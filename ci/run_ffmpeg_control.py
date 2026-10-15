@@ -235,8 +235,13 @@ def validate_config(build, lock):
     h=(build/'config.h').read_text();c=(build/'config_components.h').read_text()
     def defines(text):
         pairs=re.findall(r'^#define\s+(\w+)\s+([01])\s*$',text,re.M)
-        if len(dict(pairs))!=len(pairs):raise ValueError('Duplicate feature macro')
-        return dict(pairs)
+        result={}
+        for name,value in pairs:
+            if name in result and result[name]!=value:raise ValueError('Conflicting feature macro')
+            # FFmpeg emits LIBSMBCLIENT through two disabled external lists.
+            # Identical replacement text is legal C; conflicting values fail.
+            result[name]=value
+        return result
     config=defines(h);components=defines(c)
     for name in lock['config_one']:
         if config.get(name)!='1':raise ValueError('Required feature missing: '+name)
@@ -333,6 +338,8 @@ def evidence(report,control):
             candidates.append((e/(lib+'.'+ext),'Evidence/'+lib+'.'+ext))
     for name in ('config.h','config_components.h','ffbuild/config.log','ffbuild/config.mak','ffbuild/config.sh'):
         candidates.append((b/name,'Configuration/'+name))
+    for lib in LIBS:
+        candidates.append((SOURCE/'build/ffmpeg/control-prefix/lib/pkgconfig'/(lib+'.pc'),'Configuration/'+lib+'.pc'))
     for name in ('ffmpeg-core-control.sh','run_ffmpeg_control.py','ffmpeg-lock.json'):
         candidates.append((ROOT/'ci'/name,'Source/'+name))
     omissions=[];total=0

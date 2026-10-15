@@ -1,0 +1,185 @@
+{
+  "schema": 1,
+  "artifact_kind": "llvm15-air-reader-native",
+  "llvm_commit": "8dfdcc7b7bf66834a761bd8de445840ef68e4d1a",
+  "llvm_version": "15.0.7",
+  "dxmt_commit": "128b297c6e9a00014408dc68b4c2c2373b5813de",
+  "frozen_support_sha256": "872247fd633e950846533d0548d19c553dd799125bbeaf1c65d704cbddf97989",
+  "frozen_lock_sha256": "90b59a3cd553e394a32f361e8493aaaa799d7de83beb1a9df9b33ef7216f6479",
+  "probe_source_sha256": "4d6aae2c24b0c1e62078b05d16998060f27910ca683f572bff94518a7f224813",
+  "libraries": [
+    "LLVMBitReader",
+    "LLVMCore",
+    "LLVMRemarks",
+    "LLVMBitstreamReader",
+    "LLVMBinaryFormat",
+    "LLVMSupport",
+    "LLVMDemangle"
+  ],
+  "build_targets": [
+    "LLVMBitReader",
+    "LLVMCore",
+    "LLVMRemarks",
+    "LLVMBitstreamReader",
+    "LLVMBinaryFormat",
+    "LLVMSupport",
+    "LLVMDemangle"
+  ],
+  "host_minimum": "26.0",
+  "sdk_version": "26.5",
+  "xcode_version": "26.6",
+  "jobs": 4,
+  "configure_seconds": 240,
+  "library_build_seconds": 1200,
+  "probe_compile_seconds": 120,
+  "build_total_seconds": 1320,
+  "parse_each_seconds": 30,
+  "parse_total_seconds": 180,
+  "max_air_bytes": 33554432,
+  "source_guards": [
+    {
+      "path": "llvm/lib/Bitcode/Reader/CMakeLists.txt",
+      "file": "research/llvm__lib__Bitcode__Reader__CMakeLists.txt",
+      "sha256": "824f665dffaa12c404da0fb89d71cad95b1a0b71380ee24550dff3d8431617b5",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/lib/Bitcode/Reader/CMakeLists.txt",
+      "git_blob_sha1": "2d9ce849efca401ed7744236e54b26bd2b46b8f4"
+    },
+    {
+      "path": "llvm/lib/IR/CMakeLists.txt",
+      "file": "research/llvm__lib__IR__CMakeLists.txt",
+      "sha256": "ac2c291529d613bceb37861a6fb5abc77289d2ea89515b2ecb149dc58acf63fe",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/lib/IR/CMakeLists.txt",
+      "git_blob_sha1": "3e542e4622fbd0fd7acd77cc21aeb365cdb51855"
+    },
+    {
+      "path": "llvm/lib/Remarks/CMakeLists.txt",
+      "file": "research/llvm__lib__Remarks__CMakeLists.txt",
+      "sha256": "2458b17775dd429e82b19a3a1d5c4f6eda37b613f92535bcf91bf64461892d99",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/lib/Remarks/CMakeLists.txt",
+      "git_blob_sha1": "9e88ceccd5dbbc201d1f46ab28fd8668bad21b07"
+    },
+    {
+      "path": "llvm/lib/Bitstream/Reader/CMakeLists.txt",
+      "file": "research/llvm__lib__Bitstream__Reader__CMakeLists.txt",
+      "sha256": "217101786330efae3af70dcfa68190eeb4f0e3b64401c88efe0d713a2818b4ce",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/lib/Bitstream/Reader/CMakeLists.txt",
+      "git_blob_sha1": "832ccecfb7c9092aa6963d0efee7d67ece0c0c19"
+    },
+    {
+      "path": "llvm/lib/BinaryFormat/CMakeLists.txt",
+      "file": "research/llvm__lib__BinaryFormat__CMakeLists.txt",
+      "sha256": "6bcde9b2622b31e43b30b088f152dea1c73f45c5ab10db4a4c044eca4f3e0695",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/lib/BinaryFormat/CMakeLists.txt",
+      "git_blob_sha1": "50c171380436831b5d15a06016a0e87aab4c0378"
+    },
+    {
+      "path": "llvm/lib/Support/CMakeLists.txt",
+      "file": "research/llvm__lib__Support__CMakeLists.txt",
+      "sha256": "8bd04a7b118190a8c400114efa57ba68e5893b371d32d6e7bbfb71dd8f8bd7f8",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/lib/Support/CMakeLists.txt",
+      "git_blob_sha1": "ff23ec74df9628533e07701374c15ead6edaa78f"
+    },
+    {
+      "path": "llvm/include/llvm/Bitcode/BitcodeReader.h",
+      "file": "research/llvm__include__llvm__Bitcode__BitcodeReader.h",
+      "sha256": "74bdf232c74327589e2581b06be9b48c7dc162c1d93922c594989ba5974b6880",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/include/llvm/Bitcode/BitcodeReader.h",
+      "git_blob_sha1": "39ea48c33fc36689ddd98f716a281361ba194a40"
+    },
+    {
+      "path": "llvm/lib/Demangle/CMakeLists.txt",
+      "file": "research/llvm__lib__Demangle__CMakeLists.txt",
+      "sha256": "8e60b3c4a348398f526d6aa754e5c9292c2066c2d7c5548c2534586887dad2a9",
+      "git_blob_sha1": "eb7d212a0244932c6c2aec4f42f31bb9b8b05a05",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/lib/Demangle/CMakeLists.txt"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "air_msad",
+      "source": "src/airconv/shaders/air_msad.metal",
+      "source_sha256": "bb1f622f63026a0154164ed385e91e9d759f5bada897e6b0a76ff7710bc5565d",
+      "air_path": "generated/air_msad.air",
+      "header_path": "generated/air_msad.h",
+      "required_functions": [
+        "dxmt.msad.i32",
+        "dxmt.msad.v2i32",
+        "dxmt.msad.v3i32",
+        "dxmt.msad.v4i32"
+      ],
+      "source_url": "https://github.com/willfaust/dxmt/blob/128b297c6e9a00014408dc68b4c2c2373b5813de/src/airconv/shaders/air_msad.metal"
+    },
+    {
+      "id": "air_samplepos",
+      "source": "src/airconv/shaders/air_samplepos.metal",
+      "source_sha256": "f17da691bffe9d2ab60d20e137d3ee71c3cbade714de3f35c0ee827578f320b8",
+      "air_path": "generated/air_samplepos.air",
+      "header_path": "generated/air_samplepos.h",
+      "required_functions": [
+        "dxmt.sample_pos.i32"
+      ],
+      "source_url": "https://github.com/willfaust/dxmt/blob/128b297c6e9a00014408dc68b4c2c2373b5813de/src/airconv/shaders/air_samplepos.metal"
+    },
+    {
+      "id": "air_tessellation",
+      "source": "src/airconv/shaders/air_tessellation.metal",
+      "source_sha256": "b83e2465b8936340a3ea7336d70949a1706e15878ffa7eb4588a3e789cc6e52b",
+      "air_path": "generated/air_tessellation.air",
+      "header_path": "generated/air_tessellation.h",
+      "required_functions": [
+        "dxmt.generate_workload.triangle.integer",
+        "dxmt.generate_workload.triangle.pow2",
+        "dxmt.generate_workload.triangle.odd",
+        "dxmt.generate_workload.triangle.even",
+        "dxmt.generate_workload.quad.integer",
+        "dxmt.generate_workload.quad.pow2",
+        "dxmt.generate_workload.quad.odd",
+        "dxmt.generate_workload.quad.even",
+        "dxmt.get_domain_patch_index",
+        "dxmt.get_domain_location.integer",
+        "dxmt.get_domain_location.pow2",
+        "dxmt.get_domain_location.odd",
+        "dxmt.get_domain_location.even",
+        "dxmt.domain_generate_primitives.triangle",
+        "dxmt.domain_generate_primitives.triangle_ccw",
+        "dxmt.domain_generate_primitives.point"
+      ],
+      "source_url": "https://github.com/willfaust/dxmt/blob/128b297c6e9a00014408dc68b4c2c2373b5813de/src/airconv/shaders/air_tessellation.metal"
+    }
+  ],
+  "native_generator_input": {
+    "provider_build_id": "6ad06eef546ce6236ceec0c5",
+    "bootstrap_commit": "86c0e66a8c955c6ef5728a73adc683306dbefc05",
+    "archive_name": "run-6ad06eef546ce6236ceec0c5-native.zip",
+    "archive_bytes": 5662408,
+    "archive_sha256": "60cc63a9095d5b489a8e707201b93aa301424843a3bd0c07b2ef12eea3f8d1b3",
+    "inner_manifest_sha256": "65ec9fe4813b6a8c021b646febc6dac4eb62f15d53bbdf58b190d101927dc821",
+    "binary_sha256": "9df0ccded468dee25d8c312519042fdceea7018212a7e62264cc63429b833268",
+    "schema2_transport": {
+      "schema": 2,
+      "reassembler_path": "ci/reassemble_ntdll_artifact.py",
+      "reassembler_sha256": "d7b3116c6a4649060c91b8467a7a05c923611b3fcf36b51bc2b78a94dfd5d3db",
+      "directory": "ci/llvm-target-native-chunks",
+      "manifest_sha256": "fd7d57a8f996c8695b9298e9fc8daed0156cb02a7642b6f48aa190bfc71be130",
+      "original": {
+        "name": "llvm-tblgen-native.zip",
+        "sha256": "60cc63a9095d5b489a8e707201b93aa301424843a3bd0c07b2ef12eea3f8d1b3",
+        "size": 5662408
+      },
+      "provenance": {
+        "stage": "llvm-native",
+        "build_id": "6ad06eef546ce6236ceec0c5",
+        "app_id": "6ad03ce9a8a969b53f3a4aa9",
+        "bootstrap_commit": "86c0e66a8c955c6ef5728a73adc683306dbefc05",
+        "source_commit": "8dfdcc7b7bf66834a761bd8de445840ef68e4d1a",
+        "producer_manifest_path": "artifact-manifest.json",
+        "producer_manifest_sha256": "ca49a3bc4a73217512971c64998e999ccdaf0e5831a0afbbe26700cab3448bb4",
+        "input_lock_sha256": "90b59a3cd553e394a32f361e8493aaaa799d7de83beb1a9df9b33ef7216f6479",
+        "evidence_zip_sha256": "2450a70823329395c85210eaf7b0d6658a3435a90451db32fb34342217327945"
+      },
+      "chunks": 2,
+      "replay": "byte-identical",
+      "upload_performed": false
+    }
+  }
+}

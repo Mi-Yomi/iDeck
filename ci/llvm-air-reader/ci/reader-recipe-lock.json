@@ -1,0 +1,14 @@
+{
+  "files": {
+    "ci/air_reader.cpp": "4d6aae2c24b0c1e62078b05d16998060f27910ca683f572bff94518a7f224813",
+    "ci/frozen/llvm-source-lock.json": "90b59a3cd553e394a32f361e8493aaaa799d7de83beb1a9df9b33ef7216f6479",
+    "ci/frozen/llvm_control_support.py": "872247fd633e950846533d0548d19c553dd799125bbeaf1c65d704cbddf97989",
+    "ci/frozen/run_llvm_control.py": "324dd3d8bc30c716c9d12caf656730639930d4a49d7534156add2e732cbd581e",
+    "ci/llvm_air_probe.py": "cc21f35036407120007f9c0d98caf925ca1a6eaa17cbf53e4ca54f619a8220a9",
+    "ci/probe-source-lock.json": "1b8c8e46ae22ae7e0897a48311341625b43cc3c78626c81eb6e2139ddfea95f6",
+    "ci/run_llvm_air_reader.py": "0c71c86fb0c6fe85b9851799c16d2ae2ca415cac2b4f71122bbe900d3c5c331f",
+    "research/PROJECT-LICENSE": "e6037104443f9a7829b2aa7c5370d0789a7bda3ca65a0b904cdc0c2e285d9195"
+  },
+  "kind": "llvm15-air-reader-producer-recipe",
+  "schema": 1
+}

@@ -532,3 +532,33 @@ workflows:
     artifacts:
     - .work/pairing-control-artifacts/pairing-evidence.zip
     - .work/pairing-control-artifacts/pairing-ios-prefix.zip
+  ideck-llvm15-air-reader-native:
+    name: iDeck native LLVM15 actual AIR reader prerequisite
+    instance_type: mac_mini_m2
+    max_build_duration: 25
+    inputs:
+      expected_reader_recipe_sha256:
+        description: Exact reviewed reader-recipe-lock.json SHA256
+        type: string
+      free_quota_verified:
+        description: Current free quota and disabled paid subscription verified
+        type: string
+        default: 'false'
+      private_source_verified:
+        description: Approved private iDeck source repository verified
+        type: string
+        default: 'false'
+    environment:
+      xcode: '26.6'
+      vars:
+        EXPECTED_READER_RECIPE_SHA256: ${{ inputs.expected_reader_recipe_sha256 }}
+        FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
+        PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
+    scripts:
+    - name: Build only source-pinned native AIR reader
+      script: "set -euo pipefail\ntest \"${FREE_QUOTA_VERIFIED:-false}\" = true\n\
+        test \"${PRIVATE_SOURCE_VERIFIED:-false}\" = true\npython3 -I ci/llvm-air-reader/ci/run_llvm_air_reader.py\
+        \ \\\n  --native-chunks ci/llvm-target-native-chunks \\\n  --reassembler ci/reassemble_ntdll_artifact.py\n"
+    artifacts:
+    - ci/llvm-air-reader/.work/reader-producer/artifacts/llvm15-air-reader-evidence.zip
+    - ci/llvm-air-reader/.work/reader-producer/artifacts/llvm15-air-reader-native.zip

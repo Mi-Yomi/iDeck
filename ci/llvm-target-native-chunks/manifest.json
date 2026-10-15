@@ -1,0 +1,36 @@
+{
+  "chunk_bytes": 3145728,
+  "chunks": [
+    {
+      "index": 0,
+      "name": "chunk-0000.bin",
+      "offset": 0,
+      "sha256": "7b57186efd379467052887ea007be096a53ec345f39bee76130961f050fd1c40",
+      "size": 3145728
+    },
+    {
+      "index": 1,
+      "name": "chunk-0001.bin",
+      "offset": 3145728,
+      "sha256": "318b62f093d4feb59d55210be96c1681b9eac4dc8731c51853fe547b4fa0f150",
+      "size": 2516680
+    }
+  ],
+  "original": {
+    "name": "llvm-tblgen-native.zip",
+    "sha256": "60cc63a9095d5b489a8e707201b93aa301424843a3bd0c07b2ef12eea3f8d1b3",
+    "size": 5662408
+  },
+  "provenance": {
+    "app_id": "6ad03ce9a8a969b53f3a4aa9",
+    "bootstrap_commit": "86c0e66a8c955c6ef5728a73adc683306dbefc05",
+    "build_id": "6ad06eef546ce6236ceec0c5",
+    "evidence_zip_sha256": "2450a70823329395c85210eaf7b0d6658a3435a90451db32fb34342217327945",
+    "input_lock_sha256": "90b59a3cd553e394a32f361e8493aaaa799d7de83beb1a9df9b33ef7216f6479",
+    "producer_manifest_path": "artifact-manifest.json",
+    "producer_manifest_sha256": "ca49a3bc4a73217512971c64998e999ccdaf0e5831a0afbbe26700cab3448bb4",
+    "source_commit": "8dfdcc7b7bf66834a761bd8de445840ef68e4d1a",
+    "stage": "llvm-native"
+  },
+  "schema": 2
+}

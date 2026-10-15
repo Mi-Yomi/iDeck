@@ -428,3 +428,45 @@ workflows:
 # compiles its exact37 units sequentially. No source build scripts are executed.
 # Inputs are original five producer ZIPs, never reconstructed prefixes passed as originals.
 # Only fresh typed crypto proof may enable the immutable-original-config three-TU overlay.
+  ideck-llvm-target-control:
+    name: iDeck pinned LLVM 15.0.7 arm64 iOS static prefix control
+    instance_type: mac_mini_m2
+    max_build_duration: 25
+    inputs:
+      expected_llvm_target_wrapper_sha256:
+        description: Exact reviewed ci/run_llvm_target_control.py SHA256
+        type: string
+      expected_llvm_target_input_lock_sha256:
+        description: Exact reviewed ci/llvm-target-input-lock.json SHA256
+        type: string
+      free_quota_verified:
+        description: Free quota and disabled paid subscription verified for this manual run
+        type: string
+        default: "false"
+      private_source_verified:
+        description: Approved private Mi-Yomi/iDeck repository selected
+        type: string
+        default: "false"
+    environment:
+      xcode: "26.6"
+      vars:
+        EXPECTED_LLVM_TARGET_WRAPPER_SHA256: ${{ inputs.expected_llvm_target_wrapper_sha256 }}
+        EXPECTED_LLVM_TARGET_INPUT_LOCK_SHA256: ${{ inputs.expected_llvm_target_input_lock_sha256 }}
+        FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
+        PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
+        GIT_TERMINAL_PROMPT: "0"
+        JOBS: "4"
+    scripts:
+      - name: Build and validate only the LLVM arm64 iOS static prefix
+        script: |
+          set -euo pipefail
+          test "${FREE_QUOTA_VERIFIED:-false}" = true
+          test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
+          python3 -I ci/run_llvm_target_control.py
+    artifacts:
+      - .work/llvm-target-artifacts/llvm-target-evidence.zip
+      - .work/llvm-target-artifacts/llvm-target-prefix.zip
+# Local manual proposal only: no triggers, package installs or target execution.
+# One process-group supervisor covers checkout/import/build/verification/package.
+# 23-minute aggregate: 22-minute worker plus a reserved final evidence minute.
+# This job never reads a previous runner's workspace.

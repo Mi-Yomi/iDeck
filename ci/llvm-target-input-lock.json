@@ -1,0 +1,23 @@
+{
+  "llvm_commit": "8dfdcc7b7bf66834a761bd8de445840ef68e4d1a",
+  "madeira_commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+  "native": {
+    "app_id": "6ad03ce9a8a969b53f3a4aa9",
+    "artifact_manifest_sha256": "ca49a3bc4a73217512971c64998e999ccdaf0e5831a0afbbe26700cab3448bb4",
+    "bootstrap_commit": "86c0e66a8c955c6ef5728a73adc683306dbefc05",
+    "build_id": "6ad06eef546ce6236ceec0c5",
+    "evidence_zip_sha256": "2450a70823329395c85210eaf7b0d6658a3435a90451db32fb34342217327945",
+    "name": "llvm-tblgen-native.zip",
+    "producer_manifest_path": "artifact-manifest.json",
+    "source_lock_sha256": "90b59a3cd553e394a32f361e8493aaaa799d7de83beb1a9df9b33ef7216f6479",
+    "zip_bytes": 5662408,
+    "zip_sha256": "60cc63a9095d5b489a8e707201b93aa301424843a3bd0c07b2ef12eea3f8d1b3"
+  },
+  "schema": 1,
+  "status": "verified-original-native-producer",
+  "transport": {
+    "kind": "schema2-chunks",
+    "manifest_sha256": "fd7d57a8f996c8695b9298e9fc8daed0156cb02a7642b6f48aa190bfc71be130",
+    "path": "ci/llvm-target-native-chunks"
+  }
+}

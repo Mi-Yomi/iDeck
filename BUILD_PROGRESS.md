@@ -1,6 +1,6 @@
 # iDeck build progress
 
-Updated: 2026-10-15, 07:24 UTC.
+Updated: 2026-10-15, 07:34 UTC.
 
 ## Goal and current boundary
 
@@ -25,6 +25,7 @@ separately from application linking and device operation.
 | Current Madeira Swift and StikJIT | Real StikJIT interface import compiled; both helper inputs and all 67 unchanged main Swift sources typechecked with Xcode 27.0 / Swift 6.4. | [Current-app preflight](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad0666e546ce6236ceebf0b) |
 | Actual SDK27 field availability | All 15 current ntdll diagnostic fields compiled; independently verified own arm64 object and emitted member offsets. | [SDK27 field probe](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad076c1546ce6236ceec28e) |
 | Current ntdll Unix runtime archive | All 37 source-built objects, 19 Unix/WoW64 tables and a fresh 106-API link proof verified on SDK 27.0; 1,440 source files bound to pinned bytes. | [Ntdll control](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad07b03546ce6236ceec3aa) |
+| Native LLVM15 AIR reader | Verified native reader package, raw Apple system linkage, 256 compiled LLVM source inputs and 367 notice files. Actual shader AIR parsing is still pending. | [AIR reader producer](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad07ea8546ce6236ceec484) |
 | LLVM native generator | LLVM 15.0.7 table generator built; original package, macOS arm64 linkage and 237 compiled source inputs verified. | [Native LLVM control](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad06eef546ce6236ceec0c5) |
 
 Downloaded native runtime archive objects were checked for arm64 iOS device targeting
@@ -41,9 +42,9 @@ Playport baseline and do not silently upgrade its dependency pins.
 
 ## In progress
 
-- The native LLVM15 AIR reader prerequisite is running in a bounded build. Actual shader AIR compatibility will be checked separately with generated shader input.
+- The native LLVM15 AIR reader prerequisite is verified and ready for the DXMT stage. Actual shader AIR compatibility will be checked with source-generated shader input.
 - The 34-library LLVM target compilation completed, but public-header export validation failed. Its evidence is retained and a narrow correction is being investigated; no reusable target package was published.
-- The real pairing archive compiled with pinned official Rust and offline registry dependencies, then a strict ring object target-flags guard failed. A diagnostic-only retry is prepared to retain exact per-object metadata without changing acceptance criteria.
+- The real pairing archive compiled with pinned official Rust and offline registry dependencies, then a strict ring object target-flags guard failed. A diagnostic-only retry identified 11 exact ring assembly objects with an unspecified SDK field; the 13 C objects encode SDK26.5. All 24 target arm64 iOS18. The strict guard remains unchanged while the source-qualified policy is reviewed.
 - The Xcode 27.0 runner lacks the optional Metal Toolchain payload. Official Apple Metal installation is approved; its bounded build recipe is being prepared.
 - Remaining LLVM/DXMT closure, with exact ABI checks for reusable upstream PE components.
 
@@ -76,6 +77,6 @@ The user reports that Madeira's built-in JIT worked stably on this phone about a
 week earlier. That is useful device history, but it does not replace testing the
 new signed iDeck build.
 
-Last verified Codemagic usage: **61 of 500 free macOS minutes**. Paid subscription
+Last verified Codemagic usage: **66 of 500 free macOS minutes**. Paid subscription
 is disabled. All workflows are manual and bounded; no public repository release
 or paid build is authorized by this document.

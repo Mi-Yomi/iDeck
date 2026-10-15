@@ -15,6 +15,24 @@
   },
   "schema": 1,
   "status": "verified-original-native-producer",
+  "target_helper": {
+    "derived_from_helper_sha256": "872247fd633e950846533d0548d19c553dd799125bbeaf1c65d704cbddf97989",
+    "header_source_guards": {
+      "llvm/include/llvm/IR/CMakeLists.txt": "40ff432e21d55f0f7c065f42983486937404fb9287516b76850dd00afc7c435d",
+      "llvm/include/llvm/IR/Intrinsics.h": "3786d49744073e9a0cdce4c87c6f946c1d30d6a2d1e167f2227d2c35b0036184"
+    },
+    "native_helper_sha256": "872247fd633e950846533d0548d19c553dd799125bbeaf1c65d704cbddf97989",
+    "notice_coverage_limitation": "Private included-header dependency closure and complete embedded notice coverage have not been established; retained source units, selected notices and public headers do not establish public-distribution readiness.",
+    "path": "ci/llvm_target_control_support.py",
+    "required_public_headers": {
+      "llvm-c/Core.h": "source",
+      "llvm/Config/llvm-config.h": "generated",
+      "llvm/IR/IntrinsicEnums.inc": "generated",
+      "llvm/IR/IntrinsicImpl.inc": "generated",
+      "llvm/IR/Intrinsics.h": "source"
+    },
+    "sha256": "4bcf525dc6c5b67a83788b3713310a927c15c7e134fb1cce8818debf4ee2f801"
+  },
   "transport": {
     "kind": "schema2-chunks",
     "manifest_sha256": "fd7d57a8f996c8695b9298e9fc8daed0156cb02a7642b6f48aa190bfc71be130",

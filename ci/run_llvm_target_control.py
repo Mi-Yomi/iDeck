@@ -35,6 +35,7 @@ FINALIZE_RESERVE = 60
 PINS = {
     'llvm-core-control.sh': 'eba4f906412aa883ee37ed9257a83f9872f719fa705fe36b4a209bd34a7a46a5',
     'llvm_control_support.py': '872247fd633e950846533d0548d19c553dd799125bbeaf1c65d704cbddf97989',
+    'llvm_target_control_support.py': '4bcf525dc6c5b67a83788b3713310a927c15c7e134fb1cce8818debf4ee2f801',
     'llvm-source-lock.json': '90b59a3cd553e394a32f361e8493aaaa799d7de83beb1a9df9b33ef7216f6479',
     'run_llvm_control.py': '324dd3d8bc30c716c9d12caf656730639930d4a49d7534156add2e732cbd581e',
     'reassemble_llvm_target_artifact.py': 'd7b3116c6a4649060c91b8467a7a05c923611b3fcf36b51bc2b78a94dfd5d3db',
@@ -48,7 +49,7 @@ MANIFESTS = ('manifest.json', 'manifests/source.json', 'manifests/source-lock.js
     'manifests/source-overlay.json', 'manifests/commands.json', 'manifests/preflight.json',
     'manifests/configuration.json', 'manifests/native-import.json', 'manifests/outputs.json',
     'manifests/archive-members.json', 'manifests/public-headers.json',
-    'manifests/compiled-sources.json', 'manifests/notices.json')
+    'manifests/compiled-sources.json', 'manifests/notices.json', 'manifests/header-export.json')
 CONFIGURATION = ('evidence/CMakeCache.txt', 'evidence/compile_commands.json',
     'evidence/CMakeFiles/CMakeConfigureLog.yaml', 'evidence/include/llvm/Config/config.h',
     'evidence/include/llvm/Config/llvm-config.h', 'evidence/include/llvm/Config/abi-breaking.h')
@@ -125,7 +126,7 @@ def verify_hash(path, expected):
 def load_module(name):
     path = ROOT / 'ci' / name
     verify_hash(path, PINS[name])
-    if name == 'llvm_control_support.py':
+    if name in ('llvm_control_support.py', 'llvm_target_control_support.py'):
         verify_hash(ROOT / 'ci/llvm-source-lock.json', PINS['llvm-source-lock.json'])
     spec = importlib.util.spec_from_file_location('target_' + path.stem, path)
     module = importlib.util.module_from_spec(spec)
@@ -136,6 +137,15 @@ def load_module(name):
     finally:
         sys.dont_write_bytecode = before
     return module
+
+
+def target_recipe_identity(support=None):
+    support = support or load_module('llvm_target_control_support.py')
+    return {'path': 'ci/llvm_target_control_support.py', 'sha256': PINS['llvm_target_control_support.py'],
+        'native_helper_sha256': PINS['llvm_control_support.py'],
+        'derived_from_helper_sha256': PINS['llvm_control_support.py'],
+        'required_public_headers': support.REQUIRED_PUBLIC_HEADERS, 'header_source_guards': support.HEADER_SOURCE_GUARDS,
+        'notice_coverage_limitation': support.NOTICE_COVERAGE_LIMITATION}
 
 
 def reviewed_inputs(environ=None):
@@ -149,6 +159,7 @@ def reviewed_inputs(environ=None):
             'Wrong target input source identity')
     require(lock.get('status') == 'verified-original-native-producer',
             'BLOCKED: worker-verified successful original native ZIP and manifest identities are not frozen')
+    require(lock.get('target_helper') == target_recipe_identity(), 'Target helper identity/header contract missing from input lock')
     native = lock.get('native', {})
     require(native.get('name') == 'llvm-tblgen-native.zip' and native.get('producer_manifest_path') == 'artifact-manifest.json',
             'Wrong native artifact contract')
@@ -185,7 +196,7 @@ def target_python_invocation():
     """Preserve the already running provider interpreter; never resolve a second python3."""
     selected = safe(Path(sys.executable).resolve(strict=True))
     candidate = shutil.which('python3', path=environment()['PATH'])
-    argv = [str(selected), '-I', str(ROOT / 'ci/llvm_control_support.py'),
+    argv = [str(selected), '-I', str(ROOT / 'ci/llvm_target_control_support.py'),
             str(SOURCE), str(BUILD), 'target', str(IMPORT)]
     accepted = sys.platform == 'darwin' and sys.version_info[:3] == (3, 12, 7)
     record = {'schema': 1, 'status': 'passed' if accepted else 'rejected',
@@ -304,18 +315,21 @@ def inventory(root, rows, predicate):
 
 def validate_target(root, support=None):
     root = safe(root, directory=True)
-    support = support or load_module('llvm_control_support.py')
+    support = support or load_module('llvm_target_control_support.py')
     libraries = support.LOCK['target_libraries']
     require(len(libraries) == 34 and len(set(libraries)) == 34, 'Exactly 34 pinned libraries required')
     manifest = read_json(root / 'manifest.json')
     expected = {'schema': 1, 'stage': 'target', 'status': 'complete', 'llvm_commit': LLVM,
         'madeira_commit': MADEIRA, 'source_lock_sha256': PINS['llvm-source-lock.json'],
-        'helper_sha256': PINS['llvm_control_support.py'], 'jobs': 4, 'deployment_target': '18.0',
+        'helper_sha256': PINS['llvm_target_control_support.py'],
+        'native_helper_sha256': PINS['llvm_control_support.py'], 'derived_from_helper_sha256': PINS['llvm_control_support.py'],
+        'private_header_dependency_closure_verified': False, 'complete_embedded_notice_audit': False,
+        'public_distribution_ready': False, 'notice_coverage_limitation': support.NOTICE_COVERAGE_LIMITATION, 'jobs': 4, 'deployment_target': '18.0',
         'sdk_version': '26.5', 'xcode_version': '26.6', 'cmake_version': '4.3.4', 'target_libraries': libraries}
     require(all(manifest.get(k) == v for k, v in expected.items()), 'Target helper identity/configuration mismatch')
     require(all(manifest.get(k) is False for k in ('target_binaries_run', 'sdk_copied',
         'package_install_performed', 'explicit_signing_performed')), 'Target scope mismatch')
-    for name, key in (('outputs', 'outputs_sha256'), ('source', 'source_manifest_sha256'), ('configuration', 'configuration_sha256')):
+    for name, key in (('outputs', 'outputs_sha256'), ('source', 'source_manifest_sha256'), ('configuration', 'configuration_sha256'), ('header-export', 'header_export_sha256')):
         verify_hash(root / ('manifests/' + name + '.json'), manifest[key])
     names = inventory(root, read_json(root / 'manifests/outputs.json'), lambda n: allowed(n, libraries))
     names |= {'manifest.json', 'manifests/outputs.json'}
@@ -343,8 +357,16 @@ def validate_target(root, support=None):
                     for k, v in configuration.items()), 'Compiler/policy bypass')
     headers = inventory(root, read_json(root / 'manifests/public-headers.json'), lambda n: n.startswith('prefix/include/'))
     require(headers == {n for n in names if n.startswith('prefix/include/')}, 'Undeclared/missing public header')
-    require({'prefix/include/llvm/Config/llvm-config.h', 'prefix/include/llvm/IR/Intrinsics.inc',
-             'prefix/include/llvm-c/Core.h'} <= headers, 'Incomplete public headers')
+    require({'prefix/include/' + n for n in support.REQUIRED_PUBLIC_HEADERS} <= headers, 'Incomplete public headers')
+    export_proof = read_json(root / 'manifests/header-export.json')
+    require(export_proof == {'schema': 1, 'status': 'passed', 'llvm_commit': LLVM,
+        'target_helper_sha256': PINS['llvm_target_control_support.py'],
+        'derived_from_helper_sha256': PINS['llvm_control_support.py'],
+        'required_headers': support.REQUIRED_PUBLIC_HEADERS, 'missing': [], 'wrong_origin': [],
+        'source_guards': support.HEADER_SOURCE_GUARDS, 'exported_header_count': len(headers)},
+        'Unverified target exporter identity/header generation provenance')
+    actual_origins = {r['path'][len('prefix/include/'):]: r['origin'] for r in read_json(root / 'manifests/public-headers.json')}
+    require(all(actual_origins.get(n) == origin for n, origin in support.REQUIRED_PUBLIC_HEADERS.items()), 'Required public header has wrong source/generated origin')
     require(all(r.get('origin') in ('source', 'generated') for r in read_json(root / 'manifests/public-headers.json')), 'Missing header origin')
     notices = inventory(root, read_json(root / 'manifests/notices.json'), lambda n: n.startswith('notices/'))
     require(notices == {n for n in names if n.startswith('notices/')} and 'notices/LLVM-LICENSE.TXT' in notices,
@@ -357,6 +379,8 @@ def validate_target(root, support=None):
     require(len(source_map) == len(source_rows), 'Duplicate source provenance')
     for guard in support.LOCK['source_guards']:
         require(source_map.get(guard['path'], {}).get('sha256') == guard['sha256'], 'Pinned source configuration/notice drift')
+    for name, expected_sha in support.HEADER_SOURCE_GUARDS.items():
+        require(source_map.get(name, {}).get('sha256') == expected_sha, 'LLVM 15 header generator/consumer source identity mismatch')
     for header in read_json(root / 'manifests/public-headers.json'):
         rel = header['path'][len('prefix/include/'):]
         require(Path(rel).name != 'config.h', 'Private config.h is not a public header')
@@ -480,6 +504,8 @@ def package_prefix(lock, native_manifest):
         'madeira_commit': MADEIRA, 'sdk_version': '26.5', 'minimum_ios': '18.0', 'recipe_pins': PINS,
         'native_input': lock['native'], 'wrapper_sha256': digest(Path(__file__)),
         'input_lock_sha256': digest(ROOT / 'ci' / LOCK_NAME), 'validation': proof, 'scope': SCOPE,
+        'private_header_dependency_closure_verified': False, 'complete_embedded_notice_audit': False,
+        'public_distribution_ready': False, 'notice_coverage_limitation': target_recipe_identity()['notice_coverage_limitation'],
         'target_binaries_run': False, 'converter_validated': False, 'runtime_linked': False, 'device_tested': False, 'files': entries}
     raw = (json.dumps(manifest, indent=2, sort_keys=True) + '\n').encode()
     temporary = safe(OUT / 'llvm-target-prefix.zip.part', fresh=True)
@@ -530,7 +556,9 @@ def verify_prefix(path, zip_sha, manifest_sha, destination):
                     and manifest.get('llvm_commit') == LLVM and manifest.get('llvm_version') == '15.0.7'
                     and manifest.get('madeira_commit') == MADEIRA and manifest.get('recipe_pins') == PINS
                     and manifest.get('sdk_version') == '26.5' and manifest.get('minimum_ios') == '18.0', 'Wrong target artifact identity')
-            require(all(manifest.get(k) is False for k in ('target_binaries_run', 'converter_validated', 'runtime_linked', 'device_tested')), 'Invalid target artifact scope')
+            require(all(manifest.get(k) is False for k in ('target_binaries_run', 'converter_validated', 'runtime_linked', 'device_tested',
+                    'private_header_dependency_closure_verified', 'complete_embedded_notice_audit', 'public_distribution_ready')), 'Invalid target artifact scope')
+            require(manifest.get('notice_coverage_limitation') == target_recipe_identity()['notice_coverage_limitation'], 'Missing explicit notice coverage limitation')
             entries = manifest['files']
             require(set(entries) | {'artifact-manifest.json'} == {i.filename for i in infos}, 'Missing/undeclared target ZIP member')
             staging.mkdir()
@@ -559,6 +587,7 @@ def verify_prefix(path, zip_sha, manifest_sha, destination):
         verify_hash(staging / 'Recipe' / LOCK_NAME, manifest['input_lock_sha256'])
         input_lock = read_json(staging / 'Recipe' / LOCK_NAME)
         require(input_lock.get('status') == 'verified-original-native-producer' and input_lock.get('native') == manifest['native_input'], 'Native dependency identity mismatch')
+        require(input_lock.get('target_helper') == target_recipe_identity(), 'Imported target helper identity/header contract mismatch')
         verify_hash(staging / 'NativeProvenance/artifact-manifest.json', manifest['native_input']['artifact_manifest_sha256'])
         native = read_json(staging / 'NativeProvenance/manifest.json')
         original = read_json(staging / 'NativeProvenance/artifact-manifest.json')

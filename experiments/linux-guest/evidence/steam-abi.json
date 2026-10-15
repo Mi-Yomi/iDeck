@@ -1,0 +1,2513 @@
+{
+  "schema": 1,
+  "manifest_url": "https://client-update.fastly.steamstatic.com/steam_client_steamdeck_publicbeta_linuxarm64",
+  "manifest_sha256": "65079d08bbcc0e7fdc3d9b153aadc4c9befc62913c3e4ee0b02425690366f15f",
+  "version": "1791918634",
+  "packages": [
+    {
+      "name": "bins_linuxarm64_linuxarm64",
+      "url": "https://client-update.fastly.steamstatic.com/bins_linuxarm64_linuxarm64.zip.5a9a95afdc2ee6a000092a6205716b0f6efe899c",
+      "file": "bins_linuxarm64_linuxarm64.zip.5a9a95afdc2ee6a000092a6205716b0f6efe899c",
+      "sha256": "8b31d0b0aa844d906b690283da41403b601a9b36b1f80b7819d1f85bb27854fc",
+      "size": 110373661
+    },
+    {
+      "name": "bins_sdk_linuxarm64_linuxarm64",
+      "url": "https://client-update.fastly.steamstatic.com/bins_sdk_linuxarm64_linuxarm64.zip.2c3bec3325aef7dfb9808778eacf3b9dfbf86263",
+      "file": "bins_sdk_linuxarm64_linuxarm64.zip.2c3bec3325aef7dfb9808778eacf3b9dfbf86263",
+      "sha256": "08fbf995ea00819217990eeb3641def1334b8e3bbfee9a3607b47bf7195049d8",
+      "size": 15909646
+    },
+    {
+      "name": "codecs_linuxarm64_linuxarm64",
+      "url": "https://client-update.fastly.steamstatic.com/codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+      "file": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+      "sha256": "30fa6e5ad583de624772a415f063ff9328c330864a83420bafd20dba8652756a",
+      "size": 11186876
+    },
+    {
+      "name": "resource_linuxarm64_linuxarm64",
+      "url": "https://client-update.fastly.steamstatic.com/resource_linuxarm64_linuxarm64.zip.6e5691ac5a1a55a554250468a98c3f8e454fea4a",
+      "file": "resource_linuxarm64_linuxarm64.zip.6e5691ac5a1a55a554250468a98c3f8e454fea4a",
+      "sha256": "f78280db38d95a74096a00f7d2bc3061286db135e9e61bbf963eb65de39d66fc",
+      "size": 2371
+    },
+    {
+      "name": "sdl3_linuxarm64_linuxarm64",
+      "url": "https://client-update.fastly.steamstatic.com/sdl3_linuxarm64_linuxarm64.zip.b9e597c932dbe144546b8c0535b1d0e750895cf3",
+      "file": "sdl3_linuxarm64_linuxarm64.zip.b9e597c932dbe144546b8c0535b1d0e750895cf3",
+      "sha256": "69c917971d54fdae7df4e9a5bfc2efb026ec23495d93dc4881f8511c64aeb463",
+      "size": 9314332
+    },
+    {
+      "name": "webkit_linuxarm64_linuxarm64",
+      "url": "https://client-update.fastly.steamstatic.com/webkit_linuxarm64_linuxarm64.zip.c1d5fa58a564375f71b34bccaa51c19be1143137",
+      "file": "webkit_linuxarm64_linuxarm64.zip.c1d5fa58a564375f71b34bccaa51c19be1143137",
+      "sha256": "b8687e0f20668d24055d8f2e9f6c4fbcbe84fbb99a7bc9de4595530be7029990",
+      "size": 111396433
+    }
+  ],
+  "elf_files": [
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/chromehtml.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "librt.so.1",
+        "ld-linux-aarch64.so.1",
+        "libtier0_s.so",
+        "libvstdlib_s.so",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 2923856,
+      "sha256": "cb2956ea9c42850e1e19c8d27f3260a45f023b0429224f9a3f50a0b0560fc0e8"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/crashhandler.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "ld-linux-aarch64.so.1",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 1220704,
+      "sha256": "f64fffeca02f8ea88152bde5be44443019cc57a27760453e17565b30c98359a6"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/filesystem_stdio.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "ld-linux-aarch64.so.1",
+        "libtier0_s.so",
+        "libvstdlib_s.so",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 873536,
+      "sha256": "cbea5f62f556474444f9f7362c5a0fa4e8dd67b7ee6b31f10be2562730c17044"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/fossilize_replay",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "libdl.so.2",
+        "librt.so.1",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 3403544,
+      "sha256": "dfb5451f98750f0be38c86cef2c605af729a4c3377437a8771037594c142ad56"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/friendsui.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "librt.so.1",
+        "ld-linux-aarch64.so.1",
+        "libtier0_s.so",
+        "libvstdlib_s.so",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 7671936,
+      "sha256": "2bc9f2e02d445d92b02656eb0cd4ee888e5fdf5af778f868c688c04dd4a65314"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/gameoverlayrenderer.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "librt.so.1",
+        "ld-linux-aarch64.so.1",
+        "libGL.so.1",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 726968,
+      "sha256": "b2b4c3618fc49046dee3ccbd7f638349ca65fcf3090bdb8cecb3c247315e8c8a"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/gameoverlayui",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "libdl.so.2",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 7800,
+      "sha256": "fb6be2adc507ae2b621115d5538ba0828fac3c6da49f3f9238a02fde1e80118f"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/gameoverlayui.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "librt.so.1",
+        "ld-linux-aarch64.so.1",
+        "libtier0_s.so",
+        "libvstdlib_s.so",
+        "libavif.so.16",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 8126696,
+      "sha256": "b5194de2acb1d362f3529297caa0cca4c4a0fe701a178e1b113683455cba8bc2"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/gldriverquery",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "libSDL2-2.0.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": null,
+      "size": 174496,
+      "sha256": "1dfccd458602577f8c7187839ae27be81cce2f05513830515d6d875d539a3b5a"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libVkLayer_khronos_validation.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libpthread.so.0",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": "libVkLayer_khronos_validation.so",
+      "rpath": null,
+      "runpath": null,
+      "size": 16715320,
+      "sha256": "ec56e465adf5463db927620305fddc17a64284bb702e81538c45530ebb1b7e9b"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libVkLayer_steam_fossilize.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "librt.so.1",
+        "ld-linux-aarch64.so.1",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 1095320,
+      "sha256": "4592920fed4f509eedac500e0641bcab84550c2345e80337d74859e94c455c5f"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libaom.so.3",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": "libaom.so.3",
+      "rpath": null,
+      "runpath": null,
+      "size": 2703080,
+      "sha256": "3c4720d99fe25ebf2c1db8674aff346435e3cc93a3bb50b3752215b0b67e371e"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libaudio.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "ld-linux-aarch64.so.1",
+        "libtier0_s.so",
+        "libvstdlib_s.so",
+        "libpulse.so.0",
+        "libopenal.so.1",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 983888,
+      "sha256": "da184f1ccab2db31a01b44a212f8cf6599c159e309cbef25e4acc541b6ae1430"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libdav1d.so.6",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": "libdav1d.so.6",
+      "rpath": null,
+      "runpath": null,
+      "size": 758944,
+      "sha256": "d4c79dcc36b80c6f3d952bfe92214f6e5142bcc5bb0db11f146d2d2ac6196eee"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libmiles.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libopenal.so.1",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 403424,
+      "sha256": "b2308b33d6eaab4362db4429a3cca799cea23cd53bb2416d0488a315d889bc3d"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libminigbm.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libpthread.so.0",
+        "libdrm.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": "libminigbm.so",
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 2046456,
+      "sha256": "ea1201f47c0854f4810ea850919fd0212b28cf92088b87fa1816e0050e4e123c"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libopenvr_api.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "ld-linux-aarch64.so.1",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": null,
+      "size": 333320,
+      "sha256": "4a8723b7134c53ec6c9291d9d2f55ea86349ffd0d227d10ae49a4951ae5395d4"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libpulsecommon-10.0.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libm.so.6",
+        "libsndfile.so.1",
+        "libdbus-1.so.3",
+        "libX11-xcb.so.1",
+        "libX11.so.6",
+        "libxcb.so.1",
+        "libsystemd.so.0",
+        "libasyncns.so.0",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": "libpulsecommon-16.1.so",
+      "rpath": null,
+      "runpath": null,
+      "size": 592072,
+      "sha256": "059fb7bd2bcd2556b3639e2a4c96459f93a023b89a953fecb50dd1aa23db491a"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libs/libcurl.so.4.8.0",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libnghttp2.so.14",
+        "libssh2.so.1",
+        "libssl.so.3",
+        "libcrypto.so.3",
+        "libzstd.so.1",
+        "libbrotlidec.so.1",
+        "libz.so.1",
+        "libc.so.6"
+      ],
+      "soname": "libcurl.so.4",
+      "rpath": null,
+      "runpath": null,
+      "size": 760920,
+      "sha256": "d58dcb98115743f3b2f8f3b2dead3979ddd9f989da7d129974c20d2a0e181063"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libs/libnghttp2.so.14.20.1",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libc.so.6"
+      ],
+      "soname": "libnghttp2.so.14",
+      "rpath": null,
+      "runpath": null,
+      "size": 304688,
+      "sha256": "65802cbbab83219c19016cc1326f4df33f2da64e86cc3771c7dcaf7f6d878f11"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libsdkencryptedappticket.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "ld-linux-aarch64.so.1",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 1601472,
+      "sha256": "678e90d188bbd581efc10d96fceed2211546729ee546f0766e7c2de79fad7d67"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libtier0_s.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "ld-linux-aarch64.so.1",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 368552,
+      "sha256": "e3b2a32ac71eb6e9578cca5d96e7d07c7e3950db3a522389e9164f12eb429b42"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libvideo.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "ld-linux-aarch64.so.1",
+        "libavcodec.so.62",
+        "libavformat.so.62",
+        "libswresample.so.6",
+        "libavutil.so.60",
+        "libswscale.so.9",
+        "libavfilter.so.11",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 9741136,
+      "sha256": "fc12c4b81193ed2ac40d2d2761744252a60cf33a8348310f88ea2c3bd32a2ad2"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libvk_swiftshader.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": "libvk_swiftshader.so",
+      "rpath": null,
+      "runpath": null,
+      "size": 16882424,
+      "sha256": "cbb0e4003d7a1acb046dc4f24c3a710ea07e528ab9033fe87286c4ea485775c2"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libvstdlib_s.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "librt.so.1",
+        "ld-linux-aarch64.so.1",
+        "libtier0_s.so",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 1224744,
+      "sha256": "fc6fbf106422580a83b380187619279563b1d46eadcce8a59dd72c967b180eb6"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libvulkan.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libm.so.6",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": "libvulkan.so.1",
+      "rpath": null,
+      "runpath": null,
+      "size": 592464,
+      "sha256": "d114974137bb80154f08c12531a2adef6431dde112566a0d2625e307fbd7eedf"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libvulkan.so.1",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libm.so.6",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": "libvulkan.so.1",
+      "rpath": null,
+      "runpath": null,
+      "size": 592464,
+      "sha256": "d114974137bb80154f08c12531a2adef6431dde112566a0d2625e307fbd7eedf"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/reaper",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": null,
+      "size": 19336,
+      "sha256": "6105162a0b337c4f082f382b4bbd0211c03808df36b698a9dbfadd2d768a7161"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/steam",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "libdl.so.2",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 10124968,
+      "sha256": "090846de94be2fcd2ffe5475af412687a720f34dda6b96d1daffe2c587316456"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/steam_monitor",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "libdl.so.2",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 529152,
+      "sha256": "daf5eef785ec984822ebf550254ccd584787c04151c9d2a1ead98ba0301576d8"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/steamclient.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "librt.so.1",
+        "ld-linux-aarch64.so.1",
+        "libtier0_s.so",
+        "libvstdlib_s.so",
+        "libXrandr.so.2",
+        "libXi.so.6",
+        "libGL.so.1",
+        "libXrender.so.1",
+        "libX11.so.6",
+        "libXtst.so.6",
+        "libpipewire-0.3.so.0",
+        "libopenal.so.1",
+        "libpulse.so.0",
+        "libnm.so.0",
+        "libgobject-2.0.so.0",
+        "libglib-2.0.so.0",
+        "libudev.so.1",
+        "libgio-2.0.so.0",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 47238400,
+      "sha256": "a583cd01e6ee69d5fbd65909d6c4593e53da675b3fc53794525bfda5f32f4cdc"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/steamerrorreporter",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 158240,
+      "sha256": "6e5ddc7616300e7b62d335455fd3c35b99101128c9527f6769bb57f1616f42c3"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/steamoverlayvulkanlayer.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "ld-linux-aarch64.so.1",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 833016,
+      "sha256": "4fa061a6e69bb951aaa607bafa506e3275c2bcd8dce23c82e25c71ff63457b81"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/steamservice.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "ld-linux-aarch64.so.1",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 9180928,
+      "sha256": "1986165d80ff9b55b0589d4bf60e87f3f65c1c01c9b45e066ddb05e98f808de5"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/steamsysinfo",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "libdl.so.2",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 2585944,
+      "sha256": "5f240ef584e5179f01e821c9c49943104abb1917aa1f738f47a6151365706c08"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/steamui.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "librt.so.1",
+        "ld-linux-aarch64.so.1",
+        "libtier0_s.so",
+        "libvstdlib_s.so",
+        "libSDL3.so.0",
+        "libvideo.so",
+        "libGL.so.1",
+        "libXtst.so.6",
+        "libXfixes.so.3",
+        "libXrandr.so.2",
+        "libXrender.so.1",
+        "libXext.so.6",
+        "libX11.so.6",
+        "libXi.so.6",
+        "libgobject-2.0.so.0",
+        "libglib-2.0.so.0",
+        "libgio-2.0.so.0",
+        "libgtk-x11-2.0.so.0",
+        "libpipewire-0.3.so.0",
+        "libpulse.so.0",
+        "libgdk_pixbuf-2.0.so.0",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 39084592,
+      "sha256": "e4bfddbd7e5afa592cca1520462e12f515a913181d558fe6c2119cbd8985a69e"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/steamwebhelper",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "libdl.so.2",
+        "librt.so.1",
+        "libtier0_s.so",
+        "libvstdlib_s.so",
+        "libcef.so",
+        "libSDL3.so.0",
+        "libgobject-2.0.so.0",
+        "libglib-2.0.so.0",
+        "libgio-2.0.so.0",
+        "libX11.so.6",
+        "libXi.so.6",
+        "libXext.so.6",
+        "libXrender.so.1",
+        "libXtst.so.6",
+        "libXrandr.so.2",
+        "libXcomposite.so.1",
+        "libXdamage.so.1",
+        "libGL.so.1",
+        "libibus-1.0.so.5",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 10301976,
+      "sha256": "48ceef78c6f9310369fb4baa95d7076b67e6a2fbb5a00dc71f23f076d0d3df01"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/streaming_client",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "libdl.so.2",
+        "libSDL3.so.0",
+        "libSDL3_image.so.0",
+        "libSDL3_ttf.so.0",
+        "libh264bitstream.so.0",
+        "libhevcbitstream.so.0",
+        "libXtst.so.6",
+        "libXrender.so.1",
+        "libX11.so.6",
+        "libXi.so.6",
+        "libXrandr.so.2",
+        "libGL.so.1",
+        "libbrotlidec.so.1",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 14598048,
+      "sha256": "7400cba794d1935c277e7329d3a7f74ea105ebf90bccd9fce87f932d260bcfa5"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/swiftshader/libEGL.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": "libEGL.so",
+      "rpath": null,
+      "runpath": null,
+      "size": 1874248,
+      "sha256": "7becddfaf1d3648ae18e4fa59d4bfe79400e36b26f43211c76f31adb9074e68f"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/swiftshader/libGLESv2.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": "libGLESv2.so",
+      "rpath": null,
+      "runpath": null,
+      "size": 97036984,
+      "sha256": "88efd225ff5db1c6aaf957c076a28ea472553df2c0c791474a8777ed9eaf52fa"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/vgui2_s.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "ld-linux-aarch64.so.1",
+        "libtier0_s.so",
+        "libvstdlib_s.so",
+        "libX11.so.6",
+        "libXi.so.6",
+        "libXrandr.so.2",
+        "libXrender.so.1",
+        "libGL.so.1",
+        "libfontconfig.so.1",
+        "libfreetype.so.6",
+        "libgtk-x11-2.0.so.0",
+        "libglib-2.0.so.0",
+        "libopenal.so.1",
+        "libXinerama.so.1",
+        "libSM.so.6",
+        "libICE.so.6",
+        "libXtst.so.6",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 3455168,
+      "sha256": "d7316ccef36d2e983bab1ee204b6d9541a02d1a3bef55cb503d1ff90075c4edd"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/vgui_panel_zoo",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "libdl.so.2",
+        "librt.so.1",
+        "libtier0_s.so",
+        "libvstdlib_s.so",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 8458872,
+      "sha256": "cba8a54e1a7bbf19a280dcb80ba069bf02c5fc371b0333c6ab90229c65eceb39"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/vulkandriverquery",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 174736,
+      "sha256": "a67394cc800b9a9f15c1ccbf498b975aaf3d776002bf8c75fa91b620dab195e3"
+    },
+    {
+      "package": "bins_sdk_linuxarm64_linuxarm64",
+      "path": "linuxarm64/crashhandler.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "ld-linux-aarch64.so.1",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 1220672,
+      "sha256": "e26140f7b6ac02d211c9c20c5db519941fe16cee015e71a63a9d31a8346cbc93"
+    },
+    {
+      "package": "bins_sdk_linuxarm64_linuxarm64",
+      "path": "linuxarm64/pw-audio-namespace",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": null,
+      "size": 70352,
+      "sha256": "46e4f42ce7754866b6c4454b220e6701650f980e5bf10f07384bb6d090f86d07"
+    },
+    {
+      "package": "bins_sdk_linuxarm64_linuxarm64",
+      "path": "linuxarm64/steam-launch-wrapper",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": null,
+      "size": 73208,
+      "sha256": "e6bc99d6732cd42af52006ae5803edb93b771051a0d7f78ece63c760ca8ac48e"
+    },
+    {
+      "package": "bins_sdk_linuxarm64_linuxarm64",
+      "path": "linuxarm64/steamclient.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "librt.so.1",
+        "ld-linux-aarch64.so.1",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 46358128,
+      "sha256": "9869e0e87e9817ca810969e301772b60e9366c449b75b48106a2245d04c44958"
+    },
+    {
+      "package": "bins_sdk_linuxarm64_linuxarm64",
+      "path": "linuxarm64/steamerrorreporter",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 143504,
+      "sha256": "1cdb6e97b4be9847cdf16df641102c01c0b4252227543aff1d4ba4595150fe78"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libavcodec.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libavutil.so.59",
+        "libvpx.so.6",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libva.so.2",
+        "libc.so.6"
+      ],
+      "soname": "libavcodec.so.61",
+      "rpath": null,
+      "runpath": null,
+      "size": 3223696,
+      "sha256": "9340c42cb4922d7e82a47042a77bbf976b26cb2c2e8d92de2358611b44ea394a"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libavcodec.so.58",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libavutil.so.56",
+        "libvpx.so.6",
+        "libm.so.6",
+        "libva.so.2",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": "libavcodec.so.58",
+      "rpath": null,
+      "runpath": null,
+      "size": 2970032,
+      "sha256": "5a049fbfcce59f426ba4575a41c0cabe1b4244ef79ea975ce1aaac4d0f8660d4"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libavcodec.so.62",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libavutil.so.60",
+        "libvpx.so.6",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libva.so.2",
+        "libdl.so.2",
+        "libc.so.6"
+      ],
+      "soname": "libavcodec.so.62",
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 3195792,
+      "sha256": "35813858b86d252d802e970480d64a8cec3c60e43d18d805831f4b4bd923cc67"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libavfilter.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libavutil.so.59",
+        "libc.so.6"
+      ],
+      "soname": "libavfilter.so.10",
+      "rpath": null,
+      "runpath": null,
+      "size": 121688,
+      "sha256": "8bfaeab75f3248b5b408523cd66a8548ba74076ade60372c3708ca7015b05268"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libavfilter.so.11",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libswscale.so.9",
+        "libavutil.so.60",
+        "libc.so.6"
+      ],
+      "soname": "libavfilter.so.11",
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 175280,
+      "sha256": "08e464cce97dc7ea0984bed565e8bd5bd1dff5c6c64650e81786365dd0b659ea"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libavfilter.so.7",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libavutil.so.56",
+        "libm.so.6",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": "libavfilter.so.7",
+      "rpath": null,
+      "runpath": null,
+      "size": 134744,
+      "sha256": "2e6a95845c97aa7217f35e2da8b8966d482c0bad2d2972d2ce7a98ce91c225a9"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libavformat.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libavcodec.so.61",
+        "libavutil.so.59",
+        "libm.so.6",
+        "libbz2.so.1.0",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": "libavformat.so.61",
+      "rpath": null,
+      "runpath": null,
+      "size": 922240,
+      "sha256": "a562e8084987b51c344bc5e04e66a4304ef8ffaeb480cd5817741137fdc68c0b"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libavformat.so.58",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libavcodec.so.58",
+        "libavutil.so.56",
+        "libm.so.6",
+        "libbz2.so.1.0",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": "libavformat.so.58",
+      "rpath": null,
+      "runpath": null,
+      "size": 925176,
+      "sha256": "9e8be10df5075eb744130c4ef3bf4ef553ccf4f3de9573b72ea777f917663d8b"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libavformat.so.62",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libavcodec.so.62",
+        "libavutil.so.60",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": "libavformat.so.62",
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 1041248,
+      "sha256": "2bc162383864c93bd653de3fb1b650ca17d68d7797bf62eedb82b1218e097c51"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libavif.so.16",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdav1d.so.6",
+        "libaom.so.3",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": "libavif.so.16",
+      "rpath": null,
+      "runpath": "",
+      "size": 162664,
+      "sha256": "06a14a73462ef4e0e686cd7851bdbe1721993b6cb04ebe0ad7a639fe58e1ef76"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libavresample.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libavutil.so.56",
+        "libm.so.6",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": "libavresample.so.4",
+      "rpath": null,
+      "runpath": null,
+      "size": 133392,
+      "sha256": "fbdb4c38ccdb14701fb21128f6d295894eb0508ad87e3569ca7c2ae48f4e88cd"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libavresample.so.4",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libavutil.so.56",
+        "libm.so.6",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": "libavresample.so.4",
+      "rpath": null,
+      "runpath": null,
+      "size": 133496,
+      "sha256": "d965cb998a0c09ea33ef9ffbbd4d8e5f034643898edd955686227fc17ccf4c7c"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libavutil.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libvdpau.so.1",
+        "libX11.so.6",
+        "libm.so.6",
+        "libdrm.so.2",
+        "libva.so.2",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": "libavutil.so.59",
+      "rpath": null,
+      "runpath": null,
+      "size": 789440,
+      "sha256": "e8aa8afcd19a5f8cef404e5d59cf0125fceeabe12bbe0179025c02e03e4257a3"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libavutil.so.56",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libvdpau.so.1",
+        "libX11.so.6",
+        "libm.so.6",
+        "libdrm.so.2",
+        "libva.so.2",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": "libavutil.so.56",
+      "rpath": null,
+      "runpath": null,
+      "size": 593720,
+      "sha256": "d9abcb3c6e6dd9714ece2f5d0ab78b4a598b19966d0e2cdb4b3d3e16bd656985"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libavutil.so.60",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libm.so.6",
+        "libdrm.so.2",
+        "libva.so.2",
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": "libavutil.so.60",
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 945552,
+      "sha256": "7f3a228bd24b671d7e3416e272b1733e636f8882ef7a47c830c75b62d971285d"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libh264bitstream.so.0",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libc.so.6"
+      ],
+      "soname": "libh264bitstream.so.0",
+      "rpath": null,
+      "runpath": null,
+      "size": 433976,
+      "sha256": "22cf2cba7ab48c1f2ff92d92b694b4ed322b14b5e8ea14b6af6637ef75f285d1"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libhevcbitstream.so.0",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libc.so.6"
+      ],
+      "soname": "libhevcbitstream.so.0",
+      "rpath": null,
+      "runpath": null,
+      "size": 483024,
+      "sha256": "a9bfee5f612f2b3a1946e3c0cb18ca62293b94881e0d410350b402decf52beaa"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libogg.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libc.so.6"
+      ],
+      "soname": "libogg.so.0",
+      "rpath": null,
+      "runpath": null,
+      "size": 30832,
+      "sha256": "6eb0b5f59af51b1e434dd96fd92ef8b34c984e4f9fcd48f94867ad2b6be2372e"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libogg.so.0",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libc.so.6"
+      ],
+      "soname": "libogg.so.0",
+      "rpath": null,
+      "runpath": "$$ORIGIN",
+      "size": 30928,
+      "sha256": "91821b16b19583ec48f9204d27ef8a10ab42cd2c178d56c30aff2ab7a3b1a6b4"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libswresample.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libavutil.so.59",
+        "libm.so.6",
+        "libc.so.6"
+      ],
+      "soname": "libswresample.so.5",
+      "rpath": null,
+      "runpath": null,
+      "size": 84256,
+      "sha256": "c1c84cc09e012544aa964e5c829c47ca099dc4a89c628326ea2aa63dec7f0737"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libswresample.so.6",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libavutil.so.60",
+        "libm.so.6",
+        "libc.so.6"
+      ],
+      "soname": "libswresample.so.6",
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 88464,
+      "sha256": "d402ec9761bb524ada2cf25626c2cab5073132a48a93a87c9519ed3031133b2b"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libswscale.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libavutil.so.59",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": "libswscale.so.8",
+      "rpath": null,
+      "runpath": null,
+      "size": 375088,
+      "sha256": "ee1198033a837bfb61891cffa4bb7ae30d6f5ef89ac3007eff2830fb3bc96b09"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libswscale.so.5",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libavutil.so.56",
+        "libm.so.6",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": "libswscale.so.5",
+      "rpath": null,
+      "runpath": null,
+      "size": 461088,
+      "sha256": "5a8be80531c5bcbf16f2ffd7390a965ed2f632d259bd7377aebe56eaca16bb27"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libswscale.so.9",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libavutil.so.60",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": "libswscale.so.9",
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 769168,
+      "sha256": "c507fce6e0804f6b9ba6936a3fea0a50242d664606b9d6e9bf8e96624ee8a036"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libvorbis.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libm.so.6",
+        "libogg.so.0",
+        "libc.so.6"
+      ],
+      "soname": "libvorbis.so.0",
+      "rpath": null,
+      "runpath": "/buildffmpeg7/ffmpeg-7.0.1/build_arm64/lib",
+      "size": 162424,
+      "sha256": "2a8f0f32cb3cda2d89ec0ed59c2f4a815209c7d0ee8f27bcfc46c918283e73a3"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libvorbis.so.0",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libm.so.6",
+        "libogg.so.0",
+        "libc.so.6"
+      ],
+      "soname": "libvorbis.so.0",
+      "rpath": null,
+      "runpath": "/home/buildbot/buildslave/libav_linux/build/ffmpeg-8.1.2/build_arm64/lib:$$ORIGIN",
+      "size": 162528,
+      "sha256": "4efea9c368ffc556dd1d48126d05314641358d4ac123974c20a7909ae7379281"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libvorbisenc.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libvorbis.so.0",
+        "libc.so.6"
+      ],
+      "soname": "libvorbisenc.so.2",
+      "rpath": null,
+      "runpath": "/buildffmpeg7/ffmpeg-7.0.1/build_arm64/lib",
+      "size": 653344,
+      "sha256": "dc85e991ae4d6328c2f584ea2645fbf8a87e9b48c1ef876c7457c24ebb81d18a"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libvorbisenc.so.2",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libvorbis.so.0",
+        "libc.so.6"
+      ],
+      "soname": "libvorbisenc.so.2",
+      "rpath": null,
+      "runpath": "/home/buildbot/buildslave/libav_linux/build/ffmpeg-8.1.2/build_arm64/lib:$$ORIGIN",
+      "size": 653448,
+      "sha256": "c1fd996c7af29fded0222f45ede97a46f60485c72af889b4eb663b265e730e22"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libvorbisfile.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libvorbis.so.0",
+        "libogg.so.0",
+        "libc.so.6"
+      ],
+      "soname": "libvorbisfile.so.3",
+      "rpath": null,
+      "runpath": "/buildffmpeg7/ffmpeg-7.0.1/build_arm64/lib",
+      "size": 31104,
+      "sha256": "94a492ff8189ec94f0c4235aaa6420063ff89b18da2f9269c0d5b0a71b158e3c"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libvorbisfile.so.3",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libvorbis.so.0",
+        "libogg.so.0",
+        "libc.so.6"
+      ],
+      "soname": "libvorbisfile.so.3",
+      "rpath": null,
+      "runpath": "/home/buildbot/buildslave/libav_linux/build/ffmpeg-8.1.2/build_arm64/lib:$$ORIGIN",
+      "size": 31208,
+      "sha256": "58924ce47e51a42401ea5522b5f2baa1f6ec71f24ca49f5fd519aa69d03c843a"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libvpx.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libpthread.so.0",
+        "libm.so.6",
+        "libc.so.6"
+      ],
+      "soname": "libvpx.so.6",
+      "rpath": null,
+      "runpath": null,
+      "size": 2112000,
+      "sha256": "3a1b594ae9490f9a617e0ee5b2e0fec7f416fd6fbadcc95b35a2e6a3dbcfd948"
+    },
+    {
+      "package": "codecs_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libvpx.so.6",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libpthread.so.0",
+        "libm.so.6",
+        "libc.so.6"
+      ],
+      "soname": "libvpx.so.6",
+      "rpath": null,
+      "runpath": "$$ORIGIN",
+      "size": 2112096,
+      "sha256": "8d29aea36f0885ed314319bee850ff8ca80fe9102fb997e7bb8e363da8673514"
+    },
+    {
+      "package": "sdl3_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libSDL3.so.0",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "ld-linux-aarch64.so.1",
+        "libEGL.so.1",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": "libSDL3.so.0",
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 3329224,
+      "sha256": "655a012513ab4c0df667644a30ec42400b5527de8b448d044e3161dc208efe05"
+    },
+    {
+      "package": "sdl3_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libSDL3_image.so.0",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libSDL3.so.0",
+        "libc.so.6"
+      ],
+      "soname": "libSDL3_image.so.0",
+      "rpath": null,
+      "runpath": null,
+      "size": 278016,
+      "sha256": "6b4c637a50bb5f2f62e138a4781f0a73717d538452c5fa026f7b190e42232577"
+    },
+    {
+      "package": "sdl3_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libSDL3_ttf.so.0",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libSDL3.so.0",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "soname": "libSDL3_ttf.so.0",
+      "rpath": null,
+      "runpath": null,
+      "size": 27297024,
+      "sha256": "a6dc96b8a7deaf4d1feb563390de7f27334610577e5159d4dd17ca1545fbc332"
+    },
+    {
+      "package": "webkit_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/cefsimple",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "libcef.so",
+        "libX11.so.6",
+        "libpthread.so.0",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": null,
+      "rpath": "$ORIGIN",
+      "runpath": null,
+      "size": 4689496,
+      "sha256": "becb02eba2773071cbb8544b3ddb9cb6fa6b4d3b971b85fa8e53de2d57f7c9e3"
+    },
+    {
+      "package": "webkit_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libEGL.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": "libEGL.so",
+      "rpath": null,
+      "runpath": null,
+      "size": 283472,
+      "sha256": "26d5bfd7d5921d51101146f5be1c6c7091ad0e1f026c34314bd3d6f412e505b4"
+    },
+    {
+      "package": "webkit_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libGLESv2.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libX11.so.6",
+        "libXext.so.6",
+        "libxcb.so.1",
+        "libdrm.so.2",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": "libGLESv2.so",
+      "rpath": null,
+      "runpath": null,
+      "size": 6486432,
+      "sha256": "5e389cf7ee3202501f1c67dc2845013b7e60c5023261def47d2216e5e7f6b266"
+    },
+    {
+      "package": "webkit_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libcef.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libgobject-2.0.so.0",
+        "libglib-2.0.so.0",
+        "libnss3.so",
+        "libnssutil3.so",
+        "libsmime3.so",
+        "libnspr4.so",
+        "libdbus-1.so.3",
+        "libatk-1.0.so.0",
+        "libatk-bridge-2.0.so.0",
+        "libcups.so.2",
+        "libgio-2.0.so.0",
+        "libm.so.6",
+        "libX11.so.6",
+        "libXcomposite.so.1",
+        "libXdamage.so.1",
+        "libXext.so.6",
+        "libXfixes.so.3",
+        "libXrandr.so.2",
+        "libgbm.so.1",
+        "libdrm.so.2",
+        "libexpat.so.1",
+        "libxcb.so.1",
+        "libxkbcommon.so.0",
+        "libpango-1.0.so.0",
+        "libcairo.so.2",
+        "libasound.so.2",
+        "libatspi.so.0",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": "libcef.so",
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 218132264,
+      "sha256": "891d85f97231fcafa5763b7140039c5d3cbbb99f2a42ede08de5991abcbc3cdb"
+    }
+  ],
+  "non_elf_entries": [
+    {
+      "path": "steamrtarm64/builddate.txt",
+      "size": 30
+    },
+    {
+      "path": "steamrtarm64/icudtl.dat",
+      "size": 10468208
+    },
+    {
+      "path": "steamrtarm64/libs/libcurl.so",
+      "size": 16
+    },
+    {
+      "path": "steamrtarm64/libs/libnghttp2.so",
+      "size": 21
+    },
+    {
+      "path": "steamrtarm64/libs/libnghttp2.so.14",
+      "size": 21
+    },
+    {
+      "path": "steamrtarm64/steamwebhelper.sh",
+      "size": 398
+    },
+    {
+      "path": "steamrtarm64/swiftshader/libEGL.so.TOC",
+      "size": 2574
+    },
+    {
+      "path": "steamrtarm64/swiftshader/libGLESv2.so.TOC",
+      "size": 9261
+    },
+    {
+      "path": "steamrtarm64/v8_context_snapshot.bin",
+      "size": 670093
+    },
+    {
+      "path": "steamrtarm64/vk_swiftshader_icd.json",
+      "size": 107
+    },
+    {
+      "path": "steamrtarm64/libx264.so.142.crypt",
+      "size": 528656
+    },
+    {
+      "path": "steamrtarm64/libx264.so.142.md5",
+      "size": 32
+    },
+    {
+      "path": "steamrtarm64/video/libavcodec.so.58",
+      "size": 19
+    },
+    {
+      "path": "steamrtarm64/video/libavcodec.so.62",
+      "size": 19
+    },
+    {
+      "path": "steamrtarm64/video/libavfilter.so.11",
+      "size": 20
+    },
+    {
+      "path": "steamrtarm64/video/libavfilter.so.7",
+      "size": 19
+    },
+    {
+      "path": "steamrtarm64/video/libavformat.so.58",
+      "size": 20
+    },
+    {
+      "path": "steamrtarm64/video/libavformat.so.62",
+      "size": 20
+    },
+    {
+      "path": "steamrtarm64/video/libavutil.so.56",
+      "size": 18
+    },
+    {
+      "path": "steamrtarm64/video/libavutil.so.60",
+      "size": 18
+    },
+    {
+      "path": "steamrtarm64/video/libvpx.so.6",
+      "size": 14
+    },
+    {
+      "path": "resource/streaming_client/sdloverlay_actions.json",
+      "size": 5412
+    },
+    {
+      "path": "resource/streaming_client/sdloverlay_bindings_frame_controller.json",
+      "size": 5529
+    },
+    {
+      "path": "resource/streaming_client/sdloverlay_bindings_knuckles.json",
+      "size": 3800
+    },
+    {
+      "path": "steamrtarm64/chrome_100_percent.pak",
+      "size": 681745
+    },
+    {
+      "path": "steamrtarm64/chrome_200_percent.pak",
+      "size": 1065711
+    },
+    {
+      "path": "steamrtarm64/headless_command_resources.pak",
+      "size": 2923
+    },
+    {
+      "path": "steamrtarm64/locales/af.pak",
+      "size": 512596
+    },
+    {
+      "path": "steamrtarm64/locales/am.pak",
+      "size": 827392
+    },
+    {
+      "path": "steamrtarm64/locales/ar.pak",
+      "size": 909889
+    },
+    {
+      "path": "steamrtarm64/locales/bg.pak",
+      "size": 944775
+    },
+    {
+      "path": "steamrtarm64/locales/bn.pak",
+      "size": 1213170
+    },
+    {
+      "path": "steamrtarm64/locales/ca.pak",
+      "size": 583703
+    },
+    {
+      "path": "steamrtarm64/locales/cs.pak",
+      "size": 592948
+    },
+    {
+      "path": "steamrtarm64/locales/da.pak",
+      "size": 540773
+    },
+    {
+      "path": "steamrtarm64/locales/de.pak",
+      "size": 581056
+    },
+    {
+      "path": "steamrtarm64/locales/el.pak",
+      "size": 1033797
+    },
+    {
+      "path": "steamrtarm64/locales/en-GB.pak",
+      "size": 467831
+    },
+    {
+      "path": "steamrtarm64/locales/en-US.pak",
+      "size": 472226
+    },
+    {
+      "path": "steamrtarm64/locales/en-US.pak.info",
+      "size": 826473
+    },
+    {
+      "path": "steamrtarm64/locales/es-419.pak",
+      "size": 570045
+    },
+    {
+      "path": "steamrtarm64/locales/es-419.pak.info",
+      "size": 826473
+    },
+    {
+      "path": "steamrtarm64/locales/es.pak",
+      "size": 568452
+    },
+    {
+      "path": "steamrtarm64/locales/et.pak",
+      "size": 518617
+    },
+    {
+      "path": "steamrtarm64/locales/fa.pak",
+      "size": 839769
+    },
+    {
+      "path": "steamrtarm64/locales/fi.pak",
+      "size": 526819
+    },
+    {
+      "path": "steamrtarm64/locales/fil.pak",
+      "size": 595292
+    },
+    {
+      "path": "steamrtarm64/locales/fr.pak",
+      "size": 615909
+    },
+    {
+      "path": "steamrtarm64/locales/gu.pak",
+      "size": 1198691
+    },
+    {
+      "path": "steamrtarm64/locales/he.pak",
+      "size": 742374
+    },
+    {
+      "path": "steamrtarm64/locales/hi.pak",
+      "size": 1272068
+    },
+    {
+      "path": "steamrtarm64/locales/hr.pak",
+      "size": 572007
+    },
+    {
+      "path": "steamrtarm64/locales/hu.pak",
+      "size": 616507
+    },
+    {
+      "path": "steamrtarm64/locales/id.pak",
+      "size": 509615
+    },
+    {
+      "path": "steamrtarm64/locales/it.pak",
+      "size": 566558
+    },
+    {
+      "path": "steamrtarm64/locales/ja.pak",
+      "size": 687035
+    },
+    {
+      "path": "steamrtarm64/locales/kn.pak",
+      "size": 1363805
+    },
+    {
+      "path": "steamrtarm64/locales/ko.pak",
+      "size": 577856
+    },
+    {
+      "path": "steamrtarm64/locales/lt.pak",
+      "size": 621419
+    },
+    {
+      "path": "steamrtarm64/locales/lv.pak",
+      "size": 619906
+    },
+    {
+      "path": "steamrtarm64/locales/ml.pak",
+      "size": 1418981
+    },
+    {
+      "path": "steamrtarm64/locales/mr.pak",
+      "size": 1170234
+    },
+    {
+      "path": "steamrtarm64/locales/ms.pak",
+      "size": 533597
+    },
+    {
+      "path": "steamrtarm64/locales/nb.pak",
+      "size": 517241
+    },
+    {
+      "path": "steamrtarm64/locales/nb.pak.info",
+      "size": 826473
+    },
+    {
+      "path": "steamrtarm64/locales/nl.pak",
+      "size": 535987
+    },
+    {
+      "path": "steamrtarm64/locales/pl.pak",
+      "size": 597289
+    },
+    {
+      "path": "steamrtarm64/locales/pt-BR.pak",
+      "size": 560077
+    },
+    {
+      "path": "steamrtarm64/locales/pt-PT.pak",
+      "size": 564706
+    },
+    {
+      "path": "steamrtarm64/locales/ro.pak",
+      "size": 583685
+    },
+    {
+      "path": "steamrtarm64/locales/ru.pak",
+      "size": 957997
+    },
+    {
+      "path": "steamrtarm64/locales/sk.pak",
+      "size": 601776
+    },
+    {
+      "path": "steamrtarm64/locales/sl.pak",
+      "size": 577049
+    },
+    {
+      "path": "steamrtarm64/locales/sr.pak",
+      "size": 888287
+    },
+    {
+      "path": "steamrtarm64/locales/sv.pak",
+      "size": 521094
+    },
+    {
+      "path": "steamrtarm64/locales/sw.pak",
+      "size": 548829
+    },
+    {
+      "path": "steamrtarm64/locales/ta.pak",
+      "size": 1415510
+    },
+    {
+      "path": "steamrtarm64/locales/te.pak",
+      "size": 1302845
+    },
+    {
+      "path": "steamrtarm64/locales/th.pak",
+      "size": 1094866
+    },
+    {
+      "path": "steamrtarm64/locales/tr.pak",
+      "size": 559854
+    },
+    {
+      "path": "steamrtarm64/locales/uk.pak",
+      "size": 954907
+    },
+    {
+      "path": "steamrtarm64/locales/ur.pak",
+      "size": 833008
+    },
+    {
+      "path": "steamrtarm64/locales/vi.pak",
+      "size": 663493
+    },
+    {
+      "path": "steamrtarm64/locales/zh-CN.pak",
+      "size": 479177
+    },
+    {
+      "path": "steamrtarm64/locales/zh-TW.pak",
+      "size": 476323
+    },
+    {
+      "path": "steamrtarm64/resources.pak",
+      "size": 8721669
+    },
+    {
+      "path": "steamrtarm64/snapshot_blob.bin",
+      "size": 315962
+    }
+  ],
+  "scope": "ARM64 binary packages only; common assets and game/runtime closure excluded",
+  "executed": false,
+  "dependency_closure_verified": false,
+  "key_elfs": [
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/steam",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "libdl.so.2",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 10124968,
+      "sha256": "090846de94be2fcd2ffe5475af412687a720f34dda6b96d1daffe2c587316456"
+    },
+    {
+      "package": "bins_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/steamwebhelper",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "libdl.so.2",
+        "librt.so.1",
+        "libtier0_s.so",
+        "libvstdlib_s.so",
+        "libcef.so",
+        "libSDL3.so.0",
+        "libgobject-2.0.so.0",
+        "libglib-2.0.so.0",
+        "libgio-2.0.so.0",
+        "libX11.so.6",
+        "libXi.so.6",
+        "libXext.so.6",
+        "libXrender.so.1",
+        "libXtst.so.6",
+        "libXrandr.so.2",
+        "libXcomposite.so.1",
+        "libXdamage.so.1",
+        "libGL.so.1",
+        "libibus-1.0.so.5",
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": null,
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 10301976,
+      "sha256": "48ceef78c6f9310369fb4baa95d7076b67e6a2fbb5a00dc71f23f076d0d3df01"
+    },
+    {
+      "package": "webkit_linuxarm64_linuxarm64",
+      "path": "steamrtarm64/libcef.so",
+      "class": "ELF64",
+      "endian": "little",
+      "machine": "AArch64",
+      "e_machine": 183,
+      "elf_type": 3,
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libgobject-2.0.so.0",
+        "libglib-2.0.so.0",
+        "libnss3.so",
+        "libnssutil3.so",
+        "libsmime3.so",
+        "libnspr4.so",
+        "libdbus-1.so.3",
+        "libatk-1.0.so.0",
+        "libatk-bridge-2.0.so.0",
+        "libcups.so.2",
+        "libgio-2.0.so.0",
+        "libm.so.6",
+        "libX11.so.6",
+        "libXcomposite.so.1",
+        "libXdamage.so.1",
+        "libXext.so.6",
+        "libXfixes.so.3",
+        "libXrandr.so.2",
+        "libgbm.so.1",
+        "libdrm.so.2",
+        "libexpat.so.1",
+        "libxcb.so.1",
+        "libxkbcommon.so.0",
+        "libpango-1.0.so.0",
+        "libcairo.so.2",
+        "libasound.so.2",
+        "libatspi.so.0",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "soname": "libcef.so",
+      "rpath": null,
+      "runpath": "$ORIGIN",
+      "size": 218132264,
+      "sha256": "891d85f97231fcafa5763b7140039c5d3cbbb99f2a42ede08de5991abcbc3cdb"
+    }
+  ],
+  "key_abi_status": "aarch64_observed"
+}

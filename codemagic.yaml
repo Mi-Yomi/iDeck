@@ -602,3 +602,32 @@ workflows:
 # 240 seconds aggregate: worker 215 seconds, at most 25 seconds finalization.
 # Normal original CMake compiler probes are permitted; no library targets,
 # archive rebuild or app/witness link. Existing build worker owns remote work.
+  ideck-linux-guest-profile-check:
+    name: iDeck direct Linux profile Apple compiler check
+    instance_type: mac_mini_m2
+    max_build_duration: 10
+    inputs:
+      expected_commit:
+        description: Exact reviewed local branch commit after owner-approved push
+        type: string
+      free_quota_verified:
+        description: Current free macOS quota and disabled paid subscription checked before dispatch
+        type: string
+        default: 'false'
+      private_source_verified:
+        description: Selected repository is the private Mi-Yomi/iDeck repository
+        type: string
+        default: 'false'
+    environment:
+      xcode: '27.0'
+      vars:
+        EXPECTED_COMMIT: ${{ inputs.expected_commit }}
+        FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
+        PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
+    scripts:
+      - name: Typecheck the Linux profile for iOS and run native Mac validation checks
+        script: |
+          set -euo pipefail
+          python3 -I ci/check_linux_guest_profile.py
+# This workflow is a manual source/host check only. It has no trigger, downloads,
+# artifact publishing, signing or device action. The worker budget is 240 seconds.

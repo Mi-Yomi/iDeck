@@ -1,0 +1,62 @@
+[
+  {
+    "path": "boot-inputs.json",
+    "size": 864,
+    "sha256": "3fc8a9e18b37ca5e57d1517ad8abd485726c52f3f197d67341c5aed32618ff6b"
+  },
+  {
+    "path": "diagnostic-wip-check.json",
+    "size": 274,
+    "sha256": "4f42c1b3eb3f3a314a27263db462778b95657e3866c3dbf3d0c10888828b6a10"
+  },
+  {
+    "path": "frame-0.png",
+    "size": 2820,
+    "sha256": "83d77b8fc3d87253de8314a424b16909054ce3f000446879611a645eb8e61e04"
+  },
+  {
+    "path": "frame-1.png",
+    "size": 2820,
+    "sha256": "a5630278b4524aff81ab22de85035ed64222fce21888872b9233572cf79c0bc8"
+  },
+  {
+    "path": "guest-profile.json",
+    "size": 1565,
+    "sha256": "1848cbe63d569c22da5b2e88d067397e23bb56b81a66969f02327d15f2836ca1"
+  },
+  {
+    "path": "guest-serial.log",
+    "size": 2824,
+    "sha256": "ac4e4c59d20228ea5ac42e840beb67e03067970f556ee5d3446246d3c442443c"
+  },
+  {
+    "path": "host-guard-tests.txt",
+    "size": 1041,
+    "sha256": "7ffe43fbddcb32c31b2eadd011da268ad433637b91bbcb643dbefce815744185"
+  },
+  {
+    "path": "host-smoke.json",
+    "size": 5409,
+    "sha256": "d436162eb297e9bbede8cd165ac94daa6a983c2f0e644639d03f28157bda6b5c"
+  },
+  {
+    "path": "readelf-key-objects.txt",
+    "size": 5463,
+    "sha256": "4995fb02142bbe20be0611d83457ea50aec9efbac7b5db8b590f0f59118c19ce"
+  },
+  {
+    "path": "repositories.lock.json",
+    "size": 13531,
+    "sha256": "95909847a74a203b782d1647b556addb51215562ab436f0da6f2731d3605dce0"
+  },
+  {
+    "path": "source-inventory.json",
+    "size": 3066,
+    "sha256": "80f6bceebedfe8d4a5f3726aeccb3a25ffc23e2fc71e08a0cc85ce74a1189cbf"
+  },
+  {
+    "path": "steam-abi.json",
+    "size": 66910,
+    "sha256": "30339df4b4b8552fb87d95ef55769ca8decf8c5971d4ba182414013e86be391b"
+  }
+]

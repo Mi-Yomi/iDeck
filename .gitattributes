@@ -1,0 +1,3 @@
+/experiments/linux-guest/** text eol=lf
+/experiments/linux-guest/evidence/*.png binary
+/ci/check_linux_guest_profile.py text eol=lf

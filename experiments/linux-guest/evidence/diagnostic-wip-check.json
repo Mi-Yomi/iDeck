@@ -1,0 +1,11 @@
+{
+  "status": "archive_hashes_and_patch_equivalence_pass",
+  "file_counts": {
+    "base": 16,
+    "patched": 18
+  },
+  "archive_sha256": "c94c298326184137a4571ae883b02e7315a5aa4c94b7bab63e286729752fbe52",
+  "compiled": false,
+  "apk_created": false,
+  "device_run": false
+}

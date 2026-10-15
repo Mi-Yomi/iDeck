@@ -1,0 +1,17 @@
+[
+  {
+    "name": "qemu-w64-setup-20260811.exe",
+    "url": "https://qemu.weilnetz.de/w64/qemu-w64-setup-20260811.exe",
+    "checksum_url": "https://qemu.weilnetz.de/w64/qemu-w64-setup-20260811.sha512",
+    "sha512": "5bcf9eed634e8575a37b74f445af41a2fe4106da512d0c30c368301d4c105037fdfab40a5287367a28a957624cddebbc8c07e16c88ab6634f554cdf3d16bf543",
+    "sha256": "f98a8aeb5f7faea9765b6dee28316c266cd179d80354a2fed8e50176f9a2e59f",
+    "size": 206615928
+  },
+  {
+    "name": "alpine-netboot-3.24.1-aarch64.tar.gz",
+    "url": "https://dl-cdn.alpinelinux.org/alpine/v3.24/releases/aarch64/alpine-netboot-3.24.1-aarch64.tar.gz",
+    "checksum_url": "https://dl-cdn.alpinelinux.org/alpine/v3.24/releases/aarch64/alpine-netboot-3.24.1-aarch64.tar.gz.sha256",
+    "sha256": "54fe38fa41cce740ba379458ed63cfcd89ab06ae5e6a47a06dafe0a34e8427e8",
+    "size": 431008592
+  }
+]

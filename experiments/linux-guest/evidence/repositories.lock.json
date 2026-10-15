@@ -1,0 +1,318 @@
+[
+  {
+    "repository": "Droid-Deck/DroidDeck",
+    "commit": "10ef8c4bd62b21872fc13382a808cb0f2f117b26",
+    "latest_observed_commit": "d301148881b043430fcddf0c52e852c0163daa04",
+    "requested_ref": "10ef8c4bd62b21872fc13382a808cb0f2f117b26",
+    "license_spdx": "GPL-3.0",
+    "tree_truncated": false,
+    "files": [
+      {
+        "path": "LICENSE",
+        "sha256": "c8264e42ef8f1b8f6e9d7086bbf778472e2bc636018437d5821f6ee76f411ed1",
+        "size": 35123,
+        "url": "https://github.com/Droid-Deck/DroidDeck/blob/10ef8c4bd62b21872fc13382a808cb0f2f117b26/LICENSE"
+      },
+      {
+        "path": "README.md",
+        "sha256": "1ee715b8f63e2057ac7720bd2f5563b9b69eefa37d32e8a55b9b484c2281d47c",
+        "size": 5089,
+        "url": "https://github.com/Droid-Deck/DroidDeck/blob/10ef8c4bd62b21872fc13382a808cb0f2f117b26/README.md"
+      },
+      {
+        "path": "tools/linuxfs/overlay/usr/local/bin/droiddeck-steam-install",
+        "sha256": "82d594c7abb75833f3d3b47b69768744c634c146f022e246d89b084f73c36dc9",
+        "size": 4333,
+        "url": "https://github.com/Droid-Deck/DroidDeck/blob/10ef8c4bd62b21872fc13382a808cb0f2f117b26/tools/linuxfs/overlay/usr/local/bin/droiddeck-steam-install"
+      }
+    ]
+  },
+  {
+    "repository": "Leviidev/Husk",
+    "commit": "0695248f491cda877f7969d1f0cc89aeede1482e",
+    "latest_observed_commit": "0695248f491cda877f7969d1f0cc89aeede1482e",
+    "requested_ref": "0695248f491cda877f7969d1f0cc89aeede1482e",
+    "license_spdx": "GPL-2.0",
+    "tree_truncated": false,
+    "files": [
+      {
+        "path": "docs/00-architecture.md",
+        "sha256": "86f6fd66951039a1a680a4553e88a1cf282af3da58dcb2f29c84fa5c94e924da",
+        "size": 6950,
+        "url": "https://github.com/Leviidev/Husk/blob/0695248f491cda877f7969d1f0cc89aeede1482e/docs/00-architecture.md"
+      },
+      {
+        "path": "docs/01-licensing.md",
+        "sha256": "96173dce4956f2e55c93252b0114f7b6dfebd59931e8ab5c64b117cfb9725601",
+        "size": 6898,
+        "url": "https://github.com/Leviidev/Husk/blob/0695248f491cda877f7969d1f0cc89aeede1482e/docs/01-licensing.md"
+      },
+      {
+        "path": "docs/03-phase0-runbook.md",
+        "sha256": "1624ea4582dbff8f31d25264dec6bc1b3dcd8eb138b72545ab47515caf61bfa8",
+        "size": 8805,
+        "url": "https://github.com/Leviidev/Husk/blob/0695248f491cda877f7969d1f0cc89aeede1482e/docs/03-phase0-runbook.md"
+      },
+      {
+        "path": "LICENSE",
+        "sha256": "6f04ae8364d0079a192b14635f4b1da294ce18724c034c39a6a41d1b09df6100",
+        "size": 17992,
+        "url": "https://github.com/Leviidev/Husk/blob/0695248f491cda877f7969d1f0cc89aeede1482e/LICENSE"
+      },
+      {
+        "path": "README.md",
+        "sha256": "09615f26d0afd5bc206ffba4c022069becabda97993e98500e937aa9a564706e",
+        "size": 6404,
+        "url": "https://github.com/Leviidev/Husk/blob/0695248f491cda877f7969d1f0cc89aeede1482e/README.md"
+      },
+      {
+        "path": "scripts/build_gpu_ios.sh",
+        "sha256": "685ebfc7883e11d45b9f67fff02518da6f5758d759576a2f5d283099b2150e74",
+        "size": 3749,
+        "url": "https://github.com/Leviidev/Husk/blob/0695248f491cda877f7969d1f0cc89aeede1482e/scripts/build_gpu_ios.sh"
+      },
+      {
+        "path": "scripts/build_ios.sh",
+        "sha256": "9f039b008da5ab56e0f7581b3d84f6e4b8f1e74adc9d8c608f26d94e0a8ef176",
+        "size": 8825,
+        "url": "https://github.com/Leviidev/Husk/blob/0695248f491cda877f7969d1f0cc89aeede1482e/scripts/build_ios.sh"
+      },
+      {
+        "path": "scripts/ci_build.sh",
+        "sha256": "a2d3de617dfa45ac18e7ffba0d8a6e7d8c2d20fa4c055f84af83b5104ead24b0",
+        "size": 1866,
+        "url": "https://github.com/Leviidev/Husk/blob/0695248f491cda877f7969d1f0cc89aeede1482e/scripts/ci_build.sh"
+      },
+      {
+        "path": "scripts/fetch_phase0_guest.sh",
+        "sha256": "7ace05129bfa19917520c28f5663f42f1529f34fa1f57cca9eaec112d775256b",
+        "size": 1907,
+        "url": "https://github.com/Leviidev/Husk/blob/0695248f491cda877f7969d1f0cc89aeede1482e/scripts/fetch_phase0_guest.sh"
+      },
+      {
+        "path": "scripts/fetch_sources.sh",
+        "sha256": "2728cc267d66522221d4dfdd72b620b735942ce37e928f3c7da3424497de27e0",
+        "size": 1502,
+        "url": "https://github.com/Leviidev/Husk/blob/0695248f491cda877f7969d1f0cc89aeede1482e/scripts/fetch_sources.sh"
+      },
+      {
+        "path": "src/app/Husk/HuskMetalView.swift",
+        "sha256": "9b037480abe2799b7ae16fb0352f6fa77bc73c8ff3727efd859230d3e5cb8197",
+        "size": 6900,
+        "url": "https://github.com/Leviidev/Husk/blob/0695248f491cda877f7969d1f0cc89aeede1482e/src/app/Husk/HuskMetalView.swift"
+      },
+      {
+        "path": "src/app/Husk/QemuRunner.swift",
+        "sha256": "3aeda1af82ef951fc07f072818f618aaf09b7ac3c389462cbab6bd441ac17fd0",
+        "size": 99803,
+        "url": "https://github.com/Leviidev/Husk/blob/0695248f491cda877f7969d1f0cc89aeede1482e/src/app/Husk/QemuRunner.swift"
+      },
+      {
+        "path": "src/app/project.yml",
+        "sha256": "4fa127b04ed6dadb778f3b188f6eba8fd2691765f7638128d791512989df222d",
+        "size": 15878,
+        "url": "https://github.com/Leviidev/Husk/blob/0695248f491cda877f7969d1f0cc89aeede1482e/src/app/project.yml"
+      },
+      {
+        "path": "src/ios-jit/husk-display.c",
+        "sha256": "4baec7e0595f5a2c27065aaa076a944cd71b990f4442f1eff67204cb5bcd6cb4",
+        "size": 13870,
+        "url": "https://github.com/Leviidev/Husk/blob/0695248f491cda877f7969d1f0cc89aeede1482e/src/ios-jit/husk-display.c"
+      }
+    ]
+  },
+  {
+    "repository": "c22dev/muguet",
+    "commit": "99f3704574c79eb4e33c7d87a39055802ae62552",
+    "latest_observed_commit": "99f3704574c79eb4e33c7d87a39055802ae62552",
+    "requested_ref": null,
+    "license_spdx": "GPL-3.0",
+    "tree_truncated": false,
+    "files": [
+      {
+        "path": "Cargo.toml",
+        "sha256": "96ded3c44f241a6cf22eb9b5839b30002707720171b57cda8fa780073e499311",
+        "size": 1581,
+        "url": "https://github.com/c22dev/muguet/blob/99f3704574c79eb4e33c7d87a39055802ae62552/Cargo.toml"
+      },
+      {
+        "path": "LICENSE",
+        "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+        "size": 35149,
+        "url": "https://github.com/c22dev/muguet/blob/99f3704574c79eb4e33c7d87a39055802ae62552/LICENSE"
+      },
+      {
+        "path": "make-ios.sh",
+        "sha256": "448792fdbc736613dad22bd6a87bfe9770f0db665a0c7e718165ffc4e7ccdeed",
+        "size": 4412,
+        "url": "https://github.com/c22dev/muguet/blob/99f3704574c79eb4e33c7d87a39055802ae62552/make-ios.sh"
+      },
+      {
+        "path": "README.md",
+        "sha256": "73cf986a1d466364079d4f7aa856ae9e46d4d7decbcd7c11c9e5fda74a7e3e0e",
+        "size": 3485,
+        "url": "https://github.com/c22dev/muguet/blob/99f3704574c79eb4e33c7d87a39055802ae62552/README.md"
+      },
+      {
+        "path": "src/main.rs",
+        "sha256": "c879c4b67740c4e28a04f18eea206c499a082c4eb144b57fb818d5c47bedd8cc",
+        "size": 23503,
+        "url": "https://github.com/c22dev/muguet/blob/99f3704574c79eb4e33c7d87a39055802ae62552/src/main.rs"
+      }
+    ]
+  },
+  {
+    "repository": "willfaust/Madeira",
+    "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+    "latest_observed_commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+    "requested_ref": null,
+    "license_spdx": "GPL-3.0",
+    "tree_truncated": false,
+    "files": [
+      {
+        "path": ".gitmodules",
+        "sha256": "c11db29187070478871de8ef66603ec5fc769bacc093cd48f970ed6fb41f2417",
+        "size": 410,
+        "url": "https://github.com/willfaust/Madeira/blob/279fd0f83170425db002fe25d6bd62f6355f497d/.gitmodules"
+      },
+      {
+        "path": "build/ntdll-unix/loader_ios.c",
+        "sha256": "51a60d9700d66f42f3012117d3581bf1781e8de5631b914799edbec8448de80a",
+        "size": 165196,
+        "url": "https://github.com/willfaust/Madeira/blob/279fd0f83170425db002fe25d6bd62f6355f497d/build/ntdll-unix/loader_ios.c"
+      },
+      {
+        "path": "COPYING",
+        "sha256": "e6037104443f9a7829b2aa7c5370d0789a7bda3ca65a0b904cdc0c2e285d9195",
+        "size": 35150,
+        "url": "https://github.com/willfaust/Madeira/blob/279fd0f83170425db002fe25d6bd62f6355f497d/COPYING"
+      },
+      {
+        "path": "docs/JIT.md",
+        "sha256": "30416781c549fa46bf634b6e145c1ff9f526be204ee5d89695799c965e84236b",
+        "size": 14688,
+        "url": "https://github.com/willfaust/Madeira/blob/279fd0f83170425db002fe25d6bd62f6355f497d/docs/JIT.md"
+      },
+      {
+        "path": "LICENSE",
+        "sha256": "e6037104443f9a7829b2aa7c5370d0789a7bda3ca65a0b904cdc0c2e285d9195",
+        "size": 35150,
+        "url": "https://github.com/willfaust/Madeira/blob/279fd0f83170425db002fe25d6bd62f6355f497d/LICENSE"
+      },
+      {
+        "path": "README.md",
+        "sha256": "ce26da112acbf646f9747bfa312b162b5ce1130d82c43a91c2d134e7c8892c39",
+        "size": 9892,
+        "url": "https://github.com/willfaust/Madeira/blob/279fd0f83170425db002fe25d6bd62f6355f497d/README.md"
+      },
+      {
+        "path": "THIRD-PARTY-NOTICES.md",
+        "sha256": "bd5541572a6aec6615e27173e88981b85c4237780596d2e4622ed1737fcf26f0",
+        "size": 17596,
+        "url": "https://github.com/willfaust/Madeira/blob/279fd0f83170425db002fe25d6bd62f6355f497d/THIRD-PARTY-NOTICES.md"
+      }
+    ]
+  },
+  {
+    "repository": "playportdev/playport",
+    "commit": "412de5f8c0bdd26d84e0127eb5776ba992e3b152",
+    "latest_observed_commit": "412de5f8c0bdd26d84e0127eb5776ba992e3b152",
+    "requested_ref": null,
+    "license_spdx": "GPL-3.0",
+    "tree_truncated": false,
+    "files": [
+      {
+        "path": ".gitmodules",
+        "sha256": "2bc354f8a9c714b7f1f4f721f0a3ee43e17b1d2190239163a9fea25cb0341836",
+        "size": 104,
+        "url": "https://github.com/playportdev/playport/blob/412de5f8c0bdd26d84e0127eb5776ba992e3b152/.gitmodules"
+      },
+      {
+        "path": "docs/ARCHITECTURE.md",
+        "sha256": "3bba2dd5047439bf26ab7fcbf21538978cc02a4a52c37363929c47de150c7eea",
+        "size": 83934,
+        "url": "https://github.com/playportdev/playport/blob/412de5f8c0bdd26d84e0127eb5776ba992e3b152/docs/ARCHITECTURE.md"
+      },
+      {
+        "path": "LICENSE",
+        "sha256": "e6037104443f9a7829b2aa7c5370d0789a7bda3ca65a0b904cdc0c2e285d9195",
+        "size": 35150,
+        "url": "https://github.com/playportdev/playport/blob/412de5f8c0bdd26d84e0127eb5776ba992e3b152/LICENSE"
+      },
+      {
+        "path": "README.md",
+        "sha256": "31842525cc2a514a9a4d9222d738780f54c395b9a92b54e7ea5e599886c4ef2e",
+        "size": 15770,
+        "url": "https://github.com/playportdev/playport/blob/412de5f8c0bdd26d84e0127eb5776ba992e3b152/README.md"
+      }
+    ]
+  },
+  {
+    "repository": "Thijs2004/CyPort",
+    "commit": "980d96981cecd5460fd9280c3316b4ab5c8c00c2",
+    "latest_observed_commit": "6e042d7fe37edfef68ee229a1af9b0d0cf87e12f",
+    "requested_ref": "v1.1",
+    "license_spdx": "NOASSERTION",
+    "tree_truncated": false,
+    "files": [
+      {
+        "path": "LICENSE",
+        "sha256": "6dd4fdc28b7296c120ad7f42ee96392a6357c609d88a69bcd3de2cdf446858db",
+        "size": 1278,
+        "url": "https://github.com/Thijs2004/CyPort/blob/980d96981cecd5460fd9280c3316b4ab5c8c00c2/LICENSE"
+      },
+      {
+        "path": "README.md",
+        "sha256": "41cc6129dc7d4c082c60ca395a9108753176335412f3d427fb36aa0e4fa72683",
+        "size": 13634,
+        "url": "https://github.com/Thijs2004/CyPort/blob/980d96981cecd5460fd9280c3316b4ab5c8c00c2/README.md"
+      },
+      {
+        "path": "tools/ios_retarget.py",
+        "sha256": "1cda6ed90687a66c7e13fa67c28995cc4a6e0a1f73cd8671d3e6e5a580fca9fc",
+        "size": 18076,
+        "url": "https://github.com/Thijs2004/CyPort/blob/980d96981cecd5460fd9280c3316b4ab5c8c00c2/tools/ios_retarget.py"
+      }
+    ]
+  },
+  {
+    "repository": "jhaizhou-ops/d2r-mobile",
+    "commit": "9de307ecaff42b3c9d45e58992c848ee89b8f6a1",
+    "latest_observed_commit": "9de307ecaff42b3c9d45e58992c848ee89b8f6a1",
+    "requested_ref": null,
+    "license_spdx": "MIT",
+    "tree_truncated": false,
+    "files": [
+      {
+        "path": "dm/host/loader.c",
+        "sha256": "ff5d159223cc42c17a94fe2a2c24e5f7f2f693c32ba561eab10cde5568cf240f",
+        "size": 27973,
+        "url": "https://github.com/jhaizhou-ops/d2r-mobile/blob/9de307ecaff42b3c9d45e58992c848ee89b8f6a1/dm/host/loader.c"
+      },
+      {
+        "path": "dm/host/README.md",
+        "sha256": "a8aaa085ec57a0f27230ec3271e2aa5d27eb93289e9805089c0c2e5432bf2a09",
+        "size": 9467,
+        "url": "https://github.com/jhaizhou-ops/d2r-mobile/blob/9de307ecaff42b3c9d45e58992c848ee89b8f6a1/dm/host/README.md"
+      },
+      {
+        "path": "dm/tools/guest_dylib.py",
+        "sha256": "19be747a6b26f78039c6fed9e51499761642e9eb35b524e0c93e772f6ceb6d76",
+        "size": 8016,
+        "url": "https://github.com/jhaizhou-ops/d2r-mobile/blob/9de307ecaff42b3c9d45e58992c848ee89b8f6a1/dm/tools/guest_dylib.py"
+      },
+      {
+        "path": "LICENSE",
+        "sha256": "5811600bb8fc4522d3310e8e0e637a1bb14b7c64412f8cfc6234872eb53129b9",
+        "size": 1065,
+        "url": "https://github.com/jhaizhou-ops/d2r-mobile/blob/9de307ecaff42b3c9d45e58992c848ee89b8f6a1/LICENSE"
+      },
+      {
+        "path": "README.md",
+        "sha256": "993eb2b3ea6713f6a1b4334cc3f2185871f5adb8bc713dbf8240989418ed78bb",
+        "size": 36115,
+        "url": "https://github.com/jhaizhou-ops/d2r-mobile/blob/9de307ecaff42b3c9d45e58992c848ee89b8f6a1/README.md"
+      }
+    ]
+  }
+]

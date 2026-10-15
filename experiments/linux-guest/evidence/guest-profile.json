@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "upstream_url": "https://dl-cdn.alpinelinux.org/alpine/v3.24/releases/aarch64/alpine-netboot-3.24.1-aarch64.tar.gz",
+  "upstream_sha256": "54fe38fa41cce740ba379458ed63cfcd89ab06ae5e6a47a06dafe0a34e8427e8",
+  "upstream_size": 431008592,
+  "original_initramfs_sha256": "e47d38bc88509a3db11affc09f9762f9643b026bd29441724a4729ad8e97add6",
+  "init_source_sha256": "b533880b3a182f3089a16865caff8695a70d7a4807c2e146f7a88090f16b4a64",
+  "width": 800,
+  "height": 600,
+  "modloop_sha256": "f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b",
+  "evdev_path": "modules/6.18.35-0-virt/kernel/drivers/input/evdev.ko",
+  "evdev_sha256": "2959ebcb3ba19095d052be3cea1ec44e88982df94d52e5869612c30f9d9897c7",
+  "frame_probe_sha256": "62e9ab98f0730d00e052e2b9b0741070975ccc79229ce8ebe456303b9fee4d3d",
+  "frame_probe_source_sha256": "ed68af1c17e7492e77f9dc03fbb342fcc12be49e440d46cab9c1dfd516e60d1c",
+  "cpu": "cortex-a72",
+  "memory_mib": 1024,
+  "vcpus": 4,
+  "tcg_cache_mib": 256,
+  "kernel": {
+    "file": "vmlinuz-virt",
+    "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+    "size": 10351104
+  },
+  "initramfs": {
+    "file": "initramfs-ideck.gz",
+    "sha256": "5f64312eeef340991c6b0d97bd9d1fb01649c1763e14d7fb8231ad16551e9343",
+    "size": 9402391
+  },
+  "frames_bgra_sha256": [
+    "e8863c335217e021bca1ec62372ec27a7d569818ec085180162cbf6539e8fd97",
+    "a6c7820146e38170a5bc6b4c247acd838098b64ac1b61847c343ace2dea02f4f"
+  ],
+  "purpose": "boot-display-input only; Alpine musl is not the Steam glibc rootfs"
+}

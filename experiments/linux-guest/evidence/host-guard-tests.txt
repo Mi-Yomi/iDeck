@@ -1,0 +1,14 @@
+test_independent_linux_event_decode (test_guards.InputGuards.test_independent_linux_event_decode) ... ok
+test_listing_and_syn_are_not_input (test_guards.InputGuards.test_listing_and_syn_are_not_input) ... ok
+test_missing_release_rejected (test_guards.InputGuards.test_missing_release_rejected) ... ok
+test_truncated_event_rejected (test_guards.InputGuards.test_truncated_event_rejected) ... ok
+test_bad_elfs_rejected (test_guards.IntegrityGuards.test_bad_elfs_rejected) ... ok
+test_corrupt_and_traversal_assets_rejected (test_guards.IntegrityGuards.test_corrupt_and_traversal_assets_rejected) ... ok
+test_empty_screenshot_rejected (test_guards.IntegrityGuards.test_empty_screenshot_rejected) ... ok
+test_manifest_paths_and_hashes_rejected (test_guards.IntegrityGuards.test_manifest_paths_and_hashes_rejected) ... ok
+test_valid_elf32_and_missing_program_headers (test_guards.IntegrityGuards.test_valid_elf32_and_missing_program_headers) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.015s
+
+OK

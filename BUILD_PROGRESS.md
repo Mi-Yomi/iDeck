@@ -1,5 +1,17 @@
 # iDeck build progress
 
+## Local direct-Linux branch, 2026-10-15
+
+See [the experiment](experiments/linux-guest/README.md) and its versioned evidence.
+The original 2,023-entry exported source tree was reconstructed and verified.
+Official Valve packages now establish that Steam, steamwebhelper and CEF in the
+inspected Linux ARM64 client are AArch64; their glibc loader/rootfs closure remains
+unverified. A real AArch64 Linux kernel boot, exact two-frame software scanout and
+guest evdev keyboard/pointer round trip passed under Windows QEMU/TCG. This is host
+evidence, not iPhone, Steam UI, JIT/Metal or game-GPU acceptance. The new Apple
+profile workflow is prepared locally and has not been dispatched. The prior
+runtime/compiler history below is preserved, not re-certified by this session.
+
 Updated: 2026-10-15, 07:34 UTC.
 
 ## Goal and current boundary

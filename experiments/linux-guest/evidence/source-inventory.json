@@ -1,0 +1,72 @@
+{
+  "transport_base_commit": "a77ab500cdf8c8307af36a58b25816a3fa4d66db",
+  "transport_initial_status": "clean main; new local branch created before edits",
+  "reconstructed_source": {
+    "base_commit": "412de5f8c0bdd26d84e0127eb5776ba992e3b152",
+    "compressed_patch_sha256": "7de11bfae521936cc5de07eaaf769a4781eab91cb69e8a490fbf5bf3ab82e0d6",
+    "inventory_sha256": "e78c298283d68ab1ec01872392e92251f0122e9d4064468ea55de7c612ed8a11",
+    "madeira_commit": "8c050d03f4d89096e1e2e2c8bb44479fffd86619",
+    "patch_sha256": "eed2c9a2bed0cba86d39789037d5c3dcea2e94a2bdef31b6fb9b19a271e8a115",
+    "schema": 1,
+    "scope": "source-only pinned baseline plus exact-tree diff; not a full Git history mirror",
+    "source_commit": "1b07a996efe8cec2e12e3d3c1e19805c198fcccf",
+    "source_tree": "a305e267ebdb87ec4d202f4f8d5c499cc5ffbe44",
+    "tracked_entry_count": 2023,
+    "upstream_url": "https://github.com/playportdev/playport.git"
+  },
+  "reconstruction_result": "source_tree_verified; all 2023 inventory entries checked",
+  "reconstruction_note": "Initial fetch exceeded the helper 180-second limit but completed. Resumed checkout/apply/strict tree and per-file hash checks from FETCH_HEAD; original verifier unchanged.",
+  "available": [
+    "transport CI source/locks and Wine/native prerequisite archives",
+    "exact preserved Playport-derived source snapshot",
+    "attached 16/18-file diagnostic text WIP",
+    "architecture decision document",
+    "new official Valve ABI packages (local only)",
+    "new real Linux boot assets and evidence"
+  ],
+  "not_found_here": [
+    "full compiled DroidDeck source/export",
+    "original standalone Diagnostic APK/native payloads",
+    "200-scenario SHM report/patch archive",
+    "complete Android RescueParty log",
+    "r9 rootfs contents"
+  ],
+  "files": [
+    {
+      "name": "source-manifest.json",
+      "size": 743,
+      "sha256": "b4f0af64e6eb01a3900da0bba0e5209773f7f7fb60b3b63b65e158471caa2921"
+    },
+    {
+      "name": "source-files.json.gz",
+      "size": 175972,
+      "sha256": "e78c298283d68ab1ec01872392e92251f0122e9d4064468ea55de7c612ed8a11"
+    },
+    {
+      "name": "source.patch.gz",
+      "size": 656059,
+      "sha256": "7de11bfae521936cc5de07eaaf769a4781eab91cb69e8a490fbf5bf3ab82e0d6"
+    },
+    {
+      "name": "pairing-source-inputs.zip",
+      "size": 75683,
+      "sha256": "2587afefd1c7d1d0f5ee67e61685e1372a47020cc2978c57fbbe3442cb1d4806"
+    },
+    {
+      "name": "AGENTS.md",
+      "size": 14861,
+      "sha256": "024892f97687d1e5977e8f7de0f0dfe17d22505a121fe9a365083d9e68dff363"
+    },
+    {
+      "name": "ideck-architecture-decision-2026-10-15.md",
+      "size": 19951,
+      "sha256": "2f56d70cc59016f5dcf5a5e6df05fee6c60b4a9319056146691a7a81ff958e87"
+    },
+    {
+      "name": "droiddeck-tl-source-fix-WIP-20261015.tar.gz",
+      "size": 41281,
+      "sha256": "c94c298326184137a4571ae883b02e7315a5aa4c94b7bab63e286729752fbe52"
+    }
+  ],
+  "prior_build_progress": "Prior CI/Android compilation results remain recorded history; not re-run or re-certified in this session"
+}

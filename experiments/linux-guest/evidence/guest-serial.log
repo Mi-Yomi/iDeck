@@ -1,0 +1,67 @@
+[    0.000000] Linux version 6.18.35-0-virt (buildozer@build-3-24-aarch64) (cc (Alpine 15.2.0) 15.2.0, GNU ld (GNU Binutils) 2.45.1) #1-Alpine SMP PREEMPT_DYNAMIC 2026-06-09 12:34:47
+[    0.000000] random: crng init done
+[    0.000000] Kernel command line: console=ttyAMA0 loglevel=6 rdinit=/ideck-init fbcon=nodefer vt.global_cursor_default=0
+[    0.000000] Unknown kernel command line parameters "fbcon=nodefer", will be passed to user space.
+[    0.651444] audit: type=2000 audit(0.224:1): state=initialized audit_enabled=0 res=1
+[    0.922054] VFS: Disk quotas dquot_6.6.0
+[    1.295368] Initialise system trusted keyrings
+[    1.526366] Key type asymmetric registered
+[    1.527219] Asymmetric key parser 'x509' registered
+[    1.562087] pci-host-generic 4010000000.pcie: Memory resource size exceeds max for 32 bits
+[    1.890591] Loading compiled-in X.509 certificates
+[    2.976301] Loaded X.509 cert 'alpinelinux.org: Alpine Linux kernel key: 87fa969a47f3e2a6aa35859eb932a17c95abcd82'
+[    3.049728] Key type .fscrypt registered
+[    3.049942] Key type fscrypt-provisioning registered
+IDECK_BOOT_BEGIN
+Linux (none) 6.18.35-0-virt #1-Alpine SMP PREEMPT_DYNAMIC 2026-06-09 12:34:47 aarch64 Linux
+I: Bus=0006 Vendor=0627 Product=0003 Version=0002
+N: Name="QEMU Virtio Tablet"
+P: Phys=virtio1/input0
+S: Sysfs=/devices/platform/4010000000.pcie/pci0000:00/0000:00:02.0/virtio1/input/input0
+U: Uniq=
+H: Handlers=event0
+B: PROP=0
+B: EV=f
+B: KEY=30400 1f0000 0 0 0 0
+B: REL=100
+B: ABS=3
+
+I: Bus=0006 Vendor=0627 Product=0001 Version=0001
+N: Name="QEMU Virtio Keyboard"
+P: Phys=virtio2/input0
+S: Sysfs=/devices/platform/4010000000.pcie/pci0000:00/0000:00:03.0/virtio2/input/input1
+U: Uniq=
+H: Handlers=sysrq kbd event1
+B: PROP=0
+B: EV=120003
+B: KEY=ffffffffff ffffffffffffffff ffffffffffffffff fffffffffffffffe
+B: LED=7
+
+IDECK_FB_MMAP_WRITE_OK
+IDECK_FRAME_A
+IDECK_INPUT_READY:keyboard
+IDECK_INPUT_READY:tablet
+Terminated
+Terminated
+IDECK_EVENTS_BEGIN:keyboard
+ 93 13 d1 6a 00 00 00 00 7d 3c 0e 00 00 00 00 00
+ 01 00 1e 00 01 00 00 00 93 13 d1 6a 00 00 00 00
+ 7d 3c 0e 00 00 00 00 00 00 00 00 00 00 00 00 00
+ 93 13 d1 6a 00 00 00 00 f1 3e 0e 00 00 00 00 00
+ 01 00 1e 00 00 00 00 00 93 13 d1 6a 00 00 00 00
+ f1 3e 0e 00 00 00 00 00 00 00 00 00 00 00 00 00
+IDECK_EVENTS_END:keyboard
+IDECK_EVENTS_BEGIN:tablet
+ 93 13 d1 6a 00 00 00 00 7c 4a 0e 00 00 00 00 00
+ 03 00 00 00 00 20 00 00 93 13 d1 6a 00 00 00 00
+ 7c 4a 0e 00 00 00 00 00 03 00 01 00 ff 5f 00 00
+ 93 13 d1 6a 00 00 00 00 7c 4a 0e 00 00 00 00 00
+ 01 00 10 01 01 00 00 00 93 13 d1 6a 00 00 00 00
+ 7c 4a 0e 00 00 00 00 00 00 00 00 00 00 00 00 00
+ 93 13 d1 6a 00 00 00 00 9a 50 0e 00 00 00 00 00
+ 01 00 10 01 00 00 00 00 93 13 d1 6a 00 00 00 00
+ 9a 50 0e 00 00 00 00 00 00 00 00 00 00 00 00 00
+IDECK_EVENTS_END:tablet
+IDECK_FB_MMAP_WRITE_OK
+IDECK_FRAME_B
+IDECK_PROBE_DONE

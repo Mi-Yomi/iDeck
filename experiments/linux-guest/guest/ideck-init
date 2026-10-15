@@ -1,0 +1,71 @@
+#!/bin/sh
+# A real kernel/framebuffer/evdev probe, deliberately without Steam or networking.
+export PATH=/usr/sbin:/usr/bin:/sbin:/bin
+BB=/usr/bin/busybox
+$BB mkdir -p /proc /sys /dev /run
+$BB mount -t proc proc /proc
+$BB mount -t sysfs sysfs /sys
+$BB mount -t devtmpfs devtmpfs /dev
+exec </dev/console >/dev/console 2>&1
+echo IDECK_BOOT_BEGIN
+$BB uname -a
+for driver in virtio_pci virtio_gpu virtio_input; do
+    $BB modprobe "$driver" || echo "IDECK_MODULE_LOAD_FAILED:$driver"
+done
+# The netboot initramfs has virtio-input but omits evdev. This exact signed
+# module comes from the same Alpine archive's modloop, not another kernel.
+$BB insmod /ideck/evdev.ko || echo IDECK_MODULE_LOAD_FAILED:evdev
+n=0
+while [ ! -e /dev/fb0 ] && [ "$n" -lt 30 ]; do
+    $BB sleep 1
+    n=$((n + 1))
+done
+fail() {
+    echo "IDECK_PROBE_FAILED:$1"
+    while :; do $BB sleep 3600; done
+}
+[ -e /dev/fb0 ] || fail no_framebuffer
+[ "$($BB cat /sys/class/graphics/fb0/virtual_size)" = '800,600' ] || fail framebuffer_dimensions
+[ "$($BB cat /sys/class/graphics/fb0/bits_per_pixel)" = '32' ] || fail framebuffer_depth
+$BB cat /proc/bus/input/devices
+/ideck/fb-probe 0 || fail "framebuffer_write_a_exit_$?"
+echo IDECK_FRAME_A
+
+keyboard=
+tablet=
+for item in /sys/class/input/event*; do
+    name=$($BB cat "$item/device/name")
+    case "$name" in
+        *'Virtio Keyboard'*) keyboard=/dev/input/${item##*/} ;;
+        *'Virtio Tablet'*) tablet=/dev/input/${item##*/} ;;
+    esac
+done
+[ -n "$keyboard" ] || fail no_keyboard
+[ -n "$tablet" ] || fail no_tablet
+
+capture() {
+    label=$1
+    device=$2
+    exec 3<"$device"
+    echo "IDECK_INPUT_READY:$label"
+    $BB timeout 20 $BB cat <&3 >"/run/$label.events"
+    exec 3<&-
+}
+capture keyboard "$keyboard" &
+keyboard_pid=$!
+capture tablet "$tablet" &
+tablet_pid=$!
+wait "$keyboard_pid"
+wait "$tablet_pid"
+for label in keyboard tablet; do
+    [ -s "/run/$label.events" ] || fail "empty_$label"
+    echo "IDECK_EVENTS_BEGIN:$label"
+    $BB od -An -v -tx1 "/run/$label.events"
+    echo "IDECK_EVENTS_END:$label"
+done
+# The host independently decodes event types/codes/values; byte presence alone
+# is not an input pass. This second frame also proves continued guest execution.
+/ideck/fb-probe 1 || fail "framebuffer_write_b_exit_$?"
+echo IDECK_FRAME_B
+echo IDECK_PROBE_DONE
+while :; do $BB sleep 3600; done

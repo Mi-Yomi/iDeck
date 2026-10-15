@@ -365,7 +365,7 @@ workflows:
     - .work/llvm-control-artifacts/llvm-native-evidence.zip
     - .work/llvm-control-artifacts/llvm-tblgen-native.zip
   ideck-ntdll-ios-control:
-    name: iDeck pinned source-only iOS ntdll archive control
+    name: iDeck pinned SDK27 source-only iOS ntdll archive control
     instance_type: mac_mini_m2
     max_build_duration: 25
     inputs:
@@ -385,7 +385,7 @@ workflows:
         type: string
         default: 'false'
     environment:
-      xcode: '26.6'
+      xcode: '27.0'
       vars:
         EXPECTED_NTDLL_WRAPPER_SHA256: ${{ inputs.expected_ntdll_wrapper_sha256 }}
         EXPECTED_NTDLL_DEPENDENCY_LOCK_SHA256: ${{ inputs.expected_ntdll_dependency_lock_sha256

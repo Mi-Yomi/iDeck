@@ -17,7 +17,9 @@ MIB = 1024 * 1024
 MAX_ARCHIVE = 32 * MIB
 MAX_EXPANDED = 128 * MIB
 MAX_MEMBERS = 1024
-PROOF_HELPER_SHA256 = '6d3a662a0760a17d329675bea3d3445959f9e85ed7d0d37ff7e608f3a055af9f'
+ORIGINAL_PROOF_HELPER_SHA256 = '6d3a662a0760a17d329675bea3d3445959f9e85ed7d0d37ff7e608f3a055af9f'
+OVERLAY_PROOF_HELPER_SHA256 = 'e0ef93444777c34928b11815780c3ed4a202bd108a924322cf1d60b12c629b96'
+OVERLAY_PROOF_HELPER_NAME = 'prove_ntdll_crypto_sdk27.py'
 CONFIG_SHA256 = '22332cb47937d006792e911322c2978a953d25fb5c883837c952b05e7e4077e4'
 CRYPTO_METADATA = frozenset(('lib/libgmp.la', 'lib/libgnutls.la',
                             'lib/pkgconfig/gmp.pc', 'lib/pkgconfig/gnutls.pc',
@@ -176,7 +178,7 @@ def relocate_crypto_metadata(import_root, spec, original_proof_root, proof_spec)
             len(old) < 1024 and set(rows) == CRYPTO_METADATA, 'Unreviewed relocation scope')
     original_proof = json.loads(safe_path(Path(original_proof_root) / 'original/TargetProof/proof.json').read_text())
     require(original_proof.get('prefix') == old and original_proof.get('result') == 'passed-target-link-proof' and
-            original_proof.get('proof_helper_sha256') == PROOF_HELPER_SHA256 and
+            original_proof.get('proof_helper_sha256') == ORIGINAL_PROOF_HELPER_SHA256 and
             original_proof.get('target_binaries_run') is False and original_proof.get('signed') is False,
             'Original crypto proof identity mismatch')
     require(spec['producer'] == proof_spec['producer'], 'Crypto prefix/proof producer mismatch')
@@ -213,7 +215,8 @@ def relocate_crypto_metadata(import_root, spec, original_proof_root, proof_spec)
 def emit_validated_overlay(proof_helper, prefix, proof_output, config):
     """Enable the two scoped feature facts only through the exact target revalidator."""
     helper = safe_path(proof_helper)
-    require(sha(helper.read_bytes()) == PROOF_HELPER_SHA256, 'Unreviewed crypto proof helper')
+    require(helper.name == OVERLAY_PROOF_HELPER_NAME and
+            sha(helper.read_bytes()) == OVERLAY_PROOF_HELPER_SHA256, 'Unreviewed SDK27 overlay proof helper')
     original = safe_path(config)
     require(sha(original.read_bytes()) == CONFIG_SHA256, 'Original Wine config drift')
     location = importlib.util.spec_from_file_location('reviewed_ntdll_crypto_proof', helper)

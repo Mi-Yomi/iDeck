@@ -20,7 +20,7 @@ PACKAGE = HERE.parent
 MADEIRA = '279fd0f83170425db002fe25d6bd62f6355f497d'
 WINE = '9129e9684daaeae70da9435e7c6060e59392634e'
 MANIFEST_SHA256 = '8d487906f5bf8c402456584631bf8cb142242c2f6193eb30f1257f48a0dc1b6d'
-PROOF_HELPER_SHA256 = '6d3a662a0760a17d329675bea3d3445959f9e85ed7d0d37ff7e608f3a055af9f'
+PROOF_HELPER_SHA256 = 'e0ef93444777c34928b11815780c3ed4a202bd108a924322cf1d60b12c629b96'
 CONFIG_SHA256 = '22332cb47937d006792e911322c2978a953d25fb5c883837c952b05e7e4077e4'
 ARTIFACTS = {'wine-headers':'7049a985768cf3bcd100c0fea2fcbdb2cd28d8cf3087a63b24936f023055ebc2', 'freetype':'0a2520d9f9eeb1281387c01bb2e7e612302567ab9a735c5ae28e24e2285454fc', 'ffmpeg':'5530af1588c577f022f15911bedb683509263d93ea4df88ec2b7efd9d75f2bd8'}
 TABLES = {'audio_null_ios.o':('audio_null_ios',37), 'nsi_unixlib_ios.o':('nsi',3), 'ws2_32_unixlib.o':('ws2_32',5), 'bcrypt_unixlib.o':('bcrypt',18), 'secur32_unixlib.o':('secur32',22), 'crypt32_unixlib.o':('crypt32',7), 'dwrite_unixlib.o':('dwrite',10), 'dnsapi_unixlib.o':('dnsapi',4), 'winegstreamer_unixlib.o':('winegstreamer',37)}
@@ -359,8 +359,8 @@ class Control:
         require(sys.platform=='darwin','This helper only builds on the reviewed Mac')
         require(self.run('host-architecture',['/usr/bin/uname','-m'])=='arm64','arm64 Mac host required')
         developer=self.runner.select_developer()
-        require('Xcode 26.6' in self.run('xcode-version',['/usr/bin/xcodebuild','-version']).splitlines(),'Xcode26.6 required')
-        require(self.run('sdk-version',['/usr/bin/xcrun','--sdk','iphoneos','--show-sdk-version'])=='26.5','SDK26.5 required')
+        require(self.run('xcode-version',['/usr/bin/xcodebuild','-version']).splitlines()==['Xcode 27.0','Build version 27A266a'],'Exact Xcode27.0/27A266a required')
+        require(self.run('sdk-version',['/usr/bin/xcrun','--sdk','iphoneos','--show-sdk-version'])=='27.0','SDK27.0 required')
         sdk=self.runner.selected_xcode_path(self.run('sdk-path',['/usr/bin/xcrun','--sdk','iphoneos','--show-sdk-path']),developer,directory=True)
         tools={name:self.runner.selected_xcode_path(self.run('find-'+name,['/usr/bin/xcrun','--sdk','iphoneos','--find',name]),developer) for name in ('clang','nm','ar')}
         require(self.run('clang-version',[tools['clang'],'--version']).startswith('Apple clang version '),'Apple clang required')
@@ -393,7 +393,7 @@ class Control:
             results.append(row);write_json(self.output/'units.json',results)
         self.stage='archive';archive=self.output/'libntdll_unix.a'
         self.run('archive',[tools['ar'],'rcs',archive,*[self.output/'objects'/u['member'] for u in self.manifest['units']]])
-        actual=self.module.inspect_archive(archive)
+        actual=self.module.inspect_archive(archive,sdk_version=self.module.FRESH_SDK_VERSION)
         require([x['member'] for x in actual['members']]==[x['member'] for x in results],'Exact37 archive member order mismatch')
         require(all(a['sha256']==b['sha256'] and a['size']==b['bytes'] for a,b in zip(actual['members'],results)),'Archive member content mismatch')
         self.run('archive-members',[tools['ar'],'-t',archive]);self.run('archive-defined',[tools['nm'],'-gU',archive]);self.run('archive-undefined',[tools['nm'],'-u',archive])
@@ -406,7 +406,7 @@ class Control:
         require(digest(self.paths['proof_helper'])==PROOF_HELPER_SHA256,'Proof helper changed')
         require(sum(len(x['tables']) for x in results)==19,'Nine ordinary/WoW64 table pairs plus loader WoW64 table required')
         self.stage='complete'
-        result={'result':'passed-source-ntdll-archive-control','scope':'37 real compiled units and ordinary/WoW64 tables; unresolved native/app providers remain for later link','madeira':MADEIRA,'wine':WINE,'source_manifest_sha256':MANIFEST_SHA256,'helper_sha256':digest(HERE/'build_ntdll_control.py'),'proof_helper_sha256':PROOF_HELPER_SHA256,'config_sha256':CONFIG_SHA256,'crypto_overlay_sha256':digest(self.overlay),'member_count':37,'table_symbol_count':19,'archive':actual,'target_binaries_run':False,'native_link_performed':False,'signed':False,'installed':False,'source_modified':False,'developer_selection':self.runner.developer_selection,'sdk':'26.5','xcode':'26.6','tools':{k:{'path':str(p),'sha256':digest(p)} for k,p in tools.items()},'evidence':{n:digest(self.output/n) for n in ('inputs.json','generated-source-record.json','units.json','commands.json')},'inherited_diagnostic_suppressions':INHERITED_DIAGNOSTICS,'timeout_owner':'outer reviewed process-group wrapper'}
+        result={'result':'passed-source-ntdll-archive-control','scope':'37 real compiled units and ordinary/WoW64 tables; unresolved native/app providers remain for later link','madeira':MADEIRA,'wine':WINE,'source_manifest_sha256':MANIFEST_SHA256,'helper_sha256':digest(HERE/'build_ntdll_control.py'),'proof_helper_sha256':PROOF_HELPER_SHA256,'config_sha256':CONFIG_SHA256,'crypto_overlay_sha256':digest(self.overlay),'member_count':37,'table_symbol_count':19,'archive':actual,'target_binaries_run':False,'native_link_performed':False,'signed':False,'installed':False,'source_modified':False,'developer_selection':self.runner.developer_selection,'sdk':'27.0','xcode':'27.0','xcode_build':'27A266a','immutable_dependency_sdk':'26.5','tools':{k:{'path':str(p),'sha256':digest(p)} for k,p in tools.items()},'evidence':{n:digest(self.output/n) for n in ('inputs.json','generated-source-record.json','units.json','commands.json')},'inherited_diagnostic_suppressions':INHERITED_DIAGNOSTICS,'timeout_owner':'outer reviewed process-group wrapper'}
         write_json(self.output/'result.json',result)
         return result
 

@@ -28,8 +28,10 @@ MIB = 1024 * 1024
 AGGREGATE_SECONDS = 23 * 60
 FINALIZE_RESERVE = 60
 ARTIFACT_KINDS = frozenset(('wine-headers', 'freetype', 'ffmpeg', 'crypto-prefix', 'crypto-proof'))
+FRESH_PROOF_HELPER = 'ci/prove_ntdll_crypto_sdk27.py'
 PINS = {
-    'ci/build_ntdll_control.py': 'a37622ec50e659604ff32c93c9758fd2be4f3cdb3d5c33817fc4ef8dfc7ff2fb',
+    FRESH_PROOF_HELPER: 'e0ef93444777c34928b11815780c3ed4a202bd108a924322cf1d60b12c629b96',
+    'ci/build_ntdll_control.py': 'bbf92f6ea9b9b42677b66c2aa2b868151725f54c3774d38e9f04ba2e47de667a',
     'ntdll-source-manifest.json': '8d487906f5bf8c402456584631bf8cb142242c2f6193eb30f1257f48a0dc1b6d',
     'ci/prove_crypto_features.py': '6d3a662a0760a17d329675bea3d3445959f9e85ed7d0d37ff7e608f3a055af9f',
     'gnutls-symbol-lock.json': 'cc8924fdaef69921bbe27a2cfc7323ed22fbd2f1ca969a48dcc0b55aeb75bae4',
@@ -119,6 +121,11 @@ def reviewed_inputs(root=ROOT, environ=None):
     require(set(lock.get('artifacts', {})) == ARTIFACT_KINDS, 'Exactly five original dependency envelopes required')
     require(lock.get('crypto', {}).get('fresh_relocated_target_link_proof_required') is True
             and lock['crypto'].get('original_proof_rewritten') is False, 'Fresh proof and original evidence preservation required')
+    require(lock.get('fresh_crypto_proof') == {
+        'helper_path': FRESH_PROOF_HELPER, 'helper_sha256': PINS[FRESH_PROOF_HELPER],
+        'input_archive_sdk': '26.5', 'fresh_sdk': '27.0', 'xcode_version': '27.0', 'xcode_build': '27A266a',
+        'original_sdk_probe_zip_sha256': '5836abcff55e07ec3207c62f4fe7b9018327c38624802bccd99055f4f8ea71bb'},
+        'Exact separate SDK27 fresh-proof contract required')
     for name, sha in PINS.items():
         verify_hash(root / name, sha)
     helpers = lock.get('consumer_helpers', {})
@@ -312,20 +319,24 @@ def raw_archive_check(output, manifest, proof_module, helper_module=None):
             'Complete source-only ntdll success required')
     require(all(result.get(key) is False for key in ('target_binaries_run', 'native_link_performed', 'signed', 'installed', 'source_modified')), 'Unexpected execution/link/install/source mutation claim')
     require(result.get('helper_sha256') == PINS['ci/build_ntdll_control.py']
-            and result.get('source_manifest_sha256') == PINS['ntdll-source-manifest.json'], 'Helper/source provenance mismatch')
+            and result.get('source_manifest_sha256') == PINS['ntdll-source-manifest.json']
+            and result.get('proof_helper_sha256') == PINS[FRESH_PROOF_HELPER]
+            and result.get('sdk') == '27.0' and result.get('xcode') == '27.0'
+            and result.get('xcode_build') == '27A266a' and result.get('immutable_dependency_sdk') == '26.5',
+            'Helper/source/SDK27 provenance mismatch')
     for name in ('inputs.json', 'generated-source-record.json', 'units.json', 'commands.json'):
         verify_hash(output/name, result.get('evidence', {}).get(name))
     units = read_json(output/'units.json')
     expected = [unit['member'] for unit in manifest['units']]
     require(len(expected) == 37 and [u['member'] for u in units] == expected, 'Exact 37-unit member order required')
-    archive = proof_module.inspect_archive(safe(output/'libntdll_unix.a'))
+    archive = proof_module.inspect_archive(safe(output/'libntdll_unix.a'), sdk_version=proof_module.FRESH_SDK_VERSION)
     require(archive == result['archive'] and [r['member'] for r in archive['members']] == expected, 'Raw archive differs from helper result')
     for member, unit in zip(archive['members'], units):
         path = output/'objects'/safe_name(unit['member'])
         require(safe(path).stat().st_size == unit['bytes'] == member['size'], 'Raw member size mismatch')
         require(digest(path) == unit['sha256'] == member['sha256'], 'Raw member byte mismatch')
         metadata = proof_module.inspect_macho(path.read_bytes(), unit['member'])
-        require(metadata == unit['target'] and metadata['sdk'] == '26.5' and not metadata['sdk_unspecified_assembly_exception'], 'ntdll requires strict SDK26.5 C objects')
+        require(metadata == unit['target'] and metadata['sdk'] == '27.0' and not metadata['sdk_unspecified_assembly_exception'], 'ntdll requires strict SDK27.0 C objects')
         definitions = helper_module.read_external_sections(path.read_bytes())
         require(helper_module.verify_tables(unit['member'], definitions) == unit['tables'], 'Raw ordinary/WoW64 table evidence mismatch')
         anchors = helper_module.ANCHORS.get(unit['member'], ())
@@ -392,7 +403,8 @@ def preflight(commands):
     commands.env['DEVELOPER_DIR'] = developer
     xcode = commands.run('preflight-xcode', ['/usr/bin/xcodebuild', '-version']).decode().strip()
     sdk = commands.run('preflight-sdk', ['/usr/bin/xcrun', '--sdk', 'iphoneos', '--show-sdk-version']).decode().strip()
-    require(xcode.splitlines()[0] == 'Xcode 26.6' and sdk == '26.5', 'Exact Xcode26.6/iPhoneOS26.5 required')
+    require(xcode.splitlines() == ['Xcode 27.0', 'Build version 27A266a'] and sdk == '27.0',
+            'Exact Xcode27.0/27A266a and iPhoneOS27.0 required')
     disk = os.statvfs(commands.run_root)
     available = disk.f_bavail * disk.f_frsize
     require(available >= 4*1024*MIB, 'At least 4GiB free required before input/source acquisition')
@@ -415,14 +427,14 @@ def worker():
     crypto = imports['crypto-prefix']
     importer.relocate_crypto_metadata(crypto, lock['artifacts']['crypto-prefix'], imports['crypto-proof'], lock['artifacts']['crypto-proof'])
     proof_dir = crypto/'target-proof'
-    proof_helper = ROOT/'ci/prove_crypto_features.py'
+    proof_helper = ROOT/FRESH_PROOF_HELPER
     commands.run('fresh-crypto-proof', [sys.executable, '-I', proof_helper, crypto/'prefix', proof_dir])
     importer.emit_validated_overlay(proof_helper, crypto/'prefix', proof_dir, imports['wine-headers']/'prefix/include/config.h')
     commands.run('source-ntdll-build', [sys.executable, '-I', ROOT/'ci/build_ntdll_control.py', source,
                  imports['wine-headers']/'prefix', imports['freetype']/'prefix', imports['ffmpeg']/'prefix',
                  crypto/'prefix', proof_dir, proof_helper, RUN/'build'])
     recheck_sources(commands, manifest, before)
-    proof_module = load_module(proof_helper, PINS['ci/prove_crypto_features.py'], 'reviewed_ntdll_proof')
+    proof_module = load_module(proof_helper, PINS[FRESH_PROOF_HELPER], 'reviewed_ntdll_proof')
     raw_archive_check(RUN/'build', manifest, proof_module)
     reviewed_inputs()
     write_json(RUN/'worker-result.json', {'result': 'validated-awaiting-packaging', 'source_modified': False,
@@ -437,7 +449,7 @@ def finalizer():
     proof_dir = RUN/'imports/crypto-prefix/target-proof'
     if success:
         try:
-            proof_module = load_module(ROOT/'ci/prove_crypto_features.py', PINS['ci/prove_crypto_features.py'], 'reviewed_ntdll_final_proof')
+            proof_module = load_module(ROOT/FRESH_PROOF_HELPER, PINS[FRESH_PROOF_HELPER], 'reviewed_ntdll_final_proof')
             raw_archive_check(RUN/'build', manifest, proof_module)
             proof_module.verify_passed_proof(RUN/'imports/crypto-prefix/prefix', proof_dir, RUN/'imports/wine-headers/prefix/include/config.h')
             require(read_json(RUN/'ntdll-source-identity.json') == read_json(RUN/'ntdll-source-postcheck.json'), 'Source postcheck missing or changed')

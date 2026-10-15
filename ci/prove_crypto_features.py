@@ -165,13 +165,29 @@ def cstring(data, offset, end, label):
     require(result and not any(ord(c) < 32 or ord(c) == 127 for c in result), f"Unsafe {label}")
     return result
 
-def inspect_macho(data, label, kind=1, wanted=frozenset()):
+# The actual reviewed 6ad06461546ce6236ceebeac build emits SDK=0 only
+# for these pinned .s inputs. CPU/platform/minimum remain strict; SDK=0
+# means unspecified metadata, never an encoded claim of SDK26.5.
+SDK_UNSPECIFIED_ASSEMBLY = {
+    "libnettle.a": frozenset((
+        "chacha-core-internal.o", "aes128-encrypt-2.o", "aes128-decrypt-2.o",
+        "aes192-encrypt-2.o", "aes192-decrypt-2.o", "aes256-encrypt-2.o",
+        "aes256-decrypt-2.o", "chacha-2core.o", "chacha-4core.o",
+        "ghash-set-key-2.o", "ghash-update-2.o", "sha1-compress-2.o",
+        "sha256-compress-n-2.o",
+    )),
+    "libgnutls.a": frozenset(("aes-aarch64.o", "ghash-aarch64.o",
+        "sha1-armv8.o", "sha256-armv8.o", "sha512-armv8.o")),
+}
+
+def inspect_macho(data, label, kind=1, wanted=frozenset(), archive=None):
     require(len(data) >= 32, f"Truncated Mach-O: {label}")
     magic, cpu, subtype, ftype, ncmds, size, flags, reserved = struct.unpack_from("<8I", data)
     require((magic, cpu, subtype, ftype, reserved) == (0xFEEDFACF, 0x0100000C, 0, kind, 0), f"Expected thin arm64 Mach-O kind{kind}: {label}")
     require(0 < ncmds <= 4096 and 8 * ncmds <= size <= len(data) - 32, "Invalid Mach-O command bounds")
     offset = 32
     versions, dependencies, symtabs, sections = [], [], [], []
+    platform_command_types = []
     dylinkers = []
     for _ in range(ncmds):
         require(offset + 8 <= 32 + size, "Truncated Mach-O command")
@@ -183,10 +199,12 @@ def inspect_macho(data, label, kind=1, wanted=frozenset()):
             platform, minimum, sdk, ntools = struct.unpack_from("<4I", data, offset + 8)
             require(length == 24 + ntools * 8, "Malformed LC_BUILD_VERSION tool list")
             versions.append((platform, minimum, sdk))
+            platform_command_types.append(cmd)
         elif cmd in (0x24, 0x25, 0x2F, 0x30):
             require(length == 16, "Malformed legacy version command")
             minimum, sdk = struct.unpack_from("<2I", data, offset + 8)
             versions.append((2 if cmd == 0x25 else -1, minimum, sdk))
+            platform_command_types.append(cmd)
         elif cmd in (0xC, 0xD, 0x80000018, 0x8000001F, 0x20, 0x80000023):
             require(kind == 2 and cmd == 0xC and length >= 24, "Unexpected dylib load command")
             nameoff = struct.unpack_from("<I", data, offset + 8)[0]
@@ -212,7 +230,8 @@ def inspect_macho(data, label, kind=1, wanted=frozenset()):
                 segment_name = data[section + 16:section + 32].rstrip(b"\0").decode("ascii")
                 sections.append((segment_name, section_name))
         offset += length
-    require(offset == 32 + size and versions == [(2, IOS_VERSION, SDK_VERSION)], f"Exactly one iOS17.0/SDK26.5 platform command required: {label}")
+    unspecified_assembly = kind == 1 and platform_command_types == [0x32] and label in SDK_UNSPECIFIED_ASSEMBLY.get(archive, ()) and versions == [(2, IOS_VERSION, 0)]
+    require(offset == 32 + size and (versions == [(2, IOS_VERSION, SDK_VERSION)] or unspecified_assembly), f"Exactly one reviewed iOS17.0 platform/SDK command required: {label}")
     require(len(dependencies) == len(set(dependencies)), "Duplicate dylib command")
     if kind == 2:
         require("/usr/lib/libSystem.B.dylib" in dependencies, "Expected SDK libSystem dependency")
@@ -236,7 +255,7 @@ def inspect_macho(data, label, kind=1, wanted=frozenset()):
                 require(name[1:] not in defined, f"Duplicate linked API: {name}")
                 defined[name[1:]] = {"section": nsect, "address": value}
         require(set(defined) == set(wanted), "Linked image is missing retained API definitions")
-    return {"architecture": "arm64", "platform": "iOS", "minimum": "17.0", "sdk": "26.5", "code_signature": False, "dependencies": sorted(dependencies), "retained_api_definitions": sorted(defined)}
+    return {"architecture": "arm64", "platform": "iOS", "minimum": "17.0", "sdk": "unspecified" if unspecified_assembly else "26.5", "sdk_encoded": versions[0][2], "sdk_unspecified_assembly_exception": unspecified_assembly, "code_signature": False, "dependencies": sorted(dependencies), "retained_api_definitions": sorted(defined)}
 
 def inspect_archive(path):
     path = checked_file(path, 256 * MIB)
@@ -274,8 +293,8 @@ def inspect_archive(path):
                 require(len(indexes) == 1, "Duplicate archive index")
                 continue
             require(re.fullmatch(r"[A-Za-z0-9_.+-]+\.o", name), f"Unexpected ar object name: {name}")
-            inspect_macho(data, name)
-            inventory.append({"index": len(inventory), "member": name, "sha256": hashlib.sha256(data).hexdigest(), "size": len(data)})
+            metadata = inspect_macho(data, name, archive=Path(path).name)
+            inventory.append({"index": len(inventory), "member": name, "sha256": hashlib.sha256(data).hexdigest(), "size": len(data), **metadata})
             require(len(inventory) <= 20000, "Too many archive members")
     require(inventory, "Empty target archive")
     return {"path": str(path), "sha256": sha256(path), "size": path.stat().st_size, "member_count": len(inventory), "members": inventory}

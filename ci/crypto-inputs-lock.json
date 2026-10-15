@@ -2,7 +2,7 @@
   "files": {
     "ci/crypto-core-control.sh": "989935474663cffc12c75e3eb13b3f52846a133665732d8e918760d959fee6c3",
     "ci/crypto_control_support.py": "94311271c202408b18ceba863ffda8b57acb9bac123faac4a959ef7d9b500dc0",
-    "ci/prove_crypto_features.py": "c6b0a6f71dea27c8ba303c805a0b5b36a225fd8a7a78da48da623cdbc95fdfe5",
+    "ci/prove_crypto_features.py": "6d3a662a0760a17d329675bea3d3445959f9e85ed7d0d37ff7e608f3a055af9f",
     "gnutls-api-link-probe.c": "cbfff4cd0888a2849282f38253b4839afc4a9064dfc042932c0896ad59314e09",
     "gnutls-symbol-lock.json": "cc8924fdaef69921bbe27a2cfc7323ed22fbd2f1ca969a48dcc0b55aeb75bae4"
   },

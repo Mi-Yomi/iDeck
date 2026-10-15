@@ -68,7 +68,22 @@ def safe_name(name):
 def add_file(archive, path, name, cap, root=None):
     archive.write(checked_file(path, cap, root), safe_name(name))
 
-def validate_macho(data, name):
+# The actual reviewed 6ad06461546ce6236ceebeac build emits SDK=0 only
+# for these pinned .s inputs. CPU/platform/minimum remain strict; SDK=0
+# means unspecified metadata, never an encoded claim of SDK26.5.
+SDK_UNSPECIFIED_ASSEMBLY = {
+    "libnettle.a": frozenset((
+        "chacha-core-internal.o", "aes128-encrypt-2.o", "aes128-decrypt-2.o",
+        "aes192-encrypt-2.o", "aes192-decrypt-2.o", "aes256-encrypt-2.o",
+        "aes256-decrypt-2.o", "chacha-2core.o", "chacha-4core.o",
+        "ghash-set-key-2.o", "ghash-update-2.o", "sha1-compress-2.o",
+        "sha256-compress-n-2.o",
+    )),
+    "libgnutls.a": frozenset(("aes-aarch64.o", "ghash-aarch64.o",
+        "sha1-armv8.o", "sha256-armv8.o", "sha512-armv8.o")),
+}
+
+def validate_macho(data, name, archive=None):
     if len(data) < 32:
         raise ValueError(f"Truncated Mach-O object: {name}")
     magic, cpu, subtype, kind, ncmds, size, flags, reserved = struct.unpack_from("<8I", data)
@@ -76,7 +91,7 @@ def validate_macho(data, name):
         raise ValueError(f"Member must be a thin arm64 Mach-O object: {name}")
     if ncmds > 4096 or size > len(data) - 32:
         raise ValueError("Invalid Mach-O load-command bounds")
-    offset, platforms, minima = 32, [], []
+    offset, platforms, minima, sdks = 32, [], [], []
     for unused in range(ncmds):
         if offset + 8 > 32 + size:
             raise ValueError("Truncated Mach-O command")
@@ -91,8 +106,10 @@ def validate_macho(data, name):
             ntools = struct.unpack_from("<I", data, offset + 20)[0]
             if length != 24 + 8 * ntools:
                 raise ValueError("Invalid build-version tool count")
-            if struct.unpack_from("<I", data, offset + 16)[0] != 0x001A0500:
-                raise ValueError("Unexpected target SDK in archive object")
+            sdk = struct.unpack_from("<I", data, offset + 16)[0]
+            if sdk != 0x001A0500 and not (sdk == 0 and name in SDK_UNSPECIFIED_ASSEMBLY.get(archive, ())):
+                raise ValueError(f"Unexpected target SDK in archive object: {archive}/{name}")
+            sdks.append(sdk)
             platforms.append(struct.unpack_from("<I", data, offset + 8)[0])
             minima.append(struct.unpack_from("<I", data, offset + 12)[0])
         elif command in (0x24, 0x25, 0x2F, 0x30):
@@ -100,11 +117,15 @@ def validate_macho(data, name):
                 raise ValueError("Invalid legacy platform command size")
             if struct.unpack_from("<I", data, offset + 12)[0] != 0x001A0500:
                 raise ValueError("Unexpected target SDK in legacy object")
+            sdks.append(struct.unpack_from("<I", data, offset + 12)[0])
             platforms.append(2 if command == 0x25 else -1)
             minima.append(struct.unpack_from("<I", data, offset + 8)[0])
         offset += length
     if offset != 32 + size or platforms != [2] or minima != [0x00110000]:
         raise ValueError(f"Member must contain exactly one iOS 17.0 platform command: {name}")
+    return {"minimum_os": "17.0", "sdk_encoded": sdks[0],
+            "sdk": "26.5" if sdks[0] else "unspecified",
+            "sdk_unspecified_assembly_exception": sdks[0] == 0}
 
 def validate_archive(path):
     """Check actual bytes; never infer every object's CPU/platform from lipo alone."""
@@ -153,10 +174,10 @@ def validate_archive(path):
                 continue
             if name in names or not re.fullmatch(r"[A-Za-z0-9_.+-]+\.o", name):
                 raise ValueError("Invalid or duplicate real archive member")
-            validate_macho(data, name)
+            metadata = validate_macho(data, name, Path(path).name)
             names.append(name)
             inventory.append({"index":len(inventory),"member": name, "sha256": hashlib.sha256(data).hexdigest(),
-                              "size": len(data), "architecture": "arm64", "platform": "iOS"})
+                              "size": len(data), "architecture": "arm64", "platform": "iOS", **metadata})
     if not names or len(names) > 10000:
         raise ValueError("Missing or excessive archive objects")
     return inventory
@@ -279,7 +300,7 @@ def checkout(control, tag, path, url, commit, sparse=()):
     verify_pin(control.run(tag + "-pin", "git", "rev-parse", "HEAD", cwd=path), commit)
     return source_bounds(path)
 
-INPUT_LOCK = 'dd75b9aab4a4ac0da56ec42bb0a05ed9f8f63cd7252dc00ef98e8555768d4199'
+INPUT_LOCK = '4df0bfa6aa2a1448c0e01bde34b0b043895733ae62f70accccba9f3081a0cf42'
 INPUT_FILES = frozenset(('ci/crypto-core-control.sh','ci/crypto_control_support.py',
  'ci/prove_crypto_features.py','gnutls-api-link-probe.c','gnutls-symbol-lock.json'))
 

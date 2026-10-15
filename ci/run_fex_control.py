@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Bounded, manual FEX-only control; no signing, SDK copy or account changes."""
+from collections import Counter
 import hashlib
 import json
 import os
@@ -43,17 +44,26 @@ def digest(path):
 def validate_platform(arch, members, commands):
     if not re.search(r"(?:architecture:|are:)\s+arm64\s*$", arch.strip()):
         raise ValueError("Archive is not exactly arm64")
-    count = len([line for line in members.splitlines() if line.strip()])
-    if not count:
+    # BSD archive indexes are metadata, not Mach-O object members.
+    indexes = {"__.SYMDEF", "__.SYMDEF SORTED", "__.SYMDEF_64", "__.SYMDEF_64 SORTED"}
+    objects = [line.strip() for line in members.splitlines()
+               if line.strip() and line.strip() not in indexes]
+    if not objects:
         raise ValueError("Empty archive")
-    modern = len(re.findall(r"^\s*cmd LC_BUILD_VERSION\s*$", commands, re.M))
-    legacy = len(re.findall(r"^\s*cmd LC_VERSION_MIN_IPHONEOS\s*$", commands, re.M))
-    platforms = re.findall(r"^\s*platform (\S+)\s*$", commands, re.M)
-    if modern + legacy != count or len(platforms) != modern:
-        raise ValueError("Each object must have one iOS platform load command")
-    if any(platform not in ("IOS", "2") for platform in platforms):
-        raise ValueError("Non-iOS object platform detected")
-    return count
+    headers = list(re.finditer(r"^.+\.a\(([^\r\n]+)\):\s*$", commands, re.M))
+    if Counter(match.group(1) for match in headers) != Counter(objects):
+        raise ValueError("Archive and otool object inventories differ")
+    for index, header in enumerate(headers):
+        end = headers[index + 1].start() if index + 1 < len(headers) else len(commands)
+        block = commands[header.end():end]
+        modern = len(re.findall(r"^\s*cmd LC_BUILD_VERSION\s*$", block, re.M))
+        legacy = len(re.findall(r"^\s*cmd LC_VERSION_MIN_IPHONEOS\s*$", block, re.M))
+        platforms = re.findall(r"^\s*platform (\S+)\s*$", block, re.M)
+        if modern + legacy != 1 or len(platforms) != modern:
+            raise ValueError("Each object must have one iOS platform load command")
+        if any(platform not in ("IOS", "2") for platform in platforms):
+            raise ValueError("Non-iOS object platform detected")
+    return len(objects)
 
 
 class Control:

@@ -64,5 +64,41 @@ workflows:
           print("APPLE_SOURCE_CHECK_RESULT=" + json.dumps(summary, sort_keys=True))
           PYREPORT
           exit "$result"
-# Manual-only: no triggering, publishing, artifact upload, cache or secret groups.
+# Source-check workflow above: no triggering, publishing, artifact upload, cache or secret groups.
 # This does not link guest runtime binaries, package an IPA, sign or install apps.
+  ideck-fex-ios-control:
+    name: iDeck current Madeira FEX iOS archive control
+    instance_type: mac_mini_m2
+    max_build_duration: 25
+    inputs:
+      expected_recipe_sha256:
+        description: Exact reviewed ci/mac-core-control.sh SHA256
+        type: string
+      free_quota_verified:
+        description: Free macOS quota and disabled paid subscription checked for this manual run
+        type: string
+        default: "false"
+      private_source_verified:
+        description: Approved private Mi-Yomi/iDeck repository selected
+        type: string
+        default: "false"
+    environment:
+      xcode: "26.6"
+      vars:
+        EXPECTED_RECIPE_SHA256: ${{ inputs.expected_recipe_sha256 }}
+        FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
+        PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
+        GIT_TERMINAL_PROMPT: "0"
+        JOBS: "4"
+    scripts:
+      - name: Build seven pinned real FEX iOS archives and validate platform evidence
+        script: |
+          set -euo pipefail
+          test "${FREE_QUOTA_VERIFIED:-false}" = true
+          test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
+          python3 ci/run_fex_control.py
+    artifacts:
+      - .work/runtime-control-artifacts/fex-evidence.zip
+      - .work/runtime-control-artifacts/fex-ios-archives.zip
+# Manual-only. No triggers, retries, caches, credentials, signing or publication.
+# Add this workflow alongside the source gate only after review and coordination.

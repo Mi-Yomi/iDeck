@@ -19,6 +19,25 @@ The snapshot includes the audited tracked tree, including original public docume
 
 The check compiles six real package modules for arm64 iOS, emits the actual JITHelperXPC module, and typechecks 92 development / 80 release main-app Swift sources against Apple SDK and real pinned C headers. It creates no guest-runtime substitutes. The build does not link the Wine/FEX/CEF runtime, create an IPA, sign, install or establish actual Steam Big Picture/gameplay success.
 
-No automatic GitHub workflows, automatic retry, cache, signing, secret groups, publishing or artifact upload is configured. Inherited `.github` files stay inside the reconstructed source only. Bounded actual compiler-failure diagnostics and a compact machine-readable result are printed into the private build log.
+The source-check workflow has no automatic GitHub workflows, automatic retry, cache, signing, secret groups, publishing or artifact upload. Inherited `.github` files stay inside the reconstructed source only. Bounded actual compiler-failure diagnostics and a compact machine-readable result are printed into the private build log.
 
 Build configuration and source presence do not constitute a successful Apple build; consult the actual Codemagic run result.
+
+## Separate current-Madeira FEX control
+
+The manually selected `ideck-fex-ios-control` workflow uses the reviewed pinned
+public Madeira/FEX source tree, independently of the app source snapshot above.
+It builds seven real native arm64 iOS FEX archives with four compile jobs, a
+25-minute provider cap and a 23-minute aggregate subprocess budget. Its sparse
+Madeira checkout excludes Wine, DXMT and the proprietary converter payload.
+
+Before this manual run, verify the remaining free macOS quota and disabled paid
+subscription. The helper SHA256 input must match the frozen reviewed recipe.
+Only two explicitly constructed private ZIP artifacts are collected: bounded
+diagnostics/platform/compiler evidence, and successful archives with source
+licenses. They contain no Apple SDK, credentials, Steam data or full source/build
+directory. There are no automatic triggers, retries, caches or signing steps.
+
+This control does not link the complete runtime or app, create an IPA, or prove
+Steam Big Picture or device execution. The workflow's presence is not a passing
+compiler result; consult its actual Codemagic run.

@@ -1,5 +1,37 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Запрос компиляции: подготовка запуска
+
+Пользователь попросил «скомпиль давай чекать». Ветка для существующего Codemagic:
+`codex/linux-guest-feasibility-20261015`, workflow `ideck-linux-guest-profile-check`.
+GitHub API подтвердил `Mi-Yomi/iDeck` как private. В workflow добавлено сохранение
+`result.json` и отдельных compiler logs; остальные workflow не менялись.
+
+Автоматический доступ к Codemagic сейчас заблокирован неисправностью локального
+инструмента: и browser REPL, и Computer Use возвращают `failed to write kernel
+assets: Системе не удается найти указанный путь. (os error 3)` до выполнения кода.
+Повторная инициализация browser REPL не помогла. Это не ошибка компиляции.
+Текущую бесплатную квоту и отключённую оплату проверить не удалось; старое число
+66/500 не использовано как актуальное. Запуск Apple worker не подтверждён.
+
+Ручной запуск в существующем приложении
+`https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9`:
+
+1. Проверить, что осталось не менее 10 бесплатных macOS минут и платная подписка
+   отключена; выбрать private `Mi-Yomi/iDeck`.
+2. Start new build → ветка выше → `ideck-linux-guest-profile-check`.
+3. `expected_commit`: полный SHA HEAD этой опубликованной ветки (`git rev-parse
+   HEAD`); `free_quota_verified=true`, `private_source_verified=true` только после
+   соответствующей проверки. Gate отклонит другой или грязный checkout.
+4. Сохранить URL сборки и результат. Успешный status должен быть
+   `apple_husk_source_typecheck_and_host_checks_pass`; оба
+   `upstream_husk_typechecked` и `integrated_husk_typechecked` должны быть true.
+
+Эта задача проверяет весь настоящий Swift app source с pinned bridge и iOS SDK,
+а также компилирует и запускает Mac validator tests. Она ещё не линкует native
+QEMU/ANGLE/rppairing и не создаёт IPA. Ошибки baseline и overlay необходимо
+разбирать отдельно, не заменяя runtime API заглушками и не ослабляя gates.
+
 ## Новое состояние после просьбы продолжить
 
 Работа продолжена в `E:\Freddy Fazbear\iDeck`, ветка `codex/linux-guest-feasibility-20261015`.

@@ -597,11 +597,9 @@ workflows:
       - .work/fex-header-control-artifacts/result.json
       - .work/fex-header-control-artifacts/worker.log
       - .work/fex-header-control-artifacts/diagnostics/**
-# Manual proposal only: no trigger, dependency archive import, install, cache,
-# signing, publication, retry, target execution or SDK copying.
-# 240 seconds aggregate: worker 215 seconds, at most 25 seconds finalization.
-# Normal original CMake compiler probes are permitted; no library targets,
-# archive rebuild or app/witness link. Existing build worker owns remote work.
+# Manual Linux source check on the existing Apple worker. No automatic trigger,
+# dependency downloads, signing, app link or device action. 480-second worker
+# budget, 10-minute provider cap; retain only compiler diagnostics and the report.
   ideck-linux-guest-profile-check:
     name: iDeck Linux profile and pinned Husk source compiler check
     instance_type: mac_mini_m2
@@ -629,5 +627,6 @@ workflows:
         script: |
           set -euo pipefail
           python3 -I ci/check_linux_guest_profile.py
-# This workflow is a manual source/host check only. It has no trigger, downloads,
-# artifact publishing, signing or device action. The worker budget is 480 seconds.
+    artifacts:
+      - .work/linux-profile-apple/result.json
+      - .work/linux-profile-apple/*.log

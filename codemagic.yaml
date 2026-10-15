@@ -293,3 +293,47 @@ workflows:
 # Prefix-only product is preserved if the subsequent target-link proof fails.
 # Target probe has no ad-hoc signature and is never executed. No Wine overlay is emitted.
 # Prefix, link and eventual runtime/device tests are distinct evidence gates.
+  ideck-current-app-toolchain-preflight:
+    name: iDeck current Madeira Swift and StikJIT compiler preflight
+    instance_type: mac_mini_m2
+    max_build_duration: 10
+    inputs:
+      expected_runner_sha256:
+        description: SHA256 of the reviewed ci/run_app_preflight.py
+        type: string
+      expected_source_lock_sha256:
+        description: SHA256 of the reviewed ci/app-preflight-source-lock.json
+        type: string
+      free_quota_verified:
+        description: Free macOS quota and disabled paid subscription checked for this run
+        type: string
+        default: "false"
+      private_source_verified:
+        description: Approved private repository and exact reviewed checkpoint selected
+        type: string
+        default: "false"
+      app_preflight_reviewed:
+        description: Compiler-only scope and exact source inputs reviewed for this run
+        type: string
+        default: "false"
+    environment:
+      xcode: "27.0"
+      vars:
+        EXPECTED_RUNNER_SHA256: ${{ inputs.expected_runner_sha256 }}
+        EXPECTED_SOURCE_LOCK_SHA256: ${{ inputs.expected_source_lock_sha256 }}
+        FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
+        PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
+        APP_PREFLIGHT_REVIEWED: ${{ inputs.app_preflight_reviewed }}
+    scripts:
+      - name: Verify exact source inputs and run direct compiler-only checks
+        script: |
+          set -euo pipefail
+          python3 ci/run_app_preflight.py
+    artifacts:
+      - .work/app-preflight-artifacts/app-preflight-evidence.zip
+# PROPOSAL ONLY: parent/buildworker owns review and any later dispatch.
+# No automatic triggers, network-fetch steps, dependencies, credentials, installation,
+# converter inputs, SDK copies, project build, native link, signing or target execution.
+# Existing official Xcode 27.0 (27A266a), Swift 6.4 and iPhoneOS 27.0 SDK only.
+# Exact CPU labels accepted: Apple M2 or Apple M2 (Virtual); host must be arm64.
+# 510-second aggregate subprocess budget; 10-minute provider hard limit.

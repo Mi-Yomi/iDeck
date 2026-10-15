@@ -1,0 +1,882 @@
+{
+  "schema": 1,
+  "madeira_commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+  "source_url": "https://github.com/willfaust/Madeira/tree/279fd0f83170425db002fe25d6bd62f6355f497d",
+  "archive_sha256": "ff9ad7d30d6d4de4db012a54589a96d6a355b2709170be0f0ed2ad09e2f4a365",
+  "files": {
+    "COPYING": {
+      "sha256": "e6037104443f9a7829b2aa7c5370d0789a7bda3ca65a0b904cdc0c2e285d9195",
+      "git_blob": "2a000655e93f84c8d458d702e13a0f682a45cf45",
+      "git_mode": "100644",
+      "size": 35150
+    },
+    "LICENSE-EXCEPTION.md": {
+      "sha256": "534f059c2e9fe5de1acde82b920651b77ea3b4253f86837a3d6a81f54a5bdbbc",
+      "git_blob": "5eac352c3149ce0cf7e643192cdc3423f9290ae6",
+      "git_mode": "100644",
+      "size": 3840
+    },
+    "THIRD-PARTY-NOTICES.md": {
+      "sha256": "bd5541572a6aec6615e27173e88981b85c4237780596d2e4622ed1737fcf26f0",
+      "git_blob": "57dd6efc5b56cbe4c4766865b8398ed3fc7ef491",
+      "git_mode": "100644",
+      "size": 17596
+    },
+    "app/Frameworks/StikJIT.xcframework/Info.plist": {
+      "sha256": "34d708cee66d4125b6d96fca1f759338ec615d2ef5a70a4a869099c1a73aac5b",
+      "git_blob": "cf0d29b03fe1cfdd1aab0f268209df3c62c70b30",
+      "git_mode": "100644",
+      "size": 711
+    },
+    "app/Frameworks/StikJIT.xcframework/ios-arm64/StikJIT.framework/Headers/StikJIT-Swift.h": {
+      "sha256": "073c54a49b0bfd08131ae38fb470b56fe7a8757501663fbbae7b1d0e85a1f5df",
+      "git_blob": "eacc647346bce9be00ea3b4188e89e2e66341675",
+      "git_mode": "100644",
+      "size": 12992
+    },
+    "app/Frameworks/StikJIT.xcframework/ios-arm64/StikJIT.framework/Modules/StikJIT.swiftmodule/arm64-apple-ios.abi.json": {
+      "sha256": "d63b0675c3eeeebef0dbc597a77ba3ce8826af32ce201b533d64f2f3a0c8f0d4",
+      "git_blob": "6c7136e3f115570f856ca7d8c73a984940e8c3ad",
+      "git_mode": "100644",
+      "size": 129002
+    },
+    "app/Frameworks/StikJIT.xcframework/ios-arm64/StikJIT.framework/Modules/StikJIT.swiftmodule/arm64-apple-ios.private.swiftinterface": {
+      "sha256": "695e75f6c6c021dbd0c23086767a3c659c7851fa0a6dbd6dbeec05e8e5ea3121",
+      "git_blob": "8339193e073abfc31c91f18b6bd54de5fbf1512b",
+      "git_mode": "100644",
+      "size": 5456
+    },
+    "app/Frameworks/StikJIT.xcframework/ios-arm64/StikJIT.framework/Modules/StikJIT.swiftmodule/arm64-apple-ios.swiftdoc": {
+      "sha256": "96405a39f385d49218bb4477534697761946a65b081f4ef34ef1315570ded7db",
+      "git_blob": "88dc17fb0fca2b2dc65b44092cfaac7235002081",
+      "git_mode": "100644",
+      "size": 404
+    },
+    "app/Frameworks/StikJIT.xcframework/ios-arm64/StikJIT.framework/Modules/StikJIT.swiftmodule/arm64-apple-ios.swiftinterface": {
+      "sha256": "695e75f6c6c021dbd0c23086767a3c659c7851fa0a6dbd6dbeec05e8e5ea3121",
+      "git_blob": "8339193e073abfc31c91f18b6bd54de5fbf1512b",
+      "git_mode": "100644",
+      "size": 5456
+    },
+    "app/Frameworks/StikJIT.xcframework/ios-arm64/StikJIT.framework/Modules/module.modulemap": {
+      "sha256": "58c3cff9a8e501fc51d3cf65c2fca5c91be796668cdd61aaf0b428144cf92207",
+      "git_blob": "a1861760bf05e8a134cfcbcd95c53c1d6b6d7945",
+      "git_mode": "100644",
+      "size": 56
+    },
+    "app/Frameworks/StikJIT.xcframework/ios-arm64/StikJIT.framework/StikJIT": {
+      "sha256": "f15ad5c6766fa07d545be283c1c99eccde6a8baa97d73978a09ec080ca6381df",
+      "git_blob": "31bd9361be05da65e7fbdf2033421f8acbbc9cde",
+      "git_mode": "100755",
+      "size": 3177960
+    },
+    "app/Frameworks/StikJIT.xcframework/ios-arm64/StikJIT.framework/legacy.js": {
+      "sha256": "787df4678ca17fd100a1d002203bfac8771fae062175aa510da8d6af9f8167ec",
+      "git_blob": "090544ca89b04122ec442d1cb05f3a01c6fd7263",
+      "git_mode": "100644",
+      "size": 3687
+    },
+    "app/Frameworks/StikJIT.xcframework/ios-arm64/StikJIT.framework/universal.js": {
+      "sha256": "753e7bba37913cd6c4e68b399735a8c9a7b8d475ba04d8b36ce1afd6678c9fbc",
+      "git_blob": "9bca8f63642c18d5af4bb3e39af845ea0a112804",
+      "git_mode": "100644",
+      "size": 9838
+    },
+    "app/Madeira.xcodeproj/project.pbxproj": {
+      "sha256": "09df9b104c1f7f02f8b9e2e8b47d45678cc2fd506863d9cc76c6d87c299d3389",
+      "git_blob": "d2edfba1414feeef66e9abfc833c6a0e37bfc804",
+      "git_mode": "100644",
+      "size": 72187
+    },
+    "app/Madeira/ConfigCatalog.generated.swift": {
+      "sha256": "3001a9adcabfd5407a9cd4f62d979e07787c53fb8f3602efa08d64da148d43c8",
+      "git_blob": "e6fc0492e7ad4e35339a3b907ecc0c0b195cbcb6",
+      "git_mode": "100644",
+      "size": 210609
+    },
+    "app/Madeira/ConfigCatalog.swift": {
+      "sha256": "010345a7990f7a637658f82ad9b2be528b597310493e815a7e1d1678227a8773",
+      "git_blob": "38b8992353ea885b771f97c4e779dc550d1fcc49",
+      "git_mode": "100644",
+      "size": 10968
+    },
+    "app/Madeira/ContentView.swift": {
+      "sha256": "0cf1a74e48babe30ed826c9a19dd1c1dc43fcf75640f1b0bb67c0e355fdf6a5a",
+      "git_blob": "969d47f6c995bf2c19d45d73ea2f24f304fa4389",
+      "git_mode": "100644",
+      "size": 254152
+    },
+    "app/Madeira/DockInstallers.swift": {
+      "sha256": "8ee7989bbac7fa2e20de04be80057854595a30122bf64db8107030cd7c359250",
+      "git_blob": "0edb63bef16bfe676361e6856361a7005bf53ee8",
+      "git_mode": "100644",
+      "size": 67755
+    },
+    "app/Madeira/DockReset.swift": {
+      "sha256": "3f76fd94b4ab0b7894eabb2110dd39798627ead511d9df57829fd5b254724b9b",
+      "git_blob": "7dfea46be58a4b8553ad59eee4b3f79bb6f9167f",
+      "git_mode": "100644",
+      "size": 33293
+    },
+    "app/Madeira/DockStartScreen.swift": {
+      "sha256": "7bfcd761fcc881785b8c2d4e5ba515a7ceeecfb40a0e497a28b4d46a43164559",
+      "git_blob": "106b7b3ec1892d74f393c2ccfeeef3a0a32339fe",
+      "git_mode": "100644",
+      "size": 22509
+    },
+    "app/Madeira/EntitlementChecker.swift": {
+      "sha256": "0df2bda410974b5e2b99334917fe4a152681a354e3e1f4db4eb5a34e08937b5a",
+      "git_blob": "5b50cc2416cc5dcfd8bc7c6d12104a11bcccffcb",
+      "git_mode": "100644",
+      "size": 9215
+    },
+    "app/Madeira/FEXBridge.h": {
+      "sha256": "c3c4741b1c60e467a353d2b0e37023ce8471c48115e599e31b914ef6ce4a735d",
+      "git_blob": "b1dde40d2d4e6de5b5ad16d61b3c55b314e5fddb",
+      "git_mode": "100644",
+      "size": 1180
+    },
+    "app/Madeira/FPSOverlay.swift": {
+      "sha256": "358057445494c48a2f7c4f9eac7393cf729ccba793fc7959b61063707a1cb193",
+      "git_blob": "a5728cd48a3accfdaf1cc3f1b4977d74f7842e80",
+      "git_mode": "100644",
+      "size": 18849
+    },
+    "app/Madeira/GameProfiles.swift": {
+      "sha256": "57d6153efe61c052c6f896bd0ea5b7ffa4651e0a2d205feb6442081a3eff0bc8",
+      "git_blob": "1428951082a5c8516a9e82cd4479a4268ba74910",
+      "git_mode": "100644",
+      "size": 2731
+    },
+    "app/Madeira/GameRecommendations.swift": {
+      "sha256": "b38766accce921ffa68eaec243b84b116ca0ea975f813ef881d6d502e6885685",
+      "git_blob": "876578b6dc007127e0138d589b97eb8cc5022604",
+      "git_mode": "100644",
+      "size": 32521
+    },
+    "app/Madeira/GameRecommendationsApply.swift": {
+      "sha256": "ed24bc89c57e8088618055c7beacf247ec21928ac81dab0b47bb57f1a93721de",
+      "git_blob": "39fed0668189fc4799fd59c60ca5b504910e3dd9",
+      "git_mode": "100644",
+      "size": 11507
+    },
+    "app/Madeira/GamepadInput.swift": {
+      "sha256": "bba5b7f21eb9ad1ea78008eb220abd77cf5332d92ae8473a32ca14f90aefff32",
+      "git_blob": "e94eb6f50aeeafb0b9ef8b23ab60bb7829db3673",
+      "git_mode": "100644",
+      "size": 24661
+    },
+    "app/Madeira/GlassSkin.swift": {
+      "sha256": "35b70dfa83f6c5762a54de9da85f5bd4e7d4dea6e3f07261776e4fa0b8389c9c",
+      "git_blob": "c7ad218a3678a857860265b12545345f59d7ff88",
+      "git_mode": "100644",
+      "size": 31441
+    },
+    "app/Madeira/GuestDisplay.swift": {
+      "sha256": "4df255562f962cb9864270411b97bf1552e518cc1c51ea3720643b47456edb1c",
+      "git_blob": "277db9002d489359d2f687baac2a28e0bcd957f6",
+      "git_mode": "100644",
+      "size": 14489
+    },
+    "app/Madeira/HardwareInput.swift": {
+      "sha256": "b936bc41bbee9c7f8a40a5fb898c368d2a7c40649ffc593a58ceb129ff2bd937",
+      "git_blob": "783eae3c495dd465da1f52bbf4aec1b29c502947",
+      "git_mode": "100644",
+      "size": 98561
+    },
+    "app/Madeira/IOSDisplayShim.h": {
+      "sha256": "7376489e7a9483d572fd3acacc7436e94cff9848727c0c2ca690a22ea80c0644",
+      "git_blob": "2ce751ed33ed4bf0c56e69f09e3a5273a44a7902",
+      "git_mode": "100644",
+      "size": 1328
+    },
+    "app/Madeira/JITAllocator.h": {
+      "sha256": "a60232df81d299c1cb0357726b2574cc111e762244fe0adb25033bf346930863",
+      "git_blob": "fe1e91120add1c873c2ec9f7a726e1e142936fc0",
+      "git_mode": "100644",
+      "size": 5316
+    },
+    "app/Madeira/JITBuiltInHost.swift": {
+      "sha256": "3006a9f9e5f36657412a4d0806f9544b197bd49c502ec5100d92d6063e5e7cac",
+      "git_blob": "91740497eb9e92785436e1c18e1bc8efc8e1c8c8",
+      "git_mode": "100644",
+      "size": 8815
+    },
+    "app/Madeira/JITBuiltInMessages.swift": {
+      "sha256": "fb15379da988c6402eb90c1220d959bc2f11f3a6150296bf50b33cd311639076",
+      "git_blob": "f12892c6b8e6aab89a79a4b35e8d4ac43fa44bfc",
+      "git_mode": "100644",
+      "size": 1471
+    },
+    "app/Madeira/JITNetwork.swift": {
+      "sha256": "832f1227e6ea76425813df0414f35784ccb6b344ea3c3567117dfedab392a8a7",
+      "git_blob": "f82b271437b89cc9fc9ccc98f42bf1b8d6775707",
+      "git_mode": "100644",
+      "size": 17240
+    },
+    "app/Madeira/JITPairing.swift": {
+      "sha256": "63d6d052f6bc393a07ff5aaa36482c8f2a4df0f98c66bd004b0e80f3df9e6f02",
+      "git_blob": "931beea3556b9ce9712b4fd474432f98f5cdd3e4",
+      "git_mode": "100644",
+      "size": 16014
+    },
+    "app/Madeira/JITSetup.swift": {
+      "sha256": "a100df2e272a5e8ec16f0da0569c610e15a4975cf614660956c545992e777aab",
+      "git_blob": "b794853e34ac3cdc63e785dc948d6f680a4afb3a",
+      "git_mode": "100644",
+      "size": 31990
+    },
+    "app/Madeira/Library.swift": {
+      "sha256": "303944711deb7c3940acd0eda5d73df117591955d723636c9e5f7fd086e76ab5",
+      "git_blob": "58037faaef6afb0a3580a6a57714f53db8ad9f31",
+      "git_mode": "100644",
+      "size": 259192
+    },
+    "app/Madeira/LibraryBCD.swift": {
+      "sha256": "2a222d72c40490ab27d51df1d2a764aeec9402a24f1afa7cd925156d5fe79838",
+      "git_blob": "3a71fad10c2c101c146dfe5b67770004a312b03b",
+      "git_mode": "100644",
+      "size": 3476
+    },
+    "app/Madeira/LibraryPrefs.swift": {
+      "sha256": "0579d14ab60ef2ef8432f462ba7e8050c72edde76a7ae6b1145f0b40a1372a1b",
+      "git_blob": "eab1e18d38be2a5ab109462df78946395b26b541",
+      "git_mode": "100644",
+      "size": 2019
+    },
+    "app/Madeira/LogPattern.swift": {
+      "sha256": "e9bda2d881761df1b6f627b0ff556485e804f7b79b6d9facafaded22eff4f2bf",
+      "git_blob": "9fdcbf7d6d7d80b2c6d8bf7b8f74f2759307dd1d",
+      "git_mode": "100644",
+      "size": 3907
+    },
+    "app/Madeira/LogStore.swift": {
+      "sha256": "2b64fd0a6e0589acdc4f3a5bfcdf3f15cc22500b16c47d16cf7cbf0e0127f848",
+      "git_blob": "a480aa95691c4a8a0880b79f9b21f9783a6115d2",
+      "git_mode": "100644",
+      "size": 16683
+    },
+    "app/Madeira/LogTail.swift": {
+      "sha256": "e8bb421ee454d1cf24b9925c86fc9836091f75cc2e9df0626ffba7458f913289",
+      "git_blob": "d67f264ca304d6a009e9fb9ebf211da62658be81",
+      "git_mode": "100644",
+      "size": 4413
+    },
+    "app/Madeira/Madeira-Bridging-Header.h": {
+      "sha256": "583b2ad3d85760a31fac2a907e589d07f80ca79331dd25f376b4aefe342ed2d9",
+      "git_blob": "b65bc5cfd509949036c0452bb8b6eff6c121bb46",
+      "git_mode": "100644",
+      "size": 4078
+    },
+    "app/Madeira/MadeiraApp.swift": {
+      "sha256": "c7399851a5a0e421f3d5fdc0e4aea6a2e9ece22102e3b99379e2711571781075",
+      "git_blob": "6264cc77ca6b77c22dc5dded68f36e7d719543f2",
+      "git_mode": "100644",
+      "size": 1351
+    },
+    "app/Madeira/MadeiraConfig.swift": {
+      "sha256": "59bc1b251c7a40388a3d62ecd886cc2d8687d495ddb8577af4ae18417473ebdd",
+      "git_blob": "b96a3c9679498d030467458830ce3e52cb2b2e4e",
+      "git_mode": "100644",
+      "size": 13738
+    },
+    "app/Madeira/MadeiraDock.swift": {
+      "sha256": "c5abd7b4587cc93d79a83aac42c1b3527ced05d7a4807d20c4f036a406dcdb73",
+      "git_blob": "5ab36b27bb433eb60ccaadac478e2d079eeacc70",
+      "git_mode": "100644",
+      "size": 38787
+    },
+    "app/Madeira/MadeiraDockView.swift": {
+      "sha256": "f6e6713e62746ee9cecef6423e8dd99a9e29c06f0fa7b685323afe19e292057d",
+      "git_blob": "cac1e775bfa925997b2d3579de342b5a1e4aef50",
+      "git_mode": "100644",
+      "size": 16771
+    },
+    "app/Madeira/MadeiraRPPairing.h": {
+      "sha256": "a708abc8d35b36b3524aac2a47ca844990b09e6cfc76fad2a9dc99b148a86180",
+      "git_blob": "c52f0c82a33d6db7394780fb9cb1861d1c9bebd3",
+      "git_mode": "100644",
+      "size": 2047
+    },
+    "app/Madeira/Onboarding.swift": {
+      "sha256": "1a61a537649b6e8a7b6d35c61afa3b9a6c8e449097e625e29dc6718fabbb8754",
+      "git_blob": "f399b718f1791f42452d0932e18b70071a7bb98d",
+      "git_mode": "100644",
+      "size": 37024
+    },
+    "app/Madeira/PadKeyboardMouse.swift": {
+      "sha256": "4f095336dc3ac1883f53f4f384f7ea70d64753bb53b7b3a80300ca240052adfa",
+      "git_blob": "f44f68cae6c0c9f0f987492aaa95902f9dc6153e",
+      "git_mode": "100644",
+      "size": 12589
+    },
+    "app/Madeira/PadOutput.h": {
+      "sha256": "30a008246464a31db922bc20f2fa1d82053f7a58b4cc5bee91d946bdd439c50a",
+      "git_blob": "82170086088dc7cd99ae053d1057ceded7427d53",
+      "git_mode": "100644",
+      "size": 1374
+    },
+    "app/Madeira/PrefixExtractor.h": {
+      "sha256": "5d2be2a6637d3ab28f96bf4d7002a0e8ac6481b4e4ce9bbda5ee718051e589ed",
+      "git_blob": "ba7409e6e5caf92098b7bcfe938e90ecd30a1a96",
+      "git_mode": "100644",
+      "size": 407
+    },
+    "app/Madeira/SavesAndShortcuts.swift": {
+      "sha256": "7065b8f01e8ac818b5a5a22b8f2884afe4438876345847c0eb1730b53f76bd23",
+      "git_blob": "65bc204816546a491eec4fe58c97b4f137c3bd8e",
+      "git_mode": "100644",
+      "size": 17925
+    },
+    "app/Madeira/SteamCloud.swift": {
+      "sha256": "a119c034002c43540370e2d549eaf6660dbc4e8fc973dd4f252b60b5fb4eb14e",
+      "git_blob": "c84ddf744cb44afb492f17fb855ab1fecb6ef4bd",
+      "git_mode": "100644",
+      "size": 35689
+    },
+    "app/Madeira/SteamDownloadBackground.swift": {
+      "sha256": "ed59b0bce8e08ab52028ffaf87e404458eed8cf29e097c3d04b2e96ee50bd782",
+      "git_blob": "a537962c8ddebd23cc592e1454518355b3dc8e36",
+      "git_mode": "100644",
+      "size": 9909
+    },
+    "app/Madeira/SteamGames.swift": {
+      "sha256": "b9f673a4d2db74f8112f6a988c0259710fcd1f3ff3d7e72eb8e188c28080d0d3",
+      "git_blob": "21c1979ce133c5706eeb6ef9f83edd781e7583e9",
+      "git_mode": "100644",
+      "size": 72532
+    },
+    "app/Madeira/SteamInstall.swift": {
+      "sha256": "5d3d0c55420514ca0c82e6d3679f920760a9400078e97f85e6b761879c28ba23",
+      "git_blob": "5d15312e4429ace365689418aefc231ad7dbd2c6",
+      "git_mode": "100644",
+      "size": 6632
+    },
+    "app/Madeira/SteamKeyValues.swift": {
+      "sha256": "8e4d9e0da3c5111d8314cb3110f8462ff06a0906cab7f124ecd607741ca567cf",
+      "git_blob": "0ded4980d32d32ec36c467eac0edae13f677c970",
+      "git_mode": "100644",
+      "size": 4244
+    },
+    "app/Madeira/SteamOwnedLibrary.swift": {
+      "sha256": "22b9b3bcb15c72551d8cd30da7974c5cebabef171148a40a0564d24aad63daef",
+      "git_blob": "1cbc945e4016285e4e6c0d8cfa0fb48472e9ac66",
+      "git_mode": "100644",
+      "size": 59171
+    },
+    "app/Madeira/SteamRuntime.swift": {
+      "sha256": "ec069431eb295a5610ae1beacc40ddcf57033dc55e6f3f4f566e620998d7df6a",
+      "git_blob": "296ef590fae985b25ff3ff5ca3b0ae0d79bf0399",
+      "git_mode": "100644",
+      "size": 17602
+    },
+    "app/Madeira/StikJITHelper.swift": {
+      "sha256": "8cd4d9b0baed6d35084069e6f624828d68d4009237dd6a3e71e301550f9d387e",
+      "git_blob": "94d49edd3dd7897a750b93db581486830d17a699",
+      "git_mode": "100644",
+      "size": 102148
+    },
+    "app/Madeira/SwiftSteam/Auth/SteamAuthAPI.swift": {
+      "sha256": "29e022d509c6db284ec1332b645b5f61371856a3b502d75dfe5a59d0b8e9996a",
+      "git_blob": "fa30636790147bbe6c623f535b759ea15c936447",
+      "git_mode": "100644",
+      "size": 3507
+    },
+    "app/Madeira/SwiftSteam/Auth/SteamCredentialAuth.swift": {
+      "sha256": "05fbca74eb8dc515daefdf0878cc7532b894b7c5403437d74599e00e1dca9dc3",
+      "git_blob": "0ee1a823380298ec8d9ba2a58ec5162e2c4b9951",
+      "git_mode": "100644",
+      "size": 9599
+    },
+    "app/Madeira/SwiftSteam/Auth/SteamQRAuth.swift": {
+      "sha256": "a3a700e0187093504e8387314687ed2e136e4a8b3850df9a0d3fc34b1078acd5",
+      "git_blob": "81ec19db7b812fe73e27d6454d0c1ac6d640385d",
+      "git_mode": "100644",
+      "size": 6182
+    },
+    "app/Madeira/SwiftSteam/Auth/SteamTokenStore.swift": {
+      "sha256": "f325b9a465a13a52f833fd4e6a41b10af0e71852af47ad1b7cd3b3eba8cf67f2",
+      "git_blob": "fd32056fd0b2e1649cc48e5abfcf70447b55a0de",
+      "git_mode": "100644",
+      "size": 3207
+    },
+    "app/Madeira/SwiftSteam/Content/ContentDecryptor.swift": {
+      "sha256": "a48f79959f73542a79880ef7acd241f95f6d6098d51e3011f727d6c0131f28b1",
+      "git_blob": "ca995f4494aa1fc96466d36db08f0bf02a8b8ffa",
+      "git_mode": "100644",
+      "size": 11357
+    },
+    "app/Madeira/SwiftSteam/Content/DepotDownloader.swift": {
+      "sha256": "7c8e05ee746dcf350a7950fb9ad0c278992ce2c842ba53c597f498c37c27a9ed",
+      "git_blob": "bca8739d817ce1e45c268c240089d68f83e2147c",
+      "git_mode": "100644",
+      "size": 41207
+    },
+    "app/Madeira/SwiftSteam/Content/DepotManifest.swift": {
+      "sha256": "f108b6289034ad08d2310f93ef04a5d176c1a5a820485344b4f63e1929c86e1a",
+      "git_blob": "7fece7f6b6d4a1064fb1511c49953cfd036da557",
+      "git_mode": "100644",
+      "size": 8095
+    },
+    "app/Madeira/SwiftSteam/Core/CMServerList.swift": {
+      "sha256": "37c309af745aa4d692dad7df3a8af2d7267f877152e12a7d7f45c3e6a5d6bf43",
+      "git_blob": "b2dd06ee908917dd581157b816f0798c0ec015a7",
+      "git_mode": "100644",
+      "size": 5007
+    },
+    "app/Madeira/SwiftSteam/Core/LicenseListBox.swift": {
+      "sha256": "9f8d2333d933966c1de5f3108424ae9de2f83300a43f753fb3f87a828b65761c",
+      "git_blob": "3f8a9a494c63c868c97a5eb1a99fd01e6d3183b1",
+      "git_mode": "100644",
+      "size": 2259
+    },
+    "app/Madeira/SwiftSteam/Core/SteamCMSession.swift": {
+      "sha256": "3568528a9946539eb43796dbb459aa2ef27e1baeb1524a422c226eba3ab06647",
+      "git_blob": "c3cd38a6880ba0991b29e35784a0054f5b20faf5",
+      "git_mode": "100644",
+      "size": 1482
+    },
+    "app/Madeira/SwiftSteam/Core/SteamConnection.swift": {
+      "sha256": "b29e4b529c702598cb889148d5eee72f64c57d6010b836bffb8dc71d10ea3683",
+      "git_blob": "70c30052c7d4939d357ca3690cca0b65813a995d",
+      "git_mode": "100644",
+      "size": 7808
+    },
+    "app/Madeira/SwiftSteam/Core/SteamError.swift": {
+      "sha256": "72315f2b564cb6d08b76583ac4203dcf6012dddd943869f7d1f0f4db64144838",
+      "git_blob": "3d2675c9ea6cbde8e2402926da832fc296c8687b",
+      "git_mode": "100644",
+      "size": 4897
+    },
+    "app/Madeira/SwiftSteam/Core/SteamMessageCodec.swift": {
+      "sha256": "ee9fdf6431cdb96d2880070f8dabe01fcc96ad37e403804a5fa10a00daf12a11",
+      "git_blob": "f748a789659a3a5032a7d7655580d28bfc18c376",
+      "git_mode": "100644",
+      "size": 9055
+    },
+    "app/Madeira/SwiftSteam/Core/SteamProtocol.swift": {
+      "sha256": "ce6747794995df34e07d1cf622d5ca65ef5ce67938ce0b4f9b01f4f38c4a0420",
+      "git_blob": "20ecbfa4f598dc3db9c9048e6199dae5d332b023",
+      "git_mode": "100644",
+      "size": 2818
+    },
+    "app/Madeira/SwiftSteam/Core/SteamSession.swift": {
+      "sha256": "b6365b672b8bafb1fedfaf5c6a33ebfc5b71960b3f054cf3fb3a1d397224ce1a",
+      "git_blob": "d1df2973f0f40dc8077752f8f3df09f6c2cf5e7e",
+      "git_mode": "100644",
+      "size": 35085
+    },
+    "app/Madeira/SwiftSteam/Helpers/SteamDevice.swift": {
+      "sha256": "3f7b45a3eab7937d20160bd6379f47ecd5fe191601135752ba4a28e76eb84b62",
+      "git_blob": "70c127470e65e140f5df157d14444726b28ee88a",
+      "git_mode": "100644",
+      "size": 623
+    },
+    "app/Madeira/SwiftSteam/Helpers/SteamLog.swift": {
+      "sha256": "35d9cb1c3affed21bfd2eeb83848d745431866d3d3d576cbda1b57bad31a7d2f",
+      "git_blob": "bf2d4cb19de97d3223e47cadd349a38a0805e48e",
+      "git_mode": "100644",
+      "size": 1049
+    },
+    "app/Madeira/SwiftSteam/Install/AppManifestWriter.swift": {
+      "sha256": "dc4ef26dde41e4fea581bba0b781c38756a9c6ef336123b6809d83fc1dea2212",
+      "git_blob": "5886819fdc178a5c87c2cc82acb818a2d72cb783",
+      "git_mode": "100644",
+      "size": 9651
+    },
+    "app/Madeira/SwiftSteam/Library/SteamAppInfo.swift": {
+      "sha256": "7ab29dbfe74aff64b494cdbf59d0622421e6f072ab0ea1e316945028312d5467",
+      "git_blob": "27adee616ae37359a3be0ce28e1a67dc615a5876",
+      "git_mode": "100644",
+      "size": 20562
+    },
+    "app/Madeira/SwiftSteam/Library/SteamLibraryFetcher.swift": {
+      "sha256": "8cda4d7fe9efff415b20d9b1195ae28fe996d828fa8b19f6fd86f723e03a85da",
+      "git_blob": "e59ac9c23dfb7757b080505e73f9a5da21963b5e",
+      "git_mode": "100644",
+      "size": 17193
+    },
+    "app/Madeira/SwiftSteam/Proto/SteamProtoMessages.swift": {
+      "sha256": "c698999d114e1c4a53173bc0f7b39a114199a044d0876e352f7c36f55a217c6f",
+      "git_blob": "b778d370baf906ce683b4951e266d59c66bb6edc",
+      "git_mode": "100644",
+      "size": 35910
+    },
+    "app/Madeira/SwiftSteam/SteamSignIn.swift": {
+      "sha256": "c95b55a7517bc0eaf53caba5a6b8a226b2e8351a5f7182ba70b9971893f4c13e",
+      "git_blob": "58ac043e874499fe8f4ecd42af68ae7a3180afad",
+      "git_mode": "100644",
+      "size": 9839
+    },
+    "app/Madeira/SwiftSteam/SteamSignInView.swift": {
+      "sha256": "a437d25fbc07afa1466026bd29731b559a1140b0a7bd557bdad716150fd7f733",
+      "git_blob": "200e7bce9ecf0fa1680385896f4efe99027c2faa",
+      "git_mode": "100644",
+      "size": 7862
+    },
+    "app/Madeira/SwiftSteam/chunk_zip.h": {
+      "sha256": "9b0a245914d0be727434b41aa82a22497b5e0269bab9fcc9425c3cc3ea4a9b4a",
+      "git_blob": "61e5d6fa5e4aea2dcb7c81b0a64f33006ff45be1",
+      "git_mode": "100644",
+      "size": 826
+    },
+    "app/Madeira/SwiftSteam/lzma_shim.h": {
+      "sha256": "3f7e13f95f7481b106ebf65c588b290eda1de8329e86404abb63df564ad58043",
+      "git_blob": "9a04eb549f4b6edff317acd92abbf4a241426b2b",
+      "git_mode": "100644",
+      "size": 843
+    },
+    "app/Madeira/SwiftSteam/zstd_edu.h": {
+      "sha256": "e6b3aed8756d5f5f2c7cf3413a04cfd8a48294b1058e1d247acc8cd272673f5d",
+      "git_blob": "b09a31fcbe5d2c2f9af3a09db38d5fbba1423eac",
+      "git_mode": "100644",
+      "size": 2766
+    },
+    "app/Madeira/TouchControlPresets.swift": {
+      "sha256": "4d140ba08fe6964fe8589263a6a64fa7c7e635549effc2233bcc669e5c168921",
+      "git_blob": "58c5dc3bdcfa4e595da44e71819e0812e85e8b0a",
+      "git_mode": "100644",
+      "size": 26330
+    },
+    "app/Madeira/TouchGamepad.swift": {
+      "sha256": "d8db4817052bc8fbed23108c6d39f0074c6158328efc426b4afdb86771960f79",
+      "git_blob": "bb54757f64e62d634c20ded5c81359fbee92ad42",
+      "git_mode": "100644",
+      "size": 8678
+    },
+    "app/Madeira/WineMono.swift": {
+      "sha256": "f158dd71dbdde7b093848a62af37742701a0607ee82374a355fd3c3a9c6417cf",
+      "git_blob": "457e839f2c23aa9ffb7acfbb6720cbc7658de9c5",
+      "git_mode": "100644",
+      "size": 22240
+    },
+    "app/Madeira/WineProcessBridge.h": {
+      "sha256": "97cc1a996ad20f80dff165ca7e38c20e82adacb32f5b8c9cd3608e71bae48496",
+      "git_blob": "464dc9e88414afb3777e4363b69f03c9e2159c2e",
+      "git_mode": "100644",
+      "size": 1473
+    },
+    "app/Madeira/WineServerBridge.h": {
+      "sha256": "01f7f7ce297dd258f42c08953f8f5e1ffbf5ac64649964311f392d7a392371b1",
+      "git_blob": "7cb8270e6d257080acccb66e96896b707af044d7",
+      "git_mode": "100644",
+      "size": 1121
+    },
+    "app/Madeira/Winios/Winios.h": {
+      "sha256": "03675453dbd1f0b9259633b1e5af1765bbc62694c7bdae3d00efe2afaff61031",
+      "git_blob": "105e66bc05cd6c094c4bf00d9d3309d571a97531",
+      "git_mode": "100644",
+      "size": 6209
+    },
+    "app/Madeira/Winios/WiniosCursor.h": {
+      "sha256": "2e4ef2f5543eba72d2acc47e438bf77e67e924e283ad0202b84237a2e0ac32c0",
+      "git_blob": "295a8c3df403520bd93d2315fc19e23e2fd1e31e",
+      "git_mode": "100644",
+      "size": 3015
+    },
+    "app/Madeira/Winios/WiniosGamepad.h": {
+      "sha256": "2dbf1d701b487791e1fabe8854c00e9d96a1e3699922e7cb6f728f6aab1d049a",
+      "git_blob": "0107452007151776c6396880f17d756cae65e251",
+      "git_mode": "100644",
+      "size": 5233
+    },
+    "app/MadeiraJITHelper/MadeiraJITHelper.swift": {
+      "sha256": "7d8a52d8aa131745d77e2fff0ee9e33c17d384f87a8b863fa1ba1b6a41b95d58",
+      "git_blob": "afef763ac4341250513bf11f8ea9608627ce2f03",
+      "git_mode": "100644",
+      "size": 6904
+    },
+    "docs/LICENSING.md": {
+      "sha256": "222000b14d0025d03342201ffc450b7b97f42a20516e38c66ece5f3f0d6698ee",
+      "git_blob": "eb8136e94410298db9c2ab210546372a40219b7f",
+      "git_mode": "100644",
+      "size": 7572
+    }
+  },
+  "main_swift_sources": [
+    "app/Madeira/MadeiraDock.swift",
+    "app/Madeira/MadeiraDockView.swift",
+    "app/Madeira/DockStartScreen.swift",
+    "app/Madeira/Onboarding.swift",
+    "app/Madeira/ConfigCatalog.swift",
+    "app/Madeira/ConfigCatalog.generated.swift",
+    "app/Madeira/SteamGames.swift",
+    "app/Madeira/GlassSkin.swift",
+    "app/Madeira/SteamOwnedLibrary.swift",
+    "app/Madeira/SteamCloud.swift",
+    "app/Madeira/SavesAndShortcuts.swift",
+    "app/Madeira/WineMono.swift",
+    "app/Madeira/SteamDownloadBackground.swift",
+    "app/Madeira/SteamInstall.swift",
+    "app/Madeira/SwiftSteam/Content/ContentDecryptor.swift",
+    "app/Madeira/SwiftSteam/Content/DepotDownloader.swift",
+    "app/Madeira/SwiftSteam/Content/DepotManifest.swift",
+    "app/Madeira/SwiftSteam/Install/AppManifestWriter.swift",
+    "app/Madeira/SwiftSteam/Core/CMServerList.swift",
+    "app/Madeira/SwiftSteam/Core/LicenseListBox.swift",
+    "app/Madeira/SwiftSteam/Core/SteamConnection.swift",
+    "app/Madeira/SwiftSteam/Core/SteamMessageCodec.swift",
+    "app/Madeira/SwiftSteam/Core/SteamProtocol.swift",
+    "app/Madeira/SwiftSteam/Core/SteamSession.swift",
+    "app/Madeira/SwiftSteam/Core/SteamCMSession.swift",
+    "app/Madeira/SwiftSteam/Library/SteamAppInfo.swift",
+    "app/Madeira/SwiftSteam/Library/SteamLibraryFetcher.swift",
+    "app/Madeira/SteamKeyValues.swift",
+    "app/Madeira/SteamRuntime.swift",
+    "app/Madeira/DockInstallers.swift",
+    "app/Madeira/DockReset.swift",
+    "app/Madeira/SwiftSteam/SteamSignIn.swift",
+    "app/Madeira/SwiftSteam/SteamSignInView.swift",
+    "app/Madeira/SwiftSteam/Auth/SteamAuthAPI.swift",
+    "app/Madeira/SwiftSteam/Auth/SteamCredentialAuth.swift",
+    "app/Madeira/SwiftSteam/Auth/SteamQRAuth.swift",
+    "app/Madeira/SwiftSteam/Auth/SteamTokenStore.swift",
+    "app/Madeira/SwiftSteam/Core/SteamError.swift",
+    "app/Madeira/SwiftSteam/Proto/SteamProtoMessages.swift",
+    "app/Madeira/SwiftSteam/Helpers/SteamDevice.swift",
+    "app/Madeira/SwiftSteam/Helpers/SteamLog.swift",
+    "app/Madeira/MadeiraApp.swift",
+    "app/Madeira/TouchGamepad.swift",
+    "app/Madeira/TouchControlPresets.swift",
+    "app/Madeira/HardwareInput.swift",
+    "app/Madeira/GamepadInput.swift",
+    "app/Madeira/PadKeyboardMouse.swift",
+    "app/Madeira/ContentView.swift",
+    "app/Madeira/LogStore.swift",
+    "app/Madeira/MadeiraConfig.swift",
+    "app/Madeira/LogPattern.swift",
+    "app/Madeira/LogTail.swift",
+    "app/Madeira/FPSOverlay.swift",
+    "app/Madeira/LibraryBCD.swift",
+    "app/Madeira/LibraryPrefs.swift",
+    "app/Madeira/GameProfiles.swift",
+    "app/Madeira/GameRecommendations.swift",
+    "app/Madeira/GameRecommendationsApply.swift",
+    "app/Madeira/Library.swift",
+    "app/Madeira/GuestDisplay.swift",
+    "app/Madeira/EntitlementChecker.swift",
+    "app/Madeira/StikJITHelper.swift",
+    "app/Madeira/JITSetup.swift",
+    "app/Madeira/JITNetwork.swift",
+    "app/Madeira/JITBuiltInHost.swift",
+    "app/Madeira/JITBuiltInMessages.swift",
+    "app/Madeira/JITPairing.swift"
+  ],
+  "helper_swift_sources": [
+    "app/MadeiraJITHelper/MadeiraJITHelper.swift",
+    "app/Madeira/JITBuiltInMessages.swift"
+  ],
+  "bridging_header": "app/Madeira/Madeira-Bridging-Header.h",
+  "bridging_header_closure": [
+    "app/Madeira/FEXBridge.h",
+    "app/Madeira/IOSDisplayShim.h",
+    "app/Madeira/JITAllocator.h",
+    "app/Madeira/Madeira-Bridging-Header.h",
+    "app/Madeira/MadeiraRPPairing.h",
+    "app/Madeira/PadOutput.h",
+    "app/Madeira/PrefixExtractor.h",
+    "app/Madeira/SwiftSteam/chunk_zip.h",
+    "app/Madeira/SwiftSteam/lzma_shim.h",
+    "app/Madeira/SwiftSteam/zstd_edu.h",
+    "app/Madeira/WineProcessBridge.h",
+    "app/Madeira/WineServerBridge.h",
+    "app/Madeira/Winios/Winios.h",
+    "app/Madeira/Winios/WiniosCursor.h",
+    "app/Madeira/Winios/WiniosGamepad.h"
+  ],
+  "system_header_imports": [
+    "Foundation/Foundation.h",
+    "GameController/GameController.h",
+    "QuartzCore/CAMetalLayer.h",
+    "stdbool.h",
+    "stddef.h",
+    "stdint.h"
+  ],
+  "framework_files": [
+    "app/Frameworks/StikJIT.xcframework/Info.plist",
+    "app/Frameworks/StikJIT.xcframework/ios-arm64/StikJIT.framework/Headers/StikJIT-Swift.h",
+    "app/Frameworks/StikJIT.xcframework/ios-arm64/StikJIT.framework/Modules/StikJIT.swiftmodule/arm64-apple-ios.abi.json",
+    "app/Frameworks/StikJIT.xcframework/ios-arm64/StikJIT.framework/Modules/StikJIT.swiftmodule/arm64-apple-ios.private.swiftinterface",
+    "app/Frameworks/StikJIT.xcframework/ios-arm64/StikJIT.framework/Modules/StikJIT.swiftmodule/arm64-apple-ios.swiftdoc",
+    "app/Frameworks/StikJIT.xcframework/ios-arm64/StikJIT.framework/Modules/StikJIT.swiftmodule/arm64-apple-ios.swiftinterface",
+    "app/Frameworks/StikJIT.xcframework/ios-arm64/StikJIT.framework/Modules/module.modulemap",
+    "app/Frameworks/StikJIT.xcframework/ios-arm64/StikJIT.framework/StikJIT",
+    "app/Frameworks/StikJIT.xcframework/ios-arm64/StikJIT.framework/legacy.js",
+    "app/Frameworks/StikJIT.xcframework/ios-arm64/StikJIT.framework/universal.js"
+  ],
+  "framework_parent": "app/Frameworks/StikJIT.xcframework/ios-arm64",
+  "native_link_inputs_not_supplied": [
+    {
+      "name": "libFEXCore.a",
+      "source_relative_path": "FEX/build-ios/FEXCore/Source/libFEXCore.a",
+      "present_in_audited_checkout": false,
+      "tracked_at_pin": false,
+      "provided_to_preflight": false,
+      "verified_linkable_by_preflight": false
+    },
+    {
+      "name": "libFEXCore_Base.a",
+      "source_relative_path": "FEX/build-ios/FEXCore/Source/libFEXCore_Base.a",
+      "present_in_audited_checkout": false,
+      "tracked_at_pin": false,
+      "provided_to_preflight": false,
+      "verified_linkable_by_preflight": false
+    },
+    {
+      "name": "libfmt.a",
+      "source_relative_path": "FEX/build-ios/External/fmt/libfmt.a",
+      "present_in_audited_checkout": false,
+      "tracked_at_pin": false,
+      "provided_to_preflight": false,
+      "verified_linkable_by_preflight": false
+    },
+    {
+      "name": "libcephes_128bit.a",
+      "source_relative_path": "FEX/build-ios/External/cephes/libcephes_128bit.a",
+      "present_in_audited_checkout": false,
+      "tracked_at_pin": false,
+      "provided_to_preflight": false,
+      "verified_linkable_by_preflight": false
+    },
+    {
+      "name": "libxxhash.a",
+      "source_relative_path": "FEX/build-ios/External/xxhash/cmake_unofficial/libxxhash.a",
+      "present_in_audited_checkout": false,
+      "tracked_at_pin": false,
+      "provided_to_preflight": false,
+      "verified_linkable_by_preflight": false
+    },
+    {
+      "name": "libsoftfloat_3e.a",
+      "source_relative_path": "FEX/build-ios/External/SoftFloat-3e/libsoftfloat_3e.a",
+      "present_in_audited_checkout": false,
+      "tracked_at_pin": false,
+      "provided_to_preflight": false,
+      "verified_linkable_by_preflight": false
+    },
+    {
+      "name": "libJemallocLibs.a",
+      "source_relative_path": "FEX/build-ios/FEXCore/Source/libJemallocLibs.a",
+      "present_in_audited_checkout": false,
+      "tracked_at_pin": false,
+      "provided_to_preflight": false,
+      "verified_linkable_by_preflight": false
+    },
+    {
+      "name": "libwineserver.a",
+      "source_relative_path": "app/Madeira/libwineserver.a",
+      "present_in_audited_checkout": false,
+      "tracked_at_pin": false,
+      "provided_to_preflight": false,
+      "verified_linkable_by_preflight": false
+    },
+    {
+      "name": "libntdll_unix.a",
+      "source_relative_path": "app/Madeira/libntdll_unix.a",
+      "present_in_audited_checkout": false,
+      "tracked_at_pin": false,
+      "provided_to_preflight": false,
+      "verified_linkable_by_preflight": false
+    },
+    {
+      "name": "libmadeira_rppairing.a",
+      "source_relative_path": "app/Madeira/libmadeira_rppairing.a",
+      "present_in_audited_checkout": false,
+      "tracked_at_pin": false,
+      "provided_to_preflight": false,
+      "verified_linkable_by_preflight": false
+    },
+    {
+      "name": "libdxmt_combined.a",
+      "source_relative_path": "app/Madeira/libdxmt_combined.a",
+      "present_in_audited_checkout": false,
+      "tracked_at_pin": false,
+      "provided_to_preflight": false,
+      "verified_linkable_by_preflight": false
+    },
+    {
+      "name": "libwin32u_unix.a",
+      "source_relative_path": "app/Madeira/libwin32u_unix.a",
+      "present_in_audited_checkout": false,
+      "tracked_at_pin": false,
+      "provided_to_preflight": false,
+      "verified_linkable_by_preflight": false
+    },
+    {
+      "name": "libgnutls.a",
+      "source_relative_path": "app/Madeira/libgnutls.a",
+      "present_in_audited_checkout": true,
+      "tracked_at_pin": true,
+      "provided_to_preflight": false,
+      "verified_linkable_by_preflight": false
+    },
+    {
+      "name": "libhogweed.a",
+      "source_relative_path": "app/Madeira/libhogweed.a",
+      "present_in_audited_checkout": true,
+      "tracked_at_pin": true,
+      "provided_to_preflight": false,
+      "verified_linkable_by_preflight": false
+    },
+    {
+      "name": "libnettle.a",
+      "source_relative_path": "app/Madeira/libnettle.a",
+      "present_in_audited_checkout": true,
+      "tracked_at_pin": true,
+      "provided_to_preflight": false,
+      "verified_linkable_by_preflight": false
+    },
+    {
+      "name": "libgmp.a",
+      "source_relative_path": "app/Madeira/libgmp.a",
+      "present_in_audited_checkout": true,
+      "tracked_at_pin": true,
+      "provided_to_preflight": false,
+      "verified_linkable_by_preflight": false
+    },
+    {
+      "name": "libavformat.a",
+      "source_relative_path": "app/Madeira/libavformat.a",
+      "present_in_audited_checkout": false,
+      "tracked_at_pin": false,
+      "provided_to_preflight": false,
+      "verified_linkable_by_preflight": false
+    },
+    {
+      "name": "libavcodec.a",
+      "source_relative_path": "app/Madeira/libavcodec.a",
+      "present_in_audited_checkout": false,
+      "tracked_at_pin": false,
+      "provided_to_preflight": false,
+      "verified_linkable_by_preflight": false
+    },
+    {
+      "name": "libswresample.a",
+      "source_relative_path": "app/Madeira/libswresample.a",
+      "present_in_audited_checkout": false,
+      "tracked_at_pin": false,
+      "provided_to_preflight": false,
+      "verified_linkable_by_preflight": false
+    },
+    {
+      "name": "libavutil.a",
+      "source_relative_path": "app/Madeira/libavutil.a",
+      "present_in_audited_checkout": false,
+      "tracked_at_pin": false,
+      "provided_to_preflight": false,
+      "verified_linkable_by_preflight": false
+    }
+  ],
+  "excluded": [
+    "converter directory and binaries",
+    "native static archives",
+    "native object compilation",
+    "SDK copies",
+    "PE binaries",
+    "resources",
+    "signing",
+    "linking",
+    "installation",
+    "target execution"
+  ]
+}

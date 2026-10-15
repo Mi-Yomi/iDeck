@@ -490,3 +490,45 @@ workflows:
         '
     artifacts:
     - .work/ntdll-sdk27-probe/ntdll-sdk27-evidence.zip
+  ideck-pairing-ios-control:
+    name: iDeck pinned Rust on-device pairing source control
+    instance_type: mac_mini_m2
+    max_build_duration: 25
+    inputs:
+      stage:
+        description: Reviewed stage; preflight, rust or pairing
+        type: string
+        default: preflight
+      expected_supervisor_sha256:
+        description: Exact reviewed outer supervisor SHA256
+        type: string
+      expected_lock_sha256:
+        description: Exact reviewed source, tool and inner-control lock SHA256
+        type: string
+      free_quota_verified:
+        description: Fresh free quota and disabled paid subscription checked
+        type: string
+        default: 'false'
+      private_source_verified:
+        description: Approved private Mi-Yomi/iDeck repository selected
+        type: string
+        default: 'false'
+    environment:
+      xcode: '26.6'
+      vars:
+        PAIRING_STAGE: ${{ inputs.stage }}
+        EXPECTED_SUPERVISOR_SHA256: ${{ inputs.expected_supervisor_sha256 }}
+        EXPECTED_LOCK_SHA256: ${{ inputs.expected_lock_sha256 }}
+        FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
+        PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
+        GIT_TERMINAL_PROMPT: '0'
+    scripts:
+    - name: Verify pinned Rust tools and real iOS pairing archive
+      script: 'set -euo pipefail
+
+        python3 ci/run_pairing_control.py
+
+        '
+    artifacts:
+    - .work/pairing-control-artifacts/pairing-evidence.zip
+    - .work/pairing-control-artifacts/pairing-ios-prefix.zip

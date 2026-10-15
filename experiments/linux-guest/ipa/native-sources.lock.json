@@ -8,7 +8,14 @@
       "url": "https://github.com/utmapp/qemu/releases/download/v10.0.12-utm/qemu-10.0.12-utm.tar.xz",
       "filename": "qemu-10.0.12-utm.tar.xz",
       "size": 142836072,
-      "sha256": "7c9605290b34152debb842e965a55d2e4fbba4793e536ab677b4027e5dc0ba1a"
+      "sha256": "7c9605290b34152debb842e965a55d2e4fbba4793e536ab677b4027e5dc0ba1a",
+      "omit_symlinks": [
+        {
+          "path": "qemu-10.0.12-utm/roms/edk2/EmulatorPkg/Unix/Host/X11IncludeHack",
+          "target": "/opt/X11/include",
+          "reason": "EDK2 Unix host emulator X11 headers; the iOS QEMU dylib recipe does not build this firmware emulator."
+        }
+      ]
     },
     {
       "name": "FFI",

@@ -52,7 +52,44 @@ def restore_guest(output):
     output.mkdir(parents=True)
     for name, raw in checked.items():
         (output / name).write_bytes(raw)
-    return verify(output)
+    # verify() returns asset bytes for resource copying. Reports must contain
+    # identities, not the kernel/initramfs payloads (bytes are not JSON values).
+    return {name: {"size": len(data), "sha256": hashlib.sha256(data).hexdigest()}
+            for name, data in verify(output).items()}
+
+
+def unpack_source(archive, destination, item):
+    """Extract locked source bytes with narrowly reviewed unused-link omissions."""
+    if archive.stat().st_size != item["size"] or sha(archive) != item["sha256"]:
+        raise ValueError("Source archive differs from lock: " + item["filename"])
+    omissions = item.get("omit_symlinks", [])
+    expected = {entry["path"]: entry for entry in omissions}
+    if len(expected) != len(omissions):
+        raise ValueError("Duplicate source-link omission rule")
+    omitted = []
+    seen = set()
+
+    def source_filter(member, path):
+        if member.name in expected:
+            rule = expected[member.name]
+            if member.name in seen or not member.issym() or member.linkname != rule["target"]:
+                raise ValueError("Source member differs from reviewed symlink: " + member.name)
+            seen.add(member.name)
+            omitted.append(dict(rule))
+            return None
+        return tarfile.data_filter(member, path)
+
+    with tarfile.open(archive) as source:
+        source.extractall(destination, filter=source_filter)
+    if seen != set(expected):
+        raise ValueError("Reviewed source symlink is absent from the archive")
+    return {"archive": item["filename"], "sha256": item["sha256"], "omitted_symlinks": omitted}
+
+
+def write_result(output, report):
+    payload = json.dumps(report, indent=2) + "\n"
+    (output / "result.json").write_text(payload, encoding="utf-8")
+    print("LINUX_IPA_BUILD_RESULT=" + json.dumps(report), flush=True)
 
 
 class Worker:
@@ -176,11 +213,11 @@ def main():
         downloads = source / "third_party/sources"
         unpacked = source / "third_party/build"
         downloads.mkdir(parents=True); unpacked.mkdir(parents=True)
+        report["source_archives"] = []
         for item in lock["archives"]:
             archive = downloads / item["filename"]
             worker.fetch(item, archive)
-            with tarfile.open(archive) as tar:
-                tar.extractall(unpacked, filter="data")
+            report["source_archives"].append(unpack_source(archive, unpacked, item))
         for item in lock["git"]:
             dest = source / item["destination"]
             dest.parent.mkdir(parents=True, exist_ok=True)
@@ -232,8 +269,7 @@ def main():
     finally:
         if worker:
             report["elapsed_seconds"] = round(time.monotonic()-worker.started, 3)
-        (out / "result.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
-        print("LINUX_IPA_BUILD_RESULT=" + json.dumps(report), flush=True)
+        write_result(out, report)
 
 
 if __name__ == "__main__":

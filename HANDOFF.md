@@ -1,5 +1,49 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Распаковка native sources и JSON отчёт — 2026-10-16
+
+По переданному пользователем логу build `6ad129af3ffd2c7f0ad3b35b`, SHA
+`3a10400ebf40fc2d1d0578447d6f55b98f2dca66`, Swift gate **прошёл**: worker
+продолжил установку build tools/Rust, checkout и подготовку полного Husk.
+Следующий отказ — `tarfile.AbsoluteLinkError` на
+`qemu-10.0.12-utm/roms/edk2/EmulatorPkg/Unix/Host/X11IncludeHack`. Затем
+`finally` скрыл эту причину ошибкой `bytes is not JSON serializable`.
+Native library compilation, linker и IPA packaging не запускались.
+
+Исправления в той же Linux-ветке, все новые файлы на E:
+
+- `unpack_source` повторно проверяет исходный size/SHA и пропускает только
+  symlink по этому точному пути с target `/opt/X11/include`. Правило явно
+  записано в native lock и попадает в отчёт. Другой тип/target, отсутствие
+  ожидаемой ссылки или дубликат отклоняются. Остальные файлы проходят прежний
+  Python `data_filter`; режим `fully_trusted` не используется.
+- Это X11 include для **EDK2 Unix host emulator** (Host.inf, XCODE IA32/X64).
+  iOS recipe собирает QEMU dylib, не этот firmware emulator. Пропускается сама
+  ссылка, не весь каталог roms/edk2. Содержимое архивов, их URL, size/SHA,
+  Git pins и Rust version не изменены.
+- `restore_guest` раньше возвращал из `verify()` словарь с байтами трёх файлов;
+  теперь возвращает их size/SHA-256. Проверка и сами гостевые bytes не меняются.
+  Тот же `write_result` используется в finally и в regression: реальный гостевой
+  архив + исключение распаковки теперь дают валидный JSON с исходной ошибкой,
+  и исходное исключение продолжает выходить наружу.
+
+**Проверено:** 36 host tests PASS; полный проход `data_filter` по записям всех
+семи исходных архивов в Python 3.12.14 обнаружил только указанную абсолютную
+ссылку. Negative tests сохраняют отказы для других absolute/outside links,
+path traversal, неверных hash и изменённых omission rules. Доказательства и
+результат полной распаковки — `experiments/linux-guest/evidence/native-input-fix.json`.
+Все 7 реальных архивов полностью распакованы новым helper на Windows/Python
+3.12.14 за 359.61 секунды вместе с guest/report check; пропущена ровно одна
+указанная ссылка. `native-input-unpack.json` — фактический отчёт этого запуска.
+Более медленный дублирующий WSL/Python 3.14 запуск остановлен SIGINT после
+463.712 секунды; его частичный каталог сохранён в `.work`, за PASS он не принят.
+
+Новая Apple-сборка из этой сессии не запускалась. Следующий запуск — тот же
+`ideck-linux-probe-ipa`, эта же ветка и новый полный pushed SHA; прежний 3a10400
+повторять не нужно. Требования текущей бесплатной квоты ≥120 macOS минут,
+отключённой оплаты и private repository остаются. Старые evidence JSON ниже
+сохраняются как снимки прошлых ревизий, их pending-состояния не переписываются.
+
 ## Исправление неполного Swift source archive — 2026-10-16
 
 Пользователь передал полный вывод build `6ad126603ffd2c7f0ad3b258`:

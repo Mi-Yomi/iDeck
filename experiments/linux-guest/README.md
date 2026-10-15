@@ -4,10 +4,10 @@ This branch advances the requested **real Linux kernel + Linux Steam + Big Pictu
 
 2026-10-16: [A separate native IPA build recipe](ipa/README.md) is now available
 as `ideck-linux-probe-ipa`, alongside the ten-minute Swift source check. The
-verified guest bytes are included in Git. Its first Apple run passed the
-profile/evidence and Mac checks, then stopped in upstream Swift typechecking:
-the offline source slice lacked a transitive C header. That packaging omission
-is fixed; a new Apple run, native compilation/linking and an actual IPA are pending.
+verified guest bytes are included in Git. The Apple run at 3a10400 passed the
+Swift/profile/evidence gate, then stopped on an unused absolute link in the
+QEMU archive; binary guest data also broke JSON reporting. These preparation
+issues are fixed here. Native compilation/linking and an actual IPA are pending.
 
 ## Measured in this session
 
@@ -32,9 +32,9 @@ The host control uses Windows QEMU 11.1.0 (`v11.1.0-12130-ge470268ff4`), **not**
 
 In the pinned Husk source, `QemuRunner.run()` performs a GL probe and Android snapshot work around the existing Alpine profile. Do not merely swap its argv and treat it as an isolated Linux session. Integrate an explicit Linux branch/session that skips those Android operations, uses a dedicated directory, registers `husk_display_init()` after `qemu_init`, forwards input through the same software bridge, and runs only after the existing JIT self-test succeeds. Preserve the Android profile and its data.
 
-`ios/LinuxGuestProfile.swift` validates the assets and creates native argv with mandatory `split-wx=on`. The continuation adds `LinuxProbeSession.swift` and `LinuxProbeView.swift`: a one-session QEMU owner, isolated UI route, software display/input, strict framebuffer/evdev evidence and a shareable report. [The pinned Husk overlay](husk/README.md) connects these to the actual app entry point. Source staging passed; this Swift integration is **not yet compiled or device-tested**.
+`ios/LinuxGuestProfile.swift` validates the assets and creates native argv with mandatory `split-wx=on`. The continuation adds `LinuxProbeSession.swift` and `LinuxProbeView.swift`: a one-session QEMU owner, isolated UI route, software display/input, strict framebuffer/evdev evidence and a shareable report. [The pinned Husk overlay](husk/README.md) connects these to the actual app entry point. Source staging and the Apple Swift typecheck passed; native app compilation, linking and device testing remain pending.
 
-`ci/check_linux_guest_profile.py` and the manual `ideck-linux-guest-profile-check` typecheck the original and patched Husk Swift application using the real C bridge and Apple SDK, and run the profile/evidence validator tests on Mac. The exact offline upstream source slice now has 78 files, including the original `husk-console-abi.h` missed by the first archive. Restore checks the bridge's complete literal local-include chain as well as file hashes. Existing notices/license remain included; the archive contains no runtime binaries. The first Apple attempt and local reproduction/fix are recorded in `evidence/source-header-fix.json`; complete app typechecking is still pending.
+`ci/check_linux_guest_profile.py` and the manual `ideck-linux-guest-profile-check` typecheck the original and patched Husk Swift application using the real C bridge and Apple SDK, and run the profile/evidence validator tests on Mac. The exact offline upstream source slice has 78 files, including the original `husk-console-abi.h` missed by the first archive. Restore checks the bridge's complete literal local-include chain as well as file hashes. Existing notices/license remain included; the archive contains no runtime binaries. The first Apple attempt and local reproduction/fix are recorded in `evidence/source-header-fix.json`; the later gate completion and preparation fixes are recorded in `evidence/native-input-fix.json`.
 
 ## Reproduce on this Windows workstation
 

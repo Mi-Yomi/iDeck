@@ -70,6 +70,21 @@
     "sha256": "43c9df82e006045feb41aebe6d898acc14769b3b0fb80cbf89372fcb43907864"
   },
   {
+    "path": "native-input-fix-tests.txt",
+    "size": 4729,
+    "sha256": "15bf09c60d15cf45b52d4b397a9ef43aa84c03fc8d3d417aa3baaaf5d717d872"
+  },
+  {
+    "path": "native-input-fix.json",
+    "size": 3258,
+    "sha256": "d4e7843d79a4fd712c985d315d5e3694dcf0d5da0c67304180336858a24577e1"
+  },
+  {
+    "path": "native-input-unpack.json",
+    "size": 2402,
+    "sha256": "394c389a07eb40992d6307a256d9c871d98b1df463b5bd248801cffb8786dc4d"
+  },
+  {
     "path": "readelf-key-objects.txt",
     "size": 5463,
     "sha256": "4995fb02142bbe20be0611d83457ea50aec9efbac7b5db8b590f0f59118c19ce"

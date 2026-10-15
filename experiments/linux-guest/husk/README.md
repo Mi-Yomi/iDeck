@@ -52,7 +52,7 @@ The first staging run used a sparse checkout; that directory is retained as an
 intermediate, not a complete app source result. The final run used the full
 checkout and the tool now rejects sparse inputs.
 
-## Apple compiler gate (first run failed; corrected source archive pending)
+## Apple compiler gate (passed at 3a10400; native build pending)
 
 The first `ideck-linux-probe-ipa` run used this gate at transport commit e9dfb4b.
 Profile/evidence iOS checks and Mac validator tests passed, but upstream app
@@ -60,6 +60,10 @@ typechecking stopped at a missing `husk-console-abi.h` in the offline archive.
 The archive now includes the original pinned header and validates the bridge's
 literal local-include chain before restoration. The supplied Apple log and a
 real local Clang before/after check are retained in `../evidence/`.
+The user-supplied log of build `6ad129af3ffd2c7f0ad3b35b` at 3a10400 shows the
+corrected Swift gate completed: the worker proceeded through tool setup and
+source staging before failing on QEMU archive extraction. This confirms the
+gate's completion, not native compilation, linking or device execution.
 
 The manual `ideck-linux-guest-profile-check` has a 480-second aggregate budget
 and a 10-minute provider limit. Current free-quota/private-source checks and the
@@ -89,7 +93,7 @@ is installed. No Swift compiler or Apple SDK check has run on this Windows host.
 - All 78 upstream files match SHA-256 and their original Git blob IDs; the
   previous 77 files are unchanged.
 - Patch application and the complete independent staged worktree match the lock.
-- Thirty-one host tests passed, including rejection of the missing transitive
+- Thirty-six host tests passed, including rejection of the missing transitive
   header even with valid archive hashes. Synthetic fixtures are not device
   execution. Host Clang reproduced the old archive's missing-header failure and
   passed syntax checking of the corrected staged archive with the same flags.

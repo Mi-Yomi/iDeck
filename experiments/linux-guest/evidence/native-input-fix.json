@@ -1,0 +1,79 @@
+{
+  "status": "native_input_and_report_fixes_host_verified_apple_rerun_pending",
+  "date": "2026-10-16",
+  "failed_build": {
+    "url": "https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad129af3ffd2c7f0ad3b35b",
+    "workflow": "ideck-linux-probe-ipa",
+    "commit": "3a10400ebf40fc2d1d0578447d6f55b98f2dca66",
+    "source": "user-provided step log; not fetched directly",
+    "swift_gate_completed": true,
+    "swift_gate_evidence": "Worker proceeded to build-tools, rust setup, Husk checkout/staging and first source extraction; run() raises on a failed Swift check.",
+    "first_error": "tarfile.AbsoluteLinkError: qemu-10.0.12-utm/roms/edk2/EmulatorPkg/Unix/Host/X11IncludeHack is a link to an absolute path",
+    "secondary_error": "TypeError: Object of type bytes is not JSON serializable",
+    "native_library_build_reached": false
+  },
+  "omitted_symlink": {
+    "path": "qemu-10.0.12-utm/roms/edk2/EmulatorPkg/Unix/Host/X11IncludeHack",
+    "target": "/opt/X11/include",
+    "reason": "EDK2 Unix host emulator X11 headers; the iOS QEMU dylib recipe does not build this firmware emulator."
+  },
+  "omission_basis": {
+    "file": "qemu-10.0.12-utm/roms/edk2/EmulatorPkg/Unix/Host/Host.inf",
+    "lines": [
+      136,
+      143
+    ],
+    "scope": "XCODE IA32/X64 host emulator includes; not built by Husk iOS QEMU dylib recipe"
+  },
+  "all_original_archive_urls_sizes_hashes_and_git_pins_unchanged": true,
+  "preflight": {
+    "python": "3.12.14 Windows",
+    "filter": "tarfile.data_filter",
+    "all_archive_members_checked": true,
+    "member_counts": {
+      "qemu-10.0.12-utm.tar.xz": 86024,
+      "libffi-3.5.0.tar.gz": 507,
+      "libiconv-1.16.tar.gz": 915,
+      "gettext-0.22.5.tar.gz": 7415,
+      "glib-2.83.0.tar.xz": 2423,
+      "pixman-0.38.0.tar.gz": 167,
+      "libslirp-v4.9.1.tar.gz": 169
+    },
+    "rejected_members": [
+      "qemu-10.0.12-utm/roms/edk2/EmulatorPkg/Unix/Host/X11IncludeHack"
+    ]
+  },
+  "full_extraction": {
+    "result": "native-input-unpack.json",
+    "passed": true,
+    "archives": 7,
+    "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "win32",
+    "elapsed_seconds": 359.61,
+    "actual_omissions": 1,
+    "guest_metadata_matches_lock": true,
+    "result_json_written": true
+  },
+  "duplicate_wsl_attempt": {
+    "status": "interrupted_by_agent_due_to_slow_NTFS_IO",
+    "elapsed_seconds": 463.712,
+    "counted_as_pass": false,
+    "partial_output": ".work/native-input-fix-run"
+  },
+  "regressions": {
+    "tests_passed": 36,
+    "original_extraction_exception_preserved_during_real_guest_report_write": true,
+    "other_absolute_and_outside_links_rejected": true,
+    "path_traversal_rejected": true,
+    "changed_hash_or_omitted_link_identity_rejected": true
+  },
+  "apple_rerun_performed": false,
+  "runtime_linked": false,
+  "ipa_created": false,
+  "device_tested": false,
+  "hashes": {
+    "ci/build_linux_probe_ipa.py": "7fa4e9415274a580f06d81dbeff2dce83fc0a68bdf11b1aec9473f2c6dc39b52",
+    "experiments/linux-guest/ipa/native-sources.lock.json": "343ce97b29a08642f66eeb6d7a06cca06204abc5e4ae9c800530ffdce93c3feb",
+    "experiments/linux-guest/tests/test_ci_build.py": "e9f294bd38dc0bd127fe6d2d814f828a527fa221b15c0515836af79bd6af9b55"
+  }
+}

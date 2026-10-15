@@ -1,11 +1,12 @@
 # iDeck Linux Probe IPA build
 
 The `ideck-linux-probe-ipa` Codemagic workflow is a **native source build recipe**.
-Its first Apple run at e9dfb4b stopped in the Swift source gate because the offline
-Husk archive missed `husk-console-abi.h`. The original pinned header is now
-included, with a local-include completeness check and a regression test. The
-corrected revision has not run on Apple hardware yet; native builds/linking were
-not reached and there is no IPA. See `../evidence/source-header-fix.json`.
+The Apple run at 3a10400 passed the Swift source gate after the missing-header
+fix. It then stopped while extracting QEMU's unused absolute X11 symlink, and
+raw guest bytes in the report caused a second JSON error. Both preparation
+issues are fixed here; this correction has not run on Apple hardware yet.
+Native builds/linking were not reached and there is no IPA. See
+`../evidence/native-input-fix.json` and the earlier `source-header-fix.json`.
 
 Select branch `codex/linux-guest-feasibility-20261015` **before** selecting the
 workflow. Set `expected_commit` to the full current pushed SHA. `main` deliberately
@@ -47,6 +48,15 @@ its compatibility with this recipe is **not yet measured**. Homebrew tool
 versions are recorded per build, not claimed to be reproducibly pinned.
 Cargo dependencies remain locked by upstream `Cargo.lock`.
 
+QEMU's locked archive contains an absolute `X11IncludeHack -> /opt/X11/include`
+symlink for the EDK2 Unix host emulator. That firmware emulator is not built by
+the iOS QEMU dylib recipe. The lock explicitly records this one omitted symlink:
+its complete path, type and target must match. All other members retain Python's
+`data_filter`; there is no trusted/full-access extraction fallback. Extraction
+rechecks archive size/SHA-256 and records omissions in `result.json`. The source
+archives themselves are unchanged. Guest report entries contain size/SHA-256,
+not binary asset bytes, so a failed build can retain its original error in JSON.
+
 The separately applied `0001-fail-closed-native-build.patch` prevents the pinned
 native script from ignoring rejected patches or a missing QEMU output. It is
 not part of the Swift-only source slice, and does not weaken a verifier.
@@ -79,13 +89,22 @@ downloaded old Husk109 IPA is substituted for Husk119 output.
 
 ## Local checks performed
 
-Thirty-one host tests passed, including wrong branch/SHA/default-input rejection,
+Thirty-six host tests passed, including wrong branch/SHA/default-input rejection,
 real guest archive restoration, source staging, simulator/incorrect app identity
 rejection, a real nonzero child-process failure and rejection of the missing
-transitive header with valid package hashes. Host Clang reproduced the exact
+transitive header with valid package hashes. Extraction tests reject other
+absolute/outside links, path traversal, mismatched omission rules and altered
+archive bytes. A real-guest regression writes the failure report while preserving
+the original extraction exception. Host Clang reproduced the exact
 old-archive error and passed the corrected archive. These do not execute Xcode.
 The canonical Git version of the patched shell script passes `bash -n`.
 The 15 existing workflows preserve their original execution bodies after the
 new request guard; YAML defaults no longer resolve omitted required inputs to
 empty environment strings. The first Apple run passed YAML/request validation;
-the remaining Swift/native build results are still pending the corrected run.
+the next run passed Swift typechecking. Native build results remain pending.
+
+The new extraction helper fully unpacked all seven locked source archives on
+Windows/Python 3.12.14 and wrote a valid result with real guest metadata. Only
+the documented X11 symlink was omitted. This 359.61-second host control did not
+run an Apple compiler. A slower duplicate WSL extraction was interrupted and is
+not counted as a passing control; see `../evidence/native-input-fix.json`.

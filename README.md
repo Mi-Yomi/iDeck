@@ -3,7 +3,8 @@
 Local direct-Linux feasibility work is documented in
 [`experiments/linux-guest/README.md`](experiments/linux-guest/README.md): verified
 official Steam AArch64 ELF evidence, a real host Linux framebuffer/input probe,
-and a separate manual Apple profile compiler gate. The preserved source snapshot
+an isolated Husk Linux launch route, and a manual Apple compiler gate covering
+the pinned upstream and patched Swift application. The preserved source snapshot
 below is unchanged; no iPhone Steam session or IPA is claimed by that experiment.
 
 This private repository transports a reproducible, audited development-source snapshot for a bounded manual Codemagic check. It is **not a full mirror of the original Git history**.

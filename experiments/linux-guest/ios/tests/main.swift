@@ -32,3 +32,47 @@ do {
 } catch LinuxGuestProfile.Invalid.asset { }
 precondition(!FileManager.default.fileExists(atPath: root.appendingPathComponent("new-session").path))
 print("LINUX_PROFILE_HOST_CHECKS_PASS (synthetic assets; no QEMU/device execution)")
+
+// The input fixture is the captured serial log from the real ARM64 Linux run.
+// Parsing it on a Mac is a validator test, not a second kernel/device run.
+let serialFixture = try String(contentsOfFile: CommandLine.arguments[2], encoding: .utf8)
+try LinuxProbeEvidence.validate(serial: serialFixture)
+for bad in [serialFixture.replacingOccurrences(of: "IDECK_EVENTS_BEGIN:keyboard", with: "missing"),
+            "IDECK_PROBE_DONE\nQEMU Virtio Keyboard\nQEMU Virtio Tablet\n"] {
+    do {
+        try LinuxProbeEvidence.validate(serial: bad)
+        fatalError("non-evidence was accepted")
+    } catch { }
+}
+func record(type: UInt16, code: UInt16, value: Int32) -> String {
+    var bytes = [UInt8](repeating: 0, count: 16)
+    bytes += [UInt8(type & 255), UInt8(type >> 8), UInt8(code & 255), UInt8(code >> 8)]
+    let unsigned = UInt32(bitPattern: value)
+    bytes += (0..<4).map { UInt8((unsigned >> ($0 * 8)) & 255) }
+    return bytes.map { String(format: "%02x", $0) }.joined(separator: " ") + "\n"
+}
+let reverseKey = "IDECK_EVENTS_BEGIN:keyboard\n" + record(type: 1, code: 30, value: 0)
+    + record(type: 1, code: 30, value: 1) + "IDECK_EVENTS_END:keyboard\n"
+let tablet = "IDECK_EVENTS_BEGIN:tablet\n" + record(type: 1, code: 272, value: 1)
+    + record(type: 3, code: 0, value: 8192) + record(type: 3, code: 1, value: 24575)
+    + record(type: 1, code: 272, value: 0) + "IDECK_EVENTS_END:tablet\n"
+do {
+    try LinuxProbeEvidence.validate(serial: reverseKey + tablet)
+    fatalError("release-before-press accepted")
+} catch LinuxProbeEvidence.Invalid.key { }
+
+// Check strict row-stride/channel/last-pixel handling, including unused alpha.
+let colors: [[UInt8]] = [[34, 51, 204], [51, 204, 68], [204, 85, 34], [204, 204, 204]]
+var pixels = Data(repeating: 0, count: 3216 * 600)
+for y in 0..<600 {
+    for x in 0..<800 {
+        let color = colors[(y / 300) * 2 + x / 400]
+        for channel in 0..<3 { pixels[y * 3216 + x * 4 + channel] = color[channel] }
+    }
+}
+precondition(LinuxProbeEvidence.matchesFrame(pixels, stride: 3216, phase: 0))
+precondition(!LinuxProbeEvidence.matchesFrame(pixels, stride: 3216, phase: 1))
+pixels[599 * 3216 + 799 * 4] ^= 1
+precondition(!LinuxProbeEvidence.matchesFrame(pixels, stride: 3216, phase: 0))
+precondition(!LinuxProbeEvidence.matchesFrame(Data(), stride: 0, phase: 0))
+print("LINUX_EVIDENCE_HOST_CHECKS_PASS (recorded guest events + synthetic pixel guards)")

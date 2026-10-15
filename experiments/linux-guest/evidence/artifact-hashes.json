@@ -35,9 +35,24 @@
     "sha256": "7ffe43fbddcb32c31b2eadd011da268ad433637b91bbcb643dbefce815744185"
   },
   {
+    "path": "host-smoke-ios-bundle.json",
+    "size": 5453,
+    "sha256": "a539aae885ad026f15d5c4d11b096be46f8149fca1ecb40fe41507199a009c7f"
+  },
+  {
     "path": "host-smoke.json",
     "size": 5409,
     "sha256": "d436162eb297e9bbede8cd165ac94daa6a983c2f0e644639d03f28157bda6b5c"
+  },
+  {
+    "path": "ios-integration.json",
+    "size": 2235,
+    "sha256": "2e208c9b0d3acdf3e9d2a646881881911f75e8b059c74354dee1dadbafb42da3"
+  },
+  {
+    "path": "ios-staging-tests.txt",
+    "size": 2417,
+    "sha256": "6d57358526a4c8ff9fda107d6eb0ab9d2c79a3e27157dfc57ee66290f5f3ee41"
   },
   {
     "path": "readelf-key-objects.txt",

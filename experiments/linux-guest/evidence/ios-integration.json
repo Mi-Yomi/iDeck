@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "status": "source_and_guest_staged",
+  "upstream_commit": "0695248f491cda877f7969d1f0cc89aeede1482e",
+  "overlay_lock_sha256": "2dc41640bd14d8711259c6b8019349a7f013f5f494485487354cc799c1d6cbd4",
+  "changed_files": {
+    "src/app/Husk/HuskApp.swift": "18ff389fa29628fd1d4eb168a18a3b12f6b8c75caf6804651699e926b1ab9e31",
+    "src/app/project.yml": "9d7609c60bc137099456daa2ae92b9bd6a709c4218495666dc393312ba27997c",
+    "src/app/Husk/LinuxGuestProfile.swift": "e97fd87121fe14d71a286bab61ea29889586604d232b82af3e794983123084e1",
+    "src/app/Husk/LinuxProbeEvidence.swift": "e17ee28c23a8879a6e74dd783f901297d2bcd8d089ad4e515c972b0016f034d4",
+    "src/app/Husk/LinuxProbeSession.swift": "41012830eda0d37ab75e078f76a57300d554afcfdd9f37b6b490d8286e3231e9",
+    "src/app/Husk/LinuxProbeView.swift": "67dbe43830c33f5e08c9290d266e686e7c15c692be0558b452d7140ee3417b2a",
+    "scripts/ideck-stage-linux-guest.py": "267a95eb31f50dba82a8f75547925a60533faebb53e3198cdeea83703cd77c83"
+  },
+  "guest_assets": {
+    "profile.json": {
+      "size": 1599,
+      "sha256": "65ae64e005b9fa29f3e0ee6a9bed079366b16633e2dbebd8ca08aa15bdce0fb6"
+    },
+    "vmlinuz-virt": {
+      "size": 10351104,
+      "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+    },
+    "initramfs-ideck.gz": {
+      "size": 9402391,
+      "sha256": "5f64312eeef340991c6b0d97bd9d1fb01649c1763e14d7fb8231ad16551e9343"
+    }
+  },
+  "ios_compiled": false,
+  "runtime_linked": false,
+  "device_executed": false,
+  "next": "On an existing Husk Apple build host: regenerate Xcode project, build unsigned, then perform authorized device test.",
+  "checks": {
+    "host_guard_tests": 20,
+    "exact_offline_upstream_files": 77,
+    "source_patch_application": "pass",
+    "input_husk_checkout_clean": true,
+    "husk_c_bridge_host_clang_syntax": "pass",
+    "yaml_structures": "pass",
+    "apple_sdk": "not_run",
+    "swift_validator_tests": "not_run",
+    "ios_device": "not_run"
+  },
+  "preserved_ideck_source_tree": "a305e267ebdb87ec4d202f4f8d5c499cc5ffbe44",
+  "source_archive": "044316e0de837a47c5dd1b765b5f15a939a07030ae8415fdd6add8f6bceb823f",
+  "compiler_gate_sha256": "f1761f928e209b039dd0316057c6016175c92d7a23d21e778f15a3185bea1004"
+}

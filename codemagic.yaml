@@ -603,7 +603,7 @@ workflows:
 # Normal original CMake compiler probes are permitted; no library targets,
 # archive rebuild or app/witness link. Existing build worker owns remote work.
   ideck-linux-guest-profile-check:
-    name: iDeck direct Linux profile Apple compiler check
+    name: iDeck Linux profile and pinned Husk source compiler check
     instance_type: mac_mini_m2
     max_build_duration: 10
     inputs:
@@ -625,9 +625,9 @@ workflows:
         FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
         PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
     scripts:
-      - name: Typecheck the Linux profile for iOS and run native Mac validation checks
+      - name: Check Linux validators and actual upstream and patched Husk Swift against the Apple SDK
         script: |
           set -euo pipefail
           python3 -I ci/check_linux_guest_profile.py
 # This workflow is a manual source/host check only. It has no trigger, downloads,
-# artifact publishing, signing or device action. The worker budget is 240 seconds.
+# artifact publishing, signing or device action. The worker budget is 480 seconds.

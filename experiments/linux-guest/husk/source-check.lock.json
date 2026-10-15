@@ -1,0 +1,396 @@
+{
+  "schema": 1,
+  "repository": "https://github.com/Leviidev/Husk",
+  "commit": "0695248f491cda877f7969d1f0cc89aeede1482e",
+  "archive": "husk119-source-check.tar.gz",
+  "archive_sha256": "044316e0de837a47c5dd1b765b5f15a939a07030ae8415fdd6add8f6bceb823f",
+  "archive_size": 340363,
+  "files": {
+    "LICENSE": {
+      "size": 17992,
+      "sha256": "6f04ae8364d0079a192b14635f4b1da294ce18724c034c39a6a41d1b09df6100",
+      "git_blob": "00ccfbb62888382f5a4ce201a9d5e4bf85bbc373"
+    },
+    "docs/01-licensing.md": {
+      "size": 6898,
+      "sha256": "96173dce4956f2e55c93252b0114f7b6dfebd59931e8ab5c64b117cfb9725601",
+      "git_blob": "16d48d31c4e91fb69c4d1122f873f24ce68a23f7"
+    },
+    "src/app/Husk/ApkMetadata.swift": {
+      "size": 21623,
+      "sha256": "c01e2993e136ce1bc00e7e60c39cb7bc3b2317e2195738df8f1904fab994140d",
+      "git_blob": "8537bd521cb47df43936ed4cbe42547c5fddf1ef"
+    },
+    "src/app/Husk/AppClip.swift": {
+      "size": 7921,
+      "sha256": "7964d80db98b6104dd10186a54764cb10f9d7f9022b9543e67aced70655c743b",
+      "git_blob": "b5f0106df3dbf3bc5436d067c9161c2256251890"
+    },
+    "src/app/Husk/AppDetailView.swift": {
+      "size": 8792,
+      "sha256": "5b3c5266667a9d40d06dc43d50dd83c923379bef29382874780af50c4d5282a3",
+      "git_blob": "eae5fb3204031fa93ce3766129a496c539dacd50"
+    },
+    "src/app/Husk/AppDiagnosis.swift": {
+      "size": 18260,
+      "sha256": "a9cd45f18886e6e8638d76171bb03153ae96b3c5a932e12914e940e8aa73ed0d",
+      "git_blob": "e2f9f1ed7657b5d898982ddc0c9da6da59fc4a57"
+    },
+    "src/app/Husk/AppIcon.swift": {
+      "size": 5019,
+      "sha256": "1cfb78cf0eb829380cc09eba9dc4a8821be9956583299b890ea7a8928f1627e2",
+      "git_blob": "236adb309a703101c9855d810d156e9f82ce8322"
+    },
+    "src/app/Husk/AppSource.swift": {
+      "size": 7838,
+      "sha256": "516aa38ae497ecd1909e210bee2b162da3dcd8316b49aeac13353bfe7e7ff439",
+      "git_blob": "afbb02705c64df7cf824afe0b8f9b22590d532e0"
+    },
+    "src/app/Husk/AppTheme.swift": {
+      "size": 3012,
+      "sha256": "14f023bc4b643bc49ccca7844ba37e0ad9fcba0c11d2d3c4019c0e493fd4069f",
+      "git_blob": "f9debc35aaa16a7978cf7242b2962908b1611481"
+    },
+    "src/app/Husk/AppWindows.swift": {
+      "size": 16877,
+      "sha256": "80140cff3c9caaddb38b700684ae4556da80d46b32f98b56a231a90a69783754",
+      "git_blob": "49f8c1230701507ee399c18b3cd5637cce7736b5"
+    },
+    "src/app/Husk/BootScreen.swift": {
+      "size": 7705,
+      "sha256": "cc64407d947bd36e878df65d61177cd2d50cdd6fb861840549132989683e10f0",
+      "git_blob": "8a0bd2e9916542a705e47a96465f40d1b0f6238f"
+    },
+    "src/app/Husk/BundleUnpacker.swift": {
+      "size": 6296,
+      "sha256": "f7471010a47ad5eeebd2dc5641cd74db9aa470c1e409f6bd77807f49adfc8731",
+      "git_blob": "221095b34bce5a0088a499b0195c35181f00d456"
+    },
+    "src/app/Husk/Compatibility.swift": {
+      "size": 15959,
+      "sha256": "b011709fbf6c2cde8097967bdbf27d23a17cfa938e7596d75c85abbb9af184b7",
+      "git_blob": "6b8e70b8c8fa8ebb9e72d9060d0d252dc19f34a5"
+    },
+    "src/app/Husk/ContentView.swift": {
+      "size": 32465,
+      "sha256": "77bef440e09fb2fde5a3791217c4a5fefc053e15747d2f49f6469129a76b32cc",
+      "git_blob": "ed9cb978a915ecdf58623d9df6969a4f1c37bb01"
+    },
+    "src/app/Husk/CrashReport.swift": {
+      "size": 11703,
+      "sha256": "42e95e8c1fa59fc18a9783335a230634fc1497285b388f5f21b75a907523dc1e",
+      "git_blob": "2beac3d7a7e4cbe3935b09fffac60114141b60e8"
+    },
+    "src/app/Husk/DiscoverTab.swift": {
+      "size": 10818,
+      "sha256": "fdb40fc65acbc802f97ee8cc3dcbf68461ff18167a7bd2cfc33c58fee1d8e11d",
+      "git_blob": "4a704826d8ba101968e099a0935fd1d534f7344a"
+    },
+    "src/app/Husk/Downloads.swift": {
+      "size": 47519,
+      "sha256": "47ccbbbeb15baf8e29679829cf28ae26df04120cc0a4b5c56fa163d3910d49b1",
+      "git_blob": "5cbd2b5a3a59f9e4705507b7b7b66660c78cb6a8"
+    },
+    "src/app/Husk/DownloadsTab.swift": {
+      "size": 8467,
+      "sha256": "60c5feda847f41c88e86bd5b4a7719aece52833040a681c2b86b9c682c207366",
+      "git_blob": "0ca7f3cd04d9c552e3ed513a292ca956b43502fb"
+    },
+    "src/app/Husk/FAQTab.swift": {
+      "size": 11215,
+      "sha256": "ca4ccda046cde21c8a06af96dd195c5a01719b3ec938c03feebce891be1c433e",
+      "git_blob": "f3ed826d528163a2c6f8ed386d34073fe0f0dfe5"
+    },
+    "src/app/Husk/FilesTab.swift": {
+      "size": 9551,
+      "sha256": "cd0d77d2999ea6e319cca99658ca74ae0bba2de06184d4d684627bdedfeda679",
+      "git_blob": "3145e219e3c73b78786a923ed5e3f330e85efec7"
+    },
+    "src/app/Husk/GameStatus.swift": {
+      "size": 3967,
+      "sha256": "2be8a8c6e669456f5384d3b19cd4781876af94ba6978db406d0fe9956a8e2ca0",
+      "git_blob": "bd691680744a31ab429f6e86446a7ee4eaf26ad4"
+    },
+    "src/app/Husk/Geode.swift": {
+      "size": 11302,
+      "sha256": "2378556c944072d6eca8c12702e8479798255042c67dfedc043a4c457a3d66f0",
+      "git_blob": "6c4c345e5c90ffd225cac9a3a3a957acd39d85b1"
+    },
+    "src/app/Husk/GuestImage.swift": {
+      "size": 52247,
+      "sha256": "28c2bf758a610c3bee6b3b4cdcce726d0313d9ee90db095f794fa6093b80c1b6",
+      "git_blob": "1b59cb38001fa44aae1c41c9842a7815e2420493"
+    },
+    "src/app/Husk/GuestManifest.swift": {
+      "size": 7381,
+      "sha256": "25f67c289ac82b086de9d10bba3592c0609aefe0c0ec3f838922ae94523aded9",
+      "git_blob": "86b80397ab7a260f470065db8bb9624b9d44ab37"
+    },
+    "src/app/Husk/Holiday.swift": {
+      "size": 5921,
+      "sha256": "e4e9af145f9c8344836ac39eb9a89d2df0f1f29bbd780de2edb4dc934985f26a",
+      "git_blob": "d50168f40fca1661f1e2684605d98fb9d6c128e7"
+    },
+    "src/app/Husk/HuskApp.swift": {
+      "size": 4784,
+      "sha256": "e042be45c403dc1eca175288e2a23123075b9a26fd3fcfbd7cf2dcfc82376484",
+      "git_blob": "033fd28a99ffe008a7e47ae9e247c148ceaf4656"
+    },
+    "src/app/Husk/HuskAppIcon.swift": {
+      "size": 4201,
+      "sha256": "f60e2c115b906e430f703cd480a9ecce64c6d81346114afb1fb3d5bfa187495a",
+      "git_blob": "dec92216c0d4307a27e2f65568efa7c6b0d4d488"
+    },
+    "src/app/Husk/HuskAudio.swift": {
+      "size": 4484,
+      "sha256": "c865227680f862c134983bed68c440de82c2d7a00422501e61256064b5bd243c",
+      "git_blob": "e2071db657203babfa703f17b37c09482de4a6d1"
+    },
+    "src/app/Husk/HuskBridge.h": {
+      "size": 5103,
+      "sha256": "bd9dc8627b29f37884931cf5628a8f27fca36662d4f53e0b5a8defadda446840",
+      "git_blob": "5021d64d74f87455c8224a956eeb0c357aa4a8b2"
+    },
+    "src/app/Husk/HuskBridgeFS.swift": {
+      "size": 95517,
+      "sha256": "147cec21829b3b5e0314d4b7827bf714cafb2952db48ae1112726a3d296968ca",
+      "git_blob": "348b4e9fd52f92c8752b7f7730591a5895d79b99"
+    },
+    "src/app/Husk/HuskFilePicker.swift": {
+      "size": 3116,
+      "sha256": "fea24816cb5666d43d61389ab37b2151b8d30f82da458e81e0d79e8080d66662",
+      "git_blob": "5b9efcb263e5ef3aac2facd0ee683deebfbedb9d"
+    },
+    "src/app/Husk/HuskGLView.swift": {
+      "size": 12738,
+      "sha256": "4019598d0ca09874a03fbeef6dc195e96167ec59fcefdcef68806cdb964ed5b6",
+      "git_blob": "30072063eca080fbe2455470e5959d08b6343316"
+    },
+    "src/app/Husk/HuskGamepad.swift": {
+      "size": 4717,
+      "sha256": "2eb854be7b8d455c9929797d4488b07cb78d92be9dddeb9ec5c21c8b02c6cc3b",
+      "git_blob": "27876cb7941513d0b90c9733bafe9f2061b7bca3"
+    },
+    "src/app/Husk/HuskKeyboard.swift": {
+      "size": 9930,
+      "sha256": "a59a016e4561eb9d4f36c37b1926dc5f4021ea0a32a1ce7b247e1a8a8a253a13",
+      "git_blob": "42d41f4bdd9db526abbc01ee40e05fdba579e9c7"
+    },
+    "src/app/Husk/HuskLog.swift": {
+      "size": 18072,
+      "sha256": "3bce17e6e8c7bef8aaaa183b525a0d192c69aab9af519b866c923fcf447e0762",
+      "git_blob": "57610291bc6ba2b14fc14dc1b96ca9febc958aaa"
+    },
+    "src/app/Husk/HuskMetalPresenter.swift": {
+      "size": 10078,
+      "sha256": "12707ae7f7abda2395a6d176ae1db05491a65c655ea29aa4daeb74e66f97f33f",
+      "git_blob": "315ca2526d5431bdb4143359ea7eabe95aadd9a2"
+    },
+    "src/app/Husk/HuskMetalView.swift": {
+      "size": 6900,
+      "sha256": "9b037480abe2799b7ae16fb0352f6fa77bc73c8ff3727efd859230d3e5cb8197",
+      "git_blob": "70a0c25ec55c997241d66fe3021a7bd74dfca69d"
+    },
+    "src/app/Husk/HuskRPPairing.h": {
+      "size": 1964,
+      "sha256": "9d4a96114c14fc446906db579211c3f29435871bc1b90c3312b128648b3b109b",
+      "git_blob": "35167c7c7152abe5f1eb6065f3155a4091cdd955"
+    },
+    "src/app/Husk/IncomingFiles.swift": {
+      "size": 8173,
+      "sha256": "269d10fdd9bb97699d0158b98dac3c72f7aa1ecbf8202a46023e18199d84a7b3",
+      "git_blob": "c02418c96d22c51c258b1488fda1f1afb0278bd0"
+    },
+    "src/app/Husk/ItemPages.swift": {
+      "size": 31024,
+      "sha256": "55ed5353fd05181632433f265027fd988f51beaeeaeb793a9bc90c9c76239027",
+      "git_blob": "d0d2c69e4a370bb7499977c1b485a6225d9db1c0"
+    },
+    "src/app/Husk/JITBootstrap.swift": {
+      "size": 18743,
+      "sha256": "836164c6cf105fb26b8e61e9862ea7682de9c76c67eaad30463ecbe6ff583a5e",
+      "git_blob": "86d66957e402eee80d7f7fa2d60c6662bb2e07e5"
+    },
+    "src/app/Husk/JITBuiltIn.swift": {
+      "size": 8510,
+      "sha256": "7fff006c794c31f0d22e02d8fd0f56a48b42aa860285910bc3df63d3dae12b6d",
+      "git_blob": "49410b7d428825fac8ddad4cf90f3517d5617d01"
+    },
+    "src/app/Husk/JITCard.swift": {
+      "size": 7483,
+      "sha256": "8f827b6e59b0b85b23cbc834d325a30dd4431a6349d83d00ce692a359626cd0a",
+      "git_blob": "ed6b244ff781a4ed7775e53d383814ad33f6064c"
+    },
+    "src/app/Husk/JITPairing.swift": {
+      "size": 13626,
+      "sha256": "923584a9bfa2f8666c33330a455c507a65a207205a99d0ff651fc44d39cd984e",
+      "git_blob": "cd3217e4c17ab4f50df43b83bd5dc943e1de7785"
+    },
+    "src/app/Husk/JITSetup.swift": {
+      "size": 17467,
+      "sha256": "81a1b2004716682252ae3f21d20958846f2e83a2e396e74db3e36c9ebe13c1db",
+      "git_blob": "058281d938d72813f7976dbf2b1d9f3a12d7405b"
+    },
+    "src/app/Husk/JITSetupView.swift": {
+      "size": 23649,
+      "sha256": "1081a20e63823fd842c58cf07732b7982f7a283c1e12e56c48b7f86358ba6af9",
+      "git_blob": "053c8af65db3ea9e83f59bdbf9b6cbb14c82ae1d"
+    },
+    "src/app/Husk/Launcher.swift": {
+      "size": 33058,
+      "sha256": "ffe392481918f59b3e4c8db81df0aa593d5617b6038c15e5741f08d03bfda5bb",
+      "git_blob": "784c0009c198b97ce4ca733699bd06f13c41ad9d"
+    },
+    "src/app/Husk/MassTest.swift": {
+      "size": 17904,
+      "sha256": "8944d90e27ce4248491723e814f7c631b450a6213d33765375a97ce08e0ac0f9",
+      "git_blob": "a822887ccfd61a65d0c5fcdecf688b85f030c3d7"
+    },
+    "src/app/Husk/OnboardingView.swift": {
+      "size": 9677,
+      "sha256": "4bd1c5b6a89c27ecf101fd3b17afd8bf66f50249e3e420cf3214ccbac09e5a46",
+      "git_blob": "b1e4d9f9745a5326701781c467a47715566ed295"
+    },
+    "src/app/Husk/PS4Library.swift": {
+      "size": 6164,
+      "sha256": "677aa969bdec98b300fa662545e6a693492e99692af914f4aac41988097f1390",
+      "git_blob": "18206833569ac843d530da9ad6a85329ade2c6b1"
+    },
+    "src/app/Husk/PS4Screen.swift": {
+      "size": 8869,
+      "sha256": "bed77e8e6ba3b5167505a438d7cce7e99047230ec437dd93fd59d0ef51862968",
+      "git_blob": "1b5d991279c1bc5733aadf426222caff81956fdc"
+    },
+    "src/app/Husk/Play/GoogleSignInSheet.swift": {
+      "size": 6786,
+      "sha256": "789ee7ed77ea3f3fbca83f73e965caf7e43ffe712c6804b57007613553fcdf4b",
+      "git_blob": "4dd8f8e0287e3d159a92aeef18a94e29142ffcca"
+    },
+    "src/app/Husk/Play/PlayAPI.swift": {
+      "size": 34432,
+      "sha256": "e56d68d354d9b1bd6055dc7f50cd05a57a68200b8c9d4909f93a313fb024836f",
+      "git_blob": "ee480aa0077ad502fd71435efa4aa0e4bd46c510"
+    },
+    "src/app/Husk/Play/PlayDevice.swift": {
+      "size": 10230,
+      "sha256": "ad659aa8855a840d1544160da7634abea578917d680557aff27d80085386e6db",
+      "git_blob": "d2e4ac4b2cbcf57b99c0b96de478007659a9c2d7"
+    },
+    "src/app/Husk/Play/PlayStoreManager.swift": {
+      "size": 8488,
+      "sha256": "dbeccdfb131882dd791247dd4867a04d699cf4e6fec80304b37d5fd2c2c0fe26",
+      "git_blob": "c35d1978a8c73d3e762108b4aa55bc9ac0ecc04b"
+    },
+    "src/app/Husk/Play/Protobuf.swift": {
+      "size": 5941,
+      "sha256": "6bbcb711ad2aba21de2f9d4f4e2f23d23b5987a62afb07da54aae4ecf61e8f97",
+      "git_blob": "a6008be5979be8129c7d45427a1e59309c83a84a"
+    },
+    "src/app/Husk/Play/StoreView.swift": {
+      "size": 18662,
+      "sha256": "f130cd619c739d03c18f598cd00e937d7bcb23763ccf83f1735e1373ac5dc6ec",
+      "git_blob": "92c319f6b4e6f25c0c3f00c7c8acf1152cae6fac"
+    },
+    "src/app/Husk/QemuRunner.swift": {
+      "size": 99803,
+      "sha256": "3aeda1af82ef951fc07f072818f618aaf09b7ac3c389462cbab6bd441ac17fd0",
+      "git_blob": "98bcd0f37d066e884b4b7d0b95c9e6157a5adc8d"
+    },
+    "src/app/Husk/SaveBackup.swift": {
+      "size": 13119,
+      "sha256": "5fdf20fdd2059c6dd281b57587a89f67c2d6ef6f89fae765b71abf7e3ab8cc32",
+      "git_blob": "c14a4f2a9bd4fc96c274dfd718649df9c27544d9"
+    },
+    "src/app/Husk/SettingsTab.swift": {
+      "size": 38456,
+      "sha256": "75ce63a41487ace70808d9db2e9063263f6afad9d73eeb7a1eb6dff26f828a09",
+      "git_blob": "a199282b916d2dc88ae953f3e8fbddf1a2fd8135"
+    },
+    "src/app/Husk/Showcase.swift": {
+      "size": 9309,
+      "sha256": "eb5bdd9546ee63b1899c15e99ad03e8d251ec9216fbe0f2aeda9589e16e5e3c8",
+      "git_blob": "af080d43e282be3605fcdc6a0ba6a235b41e188d"
+    },
+    "src/app/Husk/TLAppSettings.swift": {
+      "size": 15071,
+      "sha256": "955f3540a5bf79e571f76eed0d19e1e2dd23fc8b001814e45f626d15b031622c",
+      "git_blob": "911a0330102f5a2ca8d8c1088659c73ca6d1720f"
+    },
+    "src/app/Husk/TLScreenView.swift": {
+      "size": 9332,
+      "sha256": "407dc01cb25d41923a99874d1496c100ac37a7e2744db9a976f9fef60b58c791",
+      "git_blob": "2497531de698b41401e37599252a9a059a192b52"
+    },
+    "src/app/Husk/TLUnityView.swift": {
+      "size": 52906,
+      "sha256": "1e78dd4e5881cee05c38ba38bff1fb8c47eca27879567576f0ba4d66ae1f0081",
+      "git_blob": "9993e0b17357d6368a370ebc67a2fe7b6d06b7f5"
+    },
+    "src/app/Husk/TechnicalDetails.swift": {
+      "size": 7820,
+      "sha256": "3a9520a0622eefec20d8d810b75c13f273a495dc059bfbf962bdeef61d503c2c",
+      "git_blob": "b813889031c1e683e805cd10a2833877fc54b5c6"
+    },
+    "src/app/Husk/Theme.swift": {
+      "size": 15784,
+      "sha256": "92c9f3379d574fe904a5f043d593e704c342b47ac378e115a50d2bba138d43e5",
+      "git_blob": "ec059682d06374fa1bba8d0060ad6fec0d7d4779"
+    },
+    "src/app/Husk/TranslationLayer.swift": {
+      "size": 41953,
+      "sha256": "5c5b784b24bc704ae69015913038a11acc946af7bf9e790f6e41bad6f537d59a",
+      "git_blob": "8390296b3ba6b6aa7f3b581c77c81868fc89878f"
+    },
+    "src/app/Husk/VirtualPad.swift": {
+      "size": 22626,
+      "sha256": "22a2bc23eefbdf5bb5d515f0099c870a99a4b31376a4cf4182ff2c7939ebd7db",
+      "git_blob": "98e33efc715c9bb932d41efdedc2bb5d19c718c9"
+    },
+    "src/app/Husk/WebApp.swift": {
+      "size": 31415,
+      "sha256": "f75c00987807f783f7c29c9a8bc1f5e7853277848d0b2e69fc65b67b1e29e6f0",
+      "git_blob": "910b1a807b96bfebad21e85d04f34079ed76689e"
+    },
+    "src/app/Husk/WebAppViews.swift": {
+      "size": 4331,
+      "sha256": "673665b0076d2519050f82a0c1ba609c273b5abcbf34f6b4a93023a5c28678ab",
+      "git_blob": "083dbf943561931f0501b26c563c7fff610f3444"
+    },
+    "src/app/Husk/WhatsNew.swift": {
+      "size": 6900,
+      "sha256": "ae9fa94ccee01e07e67079ac867bd533a386e11fa35546078ac65e3f02b25e4a",
+      "git_blob": "a9834fe058858b039f832231db59eb7dcbfbbb6b"
+    },
+    "src/app/HuskJITHelper/HuskJITMessages.swift": {
+      "size": 1569,
+      "sha256": "d0d5f4ba159d7640f4ee637cecd703506ae9eb807a2d41dd99ac1e90f6761132",
+      "git_blob": "6f6a90e66f4e3357ce8630b92ae2dfa4a6b27189"
+    },
+    "src/app/Shared/HuskDownloadActivity.swift": {
+      "size": 1082,
+      "sha256": "910c149335dbf915821c53f54f4da51b0af5c6cda01c774be399ac730c53c3cf",
+      "git_blob": "a43bd100d5f9564feb89dd072aedb41d1cdc79c9"
+    },
+    "src/app/project.yml": {
+      "size": 15878,
+      "sha256": "4fa127b04ed6dadb778f3b188f6eba8fd2691765f7638128d791512989df222d",
+      "git_blob": "7a0e8b897ef3ad6345ef89b159ee53f495e161b9"
+    },
+    "src/translation-layer-next/husk-console-host.h": {
+      "size": 2352,
+      "sha256": "c2f721d8b4fabd339053fd82275abc9bad0912d4efff402cb82d8d59aa56a791",
+      "git_blob": "a641ad7f3041d5f5f6c179316550a4e43e30c890"
+    },
+    "src/translation-layer-next/husk-tl-unity-app.h": {
+      "size": 11645,
+      "sha256": "199312d241d79a7b6beeed61750f46209e3c1dece94a93b4a43056abbf3c2c39",
+      "git_blob": "871080be9c62ac5f73c6332d5d18b7f7aa0e4857"
+    },
+    "src/translation-layer/husk-tl.h": {
+      "size": 5334,
+      "sha256": "43b2324ff480cd0c06878377a323d552f4cc414a14b77a611f0ba83d9278115d",
+      "git_blob": "d0297ba81a0aa6ebc87f8f12f2ce2cec5841f9d5"
+    }
+  },
+  "scope": "Exact upstream Swift/header source slice for SDK typechecking; no native binaries, guest assets or standalone runtime"
+}

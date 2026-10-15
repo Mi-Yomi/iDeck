@@ -1,0 +1,76 @@
+From b5bafa344008240bb5403335c6517ece2d849660 Mon Sep 17 00:00:00 2001
+From: iDeck local development <ideck-local@users.noreply.github.com>
+Date: Thu, 15 Oct 2026 23:14:47 +0500
+Subject: [PATCH] Add an isolated Linux probe route before Husk runtime startup
+
+Class: local-experiment
+
+Evidence: experiments/linux-guest/evidence/ios-integration.json; Apple/device execution pending
+
+Offered-upstream: no; private feasibility experiment
+---
+ src/app/Husk/HuskApp.swift | 22 ++--------------------
+ src/app/project.yml        |  6 ++++++
+ 2 files changed, 8 insertions(+), 20 deletions(-)
+
+diff --git a/src/app/Husk/HuskApp.swift b/src/app/Husk/HuskApp.swift
+index 033fd28..9a8889e 100644
+--- a/src/app/Husk/HuskApp.swift
++++ b/src/app/Husk/HuskApp.swift
+@@ -36,8 +36,7 @@ final class HuskAppDelegate: NSObject, UIApplicationDelegate {
+     }
+ 
+     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+-        // The download session reconnects to whatever was running before Husk was closed or relaunched in the background.
+-        _ = Downloads.shared
++        // The library route reconnects downloads after the user selects it.
+         return true
+     }
+ 
+@@ -66,28 +65,11 @@ struct HuskApp: App {
+         // Then the trap guard: without it, any brk we issue when StikDebug is
+         // absent kills the process outright rather than returning an error.
+         JITBootstrap.installTrapGuard()
+-
+-        // Android no longer starts by itself unless someone turns that on: once, for everyone who had it from the old default.
+-        let d = UserDefaults.standard
+-        if !d.bool(forKey: "husk.autoStart.offByDefault") {
+-            d.set(false, forKey: "husk.autoStart")
+-            d.set(true, forKey: "husk.autoStart.offByDefault")
+-        }
+-        // Copies of shared APKs that were never placed.
+-        IncomingFiles.clearLeftovers()
+-
+-        // Game controllers, for the games the native runtime runs.
+-        Task { @MainActor in HuskGamepads.shared.start() }
+     }
+ 
+     var body: some Scene {
+         WindowGroup {
+-            ContentView()
+-                // An APK shared to Husk, or opened in it from Files.
+-                .onOpenURL { url in
+-                    // husk://open_app?unique_identifier=… from a Home Screen clip; anything else may be a shared APK
+-                    if !AppClip.handle(url) { IncomingFiles.shared.receive(url) }
+-                }
++            LinuxProbeRoot()
+         }
+     }
+ }
+diff --git a/src/app/project.yml b/src/app/project.yml
+index 7a0e8b8..d3f4306 100644
+--- a/src/app/project.yml
++++ b/src/app/project.yml
+@@ -158,6 +158,12 @@ targets:
+         codeSign: true
+         link: false
+     preBuildScripts:
++      - name: Stage verified iDeck Linux probe
++        script: |
++          set -e
++          python3 "$SRCROOT/../../scripts/ideck-stage-linux-guest.py" \
++            "$SRCROOT/../../guests/ideck-linux" \
++            "$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/iDeckLinuxProbe"
+       - name: Stage guest image
+         # The Phase 0 guest is far too large for git, so it is fetched rather than
+         # vendored, and copied into the bundle at build time.

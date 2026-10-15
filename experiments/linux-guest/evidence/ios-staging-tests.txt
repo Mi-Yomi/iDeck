@@ -1,0 +1,25 @@
+test_independent_linux_event_decode (test_guards.InputGuards.test_independent_linux_event_decode) ... ok
+test_listing_and_syn_are_not_input (test_guards.InputGuards.test_listing_and_syn_are_not_input) ... ok
+test_missing_release_rejected (test_guards.InputGuards.test_missing_release_rejected) ... ok
+test_truncated_event_rejected (test_guards.InputGuards.test_truncated_event_rejected) ... ok
+test_bad_elfs_rejected (test_guards.IntegrityGuards.test_bad_elfs_rejected) ... ok
+test_corrupt_and_traversal_assets_rejected (test_guards.IntegrityGuards.test_corrupt_and_traversal_assets_rejected) ... ok
+test_empty_screenshot_rejected (test_guards.IntegrityGuards.test_empty_screenshot_rejected) ... ok
+test_manifest_paths_and_hashes_rejected (test_guards.IntegrityGuards.test_manifest_paths_and_hashes_rejected) ... ok
+test_valid_elf32_and_missing_program_headers (test_guards.IntegrityGuards.test_valid_elf32_and_missing_program_headers) ... ok
+test_changed_overlay_input_rejected (test_staging.BundleGuards.test_changed_overlay_input_rejected) ... ok
+test_corruption_cannot_mutate_existing_bundle (test_staging.BundleGuards.test_corruption_cannot_mutate_existing_bundle) ... ok
+test_dirty_or_wrong_upstream_rejected_before_worktree (test_staging.BundleGuards.test_dirty_or_wrong_upstream_rejected_before_worktree) ... ok
+test_exact_offline_source_slice_and_patch (test_staging.BundleGuards.test_exact_offline_source_slice_and_patch) ... ok
+test_only_validated_three_files_are_copied (test_staging.BundleGuards.test_only_validated_three_files_are_copied) ... ok
+test_output_cannot_be_source_or_its_child (test_staging.BundleGuards.test_output_cannot_be_source_or_its_child) ... ok
+test_output_directory_cannot_replace_an_asset (test_staging.BundleGuards.test_output_directory_cannot_replace_an_asset) ... ok
+test_overlay_paths_must_stay_under_root (test_staging.BundleGuards.test_overlay_paths_must_stay_under_root) ... ok
+test_oversized_profile_rejected_before_read (test_staging.BundleGuards.test_oversized_profile_rejected_before_read) ... ok
+test_profile_filename_and_dimensions_cannot_override_scope (test_staging.BundleGuards.test_profile_filename_and_dimensions_cannot_override_scope) ... ok
+test_sparse_checkout_is_not_a_build_source (test_staging.BundleGuards.test_sparse_checkout_is_not_a_build_source) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 1.696s
+
+OK

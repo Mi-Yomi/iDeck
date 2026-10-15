@@ -21,9 +21,14 @@ struct LinuxGuestProfile: Decodable {
     let initramfs: Asset
 
     static func load(from directory: URL) throws -> LinuxGuestProfile {
+        let root = directory.standardizedFileURL.resolvingSymlinksInPath()
+        let file = root.appendingPathComponent("profile.json")
+        let values = try file.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey, .fileSizeKey])
+        guard values.isRegularFile == true, values.isSymbolicLink != true,
+              let size = values.fileSize, size > 0, size <= 65536 else { throw Invalid.asset }
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
-        return try decoder.decode(Self.self, from: Data(contentsOf: directory.appendingPathComponent("profile.json")))
+        return try decoder.decode(Self.self, from: Data(contentsOf: file))
     }
 
     private func checkedAsset(_ asset: Asset, named name: String, in directory: URL) throws -> URL {
@@ -31,7 +36,11 @@ struct LinuxGuestProfile: Decodable {
               asset.sha256.count == 64,
               asset.sha256.allSatisfy({ "0123456789abcdef".contains($0) }) else { throw Invalid.asset }
         let root = directory.standardizedFileURL.resolvingSymlinksInPath()
-        let url = root.appendingPathComponent(name).resolvingSymlinksInPath()
+        let candidate = root.appendingPathComponent(name)
+        let values = try candidate.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey, .fileSizeKey])
+        guard values.isRegularFile == true, values.isSymbolicLink != true,
+              values.fileSize == asset.size else { throw Invalid.asset }
+        let url = candidate.resolvingSymlinksInPath()
         guard url.deletingLastPathComponent() == root else { throw Invalid.unsafePath }
         let data = try Data(contentsOf: url, options: .mappedIfSafe)
         let hash = SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()

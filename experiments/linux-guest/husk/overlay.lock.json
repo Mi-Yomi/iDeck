@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "upstream_repository": "https://github.com/Leviidev/Husk",
+  "upstream_commit": "0695248f491cda877f7969d1f0cc89aeede1482e",
+  "inputs": {
+    "ios/LinuxGuestProfile.swift": "e97fd87121fe14d71a286bab61ea29889586604d232b82af3e794983123084e1",
+    "ios/LinuxProbeEvidence.swift": "e17ee28c23a8879a6e74dd783f901297d2bcd8d089ad4e515c972b0016f034d4",
+    "ios/LinuxProbeSession.swift": "41012830eda0d37ab75e078f76a57300d554afcfdd9f37b6b490d8286e3231e9",
+    "ios/LinuxProbeView.swift": "67dbe43830c33f5e08c9290d266e686e7c15c692be0558b452d7140ee3417b2a",
+    "tools/stage_bundle.py": "267a95eb31f50dba82a8f75547925a60533faebb53e3198cdeea83703cd77c83",
+    "tools/stage_husk.py": "8ee9d7b363b900429923a74d3f4f4918800ac348b65baaa9d36af942b9e4d305",
+    "husk/patches/series": "f8aaddc8d6862e03d676780d18d2a7ff46aa6e1c3721ebaf0a336c92e03e4233",
+    "husk/patches/0001-isolated-linux-probe-route.patch": "d037311ec48784fa03c3191cbb19c60b9c811c8f01c7e119dbebaca054d2c8cf",
+    "tools/typecheck_source.py": "2c65cbb1c477c08a44d20e5490205cb1f6fed52a6c66eac251b5e681708dd6f6",
+    "husk/source-check.lock.json": "b6db59046812aa6767cf8b394880fc398edc1951d10f185857bd7691911de1b9",
+    "husk/husk119-source-check.tar.gz": "044316e0de837a47c5dd1b765b5f15a939a07030ae8415fdd6add8f6bceb823f"
+  },
+  "copies": {
+    "ios/LinuxGuestProfile.swift": "src/app/Husk/LinuxGuestProfile.swift",
+    "ios/LinuxProbeEvidence.swift": "src/app/Husk/LinuxProbeEvidence.swift",
+    "ios/LinuxProbeSession.swift": "src/app/Husk/LinuxProbeSession.swift",
+    "ios/LinuxProbeView.swift": "src/app/Husk/LinuxProbeView.swift",
+    "tools/stage_bundle.py": "scripts/ideck-stage-linux-guest.py"
+  },
+  "patched_files": {
+    "src/app/Husk/HuskApp.swift": "18ff389fa29628fd1d4eb168a18a3b12f6b8c75caf6804651699e926b1ab9e31",
+    "src/app/project.yml": "9d7609c60bc137099456daa2ae92b9bd6a709c4218495666dc393312ba27997c"
+  }
+}

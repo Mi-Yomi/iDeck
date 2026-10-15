@@ -6,6 +6,7 @@ import os
 import platform
 import re
 import subprocess
+import sys
 import time
 from pathlib import Path
 
@@ -30,7 +31,7 @@ def main():
     started = time.monotonic()
     steps = []
     def run(label, command):
-        remaining = 240 - (time.monotonic() - started)
+        remaining = 480 - (time.monotonic() - started)
         if remaining <= 0:
             raise TimeoutError("aggregate compiler budget exhausted")
         done = subprocess.run(command, cwd=ROOT, env=env, capture_output=True, text=True, timeout=remaining)
@@ -48,14 +49,40 @@ def main():
         sdk = run("ios-sdk-path", ["xcrun", "--sdk", "iphoneos", "--show-sdk-path"])
         report["ios_sdk"] = run("ios-sdk-version", ["xcrun", "--sdk", "iphoneos", "--show-sdk-version"])
         source = ROOT / "experiments/linux-guest/ios/LinuxGuestProfile.swift"
+        evidence = source.parent / "LinuxProbeEvidence.swift"
+        native = [source.parent / name for name in ("LinuxProbeSession.swift", "LinuxProbeView.swift")]
         report["source_sha256"] = hashlib.sha256(source.read_bytes()).hexdigest()
-        run("ios-typecheck", ["xcrun", "swiftc", "-typecheck", "-sdk", sdk, "-target", "arm64-apple-ios16.0", str(source)])
+        report["input_sha256"] = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in [source, evidence, *native]}
+        run("ios-typecheck", ["xcrun", "swiftc", "-typecheck", "-sdk", sdk, "-target", "arm64-apple-ios16.0", str(source), str(evidence)])
+        # Syntax-only for the Husk-integrated sources. No fake JIT/QEMU/UI types
+        # are substituted to make a standalone typecheck appear to pass.
+        run("native-syntax", ["xcrun", "swiftc", "-frontend", "-parse", *map(str, native)])
+        report["integrated_husk_typechecked"] = False
         macsdk = run("mac-sdk", ["xcrun", "--sdk", "macosx", "--show-sdk-path"])
         executable = out / "profile-tests"
-        run("mac-compile", ["xcrun", "swiftc", "-sdk", macsdk, str(source),
+        run("mac-compile", ["xcrun", "swiftc", "-sdk", macsdk, str(source), str(evidence),
                             str(source.parent / "tests/main.swift"), "-o", str(executable)])
-        report["host_test_output"] = run("mac-tests", [str(executable), str(out / "fixtures")])
-        report["status"] = "apple_profile_compiler_and_host_checks_pass"
+        report["host_test_output"] = run("mac-tests", [str(executable), str(out / "fixtures"),
+            str(ROOT / "experiments/linux-guest/evidence/guest-serial.log")])
+        # Typecheck the complete app's Swift surface against its REAL pinned C
+        # bridge and Apple SDK, first upstream then the iDeck overlay. This does
+        # not link QEMU or make an IPA. No surrogate JIT/Metal declarations.
+        sys.path.insert(0, str(ROOT / "experiments/linux-guest/tools"))
+        from typecheck_source import restore, overlay, swift_sources
+        slice_dir = out / "husk-source-check"
+        lock = restore(slice_dir)
+        report["husk_source_archive_sha256"] = lock["archive_sha256"]
+        def app_command():
+            return ["xcrun", "swiftc", "-typecheck", "-parse-as-library", "-swift-version", "5",
+                    "-module-name", "Husk", "-sdk", sdk, "-target", "arm64-apple-ios16.0",
+                    "-import-objc-header", str(slice_dir / "src/app/Husk/HuskBridge.h"),
+                    *map(str, swift_sources(slice_dir))]
+        run("husk-upstream-typecheck", app_command())
+        report["upstream_husk_typechecked"] = True
+        overlay(slice_dir)
+        run("husk-linux-typecheck", app_command())
+        report["integrated_husk_typechecked"] = True
+        report["status"] = "apple_husk_source_typecheck_and_host_checks_pass"
     finally:
         report["elapsed_seconds"] = round(time.monotonic() - started, 3)
         (out / "result.json").write_text(json.dumps(report, indent=2) + "\n")

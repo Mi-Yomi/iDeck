@@ -12,6 +12,14 @@ evidence, not iPhone, Steam UI, JIT/Metal or game-GPU acceptance. The new Apple
 profile workflow is prepared locally and has not been dispatched. The prior
 runtime/compiler history below is preserved, not re-certified by this session.
 
+Continuation: the Linux profile now has a real in-process QEMU session owner and
+UI entry point, delivered as a pinned Husk patch/overlay. It has been staged into
+a complete independent source worktree. The new resource staging path was tested
+by another real host kernel/framebuffer/input run (25.125 seconds). Twenty host
+guard/staging tests passed. The isolated route, JIT, Metal and Swift code still
+require the Apple SDK check and device test; neither ran on this Windows host.
+See `experiments/linux-guest/husk/README.md` for the exact source/compiler gates.
+
 Updated: 2026-10-15, 07:34 UTC.
 
 ## Goal and current boundary

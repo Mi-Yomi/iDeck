@@ -25,7 +25,9 @@ The host control uses Windows QEMU 11.1.0 (`v11.1.0-12130-ge470268ff4`), **not**
 
 In the pinned Husk source, `QemuRunner.run()` performs a GL probe and Android snapshot work around the existing Alpine profile. Do not merely swap its argv and treat it as an isolated Linux session. Integrate an explicit Linux branch/session that skips those Android operations, uses a dedicated directory, registers `husk_display_init()` after `qemu_init`, forwards input through the same software bridge, and runs only after the existing JIT self-test succeeds. Preserve the Android profile and its data.
 
-`ios/LinuxGuestProfile.swift` validates the generated assets and creates the native argv with mandatory `split-wx=on`. It is source prepared for that integration; it does **not** start QEMU itself. `ci/check_linux_guest_profile.py` and the manual `ideck-linux-guest-profile-check` workflow typecheck it against the real Apple SDK and run separate synthetic Mac validation checks. Neither check has run here.
+`ios/LinuxGuestProfile.swift` validates the assets and creates native argv with mandatory `split-wx=on`. The continuation adds `LinuxProbeSession.swift` and `LinuxProbeView.swift`: a one-session QEMU owner, isolated UI route, software display/input, strict framebuffer/evdev evidence and a shareable report. [The pinned Husk overlay](husk/README.md) connects these to the actual app entry point. Source staging passed; this Swift integration is **not yet compiled or device-tested**.
+
+`ci/check_linux_guest_profile.py` and the manual `ideck-linux-guest-profile-check` now typecheck the original and patched Husk Swift application using the real C bridge and Apple SDK, and run the profile/evidence validator tests on Mac. The exact offline upstream source slice has 77 files, includes its existing notices/license, and contains no runtime binaries. The workflow has not been dispatched.
 
 ## Reproduce on this Windows workstation
 
@@ -41,7 +43,7 @@ python -m unittest discover -s experiments/linux-guest/tests -v
 
 Input URLs, provider checksums, sizes and local hashes are in `evidence/boot-inputs.json`. The QEMU Windows binary provider is linked by [qemu.org](https://www.qemu.org/download/#windows). The installer was unpacked with 7-Zip, never installed. Preserve its COPYING/source information. Guest preparation refuses an archive that differs from the pinned SHA-256. Use a fresh output directory; no old result or guest is overwritten. In PowerShell, quote `'-Wl,-e,_start'`.
 
-The Apple workflow has no automatic trigger, dependency download, signing, artifact upload or publication. Before any owner-approved push/dispatch, check the current free quota and disabled paid subscription; historical quota numbers are not current authorization. Set `expected_commit` to the exact reviewed branch commit and select the existing private repository. Internal budget: 240 seconds; provider cap: 10 minutes. This task is a compiler gate, not an IPA build.
+The Apple workflow has no automatic trigger, dependency download, signing, artifact upload or publication. Before any owner-approved push/dispatch, check the current free quota and disabled paid subscription; historical quota numbers are not current authorization. Set `expected_commit` to the exact reviewed branch commit and select the existing private repository. Internal budget: 480 seconds; provider cap: 10 minutes. This task is a compiler gate, not an IPA build.
 
 ## Failed controls retained
 
@@ -51,4 +53,4 @@ The Apple workflow has no automatic trigger, dependency download, signing, artif
 
 ## Licensing and scope
 
-`RESEARCH.md` records the pinned projects and their source licenses. No third-party runtime source has been copied into this experiment, no original license was changed, and no Steam binary is committed or repackaged for distribution. The existing Playport/Madeira app and a future linked QEMU/Husk target require a file-level license/exception review before combining or distributing them. Do not assume that sharing ARM64 instructions, a Metal backend or a JIT helper makes their runtime ABIs interchangeable.
+`RESEARCH.md` records the pinned projects and their source licenses. The continuation includes an exact source-only Husk slice for offline compiler checking, with its existing GPL notices and LICENSE; no license was replaced or newly selected. No Steam binary is committed or repackaged for distribution. This is a separate Husk experiment, not a link between the Playport/Madeira app and QEMU. Combining/distributing those targets still requires a file-level license/exception review.

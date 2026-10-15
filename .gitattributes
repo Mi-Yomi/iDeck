@@ -1,3 +1,6 @@
 /experiments/linux-guest/** text eol=lf
 /experiments/linux-guest/evidence/*.png binary
+/experiments/linux-guest/husk/*.tar.gz binary
+# A format-patch blank context line has a required leading space.
+/experiments/linux-guest/husk/patches/*.patch whitespace=-blank-at-eol
 /ci/check_linux_guest_profile.py text eol=lf

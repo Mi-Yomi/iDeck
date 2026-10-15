@@ -1,0 +1,187 @@
+{
+  "schema": 1,
+  "status": "host_boot_framebuffer_input_pass",
+  "host_os": "nt",
+  "host_runner_sha256": "5e204a533155817751444373fdeab1ded12d80f6ceebf5736bbc227eb1f8feed",
+  "qemu_sha256": "952f897511177803722efed6fefe79bc3e7e5a51a026112dfc40f9a37fb0dad2",
+  "qemu_version": "QEMU emulator version 11.1.0 (v11.1.0-12130-ge470268ff4)\nCopyright (c) 2003-2026 Fabrice Bellard and the QEMU Project developers",
+  "argv": [
+    "E:\\Freddy Fazbear\\iDeck\\.work\\linux-boot\\qemu\\qemu-system-aarch64.exe",
+    "-M",
+    "virt",
+    "-cpu",
+    "cortex-a72",
+    "-smp",
+    "4",
+    "-m",
+    "1024",
+    "-accel",
+    "tcg,thread=multi,tb-size=256",
+    "-kernel",
+    "E:\\Freddy Fazbear\\iDeck\\.work\\ios-probe-bundle\\iDeckLinuxProbe\\vmlinuz-virt",
+    "-initrd",
+    "E:\\Freddy Fazbear\\iDeck\\.work\\ios-probe-bundle\\iDeckLinuxProbe\\initramfs-ideck.gz",
+    "-append",
+    "console=ttyAMA0 loglevel=6 rdinit=/ideck-init fbcon=nodefer vt.global_cursor_default=0",
+    "-nic",
+    "none",
+    "-device",
+    "virtio-gpu-pci,xres=800,yres=600",
+    "-device",
+    "virtio-tablet-pci",
+    "-device",
+    "virtio-keyboard-pci",
+    "-display",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "file:E:\\Freddy Fazbear\\iDeck\\.work\\linux-boot\\run-ios-bundle\\serial.log",
+    "-qmp",
+    "stdio",
+    "-no-reboot"
+  ],
+  "profile": {
+    "schema": 1,
+    "upstream_url": "https://dl-cdn.alpinelinux.org/alpine/v3.24/releases/aarch64/alpine-netboot-3.24.1-aarch64.tar.gz",
+    "upstream_sha256": "54fe38fa41cce740ba379458ed63cfcd89ab06ae5e6a47a06dafe0a34e8427e8",
+    "upstream_size": 431008592,
+    "original_initramfs_sha256": "e47d38bc88509a3db11affc09f9762f9643b026bd29441724a4729ad8e97add6",
+    "init_source_sha256": "b533880b3a182f3089a16865caff8695a70d7a4807c2e146f7a88090f16b4a64",
+    "width": 800,
+    "height": 600,
+    "modloop_sha256": "f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b",
+    "evdev_path": "modules/6.18.35-0-virt/kernel/drivers/input/evdev.ko",
+    "evdev_sha256": "2959ebcb3ba19095d052be3cea1ec44e88982df94d52e5869612c30f9d9897c7",
+    "frame_probe_sha256": "62e9ab98f0730d00e052e2b9b0741070975ccc79229ce8ebe456303b9fee4d3d",
+    "frame_probe_source_sha256": "ed68af1c17e7492e77f9dc03fbb342fcc12be49e440d46cab9c1dfd516e60d1c",
+    "cpu": "cortex-a72",
+    "memory_mib": 1024,
+    "vcpus": 4,
+    "tcg_cache_mib": 256,
+    "kernel": {
+      "file": "vmlinuz-virt",
+      "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+      "size": 10351104
+    },
+    "initramfs": {
+      "file": "initramfs-ideck.gz",
+      "sha256": "5f64312eeef340991c6b0d97bd9d1fb01649c1763e14d7fb8231ad16551e9343",
+      "size": 9402391
+    },
+    "frames_bgra_sha256": [
+      "e8863c335217e021bca1ec62372ec27a7d569818ec085180162cbf6539e8fd97",
+      "a6c7820146e38170a5bc6b4c247acd838098b64ac1b61847c343ace2dea02f4f"
+    ],
+    "purpose": "boot-display-input only; Alpine musl is not the Steam glibc rootfs"
+  },
+  "ios_executed": false,
+  "steam_executed": false,
+  "gpu_acceleration_verified": false,
+  "host_differences": "Windows QEMU 11.1 TCG; not Husk QEMU 10.0.12-utm; no iOS split-WX allocator or Metal presenter",
+  "qmp_version": {
+    "QMP": {
+      "version": {
+        "qemu": {
+          "micro": 0,
+          "minor": 1,
+          "major": 11
+        },
+        "package": "v11.1.0-12130-ge470268ff4"
+      },
+      "capabilities": []
+    }
+  },
+  "boot_to_capture_ready_host_seconds": 4.329,
+  "frame_a": {
+    "file": "frame-0.ppm",
+    "sha256": "702c4890f418ad6eba4c55f6fab767c24aa87795dae4af78cb0e87a3726423d1",
+    "all_480000_pixels_match": true
+  },
+  "keyboard_events": [
+    {
+      "seconds": 1792088219,
+      "microseconds": 244030,
+      "type": 1,
+      "code": 30,
+      "value": 1
+    },
+    {
+      "seconds": 1792088219,
+      "microseconds": 244030,
+      "type": 0,
+      "code": 0,
+      "value": 0
+    },
+    {
+      "seconds": 1792088219,
+      "microseconds": 244842,
+      "type": 1,
+      "code": 30,
+      "value": 0
+    },
+    {
+      "seconds": 1792088219,
+      "microseconds": 244842,
+      "type": 0,
+      "code": 0,
+      "value": 0
+    }
+  ],
+  "tablet_events": [
+    {
+      "seconds": 1792088219,
+      "microseconds": 247230,
+      "type": 3,
+      "code": 0,
+      "value": 8192
+    },
+    {
+      "seconds": 1792088219,
+      "microseconds": 247230,
+      "type": 3,
+      "code": 1,
+      "value": 24575
+    },
+    {
+      "seconds": 1792088219,
+      "microseconds": 247230,
+      "type": 1,
+      "code": 272,
+      "value": 1
+    },
+    {
+      "seconds": 1792088219,
+      "microseconds": 247230,
+      "type": 0,
+      "code": 0,
+      "value": 0
+    },
+    {
+      "seconds": 1792088219,
+      "microseconds": 248545,
+      "type": 1,
+      "code": 272,
+      "value": 0
+    },
+    {
+      "seconds": 1792088219,
+      "microseconds": 248545,
+      "type": 0,
+      "code": 0,
+      "value": 0
+    }
+  ],
+  "frame_b": {
+    "file": "frame-1.ppm",
+    "sha256": "7401cf8b527738f47a4f2e54274021dbf3c99c1aa0e7f0028ad92a3eda67cee8",
+    "all_480000_pixels_match": true
+  },
+  "elapsed_host_seconds": 25.125,
+  "qemu_exit_code": 0,
+  "raw_serial_sha256": "b3becbbc09967ab31701ea5837a23f4fb45ab437cae063fb85f5d898f56a1779",
+  "raw_ppm_sha256": {
+    "frame-0.ppm": "702c4890f418ad6eba4c55f6fab767c24aa87795dae4af78cb0e87a3726423d1",
+    "frame-1.ppm": "7401cf8b527738f47a4f2e54274021dbf3c99c1aa0e7f0028ad92a3eda67cee8"
+  }
+}

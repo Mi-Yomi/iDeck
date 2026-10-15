@@ -9,12 +9,12 @@ workflows:
         type: string
       free_quota_verified:
         description: Personal free macOS allowance and disabled paid subscription verified before this manual run
-        type: boolean
-        default: false
+        type: string
+        default: "false"
       private_source_verified:
         description: This approved private Mi-Yomi/iDeck source package is the selected repository
-        type: boolean
-        default: false
+        type: string
+        default: "false"
     environment:
       xcode: "26.6"
       vars:

@@ -1233,8 +1233,8 @@
   },
   "rust_commit": "b940084d7eb6a299eb4bfeb8e34901bc051e7ac4",
   "control_hashes": {
-    "pairing_control.py": "b1fc1c8a3f5d597a8fb8b5d3e7b7c61bdb2e87d90e19515a21c614dad48c4a17",
-    "pairing_validate.py": "c5fc35f124bb8c07858f307892dc6b7703d22f2b398da921f2abe4c0a7fd80f0",
+    "pairing_control.py": "ccdb0612c2ea6533859dd6b0bcd9ae9fa7626991e7db52f1e3b3d10f4a45ad22",
+    "pairing_validate.py": "7f6e1e51255540f63a73cef6c5dd5d3961f549796a0d8346c961f140d2c5577b",
     "rustc_wrapper.py": "32351ee2b62b02ad361ee094ae8ee2900057e294848cf49bed58f0dee5b9eeb1",
     "tool_provenance.py": "adbfe86237b34851edbc0a8638bca3c00ca76d04943fb8fedf48186f78f47238"
   },
@@ -1245,5 +1245,144 @@
     "-C",
     "save-temps"
   ],
-  "diagnostic_revision": "Capture raw final/native metadata and exact ring source/object/argv hash ties before unchanged validation; no native SDK0 allowance"
+  "diagnostic_revision": "Retain complete prevalidation diagnostics; qualify only the eleven evidence-pinned ring ios64 assembly identities for unspecified SDK0 using typed fresh source/argv/native/final object bindings.",
+  "ring_native_policy": {
+    "schema": 1,
+    "package": {
+      "name": "ring",
+      "version": "0.17.14",
+      "sha256": "a4689e6c2294d81e88dc6261c768b63bc4fcdb852be6d1352498b114f61383b7",
+      "url": "https://static.crates.io/crates/ring/ring-0.17.14.crate"
+    },
+    "evidence": {
+      "run": "6ad0806b546ce6236ceec4f2",
+      "zip_sha256": "eb82603c24c066d852e2fe4447c1659ba9fa219aa88585655fbbd14f26d4f7a0",
+      "diagnostics_sha256": "f0fc8b1e2936aa481a1dc9a6e8554457279d5f464c064564fa2f3425a0553ef5"
+    },
+    "compile_count": 24,
+    "c_source_count": 13,
+    "archives": {
+      "libring_core_0_17_14_.a": 23,
+      "libring_core_0_17_14__test.a": 1
+    },
+    "compiler_argv_template": [
+      "{compiler}",
+      "-Os",
+      "-fPIC",
+      "--target=arm64-apple-ios",
+      "-miphoneos-version-min=18.0",
+      "-isysroot",
+      "{sdk}",
+      "-I",
+      "{vendor}/include",
+      "-I",
+      "{vendor}/pregenerated",
+      "-fvisibility=hidden",
+      "-std=c1x",
+      "-Wall",
+      "-Wbad-function-cast",
+      "-Wcast-align",
+      "-Wcast-qual",
+      "-Wconversion",
+      "-Wmissing-field-initializers",
+      "-Wmissing-include-dirs",
+      "-Wnested-externs",
+      "-Wredundant-decls",
+      "-Wshadow",
+      "-Wsign-compare",
+      "-Wsign-conversion",
+      "-Wstrict-prototypes",
+      "-Wundef",
+      "-Wuninitialized",
+      "-gfull",
+      "-DNDEBUG",
+      "-isysroot",
+      "{sdk}",
+      "-miphoneos-version-min=18.0",
+      "-o",
+      "{object}",
+      "-c",
+      "{source}"
+    ],
+    "sdk0_assembly": [
+      {
+        "id": "ring-0.17.14:pregenerated/chacha-armv8-ios64.S",
+        "source": "pregenerated/chacha-armv8-ios64.S",
+        "source_sha256": "5f8068c0e4d383118acef097d3808eff801ac85b431951547019ac9c8d74c12a",
+        "archive": "libring_core_0_17_14_.a",
+        "member": "c322a0bcc369f531-chacha-armv8-ios64.o"
+      },
+      {
+        "id": "ring-0.17.14:pregenerated/chacha20_poly1305_armv8-ios64.S",
+        "source": "pregenerated/chacha20_poly1305_armv8-ios64.S",
+        "source_sha256": "dc2e632365d720aa93608b6252aa2c1fd58fdadeba4729ff806f66ef2f4a1988",
+        "archive": "libring_core_0_17_14_.a",
+        "member": "c322a0bcc369f531-chacha20_poly1305_armv8-ios64.o"
+      },
+      {
+        "id": "ring-0.17.14:pregenerated/aesv8-armx-ios64.S",
+        "source": "pregenerated/aesv8-armx-ios64.S",
+        "source_sha256": "b462dd29d15a481b2f382748624ebc124d8a3ca5de160ae21929e6a90404decc",
+        "archive": "libring_core_0_17_14_.a",
+        "member": "c322a0bcc369f531-aesv8-armx-ios64.o"
+      },
+      {
+        "id": "ring-0.17.14:pregenerated/aesv8-gcm-armv8-ios64.S",
+        "source": "pregenerated/aesv8-gcm-armv8-ios64.S",
+        "source_sha256": "d6ab780020e2b93c5e7ac038605737797190e8a05648e7c2fa85488cb38f897f",
+        "archive": "libring_core_0_17_14_.a",
+        "member": "c322a0bcc369f531-aesv8-gcm-armv8-ios64.o"
+      },
+      {
+        "id": "ring-0.17.14:pregenerated/ghash-neon-armv8-ios64.S",
+        "source": "pregenerated/ghash-neon-armv8-ios64.S",
+        "source_sha256": "078a6ffb111f3376bd47cec2abdea46180b0c8676ee33e0d9dabd912b6ea65c0",
+        "archive": "libring_core_0_17_14_.a",
+        "member": "c322a0bcc369f531-ghash-neon-armv8-ios64.o"
+      },
+      {
+        "id": "ring-0.17.14:pregenerated/ghashv8-armx-ios64.S",
+        "source": "pregenerated/ghashv8-armx-ios64.S",
+        "source_sha256": "4a62e1fbe80f7696aaa97846fde81b50d82dc3e71f5ac856b356bcd0c935e1af",
+        "archive": "libring_core_0_17_14_.a",
+        "member": "c322a0bcc369f531-ghashv8-armx-ios64.o"
+      },
+      {
+        "id": "ring-0.17.14:pregenerated/vpaes-armv8-ios64.S",
+        "source": "pregenerated/vpaes-armv8-ios64.S",
+        "source_sha256": "0c412df12f904ed43c4b24757a5f7eda8e9b00e0907cdba39827f5732b98b601",
+        "archive": "libring_core_0_17_14_.a",
+        "member": "c322a0bcc369f531-vpaes-armv8-ios64.o"
+      },
+      {
+        "id": "ring-0.17.14:pregenerated/armv8-mont-ios64.S",
+        "source": "pregenerated/armv8-mont-ios64.S",
+        "source_sha256": "22e4b20e068d0e3fb8556b590fa7a86791c22a53f15f04207df8378d94d4c462",
+        "archive": "libring_core_0_17_14_.a",
+        "member": "c322a0bcc369f531-armv8-mont-ios64.o"
+      },
+      {
+        "id": "ring-0.17.14:pregenerated/p256-armv8-asm-ios64.S",
+        "source": "pregenerated/p256-armv8-asm-ios64.S",
+        "source_sha256": "3a5f857a50f9be57b24d549cc083d1473693a02cd640216537b75bc0d0249f59",
+        "archive": "libring_core_0_17_14_.a",
+        "member": "c322a0bcc369f531-p256-armv8-asm-ios64.o"
+      },
+      {
+        "id": "ring-0.17.14:pregenerated/sha512-armv8-ios64.S",
+        "source": "pregenerated/sha512-armv8-ios64.S",
+        "source_sha256": "ca8680a5d43bb77fcaa01b67dd18f54f9e41bb41fc93158f52555b5328177e60",
+        "archive": "libring_core_0_17_14_.a",
+        "member": "c322a0bcc369f531-sha512-armv8-ios64.o"
+      },
+      {
+        "id": "ring-0.17.14:pregenerated/sha256-armv8-ios64.S",
+        "source": "pregenerated/sha256-armv8-ios64.S",
+        "source_sha256": "4ab185c41aa8eea6cd4740a2a9c3bee51e6db6e24d8fa1e3aaf4124d5be5ce8a",
+        "archive": "libring_core_0_17_14_.a",
+        "member": "c322a0bcc369f531-sha256-armv8-ios64.o"
+      }
+    ],
+    "meaning": "SDK0 is unspecified. Only these exact source/archive/member identities may report SDK0 with fresh selected-clang SDK26.5/iOS18 argv and complete current byte provenance; final linked image remains SDK26.5."
+  }
 }

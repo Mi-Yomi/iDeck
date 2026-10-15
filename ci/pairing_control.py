@@ -25,7 +25,7 @@ import zipfile
 
 from pairing_validate import (Rejected, ar_members, macho, native_flags, require,
                               safe_relative, sha, shipped_crates, source_members,
-                              validate_member, bind_own_rust, final_definitions, raw_macho_metadata)
+                              validate_member, bind_own_rust, bind_ring_native, final_definitions, raw_macho_metadata)
 from tool_provenance import component_payload, verify_installed
 
 CI = Path(__file__).resolve().parent
@@ -412,7 +412,7 @@ class Control:
                 require(sha((folder / name).read_bytes()) == expected, "vendor source changed during build")
 
     def capture_ring_diagnostics(self, final_members):
-        # Diagnostics precede every native member policy guard. No acceptance rule changes.
+        # Diagnostics precede every native member policy guard and never accept objects.
         target = self.work / "target/aarch64-apple-ios/release"
         package = next(x for x in self.lock["crates"] if x["name"] == "ring" and x["version"] == "0.17.14")
         vendor = self.work / "vendor/ring-0.17.14"
@@ -473,33 +473,56 @@ class Control:
         result = dict(package=package, materialized_package_checksum=checksum["package"],
                       source_checksum_manifest_sha256=sha((vendor / ".cargo-checksum.json").read_bytes()),
                       compile_count=len(compiles), compilation_rows=compiles, archives=archives,
-                      diagnostic_issues=issues, acceptance_policy_changed=False)
+                      diagnostic_issues=issues, diagnostic_capture_accepts_objects=False)
         diagnostic_report = json.dumps(result, indent=2) + "\n"
         require(len(diagnostic_report.encode()) <= self.lock["log_cap_bytes"], "native diagnostic evidence cap")
         (self.evidence / "ring-prevalidation-diagnostics.json").write_text(diagnostic_report)
+        self.ring_diagnostics = result
 
     def validate_archive(self):
         target = self.work / "target/aarch64-apple-ios/release"
-        rust_hashes, native_hashes = set(), set()
-        native_origins = []
+        rust_hashes = set()
         for p in target.rglob("*.rlib"):
             for name, b in ar_members(p.read_bytes()):
                 if name.endswith(".o"):
                     rust_hashes.add(sha(b))
+        native_data = {}
         for p in self.native_diagnostic_paths:
-            require(p.name.startswith("libring_core_0_17_14_"), "unreviewed native crate archive")
-            for name, b in ar_members(p.read_bytes()):
-                try:
-                    info = macho(b)
-                    require(info["minimum"] == 0x120000 and info["sdk"] == 0x1A0500, "ring target flags mismatch: " + str(p.relative_to(self.work)) + " : " + name +
-                            " minimum=" + hex(info["minimum"]) + " sdk=" + hex(info["sdk"]))
-                except Exception as error:
-                    (self.evidence / "validation-failure-context.json").write_text(json.dumps(dict(
-                        stage="native-ring-member", archive=str(p.relative_to(self.work)), member=name,
-                        sha256=sha(b), error=str(error), raw_macho=raw_macho_metadata(b)), indent=2) + "\n")
-                    raise
-                native_hashes.add(sha(b))
-                native_origins.append(dict(path=str(p.relative_to(self.work)), name=name, sha256=sha(b), **info))
+            require(p.is_file() and not p.is_symlink() and p.resolve().is_relative_to(target / "build"),
+                    "native archive path/type changed")
+            native_data[str(p.relative_to(self.work))] = p.read_bytes()
+        # Native objects are also bundled inside ring's rlib. They cannot fall back to Rust SDK0 rules.
+        native_hashes = {sha(b) for data in native_data.values() for _, b in ar_members(data)}
+        rust_hashes.difference_update(native_hashes)
+        source_hashes, object_hashes = {}, {}
+        vendor = self.work / "vendor/ring-0.17.14"
+        for row in self.ring_diagnostics["compilation_rows"]:
+            source, obj = Path(row["source"]), Path(row["object"])
+            require(source.is_file() and not source.is_symlink() and source.resolve().is_relative_to(vendor) and
+                    obj.is_file() and not obj.is_symlink() and obj.resolve().is_relative_to(target / "build"),
+                    "ring source/object path/type changed")
+            require(source.stat().st_size <= 4 * 1024**2 and obj.stat().st_size <= 16 * 1024**2,
+                    "ring source/object byte cap")
+            source_hashes[str(source)], object_hashes[str(obj)] = sha(source.read_bytes()), sha(obj.read_bytes())
+        log = next(x for x in self.commands if x["log"].endswith("-cargo-build.log"))
+        try:
+            checksum_bytes = (vendor / ".cargo-checksum.json").read_bytes()
+            require(sha(checksum_bytes) == self.ring_diagnostics["source_checksum_manifest_sha256"],
+                    "ring materialized source checksum manifest changed")
+            native_origins = bind_ring_native(self.lock["ring_native_policy"], self.ring_diagnostics,
+                    work=str(self.work), compiler=self.tools["clang"], sdk=self.ios_sdk,
+                    archive_data=native_data, final_data=self.archive.read_bytes(),
+                    source_hashes=source_hashes, object_hashes=object_hashes,
+                    checksum=json.loads(checksum_bytes),
+                    cargo_record=log, cargo_log=(self.evidence / log["log"]).read_text())
+        except Exception as error:
+            context = getattr(error, "context", dict(stage="native-ring-binding", error=str(error)))
+            (self.evidence / "validation-failure-context.json").write_text(json.dumps(context, indent=2) + "\n")
+            raise
+        (self.evidence / "ring-members.json").write_text(json.dumps(
+            [dict(**origin.evidence(), **macho(next(b for n, b in ar_members(native_data[origin.archive])
+                                                   if n == origin.member)))
+             for origin in native_origins.values()], indent=2) + "\n")
         logs = [json.loads(line) for line in (self.evidence / "rustc-argv.jsonl").read_text().splitlines()]
         source_row = next(x for x in self.lock["files"] if x["path"] == "build/rppairing-ios/src/lib.rs")
         binding = bind_own_rust(logs, compiler=str(self.rustc), source=str(self.source / "src/lib.rs"),
@@ -511,11 +534,11 @@ class Control:
                     path.stat().st_size == obj["size"] and sha(path.read_bytes()) == obj["sha256"],
                     "recorded own object bytes changed")
         (self.evidence / "own-rust-object-binding.json").write_text(json.dumps(binding, indent=2) + "\n")
-        rows = [validate_member(name, b, self.std_hashes, rust_hashes, native_hashes, binding)
+        rows = [validate_member(name, b, self.std_hashes, rust_hashes, native_origins, binding,
+                                known_native_hashes=native_hashes)
                 for name, b in ar_members(self.archive.read_bytes())]
         require(rows and any(r["origin"] == "fresh-rust-codegen-output" for r in rows), "no fresh Rust code")
         (self.evidence / "archive-members.json").write_text(json.dumps(rows, indent=2) + "\n")
-        (self.evidence / "ring-members.json").write_text(json.dumps(native_origins, indent=2) + "\n")
         symbols = self.run([self.tools["nm"], "-g", self.archive], "archive-symbols", offline=True, cap=90)
         defined = set(re.findall(r"^[0-9a-fA-F]+ [TDSB] (_\S+)$", symbols, re.M))
         require({"_" + x for x in self.lock["exports"]} == {x for x in defined if x.startswith("_madeira_rppairing_")}, "C export namespace mismatch")

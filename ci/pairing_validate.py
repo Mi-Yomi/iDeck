@@ -1,5 +1,6 @@
 """Pure, host-testable validation. Never loads or executes an input artifact."""
 import hashlib
+from dataclasses import dataclass, asdict
 import io
 import json
 from pathlib import PurePosixPath
@@ -178,27 +179,165 @@ def raw_macho_metadata(data):
     return result
 
 
-def validate_member(name, data, std_hashes, rust_hashes, native_hashes, own_binding):
+@dataclass(frozen=True)
+class NativeOrigin:
+    """Created only after current source, argv, object and archive binding succeeds."""
+    member: str
+    sha256: str
+    archive: str
+    archive_sha256: str
+    source: str
+    source_sha256: str
+    object: str
+    compiler_argv: tuple
+    log_line: int
+    log_sha256: str
+    policy_sha256: str
+    sdk0_exception: str | None
+
+    def evidence(self):
+        return asdict(self)
+
+
+def bind_ring_native(policy, diagnostics, *, work, compiler, sdk, archive_data,
+                     final_data, source_hashes, object_hashes, checksum, cargo_record, cargo_log):
+    """Qualify exact current native bytes; no filename/hash-only SDK0 allowance."""
+    require(policy.get("schema") == 1 and len(policy.get("sdk0_assembly", [])) == 11,
+            "missing/excess ring SDK0 policy entries")
+    exceptions = policy["sdk0_assembly"]
+    for key in ("id", "source", "member"):
+        require(len({e[key] for e in exceptions}) == 11, "duplicate ring exception identity")
+    for e in exceptions:
+        require(re.fullmatch(r"pregenerated/[A-Za-z0-9_-]+-ios64\.S", e["source"]) and
+                re.fullmatch(r"[0-9a-f]{64}", e["source_sha256"]) and
+                e["archive"] == "libring_core_0_17_14_.a" and
+                e["id"] == "ring-0.17.14:" + e["source"], "invalid ring assembly exception")
+    package = policy["package"]
+    require(all(diagnostics["package"].get(k) == v for k, v in package.items()) and
+            checksum["package"] == package["sha256"] == diagnostics["materialized_package_checksum"],
+            "ring package provenance mismatch")
+    require(not diagnostics["diagnostic_issues"] and cargo_record.get("returncode") == 0 and
+            cargo_record.get("offline_sandbox") is True, "ring compilation incomplete/unproven")
+    compiles = diagnostics["compilation_rows"]
+    require(len(compiles) == diagnostics["compile_count"] == policy["compile_count"] == 24,
+            "ring compile inventory changed")
+    require(len({r["object"] for r in compiles}) == len(compiles) and
+            len({r["source"] for r in compiles}) == len(compiles), "duplicate ring compilation provenance")
+    require(sum(r["language_suffix"] == ".c" for r in compiles) == policy["c_source_count"] == 13,
+            "ring C/assembly source inventory changed")
+    lines = cargo_log.splitlines()
+    logged = {}
+    for number, line in enumerate(lines, 1):
+        if line.startswith("[ring 0.17.14] running: "):
+            argv = shlex.split(line.split("running: ", 1)[1])
+            if "-c" in argv and "-o" in argv:
+                logged[number] = argv
+    require(set(logged) == {r["log_line"] for r in compiles} and len(logged) == len(compiles),
+            "missing/duplicate ring compiler log rows")
+    final_rows = list(ar_members(final_data))
+    require(len({n for n, _ in final_rows}) == len(final_rows), "duplicate final archive member")
+    final = {n: sha(b) for n, b in final_rows}
+    archives = diagnostics["archives"]
+    require(len(archives) == len(policy["archives"]) == len(archive_data) and
+            {a["path"] for a in archives} == set(archive_data) and
+            {PurePosixPath(a["path"]).name for a in archives} == set(policy["archives"]),
+            "ring native archive inventory changed")
+    origins, used_rows, seen_exceptions = {}, set(), set()
+    vendor = work + "/vendor/ring-0.17.14"
+    policy_hash = sha(json.dumps(policy, sort_keys=True, separators=(",", ":")).encode())
+    for archive in archives:
+        path = archive["path"]
+        require(re.fullmatch(r"target/aarch64-apple-ios/release/build/ring-[0-9a-f]{16}/out/[^/]+\.a", path),
+                "ring archive outside exact fresh target output")
+        content = archive_data[path]
+        require(archive.get("diagnostic_error") is None and archive["sha256"] == sha(content) and
+                archive["size"] == len(content), "ring native archive bytes changed")
+        members = list(ar_members(content))
+        require(len(members) == len(archive["members"]) == policy["archives"][PurePosixPath(path).name],
+                "ring native archive member inventory changed")
+        for ordinal, ((name, data), recorded) in enumerate(zip(members, archive["members"])):
+            digest = sha(data)
+            try:
+                require(recorded["ordinal"] == ordinal and recorded["name"] == name and
+                        recorded["sha256"] == digest and recorded["size"] == len(data),
+                        "ring recorded member identity mismatch")
+                object_path = work + "/" + str(PurePosixPath(path).parent / name)
+                matches = [i for i, r in enumerate(compiles) if r["object"] == object_path and
+                           r.get("object_sha256") == digest]
+                require(len(matches) == 1 and recorded["compile_rows"] == matches and
+                        matches[0] not in used_rows, "missing/ambiguous ring object provenance")
+                index = matches[0]; row = compiles[index]; used_rows.add(index)
+                relative = row["source_relative"]; safe_relative(relative)
+                source = vendor + "/" + relative
+                require(row["source"] == source and row["language_suffix"] == PurePosixPath(source).suffix and
+                        row["source_matches_materialized_package"] is True and
+                        row["source_sha256"] == row["vendor_manifest_sha256"] == checksum["files"].get(relative) ==
+                        source_hashes.get(source), "ring source provenance mismatch")
+                require(row["object_size"] == len(data) and object_hashes.get(object_path) == digest,
+                        "ring current object bytes changed")
+                expected = [a.format(compiler=compiler, sdk=sdk, vendor=vendor,
+                                    source=source, object=object_path) for a in policy["compiler_argv_template"]]
+                require(row["argv"] == expected == logged[row["log_line"]] and
+                        row["log"] == cargo_record["log"], "ring selected compiler/SDK/target argv mismatch")
+                require(name not in origins and final.get(name) == digest, "ring final member propagation mismatch")
+                candidates = [e for e in exceptions if e["source"] == relative or e["member"] == name]
+                exception = None
+                if candidates:
+                    require(len(candidates) == 1, "ambiguous ring exception")
+                    e = candidates[0]
+                    require(e["source"] == relative and e["source_sha256"] == row["source_sha256"] and
+                            e["archive"] == PurePosixPath(path).name and e["member"] == name and
+                            row["language_suffix"] == ".S", "ring SDK0 exception identity mismatch")
+                    exception = e["id"]; seen_exceptions.add(exception)
+                info = macho(data)
+                require(info["minimum"] == 0x120000 and
+                        (info["sdk"] == 0x1A0500 or (info["sdk"] == 0 and exception is not None)),
+                        "ring target flags mismatch: " + path + " : " + name +
+                        " minimum=" + hex(info["minimum"]) + " sdk=" + hex(info["sdk"]))
+                origins[name] = NativeOrigin(name, digest, path, sha(content), relative, row["source_sha256"],
+                        object_path, tuple(expected), row["log_line"], sha(cargo_log.encode()), policy_hash,
+                        exception if info["sdk"] == 0 else None)
+            except Rejected as error:
+                error.context = dict(stage="native-ring-member", archive=path, member=name,
+                                     sha256=digest, error=str(error), raw_macho=raw_macho_metadata(data))
+                raise
+    require(used_rows == set(range(len(compiles))) and seen_exceptions == {e["id"] for e in exceptions},
+            "incomplete ring native/exception binding")
+    return origins
+
+
+def validate_member(name, data, std_hashes, rust_hashes, native_origins, own_binding, *, known_native_hashes=frozenset()):
     info = macho(data)
     digest = sha(data)
     is_std = digest in std_hashes
-    is_native = digest in native_hashes
+    require(isinstance(native_origins, dict) and all(isinstance(v, NativeOrigin) for v in native_origins.values()),
+            "typed native origin map required")
+    native = native_origins.get(name)
+    native_hashes = {v.sha256 for v in native_origins.values()} | set(known_native_hashes)
+    is_native = native is not None or digest in native_hashes
+    if is_native:
+        require(native is not None and native.member == name and native.sha256 == digest,
+                "native member lacks exact typed identity")
     is_own = bool(own_binding and name in own_binding["members"] and
                   own_binding["members"][name] == digest)
     is_rust = digest in rust_hashes or is_own
     require(is_std or is_native or is_rust, "unattributed archive object: " + name)
-    if is_std:
+    if is_std and not is_native:
         require(0 < info["minimum"] <= 0x120000, "Rust std minimum exceeds iOS 18")
         origin = "pinned-rust-standard-library"
     else:
         require(info["minimum"] == 0x120000, "fresh object minimum must be iOS 18")
         if is_native:
-            require(info["sdk"] == 0x1A0500, "native C/asm SDK must be 26.5")
-            origin = "fresh-native-crate-output"
+            require(info["sdk"] == 0x1A0500 or (info["sdk"] == 0 and native.sdk0_exception is not None),
+                    "native SDK0 lacks exact qualified assembly origin")
+            origin = "qualified-ring-ios64-assembly" if info["sdk"] == 0 else "fresh-native-crate-output"
         else:
             require(info["sdk"] in (0, 0x1A0500), "unrecognized Rust object SDK")
             origin = "fresh-rust-codegen-output"
-    return dict(name=name, size=len(data), sha256=digest, origin=origin, **info)
+    result = dict(name=name, size=len(data), sha256=digest, origin=origin, **info)
+    if is_native:
+        result["native_binding"] = native.evidence()
+    return result
 
 
 def bind_own_rust(rows, *, compiler, source, source_sha256, out_dir, archive_data):

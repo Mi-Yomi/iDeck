@@ -156,3 +156,60 @@ workflows:
 # Xcode 26.6 / iPhoneOS SDK 26.5 are verified by preflight before Wine fetch.
 # Approved official Homebrew bottle setup is bounded and pinned before source fetch.
 # Preflight still fails closed if Bison 3 or Mach-O-capable llvm-objcopy is unavailable.
+
+  ideck-win32u-ios-control:
+    name: iDeck pinned FreeType and complete source-only iOS win32u control
+    instance_type: mac_mini_m2
+    max_build_duration: 25
+    inputs:
+      expected_recipe_sha256:
+        description: Exact reviewed ci/win32u-core-control.sh SHA256
+        type: string
+      expected_importer_sha256:
+        description: Exact reviewed ci/import_wine_headers.py SHA256
+        type: string
+      expected_source_lock_sha256:
+        description: Exact reviewed ci/source-lock.json SHA256
+        type: string
+      expected_header_lock_sha256:
+        description: Exact reviewed successful producer ci/header-artifact-lock.json SHA256
+        type: string
+      free_quota_verified:
+        description: Free macOS quota and disabled paid subscription checked for this manual run
+        type: string
+        default: "false"
+      private_source_verified:
+        description: Approved private Mi-Yomi/iDeck repository selected
+        type: string
+        default: "false"
+    environment:
+      xcode: "26.6"
+      vars:
+        EXPECTED_RECIPE_SHA256: ${{ inputs.expected_recipe_sha256 }}
+        EXPECTED_IMPORTER_SHA256: ${{ inputs.expected_importer_sha256 }}
+        EXPECTED_SOURCE_LOCK_SHA256: ${{ inputs.expected_source_lock_sha256 }}
+        EXPECTED_HEADER_LOCK_SHA256: ${{ inputs.expected_header_lock_sha256 }}
+        FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
+        PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
+        GIT_TERMINAL_PROMPT: "0"
+        JOBS: "4"
+    scripts:
+      - name: Validate locked Wine headers and compile FreeType plus all 46 win32u objects
+        script: |
+          set -euo pipefail
+          test "${FREE_QUOTA_VERIFIED:-false}" = true
+          test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
+          python3 ci/run_win32u_control.py
+    artifacts:
+      - .work/win32u-control-artifacts/win32u-evidence.zip
+      - .work/win32u-control-artifacts/freetype-ios-archive.zip
+      - .work/win32u-control-artifacts/win32u-ios-archive.zip
+# PROPOSAL ONLY. No triggers, retries, caches, publication, credentials or signing.
+# Exact original successful Wine producer ZIP and reviewed lock are now included.
+# Template PIN_PENDING values remain rejected; only the reviewed actual lock can run.
+# Input ci/inputs/wine-headers.zip must already be in the approved private repo;
+# this workflow never downloads arbitrary artifacts or installs additional tools.
+# Existing CMake 4.3.4 / Apple clang / make / iPhoneOS SDK 26.5 only.
+# Aggregate subprocess budget 23 minutes; provider hard limit 25 minutes; JOBS=4.
+# Validated output is 42 FreeType + 46 win32u = 88 unique arm64 iOS 17.0 objects.
+# Static archive success is not runtime linkage, application, Steam or device success.

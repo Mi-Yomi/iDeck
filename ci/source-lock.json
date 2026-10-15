@@ -1,0 +1,677 @@
+{
+  "madeira_commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+  "wine_commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+  "freetype_commit": "42608f77f20749dd6ddc9e0536788eaad70ea4b5",
+  "freetype_source_url": "https://github.com/freetype/freetype.git",
+  "freetype_tag": "VER-2-13-3",
+  "freetype_tree_sha1": "d28e1763fa7d7114bb5f984be296dce388bc0cf1",
+  "win32u": [
+    {
+      "member": "bitblt.o",
+      "path": "wine/dlls/win32u/bitblt.c",
+      "sha256": "55ba98f802e620971516d0fafba6ec978691e7b1192cab5bbc7a4e85b298d303"
+    },
+    {
+      "member": "bitmap.o",
+      "path": "wine/dlls/win32u/bitmap.c",
+      "sha256": "27cab7c0351a4a9ede1bea4542ce1f61fb81bdfa883c37d928008cda189d66b4"
+    },
+    {
+      "member": "brush.o",
+      "path": "wine/dlls/win32u/brush.c",
+      "sha256": "eec960780e4cb26a7ba996bfaa407b0bcd14b94ff4c57fe5f27eebd1e6373a9c"
+    },
+    {
+      "member": "class.o",
+      "path": "build/win32u-unix/class_ios.c",
+      "sha256": "ec82a41d9017a1391d081802c2eacb34e76e7c3d7451a445734f19a42c9b047e"
+    },
+    {
+      "member": "clipboard.o",
+      "path": "wine/dlls/win32u/clipboard.c",
+      "sha256": "df6cde8921495f911bf4e4a8103dba0b96c38e2b9c09321101bfde179c5b8e78"
+    },
+    {
+      "member": "clipping.o",
+      "path": "wine/dlls/win32u/clipping.c",
+      "sha256": "cdb45595ab6dc3c5f51dc64a5911789034af47ad51a5e3e7c7288484ab1c9bb2"
+    },
+    {
+      "member": "cursoricon.o",
+      "path": "wine/dlls/win32u/cursoricon.c",
+      "sha256": "117ec7ec940c11eda43d894da89d88e0bc8a364e61e806833fd07bbcf424b122"
+    },
+    {
+      "member": "d3dkmt.o",
+      "path": "build/win32u-unix/d3dkmt_ios.c",
+      "sha256": "e3ed8ceda0c282ee62175b87c1f9368aaa0ecbbd01c4f456a1e40617890d9859"
+    },
+    {
+      "member": "dc.o",
+      "path": "wine/dlls/win32u/dc.c",
+      "sha256": "d1e8dfe6f7443774b6710e7cfc0685536e3efe5f199aa0284c744d5e3006ecc0"
+    },
+    {
+      "member": "dce.o",
+      "path": "wine/dlls/win32u/dce.c",
+      "sha256": "07b82d55c78f91aad2b951470cac5aaf38a5af3d6de76694bae25fe12e99ffae"
+    },
+    {
+      "member": "defwnd.o",
+      "path": "build/win32u-unix/defwnd_ios.c",
+      "sha256": "b88fc6eb46b5c353cc61ccccefb2254515ec3feaabcd730f26b464500c5d8633"
+    },
+    {
+      "member": "dib.o",
+      "path": "wine/dlls/win32u/dib.c",
+      "sha256": "02ffec4d4639f40b07f46364eb5947f3209dfee0da56bc27b9db3eb9d01feea9"
+    },
+    {
+      "member": "dibdrv_bitblt.o",
+      "path": "wine/dlls/win32u/dibdrv/bitblt.c",
+      "sha256": "2e717f85b18d345d7c087e135f43428aef043f4d97ec898738cebac708b11d67"
+    },
+    {
+      "member": "dibdrv_dc.o",
+      "path": "wine/dlls/win32u/dibdrv/dc.c",
+      "sha256": "048535f8d0cef0eb75301b018511d29e6cc47117d47aa21eb59da6c28ac868f4"
+    },
+    {
+      "member": "dibdrv_graphics.o",
+      "path": "wine/dlls/win32u/dibdrv/graphics.c",
+      "sha256": "1e58a3272e3bf58791f16bf0ce04e37fe05061adc663e894b8edf228e8ed2049"
+    },
+    {
+      "member": "dibdrv_objects.o",
+      "path": "wine/dlls/win32u/dibdrv/objects.c",
+      "sha256": "0019d161d596b034bac6d4973f7aa890d24ce8c3f438928dfd6ddd2404b711a3"
+    },
+    {
+      "member": "dibdrv_primitives.o",
+      "path": "wine/dlls/win32u/dibdrv/primitives.c",
+      "sha256": "68528dac692d2aeccde99cc364dcd886a0334305b4c0c251e4963dfb244e650b"
+    },
+    {
+      "member": "driver.o",
+      "path": "build/win32u-unix/driver_ios.c",
+      "sha256": "9869d0cf9401c38cc83afb07bfde0015f16edd4fedb6eca59f4741bff0b16435"
+    },
+    {
+      "member": "emfdrv.o",
+      "path": "wine/dlls/win32u/emfdrv.c",
+      "sha256": "38ba81bfac2c2590c764250abb03b3543bfa5846054ca83ec3444a45a8cdeef9"
+    },
+    {
+      "member": "font.o",
+      "path": "wine/dlls/win32u/font.c",
+      "sha256": "11eceb2f8f4815b77c6760e4f35a1674a8e4ee785e1cfff5513ad61a6c779581"
+    },
+    {
+      "member": "freetype.o",
+      "path": "build/win32u-unix/freetype_ios.c",
+      "sha256": "d79358f865f18e82824c4159fb19fcb503b082b277a6e8055f59f11c06eace89"
+    },
+    {
+      "member": "gdiobj.o",
+      "path": "wine/dlls/win32u/gdiobj.c",
+      "sha256": "6dfe34835c043b9f42f82d935e60a431c12b1cfcf02ebaf0d15ef4e8da7331b7"
+    },
+    {
+      "member": "hook.o",
+      "path": "wine/dlls/win32u/hook.c",
+      "sha256": "423010d711f9a314a7e1e2e0a93533d30ceee97198dad250bbecf62e0e76464d"
+    },
+    {
+      "member": "imm.o",
+      "path": "wine/dlls/win32u/imm.c",
+      "sha256": "d91f1823c4bd9f5f06bdff0a6b8ac5faf7c4dd8da307663b5f79ef10f291cfe1"
+    },
+    {
+      "member": "input.o",
+      "path": "wine/dlls/win32u/input.c",
+      "sha256": "2038ab3fe41175465994d34616899b5f6e0038797aa947fb51f6f52e302144fd"
+    },
+    {
+      "member": "mapping.o",
+      "path": "wine/dlls/win32u/mapping.c",
+      "sha256": "9ee5e4fdf25cbe8b13b425588aa5bd41a0a6d6617ca0c0ce69b50f8395225d93"
+    },
+    {
+      "member": "menu.o",
+      "path": "wine/dlls/win32u/menu.c",
+      "sha256": "bd1cf159f4c8770647669fa363d6c33bf34a41bbd6dca71d2a54b4d6e35e1f3f"
+    },
+    {
+      "member": "message.o",
+      "path": "build/win32u-unix/message_ios.c",
+      "sha256": "7a7dfd825825031be20a1d8a749abc6a75116ac1be0da377550ebe2265c3bd4c"
+    },
+    {
+      "member": "opengl.o",
+      "path": "wine/dlls/win32u/opengl.c",
+      "sha256": "e861d1d9e63c13bc61e902393069b6201c16296a25740bb22e8c199008e27856"
+    },
+    {
+      "member": "opentype.o",
+      "path": "wine/dlls/win32u/opentype.c",
+      "sha256": "b63433d99c6f8ee749bfcd76e7415b79ed7168d23c09b89f098c0d1a39d09304"
+    },
+    {
+      "member": "painting.o",
+      "path": "wine/dlls/win32u/painting.c",
+      "sha256": "ea6180473d2ee833b35e2b74eb6e80c5a718e087ae3584d7dd0b2565cba2ce5c"
+    },
+    {
+      "member": "palette.o",
+      "path": "wine/dlls/win32u/palette.c",
+      "sha256": "4dd1d8b63931348f085f8192a8e0c20000e65bd55f58669f57c0d79d48148c1a"
+    },
+    {
+      "member": "path.o",
+      "path": "wine/dlls/win32u/path.c",
+      "sha256": "b8c1863cabf10b2c87d2295f7c0c6ef0a345f527df0078b7ce6b3c88c89cff17"
+    },
+    {
+      "member": "pen.o",
+      "path": "wine/dlls/win32u/pen.c",
+      "sha256": "03ef4632facdec8f7fba7627499ec62f0be5c4867f39b1802e078759435b52d8"
+    },
+    {
+      "member": "printdrv.o",
+      "path": "wine/dlls/win32u/printdrv.c",
+      "sha256": "5ee025e194b9a8cb15e00b7cbe63ae619aab013d5013fdd8e486cf79f2e21838"
+    },
+    {
+      "member": "rawinput.o",
+      "path": "wine/dlls/win32u/rawinput.c",
+      "sha256": "26362b36bc6239d723b6e3485bebccd77ab62042b4e89f134be127cc2fbd60d2"
+    },
+    {
+      "member": "region.o",
+      "path": "wine/dlls/win32u/region.c",
+      "sha256": "5dc525867d05674b20f78d9568ebd61c81b6ac2c7fb9920c603c759de95c9f3d"
+    },
+    {
+      "member": "scroll.o",
+      "path": "wine/dlls/win32u/scroll.c",
+      "sha256": "337ffe8fece461a67148c805bdaaa27cadda08863d04cf826bfe21d11c5c0cbc"
+    },
+    {
+      "member": "spy.o",
+      "path": "wine/dlls/win32u/spy.c",
+      "sha256": "f0d74391e3a49b84ab374dc76e6579efb255835d5d72769adae71379469f4a98"
+    },
+    {
+      "member": "syscall.o",
+      "path": "build/win32u-unix/syscall_ios.c",
+      "sha256": "2a035f1e351eed7b0f849d216b2f202f8066a99afa9f11e6e0d74896d52f6d5a"
+    },
+    {
+      "member": "sysparams.o",
+      "path": "build/win32u-unix/sysparams_ios.c",
+      "sha256": "27cfb9bf0a44c69bed4b12e59659c90acf097dd6bb44a5150b955010ece26a08"
+    },
+    {
+      "member": "systray.o",
+      "path": "wine/dlls/win32u/systray.c",
+      "sha256": "7ecbb0338b135a93d9f127d75c0b681a7d9d378ee5c53125270a7e8e7c4623e1"
+    },
+    {
+      "member": "vertical.o",
+      "path": "wine/dlls/win32u/vertical.c",
+      "sha256": "59e1826ae8c2e15b9c21e93b1826921f37fed5884feda44b6879123c43714c11"
+    },
+    {
+      "member": "vulkan.o",
+      "path": "wine/dlls/win32u/vulkan.c",
+      "sha256": "911a726c004382a78dbc7edcf472381833fd46029aab311fbd0b25f38cbc216d"
+    },
+    {
+      "member": "window.o",
+      "path": "wine/dlls/win32u/window.c",
+      "sha256": "fefe5ece9ba2f9c81b6e38f26a1f424c14b60952326a6ca9e2d5c040089e8f0a"
+    },
+    {
+      "member": "winstation.o",
+      "path": "build/win32u-unix/winstation_ios.c",
+      "sha256": "97b4a4f697f63c9a46e4e7381281d705efca91bf1cc44055fd78e1b7a52e7402"
+    }
+  ],
+  "freetype": [
+    {
+      "member": "autofit.c.o",
+      "path": "research/freetype/src/autofit/autofit.c",
+      "git_blob_sha1": "de5ec7c7c5c44acbc1371c71523f78f6fdfceca5"
+    },
+    {
+      "member": "ftbase.c.o",
+      "path": "research/freetype/src/base/ftbase.c",
+      "git_blob_sha1": "50805ccec4bae4a192ec316467384cffc791850d"
+    },
+    {
+      "member": "ftbbox.c.o",
+      "path": "research/freetype/src/base/ftbbox.c",
+      "git_blob_sha1": "d6aa5d56df878021a399135f3e945e1ebf4ff984"
+    },
+    {
+      "member": "ftbdf.c.o",
+      "path": "research/freetype/src/base/ftbdf.c",
+      "git_blob_sha1": "d8e9fd7eaf4c39cb56d45181efc58387ec33622a"
+    },
+    {
+      "member": "ftbitmap.c.o",
+      "path": "research/freetype/src/base/ftbitmap.c",
+      "git_blob_sha1": "4be145679fd50c842cd8455784405aeb2e35a8f7"
+    },
+    {
+      "member": "ftcid.c.o",
+      "path": "research/freetype/src/base/ftcid.c",
+      "git_blob_sha1": "4f2deb19a053f003553794dfc31c586ee99bd000"
+    },
+    {
+      "member": "ftfstype.c.o",
+      "path": "research/freetype/src/base/ftfstype.c",
+      "git_blob_sha1": "1565c3b7e25adb6bd08a201935023a047ed5941e"
+    },
+    {
+      "member": "ftgasp.c.o",
+      "path": "research/freetype/src/base/ftgasp.c",
+      "git_blob_sha1": "c63d30e978c617774b2dec44281788c0cb72e6dc"
+    },
+    {
+      "member": "ftglyph.c.o",
+      "path": "research/freetype/src/base/ftglyph.c",
+      "git_blob_sha1": "1b5849f99afa1f29b8ac40466c7d4d90dcb8af71"
+    },
+    {
+      "member": "ftgxval.c.o",
+      "path": "research/freetype/src/base/ftgxval.c",
+      "git_blob_sha1": "6e38cb5ba9ab59b337a8c700e8987885d02739f2"
+    },
+    {
+      "member": "ftinit.c.o",
+      "path": "research/freetype/src/base/ftinit.c",
+      "git_blob_sha1": "9a6c00e13efaf8cdc567b198676dd9fad2108470"
+    },
+    {
+      "member": "ftmm.c.o",
+      "path": "research/freetype/src/base/ftmm.c",
+      "git_blob_sha1": "cc4ca22fba3ba1c7bafb54ec295e73d4e05b09e6"
+    },
+    {
+      "member": "ftotval.c.o",
+      "path": "research/freetype/src/base/ftotval.c",
+      "git_blob_sha1": "aed9eef343042ba3967ce1797aae6e89c301735b"
+    },
+    {
+      "member": "ftpatent.c.o",
+      "path": "research/freetype/src/base/ftpatent.c",
+      "git_blob_sha1": "2055757e023cd38eed8c49cb182d8426ab6eadc4"
+    },
+    {
+      "member": "ftpfr.c.o",
+      "path": "research/freetype/src/base/ftpfr.c",
+      "git_blob_sha1": "0caa9d1d58482896f683b82ca4445366b329cb06"
+    },
+    {
+      "member": "ftstroke.c.o",
+      "path": "research/freetype/src/base/ftstroke.c",
+      "git_blob_sha1": "64f46ce43e76c805aefbcf61eea5d32271885b85"
+    },
+    {
+      "member": "ftsynth.c.o",
+      "path": "research/freetype/src/base/ftsynth.c",
+      "git_blob_sha1": "ec05bce33a9a6a31ef7ca9d56e5f5baa4b280192"
+    },
+    {
+      "member": "fttype1.c.o",
+      "path": "research/freetype/src/base/fttype1.c",
+      "git_blob_sha1": "cedf7c405054d9b2338ee0ec545dd27f4d4bd7d9"
+    },
+    {
+      "member": "ftwinfnt.c.o",
+      "path": "research/freetype/src/base/ftwinfnt.c",
+      "git_blob_sha1": "e849a15f4222e342261432a829d93b2a3ea13a3f"
+    },
+    {
+      "member": "bdf.c.o",
+      "path": "research/freetype/src/bdf/bdf.c",
+      "git_blob_sha1": "249012e5907ed3d3cb9da2a8a081a54ed9aa119f"
+    },
+    {
+      "member": "ftbzip2.c.o",
+      "path": "research/freetype/src/bzip2/ftbzip2.c",
+      "git_blob_sha1": "a0249eb8d4380b35f1a3bc21f5fe37e7182207a4"
+    },
+    {
+      "member": "ftcache.c.o",
+      "path": "research/freetype/src/cache/ftcache.c",
+      "git_blob_sha1": "81e0347af9be4b0e078fa21fc7ecfca5b573f0c3"
+    },
+    {
+      "member": "cff.c.o",
+      "path": "research/freetype/src/cff/cff.c",
+      "git_blob_sha1": "e3e009699d2295ee6a09caf3e9391eafa7bba998"
+    },
+    {
+      "member": "type1cid.c.o",
+      "path": "research/freetype/src/cid/type1cid.c",
+      "git_blob_sha1": "890a3ac549d964436d9fa71167ca3554650b6c6c"
+    },
+    {
+      "member": "ftgzip.c.o",
+      "path": "research/freetype/src/gzip/ftgzip.c",
+      "git_blob_sha1": "f77377ef9a281bdae1b0bca481251e3ca6093cdf"
+    },
+    {
+      "member": "ftlzw.c.o",
+      "path": "research/freetype/src/lzw/ftlzw.c",
+      "git_blob_sha1": "e1acf22eee06c594268107a252d86fdd26fb2779"
+    },
+    {
+      "member": "pcf.c.o",
+      "path": "research/freetype/src/pcf/pcf.c",
+      "git_blob_sha1": "6b30fb249a709a0fe5d7cbba59bbd132f8f53983"
+    },
+    {
+      "member": "pfr.c.o",
+      "path": "research/freetype/src/pfr/pfr.c",
+      "git_blob_sha1": "71b57930b373ccea44917d53ced806b843dade39"
+    },
+    {
+      "member": "psaux.c.o",
+      "path": "research/freetype/src/psaux/psaux.c",
+      "git_blob_sha1": "ffe89cd624fa005a40dd67bd5e86181dd2d68418"
+    },
+    {
+      "member": "pshinter.c.o",
+      "path": "research/freetype/src/pshinter/pshinter.c",
+      "git_blob_sha1": "ae2b53fee53fea45c2dcf322bcb1032a352866a9"
+    },
+    {
+      "member": "psnames.c.o",
+      "path": "research/freetype/src/psnames/psnames.c",
+      "git_blob_sha1": "2933af1bf5be553a361d47d34f46d59c57ad3667"
+    },
+    {
+      "member": "raster.c.o",
+      "path": "research/freetype/src/raster/raster.c",
+      "git_blob_sha1": "fe33af242307222f8cfd5ac6d173ec9030428874"
+    },
+    {
+      "member": "sdf.c.o",
+      "path": "research/freetype/src/sdf/sdf.c",
+      "git_blob_sha1": "6045b8330b82e1bd83015b67c5291300ef132bf1"
+    },
+    {
+      "member": "sfnt.c.o",
+      "path": "research/freetype/src/sfnt/sfnt.c",
+      "git_blob_sha1": "52411febc4440e689d9ae6bc48bb1dd9bd654bd8"
+    },
+    {
+      "member": "smooth.c.o",
+      "path": "research/freetype/src/smooth/smooth.c",
+      "git_blob_sha1": "8c5068180e8ce478461dd3569cdb21218e2b3fcb"
+    },
+    {
+      "member": "svg.c.o",
+      "path": "research/freetype/src/svg/svg.c",
+      "git_blob_sha1": "1f1c04b2f2c07412bb55b244e3c1ae7ce0e270a3"
+    },
+    {
+      "member": "truetype.c.o",
+      "path": "research/freetype/src/truetype/truetype.c",
+      "git_blob_sha1": "fe9cb9247a5d61f96fd3341823f8c444ca50efd5"
+    },
+    {
+      "member": "type1.c.o",
+      "path": "research/freetype/src/type1/type1.c",
+      "git_blob_sha1": "d7ff53c79985f5f9f2470af6e5f0cbde3922c701"
+    },
+    {
+      "member": "type42.c.o",
+      "path": "research/freetype/src/type42/type42.c",
+      "git_blob_sha1": "a9444f0f505ebeba794d337f66dcd3fdc7f9dd58"
+    },
+    {
+      "member": "winfnt.c.o",
+      "path": "research/freetype/src/winfonts/winfnt.c",
+      "git_blob_sha1": "74a06416cd47c3cc62960ed2917c3de5b54da983"
+    },
+    {
+      "member": "ftsystem.c.o",
+      "path": "research/freetype/builds/unix/ftsystem.c",
+      "git_blob_sha1": "42895e8f5ab2de1ae49101779cdeab35650467e1"
+    },
+    {
+      "member": "ftdebug.c.o",
+      "path": "research/freetype/src/base/ftdebug.c",
+      "git_blob_sha1": "11307eaace4e1a0520d025536805f2ac4465918b"
+    }
+  ],
+  "additional_source_files": [
+    "app/Madeira/Winios/WiniosGamepad.h",
+    "build/freetype-ios/build.sh",
+    "build/madeira_cfg.h",
+    "build/ntdll-unix/shims/wine_ios_exit.h",
+    "build/win32u-unix/build.sh",
+    "build/win32u-unix/config_ios.h",
+    "build/win32u-unix/madeira_kmt.h",
+    "research/freetype/CMakeLists.txt",
+    "research/freetype/builds/unix/ftconfig.h.in",
+    "research/freetype/include/freetype/config/ftoption.h",
+    "wine/dlls/win32u/d3dkmt.c",
+    "wine/dlls/win32u/dibdrv/dibdrv.h",
+    "wine/dlls/win32u/freetype.c",
+    "wine/dlls/win32u/ntgdi_private.h",
+    "wine/dlls/win32u/ntuser_private.h",
+    "wine/dlls/win32u/syscall.c",
+    "wine/dlls/win32u/win32syscalls.h",
+    "wine/dlls/win32u/win32u_private.h",
+    "wine/include/apisetcconv.h",
+    "wine/include/basetsd.h",
+    "wine/include/bcrypt.h",
+    "wine/include/cderr.h",
+    "wine/include/cfg.h",
+    "wine/include/cfgmgr32.h",
+    "wine/include/cguid.h",
+    "wine/include/combaseapi.h",
+    "wine/include/comcat.idl",
+    "wine/include/commctrl.h",
+    "wine/include/commctrl.rh",
+    "wine/include/commdlg.h",
+    "wine/include/concurrencysal.h",
+    "wine/include/consoleapi.h",
+    "wine/include/d3d10.idl",
+    "wine/include/d3d10effect.idl",
+    "wine/include/d3d10misc.h",
+    "wine/include/d3d10sdklayers.idl",
+    "wine/include/d3d10shader.idl",
+    "wine/include/d3d11.idl",
+    "wine/include/d3d12.idl",
+    "wine/include/d3d12sdklayers.idl",
+    "wine/include/d3d9types.h",
+    "wine/include/d3dcommon.idl",
+    "wine/include/d3dkmdt.h",
+    "wine/include/d3dukmdt.h",
+    "wine/include/dbt.h",
+    "wine/include/dde.h",
+    "wine/include/dde.rh",
+    "wine/include/ddeml.h",
+    "wine/include/ddk/d3dkmthk.h",
+    "wine/include/ddk/hidclass.h",
+    "wine/include/ddk/hidpi.h",
+    "wine/include/ddk/wdm.h",
+    "wine/include/devpropdef.h",
+    "wine/include/dlgs.h",
+    "wine/include/docobj.idl",
+    "wine/include/driverspecs.h",
+    "wine/include/dxgi.idl",
+    "wine/include/dxgicommon.idl",
+    "wine/include/dxgiformat.idl",
+    "wine/include/dxgitype.idl",
+    "wine/include/excpt.h",
+    "wine/include/exdisp.idl",
+    "wine/include/exdispid.h",
+    "wine/include/fibersapi.h",
+    "wine/include/guiddef.h",
+    "wine/include/hidusage.h",
+    "wine/include/idispids.h",
+    "wine/include/imm.h",
+    "wine/include/immdev.h",
+    "wine/include/inaddr.h",
+    "wine/include/isguids.h",
+    "wine/include/kbd.h",
+    "wine/include/knownfolders.h",
+    "wine/include/libloaderapi.h",
+    "wine/include/lzexpand.h",
+    "wine/include/mcx.h",
+    "wine/include/memoryapi.h",
+    "wine/include/minwinbase.h",
+    "wine/include/minwindef.h",
+    "wine/include/mmsystem.h",
+    "wine/include/msxml.idl",
+    "wine/include/msxml2did.h",
+    "wine/include/msxmldid.h",
+    "wine/include/namespaceapi.h",
+    "wine/include/nb30.h",
+    "wine/include/ncrypt.h",
+    "wine/include/ntdef.h",
+    "wine/include/ntgdi.h",
+    "wine/include/ntstatus.h",
+    "wine/include/ntuser.h",
+    "wine/include/oaidl.idl",
+    "wine/include/objbase.h",
+    "wine/include/objectarray.idl",
+    "wine/include/objidl.idl",
+    "wine/include/objidlbase.idl",
+    "wine/include/ocidl.idl",
+    "wine/include/ole2.h",
+    "wine/include/oleauto.h",
+    "wine/include/olectl.h",
+    "wine/include/oleidl.idl",
+    "wine/include/processthreadsapi.h",
+    "wine/include/propidl.idl",
+    "wine/include/propsys.idl",
+    "wine/include/prsht.h",
+    "wine/include/realtimeapiset.h",
+    "wine/include/reason.h",
+    "wine/include/richedit.h",
+    "wine/include/rpc.h",
+    "wine/include/rpcasync.h",
+    "wine/include/rpcdce.h",
+    "wine/include/rpcdcep.h",
+    "wine/include/rpcndr.h",
+    "wine/include/rpcnterr.h",
+    "wine/include/rpcsal.h",
+    "wine/include/sal.h",
+    "wine/include/scarderr.h",
+    "wine/include/sdkddkver.h",
+    "wine/include/servprov.idl",
+    "wine/include/shdispid.h",
+    "wine/include/shellapi.h",
+    "wine/include/shldisp.idl",
+    "wine/include/shlguid.h",
+    "wine/include/shlobj.h",
+    "wine/include/shobjidl.idl",
+    "wine/include/shobjidl_core.idl",
+    "wine/include/shtypes.idl",
+    "wine/include/specstrings.h",
+    "wine/include/specstrings_strict.h",
+    "wine/include/structuredquerycondition.idl",
+    "wine/include/synchapi.h",
+    "wine/include/sysinfoapi.h",
+    "wine/include/threadpoolapiset.h",
+    "wine/include/timezoneapi.h",
+    "wine/include/unknwn.idl",
+    "wine/include/urlmon.idl",
+    "wine/include/verrsrc.h",
+    "wine/include/winapifamily.h",
+    "wine/include/winbase.h",
+    "wine/include/wincon.h",
+    "wine/include/wincontypes.h",
+    "wine/include/wincrypt.h",
+    "wine/include/windef.h",
+    "wine/include/windows.h",
+    "wine/include/wine/asm.h",
+    "wine/include/wine/debug.h",
+    "wine/include/wine/gdi_driver.h",
+    "wine/include/wine/hid.h",
+    "wine/include/wine/list.h",
+    "wine/include/wine/opengl_driver.h",
+    "wine/include/wine/rbtree.h",
+    "wine/include/wine/server.h",
+    "wine/include/wine/server_protocol.h",
+    "wine/include/wine/unixlib.h",
+    "wine/include/wine/vulkan.h",
+    "wine/include/wine/vulkan_driver.h",
+    "wine/include/wine/wgl.h",
+    "wine/include/wine/winbase16.h",
+    "wine/include/wine/windef16.h",
+    "wine/include/wine/wingdi16.h",
+    "wine/include/winerror.h",
+    "wine/include/wingdi.h",
+    "wine/include/winioctl.h",
+    "wine/include/winnetwk.h",
+    "wine/include/winnls.h",
+    "wine/include/winnt.h",
+    "wine/include/winnt.rh",
+    "wine/include/winperf.h",
+    "wine/include/winreg.h",
+    "wine/include/winresrc.h",
+    "wine/include/winscard.h",
+    "wine/include/winsmcrd.h",
+    "wine/include/winsock.h",
+    "wine/include/winspool.h",
+    "wine/include/winsvc.h",
+    "wine/include/winternl.h",
+    "wine/include/winuser.h",
+    "wine/include/winuser.rh",
+    "wine/include/winver.h",
+    "wine/include/wtypes.idl",
+    "wine/include/wtypesbase.idl",
+    "wine/include/xmldom.idl",
+    "wine/include/xmldomdid.h",
+    "wine/include/xmldso.idl",
+    "wine/include/xmldsodid.h"
+  ],
+  "required_generated_headers": [
+    "comcat.h",
+    "config.h",
+    "d3d10.h",
+    "d3d10effect.h",
+    "d3d10sdklayers.h",
+    "d3d10shader.h",
+    "d3d11.h",
+    "d3d12.h",
+    "d3d12sdklayers.h",
+    "d3dcommon.h",
+    "docobj.h",
+    "dxgi.h",
+    "dxgicommon.h",
+    "dxgiformat.h",
+    "dxgitype.h",
+    "exdisp.h",
+    "msxml.h",
+    "oaidl.h",
+    "objectarray.h",
+    "objidl.h",
+    "objidlbase.h",
+    "ocidl.h",
+    "oleidl.h",
+    "propidl.h",
+    "propsys.h",
+    "servprov.h",
+    "shldisp.h",
+    "shobjidl.h",
+    "shobjidl_core.h",
+    "shtypes.h",
+    "structuredquerycondition.h",
+    "unknwn.h",
+    "urlmon.h",
+    "wtypes.h",
+    "wtypesbase.h"
+  ],
+  "license_choice": "FTL for FreeType; retain its bundled module notices separately",
+  "source_only": true
+}

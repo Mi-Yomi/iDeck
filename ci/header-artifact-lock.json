@@ -1,0 +1,1998 @@
+{
+  "schema_version": 1,
+  "status": "VERIFIED",
+  "producer": {
+    "build_id": "6ad0576e546ce6236ceebc85",
+    "bootstrap_commit": "13cc0440aa0ac0407269a6e7881343ca126250fc",
+    "sdk_version": "26.5",
+    "xcode_version": "26.6",
+    "evidence_sha256": "19f9732d9d3e0696e04b2631620607e1d075e9650a6d3ed1c1894022e460eb52",
+    "result": "passed-source-control-only"
+  },
+  "source": {
+    "madeira": "279fd0f83170425db002fe25d6bd62f6355f497d",
+    "wine": "9129e9684daaeae70da9435e7c6060e59392634e",
+    "recipe_sha256": "c31e77940f4ed7ce45b9bcda507aa30ac3cc0e8cff413e494400233930287f03",
+    "wrapper_sha256": "9a7107f2bac23755450b77784d2c15b2ab404e662b5674c98e40a6b28046e2d7"
+  },
+  "artifact": {
+    "filename": "wine-headers.zip",
+    "sha256": "7049a985768cf3bcd100c0fea2fcbdb2cd28d8cf3087a63b24936f023055ebc2",
+    "size": 3956753,
+    "manifest_sha256": "3ac2ef23916a9b1f055e529f546b6a72d68d19960ad251ce627c51368df73b99",
+    "config_sha256": "22332cb47937d006792e911322c2978a953d25fb5c883837c952b05e7e4077e4"
+  },
+  "headers": [
+    {
+      "path": "activation.h",
+      "sha256": "ad6b8f27e0b00a908f135541ce3dfca637d7458fde3af3a63224b99350cc437c",
+      "size": 4697
+    },
+    {
+      "path": "activaut.h",
+      "sha256": "8e5cabe063899afd8e8aec0d78cfddc35063a37e67c751ffb1051ecda804c9f5",
+      "size": 787
+    },
+    {
+      "path": "activdbg.h",
+      "sha256": "8ab6b702147d7c4b1c60bbcfc5b83bfa46754e424405f2e2171aadc5908627ae",
+      "size": 98193
+    },
+    {
+      "path": "activscp.h",
+      "sha256": "06af26be5a64605c3d2b50dbecdd2aeb486e1c02fc7ed2b873553265640802d6",
+      "size": 87780
+    },
+    {
+      "path": "amsi.h",
+      "sha256": "9c0122f182ff4b4a3a3dd896e563f3573bf33f7cf1c1e6ba3a8d339f3cf86bd4",
+      "size": 1289
+    },
+    {
+      "path": "amstream.h",
+      "sha256": "ac676aa6aefa2f9f8aecca369b030c815a70f61cdb1bfd81b14d82cae89c0a7f",
+      "size": 69029
+    },
+    {
+      "path": "amvideo.h",
+      "sha256": "b32465d190f2fb11884736777e6f63a5eca666b55032834c842ddea56e00de9e",
+      "size": 42383
+    },
+    {
+      "path": "asptlb.h",
+      "sha256": "92bba6f06ccf56f47894ad1c64ebcc71c474b68dc8c7c811619ad0d8b5b4de49",
+      "size": 24244
+    },
+    {
+      "path": "asyncinfo.h",
+      "sha256": "cd1d8718ee2cac824fe5fa8e0640bb75104d4670d388db32be81620fbaf3858a",
+      "size": 5759
+    },
+    {
+      "path": "atliface.h",
+      "sha256": "a9dc08b31cfc13394d123d072310487e451feee11f77b1c7b84f0b5856efd360",
+      "size": 61507
+    },
+    {
+      "path": "audioclient.h",
+      "sha256": "3abdd57000c3b14d99bb615e8b2fda30425474e35bd1c3aa54063fe40e08d6cc",
+      "size": 72456
+    },
+    {
+      "path": "audiopolicy.h",
+      "sha256": "2727f144bcb661f9ecb0ea8209fbc006af196677ef6c78d4be95929eb3b61a86",
+      "size": 48087
+    },
+    {
+      "path": "austream.h",
+      "sha256": "6778a314f3e4328b3b26757e3a560eadb58fde6c0f6910b12525af83998204b6",
+      "size": 21688
+    },
+    {
+      "path": "bdaiface.h",
+      "sha256": "be3ccc6df1245066c930ec6220f6cbd6140dd5bf412fe17484716c357c2c4ef3",
+      "size": 253133
+    },
+    {
+      "path": "bits.h",
+      "sha256": "6df4f11e67d426b34e1b56b5003defdf148cd299aa6bac289f50b16e65c2ae3c",
+      "size": 48381
+    },
+    {
+      "path": "bits1_5.h",
+      "sha256": "a658b22ab4ca19fe4d12762844ffa4cd2838bc8e2f4b136c4bd2b709c86b8d25",
+      "size": 21635
+    },
+    {
+      "path": "bits2_0.h",
+      "sha256": "c7330ec1b4f0f7a862ceaf50a457fbc31f85eda4b1f1f9ab267abd0c4eeb7225",
+      "size": 27399
+    },
+    {
+      "path": "bits2_5.h",
+      "sha256": "47bebe02f4afbe2149fe47f93c370a5429ad8b4b8235f8a7a70c08f514c9a903",
+      "size": 10729
+    },
+    {
+      "path": "bits3_0.h",
+      "sha256": "170b2c83da8c00fe5e262f4a000339c8c813446fe249346a0e2b7d1c2bf43258",
+      "size": 29292
+    },
+    {
+      "path": "bits5_0.h",
+      "sha256": "452037c123d9e078e8f29d499abd72c99f7ae7120670d40c8ebabc38ff5f2ad2",
+      "size": 24671
+    },
+    {
+      "path": "cdosys.h",
+      "sha256": "770d97c1fb24302f37f27db7908eaa8d24caca12d25075605f246e00cd1771ce",
+      "size": 68306
+    },
+    {
+      "path": "cmnquery.h",
+      "sha256": "36e5ac85968d02df27c50d73a5a007caaa92a207d49c92f7c4cf874fe20c2b8c",
+      "size": 11494
+    },
+    {
+      "path": "comcat.h",
+      "sha256": "60c5bd81453decf36e6b19f303057bbda54bfea871f8bb1e250bd0c5d576442b",
+      "size": 25120
+    },
+    {
+      "path": "commoncontrols.h",
+      "sha256": "f142fbbd9b005de33afbccdc2730f4f41bc48aa5010898eecaa1825ac18961d8",
+      "size": 37207
+    },
+    {
+      "path": "comsvcs.h",
+      "sha256": "74731701bfd9699272ecc1ec91d57ac5cb034efe97db2b274028733af1b6a11c",
+      "size": 36674
+    },
+    {
+      "path": "config.h",
+      "sha256": "22332cb47937d006792e911322c2978a953d25fb5c883837c952b05e7e4077e4",
+      "size": 26687
+    },
+    {
+      "path": "control.h",
+      "sha256": "0ce6a23a8e9f5c4cdb5ca9c8e1c6d017cd9a6a3225bb414a4e61e75f64dd2937",
+      "size": 100805
+    },
+    {
+      "path": "cor.h",
+      "sha256": "81ac2ff46a36a0de7b880c0d1080d098001b7806ecf55755a35431577ae6e740",
+      "size": 15681
+    },
+    {
+      "path": "cordebug.h",
+      "sha256": "b80e2834508156c1bd090a29993db40b51b2817a98492f284937b2182bc7fdcf",
+      "size": 268199
+    },
+    {
+      "path": "corsym.h",
+      "sha256": "eb1a1c296794c77efded52f596387b5803ab3922adb50155270a14dac10c5622",
+      "size": 104306
+    },
+    {
+      "path": "ctfutb.h",
+      "sha256": "7d5e3d0a582113bc07cbc1b8541c17df45ed522a804648ecd9f4e9b909484c76",
+      "size": 34961
+    },
+    {
+      "path": "ctxtcall.h",
+      "sha256": "4e6303b830030a77013f87d67978748ab730db0b5cb272dba78b8bbee9d2d9a3",
+      "size": 3883
+    },
+    {
+      "path": "d2d1.h",
+      "sha256": "339aeb0aed8880f50519a944b1da360441626ccc0f507f39162b2b51a3a3552d",
+      "size": 335950
+    },
+    {
+      "path": "d2d1_1.h",
+      "sha256": "63a8976f830ede58a5c62b3d3b3738bb2b82707a8a4bc793e267d9fc2f18d2c7",
+      "size": 200825
+    },
+    {
+      "path": "d2d1_2.h",
+      "sha256": "3cee7c32d3b7b0b432d5769d795a445edc11031997c524ea3af49740ab1995e6",
+      "size": 91327
+    },
+    {
+      "path": "d2d1_3.h",
+      "sha256": "38958a587b47850aa708eb91c8a66bec1b17111d1803205f27f11b4ae3d4854d",
+      "size": 652629
+    },
+    {
+      "path": "d2d1effectauthor.h",
+      "sha256": "6820ffd7b2856a80f2d52109a519504f9afb1b94e2d319872c96d773c4e352a6",
+      "size": 107970
+    },
+    {
+      "path": "d2d1effects.h",
+      "sha256": "074268063432bd7553f69b172637f2c8d38dfa4dffa07830d1cdabfa763e65eb",
+      "size": 13551
+    },
+    {
+      "path": "d2d1effects_1.h",
+      "sha256": "1b8de039a8dc5bc24921b970bacdf60b81fe669fa62c733b7c20ab9d9ed626f2",
+      "size": 1793
+    },
+    {
+      "path": "d2d1effects_2.h",
+      "sha256": "2b4867234a19f9492d0998931b5251fd58f8aa2bc2c9ffa88dc0cf6e1f1da895",
+      "size": 1534
+    },
+    {
+      "path": "d3d10.h",
+      "sha256": "8802cbd033a83fad60d730a4d2b63ce2111cc9d73525f0a6df60ae7bf3434fc5",
+      "size": 220647
+    },
+    {
+      "path": "d3d10_1.h",
+      "sha256": "1df403cb3e6a24cde2e0696fb57fb29769419ab45999c07aff1567ed9567054c",
+      "size": 70304
+    },
+    {
+      "path": "d3d10effect.h",
+      "sha256": "f867168103f56c3bbcd1476876e4fabf7eec521ed364f4434161f68436b3697f",
+      "size": 240361
+    },
+    {
+      "path": "d3d10sdklayers.h",
+      "sha256": "d4eb98f3c66f693d9fdb6e631a3d4471c00f692fc4344333abe61fd226249811",
+      "size": 63509
+    },
+    {
+      "path": "d3d10shader.h",
+      "sha256": "385cdcb113c9cfb7feabff569d7e379fad507ea43d7be45f433de04206fcca0e",
+      "size": 20978
+    },
+    {
+      "path": "d3d11.h",
+      "sha256": "1c81e10434b0fe499233357e9597a9180ab7ac6d71597a8583cea9e58b12d852",
+      "size": 471524
+    },
+    {
+      "path": "d3d11_1.h",
+      "sha256": "3575e56735dc0f451ebf5b0297dda1261bb415db4926a6f388c9eb8c185a5a8b",
+      "size": 227217
+    },
+    {
+      "path": "d3d11_2.h",
+      "sha256": "6baa6f247dd0915b00016848f2a44e8c00a50d6ea09bf029b03092254153b870",
+      "size": 126927
+    },
+    {
+      "path": "d3d11_3.h",
+      "sha256": "046c7a16d2a4d3a08cbad6479fcdb4dc1753812b3e6159f41ebbf8b10f759d31",
+      "size": 275376
+    },
+    {
+      "path": "d3d11_4.h",
+      "sha256": "d6a27355ea1447d4cacf9b74035bb6a11dc8acc97a3fcf8cda745ad5edc1eef3",
+      "size": 146380
+    },
+    {
+      "path": "d3d11on12.h",
+      "sha256": "1a25050bfced9686bbf05c1fa1e40bc6d2e34f392b364efb10123ff7ab12a8c1",
+      "size": 17614
+    },
+    {
+      "path": "d3d11sdklayers.h",
+      "sha256": "f7e4c1c90a1e724158bfadfde8187cb53b330bcbb8085df5d29616b742f7f922",
+      "size": 111328
+    },
+    {
+      "path": "d3d12.h",
+      "sha256": "ce43afa3278ee8580099dae06a5d4ca27b3839d960f3ebb02adf99f3f1440790",
+      "size": 1252088
+    },
+    {
+      "path": "d3d12sdklayers.h",
+      "sha256": "fca1082ca2e93fa0259e6dd34621d528ef9a15bf545a8598609b46fa3e947a67",
+      "size": 137875
+    },
+    {
+      "path": "d3d12shader.h",
+      "sha256": "68be6eaf17a3b215e28039757c782b47688018d7447742c3356c47770034fa6a",
+      "size": 42942
+    },
+    {
+      "path": "d3d12video.h",
+      "sha256": "911945cb2b4323a949a49fe32a56a6d5245ca70e04b49e42c6e0597ecc2af313",
+      "size": 282508
+    },
+    {
+      "path": "d3d9on12.h",
+      "sha256": "63a48cec94bc6359f0af315a76733733dc8e7748829eb6c3d01e23eaea9b30a4",
+      "size": 6113
+    },
+    {
+      "path": "d3dcommon.h",
+      "sha256": "140f0d666918fb79d2d4314b38d8362ae630ffe5cf70ada7e3e352cdec49c4d1",
+      "size": 35603
+    },
+    {
+      "path": "d3dx11core.h",
+      "sha256": "5cba4e617d143b183db46e2f8f6325fa06b254f7922a76bbc9b0d9c818f6ffcd",
+      "size": 10505
+    },
+    {
+      "path": "dcommon.h",
+      "sha256": "0be349b7f14de78acf21d80caae3897167404532cb8a8ad8f32a9efc62193526",
+      "size": 5045
+    },
+    {
+      "path": "dcomp.h",
+      "sha256": "982c958f4ca3d72afd9670a06b7a5bd1747b85eb31f01882d8ded0ef2cc79e2a",
+      "size": 175422
+    },
+    {
+      "path": "dcompanimation.h",
+      "sha256": "9d7f2c71025d2e705fa379c28d9ca7d2e4f133ac8435d96f11436be7df7cbcee",
+      "size": 6747
+    },
+    {
+      "path": "dcomptypes.h",
+      "sha256": "19ab1770253f4311ac16221e175203d7e3281b42f60f35ddfe891094cb148c1f",
+      "size": 2309
+    },
+    {
+      "path": "ddstream.h",
+      "sha256": "06eca849d4197ebf786960539d383acc43f6892f69556bd713c4edfdf503a7ec",
+      "size": 17621
+    },
+    {
+      "path": "devicetopology.h",
+      "sha256": "79c88de97ded44a1a29dfab75509597ff3b07de55e60b02fd6a1a7fa2fd58990",
+      "size": 108567
+    },
+    {
+      "path": "dhtmled.h",
+      "sha256": "c08180d85f5c9d0179f5c045a98d5cb04e4d56ec980c2d54f464c44c774818f1",
+      "size": 59484
+    },
+    {
+      "path": "dimm.h",
+      "sha256": "be26a8fa84b344f7545048da5ae4a72d3b2d2979b75b4c79b3155d02eeca0c43",
+      "size": 65686
+    },
+    {
+      "path": "directmanipulation.h",
+      "sha256": "7f661a54b17d76d29f7db2a815fa776b147e084ef3f3b17d798649e8a903793b",
+      "size": 104515
+    },
+    {
+      "path": "dispatcherqueue.h",
+      "sha256": "0d9fe21eb51f67ec4665b51441571731281f4e2ce99f4106eef92c23f1e45942",
+      "size": 1715
+    },
+    {
+      "path": "dispex.h",
+      "sha256": "cfd3333498bdf4298f0bd82f3fa78b4c1e8e30ca2cbe56313d5a5be9c3588b3b",
+      "size": 29326
+    },
+    {
+      "path": "dmodshow.h",
+      "sha256": "c1385ac9d684f3590e4990cbe71f7edf7380f38992406fa2f9959d66595cb46f",
+      "size": 3614
+    },
+    {
+      "path": "docobj.h",
+      "sha256": "cfe1dfd000490489d6e239176682a5c8960f3848778cd2d2955e96c55178f6e9",
+      "size": 38998
+    },
+    {
+      "path": "docobjectservice.h",
+      "sha256": "870b70a0cc1e83ab92350d888aa4daaf2623e2e878a407076c8723d9eda7069d",
+      "size": 8871
+    },
+    {
+      "path": "documenttarget.h",
+      "sha256": "7aa0ebf882541547cfb11f63fb7c49b9ff367a835d4b6d642626fd4062e9c971",
+      "size": 17993
+    },
+    {
+      "path": "downloadmgr.h",
+      "sha256": "df0381cb3f56f1ca72dd13651741865be9fcce448dbeb73d6ea54a2aa02b53c0",
+      "size": 3965
+    },
+    {
+      "path": "dragdropinterop.h",
+      "sha256": "7603c38d704106e89f35fe9cfda08147b36a0ee397a34a90f2bfcdbac978321a",
+      "size": 5006
+    },
+    {
+      "path": "drmexternals.h",
+      "sha256": "32dedbb8866507346e48cdb7856f80f26bdb937a9ff2b9f541d4e6ea18e53769",
+      "size": 1045
+    },
+    {
+      "path": "dvdif.h",
+      "sha256": "83b21d23f35c0f0dcccf50c3b2b9c2d1fa3d99885c5f65ad36ade25663835335",
+      "size": 98256
+    },
+    {
+      "path": "dwrite.h",
+      "sha256": "1320295c78e0deeb12389e31b73589633f479ff86ed0b539cba3717e65697faa",
+      "size": 225745
+    },
+    {
+      "path": "dwrite_1.h",
+      "sha256": "864f01d12fdd08abb7f3820ed00c8aa45badfbc061b57bce060e699027573867",
+      "size": 146533
+    },
+    {
+      "path": "dwrite_2.h",
+      "sha256": "701d4d0c7ac1fde808b3c6fb7f84e91fb1b300e240c6630206792136f5b7a399",
+      "size": 156308
+    },
+    {
+      "path": "dwrite_3.h",
+      "sha256": "1fcb4ccd7a58b3afe23c25978550a0838e141c3a27ddbe803f3430480e978fe1",
+      "size": 710675
+    },
+    {
+      "path": "dxgi.h",
+      "sha256": "2284391201b814294d90d04b30ef128927a7cdc104aa7159976b6954af319ab1",
+      "size": 97952
+    },
+    {
+      "path": "dxgi1_2.h",
+      "sha256": "6088acb02fd8d7912abe6734e4b8258740840352b46123588b8872fbade04588",
+      "size": 88814
+    },
+    {
+      "path": "dxgi1_3.h",
+      "sha256": "f67c6e025aed872b53a3ac1ad5a11d889854590a95fc465a143e9e5218dd5bf1",
+      "size": 81565
+    },
+    {
+      "path": "dxgi1_4.h",
+      "sha256": "51bf0a421ee150e27892c6abadb1789a332a6540a77faf1d31778bb9ecd124e8",
+      "size": 58526
+    },
+    {
+      "path": "dxgi1_5.h",
+      "sha256": "1b8b701c9f556f2846bba5b9072c1a04775e553b94ba6ab42e34de03463be924",
+      "size": 60932
+    },
+    {
+      "path": "dxgi1_6.h",
+      "sha256": "3a6daed6ff773bfbded29c289c0c4528ae482ed5033438751428c94d99b1eab6",
+      "size": 60377
+    },
+    {
+      "path": "dxgicommon.h",
+      "sha256": "72d34582ad7c2981c8ecbf8010f8634842ab859f4d8c1c36826a1484442c0f26",
+      "size": 2423
+    },
+    {
+      "path": "dxgidebug.h",
+      "sha256": "1852d6265c3de8d3bc23cf5a1ba758e20e5c5a28c4c3a023482ec1259c346569",
+      "size": 33762
+    },
+    {
+      "path": "dxgiformat.h",
+      "sha256": "fe831a1f855870a841a285dc5763d319dc1318d77a1c0277d810f4dcd7ca372a",
+      "size": 5101
+    },
+    {
+      "path": "dxgitype.h",
+      "sha256": "0bcf2ce98bf671526343ef0ad7b44899f356852eb1c0158da1b0be910f870282",
+      "size": 2278
+    },
+    {
+      "path": "dxva2api.h",
+      "sha256": "7d33f39747a53f181f590ebc9c919323cf512b1a231c916194252267374dffed",
+      "size": 67229
+    },
+    {
+      "path": "dxvahd.h",
+      "sha256": "e2b343cd5782db51c682137a4b378ccc93b2b1316ba93b887d8c67fc50adbde0",
+      "size": 18634
+    },
+    {
+      "path": "endpointvolume.h",
+      "sha256": "ea56b92b9246bb8bf0913a2d037d268182e7e6391a657f71e814973ea827a7cf",
+      "size": 30596
+    },
+    {
+      "path": "eventtoken.h",
+      "sha256": "3eba5a11a1ef45978b1ffc36fd09f14a3b70ad753190d65718647c6a8220478b",
+      "size": 716
+    },
+    {
+      "path": "evr.h",
+      "sha256": "222800e9314c1a8d7cf19b2a9b6ff0c89e1c877d4cc2fddd60a4dadf29c8bfe4",
+      "size": 53367
+    },
+    {
+      "path": "evr9.h",
+      "sha256": "1e3203b8c18a17dd700745d0ab78dcb3d560aad7da1d9051ecf56cadea10c96b",
+      "size": 14434
+    },
+    {
+      "path": "exdisp.h",
+      "sha256": "cb8c54fc9e662dc6a236d1c2dc01c8808b838c9ebdfc7cf5d54eb79b98dd090e",
+      "size": 238447
+    },
+    {
+      "path": "filter.h",
+      "sha256": "3daf7f635948f77e0a798f4317591df1c17274b0f0d2cbb167e98c7944f0c2b1",
+      "size": 6928
+    },
+    {
+      "path": "fusion.h",
+      "sha256": "1daebdf5c2122f89dc5d10f5528250ee0d98aed78aab757581073355241ca8e9",
+      "size": 33244
+    },
+    {
+      "path": "gameinput.h",
+      "sha256": "088130fbdac928fc95436c3af51c92c3b63313c2464ffe0da7f319db5f775544",
+      "size": 174822
+    },
+    {
+      "path": "gameux.h",
+      "sha256": "65b4140dd3971a8b43c5703bd5f64c85ddbbd1b7eb351f47749f5caeebe2ac33",
+      "size": 23930
+    },
+    {
+      "path": "hlink.h",
+      "sha256": "856c13fdc4349eb1710ee9278782baa70c7db2438a0bffcd9eb8e328ef6dd095",
+      "size": 48304
+    },
+    {
+      "path": "holographicspaceinterop.h",
+      "sha256": "e5bb076d6cc587239becaad4c772b46784c7fef14f0ea95ff04f825547f0f5f9",
+      "size": 5490
+    },
+    {
+      "path": "hrtfapoapi.h",
+      "sha256": "88da2708b785c6ea17c124cfce69c6bec69ac04a48677994d8b7e17982746d0a",
+      "size": 6416
+    },
+    {
+      "path": "hstring.h",
+      "sha256": "b505284e00185ee49048f5cbf4313111252d06a9dee0b192d0c95feb4418e9aa",
+      "size": 916
+    },
+    {
+      "path": "htiface.h",
+      "sha256": "ec716306b4fa035e84746c0b4df7c13ea2db7735525d8f354ce3f940adb5e21f",
+      "size": 23624
+    },
+    {
+      "path": "htiframe.h",
+      "sha256": "25a70ef6871212e7f80342192d78448e19afc42b2240c7ba74d356fb82055b0a",
+      "size": 19616
+    },
+    {
+      "path": "httprequest.h",
+      "sha256": "450682cf4f9a09113e7d3d9f68c5f68dead8625c01415a7c7220d226579ae6c1",
+      "size": 18052
+    },
+    {
+      "path": "iads.h",
+      "sha256": "53d825f93ff223acffba805b1090d5517acbe1eca5164b55fed745b34f45170c",
+      "size": 153256
+    },
+    {
+      "path": "icftypes.h",
+      "sha256": "b2af9c02ae9d5f0be096ee146cc2b215c4dc0eb4c6c57a6bf25cebe8893dc79d",
+      "size": 2364
+    },
+    {
+      "path": "icodecapi.h",
+      "sha256": "2e9e46b5432eafb1ea2a27ad1599570e480c7c0482c05d0733a58501990745aa",
+      "size": 10261
+    },
+    {
+      "path": "ieautomation.h",
+      "sha256": "3c8f2465f69239bdf2d0dbce1648b9e9f3e0900e24b11cefe87323bd93bf937a",
+      "size": 4832
+    },
+    {
+      "path": "iextag.h",
+      "sha256": "d813f362f743919e8911dde56c38ab4f3b0b62d51c5993f3d2a0e5445fca8aae",
+      "size": 15354
+    },
+    {
+      "path": "iimgctx.h",
+      "sha256": "bde01806a2e91c20305297fea7d23b48758725df6b32054e4351338ec9898416",
+      "size": 8511
+    },
+    {
+      "path": "imnact.h",
+      "sha256": "13f37fc404ec92dc78bdae3fde7b5a7ee29f66246c093d9ccc80d5716234c453",
+      "size": 46889
+    },
+    {
+      "path": "imnxport.h",
+      "sha256": "781cd0c6d807f9c14b406dc7c886982e49f5fcfa2b99f371fb051697b410379f",
+      "size": 122350
+    },
+    {
+      "path": "indexsrv.h",
+      "sha256": "db6f18d4ce0d6568c408bdc28e81ac6bfbe5e0962d840f2892c77c6c3814888f",
+      "size": 13964
+    },
+    {
+      "path": "inputpaneinterop.h",
+      "sha256": "864167eb8005b5a2cedff2684a393324f08b7e9d5c80ebce6ad867746c751d6f",
+      "size": 5073
+    },
+    {
+      "path": "inputscope.h",
+      "sha256": "12b9d747f81ef2f313c3010b57736d4cddeacf44a4c1005d95c1eb69a549c19c",
+      "size": 7637
+    },
+    {
+      "path": "inseng.h",
+      "sha256": "e04ea474553f6c40da4447b7f0f26c8746a3a4444a5a36b5d55d873c3a0a4255",
+      "size": 40547
+    },
+    {
+      "path": "inspectable.h",
+      "sha256": "4a209e8a68e461d6a0b2f3ba18590d4f762ba42fb2d4fac35c171f0300aa7f16",
+      "size": 4629
+    },
+    {
+      "path": "ivectorchangedeventargs.h",
+      "sha256": "aeada8972c28a12148f954eadebf55d4e7354893fa90e91ef3476cc92fc62ae8",
+      "size": 11312
+    },
+    {
+      "path": "mediaobj.h",
+      "sha256": "0c6e56adec4ed4e8399a9ea02f098b39f0f19c1a5ce991268d536ff43e204bf2",
+      "size": 36971
+    },
+    {
+      "path": "medparam.h",
+      "sha256": "7d7dca75aa34707ca672c85a34b2f74a4fafdd759b75c3dbb7880add6d2896b8",
+      "size": 11442
+    },
+    {
+      "path": "metahost.h",
+      "sha256": "5a809f270fa854c2b196d2947bbc38f6b836afcdbdae2932eb49a0fb661692f6",
+      "size": 29682
+    },
+    {
+      "path": "mfd3d12.h",
+      "sha256": "8aa78af68f5523ed97df419cf2c8b1d67eebf648d9bb0f451f994d92e3eb7340",
+      "size": 11088
+    },
+    {
+      "path": "mfidl.h",
+      "sha256": "ea92d4dbbbb728f10d945fcb5191f7071f2b4ac498135fd37572c4b1f1e8484a",
+      "size": 407632
+    },
+    {
+      "path": "mfmediaengine.h",
+      "sha256": "a0bd3d79130c05934032395dcf43dd478c43f1386412c9be76bf4c3b0675ab29",
+      "size": 92670
+    },
+    {
+      "path": "mfobjects.h",
+      "sha256": "96f8717fbbf39c5444d994a8e84c5075cac09b4678511dfb8cc2041a948cd503",
+      "size": 213750
+    },
+    {
+      "path": "mfplay.h",
+      "sha256": "16d5b038419fa921aa45ca56d3d685e013dc58ff76af9eedd24a244265c0f984",
+      "size": 40035
+    },
+    {
+      "path": "mfreadwrite.h",
+      "sha256": "1003d475706e35e080eada2b18a3a7634dfed295b76e48d6d0e6974275688b0c",
+      "size": 65724
+    },
+    {
+      "path": "mftransform.h",
+      "sha256": "7703e9e76628ba687830d768a19c80213564971a955fc6ff8c99fdab1b61c364",
+      "size": 23825
+    },
+    {
+      "path": "mimeinfo.h",
+      "sha256": "6e61c1374ec9932c36f3d8265f6175a24a23c173b6a891c3fb5fc0c701aa5eb9",
+      "size": 3342
+    },
+    {
+      "path": "mimeole.h",
+      "sha256": "6b56b9743f9e6a310e132028798f6664241d4fd9276200b832cc2f564ba7507a",
+      "size": 201613
+    },
+    {
+      "path": "mlang.h",
+      "sha256": "d65988861aa89a867aed33c7075f79a203f175a0b53700b35f652643280b38e6",
+      "size": 111037
+    },
+    {
+      "path": "mmc.h",
+      "sha256": "1f3ba34d2655365159f4273a06798ab10503665dc21881728bea550c9c7912bd",
+      "size": 4378
+    },
+    {
+      "path": "mmdeviceapi.h",
+      "sha256": "816005d103ae09884ea7f8be30adb162ee74e30f3b205045a62c00070c240c59",
+      "size": 35902
+    },
+    {
+      "path": "mmstream.h",
+      "sha256": "fff4672faed8a7b6ec7e1ebef24b7daae110227286c3abe87217cf083cf2a2fa",
+      "size": 20610
+    },
+    {
+      "path": "mpeg2data.h",
+      "sha256": "c4949fa067aa2d641ff166cf76d5e3111b686c7457ba9cb90fbb73f7a2ab3578",
+      "size": 25015
+    },
+    {
+      "path": "mpeg2structs.h",
+      "sha256": "8d19c6d67245f00c379c7b7f4ad51935bf736dd2673703574825cd011e6ab587",
+      "size": 8199
+    },
+    {
+      "path": "mpegtype.h",
+      "sha256": "573856b79a6e02a3b0c25ed8d8c4b190ea3229be26d1f54e6a90622115c6fa6c",
+      "size": 9808
+    },
+    {
+      "path": "msado15_backcompat.h",
+      "sha256": "95f5dda959ea619264420bbffbb78eacaf99b7527f4c033222e3862e641d7b5b",
+      "size": 392647
+    },
+    {
+      "path": "mscoree.h",
+      "sha256": "e830f18742542a43f85dd8b4ff7dcb20a91cd976f86b2f24937c5d238b4c0a7d",
+      "size": 46033
+    },
+    {
+      "path": "msctf.h",
+      "sha256": "764437c9e52788edcda5d2e850cc986817156695e12dea6bcaac9c7caddb481b",
+      "size": 338271
+    },
+    {
+      "path": "msdadc.h",
+      "sha256": "83fb403e467ec2310f88ed92d204aa2661aad875fd8ba06988baa986bbc81fd8",
+      "size": 9373
+    },
+    {
+      "path": "msdasc.h",
+      "sha256": "71bd9b049b7774f2e5454190b873040df826f709b376e04df6adeebd82b82f2f",
+      "size": 23087
+    },
+    {
+      "path": "mshtmhst.h",
+      "sha256": "6e807125f41befdbca3bb5bf8f7e8eaa14187023bc78a0f4cb3af77913be778a",
+      "size": 40641
+    },
+    {
+      "path": "mshtml.h",
+      "sha256": "a2d7d0961034789ebb10bebe10d6fc8dfe2c48c9cbe2fa51bcb177cc0895faf9",
+      "size": 3287824
+    },
+    {
+      "path": "msident.h",
+      "sha256": "d45be5ebac72e98681ad5448d4239fa17deed9a1c1280a9bc756965426927c1e",
+      "size": 15493
+    },
+    {
+      "path": "msinkaut.h",
+      "sha256": "b220047acc467bbff7fb22eeb8d34f6c113b35663f969223e037e9d98281ae2c",
+      "size": 252435
+    },
+    {
+      "path": "msopc.h",
+      "sha256": "e2fd79b9eedce5835c2c5c7cf8b211ef95e0889418cef9cfa0d63c01c0a16cbd",
+      "size": 69422
+    },
+    {
+      "path": "mstask.h",
+      "sha256": "3f73799c1c4ca39aacf208e06192c8b039aa1e2fc56fc9d355eef6129c33fe72",
+      "size": 56146
+    },
+    {
+      "path": "msxml.h",
+      "sha256": "07db95d940a437652ee2cb76f919530fa3dd5febc9d7ca4d1c26e822b3aeb54b",
+      "size": 436219
+    },
+    {
+      "path": "msxml2.h",
+      "sha256": "eb74262223bb98e03e1665379b64a84d77456e5815cca7af6d6f95d992df55d1",
+      "size": 945825
+    },
+    {
+      "path": "msxml6.h",
+      "sha256": "7c18f33433f955ae67b183d52d3fc3d01a001acb5fb6cdb843a3104c9582df5c",
+      "size": 939737
+    },
+    {
+      "path": "natupnp.h",
+      "sha256": "8ca11d31f42639722fe56c05e8cde72140c9f9d8393f743941d9f050a122aa2b",
+      "size": 50599
+    },
+    {
+      "path": "netcfgx.h",
+      "sha256": "872b2a7ae32756ed6b2a5c544db4873e0640556f07eac7efc80641da84737fbe",
+      "size": 22959
+    },
+    {
+      "path": "netcon.h",
+      "sha256": "94a9bd79a9e1bcab92e22bf02e7c0ddd161ab41ed6b9e6b0e843eb8a382baefa",
+      "size": 86793
+    },
+    {
+      "path": "netfw.h",
+      "sha256": "db8a81da9e39684179f9b0e25f81f56029adb68e8631e7fcfb96a4cc3e4cf5cc",
+      "size": 217240
+    },
+    {
+      "path": "netlistmgr.h",
+      "sha256": "8690541258281a069305f9995bb5d88d88cea68fd234a91d928174556712ecd7",
+      "size": 70923
+    },
+    {
+      "path": "ntverp.h",
+      "sha256": "2d1d9e308702b460ee501aba60227a91625a79f176b248f2899cbc97327f1282",
+      "size": 1701
+    },
+    {
+      "path": "oaidl.h",
+      "sha256": "cace052c75e0419e4b9b9ace4e864e94874ac73f5f7950fe0f9338b7307e105f",
+      "size": 180744
+    },
+    {
+      "path": "objectarray.h",
+      "sha256": "05f3eae2d07e3de95c841639a696edc9b855faf573bc53f5daab24cb72de604f",
+      "size": 8406
+    },
+    {
+      "path": "objidl.h",
+      "sha256": "da5a6bbe8c7e7e0a2181d53be1feaf14e4f03bf63d0cb14459b36e232903215c",
+      "size": 383414
+    },
+    {
+      "path": "objidlbase.h",
+      "sha256": "af0f6e7bfe7e7901cfb4b7b780283563ba2f2126a8ab94db5d36fb9f8609bebd",
+      "size": 198379
+    },
+    {
+      "path": "objsafe.h",
+      "sha256": "a103c5f63a8e60a1e697f7d596af24a952621316198d74cf25a1a673a7809c48",
+      "size": 4662
+    },
+    {
+      "path": "ocidl.h",
+      "sha256": "3c8bac59f7732720404eb233a294b08f33517dc53ce4343c6c6849316d7b5d00",
+      "size": 222368
+    },
+    {
+      "path": "ocmm.h",
+      "sha256": "4dec81c6cbdad23b0e4583ee794e1431634d0ec90b7ee7fc2ebea991daeb057f",
+      "size": 11261
+    },
+    {
+      "path": "oleacc.h",
+      "sha256": "d3772a4ae5b487c2e6814ae72d2a9d2609515c8960e70c37346a0836a128bc80",
+      "size": 48172
+    },
+    {
+      "path": "oledb.h",
+      "sha256": "5ddbe05a7d09c198b1dd5e6694030eb5576d1c7dba239e944fcdb9538bb2c64e",
+      "size": 349273
+    },
+    {
+      "path": "oleidl.h",
+      "sha256": "7a936513d0e3985d0cba496db35d8d6dc92a94cf859bd6c504991a3019af96d0",
+      "size": 132494
+    },
+    {
+      "path": "optary.h",
+      "sha256": "d18d8f71ca7bebe0018f33b2958c7f69b6cc69779705b46da919fd5588ac684c",
+      "size": 7393
+    },
+    {
+      "path": "peninputpanel.h",
+      "sha256": "f32a76290528a6679500155f6ee9ba321acb6af53d8a6d0726943ad7481bf84a",
+      "size": 27870
+    },
+    {
+      "path": "perhist.h",
+      "sha256": "874a7edb48dcdb4bb25245266efe77252df2a88b0aa94dab1b216ef1fa68acf6",
+      "size": 5255
+    },
+    {
+      "path": "proofofpossessioncookieinfo.h",
+      "sha256": "9ba5fc9d9000a80540fac3a594d4baca81f573fccd560d0379618fe4b177da17",
+      "size": 6156
+    },
+    {
+      "path": "propidl.h",
+      "sha256": "ed73bdc5a6437362d9abc813f98f0f90c9fc7232ef7e507b0205b9163d3f66e6",
+      "size": 32771
+    },
+    {
+      "path": "propsys.h",
+      "sha256": "3cb63fef6931d7c487a402905d4373ad16bafad5293372eed04d306d54a78816",
+      "size": 167329
+    },
+    {
+      "path": "pstore.h",
+      "sha256": "d21a7d371cb3e8c98ce97f985a0ba2e7c8e9f76ef450a0165568d9879ffba4b2",
+      "size": 27288
+    },
+    {
+      "path": "qedit.h",
+      "sha256": "ce5eb848448e262e1949a31e4bcd19df65e56bfacc2c9866a934601f9da91441",
+      "size": 96578
+    },
+    {
+      "path": "relogger.h",
+      "sha256": "2f6f0b5a95aff2b96327abdaec37759d43e08c1d8194a9caca864c26e9b77b54",
+      "size": 21793
+    },
+    {
+      "path": "restrictederrorinfo.h",
+      "sha256": "6622536ce76e32bdc87d9c33605ac3792fa2a8b575a92dd0343b5617c1da5db5",
+      "size": 4491
+    },
+    {
+      "path": "richole.h",
+      "sha256": "a6eb28c5614ecd5b6a4710c620942fc11e7539e8e525ac6bcd4fd6e9e8941f53",
+      "size": 22784
+    },
+    {
+      "path": "rmxftmpl.h",
+      "sha256": "76ef9dfa9cb0650c672620860230df553a3a0646f305aa62702167b21502b925",
+      "size": 20453
+    },
+    {
+      "path": "robuffer.h",
+      "sha256": "8527b6079e95e1ae8c23c427e195142e3d54127e504700d850e02b26d81b3d22",
+      "size": 6200
+    },
+    {
+      "path": "rometadataapi.h",
+      "sha256": "3c9a052403e4ab01a07c3729441a1202c876a86bf64f61a2dc216a2aedafb7dd",
+      "size": 66511
+    },
+    {
+      "path": "roparameterizediid.h",
+      "sha256": "db56577a7d628617e9317b5bfabb287e98d58ad02bd479a2d4141dbf76bba861",
+      "size": 10306
+    },
+    {
+      "path": "rtworkq.h",
+      "sha256": "96977cbe6911025128f639a1d3bddaf17cdca7ad685273b0ec6019f454f7e112",
+      "size": 15193
+    },
+    {
+      "path": "sapi.h",
+      "sha256": "26ff9254ca779d66f6a5c08b06d5a5b13e3a77238be4f20ad732eca52853a333",
+      "size": 578532
+    },
+    {
+      "path": "sapiddk.h",
+      "sha256": "d24ac6c1224c3de03b7eb13434ede17feace0d2787cff3734b2e0aec54620a2f",
+      "size": 20621
+    },
+    {
+      "path": "sensevts.h",
+      "sha256": "e3103a598e571d60adfd9991d92cb8957bd3689eac3f5335d3ccaf005515527c",
+      "size": 28822
+    },
+    {
+      "path": "servprov.h",
+      "sha256": "b6c56575376cfbf98bb43af7f78bf376a411919d85930a84b16f70faf7ad5343",
+      "size": 4173
+    },
+    {
+      "path": "shdeprecated.h",
+      "sha256": "2f11a92b46f260a57029be2da0e517c900e5b19dc4bb0f177f3d55dbd7e2ea6b",
+      "size": 84473
+    },
+    {
+      "path": "shimgdata.h",
+      "sha256": "44d1028f528f6ba52f24c394c43363ef6ea67f3d70e73aa2861fdaa96951c578",
+      "size": 23062
+    },
+    {
+      "path": "shldisp.h",
+      "sha256": "e099ed631995a573a48c922a0a45ace34e60fec64729fb69f6f22e1f7b439aa9",
+      "size": 272139
+    },
+    {
+      "path": "shobjidl.h",
+      "sha256": "7be0372d8b1bdea5acb041882e3fa2be64b5b788069b4c183891510dc366bff4",
+      "size": 646119
+    },
+    {
+      "path": "shobjidl_core.h",
+      "sha256": "c22c84ab56ec6f2993e75f857760846694af4b3f1d94011fa170056ec713437d",
+      "size": 8350
+    },
+    {
+      "path": "shtypes.h",
+      "sha256": "39ce71b481e91b233bc5da67b7e56387118c0ff10b121dac35e060d97f5d73cd",
+      "size": 5471
+    },
+    {
+      "path": "spatialaudioclient.h",
+      "sha256": "ef28b25e2083d7833b7ea71b40af750d3f80fe3f73ada6fea378db7b2cb50ad8",
+      "size": 39550
+    },
+    {
+      "path": "strmif.h",
+      "sha256": "ba732d7585b240c2b37b17ec31c8a859fd28d1e95e673950002c8b474f1d9388",
+      "size": 570306
+    },
+    {
+      "path": "structuredquerycondition.h",
+      "sha256": "529de7681b6e73f9b2d41ba043b8daf2817c9b4e52d48b3f09dc5a91cfe37b62",
+      "size": 1391
+    },
+    {
+      "path": "systemmediatransportcontrolsinterop.h",
+      "sha256": "65086a5055f497979c50b9c53fb3eae28ffe70f07f44eecf1c89fbaf9e8153be",
+      "size": 6030
+    },
+    {
+      "path": "taskschd.h",
+      "sha256": "a92c5f9fbacf2e0d0fc6bbe47b14eb85dbb5fc9908d634671f8abe926fc2d7f3",
+      "size": 321886
+    },
+    {
+      "path": "textstor.h",
+      "sha256": "ff7167a5cb3230cf230a44cb7f02590265733b40da90b0f6ca8eec899300c9e6",
+      "size": 31966
+    },
+    {
+      "path": "thumbcache.h",
+      "sha256": "73d4d78c34fe49d89190441538a5dae75ad81cd4d82bf7bbd1bb8a7a593a515c",
+      "size": 23516
+    },
+    {
+      "path": "tlogstg.h",
+      "sha256": "2598efdc52625b8f267fd17ccc727f5a39692a0cbb5d5ca4a324b60012130507",
+      "size": 4840
+    },
+    {
+      "path": "tom.h",
+      "sha256": "a965cc68fe931b617ea6791d6f360cf6993d001cf6d3f519b42108b178926371",
+      "size": 292679
+    },
+    {
+      "path": "transact.h",
+      "sha256": "83d9bf0d9affb19f2e331a04ae41b1e0fe5d5842bafb3f7f8f70295ae8f2b2f4",
+      "size": 32872
+    },
+    {
+      "path": "txcoord.h",
+      "sha256": "dc1f532fb21dec94cd0d1960f60332969cef4285e06538e683d7ff912c7943d6",
+      "size": 71286
+    },
+    {
+      "path": "txdtc.h",
+      "sha256": "f4abe072ef37a092b9276e100557d3c71992499167dfbfe4a7e9cd2ebdbc404b",
+      "size": 161735
+    },
+    {
+      "path": "uianimation.h",
+      "sha256": "6963f976ba709f55e26796297cb12b98e32b4e5c4cc45ee92dde61e617341902",
+      "size": 109881
+    },
+    {
+      "path": "uiautomationclient.h",
+      "sha256": "c025c6c554d17df1f7fdb0019272dfe6e6b2e2f24743c9d0253d90c730ea4665",
+      "size": 1061940
+    },
+    {
+      "path": "uiautomationcore.h",
+      "sha256": "99300c2bca9a5dd91c06487b16105c7d48164899e56c340cc03d4fe0567853e2",
+      "size": 257496
+    },
+    {
+      "path": "uiribbon.h",
+      "sha256": "7136496d717ba36c2d2e5574bda750e23d3a282fc815fafef2e6600feca0577c",
+      "size": 41564
+    },
+    {
+      "path": "uiviewsettingsinterop.h",
+      "sha256": "54365af6ad04c880dc419171aaa2a4cb7d4bb69af9565f127012a5ee3081df1e",
+      "size": 5280
+    },
+    {
+      "path": "unknwn.h",
+      "sha256": "8c7dfcc975318a945fda99b97d9dfe73e47c8d2e10730d18d330acaf13576d6b",
+      "size": 8729
+    },
+    {
+      "path": "urlhist.h",
+      "sha256": "fbf69ae01840a1579d847c8db30b52b1ac4ab4cd68f6076d59a09f32e3441a65",
+      "size": 19833
+    },
+    {
+      "path": "urlmon.h",
+      "sha256": "452ea593e3c5f96cea63889ddb39e3f544e0c1010c8b4e3d369468022a2f85e3",
+      "size": 280748
+    },
+    {
+      "path": "videoacc.h",
+      "sha256": "5647f53e731a3b6819d14da8fc5631f8e2f538b8ce829f9edc3d62911529efb0",
+      "size": 17427
+    },
+    {
+      "path": "vmr9.h",
+      "sha256": "e24629483e9ebc7a3e5c4e0a618b60ca0d8f893801b6a47714710c2435233e6d",
+      "size": 87997
+    },
+    {
+      "path": "vsbackup.h",
+      "sha256": "e457c72435ff128ce797d5f8487ba048786337877bf9354eb66af60d84eb0a64",
+      "size": 34495
+    },
+    {
+      "path": "vss.h",
+      "sha256": "5a743fdd44bf1211749075a19cca28d07147ed7e69d38ab151e98a13d4b6a7ae",
+      "size": 3621
+    },
+    {
+      "path": "vswriter.h",
+      "sha256": "db671f90b8c42fa2d4dc98314546adf4b8517627dcf844463a123f6944506fdf",
+      "size": 1554
+    },
+    {
+      "path": "wbemcli.h",
+      "sha256": "edb44a14a01c905033a2711e38218c34043ab0abaa3749f3b5bfb924b9ec7086",
+      "size": 124589
+    },
+    {
+      "path": "wbemdisp.h",
+      "sha256": "9bcdfcd9cf6ef95f95327f4c1249c24b27da64cf798bbe8d12d7d8ee46a2e8af",
+      "size": 183498
+    },
+    {
+      "path": "wbemprov.h",
+      "sha256": "6bebec53ca7214677077a428ba4046984a0ff8b611ff27f6978aac1c0e2e9c2f",
+      "size": 1695
+    },
+    {
+      "path": "weakreference.h",
+      "sha256": "b0c512ab1f285160a2af074060ab8aa5c1b219626898fe898473b420a213f84f",
+      "size": 6116
+    },
+    {
+      "path": "wia_lh.h",
+      "sha256": "bd026cc206b49581de9eb74cd71400a8cdd2e1ee2afa3c3f64f3802a2c6673f5",
+      "size": 64853
+    },
+    {
+      "path": "wia_xp.h",
+      "sha256": "e241854cd3deacd7ac9aaff6aa0db69e0d0e0899c14dca844b9b673e5f57ad85",
+      "size": 23937
+    },
+    {
+      "path": "wincodec.h",
+      "sha256": "1719e1bf0aac32060490bb1fc413300dd451911a7aa292b5d6000550aa78b8f6",
+      "size": 272466
+    },
+    {
+      "path": "wincodecsdk.h",
+      "sha256": "ee696f12d093d3f58261c1f96758cff4868b3d607656c68b96cec7186a5504ef",
+      "size": 110530
+    },
+    {
+      "path": "windows.applicationmodel.activation.h",
+      "sha256": "2bd9a07250f54f585e62a32962bdadf40492e8dcb5d10de1391725b481f71e60",
+      "size": 86089
+    },
+    {
+      "path": "windows.applicationmodel.background.h",
+      "sha256": "08a001559775913c11da11e43adfe53f2dc812aff137a6f512f74e9750f053e5",
+      "size": 232804
+    },
+    {
+      "path": "windows.applicationmodel.core.h",
+      "sha256": "4915f27e518493dd026edfc690fce7d5781a2d81dcabf6968b58dc5129554365",
+      "size": 326961
+    },
+    {
+      "path": "windows.applicationmodel.datatransfer.dragdrop.core.h",
+      "sha256": "34f98178015aa187ca4f8a21674e51a9e091a240d1fd8455576882a012dd0977",
+      "size": 120752
+    },
+    {
+      "path": "windows.applicationmodel.datatransfer.dragdrop.h",
+      "sha256": "4e7095d85c0810d4ca2f531efbe51824b5bbbb395cef0cb49ee2b590b7fd7aa5",
+      "size": 3067
+    },
+    {
+      "path": "windows.applicationmodel.datatransfer.h",
+      "sha256": "c2a3c6a08ed8d07d1aed54d7071b900e713ed8da87aec4e4a6e2301a578f35a8",
+      "size": 875537
+    },
+    {
+      "path": "windows.applicationmodel.h",
+      "sha256": "9c53c4af500d268c06ff7151d451a01002cfb4a155462336a5d280de12bef2ef",
+      "size": 325057
+    },
+    {
+      "path": "windows.data.json.h",
+      "sha256": "5230282f2746c7b3319daae994a015621152568fb6139cdf9ea17515154625a8",
+      "size": 145680
+    },
+    {
+      "path": "windows.data.xml.dom.h",
+      "sha256": "15165497e20a27095ac34b8533d286cf9c225d9068db9e7c30ec8efb279eb4a8",
+      "size": 333667
+    },
+    {
+      "path": "windows.devices.bluetooth.advertisement.h",
+      "sha256": "0b9bf8d7112ca5a3e1448f46039553015970d9067a86b473c188aba8756d0ce5",
+      "size": 535874
+    },
+    {
+      "path": "windows.devices.bluetooth.genericattributeprofile.h",
+      "sha256": "940ed182ec538cbc3392b3052d16cd1bbd6eda32a496ecda9cddd73bed062e46",
+      "size": 804653
+    },
+    {
+      "path": "windows.devices.bluetooth.h",
+      "sha256": "11baa0beaad8e52b23b8b87e2e3367e0269d72bf469022dc1f70a7b130a1a4e1",
+      "size": 285319
+    },
+    {
+      "path": "windows.devices.bluetooth.rfcomm.h",
+      "sha256": "e3b03ce0f03cb698c3b18dfe3dd46c148de94053916b1bdb820fba196efc1b12",
+      "size": 94429
+    },
+    {
+      "path": "windows.devices.enumeration.h",
+      "sha256": "2127ee38b6e8973e4d8819ad36022be5f9f1f9b07b7aebcad266964910bb8a69",
+      "size": 279333
+    },
+    {
+      "path": "windows.devices.geolocation.h",
+      "sha256": "508d41b87aec25811cf4676706d3462454342f082b45664d09edcf7196a532d1",
+      "size": 118775
+    },
+    {
+      "path": "windows.devices.haptics.h",
+      "sha256": "f4baaee7e45a6173e5410d4e20009632da8a36cdeeb776b6117a7a146fb82d05",
+      "size": 94655
+    },
+    {
+      "path": "windows.devices.input.h",
+      "sha256": "c60141ed1c3017016d3580f898e46d99047ccec2ce12461de9a44d865227a4b3",
+      "size": 53096
+    },
+    {
+      "path": "windows.devices.power.h",
+      "sha256": "632f8f89a70c0387392644a4e0cf3d8be40014148b701af9632eab322f3b9a78",
+      "size": 13803
+    },
+    {
+      "path": "windows.devices.radios.h",
+      "sha256": "189eabccbe6d73b136f49c4c38a41f2987ff0791e990a5ec08221a0c91102be9",
+      "size": 107634
+    },
+    {
+      "path": "windows.devices.usb.h",
+      "sha256": "5303d6b0f3724abc141394da3aaa509c95b20d10ad99c08457e58058c3151f37",
+      "size": 447141
+    },
+    {
+      "path": "windows.foundation.collections.h",
+      "sha256": "ecce0104d320ed26af7bb5b75d5c39c3e898c432eca7cf6e17b0b35ae81198cb",
+      "size": 33889
+    },
+    {
+      "path": "windows.foundation.h",
+      "sha256": "1b9938a3a3eab7a1b49380b6d0163f120d4a89a86d755636a8ebf07cea95e756",
+      "size": 673612
+    },
+    {
+      "path": "windows.foundation.metadata.h",
+      "sha256": "fcdcd9f3c16ce9f7379ce47651b5fd4169176f0e35e9770a468e492a611a1619",
+      "size": 23219
+    },
+    {
+      "path": "windows.foundation.numerics.h",
+      "sha256": "cee2bac7888f5f48afac312c3bff6331d0d0f78a7acb15f984bbb5f847b0db1f",
+      "size": 27174
+    },
+    {
+      "path": "windows.gaming.input.custom.h",
+      "sha256": "7d6e69110cd75f8aa97be1f84f16d254ac8dedbf3cd39092a50e471ee3aae4a1",
+      "size": 111207
+    },
+    {
+      "path": "windows.gaming.input.forcefeedback.h",
+      "sha256": "2aad1713d0c1d1bdaef89de9f7489636713d333ed308816ba830d0ad9c0f25a2",
+      "size": 186321
+    },
+    {
+      "path": "windows.gaming.input.h",
+      "sha256": "d8c155ee004b141ef85de3365e6f21bf23f462df41ba1ff33f32dcc92ff691ab",
+      "size": 452708
+    },
+    {
+      "path": "windows.gaming.ui.h",
+      "sha256": "3b42223dc16894afd5c167e6cac190c0190dd6a360fe813b0742555212476ff1",
+      "size": 13482
+    },
+    {
+      "path": "windows.globalization.h",
+      "sha256": "4ad9f3b0a2710db990331a5c7e2a83c08a28d5eec8c959d3c88e96a116888512",
+      "size": 263200
+    },
+    {
+      "path": "windows.graphics.capture.h",
+      "sha256": "8b0c520d893503a2411f97eedd7a846a6d8ba3eeb1cc0807d8032f3bf60df20f",
+      "size": 163207
+    },
+    {
+      "path": "windows.graphics.capture.interop.h",
+      "sha256": "01f8e1f206736f2e4c3ac6c857dd9d43e591f4c90a4a93adeaff612ef8f8fd78",
+      "size": 5289
+    },
+    {
+      "path": "windows.graphics.directx.direct3d11.h",
+      "sha256": "2928b15326bb27997ee1ca91e6cb4691a0eaacdbacc8c15ed501dc7b4c552945",
+      "size": 54384
+    },
+    {
+      "path": "windows.graphics.directx.h",
+      "sha256": "add4f7fded18429f5510f7f94934a623da3f9fa1a18308f61e1a221e5f40d27f",
+      "size": 40459
+    },
+    {
+      "path": "windows.graphics.display.h",
+      "sha256": "f12f154a62302d6f927c11b9374dbd0dfdb3a1369f01ed62a6f2f9f30834fc8c",
+      "size": 107168
+    },
+    {
+      "path": "windows.graphics.effects.h",
+      "sha256": "499b69c906d46832d62a74bdab101dcba9da85a195a5ec4a952a6a6d00cc6a05",
+      "size": 16934
+    },
+    {
+      "path": "windows.graphics.h",
+      "sha256": "ea2b31fa6faeb798713aa4dfa013bd1bd16318485d483f87aa52186e8175df53",
+      "size": 38799
+    },
+    {
+      "path": "windows.graphics.holographic.h",
+      "sha256": "41edadf43236726b34bfedecaf3a87999a205b8c9e74b506b906da99ac229079",
+      "size": 208402
+    },
+    {
+      "path": "windows.graphics.imaging.h",
+      "sha256": "1c8a212a46867a63f53a29c1361f8070788dcce951db380f8ecc8e24f2574f64",
+      "size": 133730
+    },
+    {
+      "path": "windows.management.deployment.h",
+      "sha256": "f266cce7bb85c65dfd99c6982bab6091288bef555599413b8d07bc5ede47fd10",
+      "size": 179746
+    },
+    {
+      "path": "windows.media.capture.h",
+      "sha256": "eaa5d727be08e23d75f0d876701b2eb9e88df8991e32428fc790d2a9898ce6a9",
+      "size": 4134
+    },
+    {
+      "path": "windows.media.closedcaptioning.h",
+      "sha256": "69b359cbbfdcac47346b987b90484526837a4fd9a25bb4da86fe445cc5f3ae5a",
+      "size": 32511
+    },
+    {
+      "path": "windows.media.core.h",
+      "sha256": "4361afa31eb70212ebe7a1558c004b2f45ff81affa29d26184a0ac1265d1ad73",
+      "size": 7739
+    },
+    {
+      "path": "windows.media.devices.h",
+      "sha256": "45a7f7ba3952543f107a1fa6ea9dd5ba071bd56aa046180ea5668fad7f724207",
+      "size": 50011
+    },
+    {
+      "path": "windows.media.effects.h",
+      "sha256": "2e68371725409b97ec2314effe3e4e312aa592745b8ce94db14bf656673d8fdf",
+      "size": 107775
+    },
+    {
+      "path": "windows.media.faceanalysis.h",
+      "sha256": "3b0ed32672d8f685e4af1b99f3b5d8391c07e101264301ba3da2af7044b318dc",
+      "size": 118381
+    },
+    {
+      "path": "windows.media.h",
+      "sha256": "30e51a2efba3713f1b6f954f33309634b4d3d469ebd2af6063d7402d7c265593",
+      "size": 340306
+    },
+    {
+      "path": "windows.media.mediaproperties.h",
+      "sha256": "14e09dfa6ca202a90c01505a8c917bf60bc2091655c644b4f73a39632f245bc9",
+      "size": 148750
+    },
+    {
+      "path": "windows.media.playback.h",
+      "sha256": "15add71faa9a6a142c676e5199a7aa79eb8e3f59d7441dd659ac2058277b0d8f",
+      "size": 219607
+    },
+    {
+      "path": "windows.media.render.h",
+      "sha256": "59c7fda6e3fde61a943b9effb3b888d7683a10b88fd3329bdd06ccbd094b6c25",
+      "size": 4670
+    },
+    {
+      "path": "windows.media.speechrecognition.h",
+      "sha256": "d2cc7e70349ab72807db50ac57795e7181286be1f0583c1b30be2a9206045c23",
+      "size": 499906
+    },
+    {
+      "path": "windows.media.speechsynthesis.h",
+      "sha256": "a838d7141f25a11bd00f38e959402a9473a1353bfd85afe7ec42b4528a57b2af",
+      "size": 150288
+    },
+    {
+      "path": "windows.media.transcoding.h",
+      "sha256": "5e7a6188d72b2ef200f57a4725989a082eadb04de6131eb6e3c33f33d78987b0",
+      "size": 127989
+    },
+    {
+      "path": "windows.networking.connectivity.h",
+      "sha256": "7dafc708ae9e441eba9b431c8abbc313a9cb42ed7ff0632edb282d2c7358ce1b",
+      "size": 407446
+    },
+    {
+      "path": "windows.networking.h",
+      "sha256": "bd60bb6d748e12a04720102662cf8e3359f67ab6708dc6da641362a4d3992464",
+      "size": 138007
+    },
+    {
+      "path": "windows.networking.sockets.h",
+      "sha256": "8c4f9c79917cb8f288b125021eb27d7035213e3537798e5d43e99fdad66f38cb",
+      "size": 5374
+    },
+    {
+      "path": "windows.perception.h",
+      "sha256": "a3a231e03bb2e8d542124b5201ea4f47b93d92d883d605143107d0c1257dbb0c",
+      "size": 11067
+    },
+    {
+      "path": "windows.perception.spatial.h",
+      "sha256": "731c1e6e3ad23aec9f87a2c37c2fca937debe7ba5c746f353f7d8faabaa85940",
+      "size": 205723
+    },
+    {
+      "path": "windows.perception.spatial.surfaces.h",
+      "sha256": "d7fa81632c09da5bafea9fb3c0596b9714159dfcafcb696639647b62e340ab05",
+      "size": 191701
+    },
+    {
+      "path": "windows.security.authentication.onlineid.h",
+      "sha256": "577558e223bb785eb33b6bb216f2c429355701f437f2a39fda8e3f2beed96f2f",
+      "size": 145042
+    },
+    {
+      "path": "windows.security.authorization.appcapabilityaccess.h",
+      "sha256": "4544f1b753cdadb8b4cf1e9eb04db9e10237bda29c2c28413dbad2eaa3a1a6f7",
+      "size": 146717
+    },
+    {
+      "path": "windows.security.credentials.h",
+      "sha256": "48495b1e0b7fd9850d7a3291edb24e73b956c4032ed92105daeaf9bf95560b10",
+      "size": 135314
+    },
+    {
+      "path": "windows.security.credentials.ui.h",
+      "sha256": "6737290391c396593158887b410b1777222df267d0e37bc4dde5406225e93b62",
+      "size": 49894
+    },
+    {
+      "path": "windows.security.cryptography.core.h",
+      "sha256": "ac12f4255c3d9617dc2d7835e84debf57f86caaa4cdad023040c330d0a4cf784",
+      "size": 3349
+    },
+    {
+      "path": "windows.security.cryptography.h",
+      "sha256": "7fb070478b2d21e45fef0f881198fc318aa98639c7ae174612285dc84626a787",
+      "size": 24472
+    },
+    {
+      "path": "windows.security.enterprisedata.h",
+      "sha256": "13cfbd1d0035f272417ea64ff54a940f442ec9b6b0a38dfbd60da9565a2d8553",
+      "size": 18665
+    },
+    {
+      "path": "windows.security.exchangeactivesyncprovisioning.h",
+      "sha256": "970a97848e38b94cd490fa55f143f0e64dff581151f0ca46c6ea78c22b7fe67a",
+      "size": 18576
+    },
+    {
+      "path": "windows.security.isolation.h",
+      "sha256": "80cf46eb2509941249acba94aa2ec8bb752fa4cb0288d3f29106638a91a6b9d4",
+      "size": 26480
+    },
+    {
+      "path": "windows.storage.fileproperties.h",
+      "sha256": "11c67fd189e9cdd58ce4929f00a9a84dab908715b318d22b6fdb76cdb2faabd2",
+      "size": 30638
+    },
+    {
+      "path": "windows.storage.h",
+      "sha256": "3aa044535837c67793f26f0a0f2df43659ecba5cc0ddf51f185acce48d2a14fa",
+      "size": 479221
+    },
+    {
+      "path": "windows.storage.search.h",
+      "sha256": "8661774a4be1c4e2b6cc4d05a65d4a16ea11c2963309c56c462d48c738bc0350",
+      "size": 1566
+    },
+    {
+      "path": "windows.storage.streams.h",
+      "sha256": "f17d085d712339c4f72c3e20670e4501c01286fcf66faa5c5dbbb938127dcfef",
+      "size": 436526
+    },
+    {
+      "path": "windows.system.h",
+      "sha256": "3f308f2ed5b4dda9bce4c8e6ca72fa805cb20347214888624af9af2548fd4fe0",
+      "size": 192877
+    },
+    {
+      "path": "windows.system.power.h",
+      "sha256": "3a5ef18f8f7ae3a44cc7939e0e707b53c8c55a1824ec45787491937f88979cd0",
+      "size": 2183
+    },
+    {
+      "path": "windows.system.profile.h",
+      "sha256": "ec97b2869a018991c02cb2a788976414080a15586d2c4f3ee27b51548160f382",
+      "size": 48727
+    },
+    {
+      "path": "windows.system.profile.systemmanufacturers.h",
+      "sha256": "314e4965015e277921007d119e00b083305bb75f29a26087d05c6eebdfcba45c",
+      "size": 13721
+    },
+    {
+      "path": "windows.system.threading.h",
+      "sha256": "331efcb72b119915b94d450f1211800e4406194eaa78e485e3dd1f3cc79cd96f",
+      "size": 21049
+    },
+    {
+      "path": "windows.system.userprofile.h",
+      "sha256": "184a4672b038cd9d3e9cc1d051b75d3474d9d4a5d29e4aac367f70732442a960",
+      "size": 29949
+    },
+    {
+      "path": "windows.ui.composition.h",
+      "sha256": "6766bc733796938824a46b114856fdc43b9580d5d7d93dcb3aad7460bcbb0986",
+      "size": 632312
+    },
+    {
+      "path": "windows.ui.composition.interop.h",
+      "sha256": "c275d3a2dc30a4d38ea78f04cb276663ba63d80a319303e704c141e08cc3ae31",
+      "size": 9040
+    },
+    {
+      "path": "windows.ui.core.h",
+      "sha256": "1e6d2512891101819a42bb74d0f6fadb837dd8216d0755e3ef630ac4ab66be62",
+      "size": 433253
+    },
+    {
+      "path": "windows.ui.h",
+      "sha256": "01c170583e8db6f860b21e011e6d0d0935f040ee670319d83d9c49e17af1866c",
+      "size": 185395
+    },
+    {
+      "path": "windows.ui.input.h",
+      "sha256": "534aba6ef0e69ff6985fdf1b818340faac60df673ce40e5b97c37663c3d4fa14",
+      "size": 97831
+    },
+    {
+      "path": "windows.ui.notifications.h",
+      "sha256": "729ec444aa147a018712feb3e795b755e6e03d16a68d12b551a07d067a5b2153",
+      "size": 1245292
+    },
+    {
+      "path": "windows.ui.text.core.h",
+      "sha256": "c02a8fd62d07c02ff71d3987512518b0192bdd177284c69e42e37d50b28f06c9",
+      "size": 355260
+    },
+    {
+      "path": "windows.ui.text.h",
+      "sha256": "e3b98cbace71951741779f5bfd9a2dcff34814e5aec3510c12fade20c4d33c10",
+      "size": 9665
+    },
+    {
+      "path": "windows.ui.viewmanagement.core.h",
+      "sha256": "7d18b85dc64c3306fd2b707db9e969faa11d0e1f3039aa82d25370fa26378fa7",
+      "size": 242006
+    },
+    {
+      "path": "windows.ui.viewmanagement.h",
+      "sha256": "e00bf57a6946d348d005f12df51d45960e56af4a6e4f9676aa784e462dce51bb",
+      "size": 598730
+    },
+    {
+      "path": "windows.ui.windowmanagement.h",
+      "sha256": "1ee94ca4f585c420f54b070164de404a98dc99b1b5eb2454535a94c037cf6042",
+      "size": 155754
+    },
+    {
+      "path": "windows.ui.xaml.h",
+      "sha256": "d10564bf19837c5b5c2a0c40481f1d875307345126e41cbc7f030ca24dc597e7",
+      "size": 132213
+    },
+    {
+      "path": "windows.ui.xaml.hosting.desktopwindowxamlsource.h",
+      "sha256": "4e177997808ef8fbef02e8908ef64d78d7eb11a7f6e7ef277f8d9c1312d30ca2",
+      "size": 8775
+    },
+    {
+      "path": "windows.ui.xaml.interop.h",
+      "sha256": "03c4dcae8eeaf8c9249ea5a96cfde8bd26ae90d0a87d78590c30d78d47c7b92f",
+      "size": 3460
+    },
+    {
+      "path": "windowscontracts.h",
+      "sha256": "20b32ed67059c3a7c0512f79de7f74e3b2efe500defc61b4a074050053ccd548",
+      "size": 1166
+    },
+    {
+      "path": "wine/fil_data.h",
+      "sha256": "27d6cff8b0fac1405c3ab000f07185831768bec0529a2f151498e6a055c6d5d9",
+      "size": 3975
+    },
+    {
+      "path": "wine/iaccessible2.h",
+      "sha256": "d60f1923ff8c75be957eb279ef9be77b42d878bab331928f48ec19f2e54bf3dc",
+      "size": 195574
+    },
+    {
+      "path": "wine/itss.h",
+      "sha256": "10a016a1d11760f953410fd66c4cde4f08e2fe967fad1cf1dd44cf566352ade1",
+      "size": 10247
+    },
+    {
+      "path": "wine/mfinternal.h",
+      "sha256": "f2d92e44cb2376ab1d77b2c47d5719a92e7d13ea280f1e1939b638f67224e4f8",
+      "size": 6130
+    },
+    {
+      "path": "wine/orpc.h",
+      "sha256": "0ab591e2493d7c692f785a6cfedd223e853846c29ab2f1f5b6c8f55fa712c027",
+      "size": 4029
+    },
+    {
+      "path": "wine/plugplay.h",
+      "sha256": "d50011ea45941e68461b893ac1dad181b9ea255b091237cc4eb760699481d14a",
+      "size": 1904
+    },
+    {
+      "path": "wine/svcctl.h",
+      "sha256": "743dc68e11d8bc2c3543a3fa2917501e6fc422bd539cb43f0e2955298eeff4b0",
+      "size": 20002
+    },
+    {
+      "path": "wine/winedxgi.h",
+      "sha256": "d1f7c540af48587a0d4ecd8cd37b8b368af63d42971783724812173b8ea17268",
+      "size": 47080
+    },
+    {
+      "path": "winsxs.h",
+      "sha256": "1bb8d0b34d77bd996199a456cc9f786f8603b4023f13624356c21dbe5e893b84",
+      "size": 19667
+    },
+    {
+      "path": "wmcodecdsp.h",
+      "sha256": "a033b8a24c8b790d9e29282cf26f6bb3fe170be7273bb981d2bbca65b6f4042e",
+      "size": 17108
+    },
+    {
+      "path": "wmdrmsdk.h",
+      "sha256": "d5a3a20f820a510f33673b9862256e45eb1b536243208dc704302aae0b77c621",
+      "size": 2765
+    },
+    {
+      "path": "wmiutils.h",
+      "sha256": "2e3b22adba55566370510e7d5becad0f7b6a5fa9ccd4d03ba77e2f0989c29d3a",
+      "size": 25976
+    },
+    {
+      "path": "wmp.h",
+      "sha256": "756b0aa429a621461149dc5ca7cfbce6e6b2d10b69986b6560854b43ed8c25fe",
+      "size": 396666
+    },
+    {
+      "path": "wmprealestate.h",
+      "sha256": "c66d3808027ae06bbfad84df48e20c68c4151d6cee27ca4f2459dfa41a3341fa",
+      "size": 6720
+    },
+    {
+      "path": "wmpservices.h",
+      "sha256": "ef348ae608a88433ad66236d7d4f47b38df12e3b79c1e5a27070f2d03a005c0a",
+      "size": 4615
+    },
+    {
+      "path": "wmsbuffer.h",
+      "sha256": "e35c0ff6412df99ae8fb04628bac44e643b301dd7bf8955ba53dc44162236354",
+      "size": 15620
+    },
+    {
+      "path": "wmsdkidl.h",
+      "sha256": "a1894d0c4aa150f5f84455f29d0910e0b6fd5fa7cfcf94fa13f6d71454fdb357",
+      "size": 500472
+    },
+    {
+      "path": "wmsecure.h",
+      "sha256": "f843e03b94e8ed834e4342bd0a56a9a54fb80d161f5002b754a1393d4d270126",
+      "size": 15777
+    },
+    {
+      "path": "wpcapi.h",
+      "sha256": "245b4469f45778bdb4a4811a079cd76f96f9551b3cdb530d34d5f6c7abdc2c26",
+      "size": 24907
+    },
+    {
+      "path": "wsdbase.h",
+      "sha256": "d53e27f55c3318a8194777ae65476c24e079240303834da9811f20f429aa5992",
+      "size": 30865
+    },
+    {
+      "path": "wsddisco.h",
+      "sha256": "3573a3390f88a60c5761b5f6ebe09ad7b05c85fc901f7843d16e1623bf03f53d",
+      "size": 48445
+    },
+    {
+      "path": "wsdxml.h",
+      "sha256": "98172c0a958b8b64c10d23f3366dbcd618d4749d5b1e7479b258e53077389378",
+      "size": 5879
+    },
+    {
+      "path": "wtypes.h",
+      "sha256": "57e0be6cb03c78ce711bc3d77f5120c7f8c87301d5fb74b91113e649a44ac9bd",
+      "size": 12505
+    },
+    {
+      "path": "wtypesbase.h",
+      "sha256": "20463819b98712406ec872b7c8576a4b7e262f545c12f6ba5b230a52f7af31d5",
+      "size": 9912
+    },
+    {
+      "path": "wuapi.h",
+      "sha256": "6acb80c318ab94f4edf164038d7d81a4cca4fb4a0be64638f460f716840dc075",
+      "size": 279043
+    },
+    {
+      "path": "xamlom.h",
+      "sha256": "cb873fabaf731094550ca4bc3ef62a12d73b0e88144e0f66cbd22c736c16f2e3",
+      "size": 61174
+    },
+    {
+      "path": "xapo.h",
+      "sha256": "c8c681cc198619cfd56c29a301080abdecebfa018357b3b5814c3d1009fba4bc",
+      "size": 14008
+    },
+    {
+      "path": "xaudio2.h",
+      "sha256": "30b3bc13cf7940a4ae0e6120bed5bf5074dfe2cbe428742e888eef7710573e69",
+      "size": 79142
+    },
+    {
+      "path": "xaudio2fx.h",
+      "sha256": "12537c1fa286fdc804492606e792dfd29f92337ce0788645ecc5bec0a4733bfa",
+      "size": 733
+    },
+    {
+      "path": "xmllite.h",
+      "sha256": "25467fcdfe75bcb03904e35f3433961870b3a36114c1d72ad0cee4388f86f9e7",
+      "size": 38813
+    },
+    {
+      "path": "xpsobjectmodel.h",
+      "sha256": "a9a88bcbde482a1b8728599283c5fe9ea8e64843109a3a671222a60d48b2672e",
+      "size": 73800
+    },
+    {
+      "path": "xpsobjectmodel_1.h",
+      "sha256": "627cb072419a3566c18cc967efa0516cde56b0067d761842325fb193676fb108",
+      "size": 5245
+    }
+  ],
+  "licenses": [
+    {
+      "path": "Licenses/Madeira/COPYING",
+      "sha256": "e6037104443f9a7829b2aa7c5370d0789a7bda3ca65a0b904cdc0c2e285d9195",
+      "size": 35150
+    },
+    {
+      "path": "Licenses/Madeira/LICENSE-EXCEPTION.md",
+      "sha256": "534f059c2e9fe5de1acde82b920651b77ea3b4253f86837a3d6a81f54a5bdbbc",
+      "size": 3840
+    },
+    {
+      "path": "Licenses/Madeira/LICENSES/BSD-2-xxHash.txt",
+      "sha256": "6ffedbc0f7878612d2b23589f1ff2ab15633e1df7963a5d9fc750ec5500c7e7a",
+      "size": 1389
+    },
+    {
+      "path": "Licenses/Madeira/LICENSES/BSD-3-SoftFloat-3e.txt",
+      "sha256": "bb19c0ba29e71fa2b81fcefc66c2f351d51a096ae8cdd45c224bbbcb4674a1d5",
+      "size": 1571
+    },
+    {
+      "path": "Licenses/Madeira/LICENSES/Cephes.txt",
+      "sha256": "edf1440b625e6d434a986cdb535c702001afab8959d94ce6275441a58cfd0ebb",
+      "size": 4754
+    },
+    {
+      "path": "Licenses/Madeira/LICENSES/LGPL-2.1.txt",
+      "sha256": "e237fa56668030e928551ddd60f05df5fe957f75eab874bbd017e085ed722e7c",
+      "size": 26434
+    },
+    {
+      "path": "Licenses/Madeira/LICENSES/LGPL-3.0.txt",
+      "sha256": "a853c2ffec17057872340eee242ae4d96cbf2b520ae27d903e1b2fef1a5f9d1c",
+      "size": 7639
+    },
+    {
+      "path": "Licenses/Madeira/LICENSES/MIT-DXMT.txt",
+      "sha256": "6b928413c6308c106f3e0080bd94b6427b56d587d400fd40e6cbfbab7d9c4ae1",
+      "size": 1065
+    },
+    {
+      "path": "Licenses/Madeira/LICENSES/MIT-FEX.txt",
+      "sha256": "f34a779f56b36d22b20e1b990d23e583a6a7ca071331925fa46156441c77a1ee",
+      "size": 1094
+    },
+    {
+      "path": "Licenses/Madeira/LICENSES/MIT-NVAPI.txt",
+      "sha256": "bab44777f0f4d0333479ea0be6e24c084464a8cb64b98f1253fcc3df70f6eccf",
+      "size": 1217
+    },
+    {
+      "path": "Licenses/Madeira/LICENSES/MIT-fmt.txt",
+      "sha256": "07580f2a3b35709ce703d523f447b242f6dfec7582a8c0df102c7fa2849375f8",
+      "size": 1431
+    },
+    {
+      "path": "Licenses/Madeira/LICENSES/MIT-idevice.txt",
+      "sha256": "695f188d45a655f012d28d2c7e0b41589ea55ea2fc5b35a71b8382403cfb6fca",
+      "size": 1062
+    },
+    {
+      "path": "Licenses/Madeira/LICENSES/MIT-libxml2.txt",
+      "sha256": "c5c63674f8a83c4d2e385d96d1c670a03cb871ba2927755467017317878574bd",
+      "size": 1289
+    },
+    {
+      "path": "Licenses/Madeira/LICENSES/MIT-libxslt.txt",
+      "sha256": "7e48e290b6bfccc2ec1b297023a1d77f2fd87417f71fbb9f50aabef40a851819",
+      "size": 2968
+    },
+    {
+      "path": "Licenses/Madeira/LICENSES/MPL-2.0.txt",
+      "sha256": "1f256ecad192880510e84ad60474eab7589218784b9a50bc7ceee34c2b91f1d5",
+      "size": 16725
+    },
+    {
+      "path": "Licenses/Madeira/LICENSES/ZSTD-BSD.txt",
+      "sha256": "7055266497633c9025b777c78eb7235af13922117480ed5c674677adc381c9d8",
+      "size": 1549
+    },
+    {
+      "path": "Licenses/Madeira/LICENSES/rpmalloc-0BSD.txt",
+      "sha256": "9fdc653aacc736bef0cd12854f4a8d94f703ec5603fb5dca1be945b7f679918c",
+      "size": 606
+    },
+    {
+      "path": "Licenses/Wine/COPYING.LIB",
+      "sha256": "e237fa56668030e928551ddd60f05df5fe957f75eab874bbd017e085ed722e7c",
+      "size": 26434
+    },
+    {
+      "path": "Licenses/Wine/LICENSE",
+      "sha256": "ae025f125a5d639f0f7abe5146efa1e3d7453cc10b744b2910806fa3f46626ef",
+      "size": 824
+    },
+    {
+      "path": "Licenses/Wine/LICENSE-MADEIRA.md",
+      "sha256": "b9852a7a9642564f400bd11ad4fef4cb13dc89c803586e3f5d33d757484a27b7",
+      "size": 4026
+    },
+    {
+      "path": "Licenses/Wine/LICENSE.OLD",
+      "sha256": "2799d474935ef6c1787abc0895f3e386cd2843a5c7cd72a1c30d4f6762ac4b0a",
+      "size": 1324
+    },
+    {
+      "path": "Licenses/Wine/libs/capstone/LICENSE.TXT",
+      "sha256": "65e9ed46a59976eda8f5bd1ea79a680dea38dd299c760bc9a8d87a764ef5029b",
+      "size": 1687
+    },
+    {
+      "path": "Licenses/Wine/libs/capstone/LICENSE_LLVM.TXT",
+      "sha256": "dfdca2d7fdbabfd937f9dc41b7f61647b0e6cb1f9ee767ecb4520f979ebe91da",
+      "size": 3331
+    },
+    {
+      "path": "Licenses/Wine/libs/compiler-rt/LICENSE.TXT",
+      "sha256": "09e65c6534e75ec49cdc74fa894bfe4287bfbb1002be41fcad90110e9acd0984",
+      "size": 4288
+    },
+    {
+      "path": "Licenses/Wine/libs/faudio/LICENSE",
+      "sha256": "18325126e220d6898c4a8d1e3896a7b8c0e10e15b9d08bc6630f403bf4981215",
+      "size": 1054
+    },
+    {
+      "path": "Licenses/Wine/libs/fluidsynth/COPYING.md",
+      "sha256": "db7d88e8584f98b5d393cc4ab60290c3d06cd3947d104b1c91ec95c140df89c6",
+      "size": 467
+    },
+    {
+      "path": "Licenses/Wine/libs/jpeg/LICENSE",
+      "sha256": "1cb448f5e2e6d3aca60943f4eee1a04675628dc0266a074a42bc1560ebc28d61",
+      "size": 1815
+    },
+    {
+      "path": "Licenses/Wine/libs/jxr/LICENSE",
+      "sha256": "a645aa6019f2a0300dd5108b6679afb9fca0620ed06b8efe4bc1eb3d36799ada",
+      "size": 1294
+    },
+    {
+      "path": "Licenses/Wine/libs/lcms2/COPYING",
+      "sha256": "46d4e05af3bce75332a12d01f19bcce7e32b6bac544be28a64043d0231291e31",
+      "size": 1083
+    },
+    {
+      "path": "Licenses/Wine/libs/ldap/LICENSE",
+      "sha256": "310fe25c858a9515fc8c8d7d1f24a67c9496f84a91e0a0e41ea9975b1371e569",
+      "size": 2214
+    },
+    {
+      "path": "Licenses/Wine/libs/mpg123/LICENSE",
+      "sha256": "88cfbfd10c2b05905b84819502d8f494c925497507b13b60acd4e99fa85586dc",
+      "size": 1067
+    },
+    {
+      "path": "Licenses/Wine/libs/png/LICENSE",
+      "sha256": "bdb0a645ea18c60507d0368379b1ac5474b92255fcc2d115e07486a7672ba526",
+      "size": 5345
+    },
+    {
+      "path": "Licenses/Wine/libs/tomcrypt/LICENSE",
+      "sha256": "1ba8f8006c93ac386e117f5721080192b2b29c1e3e8f75dfe577ff4e2c3459a8",
+      "size": 718
+    },
+    {
+      "path": "Licenses/Wine/libs/vkd3d/COPYING",
+      "sha256": "1f69abfaeee0131bba28ad72d87683a223743d8c9ee1da113fde10cb082f3c91",
+      "size": 786
+    },
+    {
+      "path": "Licenses/Wine/libs/xml2/COPYING",
+      "sha256": "c5c63674f8a83c4d2e385d96d1c670a03cb871ba2927755467017317878574bd",
+      "size": 1289
+    },
+    {
+      "path": "Licenses/Wine/libs/xslt/COPYING",
+      "sha256": "7e48e290b6bfccc2ec1b297023a1d77f2fd87417f71fbb9f50aabef40a851819",
+      "size": 2968
+    },
+    {
+      "path": "Licenses/Wine/libs/zlib/LICENSE",
+      "sha256": "845efc77857d485d91fb3e0b884aaa929368c717ae8186b66fe1ed2495753243",
+      "size": 1002
+    }
+  ],
+  "scope": "Source-only control: native generated Wine headers and one arm64 iOS wineserver static archive. No full runtime link, FEX, DXMT, converter, Steam, IPA, signing or device test. Wine config.h is unchanged from --without-gnutls configuration; later ntdll/win32u work needs deliberate TLS configuration/prefix integration.",
+  "source_only": true,
+  "runtime_linked": false,
+  "device_tested": false
+}

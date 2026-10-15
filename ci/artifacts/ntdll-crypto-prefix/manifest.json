@@ -1,0 +1,57 @@
+{
+  "chunk_bytes": 3145728,
+  "chunks": [
+    {
+      "index": 0,
+      "name": "chunk-0000.bin",
+      "offset": 0,
+      "sha256": "4117bc0cb1d4c198a3f2bfc64f2bc2905cc79a4c1dc97f1dd49070780ddbdb47",
+      "size": 3145728
+    },
+    {
+      "index": 1,
+      "name": "chunk-0001.bin",
+      "offset": 3145728,
+      "sha256": "90c24bdf4c1c16ea941742a6b3135fdb2ed7d42d302e8886e5b806f719e1b414",
+      "size": 3145728
+    },
+    {
+      "index": 2,
+      "name": "chunk-0002.bin",
+      "offset": 6291456,
+      "sha256": "c8f928ac25ca1486a11cebb0230565363ee7adc4e8c3e8c0a60c2dbe8b4c4a0e",
+      "size": 3145728
+    },
+    {
+      "index": 3,
+      "name": "chunk-0003.bin",
+      "offset": 9437184,
+      "sha256": "d65f47c22132d50702ecbdfc56d35d8b21b4b663cdc593a5c100c90e386d90b8",
+      "size": 3145728
+    },
+    {
+      "index": 4,
+      "name": "chunk-0004.bin",
+      "offset": 12582912,
+      "sha256": "4e80d02c0068f2ca6c2ecd2a2ea3f7e2d8d9c164b007a0355a6f6b83fead829e",
+      "size": 2275013
+    }
+  ],
+  "original": {
+    "name": "crypto-prefix.zip",
+    "sha256": "1e1f1a6af6e2461a98a7198c77f87639021f6599d9b067e2d3afe2ff878b2b49",
+    "size": 14857925
+  },
+  "provenance": {
+    "app_id": "6ad03ce9a8a969b53f3a4aa9",
+    "bootstrap_commit": "3034a79047e472d9013cc9c6d075a32249f9458d",
+    "build_id": "6ad06780546ce6236ceebf48",
+    "evidence_zip_sha256": "85d564eac81d8e5f42bc52dc3cc562dbb701dccd8f57f046d10ef9151b895474",
+    "input_lock_sha256": "4df0bfa6aa2a1448c0e01bde34b0b043895733ae62f70accccba9f3081a0cf42",
+    "producer_manifest_path": "source-and-prefix-manifest.json",
+    "producer_manifest_sha256": "fbe57eaed9e7818dfde1e377bd94cc02a2ee36eb549b6730b447fde1f6771c70",
+    "source_commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+    "stage": "crypto-prefix"
+  },
+  "schema": 2
+}

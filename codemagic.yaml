@@ -378,3 +378,53 @@ workflows:
 # Manual proposal only: no triggers, installs, dispatch, publication or target stage.
 # The wrapper's process-group aggregate budget is 23 minutes; provider cap is 25.
 # Every later job imports an independently verified ZIP and manifest, never a prior workspace.
+  ideck-ntdll-ios-control:
+    name: iDeck pinned source-only iOS ntdll archive control
+    instance_type: mac_mini_m2
+    max_build_duration: 25
+    inputs:
+      expected_ntdll_wrapper_sha256:
+        description: Exact separately reviewed ci/run_ntdll_control.py SHA256
+        type: string
+      expected_ntdll_dependency_lock_sha256:
+        description: Exact reviewed ci/ntdll-dependency-artifacts-lock.json SHA256
+        type: string
+      free_quota_verified:
+        description: Free macOS quota available and paid subscription disabled for this manual run
+        type: string
+        default: "false"
+      private_source_verified:
+        description: Approved private Mi-Yomi/iDeck source repository selected
+        type: string
+        default: "false"
+    environment:
+      xcode: "26.6"
+      vars:
+        EXPECTED_NTDLL_WRAPPER_SHA256: ${{ inputs.expected_ntdll_wrapper_sha256 }}
+        EXPECTED_NTDLL_DEPENDENCY_LOCK_SHA256: ${{ inputs.expected_ntdll_dependency_lock_sha256 }}
+        FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
+        PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
+        JOBS: "4"
+        GIT_TERMINAL_PROMPT: "0"
+    scripts:
+      - name: Verify originals, reprove scoped crypto, compile and validate exact ntdll archive
+        script: |
+          set -euo pipefail
+          test "${FREE_QUOTA_VERIFIED:-false}" = true
+          test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
+          python3 -I ci/run_ntdll_control.py
+    artifacts:
+      - .work/ntdll-control-artifacts/ntdll-evidence.zip
+      - .work/ntdll-control-artifacts/ntdll-archive.zip
+      - .work/ntdll-control-artifacts/result.json
+      - .work/ntdll-control-artifacts/worker-exit.json
+      - .work/ntdll-control-artifacts/wrapper-exit.json
+      - .work/ntdll-control-artifacts/worker.log
+      - .work/ntdll-control-artifacts/finalize.log
+# Manual proposal only: no triggers, cache, retries, publication, signing or credentials.
+# Existing Python3.12.7 and Apple Xcode26.6/iPhoneOS26.5; no configure or installations.
+# One 23-minute aggregate process-group budget, including at most60 seconds reserved
+# for finalization. Provider hard limit25 minutes. JOBS=4 ceiling; helper currently
+# compiles its exact37 units sequentially. No source build scripts are executed.
+# Inputs are original five producer ZIPs, never reconstructed prefixes passed as originals.
+# Only fresh typed crypto proof may enable the immutable-original-config three-TU overlay.

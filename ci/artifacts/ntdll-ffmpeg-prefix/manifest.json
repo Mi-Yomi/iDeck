@@ -1,0 +1,50 @@
+{
+  "chunk_bytes": 3145728,
+  "chunks": [
+    {
+      "index": 0,
+      "name": "chunk-0000.bin",
+      "offset": 0,
+      "sha256": "06e51cf499d3020863276bb9edc587127c78af374a290a022c49ceacd07e900f",
+      "size": 3145728
+    },
+    {
+      "index": 1,
+      "name": "chunk-0001.bin",
+      "offset": 3145728,
+      "sha256": "7914dfc06335838c90dca2ac336bfb429ff1d25c4cbb35bd8492ba5a3aa365b5",
+      "size": 3145728
+    },
+    {
+      "index": 2,
+      "name": "chunk-0002.bin",
+      "offset": 6291456,
+      "sha256": "82cbdf4f0437d69255c6353806355b58c9f580e3a29cfa55bb83844647d4206b",
+      "size": 3145728
+    },
+    {
+      "index": 3,
+      "name": "chunk-0003.bin",
+      "offset": 9437184,
+      "sha256": "9d77a863d148d03d008b688d5fea716d2204f4429f6e966a3e4cd6134e87a826",
+      "size": 3072997
+    }
+  ],
+  "original": {
+    "name": "ffmpeg-prefix.zip",
+    "sha256": "5530af1588c577f022f15911bedb683509263d93ea4df88ec2b7efd9d75f2bd8",
+    "size": 12510181
+  },
+  "provenance": {
+    "app_id": "6ad03ce9a8a969b53f3a4aa9",
+    "bootstrap_commit": "8c6cf5b60b9cdbea499e386147c13ca2e6f83006",
+    "build_id": "6ad06029546ce6236ceebdf7",
+    "evidence_zip_sha256": "a5f4b4090a2fae793335f4f57d6119a7c2428b7a806852d771d955a5d82aa6c7",
+    "input_lock_sha256": "4f6e6cce93b69b66edfc35a1e9329db166ee1e6c02703871fc23ad242656f51a",
+    "producer_manifest_path": "manifest.json",
+    "producer_manifest_sha256": "e3fa3b44c12cc9323638e85f81f6bb3324e278db5b3396ce7219c3fc48b9fc99",
+    "source_commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+    "stage": "ffmpeg-prefix"
+  },
+  "schema": 2
+}

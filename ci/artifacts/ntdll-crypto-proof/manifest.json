@@ -1,0 +1,57 @@
+{
+  "chunk_bytes": 3145728,
+  "chunks": [
+    {
+      "index": 0,
+      "name": "chunk-0000.bin",
+      "offset": 0,
+      "sha256": "1b666c4c441776c75cfa0cc375f91fc4523d32b1f19ad77c1edeae971d00df71",
+      "size": 3145728
+    },
+    {
+      "index": 1,
+      "name": "chunk-0001.bin",
+      "offset": 3145728,
+      "sha256": "56672f8d6add202eadfb67f41fe589d17ac86949ac794779d53b6908c617dd6e",
+      "size": 3145728
+    },
+    {
+      "index": 2,
+      "name": "chunk-0002.bin",
+      "offset": 6291456,
+      "sha256": "28ab9cdd982d0fcf69d663193517437b93a39bb90abddcdee3401560daf168a9",
+      "size": 3145728
+    },
+    {
+      "index": 3,
+      "name": "chunk-0003.bin",
+      "offset": 9437184,
+      "sha256": "adf134627265aa41cbd3e0ec45fc704c6b2f6bf17eb07ffc920d58b35bc92522",
+      "size": 3145728
+    },
+    {
+      "index": 4,
+      "name": "chunk-0004.bin",
+      "offset": 12582912,
+      "sha256": "3c2df3437bde460f6ce55ad263df313b5a3c1e5cd07f93dc803193a11ee1ac7d",
+      "size": 1004627
+    }
+  ],
+  "original": {
+    "name": "crypto-proof.zip",
+    "sha256": "0a839ff83c2c840dd91e5d91f88ad94a5e2bfba5499482810849849228fc8fda",
+    "size": 13587539
+  },
+  "provenance": {
+    "app_id": "6ad03ce9a8a969b53f3a4aa9",
+    "bootstrap_commit": "3034a79047e472d9013cc9c6d075a32249f9458d",
+    "build_id": "6ad06780546ce6236ceebf48",
+    "evidence_zip_sha256": "85d564eac81d8e5f42bc52dc3cc562dbb701dccd8f57f046d10ef9151b895474",
+    "input_lock_sha256": "4df0bfa6aa2a1448c0e01bde34b0b043895733ae62f70accccba9f3081a0cf42",
+    "producer_manifest_path": "artifact-manifest.json",
+    "producer_manifest_sha256": "040b0bfcda300c9b22cafac2b653306ca2fad2f5d9b7e613246bd1c3adfc4fb5",
+    "source_commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+    "stage": "crypto-proof"
+  },
+  "schema": 2
+}

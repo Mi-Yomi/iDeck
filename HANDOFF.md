@@ -5,6 +5,72 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## Последняя Apple-попытка: pixman download reset
+
+[Build `6ad130983ffd2c7f0ad3b5a1`](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad130983ffd2c7f0ad3b5a1)
+на SHA `ab86fe490027cf35a184f08745b3e4f12b80aa11` завершился **failed**.
+Источник сведений в этом разделе — краткая browser-сводка координатора;
+полный raw log автору раздела не передан, сводка не выдаётся за полный лог.
+
+- `swift-source-check`: exit 0, 59.852 секунды. Source stage и guest hashes
+  приняты; overlay SHA-256
+  `b70bc4bfe6ad22b053d5392603ec93fe5176726a851ad5236080cc050e5afeb8`.
+- QEMU archive SHA-256
+  `7c9605290b34152debb842e965a55d2e4fbba4793e536ab677b4027e5dc0ba1a`
+  принят, распаковка прошла с ровно одним ранее разрешённым пропуском symlink.
+  Ошибки распаковки и JSON из предыдущей попытки здесь не повторились:
+  `result.json` создан.
+- Первый новый отказ: `Worker.fetch` при TLS `do_handshake` для
+  `https://www.cairographics.org/releases/pixman-0.38.0.tar.gz` —
+  `URLError`, внутри `ConnectionResetError`, errno 54. Общее время 126.498 секунды.
+  Native library compilation, runtime linking и IPA packaging не достигнуты.
+
+Lock сохраняет pixman 0.38.0: **891 291 байт**, SHA-256
+`a7592bef0156d7c27545487a52245669b00cf7e70054505381cff2136d890ca8`.
+Отдельная read-only проверка того же URL из облачной среды координатором
+получила `Tunnel connection failed: 403 Forbidden`. Это отказ другого proxy,
+не объяснение Apple TLS reset. Обход запрета не выполнялся; постоянная
+недоступность URL на Apple runner этим не доказана.
+
+В `ci/build_linux_probe_ipa.py` добавлен bounded retry для transient
+transport failures и HTTP 408/429/500/502/503/504: не более **3 попыток**, backoff
+**2/4 секунды**, общий deadline файла **300 секунд** вместе с попытками,
+ожиданием, проверкой и публикацией; он также ограничен остатком worker budget.
+Socket timeout — не более 60 секунд. Main-thread `SIGALRM` ограничивает полное
+wall-clock время даже при медленном непрерывном ответе; неподдерживаемая среда
+или уже активный timer дают отказ, прежний signal handler восстанавливается.
+Certificate/SSL, access denial (включая 401/403/407), integrity/size и filesystem
+errors, исчерпание бюджета не повторяются. TLS/security checks не отключены.
+
+Каждая попытка пишет собственный exclusive partial. Только полностью проверенный
+size/SHA-256 публикуется через no-clobber `os.link`; существующий destination,
+включая dangling symlink, не перезаписывается. Собственный partial удаляется и
+при ошибке. Диагностика URL/attempt/bytes/duration/error/errno/HTTP status идёт
+в stdout и `downloads` в `result.json`; HTTPError response закрывается.
+Source URLs, pins, locks, extraction/data_filter, guest checks, native recipe и
+workflow не менялись. Старые evidence-снимки сохранены.
+
+Работа ведётся в существующем облачном checkout `/workspace/iDeck`, только в
+Linux-ветке, исходный HEAD `00745fb36b444df8d0e4b43842e0d8eb9a65999c`.
+**Проверено координатором:** `python3 -B -m unittest discover -s
+experiments/linux-guest/tests -v` — **56 host tests PASS**, exit 0, 0.607 секунды,
+Python 3.12.14/Linux. Это 20 новых network-free download regressions и 36 прежних
+request/source/guest/extraction tests. Проверены transient recovery, предел
+попыток/deadlines, fatal SSL/access/integrity/filesystem отказы, partial cleanup,
+no-clobber publication и signal timer/handler restoration. Независимый reviewer
+не нашёл correctness/security blocker; Swift/Xcode/IPA auditor не установил
+дополнительного доказанного blocker до следующего Apple run. Это host-проверки,
+не компиляция native implementations или linking с Apple SDK.
+
+Локальный лог: `.work/native-download-retry/host-tests.log`, SHA-256
+`b92e977e5a6b7a4cc80de6428290b15bcba75f2143a01ced96a8207292e05a09`; лог не добавлен в Git. Отчёт с hash script/tests/lock:
+`experiments/linux-guest/evidence/native-download-retry.json`.
+
+Новая CI из этого checkout не запускалась; ей управляет browser-координатор.
+Перед следующим запуском нужны свежие private/free-quota/billing проверки и
+точный новый pushed SHA. Лимиты **6900 секунд / 120 минут** сохраняются.
+**IPA нет; Linux/JIT на iPhone и Steam не проверены.**
+
 ## Распаковка native sources и JSON отчёт — 2026-10-16
 
 По переданному пользователем логу build `6ad129af3ffd2c7f0ad3b35b`, SHA

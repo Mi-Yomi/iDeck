@@ -1,0 +1,142 @@
+{
+  "status": "host_reviewed_apple_rerun_pending",
+  "working_branch": "codex/linux-guest-feasibility-20261015",
+  "preparation_base_commit": "00745fb36b444df8d0e4b43842e0d8eb9a65999c",
+  "failed_build": {
+    "url": "https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad130983ffd2c7f0ad3b5a1",
+    "workflow": "ideck-linux-probe-ipa",
+    "commit": "ab86fe490027cf35a184f08745b3e4f12b80aa11",
+    "status": "failed",
+    "evidence_source": "Coordinator-provided browser outcome summary; full raw log was not available to this evidence author and is not reproduced here.",
+    "elapsed_seconds": 126.498,
+    "swift_source_check": {
+      "exit_code": 0,
+      "elapsed_seconds": 59.852
+    },
+    "source_stage_accepted": true,
+    "source_stage_overlay_sha256": "b70bc4bfe6ad22b053d5392603ec93fe5176726a851ad5236080cc050e5afeb8",
+    "guest_hashes_accepted": true,
+    "qemu_archive": {
+      "sha256": "7c9605290b34152debb842e965a55d2e4fbba4793e536ab677b4027e5dc0ba1a",
+      "extraction_succeeded": true,
+      "reviewed_symlink_omissions": 1
+    },
+    "first_error": {
+      "operation": "Worker.fetch: pixman source archive download",
+      "exception": "urllib.error.URLError wrapping ConnectionResetError",
+      "errno": 54,
+      "phase": "TLS do_handshake"
+    },
+    "report_json_created": true,
+    "native_library_compilation_reached": false,
+    "runtime_linked": false,
+    "ipa_created": false,
+    "device_tested": false,
+    "steam_executed": false
+  },
+  "locked_pixman_input": {
+    "name": "PIXMAN",
+    "url": "https://www.cairographics.org/releases/pixman-0.38.0.tar.gz",
+    "filename": "pixman-0.38.0.tar.gz",
+    "size": 891291,
+    "sha256": "a7592bef0156d7c27545487a52245669b00cf7e70054505381cff2136d890ca8"
+  },
+  "cloud_url_check": {
+    "source": "Coordinator-provided read-only check outcome; not repeated by this evidence author.",
+    "environment": "saved cloud environment, separate from Apple runner",
+    "url": "https://www.cairographics.org/releases/pixman-0.38.0.tar.gz",
+    "error": "URLError: Tunnel connection failed: 403 Forbidden",
+    "access_denial_bypassed": false,
+    "used_as_apple_failure_diagnosis": false
+  },
+  "retry_change": {
+    "status": "implemented_host_reviewed_apple_rerun_pending",
+    "script": "ci/build_linux_probe_ipa.py",
+    "max_attempts": 3,
+    "backoff_seconds": [
+      2,
+      4
+    ],
+    "per_file_wall_clock_seconds": 300,
+    "per_socket_timeout_seconds_max": 60,
+    "worker_aggregate_seconds_unchanged": 6900,
+    "provider_max_minutes_unchanged": 120,
+    "deadline_includes": [
+      "all attempts",
+      "backoff",
+      "reading",
+      "integrity verification",
+      "publication"
+    ],
+    "wall_clock_enforcement": "Main-thread SIGALRM/setitimer guard; refuses unsupported environment or an already active timer and restores the previous signal handler.",
+    "retryable_http_statuses": [
+      408,
+      429,
+      500,
+      502,
+      503,
+      504
+    ],
+    "retryable_transport_failures": [
+      "connection reset/aborted",
+      "network reset",
+      "transport timeout",
+      "broken pipe",
+      "incomplete read",
+      "remote disconnect"
+    ],
+    "fatal_without_retry": [
+      "certificate or other SSL error",
+      "HTTP status outside allowlist, including 401/403/407",
+      "size or SHA-256 mismatch",
+      "oversized body",
+      "filesystem/permission error",
+      "file or worker budget exhausted"
+    ],
+    "partial_files": "An exclusive mkstemp file per attempt; only the owned partial is unlinked on exit. Existing destination or dangling symlink is rejected.",
+    "publication": "Verified size/SHA-256 required before os.link no-clobber publication; concurrent destination is not overwritten.",
+    "diagnostics": "Exact locked URL, attempt number, bytes received, duration, exception type/reason/errno and HTTP status as applicable in IDECK_SOURCE_ATTEMPT stdout and worker.downloads/result.json.",
+    "http_error_response_closed": true,
+    "tls_verification_unchanged": true,
+    "archive_urls_sizes_sha256_and_git_pins_unchanged": true,
+    "native_recipe_extraction_guest_checks_and_workflow_unchanged": true
+  },
+  "host_validation": {
+    "status": "passed",
+    "source": "Coordinator executed integrated suite; evidence author checked saved log and file hashes.",
+    "command": "python3 -B -m unittest discover -s experiments/linux-guest/tests -v",
+    "environment": "Existing saved Linux cloud environment /workspace/iDeck; Python 3.12.14",
+    "exit_code": 0,
+    "tests_passed": 56,
+    "new_network_free_download_regressions": 20,
+    "existing_tests_included": 36,
+    "elapsed_seconds": 0.607,
+    "log": ".work/native-download-retry/host-tests.log",
+    "log_size": 7726,
+    "log_sha256": "b92e977e5a6b7a4cc80de6428290b15bcba75f2143a01ced96a8207292e05a09",
+    "log_committed": false,
+    "coverage": [
+      "reset and partial-read retries followed by verified success",
+      "attempt limit and file/worker deadlines",
+      "fatal certificate/TLS/access/integrity/filesystem errors without retry",
+      "owned partial cleanup and existing destination protection",
+      "signal timer enforcement and handler restoration",
+      "existing request/source/guest/extraction guards"
+    ],
+    "independent_review": {
+      "source": "Coordinator-reported outcomes from independent reviewer and Swift/Xcode/IPA auditor",
+      "correctness_or_security_blocker_found": false,
+      "additional_proven_ipa_blocker_found": false
+    }
+  },
+  "apple_rerun_performed_for_retry_change": false,
+  "runtime_linked": false,
+  "ipa_created": false,
+  "device_tested": false,
+  "steam_executed": false,
+  "hashes": {
+    "ci/build_linux_probe_ipa.py": "eb168a3befa91a3bca23a4da1f1cae1ba3515e9a103f44047d4bb5899ab7083d",
+    "experiments/linux-guest/tests/test_downloads.py": "0a74779011403f6eed1b3dd51c72250a5d03309453e0587aec0240c9d66f56b4",
+    "experiments/linux-guest/ipa/native-sources.lock.json": "343ce97b29a08642f66eeb6d7a06cca06204abc5e4ae9c800530ffdce93c3feb"
+  }
+}

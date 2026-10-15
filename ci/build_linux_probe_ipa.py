@@ -4,16 +4,24 @@
 No device installation or Apple account credentials. The IPA needs the owner's
 normal sideload signing before installation. No Steam/GPU acceptance is implied.
 """
+import contextlib
+import errno
 import hashlib
+import http.client
 import json
 import os
 import platform
 import shutil
 import signal
+import socket
+import ssl
 import subprocess
 import sys
 import tarfile
+import tempfile
+import threading
 import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -22,6 +30,65 @@ EXPERIMENT = ROOT / "experiments/linux-guest"
 sys.path.insert(0, str(EXPERIMENT / "tools"))
 from stage_husk import PIN, prepare
 from stage_bundle import verify
+
+DOWNLOAD_MAX_ATTEMPTS = 3
+DOWNLOAD_TIMEOUT_SECONDS = 300
+DOWNLOAD_BACKOFF_SECONDS = (2, 4)
+
+
+class DownloadDeadlineExceeded(TimeoutError):
+    """The file/worker wall-clock budget expired; this must never be retried."""
+
+
+@contextlib.contextmanager
+def download_deadline(seconds):
+    # The production worker is the macOS main thread. Socket timeouts alone do
+    # not bound a peer that keeps delivering a few bytes before each timeout.
+    if (not hasattr(signal, "setitimer") or not hasattr(signal, "SIGALRM")
+            or threading.current_thread() is not threading.main_thread()):
+        raise RuntimeError("A main-thread download wall-clock timer is required")
+    if signal.getitimer(signal.ITIMER_REAL) != (0.0, 0.0):
+        raise RuntimeError("Refusing to replace an active wall-clock timer")
+    if seconds <= 0:
+        raise DownloadDeadlineExceeded("Source download wall-clock budget exhausted")
+
+    def expired(signum, frame):
+        raise DownloadDeadlineExceeded("Source download wall-clock budget exhausted")
+
+    previous = signal.signal(signal.SIGALRM, expired)
+    try:
+        signal.setitimer(signal.ITIMER_REAL, seconds)
+        yield
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0)
+        signal.signal(signal.SIGALRM, previous)
+
+
+def transient_download_error(error):
+    """Retry only selected transport failures, never TLS/integrity/access errors."""
+    if isinstance(error, urllib.error.HTTPError):
+        return error.code in (408, 429, 500, 502, 503, 504)
+    if isinstance(error, urllib.error.URLError):
+        return transient_download_error(error.reason)
+    if isinstance(error, (DownloadDeadlineExceeded, ssl.SSLError)):
+        return False
+    if isinstance(error, (http.client.IncompleteRead, http.client.RemoteDisconnected)):
+        return True
+    return (isinstance(error, (TimeoutError, socket.timeout))
+            or isinstance(error, OSError) and error.errno in
+            (errno.ECONNRESET, errno.ECONNABORTED, errno.ENETRESET, errno.ETIMEDOUT, errno.EPIPE))
+
+
+def download_error_details(error):
+    details = {"error_type": type(error).__name__, "error": str(error)}
+    reason = error
+    while isinstance(reason, urllib.error.URLError) and isinstance(reason.reason, BaseException):
+        reason = reason.reason
+    details["reason_type"] = type(reason).__name__
+    details["errno"] = getattr(reason, "errno", None)
+    if isinstance(error, urllib.error.HTTPError):
+        details["http_status"] = error.code
+    return details
 
 
 def sha(path):
@@ -103,6 +170,7 @@ class Worker:
             path.mkdir()
             self.env[variable] = str(path)
         self.steps = []
+        self.downloads = []
 
     def remaining(self):
         seconds = 6900 - (time.monotonic() - self.started)
@@ -151,16 +219,64 @@ class Worker:
 
     def fetch(self, item, destination):
         print("IDECK_SOURCE=" + item["filename"], flush=True)
-        with urllib.request.urlopen(item["url"], timeout=min(60, self.remaining())) as response, destination.open("xb") as stream:
-            received = 0
-            while chunk := response.read(1024 * 1024):
-                self.remaining()
-                received += len(chunk)
-                if received > item["size"]:
-                    raise ValueError("Source exceeds locked size")
-                stream.write(chunk)
-        if received != item["size"] or sha(destination) != item["sha256"]:
-            raise ValueError("Source archive differs from lock: " + item["filename"])
+        record = {"filename": item["filename"], "url": item["url"], "status": "failed", "attempts": []}
+        self.downloads.append(record)
+        # lexists also rejects dangling symlinks; no network request or overwrite
+        # is justified for a destination that was not created by this call.
+        if os.path.lexists(destination):
+            raise FileExistsError("Source destination must be new: " + str(destination))
+        deadline = time.monotonic() + min(DOWNLOAD_TIMEOUT_SECONDS, self.remaining())
+
+        def remaining():
+            seconds = min(deadline - time.monotonic(), self.remaining())
+            if seconds <= 0:
+                raise DownloadDeadlineExceeded("Source download wall-clock budget exhausted")
+            return seconds
+
+        with download_deadline(remaining()):
+            for number in range(1, DOWNLOAD_MAX_ATTEMPTS + 1):
+                before = time.monotonic()
+                attempt = {"attempt": number, "url": item["url"], "received_bytes": 0, "status": "failed"}
+                record["attempts"].append(attempt)
+                partial = None
+                try:
+                    # Each attempt owns its exclusive file. Only verified bytes
+                    # may become destination, via a no-clobber atomic hard link.
+                    descriptor, name = tempfile.mkstemp(prefix="." + destination.name + ".", suffix=".part", dir=destination.parent)
+                    partial = Path(name)
+                    with os.fdopen(descriptor, "wb") as stream:
+                        with urllib.request.urlopen(item["url"], timeout=min(60, remaining())) as response:
+                            while chunk := response.read(1024 * 1024):
+                                remaining()
+                                attempt["received_bytes"] += len(chunk)
+                                if attempt["received_bytes"] > item["size"]:
+                                    raise ValueError("Source exceeds locked size")
+                                stream.write(chunk)
+                    remaining()
+                    if attempt["received_bytes"] != item["size"] or sha(partial) != item["sha256"]:
+                        raise ValueError("Source archive differs from lock: " + item["filename"])
+                    remaining()
+                    os.link(partial, destination)
+                    attempt["status"] = record["status"] = "verified"
+                    return
+                except Exception as error:
+                    attempt.update(download_error_details(error))
+                    if isinstance(error, urllib.error.HTTPError):
+                        error.close()
+                    if not transient_download_error(error) or number == DOWNLOAD_MAX_ATTEMPTS:
+                        raise
+                    # An exhausted worker/file budget is not a transport retry.
+                    delay = DOWNLOAD_BACKOFF_SECONDS[number - 1]
+                    if remaining() <= delay:
+                        raise DownloadDeadlineExceeded("Source download budget cannot fit retry backoff") from error
+                    attempt["status"] = "retry"
+                    attempt["backoff_seconds"] = delay
+                finally:
+                    if partial is not None:
+                        partial.unlink()
+                    attempt["seconds"] = round(time.monotonic() - before, 3)
+                    print("IDECK_SOURCE_ATTEMPT=" + json.dumps(attempt), flush=True)
+                time.sleep(delay)
 
 
 def main():
@@ -181,6 +297,7 @@ def main():
         check_request()
         worker = Worker(out)
         report["steps"] = worker.steps
+        report["downloads"] = worker.downloads
         report["commit"] = worker.run("checkout", ["git", "rev-parse", "HEAD"])
         report["xcode"] = worker.run("xcode", ["xcodebuild", "-version"])
         worker.run("swift-source-check", [sys.executable, "-I", "ci/check_linux_guest_profile.py"])

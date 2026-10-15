@@ -25,7 +25,8 @@ import zipfile
 
 from pairing_validate import (Rejected, ar_members, macho, native_flags, require,
                               safe_relative, sha, shipped_crates, source_members,
-                              validate_member, bind_own_rust, bind_ring_native, final_definitions, raw_macho_metadata)
+                              validate_member, bind_own_rust, bind_ring_native, final_definitions, raw_macho_metadata,
+                              archive_api_symbols)
 from tool_provenance import component_payload, verify_installed
 
 CI = Path(__file__).resolve().parent
@@ -539,9 +540,16 @@ class Control:
                 for name, b in ar_members(self.archive.read_bytes())]
         require(rows and any(r["origin"] == "fresh-rust-codegen-output" for r in rows), "no fresh Rust code")
         (self.evidence / "archive-members.json").write_text(json.dumps(rows, indent=2) + "\n")
-        symbols = self.run([self.tools["nm"], "-g", self.archive], "archive-symbols", offline=True, cap=90)
-        defined = set(re.findall(r"^[0-9a-fA-F]+ [TDSB] (_\S+)$", symbols, re.M))
-        require({"_" + x for x in self.lock["exports"]} == {x for x in defined if x.startswith("_madeira_rppairing_")}, "C export namespace mismatch")
+        try:
+            symbols = archive_api_symbols(self.archive.read_bytes(), self.lock["exports"], binding,
+                                          self.lock["archive_symbol_policy"]["raw_table_cap_bytes"])
+            report = json.dumps(symbols, indent=2) + "\n"
+            require(len(report.encode()) <= self.lock["log_cap_bytes"], "raw archive symbol evidence cap")
+            (self.evidence / "archive-raw-symbols.json").write_text(report)
+        except Exception as error:
+            context = getattr(error, "context", dict(stage="raw-archive-symbols", error=str(error)))
+            (self.evidence / "validation-failure-context.json").write_text(json.dumps(context, indent=2) + "\n")
+            raise
         self.run([self.tools["ar"], "-t", self.archive], "archive-member-names", offline=True, cap=90)
         self.run([self.tools["otool"], "-l", self.archive], "archive-load-commands", offline=True, cap=90)
         self.run([self.tools["lipo"], "-info", self.archive], "archive-architecture", offline=True, cap=30)

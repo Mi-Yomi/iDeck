@@ -1233,8 +1233,8 @@
   },
   "rust_commit": "b940084d7eb6a299eb4bfeb8e34901bc051e7ac4",
   "control_hashes": {
-    "pairing_control.py": "ccdb0612c2ea6533859dd6b0bcd9ae9fa7626991e7db52f1e3b3d10f4a45ad22",
-    "pairing_validate.py": "7f6e1e51255540f63a73cef6c5dd5d3961f549796a0d8346c961f140d2c5577b",
+    "pairing_control.py": "a57ca7ec38050d259d44b47754cef40bb857e1665d054e55ea291791c72d6db8",
+    "pairing_validate.py": "5c8bff8969e98e4f86cc7204a5dff6ef7a8095ff011e8cdd7610d25546f0c873",
     "rustc_wrapper.py": "32351ee2b62b02ad361ee094ae8ee2900057e294848cf49bed58f0dee5b9eeb1",
     "tool_provenance.py": "adbfe86237b34851edbc0a8638bca3c00ca76d04943fb8fedf48186f78f47238"
   },
@@ -1384,5 +1384,15 @@
       }
     ],
     "meaning": "SDK0 is unspecified. Only these exact source/archive/member identities may report SDK0 with fresh selected-clang SDK26.5/iOS18 argv and complete current byte provenance; final linked image remains SDK26.5."
+  },
+  "archive_symbol_policy": {
+    "method": "raw-Mach-O-nlist64",
+    "raw_table_cap_bytes": 2097152,
+    "expected_public_api_count": 11,
+    "own_final_rustc_binding_required": true,
+    "definition": "Exact strong external N_SECT in bounded file-backed __TEXT,__text with instruction flags; no weak/private/STAB/alias/common/undefined/data substitutes; unique namespace and bounded raw evidence",
+    "baseline_evidence_zip_sha256": "d1c30c2576cb883ec07972ddc4d261fdfb565dceb4c97dbac30f0c7cd69f2957",
+    "baseline_observed_raw_table_bytes": 388944,
+    "final_link_and_final_nm_unchanged": true
   }
 }

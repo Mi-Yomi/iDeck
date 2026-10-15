@@ -395,6 +395,126 @@ def final_definitions(output, exports):
     return [dict(address=a, kind=k, name=n) for a, k, n in actual]
 
 
+def raw_symbol_table(data, maximum_bytes):
+    """Read native Mach-O nlist64 only; never interpret embedded LLVM bitcode."""
+    macho(data)
+    count, command_bytes = struct.unpack_from("<II", data, 16)
+    end_commands = 32 + command_bytes
+    offset, sections, symtab = 32, [], None
+    for _ in range(count):
+        cmd, length = struct.unpack_from("<II", data, offset)
+        if cmd == 0x19:
+            require(length >= 72, "truncated symbol-proof segment")
+            values = struct.unpack_from("<II16sQQQQiiII", data, offset)
+            file_offset, file_size, nsects = values[5], values[6], values[9]
+            require(length == 72 + 80 * nsects and len(sections) + nsects <= 255,
+                    "invalid symbol-proof section count/command")
+            require(file_offset <= len(data) and file_size <= len(data) - file_offset,
+                    "symbol-proof segment file bounds")
+            for index in range(nsects):
+                position = offset + 72 + index * 80
+                name, segment, address, size, start, align, reloc, nreloc, flags, r1, r2, r3 = \
+                    struct.unpack_from("<16s16sQQ8I", data, position)
+                section = dict(index=len(sections) + 1,
+                    name=name.split(b"\0", 1)[0].decode("ascii"),
+                    segment=segment.split(b"\0", 1)[0].decode("ascii"),
+                    address=address, size=size, file_offset=start, flags=flags,
+                    relocation_offset=reloc, relocation_count=nreloc)
+                require(address + size <= 1 << 64 and reloc + nreloc * 8 <= len(data),
+                        "symbol-proof section address/relocation bounds")
+                zerofill = flags & 0xFF in (1, 0xC, 0x12)
+                if size and not zerofill:
+                    require(start >= end_commands and start >= file_offset and
+                            size <= len(data) - start and start + size <= file_offset + file_size,
+                            "symbol-proof section file bounds")
+                section["file_backed"] = not zerofill
+                sections.append(section)
+        elif cmd == 2:
+            require(length == 24 and symtab is None, "missing/duplicate/malformed LC_SYMTAB")
+            symtab = struct.unpack_from("<4I", data, offset + 8)
+        offset += length
+    require(offset == end_commands and symtab is not None, "missing symbol table")
+    symoff, nsyms, stroff, strsize = symtab
+    raw_bytes = nsyms * 16 + strsize
+    require(nsyms <= 1000000 and 0 < strsize and raw_bytes <= maximum_bytes,
+            "raw symbol/string table cap")
+    require(symoff >= end_commands and nsyms * 16 <= len(data) - symoff and
+            stroff >= symoff + nsyms * 16 and strsize <= len(data) - stroff,
+            "symbol/string bounds or overlap")
+    require(all(not s["size"] or not s["file_backed"] or
+                s["file_offset"] + s["size"] <= symoff for s in sections),
+            "symbol table overlaps file-backed section")
+    nlists, strings = data[symoff:symoff + nsyms * 16], data[stroff:stroff + strsize]
+    api = []
+    for index in range(nsyms):
+        raw = nlists[index * 16:(index + 1) * 16]
+        strx, kind, section_index, desc, value = struct.unpack("<IBBHQ", raw)
+        require(strx < len(strings), "symbol string index outside table")
+        stop = strings.find(b"\0", strx)
+        require(stop >= strx, "unterminated symbol string")
+        name = strings[strx:stop]
+        if not kind & 0xE0 and kind & 0x0E == 0x0E:
+            require(0 < section_index <= len(sections), "nlist section index outside table")
+        if not name.startswith(b"_madeira_rppairing_"):
+            continue
+        require(kind == 0x0F and not desc & 0xC0,
+                "pairing API is not a strong external N_SECT definition")
+        require(0 < section_index <= len(sections), "API section index outside table")
+        section = sections[section_index - 1]
+        require(section["segment"] == "__TEXT" and section["name"] == "__text" and
+                section["file_backed"] and section["flags"] & 0xFF == 0 and
+                section["flags"] & 0x80000400 == 0x80000400,
+                "pairing API is not file-backed instruction text")
+        require(section["address"] <= value < section["address"] + section["size"] and value % 4 == 0,
+                "pairing API address outside/alignment of text")
+        position = section["file_offset"] + value - section["address"]
+        require(position + 4 <= section["file_offset"] + section["size"] and position + 4 <= len(data),
+                "pairing API instruction storage truncated")
+        api.append(dict(symbol=name.decode("ascii"), nlist_index=index, raw_nlist_hex=raw.hex(),
+                        string_index=strx, n_type=kind, n_sect=section_index, n_desc=desc, n_value=value,
+                        section=section, file_offset=position,
+                        first_instruction_bytes_hex=data[position:position + 4].hex()))
+    return dict(raw_table_bytes=raw_bytes, header_hex=data[:32].hex(),
+                load_command_bytes_hex=data[32:end_commands].hex(), sections=sections,
+                symbol_offset=symoff, symbol_count=nsyms, string_offset=stroff, string_size=strsize,
+                nlist_sha256=sha(nlists), nlist_hex=nlists.hex(),
+                strings_sha256=sha(strings), strings_hex=strings.hex(), api_definitions=api)
+
+
+def archive_api_symbols(data, exports, own_binding, maximum_bytes=2 * 1024**2):
+    require(own_binding and own_binding.get("archive_sha256") == sha(data),
+            "raw API symbols lack exact own archive binding")
+    require(len(exports) == 11 and len(set(exports)) == 11, "exact eleven C exports required")
+    expected = {"_" + name for name in exports}
+    rows, definitions, seen, total = [], {}, set(), 0
+    for ordinal, (name, body) in enumerate(ar_members(data)):
+        digest = sha(body)
+        require(name not in seen, "duplicate archive member in symbol proof")
+        seen.add(name)
+        try:
+            symbols = raw_symbol_table(body, maximum_bytes - total)
+            total += symbols["raw_table_bytes"]
+            row = dict(member_ordinal=ordinal, member=name, member_sha256=digest,
+                       member_size=len(body), **symbols)
+            rows.append(row)
+            for symbol in symbols["api_definitions"]:
+                api = symbol["symbol"]
+                require(api in expected and api not in definitions, "extra/duplicate pairing API definition")
+                require(own_binding["members"].get(name) == digest,
+                        "pairing API definition is not bound to own successful rustc output")
+                definitions[api] = dict(archive="libmadeira_rppairing.a", archive_sha256=sha(data), member_ordinal=ordinal, member=name,
+                                        member_sha256=digest, **symbol)
+        except Rejected as error:
+            error.context = dict(stage="raw-archive-symbols", member_ordinal=ordinal, member=name,
+                                 member_sha256=digest, error=str(error), raw_macho=raw_macho_metadata(body))
+            raise
+    require(set(definitions) == expected, "missing strong pairing API definitions")
+    return dict(method="raw-Mach-O-nlist64", archive="libmadeira_rppairing.a", archive_sha256=sha(data), archive_size=len(data),
+                member_count=len(rows), raw_table_bytes=total, raw_table_cap_bytes=maximum_bytes,
+                definitions=[definitions[n] for n in sorted(definitions)], members=rows,
+                llvm_bitcode_interpreted=False, target_link_established=False)
+
+
 def native_flags(output, libraries, frameworks):
     matches = re.findall(r"(?:^|\n)(?:note: )?native-static-libs:\s*([^\n]+)", output)
     require(len(matches) == 1, "missing/ambiguous native-static-libs")

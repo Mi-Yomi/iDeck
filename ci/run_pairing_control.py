@@ -12,8 +12,8 @@ import sys
 import time
 import zipfile
 
-SELF_PIN = '44d621fd3505489e1355379a2e05ed99af11ad5499c696ebd412f4b1c7d3cc00'
-LOCK_PIN = 'b46212e94451271782ea4de0e91e9bc264f97f00f75357aa631c4676786c521b'
+SELF_PIN = 'fc3c4db2be6b3a9463a26b8fb6061e0e558a3b6ddee5b3c90218d19a4b976e9c'
+LOCK_PIN = '9466ed56786ad238db47d5d483aadee543873e03518f346f1e5be00f66e4c156'
 ROOT = Path(__file__).resolve().parents[1]
 MIB = 1024 * 1024
 AGGREGATE_SECONDS = 1380
@@ -22,7 +22,7 @@ EVIDENCE_NAMES = {
     'pairing-source-lock.json', 'commands.json', 'result.json', 'tool-downloads.json',
     'installed-toolchain-provenance.json', 'rust-std-members.json', 'crate-downloads.json',
     'build-environment.json', 'rustc-wrapper-source.py', 'rustc-argv.jsonl',
-    'archive-raw-members.json', 'archive-members.json', 'ring-members.json',
+    'archive-raw-members.json', 'archive-members.json', 'archive-raw-symbols.json', 'ring-members.json',
     'ring-prevalidation-diagnostics.json', 'validation-failure-context.json',
     'own-rust-object-binding.json', 'api_probe.c', 'api_probe.dylib',
     'native-link-closure.json', 'all-crate-notices.json', 'output-manifest.json',

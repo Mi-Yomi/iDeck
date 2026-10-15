@@ -562,3 +562,43 @@ workflows:
     artifacts:
     - ci/llvm-air-reader/.work/reader-producer/artifacts/llvm15-air-reader-evidence.zip
     - ci/llvm-air-reader/.work/reader-producer/artifacts/llvm15-air-reader-native.zip
+
+  ideck-fex-generated-headers-control:
+    name: iDeck original FEX generated headers and compile-only ABI witness
+    instance_type: mac_mini_m2
+    max_build_duration: 5
+    inputs:
+      expected_fex_header_wrapper_sha256:
+        description: Exact separately reviewed ci/fex-header/run.py SHA256
+        type: string
+      free_quota_verified:
+        description: Existing free macOS quota verified; paid subscription disabled
+        type: string
+        default: "false"
+      private_source_verified:
+        description: Approved private Mi-Yomi/iDeck repository selected
+        type: string
+        default: "false"
+    environment:
+      xcode: "26.6"
+      vars:
+        EXPECTED_FEX_HEADER_WRAPPER_SHA256: ${{ inputs.expected_fex_header_wrapper_sha256 }}
+        FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
+        PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
+    scripts:
+      - name: Generate exact FEX configuration headers and original-compiler data witness
+        script: |
+          set -euo pipefail
+          test "${FREE_QUOTA_VERIFIED:-false}" = true
+          test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
+          python3 -I ci/fex-header/run.py
+    artifacts:
+      - .work/fex-header-control-artifacts/headers-and-witness.zip
+      - .work/fex-header-control-artifacts/result.json
+      - .work/fex-header-control-artifacts/worker.log
+      - .work/fex-header-control-artifacts/diagnostics/**
+# Manual proposal only: no trigger, dependency archive import, install, cache,
+# signing, publication, retry, target execution or SDK copying.
+# 240 seconds aggregate: worker 215 seconds, at most 25 seconds finalization.
+# Normal original CMake compiler probes are permitted; no library targets,
+# archive rebuild or app/witness link. Existing build worker owns remote work.

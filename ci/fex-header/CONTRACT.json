@@ -1,0 +1,2208 @@
+{
+  "schema": "ideck.fex-header-supplement-proposal.v1",
+  "status": "proposal-only; no CMake, generator or compiler execution",
+  "fex_pin": "f59cab95659e8add0c88f0c76ec1cf483c536dbf",
+  "madeira_pin": "279fd0f83170425db002fe25d6bd62f6355f497d",
+  "reference_producer": {
+    "build_id": "6ad050ed546ce6236ceebb52",
+    "bootstrap_commit": "47f9692142a10144eb0d5b8ddd9a98b065b83a59",
+    "url": "https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad050ed546ce6236ceebb52",
+    "archive_transport": {
+      "path": ".work/ideck/github-build/runtime-control-proposal/run-6ad050ed546ce6236ceebb52-archives.zip",
+      "bytes": 1014199,
+      "sha256": "a9e0368cff2d108685c76dc148009992e04333961efdbad7f8a17ec4af2ba46a"
+    },
+    "evidence_transport": {
+      "path": ".work/ideck/github-build/runtime-control-proposal/run-6ad050ed546ce6236ceebb52-evidence.zip",
+      "bytes": 246093,
+      "sha256": "8bad4dd2a6685cba992d896d8c65b0d3c8038612a5c9a939a6686ed7a5a35c3e"
+    },
+    "archive_inputs": [
+      {
+        "member": "Archives/libFEXCore.a",
+        "bytes": 4097792,
+        "sha256": "74aaa2702132bc2beb30454c5d3bb0326c1a5df7f91c00dcbf03e07e1ecec094"
+      },
+      {
+        "member": "Archives/libFEXCore_Base.a",
+        "bytes": 132984,
+        "sha256": "3d86ece6c8ec4aa2c5c47b5b17a3ad46f4918985d3ffdee82d025fa2dcc01ea2"
+      },
+      {
+        "member": "Archives/libJemallocLibs.a",
+        "bytes": 2320,
+        "sha256": "6a4aec5de51aa67605693d51e4d9d160886da41d6f5cdd1b461ef3225e806d75"
+      },
+      {
+        "member": "Archives/libfmt.a",
+        "bytes": 190568,
+        "sha256": "4f30874aff8295f1f1a892267c369425fca12f5eef46e5ba3f73fe0011b2a635"
+      },
+      {
+        "member": "Archives/libcephes_128bit.a",
+        "bytes": 23928,
+        "sha256": "12f9c487c8572c8329659c16ef2f365e8ee74f69208b59e205a24847c9ff6918"
+      },
+      {
+        "member": "Archives/libxxhash.a",
+        "bytes": 42392,
+        "sha256": "f1f77b01c2f07abc090455b6d4e8ff79e745192fc6a3c4c2cd600891844194fe"
+      },
+      {
+        "member": "Archives/libsoftfloat_3e.a",
+        "bytes": 77392,
+        "sha256": "9146eec31aa17d194bfe182a5f8e31808fe4aefef52719276d56e96dbd48e982"
+      }
+    ],
+    "evidence_members": [
+      {
+        "path": "Configuration/fex-CMakeCache.txt",
+        "sha256": "02faa727161a7f1b614024c161db34e11024e3c624150905c52cf3e097a71323"
+      },
+      {
+        "path": "Configuration/compile_commands.json",
+        "sha256": "af149c5239bb6722e5462ec84192aa6704e8693e0919d67005941f6ff028c7c6"
+      }
+    ],
+    "compile_entry_count": 155
+  },
+  "toolchain": {
+    "xcode": "26.6",
+    "xcode_build": "17F113",
+    "sdk": "iphoneos26.5",
+    "clang": "Apple clang 21.0.0 (clang-2100.1.1.101)",
+    "cmake": "4.3.4",
+    "make": "Xcode GNU Make 3.81",
+    "python3_resolved_in_preflight": "3.12.7",
+    "cmake_find_python": "3.13.14",
+    "python_resolution_caveat": "CONFIG_INC invokes bare python3, not the CMake Python_EXECUTABLE. Record actual resolution in supplement; original preflight resolution is not a trace of every child process."
+  },
+  "external_pins": {
+    "External/fmt": "407c905e45ad75fc29bf0f9bb7c5c2fd3475976f",
+    "External/range-v3": "ca1388fb9da8e69314dda222dc7b139ca84e092f",
+    "External/xxhash": "e626a72bc2321cd320e953a0ccf1584cad60f363",
+    "External/unordered_dense": "3234af2c03549bc85656bfd3a86993bf1cd8aef1"
+  },
+  "original_configure_arguments": [
+    "-G",
+    "Unix Makefiles",
+    "-DCMAKE_MAKE_PROGRAM=${XCRUN_MAKE}",
+    "-DCMAKE_SYSTEM_NAME=iOS",
+    "-DCMAKE_SYSTEM_PROCESSOR=arm64",
+    "-DCMAKE_OSX_ARCHITECTURES=arm64",
+    "-DCMAKE_OSX_SYSROOT=${SDK26_5}",
+    "-DCMAKE_OSX_DEPLOYMENT_TARGET=17.0",
+    "-DCMAKE_BUILD_TYPE=Release",
+    "-DBUILD_TESTING=OFF",
+    "-DBUILD_THUNKS=OFF",
+    "-DBUILD_FEXCONFIG=OFF",
+    "-DBUILD_FEX_LINUX_TESTS=OFF",
+    "-DENABLE_FEX_ALLOCATOR=OFF",
+    "-DENABLE_ASSERTIONS=OFF",
+    "-DENABLE_CLANG_THUNKS=ON",
+    "-DENABLE_CCACHE=OFF",
+    "-DENABLE_LTO=OFF",
+    "-DTUNE_CPU=cortex-a78",
+    "-DCMAKE_DISABLE_FIND_PACKAGE_fmt=TRUE",
+    "-DCMAKE_DISABLE_FIND_PACKAGE_range-v3=TRUE",
+    "-DCMAKE_DISABLE_FIND_PACKAGE_unordered_dense=TRUE"
+  ],
+  "new_build_directory_required": true,
+  "permitted_build_targets": [
+    "CONFIG_INC"
+  ],
+  "forbidden_build_targets": [
+    "all",
+    "FEXCore",
+    "FEXCore_Base",
+    "JemallocLibs",
+    "fmt",
+    "cephes_128bit",
+    "xxhash",
+    "softfloat_3e"
+  ],
+  "cache_inputs": {
+    "BUILD_FEXCONFIG": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "BUILD_FEX_LINUX_TESTS": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "BUILD_STEAM_SUPPORT": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "BUILD_TESTING": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "BUILD_THUNKS": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "CMAKE_BUILD_TYPE": {
+      "type": "STRING",
+      "value": "Release"
+    },
+    "CMAKE_CXX_FLAGS": {
+      "type": "STRING",
+      "value": ""
+    },
+    "CMAKE_CXX_FLAGS_RELEASE": {
+      "type": "STRING",
+      "value": "-O3 -DNDEBUG"
+    },
+    "CMAKE_DISABLE_FIND_PACKAGE_fmt": {
+      "type": "UNINITIALIZED",
+      "value": "TRUE"
+    },
+    "CMAKE_DISABLE_FIND_PACKAGE_range-v3": {
+      "type": "UNINITIALIZED",
+      "value": "TRUE"
+    },
+    "CMAKE_DISABLE_FIND_PACKAGE_unordered_dense": {
+      "type": "UNINITIALIZED",
+      "value": "TRUE"
+    },
+    "CMAKE_INSTALL_BINDIR": {
+      "type": "PATH",
+      "value": "bin"
+    },
+    "CMAKE_INSTALL_DATADIR": {
+      "type": "PATH",
+      "value": ""
+    },
+    "CMAKE_INSTALL_DATAROOTDIR": {
+      "type": "PATH",
+      "value": "share"
+    },
+    "CMAKE_INSTALL_DOCDIR": {
+      "type": "PATH",
+      "value": ""
+    },
+    "CMAKE_INSTALL_INCLUDEDIR": {
+      "type": "PATH",
+      "value": "include"
+    },
+    "CMAKE_INSTALL_INFODIR": {
+      "type": "PATH",
+      "value": ""
+    },
+    "CMAKE_INSTALL_LIBDIR": {
+      "type": "PATH",
+      "value": "lib"
+    },
+    "CMAKE_INSTALL_LIBEXECDIR": {
+      "type": "PATH",
+      "value": "libexec"
+    },
+    "CMAKE_INSTALL_LOCALEDIR": {
+      "type": "PATH",
+      "value": ""
+    },
+    "CMAKE_INSTALL_LOCALSTATEDIR": {
+      "type": "PATH",
+      "value": "var"
+    },
+    "CMAKE_INSTALL_MANDIR": {
+      "type": "PATH",
+      "value": ""
+    },
+    "CMAKE_INSTALL_NAME_TOOL": {
+      "type": "FILEPATH",
+      "value": "/usr/bin/install_name_tool"
+    },
+    "CMAKE_INSTALL_OLDINCLUDEDIR": {
+      "type": "PATH",
+      "value": "/usr/include"
+    },
+    "CMAKE_INSTALL_PREFIX": {
+      "type": "PATH",
+      "value": "/usr/local"
+    },
+    "CMAKE_INSTALL_RUNSTATEDIR": {
+      "type": "PATH",
+      "value": ""
+    },
+    "CMAKE_INSTALL_SBINDIR": {
+      "type": "PATH",
+      "value": "sbin"
+    },
+    "CMAKE_INSTALL_SHAREDSTATEDIR": {
+      "type": "PATH",
+      "value": "com"
+    },
+    "CMAKE_INSTALL_SYSCONFDIR": {
+      "type": "PATH",
+      "value": "etc"
+    },
+    "CMAKE_OSX_ARCHITECTURES": {
+      "type": "STRING",
+      "value": "arm64"
+    },
+    "CMAKE_OSX_DEPLOYMENT_TARGET": {
+      "type": "UNINITIALIZED",
+      "value": "17.0"
+    },
+    "CMAKE_OSX_SYSROOT": {
+      "type": "PATH",
+      "value": "/Applications/Xcode-26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk"
+    },
+    "ENABLE_ASAN": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "ENABLE_ASSERTIONS": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "ENABLE_CCACHE": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "ENABLE_CLANG_THUNKS": {
+      "type": "BOOL",
+      "value": "ON"
+    },
+    "ENABLE_COMPILE_TIME_TRACE": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "ENABLE_COVERAGE": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "ENABLE_FEXCORE_PROFILER": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "ENABLE_FEX_ALLOCATOR": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "ENABLE_GDB_SYMBOLS": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "ENABLE_GLIBC_ALLOCATOR_HOOK_FAULT": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "ENABLE_GUEST_WINDOW": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "ENABLE_IWYU": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "ENABLE_JEMALLOC_GLIBC_ALLOC": {
+      "type": "BOOL",
+      "value": "ON"
+    },
+    "ENABLE_LIBCXX": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "ENABLE_LTO": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "ENABLE_OFFLINE_TELEMETRY": {
+      "type": "BOOL",
+      "value": "ON"
+    },
+    "ENABLE_STRICT_WERROR": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "ENABLE_TSAN": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "ENABLE_UBSAN": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "ENABLE_VIXL_DISASSEMBLER": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "ENABLE_VIXL_SIMULATOR": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "ENABLE_WERROR": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "ENABLE_XRAY": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "ENABLE_ZYDIS": {
+      "type": "BOOL",
+      "value": "OFF"
+    },
+    "TUNE_ARCH": {
+      "type": "STRING",
+      "value": "generic"
+    },
+    "TUNE_CPU": {
+      "type": "STRING",
+      "value": "cortex-a78"
+    },
+    "BUILD_SHARED_LIBS": {
+      "type": "INTERNAL",
+      "value": "OFF"
+    },
+    "CMAKE_INSTALL_BINDIR-ADVANCED": {
+      "type": "INTERNAL",
+      "value": "1"
+    },
+    "CMAKE_INSTALL_DATADIR-ADVANCED": {
+      "type": "INTERNAL",
+      "value": "1"
+    },
+    "CMAKE_INSTALL_DATAROOTDIR-ADVANCED": {
+      "type": "INTERNAL",
+      "value": "1"
+    },
+    "CMAKE_INSTALL_DOCDIR-ADVANCED": {
+      "type": "INTERNAL",
+      "value": "1"
+    },
+    "CMAKE_INSTALL_INCLUDEDIR-ADVANCED": {
+      "type": "INTERNAL",
+      "value": "1"
+    },
+    "CMAKE_INSTALL_INFODIR-ADVANCED": {
+      "type": "INTERNAL",
+      "value": "1"
+    },
+    "CMAKE_INSTALL_LIBDIR-ADVANCED": {
+      "type": "INTERNAL",
+      "value": "1"
+    },
+    "CMAKE_INSTALL_LIBEXECDIR-ADVANCED": {
+      "type": "INTERNAL",
+      "value": "1"
+    },
+    "CMAKE_INSTALL_LOCALEDIR-ADVANCED": {
+      "type": "INTERNAL",
+      "value": "1"
+    },
+    "CMAKE_INSTALL_LOCALSTATEDIR-ADVANCED": {
+      "type": "INTERNAL",
+      "value": "1"
+    },
+    "CMAKE_INSTALL_MANDIR-ADVANCED": {
+      "type": "INTERNAL",
+      "value": "1"
+    },
+    "CMAKE_INSTALL_NAME_TOOL-ADVANCED": {
+      "type": "INTERNAL",
+      "value": "1"
+    },
+    "CMAKE_INSTALL_OLDINCLUDEDIR-ADVANCED": {
+      "type": "INTERNAL",
+      "value": "1"
+    },
+    "CMAKE_INSTALL_RUNSTATEDIR-ADVANCED": {
+      "type": "INTERNAL",
+      "value": "1"
+    },
+    "CMAKE_INSTALL_SBINDIR-ADVANCED": {
+      "type": "INTERNAL",
+      "value": "1"
+    },
+    "CMAKE_INSTALL_SHAREDSTATEDIR-ADVANCED": {
+      "type": "INTERNAL",
+      "value": "1"
+    },
+    "CMAKE_INSTALL_SYSCONFDIR-ADVANCED": {
+      "type": "INTERNAL",
+      "value": "1"
+    },
+    "HAS_CLANG_PRESERVE_ALL": {
+      "type": "INTERNAL",
+      "value": "1"
+    },
+    "HAS_PROGRAM_INVOCATION_NAME": {
+      "type": "INTERNAL",
+      "value": ""
+    }
+  },
+  "effective_overrides": {
+    "ENABLE_JEMALLOC_GLIBC_ALLOC": false,
+    "ENABLE_FEX_ALLOCATOR": false,
+    "FEX_GENERATOR_FEATURES": [],
+    "FEX_IOS_HOST_BUILD": "unset",
+    "CMAKE_INSTALL_FULL_LIBDIR": "/usr/local/lib",
+    "GLOBAL_DATA_DIRECTORY": "/usr/local/share/fex-emu/"
+  },
+  "source_inputs": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 26703,
+      "sha256": "01085c3b791d0247f2f963ec7a7ac2656f33f648fe1e0e36f43b1ad22256ed6c",
+      "git_blob_sha1": "1924a1cc7b1fb8b3d1da451d2ed86d294b891869"
+    },
+    {
+      "path": "FEXCore/Source/CMakeLists.txt",
+      "bytes": 10908,
+      "sha256": "753e1a34616a95da259e174ddff1c6186c9e1e366607a1fcbf7c75ec109f74b9",
+      "git_blob_sha1": "40b9214447cc6a72b2b9ff3d676c895c29e21b73"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Config/Config.json.in",
+      "bytes": 24556,
+      "sha256": "961f8e7019e13d6876eaa8f3bd780ae1a1041dddf6d0abd3c3d98f37298e002a",
+      "git_blob_sha1": "d1fb9c5f2a9921609c0004c218be9e65086a5728"
+    },
+    {
+      "path": "FEXCore/Scripts/config_generator.py",
+      "bytes": 16851,
+      "sha256": "2196d7f18dc09865f2a1d6331c0e13265f39092ac94e283f418345a9ae796647",
+      "git_blob_sha1": "5da5246b1d4073c2a2b4cf59fa5f9fbf3e2ffdc3"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/LongJump.h",
+      "bytes": 1235,
+      "sha256": "d9c5196db8d567cd21f8ef817250dc78391f7f60081772d53e128732f9aa4146",
+      "git_blob_sha1": "df8e4b7baa5ee99df31eff0352d4969c6391fd3e"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Debug/InternalThreadState.h",
+      "bytes": 7062,
+      "sha256": "20c70783a10ed428b6a7e4be532ad85e56dc67550af9642203544c449c4a39ef",
+      "git_blob_sha1": "edad382e2865007b987317c134314e716956ac71"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Core/CoreState.h",
+      "bytes": 19677,
+      "sha256": "09056e80bc443ce27d40c8703fb6bc667cf7bc0115b9fcebb2d4500cc55ae78a",
+      "git_blob_sha1": "cc7ea8709d719c78536fdb5d2a11cae6e89cb13b"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/TypeDefines.h",
+      "bytes": 460,
+      "sha256": "6bd4102134a8cac3496cb0ad1f878c7a9f56b30621e61e4547e9d3a303970460",
+      "git_blob_sha1": "ec03ac6cd3c4cd8ef2560be3cd9e3f4e87b1fc45"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Config/Config.h",
+      "bytes": 10715,
+      "sha256": "51b81639821b897dc59f4d65eb1cab6437f8936096da627bc20a0585f376ad4b",
+      "git_blob_sha1": "f714193278dc6fe1083af005caf27a0c82744028"
+    }
+  ],
+  "source_header_closure": [
+    {
+      "path": "FEXCore/include/FEXCore/Config/Config.h",
+      "sha256": "51b81639821b897dc59f4d65eb1cab6437f8936096da627bc20a0585f376ad4b",
+      "git_blob_sha1": "f714193278dc6fe1083af005caf27a0c82744028"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Core/CPUID.h",
+      "sha256": "643b2ac46fa7995c78832a6d60fc7694461b68eb85866fd1b5c781a7175fa079",
+      "git_blob_sha1": "0e3c77f739b98b697ff2dfa50202af4854ba9f65"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Core/CodeCache.h",
+      "sha256": "cb06177533f0ba9f0735610c20742d2f49b298028fb40962d5804c3f69a4d914",
+      "git_blob_sha1": "bd99d4bd2ef1e902c068232117e0ed1888ba50c1"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Core/Context.h",
+      "sha256": "21b938fa6f1d6bc51e276217f439cde9fc80429ad77f29e3084f2aecbe19a30d",
+      "git_blob_sha1": "ec61b90bf82769e34b42bb229d7781ecb98d3853"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Core/CoreState.h",
+      "sha256": "09056e80bc443ce27d40c8703fb6bc667cf7bc0115b9fcebb2d4500cc55ae78a",
+      "git_blob_sha1": "cc7ea8709d719c78536fdb5d2a11cae6e89cb13b"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Core/HostFeatures.h",
+      "sha256": "079986f0b98b8017367da9049a45e0b1bb12f89df06255c057e09b22d0c4be7b",
+      "git_blob_sha1": "c927df66bbecfa14622674221b3a992ceb083f90"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Core/SignalDelegator.h",
+      "sha256": "f1348f90959ded4638d9de0c07fbb0268004190bdaf3753205872c3cf0217487",
+      "git_blob_sha1": "4386f0c9d92fd58760eb41e9509d63eae8089a49"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Core/X86Enums.h",
+      "sha256": "c1a29dd0f90d368439b2dc7352291cee28181ce02199eca12e8afe958ef6358f",
+      "git_blob_sha1": "8c3b1c9f36ec0db5e58f6fe719b389e7bf16c93d"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Debug/InternalThreadState.h",
+      "sha256": "20c70783a10ed428b6a7e4be532ad85e56dc67550af9642203544c449c4a39ef",
+      "git_blob_sha1": "edad382e2865007b987317c134314e716956ac71"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/HLE/SyscallHandler.h",
+      "sha256": "f2de0012d4d7b61ed6316901f32fb3005b87bd7d8e6493657b4cd7700702c387",
+      "git_blob_sha1": "d1f4decd75f0ae61432c7a4ae4b90386e472ea46"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/IR/IR.h",
+      "sha256": "54a817cc686658e4100d4a3f41f24d0d7e2351a0abe64ce378100f838092442f",
+      "git_blob_sha1": "ca43d18ed4083e34891ea62de6dc9f9bc38aa00d"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/Allocator.h",
+      "sha256": "830ae790125b947476cfeef87ed8b2c5b45ebc3dfc8c5ca28855571e2e87cbe6",
+      "git_blob_sha1": "c9444251eb39c65e21bddcaf3c2bc0a93c68e249"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
+      "sha256": "0bb751a8e4effe0ebb731fa90f3d26c648a5b4c76945bdac91545284aaea172e",
+      "git_blob_sha1": "509750c1582b87940b5c18351cff9d1c85d64a43"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/CompilerDefs.h",
+      "sha256": "832362e45a28f5dae45f246b946893417592779bf745308f2fde57a836a1ce58",
+      "git_blob_sha1": "08540f2cac8709939b5796e3ac141db5a0570fda"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/DualMap.h",
+      "sha256": "20ebdc142fdbedfd177f099cb69cb4ed4176607cc3df6b8669fae0e331451a50",
+      "git_blob_sha1": "4bc880d6faf5d256392b89da49b7171fa643b966"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/EnumOperators.h",
+      "sha256": "0da0af28e35cc650f4ca5caadb5db73256b0a2dbdde37895f97671977711053c",
+      "git_blob_sha1": "174b62bc1a3a0e75c842f5b117c7ca7773cc1591"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/EnumUtils.h",
+      "sha256": "7681da383aa3cf9193e23122bc4d07b2435742ee6e47e066c421c06fcabe1c7e",
+      "git_blob_sha1": "d5c4755d83afc27542dbaf190abc8b9bc9f62f92"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/File.h",
+      "sha256": "b7d705b33211fa37ece2a7a9c5804d5616856e518a90f4ece02534e3786885ba",
+      "git_blob_sha1": "0d5185e47bcfd9ea8073722365e910a03eda25bd"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/IntervalList.h",
+      "sha256": "75383f467f6a0d903a9be57cc35949000c338fa2dbecd243e573fa4032678b47",
+      "git_blob_sha1": "5535b0a49896fe941e1aec67cbf4d3533f29eb1a"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/LogManager.h",
+      "sha256": "34d1e5ac075c00742325d0dc0fed770ba09051858cc382d8a6eb47c1a86a3d89",
+      "git_blob_sha1": "64093db8b4002f4d11178efb72dbbbf6dd26d4b7"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/LongJump.h",
+      "sha256": "d9c5196db8d567cd21f8ef817250dc78391f7f60081772d53e128732f9aa4146",
+      "git_blob_sha1": "df8e4b7baa5ee99df31eff0352d4969c6391fd3e"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/SpinWaitLock.h",
+      "sha256": "5427c05dce65365bdce50546e884a3428bfc1215b76279cef49eda0fbbbb692b",
+      "git_blob_sha1": "2ba822b473cc9899afdab1d69ea0096ffcf1c0f7"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/Telemetry.h",
+      "sha256": "378068f76e2bbe43256589ebac019cc94defeaddc10a33d962f0f1e5dfebf7c4",
+      "git_blob_sha1": "da0f76849b7345a6b2f708dc74ee5150e9b12c79"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/TypeDefines.h",
+      "sha256": "6bd4102134a8cac3496cb0ad1f878c7a9f56b30621e61e4547e9d3a303970460",
+      "git_blob_sha1": "ec03ac6cd3c4cd8ef2560be3cd9e3f4e87b1fc45"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/WritePriorityMutex.h",
+      "sha256": "6774e496b70db596f90c420418ce36b01de74c650750fa0e88c3cbcd876c92f8",
+      "git_blob_sha1": "3dec78699ba459cb1dd159ef033e2f9093d2312f"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/fextl/allocator.h",
+      "sha256": "86b01114c7a7f8758da9a6b92eb109be106306b950ff7206da6a772a02625891",
+      "git_blob_sha1": "9aee013082020ea2fe093a3fad9d46918238a2cc"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/fextl/fmt.h",
+      "sha256": "d92ed19d5f2f4273bb584f625dc9a51e6a649df52a0ce2f22aee65d3f8ea42a6",
+      "git_blob_sha1": "9c94df2ded8b95cc79576e0481ecaa94a94fd5bc"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/fextl/functional.h",
+      "sha256": "0875ccd2f8521b426c18253222cc3310fe2d9308232fc38f7ca03507cd1c55ab",
+      "git_blob_sha1": "628e5ff217444a16730067b66f668dfe4d9aef06"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/fextl/list.h",
+      "sha256": "2d85a4fc795e0fb2a9bd42de2b79b6c8616e6a3ce1f93f199c544778a8ca0387",
+      "git_blob_sha1": "613981d61a2a78c2ba3f8425d13034c002f5c374"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/fextl/map.h",
+      "sha256": "235ac296c9f9f10569087df88e5ab2927e491dd08f0571b10897e57dbf14f64f",
+      "git_blob_sha1": "abb37d8985903da9baff61de5bdcab7de26b00f2"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/fextl/memory.h",
+      "sha256": "e7f297f0930c2aa771e191d68ce2729dd85afaccf0764e545608289192125a15",
+      "git_blob_sha1": "e9c23b93450d1defec083f9f6ebc8d8ea46ff523"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/fextl/robin_map.h",
+      "sha256": "d46beacb544f8348db7877947ce03531abacca88ee179e7a7a7ae5acb074d4cb",
+      "git_blob_sha1": "528860af4d8829ae27338373b42cfea444f27883"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/fextl/set.h",
+      "sha256": "d5cb75c3c990a7f4928d2ba21e6c212b1860df64701e965329f913fc78db5fd6",
+      "git_blob_sha1": "938b4038445080c008665abea69e6150b577c1f4"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/fextl/string.h",
+      "sha256": "cefc0a482b3c4489387f267d904f5cff39cb72255892918c40e2ce2c44130875",
+      "git_blob_sha1": "825ac662ef18ddb4049ca4f8eee7168c339130af"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/fextl/unordered_map.h",
+      "sha256": "c6c85a4fee8e7fab3f59b2775588026284087a54c05bce106b9eafb8b1fb7064",
+      "git_blob_sha1": "709020736d88123763e4a3deb26bff5e4b268b5f"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/fextl/vector.h",
+      "sha256": "175785c04909dc8d2094b14fe6f9981512092fe16111a566c5eb19de723002e2",
+      "git_blob_sha1": "7246eff089bf22bfffa49db77145c43a91c95470"
+    }
+  ],
+  "header_conditionals": [
+    {
+      "path": "FEXCore/include/FEXCore/Core/CodeCache.h",
+      "line": 42,
+      "directive": "#if __clang_major__ < 16"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Core/Context.h",
+      "line": 127,
+      "directive": "#ifndef _WIN32"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Core/CoreState.h",
+      "line": 219,
+      "directive": "#ifndef NDEBUG"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Core/CoreState.h",
+      "line": 434,
+      "directive": "#ifdef ARCHITECTURE_arm64ec"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Core/CoreState.h",
+      "line": 494,
+      "directive": "#if defined(FEX_IOS_HOST) && defined(ARCHITECTURE_arm64ec)"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Core/CoreState.h",
+      "line": 500,
+      "directive": "#if defined(FEX_IOS_HOST) && defined(ARCHITECTURE_arm64ec)"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Core/CoreState.h",
+      "line": 510,
+      "directive": "#if defined(FEX_IOS_HOST) && defined(ARCHITECTURE_arm64ec)"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Core/SignalDelegator.h",
+      "line": 13,
+      "directive": "#ifndef _WIN32"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Debug/InternalThreadState.h",
+      "line": 171,
+      "directive": "#if !defined(__APPLE__)"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/Allocator.h",
+      "line": 17,
+      "directive": "#ifdef GLIBC_ALLOCATOR_FAULT"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/Allocator.h",
+      "line": 79,
+      "directive": "#ifndef _WIN32"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
+      "line": 7,
+      "directive": "#ifdef _WIN32"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
+      "line": 9,
+      "directive": "#elif defined(__APPLE__)"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
+      "line": 19,
+      "directive": "#ifdef _WIN32"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
+      "line": 44,
+      "directive": "#ifndef _WIN32"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
+      "line": 57,
+      "directive": "#ifdef _WIN32"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
+      "line": 64,
+      "directive": "#if defined(FEX_IOS_HOST) && !defined(ARCHITECTURE_arm64ec)"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
+      "line": 80,
+      "directive": "#if defined(ARCHITECTURE_arm64ec) || defined(FEX_IOS_HOST)"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
+      "line": 81,
+      "directive": "#ifdef FEX_IOS_HOST"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
+      "line": 154,
+      "directive": "#if defined(FEX_IOS_HOST) && !defined(ARCHITECTURE_arm64ec)"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
+      "line": 259,
+      "directive": "#if defined(MADV_HUGEPAGE) && defined(MADV_NOHUGEPAGE)"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
+      "line": 319,
+      "directive": "#ifndef _WIN32"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/DualMap.h",
+      "line": 7,
+      "directive": "#if defined(__APPLE__) || defined(FEX_IOS_HOST)"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/File.h",
+      "line": 7,
+      "directive": "#ifndef _WIN32"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/File.h",
+      "line": 34,
+      "directive": "#ifndef _WIN32"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/File.h",
+      "line": 43,
+      "directive": "#ifndef _WIN32"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/File.h",
+      "line": 72,
+      "directive": "#ifndef _WIN32"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/File.h",
+      "line": 98,
+      "directive": "#ifndef _WIN32"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/File.h",
+      "line": 118,
+      "directive": "#ifndef _WIN32"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/File.h",
+      "line": 129,
+      "directive": "#ifndef _WIN32"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/File.h",
+      "line": 140,
+      "directive": "#ifndef _WIN32"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/File.h",
+      "line": 160,
+      "directive": "#ifndef _WIN32"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/File.h",
+      "line": 176,
+      "directive": "#ifndef _WIN32"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/File.h",
+      "line": 201,
+      "directive": "#ifndef _WIN32"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/LogManager.h",
+      "line": 54,
+      "directive": "#if defined(ASSERTIONS_ENABLED) && ASSERTIONS_ENABLED"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/LogManager.h",
+      "line": 117,
+      "directive": "#if defined(ASSERTIONS_ENABLED) && ASSERTIONS_ENABLED"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/LongJump.h",
+      "line": 12,
+      "directive": "#if defined(ARCHITECTURE_arm64)"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/SpinWaitLock.h",
+      "line": 32,
+      "directive": "#ifdef ARCHITECTURE_arm64"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/SpinWaitLock.h",
+      "line": 104,
+      "directive": "#ifdef __APPLE__"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/SpinWaitLock.h",
+      "line": 139,
+      "directive": "#ifdef __APPLE__"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/Telemetry.h",
+      "line": 35,
+      "directive": "#ifndef FEX_DISABLE_TELEMETRY"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/WritePriorityMutex.h",
+      "line": 6,
+      "directive": "#if defined(__linux__)"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/WritePriorityMutex.h",
+      "line": 10,
+      "directive": "#elif defined(__APPLE__)"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/WritePriorityMutex.h",
+      "line": 16,
+      "directive": "#ifndef INFINITE"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/WritePriorityMutex.h",
+      "line": 75,
+      "directive": "#if defined(ASSERTIONS_ENABLED) && ASSERTIONS_ENABLED"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/WritePriorityMutex.h",
+      "line": 243,
+      "directive": "#if defined(ASSERTIONS_ENABLED) && ASSERTIONS_ENABLED"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/WritePriorityMutex.h",
+      "line": 276,
+      "directive": "#if defined(_WIN32)"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/WritePriorityMutex.h",
+      "line": 334,
+      "directive": "#if !defined(_WIN32)"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/WritePriorityMutex.h",
+      "line": 351,
+      "directive": "#if defined(__linux__)"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/WritePriorityMutex.h",
+      "line": 367,
+      "directive": "#elif defined(__APPLE__)"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/WritePriorityMutex.h",
+      "line": 459,
+      "directive": "#ifdef ARCHITECTURE_arm64"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/WritePriorityMutex.h",
+      "line": 488,
+      "directive": "#ifdef ARCHITECTURE_arm64"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/WritePriorityMutex.h",
+      "line": 547,
+      "directive": "#if defined(_WIN32)"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/WritePriorityMutex.h",
+      "line": 563,
+      "directive": "#ifdef ARCHITECTURE_arm64"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/WritePriorityMutex.h",
+      "line": 663,
+      "directive": "#ifdef ARCHITECTURE_arm64"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/WritePriorityMutex.h",
+      "line": 740,
+      "directive": "#if defined(_WIN32) && defined(ARCHITECTURE_arm64)"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/fextl/fmt.h",
+      "line": 41,
+      "directive": "#ifndef _WIN32"
+    }
+  ],
+  "compile_profiles": [
+    {
+      "source_suffix": "Interface/Config/Config.cpp",
+      "original_entry": {
+        "directory": "/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/FEXCore/Source",
+        "command": "/usr/bin/c++ -DARCHITECTURE_arm64=1 -DFEXCORE_HAS_PRESERVE_ALL_ATTR=1 -DFEXCORE_PRESERVE_ALL_ATTR=\"__attribute__((preserve_all))\" -DFEX_HAS_PRESERVE_ALL_ATTR=1 -DFEX_PRESERVE_ALL_ATTR=\"__attribute__((preserve_all))\" -DGLOBAL_DATA_DIRECTORY=\\\"/usr/local/share/fex-emu/\\\" -DHAS_PROGRAM_INVOCATION_NAME=\"\" -DINLINE=\"static inline\" -DINLINE_LEVEL=4 -DJIT_ARM64 -DSOFTFLOAT_BUILTIN_CLZ=1 -DSOFTFLOAT_FAST_DIV32TO16=1 -DSOFTFLOAT_FAST_DIV64TO32=1 -DSOFTFLOAT_FAST_INT64=1 -D_LARGEFILE64_SOURCE -I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/FEXCore/Source -I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source -I/Users/builder/clone/.work/madeira-fex-control/FEX/Source -I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/Source -I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/generated -I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source/IncludePrivate -I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/include -I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/include -I/Users/builder/clone/.work/madeira-fex-control/FEX/External/fmt/include -I/Users/builder/clone/.work/madeira-fex-control/FEX/External/xxhash/cmake_unofficial/.. -I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXHeaderUtils/. -I/Users/builder/clone/.work/madeira-fex-control/FEX/CodeEmitter/. -I/Users/builder/clone/.work/madeira-fex-control/FEX/External/cephes/include -I/Users/builder/clone/.work/madeira-fex-control/FEX/External/SoftFloat-3e/include -I/Users/builder/clone/.work/madeira-fex-control/FEX/External/SoftFloat-3e/include/SoftFloat-3e -I/Users/builder/clone/.work/madeira-fex-control/FEX/External/unordered_dense/include -O3 -DNDEBUG -fomit-frame-pointer -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode-26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -miphoneos-version-min=17.0 -fPIC -fvisibility=hidden -fvisibility-inlines-hidden -Wno-trigraphs -fdiagnostics-color=always -fcolor-diagnostics -Wno-deprecated-enum-enum-conversion -Wall -fno-strict-aliasing -fno-exceptions -Werror=cast-qual -Werror=ignored-qualifiers -Werror=implicit-fallthrough -ffunction-sections -fwrapv -o CMakeFiles/FEXCore_Base.dir/Interface/Config/Config.cpp.o -c /Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source/Interface/Config/Config.cpp",
+        "file": "/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source/Interface/Config/Config.cpp",
+        "output": "FEXCore/Source/CMakeFiles/FEXCore_Base.dir/Interface/Config/Config.cpp.o"
+      },
+      "argv": [
+        "/usr/bin/c++",
+        "-DARCHITECTURE_arm64=1",
+        "-DFEXCORE_HAS_PRESERVE_ALL_ATTR=1",
+        "-DFEXCORE_PRESERVE_ALL_ATTR=__attribute__((preserve_all))",
+        "-DFEX_HAS_PRESERVE_ALL_ATTR=1",
+        "-DFEX_PRESERVE_ALL_ATTR=__attribute__((preserve_all))",
+        "-DGLOBAL_DATA_DIRECTORY=\"/usr/local/share/fex-emu/\"",
+        "-DHAS_PROGRAM_INVOCATION_NAME=",
+        "-DINLINE=static inline",
+        "-DINLINE_LEVEL=4",
+        "-DJIT_ARM64",
+        "-DSOFTFLOAT_BUILTIN_CLZ=1",
+        "-DSOFTFLOAT_FAST_DIV32TO16=1",
+        "-DSOFTFLOAT_FAST_DIV64TO32=1",
+        "-DSOFTFLOAT_FAST_INT64=1",
+        "-D_LARGEFILE64_SOURCE",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/FEXCore/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/generated",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source/IncludePrivate",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/include",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/include",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/fmt/include",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/xxhash/cmake_unofficial/..",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXHeaderUtils/.",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/CodeEmitter/.",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/cephes/include",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/SoftFloat-3e/include",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/SoftFloat-3e/include/SoftFloat-3e",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/unordered_dense/include",
+        "-O3",
+        "-DNDEBUG",
+        "-fomit-frame-pointer",
+        "-std=gnu++20",
+        "-arch",
+        "arm64",
+        "-isysroot",
+        "/Applications/Xcode-26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk",
+        "-miphoneos-version-min=17.0",
+        "-fPIC",
+        "-fvisibility=hidden",
+        "-fvisibility-inlines-hidden",
+        "-Wno-trigraphs",
+        "-fdiagnostics-color=always",
+        "-fcolor-diagnostics",
+        "-Wno-deprecated-enum-enum-conversion",
+        "-Wall",
+        "-fno-strict-aliasing",
+        "-fno-exceptions",
+        "-Werror=cast-qual",
+        "-Werror=ignored-qualifiers",
+        "-Werror=implicit-fallthrough",
+        "-ffunction-sections",
+        "-fwrapv",
+        "-o",
+        "CMakeFiles/FEXCore_Base.dir/Interface/Config/Config.cpp.o",
+        "-c",
+        "/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source/Interface/Config/Config.cpp"
+      ],
+      "definitions": [
+        "ARCHITECTURE_arm64=1",
+        "FEXCORE_HAS_PRESERVE_ALL_ATTR=1",
+        "FEXCORE_PRESERVE_ALL_ATTR=__attribute__((preserve_all))",
+        "FEX_HAS_PRESERVE_ALL_ATTR=1",
+        "FEX_PRESERVE_ALL_ATTR=__attribute__((preserve_all))",
+        "GLOBAL_DATA_DIRECTORY=\"/usr/local/share/fex-emu/\"",
+        "HAS_PROGRAM_INVOCATION_NAME=",
+        "INLINE=static inline",
+        "INLINE_LEVEL=4",
+        "JIT_ARM64",
+        "SOFTFLOAT_BUILTIN_CLZ=1",
+        "SOFTFLOAT_FAST_DIV32TO16=1",
+        "SOFTFLOAT_FAST_DIV64TO32=1",
+        "SOFTFLOAT_FAST_INT64=1",
+        "_LARGEFILE64_SOURCE",
+        "NDEBUG"
+      ],
+      "include_arguments": [
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/FEXCore/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/generated",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source/IncludePrivate",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/include",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/include",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/fmt/include",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/xxhash/cmake_unofficial/..",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXHeaderUtils/.",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/CodeEmitter/.",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/cephes/include",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/SoftFloat-3e/include",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/SoftFloat-3e/include/SoftFloat-3e",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/unordered_dense/include"
+      ]
+    },
+    {
+      "source_suffix": "Interface/Context/Context.cpp",
+      "original_entry": {
+        "directory": "/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/FEXCore/Source",
+        "command": "/usr/bin/c++ -DARCHITECTURE_arm64=1 -DFEXCORE_HAS_PRESERVE_ALL_ATTR=1 -DFEXCORE_PRESERVE_ALL_ATTR=\"__attribute__((preserve_all))\" -DFEX_HAS_PRESERVE_ALL_ATTR=1 -DFEX_PRESERVE_ALL_ATTR=\"__attribute__((preserve_all))\" -DGLOBAL_DATA_DIRECTORY=\\\"/usr/local/share/fex-emu/\\\" -DHAS_PROGRAM_INVOCATION_NAME=\"\" -DINLINE=\"static inline\" -DINLINE_LEVEL=4 -DJIT_ARM64 -DSOFTFLOAT_BUILTIN_CLZ=1 -DSOFTFLOAT_FAST_DIV32TO16=1 -DSOFTFLOAT_FAST_DIV64TO32=1 -DSOFTFLOAT_FAST_INT64=1 -D_LARGEFILE64_SOURCE -I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/FEXCore/Source -I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source -I/Users/builder/clone/.work/madeira-fex-control/FEX/Source -I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/Source -I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/generated -I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source/IncludePrivate -I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/include -I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/include -I/Users/builder/clone/.work/madeira-fex-control/FEX/External/fmt/include -I/Users/builder/clone/.work/madeira-fex-control/FEX/External/xxhash/cmake_unofficial/.. -I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXHeaderUtils/. -I/Users/builder/clone/.work/madeira-fex-control/FEX/CodeEmitter/. -I/Users/builder/clone/.work/madeira-fex-control/FEX/External/cephes/include -I/Users/builder/clone/.work/madeira-fex-control/FEX/External/SoftFloat-3e/include -I/Users/builder/clone/.work/madeira-fex-control/FEX/External/SoftFloat-3e/include/SoftFloat-3e -I/Users/builder/clone/.work/madeira-fex-control/FEX/External/unordered_dense/include -O3 -DNDEBUG -fomit-frame-pointer -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode-26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -miphoneos-version-min=17.0 -fPIC -fvisibility=hidden -fvisibility-inlines-hidden -Wno-trigraphs -fdiagnostics-color=always -fcolor-diagnostics -Wno-deprecated-enum-enum-conversion -Wall -fno-strict-aliasing -fno-exceptions -mcpu=cortex-a78 -Werror=cast-qual -Werror=ignored-qualifiers -Werror=implicit-fallthrough -ffunction-sections -fwrapv -o CMakeFiles/FEXCore_object.dir/Interface/Context/Context.cpp.o -c /Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source/Interface/Context/Context.cpp",
+        "file": "/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source/Interface/Context/Context.cpp",
+        "output": "FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Context/Context.cpp.o"
+      },
+      "argv": [
+        "/usr/bin/c++",
+        "-DARCHITECTURE_arm64=1",
+        "-DFEXCORE_HAS_PRESERVE_ALL_ATTR=1",
+        "-DFEXCORE_PRESERVE_ALL_ATTR=__attribute__((preserve_all))",
+        "-DFEX_HAS_PRESERVE_ALL_ATTR=1",
+        "-DFEX_PRESERVE_ALL_ATTR=__attribute__((preserve_all))",
+        "-DGLOBAL_DATA_DIRECTORY=\"/usr/local/share/fex-emu/\"",
+        "-DHAS_PROGRAM_INVOCATION_NAME=",
+        "-DINLINE=static inline",
+        "-DINLINE_LEVEL=4",
+        "-DJIT_ARM64",
+        "-DSOFTFLOAT_BUILTIN_CLZ=1",
+        "-DSOFTFLOAT_FAST_DIV32TO16=1",
+        "-DSOFTFLOAT_FAST_DIV64TO32=1",
+        "-DSOFTFLOAT_FAST_INT64=1",
+        "-D_LARGEFILE64_SOURCE",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/FEXCore/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/generated",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source/IncludePrivate",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/include",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/include",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/fmt/include",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/xxhash/cmake_unofficial/..",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXHeaderUtils/.",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/CodeEmitter/.",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/cephes/include",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/SoftFloat-3e/include",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/SoftFloat-3e/include/SoftFloat-3e",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/unordered_dense/include",
+        "-O3",
+        "-DNDEBUG",
+        "-fomit-frame-pointer",
+        "-std=gnu++20",
+        "-arch",
+        "arm64",
+        "-isysroot",
+        "/Applications/Xcode-26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk",
+        "-miphoneos-version-min=17.0",
+        "-fPIC",
+        "-fvisibility=hidden",
+        "-fvisibility-inlines-hidden",
+        "-Wno-trigraphs",
+        "-fdiagnostics-color=always",
+        "-fcolor-diagnostics",
+        "-Wno-deprecated-enum-enum-conversion",
+        "-Wall",
+        "-fno-strict-aliasing",
+        "-fno-exceptions",
+        "-mcpu=cortex-a78",
+        "-Werror=cast-qual",
+        "-Werror=ignored-qualifiers",
+        "-Werror=implicit-fallthrough",
+        "-ffunction-sections",
+        "-fwrapv",
+        "-o",
+        "CMakeFiles/FEXCore_object.dir/Interface/Context/Context.cpp.o",
+        "-c",
+        "/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source/Interface/Context/Context.cpp"
+      ],
+      "definitions": [
+        "ARCHITECTURE_arm64=1",
+        "FEXCORE_HAS_PRESERVE_ALL_ATTR=1",
+        "FEXCORE_PRESERVE_ALL_ATTR=__attribute__((preserve_all))",
+        "FEX_HAS_PRESERVE_ALL_ATTR=1",
+        "FEX_PRESERVE_ALL_ATTR=__attribute__((preserve_all))",
+        "GLOBAL_DATA_DIRECTORY=\"/usr/local/share/fex-emu/\"",
+        "HAS_PROGRAM_INVOCATION_NAME=",
+        "INLINE=static inline",
+        "INLINE_LEVEL=4",
+        "JIT_ARM64",
+        "SOFTFLOAT_BUILTIN_CLZ=1",
+        "SOFTFLOAT_FAST_DIV32TO16=1",
+        "SOFTFLOAT_FAST_DIV64TO32=1",
+        "SOFTFLOAT_FAST_INT64=1",
+        "_LARGEFILE64_SOURCE",
+        "NDEBUG"
+      ],
+      "include_arguments": [
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/FEXCore/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/generated",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source/IncludePrivate",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/include",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/include",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/fmt/include",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/xxhash/cmake_unofficial/..",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXHeaderUtils/.",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/CodeEmitter/.",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/cephes/include",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/SoftFloat-3e/include",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/SoftFloat-3e/include/SoftFloat-3e",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/External/unordered_dense/include"
+      ]
+    },
+    {
+      "source_suffix": "AllocatorHooks.cpp",
+      "original_entry": {
+        "directory": "/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/FEXCore/Source",
+        "command": "/usr/bin/c++ -DARCHITECTURE_arm64=1 -DFEX_HAS_PRESERVE_ALL_ATTR=1 -DFEX_PRESERVE_ALL_ATTR=\"__attribute__((preserve_all))\" -DGLOBAL_DATA_DIRECTORY=\\\"/usr/local/share/fex-emu/\\\" -DHAS_PROGRAM_INVOCATION_NAME=\"\" -D_LARGEFILE64_SOURCE -I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/FEXCore/Source -I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source -I/Users/builder/clone/.work/madeira-fex-control/FEX/Source -I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/Source -I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/generated -O3 -DNDEBUG -fomit-frame-pointer -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode-26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -miphoneos-version-min=17.0 -fPIC -Wno-trigraphs -fdiagnostics-color=always -fcolor-diagnostics -Wno-deprecated-enum-enum-conversion -Wall -fno-strict-aliasing -fno-exceptions -o CMakeFiles/JemallocLibs.dir/Utils/AllocatorHooks.cpp.o -c /Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source/Utils/AllocatorHooks.cpp",
+        "file": "/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source/Utils/AllocatorHooks.cpp",
+        "output": "FEXCore/Source/CMakeFiles/JemallocLibs.dir/Utils/AllocatorHooks.cpp.o"
+      },
+      "argv": [
+        "/usr/bin/c++",
+        "-DARCHITECTURE_arm64=1",
+        "-DFEX_HAS_PRESERVE_ALL_ATTR=1",
+        "-DFEX_PRESERVE_ALL_ATTR=__attribute__((preserve_all))",
+        "-DGLOBAL_DATA_DIRECTORY=\"/usr/local/share/fex-emu/\"",
+        "-DHAS_PROGRAM_INVOCATION_NAME=",
+        "-D_LARGEFILE64_SOURCE",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/FEXCore/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/generated",
+        "-O3",
+        "-DNDEBUG",
+        "-fomit-frame-pointer",
+        "-std=gnu++20",
+        "-arch",
+        "arm64",
+        "-isysroot",
+        "/Applications/Xcode-26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk",
+        "-miphoneos-version-min=17.0",
+        "-fPIC",
+        "-Wno-trigraphs",
+        "-fdiagnostics-color=always",
+        "-fcolor-diagnostics",
+        "-Wno-deprecated-enum-enum-conversion",
+        "-Wall",
+        "-fno-strict-aliasing",
+        "-fno-exceptions",
+        "-o",
+        "CMakeFiles/JemallocLibs.dir/Utils/AllocatorHooks.cpp.o",
+        "-c",
+        "/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source/Utils/AllocatorHooks.cpp"
+      ],
+      "definitions": [
+        "ARCHITECTURE_arm64=1",
+        "FEX_HAS_PRESERVE_ALL_ATTR=1",
+        "FEX_PRESERVE_ALL_ATTR=__attribute__((preserve_all))",
+        "GLOBAL_DATA_DIRECTORY=\"/usr/local/share/fex-emu/\"",
+        "HAS_PROGRAM_INVOCATION_NAME=",
+        "_LARGEFILE64_SOURCE",
+        "NDEBUG"
+      ],
+      "include_arguments": [
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/FEXCore/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/FEXCore/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/Source",
+        "-I/Users/builder/clone/.work/madeira-fex-control/FEX/build-ios/generated"
+      ]
+    }
+  ],
+  "consumer_contract": {
+    "required_consumer_per_file_definitions": {
+      "ARCHITECTURE_arm64": "1",
+      "NDEBUG": "1"
+    },
+    "required_absent": [
+      "ARCHITECTURE_arm64ec",
+      "ARCHITECTURE_x86_64",
+      "FEX_IOS_HOST",
+      "_WIN32",
+      "GLIBC_ALLOCATOR_FAULT",
+      "ASSERTIONS_ENABLED",
+      "FEX_DISABLE_TELEMETRY",
+      "ENABLE_GUEST_WINDOW",
+      "FEX_GUEST_WINDOW",
+      "FEX_STEAM_SUPPORT"
+    ],
+    "compiler_builtins_required": [
+      "__APPLE__",
+      "__aarch64__"
+    ],
+    "do_not_synthesize_builtin_macros": true,
+    "language": "gnu++20",
+    "consumer_language_mode": "objective-c++ (FEXBridge.mm)",
+    "producer_language_mode": "c++ (Context.cpp)",
+    "producer_only_definitions_reason": {
+      "FEXCORE_HAS_PRESERVE_ALL_ATTR / FEXCORE_PRESERVE_ALL_ATTR / FEX_HAS_PRESERVE_ALL_ATTR / FEX_PRESERVE_ALL_ATTR": "Preserve-all internal calling convention; record exact producer values; none used in the 36 resolved bridge headers. Do not spread globally. Recheck actual depfile closure.",
+      "GLOBAL_DATA_DIRECTORY": "Config implementation fallback /usr/local/share/fex-emu/; no field-layout selection in public bridge closure.",
+      "HAS_PROGRAM_INVOCATION_NAME": "Empty effective macro disables a libc symbol probe path; implementation feature, no bridge layout use.",
+      "INLINE / INLINE_LEVEL / SOFTFLOAT_*": "Private SoftFloat implementation compilation; not a substitute for header ABI definitions.",
+      "JIT_ARM64": "Producer JIT backend implementation selector; public JumpBuf instead requires ARCHITECTURE_arm64.",
+      "_LARGEFILE64_SOURCE": "POSIX API exposure; original producer recorded, no use found in selected FEX header directives; validate target SDK depfile and types."
+    },
+    "relevant_absences_reason": {
+      "ARCHITECTURE_arm64ec / FEX_IOS_HOST": "Would add fields to CpuStateFrame or select allocator/Windows bridge hooks incompatible with native archives.",
+      "ASSERTIONS_ENABLED / GLIBC_ALLOCATOR_FAULT": "Change inline checks and allocator hooks; original native producer absent.",
+      "FEX_DISABLE_TELEMETRY": "Native producer telemetry enabled; preserve declaration/inline branch.",
+      "FEX_GUEST_WINDOW / ENABLE_GUEST_WINDOW / generator --feature=GuestWindow": "Would add CONFIG_GUEST32BASE, shifting subsequent ConfigOption ordinals; original producer OFF, no generator feature arguments.",
+      "NDEBUG": "CPUState constructor debug initialization differs without this macro; match original Release inline definition."
+    }
+  },
+  "config_contract": {
+    "substitutions": {
+      "CMAKE_INSTALL_FULL_LIBDIR": "/usr/local/lib",
+      "CMAKE_INSTALL_PREFIX": "/usr/local"
+    },
+    "configured_json_expected_sha256": "039c876beda0bd73d550b6cf33b0f03cf98cc2da167c6f0075863ef0e2bc8469",
+    "configured_json_hash_kind": "expected bytes from independently applying the two verified configure_file substitutions; verify against real producer output",
+    "enabled_generator_features": [],
+    "excluded_named_options": [
+      {
+        "group": "Debug",
+        "name": "Guest32Base",
+        "feature": "GuestWindow"
+      }
+    ],
+    "options": [
+      {
+        "ordinal": 0,
+        "group": "CPU",
+        "name": "Multiblock",
+        "enum": "CONFIG_MULTIBLOCK",
+        "type": "bool",
+        "default": "true",
+        "unnamed": false
+      },
+      {
+        "ordinal": 1,
+        "group": "CPU",
+        "name": "MaxInst",
+        "enum": "CONFIG_MAXINST",
+        "type": "int32",
+        "default": "5000",
+        "unnamed": false
+      },
+      {
+        "ordinal": 2,
+        "group": "CPU",
+        "name": "EnableCodeCachingWIP",
+        "enum": "CONFIG_ENABLECODECACHINGWIP",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 3,
+        "group": "CPU",
+        "name": "EnableLazyCodeCachingWIP",
+        "enum": "CONFIG_ENABLELAZYCODECACHINGWIP",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 4,
+        "group": "CPU",
+        "name": "EnableCodeCacheValidation",
+        "enum": "CONFIG_ENABLECODECACHEVALIDATION",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 5,
+        "group": "CPU",
+        "name": "HostFeatures",
+        "enum": "CONFIG_HOSTFEATURES",
+        "type": "strenum",
+        "default": "FEXCore::Config::HostFeatures::OFF",
+        "unnamed": false
+      },
+      {
+        "ordinal": 6,
+        "group": "CPU",
+        "name": "SmallTSCScale",
+        "enum": "CONFIG_SMALLTSCSCALE",
+        "type": "bool",
+        "default": "true",
+        "unnamed": false
+      },
+      {
+        "ordinal": 7,
+        "group": "CPU",
+        "name": "HideHybrid",
+        "enum": "CONFIG_HIDEHYBRID",
+        "type": "bool",
+        "default": "true",
+        "unnamed": false
+      },
+      {
+        "ordinal": 8,
+        "group": "CPU",
+        "name": "CPUFeatureRegisters",
+        "enum": "CONFIG_CPUFEATUREREGISTERS",
+        "type": "str",
+        "default": "",
+        "unnamed": false
+      },
+      {
+        "ordinal": 9,
+        "group": "Emulation",
+        "name": "RootFS",
+        "enum": "CONFIG_ROOTFS",
+        "type": "str",
+        "default": "",
+        "unnamed": false
+      },
+      {
+        "ordinal": 10,
+        "group": "Emulation",
+        "name": "ThunkHostLibs",
+        "enum": "CONFIG_THUNKHOSTLIBS",
+        "type": "str",
+        "default": "/usr/local/lib/fex-emu/HostThunks",
+        "unnamed": false
+      },
+      {
+        "ordinal": 11,
+        "group": "Emulation",
+        "name": "ThunkGuestLibs",
+        "enum": "CONFIG_THUNKGUESTLIBS",
+        "type": "str",
+        "default": "/usr/local/share/fex-emu/GuestThunks",
+        "unnamed": false
+      },
+      {
+        "ordinal": 12,
+        "group": "Emulation",
+        "name": "ThunkConfig",
+        "enum": "CONFIG_THUNKCONFIG",
+        "type": "str",
+        "default": "",
+        "unnamed": false
+      },
+      {
+        "ordinal": 13,
+        "group": "Emulation",
+        "name": "Env",
+        "enum": "CONFIG_ENV",
+        "type": "strarray",
+        "default": "",
+        "unnamed": false
+      },
+      {
+        "ordinal": 14,
+        "group": "Emulation",
+        "name": "HostEnv",
+        "enum": "CONFIG_HOSTENV",
+        "type": "strarray",
+        "default": "",
+        "unnamed": false
+      },
+      {
+        "ordinal": 15,
+        "group": "Emulation",
+        "name": "AdditionalArguments",
+        "enum": "CONFIG_ADDITIONALARGUMENTS",
+        "type": "strarray",
+        "default": "",
+        "unnamed": false
+      },
+      {
+        "ordinal": 16,
+        "group": "Emulation",
+        "name": "DisableL2Cache",
+        "enum": "CONFIG_DISABLEL2CACHE",
+        "type": "bool",
+        "default": "true",
+        "unnamed": false
+      },
+      {
+        "ordinal": 17,
+        "group": "Emulation",
+        "name": "DynamicL1Cache",
+        "enum": "CONFIG_DYNAMICL1CACHE",
+        "type": "bool",
+        "default": "true",
+        "unnamed": false
+      },
+      {
+        "ordinal": 18,
+        "group": "Emulation",
+        "name": "DynamicL1CacheIncreaseCountHeuristic",
+        "enum": "CONFIG_DYNAMICL1CACHEINCREASECOUNTHEURISTIC",
+        "type": "uint64",
+        "default": "250",
+        "unnamed": false
+      },
+      {
+        "ordinal": 19,
+        "group": "Emulation",
+        "name": "DynamicL1CacheDecreaseCountHeuristic",
+        "enum": "CONFIG_DYNAMICL1CACHEDECREASECOUNTHEURISTIC",
+        "type": "uint64",
+        "default": "50",
+        "unnamed": false
+      },
+      {
+        "ordinal": 20,
+        "group": "Debug",
+        "name": "SingleStep",
+        "enum": "CONFIG_SINGLESTEP",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 21,
+        "group": "Debug",
+        "name": "GdbServer",
+        "enum": "CONFIG_GDBSERVER",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 22,
+        "group": "Debug",
+        "name": "DumpIR",
+        "enum": "CONFIG_DUMPIR",
+        "type": "str",
+        "default": "no",
+        "unnamed": false
+      },
+      {
+        "ordinal": 23,
+        "group": "Debug",
+        "name": "PassManagerDumpIR",
+        "enum": "CONFIG_PASSMANAGERDUMPIR",
+        "type": "strenum",
+        "default": "FEXCore::Config::PassManagerDumpIR::OFF",
+        "unnamed": false
+      },
+      {
+        "ordinal": 24,
+        "group": "Debug",
+        "name": "DumpGPRs",
+        "enum": "CONFIG_DUMPGPRS",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 25,
+        "group": "Debug",
+        "name": "O0",
+        "enum": "CONFIG_O0",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 26,
+        "group": "Debug",
+        "name": "GlobalJITNaming",
+        "enum": "CONFIG_GLOBALJITNAMING",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 27,
+        "group": "Debug",
+        "name": "LibraryJITNaming",
+        "enum": "CONFIG_LIBRARYJITNAMING",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 28,
+        "group": "Debug",
+        "name": "BlockJITNaming",
+        "enum": "CONFIG_BLOCKJITNAMING",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 29,
+        "group": "Debug",
+        "name": "GDBSymbols",
+        "enum": "CONFIG_GDBSYMBOLS",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 30,
+        "group": "Debug",
+        "name": "InjectLibSegFault",
+        "enum": "CONFIG_INJECTLIBSEGFAULT",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 31,
+        "group": "Debug",
+        "name": "Disassemble",
+        "enum": "CONFIG_DISASSEMBLE",
+        "type": "strenum",
+        "default": "FEXCore::Config::Disassemble::OFF",
+        "unnamed": false
+      },
+      {
+        "ordinal": 32,
+        "group": "Debug",
+        "name": "X86Disassemble",
+        "enum": "CONFIG_X86DISASSEMBLE",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 33,
+        "group": "Debug",
+        "name": "ForceSVEWidth",
+        "enum": "CONFIG_FORCESVEWIDTH",
+        "type": "uint32",
+        "default": "0",
+        "unnamed": false
+      },
+      {
+        "ordinal": 34,
+        "group": "Debug",
+        "name": "DisableTelemetry",
+        "enum": "CONFIG_DISABLETELEMETRY",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 35,
+        "group": "Logging",
+        "name": "SilentLog",
+        "enum": "CONFIG_SILENTLOG",
+        "type": "bool",
+        "default": "true",
+        "unnamed": false
+      },
+      {
+        "ordinal": 36,
+        "group": "Logging",
+        "name": "OutputLog",
+        "enum": "CONFIG_OUTPUTLOG",
+        "type": "str",
+        "default": "server",
+        "unnamed": false
+      },
+      {
+        "ordinal": 37,
+        "group": "Logging",
+        "name": "TelemetryDirectory",
+        "enum": "CONFIG_TELEMETRYDIRECTORY",
+        "type": "str",
+        "default": "",
+        "unnamed": false
+      },
+      {
+        "ordinal": 38,
+        "group": "Logging",
+        "name": "ProfileStats",
+        "enum": "CONFIG_PROFILESTATS",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 39,
+        "group": "Logging",
+        "name": "EnableGpuvisProfiling",
+        "enum": "CONFIG_ENABLEGPUVISPROFILING",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 40,
+        "group": "Hacks",
+        "name": "SMCChecks",
+        "enum": "CONFIG_SMCCHECKS",
+        "type": "uint8",
+        "default": "FEXCore::Config::CONFIG_SMC_MTRACK",
+        "unnamed": false
+      },
+      {
+        "ordinal": 41,
+        "group": "Hacks",
+        "name": "TSOEnabled",
+        "enum": "CONFIG_TSOENABLED",
+        "type": "bool",
+        "default": "true",
+        "unnamed": false
+      },
+      {
+        "ordinal": 42,
+        "group": "Hacks",
+        "name": "VectorTSOEnabled",
+        "enum": "CONFIG_VECTORTSOENABLED",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 43,
+        "group": "Hacks",
+        "name": "MemcpySetTSOEnabled",
+        "enum": "CONFIG_MEMCPYSETTSOENABLED",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 44,
+        "group": "Hacks",
+        "name": "HalfBarrierTSOEnabled",
+        "enum": "CONFIG_HALFBARRIERTSOENABLED",
+        "type": "bool",
+        "default": "true",
+        "unnamed": false
+      },
+      {
+        "ordinal": 45,
+        "group": "Hacks",
+        "name": "StrictInProcessSplitLocks",
+        "enum": "CONFIG_STRICTINPROCESSSPLITLOCKS",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 46,
+        "group": "Hacks",
+        "name": "KernelUnalignedAtomicBackpatching",
+        "enum": "CONFIG_KERNELUNALIGNEDATOMICBACKPATCHING",
+        "type": "bool",
+        "default": "true",
+        "unnamed": false
+      },
+      {
+        "ordinal": 47,
+        "group": "Hacks",
+        "name": "VolatileMetadata",
+        "enum": "CONFIG_VOLATILEMETADATA",
+        "type": "bool",
+        "default": "true",
+        "unnamed": false
+      },
+      {
+        "ordinal": 48,
+        "group": "Hacks",
+        "name": "X87ReducedPrecision",
+        "enum": "CONFIG_X87REDUCEDPRECISION",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 49,
+        "group": "Hacks",
+        "name": "StallProcess",
+        "enum": "CONFIG_STALLPROCESS",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 50,
+        "group": "Hacks",
+        "name": "HideHypervisorBit",
+        "enum": "CONFIG_HIDEHYPERVISORBIT",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 51,
+        "group": "Hacks",
+        "name": "StartupSleep",
+        "enum": "CONFIG_STARTUPSLEEP",
+        "type": "uint32",
+        "default": "0",
+        "unnamed": false
+      },
+      {
+        "ordinal": 52,
+        "group": "Hacks",
+        "name": "StartupSleepProcName",
+        "enum": "CONFIG_STARTUPSLEEPPROCNAME",
+        "type": "str",
+        "default": "",
+        "unnamed": false
+      },
+      {
+        "ordinal": 53,
+        "group": "Hacks",
+        "name": "MonoHacks",
+        "enum": "CONFIG_MONOHACKS",
+        "type": "bool",
+        "default": "true",
+        "unnamed": false
+      },
+      {
+        "ordinal": 54,
+        "group": "Misc",
+        "name": "ServerSocketPath",
+        "enum": "CONFIG_SERVERSOCKETPATH",
+        "type": "str",
+        "default": "",
+        "unnamed": false
+      },
+      {
+        "ordinal": 55,
+        "group": "Misc",
+        "name": "NeedsSeccomp",
+        "enum": "CONFIG_NEEDSSECCOMP",
+        "type": "bool",
+        "default": "false",
+        "unnamed": false
+      },
+      {
+        "ordinal": 56,
+        "group": "Misc",
+        "name": "ExtendedVolatileMetadata",
+        "enum": "CONFIG_EXTENDEDVOLATILEMETADATA",
+        "type": "str",
+        "default": "",
+        "unnamed": false
+      },
+      {
+        "ordinal": 57,
+        "group": "Misc",
+        "name": "INTERPRETER_INSTALLED",
+        "enum": "CONFIG_INTERPRETER_INSTALLED",
+        "type": "bool",
+        "default": "false",
+        "unnamed": true
+      },
+      {
+        "ordinal": 58,
+        "group": "Misc",
+        "name": "APP_FILENAME",
+        "enum": "CONFIG_APP_FILENAME",
+        "type": "str",
+        "default": "",
+        "unnamed": true
+      },
+      {
+        "ordinal": 59,
+        "group": "Misc",
+        "name": "APP_CONFIG_NAME",
+        "enum": "CONFIG_APP_CONFIG_NAME",
+        "type": "str",
+        "default": "",
+        "unnamed": true
+      },
+      {
+        "ordinal": 60,
+        "group": "Misc",
+        "name": "IS64BIT_MODE",
+        "enum": "CONFIG_IS64BIT_MODE",
+        "type": "bool",
+        "default": "false",
+        "unnamed": true
+      },
+      {
+        "ordinal": 61,
+        "group": "Misc",
+        "name": "DISABLE_VIXL_INDIRECT_RUNTIME_CALLS",
+        "enum": "CONFIG_DISABLE_VIXL_INDIRECT_RUNTIME_CALLS",
+        "type": "bool",
+        "default": "true",
+        "unnamed": true
+      }
+    ],
+    "strenums": [
+      {
+        "name": "HostFeatures",
+        "members": [
+          {
+            "name": "OFF",
+            "value": 0
+          },
+          {
+            "name": "ENABLESVE",
+            "json_value": "enablesve",
+            "value": 1
+          },
+          {
+            "name": "DISABLESVE",
+            "json_value": "disablesve",
+            "value": 2
+          },
+          {
+            "name": "ENABLEAVX",
+            "json_value": "enableavx",
+            "value": 4
+          },
+          {
+            "name": "DISABLEAVX",
+            "json_value": "disableavx",
+            "value": 8
+          },
+          {
+            "name": "ENABLEAFP",
+            "json_value": "enableafp",
+            "value": 16
+          },
+          {
+            "name": "DISABLEAFP",
+            "json_value": "disableafp",
+            "value": 32
+          },
+          {
+            "name": "ENABLELRCPC",
+            "json_value": "enablelrcpc",
+            "value": 64
+          },
+          {
+            "name": "DISABLELRCPC",
+            "json_value": "disablelrcpc",
+            "value": 128
+          },
+          {
+            "name": "ENABLELRCPC2",
+            "json_value": "enablelrcpc2",
+            "value": 256
+          },
+          {
+            "name": "DISABLELRCPC2",
+            "json_value": "disablelrcpc2",
+            "value": 512
+          },
+          {
+            "name": "ENABLECSSC",
+            "json_value": "enablecssc",
+            "value": 1024
+          },
+          {
+            "name": "DISABLECSSC",
+            "json_value": "disablecssc",
+            "value": 2048
+          },
+          {
+            "name": "ENABLEPMULL128",
+            "json_value": "enablepmull128",
+            "value": 4096
+          },
+          {
+            "name": "DISABLEPMULL128",
+            "json_value": "disablepmull128",
+            "value": 8192
+          },
+          {
+            "name": "ENABLERNG",
+            "json_value": "enablerng",
+            "value": 16384
+          },
+          {
+            "name": "DISABLERNG",
+            "json_value": "disablerng",
+            "value": 32768
+          },
+          {
+            "name": "ENABLECLZERO",
+            "json_value": "enableclzero",
+            "value": 65536
+          },
+          {
+            "name": "DISABLECLZERO",
+            "json_value": "disableclzero",
+            "value": 131072
+          },
+          {
+            "name": "ENABLEATOMICS",
+            "json_value": "enableatomics",
+            "value": 262144
+          },
+          {
+            "name": "DISABLEATOMICS",
+            "json_value": "disableatomics",
+            "value": 524288
+          },
+          {
+            "name": "ENABLEFCMA",
+            "json_value": "enablefcma",
+            "value": 1048576
+          },
+          {
+            "name": "DISABLEFCMA",
+            "json_value": "disablefcma",
+            "value": 2097152
+          },
+          {
+            "name": "ENABLEFLAGM",
+            "json_value": "enableflagm",
+            "value": 4194304
+          },
+          {
+            "name": "DISABLEFLAGM",
+            "json_value": "disableflagm",
+            "value": 8388608
+          },
+          {
+            "name": "ENABLEFLAGM2",
+            "json_value": "enableflagm2",
+            "value": 16777216
+          },
+          {
+            "name": "DISABLEFLAGM2",
+            "json_value": "disableflagm2",
+            "value": 33554432
+          },
+          {
+            "name": "ENABLEFRINTTS",
+            "json_value": "enablefrintts",
+            "value": 67108864
+          },
+          {
+            "name": "DISABLEFRINTTS",
+            "json_value": "disablefrintts",
+            "value": 134217728
+          },
+          {
+            "name": "ENABLECRYPTO",
+            "json_value": "enablecrypto",
+            "value": 268435456
+          },
+          {
+            "name": "DISABLECRYPTO",
+            "json_value": "disablecrypto",
+            "value": 536870912
+          },
+          {
+            "name": "ENABLERPRES",
+            "json_value": "enablerpres",
+            "value": 1073741824
+          },
+          {
+            "name": "DISABLERPRES",
+            "json_value": "disablerpres",
+            "value": 2147483648
+          },
+          {
+            "name": "ENABLESVEBITPERM",
+            "json_value": "enablesvebitperm",
+            "value": 4294967296
+          },
+          {
+            "name": "DISABLESVEBITPERM",
+            "json_value": "disablesvebitperm",
+            "value": 8589934592
+          },
+          {
+            "name": "ENABLEPRESERVEALLABI",
+            "json_value": "enablepreserveallabi",
+            "value": 17179869184
+          },
+          {
+            "name": "DISABLEPRESERVEALLABI",
+            "json_value": "disablepreserveallabi",
+            "value": 34359738368
+          },
+          {
+            "name": "ENABLEWFXT",
+            "json_value": "enablewfxt",
+            "value": 68719476736
+          },
+          {
+            "name": "DISABLEWFXT",
+            "json_value": "disablewfxt",
+            "value": 137438953472
+          },
+          {
+            "name": "ENABLE3DNOW",
+            "json_value": "enable3dnow",
+            "value": 274877906944
+          },
+          {
+            "name": "DISABLE3DNOW",
+            "json_value": "disable3dnow",
+            "value": 549755813888
+          },
+          {
+            "name": "ENABLESSE4A",
+            "json_value": "enablesse4a",
+            "value": 1099511627776
+          },
+          {
+            "name": "DISABLESSE4A",
+            "json_value": "disablesse4a",
+            "value": 2199023255552
+          },
+          {
+            "name": "ENABLEMOPS",
+            "json_value": "enablemops",
+            "value": 4398046511104
+          },
+          {
+            "name": "DISABLEMOPS",
+            "json_value": "disablemops",
+            "value": 8796093022208
+          }
+        ]
+      },
+      {
+        "name": "PassManagerDumpIR",
+        "members": [
+          {
+            "name": "OFF",
+            "value": 0
+          },
+          {
+            "name": "BEFOREOPT",
+            "json_value": "beforeopt",
+            "value": 1
+          },
+          {
+            "name": "AFTEROPT",
+            "json_value": "afteropt",
+            "value": 2
+          },
+          {
+            "name": "BEFOREPASS",
+            "json_value": "beforepass",
+            "value": 4
+          },
+          {
+            "name": "AFTERPASS",
+            "json_value": "afterpass",
+            "value": 8
+          }
+        ]
+      },
+      {
+        "name": "Disassemble",
+        "members": [
+          {
+            "name": "OFF",
+            "value": 0
+          },
+          {
+            "name": "DISPATCHER",
+            "json_value": "dispatcher",
+            "value": 1
+          },
+          {
+            "name": "BLOCKS",
+            "json_value": "blocks",
+            "value": 2
+          },
+          {
+            "name": "STATS",
+            "json_value": "stats",
+            "value": 4
+          }
+        ]
+      }
+    ],
+    "generated_header_outputs": [
+      {
+        "path": "include/FEXCore/Config/ConfigValues.inl",
+        "sha256": null,
+        "status": "must be populated by actual source-generator producer"
+      },
+      {
+        "path": "include/FEXCore/Config/ConfigOptions.inl",
+        "sha256": null,
+        "status": "must be populated by actual source-generator producer"
+      }
+    ],
+    "other_CONFIG_INC_outputs": [
+      "generated/Config/Config.json",
+      "generated/FEX.1",
+      "generated/FEX.1.gz"
+    ],
+    "manpage_nondeterminism": "The manpage includes datetime.now(). Header files do not. gzip -n removes gzip timestamp but does not remove the date in content; exclude manpages from portable header identity."
+  },
+  "licenses": {
+    "fex": "MIT upstream; pinned Madeira modifications GPL-3.0-or-later with additional permission, retain all exact notices",
+    "external_headers": {
+      "External/fmt": "MIT",
+      "External/range-v3": "BSL-1.0; verify per-file notices",
+      "External/unordered_dense": "MIT",
+      "External/xxhash": "BSD-2-Clause"
+    },
+    "required_fex_notices": [
+      {
+        "path": "LICENSE",
+        "bytes": 1094,
+        "sha256": "f34a779f56b36d22b20e1b990d23e583a6a7ca071331925fa46156441c77a1ee",
+        "git_blob_sha1": "cdb4f90b34cd30c0e0fd88108481c1fe61f66e57"
+      },
+      {
+        "path": "FEXCore/LICENSE",
+        "bytes": 1094,
+        "sha256": "f34a779f56b36d22b20e1b990d23e583a6a7ca071331925fa46156441c77a1ee",
+        "git_blob_sha1": "cdb4f90b34cd30c0e0fd88108481c1fe61f66e57"
+      },
+      {
+        "path": "LICENSE-MADEIRA.md",
+        "bytes": 3764,
+        "sha256": "5a6a95e9e25f0c61d253f79a53d24eee5e8a0bad305ed56e67d5a29a7e18696f",
+        "git_blob_sha1": "ea2aee6bf324131bb1db9bae59dc9a2f1183f4c1"
+      },
+      {
+        "path": "COPYING.GPL-3.0",
+        "bytes": 35150,
+        "sha256": "e6037104443f9a7829b2aa7c5370d0789a7bda3ca65a0b904cdc0c2e285d9195",
+        "git_blob_sha1": "2a000655e93f84c8d458d702e13a0f682a45cf45"
+      }
+    ],
+    "policy": "Copy producer source notices and external per-file licenses with generated headers; no SDK or Apple headers in supplement. Existing seven-archive source/license bundle remains required."
+  },
+  "limits": [
+    "A reconstructed compiler-equivalent source witness is not an extracted historical archive layout witness; retain this distinction.",
+    "Header generation/ABI data agreement does not establish successful FEXBridge compilation, linking, symbol resolution, device execution, or guest ABI.",
+    "Actual output header hashes and both compiler data witnesses remain absent until separately authorized producers run."
+  ]
+}

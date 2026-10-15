@@ -1,6 +1,6 @@
 # iDeck build progress
 
-Updated: 2026-10-15, 05:22 UTC.
+Updated: 2026-10-15, 05:48 UTC.
 
 ## Goal and current boundary
 
@@ -21,9 +21,13 @@ separately from application linking and device operation.
 | Wine generated headers and server | 356 verified headers and a real 49-object iOS wineserver archive. | [Wine control](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad0576e546ce6236ceebc85) |
 | FreeType and win32u | 42 font-engine objects plus 46 window-subsystem objects; all 88 members verified in the merged archive. | [FreeType/win32u control](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad05a7b546ce6236ceebd02) |
 | FFmpeg | Four real iOS archives, 209 object files, 45 required API definitions and 127 public headers verified. | [FFmpeg control](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad06029546ce6236ceebdf7) |
+| Crypto prefix and API link | Four real iOS archives, 1,312 objects and 91 headers verified; all 106 source-used APIs linked into an unsigned, nonexecuted target probe. | [Crypto control](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad06780546ce6236ceebf48) |
+| Current Madeira Swift and StikJIT | Real StikJIT interface import compiled; both helper inputs and all 67 unchanged main Swift sources typechecked with Xcode 27.0 / Swift 6.4. | [Current-app preflight](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad0666e546ce6236ceebf0b) |
 
-All downloaded native objects above were checked for arm64 iOS device targeting,
-minimum iOS 17.0 and SDK 26.5. Original artifacts, source identities, file hashes,
+Downloaded native runtime archive objects were checked for arm64 iOS device targeting
+and minimum iOS 17.0. They encode SDK 26.5 except exactly 18 source-qualified crypto
+assembly members whose SDK field is unspecified. The final crypto probe encodes SDK
+26.5. The separate StikJIT import object targets iOS 26.0 with SDK 27.0. Original artifacts, source identities, file hashes,
 compiler evidence and license notices are retained. This does not establish
 runtime compatibility merely from matching architectures.
 
@@ -33,8 +37,8 @@ Playport baseline and do not silently upgrade its dependency pins.
 
 ## In progress
 
-- [Crypto prefix and target API-link control](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad06207546ce6236ceebe3c): the corrected-input run passed the exact source-input guard and pinned checkout, then stopped before compilation because its host label is `Apple M2 (Virtual)`. A narrow host-label compatibility correction is under review. It builds real GMP, Nettle and GnuTLS, then checks 106 APIs in an unsigned, nonexecuted iOS link probe.
-- Current Madeira app toolchain preflight: preparing an Xcode 27 / Swift 6.4 check for its real StikJIT framework and Swift sources.
+- Import verified source-built prefixes into the native ntdll control, with explicit metadata relocation and a fresh API-link proof.
+- The Xcode 27.0 runner lacks the optional Metal Toolchain payload: `metal` is only a driver and `metallib` is unavailable. The own AIR probe stopped there; nothing was installed.
 - Remaining native ntdll and LLVM/DXMT closure, with exact ABI checks for reusable upstream PE components.
 
 Current source supports an in-tree SM5 shader-conversion path separate from
@@ -66,6 +70,6 @@ The user reports that Madeira's built-in JIT worked stably on this phone about a
 week earlier. That is useful device history, but it does not replace testing the
 new signed iDeck build.
 
-Last verified Codemagic usage: **28 of 500 free macOS minutes**. Paid subscription
+Last verified Codemagic usage: **36 of 500 free macOS minutes**. Paid subscription
 is disabled. All workflows are manual and bounded; no public repository release
 or paid build is authorized by this document.

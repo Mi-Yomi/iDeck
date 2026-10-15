@@ -28,7 +28,7 @@ MAX_FILE = 64 * MIB
 MAX_BUNDLE = 192 * MIB
 RECIPE_PINS = {
     "llvm-core-control.sh": "eba4f906412aa883ee37ed9257a83f9872f719fa705fe36b4a209bd34a7a46a5",
-    "llvm_control_support.py": "f1c067afee151467a2f6700934365101f1ebcc6a207ecd714936f0f6edacae69",
+    "llvm_control_support.py": "872247fd633e950846533d0548d19c553dd799125bbeaf1c65d704cbddf97989",
     "llvm-source-lock.json": "90b59a3cd553e394a32f361e8493aaaa799d7de83beb1a9df9b33ef7216f6479",
 }
 EXPECTED_DYLIBS = frozenset(("/usr/lib/libSystem.B.dylib", "/usr/lib/libc++.1.dylib"))

@@ -96,6 +96,18 @@ def real_path(path, root=None, file=False):
     return path
 
 
+def apple_tool_path(value, developer, name):
+    """Keep the driver spelling; clang++ may be a symlink to the clang binary."""
+    path = Path(value)
+    require(path.is_absolute() and '..' not in path.parts and path.name == name,
+            'Unexpected xcrun tool invocation path')
+    root = Path(developer).resolve()
+    resolved = path.resolve(strict=True)
+    require(path.is_relative_to(root) and resolved.is_relative_to(root) and
+            resolved.is_file() and os.access(path, os.X_OK), 'Apple tool outside selected Xcode')
+    return str(path), str(resolved)
+
+
 def base_environment(build, developer=None):
     env = {"PATH": SYSTEM_PATH, "HOME": str(build / "home"), "TMPDIR": str(build / "tmp"),
            "LC_ALL": "C", "LANG": "C", "TZ": "UTC", "PYTHONNOUSERSITE": "1",
@@ -323,7 +335,7 @@ class Control:
         self.llvm = self.source / "toolchains/llvm-project"
         self.obj = self.build / "build"
         self.prefix = self.build / ("native" if stage == "native" else "prefix")
-        self.commands, self.tools, self.versions = [], {}, {}
+        self.commands, self.tools, self.versions, self.resolved_tools = [], {}, {}, {}
 
     def run(self, name, argv, cwd=None, binary=False):
         require(re.fullmatch(r"[A-Za-z0-9_.-]+", name), "Invalid command label")
@@ -369,9 +381,8 @@ class Control:
             self.sdks[sdk] = str(path)
         require(self.versions["iphoneos"] == "26.5", "iPhoneOS SDK26.5 required")
         for name in ("clang", "clang++", "ar", "ranlib", "ld", "libtool"):
-            path = Path(self.run("find-" + name.replace("+", "x"), ["/usr/bin/xcrun", "--sdk", "macosx", "--find", name])).resolve()
-            require(path.is_file() and path.is_relative_to(dev) and os.access(path, os.X_OK), "Apple tool outside selected Xcode")
-            self.tools[name] = str(path)
+            value = self.run("find-" + name.replace("+", "x"), ["/usr/bin/xcrun", "--sdk", "macosx", "--find", name])
+            self.tools[name], self.resolved_tools[name] = apple_tool_path(value, dev, name)
         self.tools["make"] = "/usr/bin/make"
         cmake = shutil.which("cmake", path="/opt/homebrew/bin:" + SYSTEM_PATH)
         require(cmake, "Existing CMake required; no package install allowed")
@@ -395,7 +406,8 @@ class Control:
         self.run("disk-space", ["/bin/df", "-h", self.build])
         write_json(self.build / "manifests/preflight.json", {"schema": 1, "status": "passed", "cpu": cpu,
             "os_version": osver, "developer_dir": str(dev), "developer_selection": "provider" if self.requested_developer else "xcode-select",
-            "tools": self.tools, "tool_sha256": {name: sha256(path) for name, path in self.tools.items()},
+            "tools": self.tools, "resolved_apple_tools": self.resolved_tools,
+            "tool_sha256": {name: sha256(path) for name, path in self.tools.items()},
             "python_path": str(Path(sys.executable).resolve()), "python_sha256": sha256(Path(sys.executable).resolve()),
             "versions": self.versions, "sdk_paths": self.sdks, "environment": self.env})
 

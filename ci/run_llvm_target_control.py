@@ -181,6 +181,26 @@ def environment():
     return env
 
 
+def target_python_invocation():
+    """Preserve the already running provider interpreter; never resolve a second python3."""
+    selected = safe(Path(sys.executable).resolve(strict=True))
+    candidate = shutil.which('python3', path=environment()['PATH'])
+    argv = [str(selected), '-I', str(ROOT / 'ci/llvm_control_support.py'),
+            str(SOURCE), str(BUILD), 'target', str(IMPORT)]
+    accepted = sys.platform == 'darwin' and sys.version_info[:3] == (3, 12, 7)
+    record = {'schema': 1, 'status': 'passed' if accepted else 'rejected',
+        'invoked_interpreter': sys.executable, 'resolved_interpreter': str(selected),
+        'interpreter_sha256': digest(selected), 'observed_version': sys.version,
+        'observed_version_info': list(sys.version_info[:3]), 'observed_platform': sys.platform,
+        'required_version': [3, 12, 7], 'sanitized_path': environment()['PATH'],
+        'sanitized_path_python3_candidate': candidate, 'path_candidate_executed': False,
+        'helper_argv': argv,
+        'selection': 'running-wrapper-sys.executable; no shell PATH re-resolution'}
+    write_json(OUT / 'python-selection.json', record)
+    require(accepted, 'macOS with Python3.12.7 required for wrapper and unchanged helper')
+    return argv
+
+
 class Commands:
     def __init__(self):
         self.steps = []
@@ -565,6 +585,8 @@ def worker():
               'jobs': 4, 'aggregate_budget_seconds': AGGREGATE_SECONDS, 'native_input': lock['native'],
               'target_binaries_run': False, 'converter_validated': False, 'runtime_linked': False, 'device_tested': False}
     try:
+        helper_argv = target_python_invocation()
+        report['python_selection_sha256'] = digest(OUT / 'python-selection.json')
         native = load_module('run_llvm_control.py')
         native.SOURCE = SOURCE
         original = transport_native(lock)
@@ -573,7 +595,7 @@ def worker():
         report['checkout'] = native.checkout(commands)
         BUILD.parent.mkdir(parents=True)
         native.verify_import(original, lock['native']['zip_sha256'], lock['native']['artifact_manifest_sha256'], IMPORT)
-        commands.run('target-build', '/bin/bash', str(ROOT / 'ci/llvm-core-control.sh'), str(SOURCE), str(BUILD), 'target', str(IMPORT))
+        commands.run('target-build', *helper_argv)
         report['artifact'] = package_prefix(lock, original_manifest)
         report['result'] = 'passed-target-llvm-prefix-only'
     except Exception as error:
@@ -595,7 +617,7 @@ def finalize():
     write_json(OUT / 'result.json', result)
     labels = ('madeira-init madeira-origin madeira-fetch madeira-sparse madeira-checkout madeira-pin '
               'llvm-init llvm-origin llvm-fetch llvm-sparse llvm-checkout llvm-pin llvm-toplevel target-build').split()
-    candidates = [(OUT / n, n) for n in ('result.json', 'supervisor.json', 'steps.json', 'worker.log')]
+    candidates = [(OUT / n, n) for n in ('result.json', 'supervisor.json', 'steps.json', 'worker.log', 'python-selection.json')]
     candidates += [(OUT / (n + '.log'), 'Logs/' + n + '.log') for n in labels]
     candidates += [(BUILD / n, 'Build/' + n) for n in MANIFESTS + CONFIGURATION + COMPILER_EVIDENCE + ('failure.json',)]
     candidates += [(BUILD / 'logs' / (n + '.log'), 'Build/logs/' + n + '.log') for n in sorted(LOG_LABELS)]

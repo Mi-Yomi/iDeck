@@ -1,0 +1,138 @@
+{
+  "status": "host_reviewed_metal_toolchain_bootstrap_apple_rerun_pending",
+  "working_branch": "codex/linux-guest-feasibility-20261015",
+  "preparation_base_commit": "86d4ac0ea9b7c503fb0c982e648d50e7bd178c23",
+  "failed_build": {
+    "url": "https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad15b143ffd2c7f0ad3c111",
+    "workflow": "ideck-linux-probe-ipa",
+    "commit": "86d4ac0ea9b7c503fb0c982e648d50e7bd178c23",
+    "status": "failed",
+    "evidence_source": "Coordinator-provided latest browser summary, not a full raw build/browser log; not fetched directly by this evidence author.",
+    "first_failed_step": "native-angle",
+    "first_error": "Missing Metal toolchain; diagnostic recommends xcodebuild -downloadComponent MetalToolchain.",
+    "swift_source_check": {
+      "exit_code": 0,
+      "elapsed_seconds": 67.143
+    },
+    "source_archives_verified": 7,
+    "pixman_download_attempts": 1,
+    "native_base": {
+      "exit_code": 0,
+      "elapsed_seconds": 79.09
+    },
+    "result_json_created": true,
+    "full_qemu_husk_runtime_built": false,
+    "runtime_linked": false,
+    "ipa_created": false,
+    "device_tested": false,
+    "steam_executed": false
+  },
+  "previous_quota_blocker": {
+    "historical_evidence": "overnight-quota-blocker.json",
+    "resolved_for_this_build": true,
+    "resolution_source": "Coordinator-reported direct user confirmation: 83 used / 417 remaining free macOS minutes, plus explicit instruction «Запускай сборку». Normal automatic review accepted dispatch before this build.",
+    "applies_to_future_builds_without_recheck": false,
+    "historical_json_modified": false
+  },
+  "bootstrap_change": {
+    "status": "implemented_host_reviewed_apple_rerun_pending",
+    "intended_scope": "Official MetalToolchain component bootstrap and probe on disposable Xcode 27 Apple runner, within authorized build setup.",
+    "diagnostic_command": [
+      "xcodebuild",
+      "-downloadComponent",
+      "MetalToolchain"
+    ],
+    "worker_aggregate_seconds_unchanged": 6900,
+    "provider_max_minutes_unchanged": 120,
+    "automatic_license_acceptance": false,
+    "accounts_or_credentials_created": false,
+    "paid_resource_or_billing_changes": false,
+    "implementation": "ensure_metal_toolchain before native-angle: compile a real minimal shader with xcrun --sdk iphoneos metal -c to a new AIR file; download official component once only when the failed probe diagnostic identifies both missing Metal Toolchain and the exact xcodebuild recovery command; recompile to a distinct new AIR path and require nonempty output.",
+    "download_command": [
+      "xcodebuild",
+      "-downloadComponent",
+      "metalToolchain"
+    ],
+    "reporting": "metal_toolchain receipt includes initial probe, download requested flag, ready status only after real compile, probe AIR size/SHA-256 and metal --version; existing Worker.run child logs and aggregate deadline apply.",
+    "fail_closed": "Unrelated compile/license/permission/account failures do not request a download. Component download/reprobe errors and timeout propagate; no alternate tool, compiler stub, license acceptance or repeated download is used.",
+    "official_component_documentation": "https://developer.apple.com/documentation/xcode/downloading-and-installing-additional-xcode-components",
+    "official_shader_compile_documentation": "https://developer.apple.com/documentation/metal/building-a-shader-library-by-precompiling-source-files",
+    "documentation_verification_source": "Coordinator relayed URLs verified by the Swift/Xcode auditor; not browsed by this evidence author.",
+    "component_name_note": "Apple diagnostic used MetalToolchain; invoked component identifier uses documented canonical metalToolchain.",
+    "compiler_selection": "All probe/download/version invocations use /usr/bin/env -i with only the same PATH and HOME as pinned ANGLE recipe, avoiding DEVELOPER_DIR/TOOLCHAINS overrides selecting another compiler. Receipt records only booleans for whether overrides were ignored.",
+    "script_scope": "New helper and one call before native-angle; source pins/patches/native recipe/extraction/workflow unchanged."
+  },
+  "host_validation": {
+    "status": "passed",
+    "source": "Coordinator executed final integrated suite; evidence author checked saved log and file hashes.",
+    "command": "python3 -B -m unittest discover -s experiments/linux-guest/tests -v",
+    "environment": "Existing Linux cloud environment /workspace/iDeck; Python 3.12.14",
+    "tests_passed": 68,
+    "new_metal_bootstrap_tests": 12,
+    "previous_tests_included": 56,
+    "elapsed_seconds": 0.744,
+    "exit_code": 0,
+    "log": ".work/metal-toolchain-bootstrap/host-tests.log",
+    "log_size": 9784,
+    "log_sha256": "5e5dd83a4116efae67782d0e7eace0192ab77816992bc149d092883454a6cbc6",
+    "log_committed": false,
+    "scope": "Network-free host tests with mocked subprocess/Apple output; do not claim an Apple Metal compile or component download.",
+    "coverage": [
+      "already available compiler does not download",
+      "explicit missing component downloads once and re-probes",
+      "unrelated compile/license/permission failure does not authorize download",
+      "download/reprobe failure or empty/missing AIR fails closed",
+      "worker budget/timeouts and process cleanup",
+      "PATH/HOME-only selection matches ANGLE, ignores developer/toolchain overrides"
+    ],
+    "independent_reviews": {
+      "source": "Coordinator confirmation of native/Swift-Xcode audit and independent regression review",
+      "native_swift_xcode_review_approved": true,
+      "independent_tests_review_approved": true
+    }
+  },
+  "apple_rerun_performed_for_bootstrap_change": false,
+  "full_qemu_husk_runtime_built": false,
+  "runtime_linked": false,
+  "ipa_created": false,
+  "device_tested": false,
+  "steam_executed": false,
+  "artifact_materialization": {
+    "source": "Parent-provided artifact identity and expected digests, not independently verified raw artifact bytes.",
+    "library_file_id": "libfile_f61b646f9c288191a124637f3544e895",
+    "reported_zip_size": 103082,
+    "reported_zip_sha256": "4aaebb94a8193fdbf8c63db69acc9816971d460fed4d11760cbc98914705c82e",
+    "reported_members": {
+      "angle-build.log": {
+        "size": 209673,
+        "sha256": "7b95db03d181f0906a132d98aae57fc30cfc6df7ad5c9c2f4effdf683e3e6a15"
+      },
+      "native-angle.log": {
+        "size": 274,
+        "sha256": "1b1ff350b2585bfc98dafcacc259b4a510fd48103ab33ee1aef345eb08426fba"
+      },
+      "result.json": {
+        "size": 10737,
+        "sha256": "0fb2c978354f07c4c47e84da652fcb17c5e80e82af40f9a30fd93c029b0d8525"
+      }
+    },
+    "locally_materialized": false,
+    "independently_verified_digests": false,
+    "blocker": "Authorized Library prepare_materialize returned a signed URL with workspace_path null. Ordinary urllib GET through the cloud proxy failed with Tunnel connection failed: 403 Forbidden before receiving bytes. No ZIP file was written.",
+    "signed_url_saved_or_committed": false,
+    "access_denial_bypassed": false,
+    "reported_diagnostic_context": {
+      "operation": "CompileMetalFile",
+      "source": "mtl_internal_shaders_autogen.metal",
+      "target": "ANGLEMetalLib",
+      "architecture_target": "air64-apple-ios15.5",
+      "sdk": "27.0",
+      "failure": "Metal tool unavailable; compiler diagnostic recommends official MetalToolchain component download."
+    }
+  },
+  "hashes": {
+    "ci/build_linux_probe_ipa.py": "4e72273462a4fdbb0b706ac2ccebb194ed2c0ffd989f8fd74e415c1203006233",
+    "experiments/linux-guest/tests/test_metal_toolchain.py": "cefbc05d24fcec95a3b6f73f39843ee869bb0dc5b1928d0833bf12ba7f7dffee",
+    "experiments/linux-guest/ipa/native-sources.lock.json": "343ce97b29a08642f66eeb6d7a06cca06204abc5e4ae9c800530ffdce93c3feb"
+  }
+}

@@ -159,6 +159,52 @@ def write_result(output, report):
     print("LINUX_IPA_BUILD_RESULT=" + json.dumps(report), flush=True)
 
 
+def ensure_metal_toolchain(worker, report):
+    """Compile a real shader; acquire Apple's component only when explicitly missing."""
+    receipt = {"status": "failed", "download_requested": False, "sdk": "iphoneos",
+               "initial_probe": "failed", "selection_mode": "angle_env_i_path_home",
+               "ignored_developer_dir_override": bool(worker.env.get("DEVELOPER_DIR")),
+               "ignored_toolchains_override": bool(worker.env.get("TOOLCHAINS"))}
+    report["metal_toolchain"] = receipt
+    # The pinned ANGLE recipe invokes xcodebuild with only PATH/HOME. Match
+    # that selection exactly: inherited DEVELOPER_DIR/TOOLCHAINS could otherwise
+    # make a successful probe test a different compiler from the actual build.
+    angle_environment = ["/usr/bin/env", "-i", "PATH=" + worker.env["PATH"], "HOME=" + worker.env["HOME"]]
+    directory = worker.output / "metal-toolchain"
+    directory.mkdir()
+    source = directory / "probe.metal"
+    source.write_text("kernel void ideck_toolchain_probe() {}\n", encoding="utf-8")
+
+    def probe(label, output):
+        # xcrun --find can resolve a stub even when the component is absent.
+        # Require an actual compiler invocation and a newly produced AIR file.
+        worker.run(label, angle_environment + ["xcrun", "--sdk", "iphoneos", "metal", "-c", source, "-o", output])
+        if not output.is_file() or output.stat().st_size == 0:
+            raise ValueError("Metal compiler did not produce a nonempty probe AIR file")
+        return {"path": str(output.relative_to(worker.output)),
+                "size": output.stat().st_size, "sha256": sha(output)}
+
+    try:
+        artifact = probe("metal-probe-before", directory / "probe-before.air")
+    except RuntimeError:
+        diagnostic = (worker.output / "metal-probe-before.log").read_text(errors="replace")
+        # No generic compiler, license, permission or account failure authorizes
+        # a download. Preserve its original error and log instead.
+        if ("missing Metal Toolchain" not in diagnostic
+                or "xcodebuild -downloadComponent MetalToolchain" not in diagnostic):
+            receipt["initial_probe"] = "failed"
+            raise
+        receipt["initial_probe"] = "missing_component"
+        receipt["download_requested"] = True
+        worker.run("metal-toolchain-download", angle_environment + ["xcodebuild", "-downloadComponent", "metalToolchain"])
+        artifact = probe("metal-probe-after", directory / "probe-after.air")
+    else:
+        receipt["initial_probe"] = "passed"
+    receipt["probe_artifact"] = artifact
+    receipt["compiler_version"] = worker.run("metal-version", angle_environment + ["xcrun", "--sdk", "iphoneos", "metal", "--version"])
+    receipt["status"] = "ready"
+
+
 class Worker:
     def __init__(self, output):
         self.output = output
@@ -342,6 +388,7 @@ def main():
         worker.run("native-base", ["bash", "scripts/build_ios.sh", "libffi", "glib", "pixman", "libucontext", "libslirp"], source)
         cross = source / "build/ios-arm64"
         shutil.copyfile(cross / "cross-darwin.meson", cross / "cross-ios-darwin.meson")
+        ensure_metal_toolchain(worker, report)
         worker.run("native-angle", ["bash", "scripts/build_angle_ios.sh"], source)
         worker.env["PKG_CONFIG_LIBDIR"] = str(cross / "sysroot/lib/pkgconfig") + ":" + str(cross / "sysroot/share/pkgconfig")
         worker.run("native-gpu", ["bash", "scripts/build_gpu_ios.sh"], source)

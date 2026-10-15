@@ -5,6 +5,68 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## Новая Apple-попытка: native-base прошёл, отсутствует Metal toolchain
+
+[Build `6ad15b143ffd2c7f0ad3c111`](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad15b143ffd2c7f0ad3c111)
+на [`86d4ac0ea9b7c503fb0c982e648d50e7bd178c23`](https://github.com/Mi-Yomi/iDeck/commit/86d4ac0ea9b7c503fb0c982e648d50e7bd178c23)
+завершился **failed**, первый упавший шаг — `native-angle`: отсутствует Metal
+toolchain; диагностика указывает официальный
+`xcodebuild -downloadComponent MetalToolchain`. Источник — последняя краткая
+browser-сводка координатора, **не полный raw log**; автор раздела не получал
+его напрямую.
+
+- `swift-source-check`: exit 0, 67.143 секунды.
+- Все **7 source archives** проверены; pixman скачан с первой попытки.
+- `native-base`: exit 0, 79.09 секунды. Это реальная Apple-сборка базовых native
+  зависимостей, но не полный QEMU/Husk runtime или линковка приложения.
+- `result.json` создан. IPA отсутствует; device Linux/JIT/Steam не проверены.
+
+Предыдущий quota blocker **разрешён для этой попытки**: пользователь прямо
+подтвердил 83 использованных / 417 оставшихся бесплатных macOS минут и дал
+команду «Запускай сборку»; обычный automatic review одобрил отправку перед
+этой CI. Нижний ночной раздел и
+`experiments/linux-guest/evidence/overnight-quota-blocker.json` — исторический снимок до этого подтверждения, не текущий внешний blocker.
+Старый JSON не изменён. Для любого следующего запуска нужна свежая проверка
+квоты, disabled billing, private repo, отсутствия активной CI и exact pushed SHA.
+
+В worker перед `native-angle` добавлен реальный compile probe минимального
+Metal shader: `xcrun --sdk iphoneos metal -c` должен создать новый непустой AIR.
+Только при точной диагностике missing Metal Toolchain вместе с официальной
+recovery command вызывается **один**
+`xcodebuild -downloadComponent metalToolchain` (каноническое имя component по
+[документации Apple](https://developer.apple.com/documentation/xcode/downloading-and-installing-additional-xcode-components));
+затем shader компилируется заново в другой новый AIR. В отчёт входят status,
+факт download, version и size/SHA-256 probe. Probe/download/version исполняются
+через `env -i` только с PATH/HOME, как pinned ANGLE; DEVELOPER_DIR/TOOLCHAINS
+не могут незаметно выбрать другой compiler. В отчёте лишь boolean наличия
+проигнорированных overrides. Unrelated compile/license/permission отказы, download/reprobe failure и timeout распространяются наружу; проверки
+не заменяются заглушкой или одним `xcrun --find`. Это подготовка disposable
+Xcode 27 runner в рамках разрешения. Лимиты **6900 секунд / 120 минут** сохранены;
+автоматического принятия лицензий, аккаунтов, credentials или оплаты нет.
+**Проверено координатором:** `python3 -B -m unittest discover -s
+experiments/linux-guest/tests -v` — **68 host tests PASS**, exit 0, 0.744 секунды,
+Python 3.12.14/Linux: 12 новых bootstrap tests плюс 56 прежних. Это network-free
+host tests с подменой subprocess/Apple outputs, не настоящая загрузка component
+или Metal compile. Native/Swift-Xcode auditor и независимый regression reviewer
+одобрили итог. Log: `.work/metal-toolchain-bootstrap/host-tests.log`, SHA-256
+`5e5dd83a4116efae67782d0e7eace0192ab77816992bc149d092883454a6cbc6`; не добавлен в Git. Script/test/lock hashes и evidence:
+`experiments/linux-guest/evidence/metal-toolchain-bootstrap.json`.
+
+Для полной raw-диагностики parent предоставил Library artifact ZIP
+`libfile_f61b646f9c288191a124637f3544e895` и ожидаемые size/hashes. Root получил
+разрешённый materialization URL, но обычный GET через cloud proxy остановился
+на `Tunnel connection failed: 403 Forbidden` до получения bytes. ZIP не записан,
+локальная независимая проверка raw digests не выполнена. Переданные hashes
+помечены в новом evidence как **reported / unverified locally**; signed URL
+не сохраняется. Переданный контекст: `CompileMetalFile`,
+`mtl_internal_shaders_autogen.metal`, target `ANGLEMetalLib`,
+`air64-apple-ios15.5`, SDK 27.0. Это всё ещё сведения parent, не прочитанный
+локально full raw log; access denial не обходился.
+Новая CI для bootstrap-исправления пока не запускалась; ей управляет только
+browser-координатор. Полный новый SHA после commit/push брать через
+`git rev-parse HEAD` и сверять с удалённой Linux-веткой; build SHA выше относится
+к уже завершённой попытке.
+
 ## Ночной итог: исправление pushed, Apple-запуск заблокирован проверкой квоты
 
 Code commit: [`d849a307727faf374b1bd8a60035a3afdd3e28fa`](https://github.com/Mi-Yomi/iDeck/commit/d849a307727faf374b1bd8a60035a3afdd3e28fa),

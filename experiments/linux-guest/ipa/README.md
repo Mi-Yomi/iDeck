@@ -1,12 +1,14 @@
 # iDeck Linux Probe IPA build
 
 The `ideck-linux-probe-ipa` Codemagic workflow is a **native source build recipe**.
-The Apple run at 3a10400 passed the Swift source gate after the missing-header
-fix. It then stopped while extracting QEMU's unused absolute X11 symlink, and
-raw guest bytes in the report caused a second JSON error. Both preparation
-issues are fixed here; this correction has not run on Apple hardware yet.
-Native builds/linking were not reached and there is no IPA. See
-`../evidence/native-input-fix.json` and the earlier `source-header-fix.json`.
+The latest [Apple run at 86d4ac0](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad15b143ffd2c7f0ad3c111) passed the Swift source gate,
+verified all seven source archives (pixman on its first attempt), and completed
+`native-base`. It stopped at `native-angle` because the Xcode 27 runner lacked
+the Metal toolchain. These results come from the coordinator's browser summary,
+not a full raw log. Full QEMU/Husk compilation, app linking and IPA packaging
+remain unverified. See `../evidence/metal-toolchain-bootstrap.json`; earlier
+source-header, extraction/JSON and download-retry evidence are preserved as
+historical snapshots. There is no IPA or device Linux/Steam proof yet.
 
 Select branch `codex/linux-guest-feasibility-20261015` **before** selecting the
 workflow. Set `expected_commit` to the full current pushed SHA. `main` deliberately
@@ -28,7 +30,24 @@ The source check runs first, followed by the actual native dependency builds,
 Xcode project generation, `xcodebuild build`, bundle validation, ad-hoc signing
 and ZIP packaging. The worker budget is 6,900 seconds; the provider cap is 120
 minutes. This is a cap, not a measured duration or a guarantee that a cold build
-finishes within it. No automatic trigger or retry is configured.
+finishes within it. No automatic build trigger or build rerun is configured.
+Source archive fetches have bounded transient retries with unchanged TLS and
+integrity checks; access denial, certificate errors and hash mismatches fail.
+
+Before ANGLE, the worker compiles a minimal Metal shader using
+`xcrun --sdk iphoneos metal -c`, requiring a newly produced nonempty AIR
+file. If that probe explicitly reports a missing Metal Toolchain and Apple's
+recovery command, it runs
+[`xcodebuild -downloadComponent metalToolchain`](https://developer.apple.com/documentation/xcode/downloading-and-installing-additional-xcode-components)
+once, then recompiles to a different new AIR file. This follows Apple's
+[shader compilation flow](https://developer.apple.com/documentation/metal/building-a-shader-library-by-precompiling-source-files).
+Probe, download and version commands use `env -i` with PATH/HOME only, matching
+the pinned ANGLE recipe; inherited DEVELOPER_DIR/TOOLCHAINS cannot test another
+compiler. Compiler version, AIR size/hash and booleans for ignored overrides
+are recorded in `result.json`. Generic compiler, license, permission, component
+download or reprobe failures remain fatal; there is no automatic license
+acceptance or alternate compiler. The component uses the disposable runner and
+existing aggregate budget. This preparation still needs its Apple CI rerun.
 
 ## Scope and provenance
 
@@ -89,7 +108,10 @@ downloaded old Husk109 IPA is substituted for Husk119 output.
 
 ## Local checks performed
 
-Thirty-six host tests passed, including wrong branch/SHA/default-input rejection,
+The integrated suite passes 68 network-free host tests (12 Metal bootstrap,
+20 bounded-download and 36 earlier tests), with independent review. Bootstrap
+tests simulate subprocess/Apple outputs; they do not execute an Apple compiler
+or download a component. The earlier tests include wrong branch/SHA/default-input rejection,
 real guest archive restoration, source staging, simulator/incorrect app identity
 rejection, a real nonzero child-process failure and rejection of the missing
 transitive header with valid package hashes. Extraction tests reject other
@@ -101,7 +123,9 @@ The canonical Git version of the patched shell script passes `bash -n`.
 The 15 existing workflows preserve their original execution bodies after the
 new request guard; YAML defaults no longer resolve omitted required inputs to
 empty environment strings. The first Apple run passed YAML/request validation;
-the next run passed Swift typechecking. Native build results remain pending.
+the next run passed Swift typechecking. The latest Apple run completed native-base;
+Metal component preparation, full QEMU/Husk runtime and app linking remain
+pending a new Apple run.
 
 The new extraction helper fully unpacked all seven locked source archives on
 Windows/Python 3.12.14 and wrote a valid result with real guest metadata. Only

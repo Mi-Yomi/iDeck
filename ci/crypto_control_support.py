@@ -374,7 +374,7 @@ class Control:
         require(sys.platform == "darwin", "arm64 macOS required")
         require(self.capture("host-arch", ["/usr/bin/uname", "-m"]) == "arm64", "arm64 macOS required")
         brand = self.capture("host-cpu", ["/usr/sbin/sysctl", "-n", "machdep.cpu.brand_string"])
-        require(brand == "Apple M2", f"Unreviewed runner CPU: {brand}")
+        require(brand in ("Apple M2", "Apple M2 (Virtual)"), f"Unreviewed runner CPU: {brand}")
         require(self.capture("madeira-pin", ["/usr/bin/git", "-C", str(self.source), "rev-parse", "HEAD"]) == MADEIRA_PIN, "Wrong Madeira pin")
         self.run("tracked-source-clean", ["/usr/bin/git", "-C", str(self.source), "diff", "--exit-code", "HEAD", "--", "build/gnutls-ios"])
         # Codemagic selects its requested Xcode through DEVELOPER_DIR; the

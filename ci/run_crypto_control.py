@@ -279,7 +279,7 @@ def checkout(control, tag, path, url, commit, sparse=()):
     verify_pin(control.run(tag + "-pin", "git", "rev-parse", "HEAD", cwd=path), commit)
     return source_bounds(path)
 
-INPUT_LOCK = '1be610acab7d677a69a95fdbbcbcb0ce4bdc3b0a948a28c73b379434dcf5132d'
+INPUT_LOCK = 'dd75b9aab4a4ac0da56ec42bb0a05ed9f8f63cd7252dc00ef98e8555768d4199'
 INPUT_FILES = frozenset(('ci/crypto-core-control.sh','ci/crypto_control_support.py',
  'ci/prove_crypto_features.py','gnutls-api-link-probe.c','gnutls-symbol-lock.json'))
 

@@ -1,3 +1,109 @@
+# HANDOFF — продолжение iDeck, 2026-10-15
+
+## Новое состояние после просьбы продолжить
+
+Работа продолжена в `E:\Freddy Fazbear\iDeck`, ветка `codex/linux-guest-feasibility-20261015`.
+Коммит реализации: `5baf235d52b2a5ec64587519e3ad2ec4c0fbd592`. Этот HANDOFF — следующий отдельный коммит; его точный ID: `git log -1 --format=%H -- HANDOFF.md`.
+Локальный `main` остался на `a77ab500cdf8c8307af36a58b25816a3fa4d66db`.
+
+Теперь подготовлена **интеграция настоящего Linux-пробника в исходники iOS-приложения Husk**, а не только генератор аргументов QEMU:
+
+- Выбор Linux / прежняя библиотека Husk до создания Android-экрана. Выбор один на процесс; общая JIT-область не переиспользуется другой средой.
+- Реальный вызов `qemu_init` / `qemu_main_loop` в отдельном потоке с сохранённым argv; существующие JIT/prewarm и `husk_display_init` / `HuskDisplay`.
+- Отдельный каталог сессии, проверка размеров/SHA-256 файлов до старта, IO вне main thread. Android snapshots, GL probe, диски и watchers не вызываются этим маршрутом.
+- Два framebuffer проверяются по каждому RGB-каналу каждого пикселя; реальные записи Linux evdev проверяются на нажатие/отпускание A и указателя, обе оси. UI предлагает тап по изображению, Send A и сохранение отчёта.
+- Отчёт содержит OS, SHA-256 исполняемого файла приложения, параметры гостя, хеши кадров/serial и отдельные статусы. Physical screen / Steam / accelerated guest GPU не объявляются проверенными.
+- Выделение JIT в Husk может быть 512 MiB при запросе TCG 256 MiB; это явно записывается. Безопасного in-process restart/teardown display в pinned bridge нет: после сессии закрыть и открыть приложение. Deadline прекращает сбор доказательств, не убивает общий процесс.
+
+**На Windows Swift и iOS runtime не компилировались и на телефоне не запускались. IPA и Steam Big Picture на iPhone по-прежнему нет.** Интеграция пока является исходниками с подготовленной проверкой Apple SDK.
+
+## Что действительно проверено в продолжении
+
+1. Получен полный clean checkout `Leviidev/Husk` на `0695248f491cda877f7969d1f0cc89aeede1482e`. Исходный checkout `.work/husk-base` не изменён. Патч оформлен через `git format-patch` из отдельного authoring worktree.
+2. Итоговая сборочная копия исходников и гостя: `.work/husk-linux-staged-final`. Все изменённые файлы совпали с `husk/overlay.lock.json`. Первая `.work/husk-linux-staged` была sparse-промежуточной и не является полной сборочной копией; сохранена. Теперь stage tool отказывает sparse checkout.
+3. В offline source-check архиве **77 настоящих upstream Swift/header/license файлов**, каждый с SHA-256 и original Git blob ID. Архив не содержит native runtime binaries. License/headers сохранены, лицензии проекта не заменялись; старый Playport/Madeira target с QEMU не объединялся.
+4. **20 host guard/staging tests PASS**. Host Clang проверил исходный C bridge. AST всех Python-скриптов и YAML проверены; среди CI workflow изменён только ранее добавленный Linux compiler check.
+5. Сработал тот же resource stage, который добавлен в Xcode project. Из его выходного каталога `.work/ios-probe-bundle/iDeckLinuxProbe` **повторно реально загружен Linux в Windows QEMU**: оба кадра по 480 000 пикселей и guest keyboard/pointer PASS, 25.125 секунды. Raw run: `.work/linux-boot/run-ios-bundle`.
+6. Индекс прежнего восстановленного source export остался **`a305e267ebdb87ec4d202f4f8d5c499cc5ffbe44`**. Ни staged diff прежней работы, ни main не сбрасывались. Push / CI dispatch / signing / device install не было.
+
+Evidence: `experiments/linux-guest/evidence/ios-integration.json`, `host-smoke-ios-bundle.json`, `ios-staging-tests.txt`; общий индекс hashes обновлён. Git-staged bytes проверены против locks. Архив помечен binary; формат-patch сохраняет обязательные пробелы пустых context lines, а применённый source diff отдельно проходит whitespace check.
+
+## Точные команды этой части
+
+PowerShell из корня репозитория; повторный stage требует нового output-каталога.
+
+```powershell
+$taskPy = 'C:\Users\Sevex\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe'
+$env:PYTHONDONTWRITEBYTECODE = '1'
+$env:TEMP = 'E:\Freddy Fazbear\work\temp'
+$env:TMP = $env:TEMP
+
+& $taskPy -m unittest discover -s experiments/linux-guest/tests -v
+& $taskPy experiments/linux-guest/tools/stage_husk.py --upstream .work/husk-base --guest .work/linux-boot/probe-final --out .work/husk-linux-staged-final
+& $taskPy .work/husk-linux-staged/scripts/ideck-stage-linux-guest.py .work/husk-linux-staged/guests/ideck-linux .work/ios-probe-bundle/iDeckLinuxProbe
+& $taskPy experiments/linux-guest/tools/host_smoke.py --qemu .work/linux-boot/qemu/qemu-system-aarch64.exe --guest .work/ios-probe-bundle/iDeckLinuxProbe --out .work/linux-boot/run-ios-bundle
+& 'C:\Program Files\Windhawk\Compiler\bin\clang-20.exe' -fsyntax-only -x c -Wall -Wextra -Werror .work/husk-base/src/app/Husk/HuskBridge.h
+
+git -C .work/source write-tree
+git -C .work/husk-base status --short
+git diff --cached --check
+git -C .work/husk-linux-staged-final diff --cached --check
+```
+
+Resource stage в host run использовал первый staged каталог до удаления неиспользуемого Python import; алгоритм и все три полученных файла идентичны итоговому stage. Final source stage уже включает полный checkout, финальный session source и окончательный overlay lock.
+
+## Apple задача и оставшиеся ограничения
+
+Существующий manual `ideck-linux-guest-profile-check` расширен: **480 секунд aggregate, provider cap 10 минут**. Точные clean commit / текущая бесплатная квота / private repository остаются входными gates. Ни текущая доступность Xcode 27 runner, ни квота в этой части не проверялись; задача не отправлялась.
+
+Теперь worker проверяет profile/evidence для iOS, запускает Mac validator tests на реальном ранее записанном serial и negative fixtures, восстанавливает offline source slice и typecheck'ит **исходный и затем patched Husk Swift application против настоящего Apple SDK и HuskBridge.h**. JIT/QEMU API-заглушек нет. Это typecheck Swift/C declarations; не компиляция native implementation bodies, не линковка и не IPA.
+
+Следующая независимая граница — выполнить эту Apple проверку на существующем разрешённом runner, затем собрать pinned Husk с его настоящими native dependency outputs и patched `project.yml`. Для device run: Linux → Enable JIT → Start Linux → увидеть первый кадр → тап и Send A в течение 20 секунд → второй кадр → сохранить отчёт и запись экрана. Снимки Android и сохранения не сбрасывать.
+
+Параллельно будущему этапу остаётся собрать отдельный **glibc ARM64 rootfs + полный официальный Steam с common resources**, затем настоящий client/CEF и Big Picture. Здесь это не делалось. Требования GPU/игр и сведения о старом WIP остаются в предыдущем отчёте ниже.
+
+## Новые hashes
+
+- Offline Husk source-check archive: `044316e0de837a47c5dd1b765b5f15a939a07030ae8415fdd6add8f6bceb823f` (340 363 bytes).
+- Overlay lock: `2dc41640bd14d8711259c6b8019349a7f013f5f494485487354cc799c1d6cbd4`.
+- Kernel: `47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756`.
+- Initramfs: `5f64312eeef340991c6b0d97bd9d1fb01649c1763e14d7fb8231ad16551e9343`.
+- Final session source: `41012830eda0d37ab75e078f76a57300d554afcfdd9f37b6b490d8286e3231e9`.
+
+## Изменённые файлы реализации
+
+```text
+.gitattributes
+BUILD_PROGRESS.md
+README.md
+ci/check_linux_guest_profile.py
+codemagic.yaml
+experiments/linux-guest/README.md
+experiments/linux-guest/evidence/artifact-hashes.json
+experiments/linux-guest/evidence/host-smoke-ios-bundle.json
+experiments/linux-guest/evidence/ios-integration.json
+experiments/linux-guest/evidence/ios-staging-tests.txt
+experiments/linux-guest/husk/README.md
+experiments/linux-guest/husk/husk119-source-check.tar.gz
+experiments/linux-guest/husk/overlay.lock.json
+experiments/linux-guest/husk/patches/0001-isolated-linux-probe-route.patch
+experiments/linux-guest/husk/patches/series
+experiments/linux-guest/husk/source-check.lock.json
+experiments/linux-guest/ios/LinuxGuestProfile.swift
+experiments/linux-guest/ios/LinuxProbeEvidence.swift
+experiments/linux-guest/ios/LinuxProbeSession.swift
+experiments/linux-guest/ios/LinuxProbeView.swift
+experiments/linux-guest/ios/tests/main.swift
+experiments/linux-guest/tests/test_staging.py
+experiments/linux-guest/tools/stage_bundle.py
+experiments/linux-guest/tools/stage_husk.py
+experiments/linux-guest/tools/typecheck_source.py
+```
+
+---
+
+Ниже сохранён отчёт **предыдущего этапа**. Его формулировки «ещё не интегрировано», бюджет 240 секунд и отсутствие copied Husk source относятся к состоянию до продолжения; актуальные изменения перечислены выше.
+
 # HANDOFF — iDeck, 2026-10-15
 
 ## Результат этой сессии

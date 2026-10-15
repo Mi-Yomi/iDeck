@@ -213,3 +213,40 @@ workflows:
 # Aggregate subprocess budget 23 minutes; provider hard limit 25 minutes; JOBS=4.
 # Validated output is 42 FreeType + 46 win32u = 88 unique arm64 iOS 17.0 objects.
 # Static archive success is not runtime linkage, application, Steam or device success.
+
+  ideck-ffmpeg-ios-control:
+    name: iDeck pinned FFmpeg iOS source prefix control
+    instance_type: mac_mini_m2
+    max_build_duration: 25
+    inputs:
+      expected_recipe_sha256:
+        description: Exact reviewed FFmpeg shell recipe SHA256
+        type: string
+      expected_lock_sha256:
+        description: Exact reviewed FFmpeg source and feature lock SHA256
+        type: string
+      free_quota_verified:
+        description: Free quota and disabled paid subscription checked before this run
+        type: string
+        default: "false"
+      private_source_verified:
+        description: Approved private Mi-Yomi/iDeck repository selected
+        type: string
+        default: "false"
+    environment:
+      xcode: "26.6"
+      vars:
+        EXPECTED_RECIPE_SHA256: ${{ inputs.expected_recipe_sha256 }}
+        EXPECTED_LOCK_SHA256: ${{ inputs.expected_lock_sha256 }}
+        FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
+        PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
+        GIT_TERMINAL_PROMPT: "0"
+    scripts:
+      - name: Build four real FFmpeg iOS libraries and verify source/config/platform
+        script: |
+          set -euo pipefail
+          python3 ci/run_ffmpeg_control.py
+    artifacts:
+      - .work/ffmpeg-control-artifacts/ffmpeg-evidence.zip
+      - .work/ffmpeg-control-artifacts/ffmpeg-ios-prefix.zip
+# Manual only, no cache/triggers/install/signing/publication. Four build jobs.

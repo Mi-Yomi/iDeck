@@ -4,8 +4,10 @@ This branch advances the requested **real Linux kernel + Linux Steam + Big Pictu
 
 2026-10-16: [A separate native IPA build recipe](ipa/README.md) is now available
 as `ideck-linux-probe-ipa`, alongside the ten-minute Swift source check. The
-verified guest bytes are included in Git. Host guards/staging pass; Apple
-compilation, linking and an actual IPA are still pending execution of that recipe.
+verified guest bytes are included in Git. Its first Apple run passed the
+profile/evidence and Mac checks, then stopped in upstream Swift typechecking:
+the offline source slice lacked a transitive C header. That packaging omission
+is fixed; a new Apple run, native compilation/linking and an actual IPA are pending.
 
 ## Measured in this session
 
@@ -32,7 +34,7 @@ In the pinned Husk source, `QemuRunner.run()` performs a GL probe and Android sn
 
 `ios/LinuxGuestProfile.swift` validates the assets and creates native argv with mandatory `split-wx=on`. The continuation adds `LinuxProbeSession.swift` and `LinuxProbeView.swift`: a one-session QEMU owner, isolated UI route, software display/input, strict framebuffer/evdev evidence and a shareable report. [The pinned Husk overlay](husk/README.md) connects these to the actual app entry point. Source staging passed; this Swift integration is **not yet compiled or device-tested**.
 
-`ci/check_linux_guest_profile.py` and the manual `ideck-linux-guest-profile-check` now typecheck the original and patched Husk Swift application using the real C bridge and Apple SDK, and run the profile/evidence validator tests on Mac. The exact offline upstream source slice has 77 files, includes its existing notices/license, and contains no runtime binaries. The workflow has not been dispatched.
+`ci/check_linux_guest_profile.py` and the manual `ideck-linux-guest-profile-check` typecheck the original and patched Husk Swift application using the real C bridge and Apple SDK, and run the profile/evidence validator tests on Mac. The exact offline upstream source slice now has 78 files, including the original `husk-console-abi.h` missed by the first archive. Restore checks the bridge's complete literal local-include chain as well as file hashes. Existing notices/license remain included; the archive contains no runtime binaries. The first Apple attempt and local reproduction/fix are recorded in `evidence/source-header-fix.json`; complete app typechecking is still pending.
 
 ## Reproduce on this Windows workstation
 
@@ -48,7 +50,7 @@ python -m unittest discover -s experiments/linux-guest/tests -v
 
 Input URLs, provider checksums, sizes and local hashes are in `evidence/boot-inputs.json`. The QEMU Windows binary provider is linked by [qemu.org](https://www.qemu.org/download/#windows). The installer was unpacked with 7-Zip, never installed. Preserve its COPYING/source information. Guest preparation refuses an archive that differs from the pinned SHA-256. Use a fresh output directory; no old result or guest is overwritten. In PowerShell, quote `'-Wl,-e,_start'`.
 
-The Apple workflow has no automatic trigger, dependency download, signing, artifact upload or publication. Before any owner-approved push/dispatch, check the current free quota and disabled paid subscription; historical quota numbers are not current authorization. Set `expected_commit` to the exact reviewed branch commit and select the existing private repository. Internal budget: 480 seconds; provider cap: 10 minutes. This task is a compiler gate, not an IPA build.
+The Swift-only Apple workflow has no automatic trigger, dependency download, signing or publication; it retains compiler logs and the result as CI artifacts. Before dispatch, check the current free quota and disabled paid subscription; historical quota numbers are not current authorization. Set `expected_commit` to the exact reviewed branch commit and select the existing private repository. Internal budget: 480 seconds; provider cap: 10 minutes. The separate IPA workflow includes this gate and has its own 120-minute cap.
 
 ## Failed controls retained
 

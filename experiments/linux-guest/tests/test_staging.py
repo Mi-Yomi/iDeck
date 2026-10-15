@@ -1,6 +1,8 @@
 import hashlib
+import io
 import json
 import sys
+import tarfile
 import tempfile
 import unittest
 from pathlib import Path
@@ -100,7 +102,8 @@ class BundleGuards(unittest.TestCase):
     def test_exact_offline_source_slice_and_patch(self):
         out = self.root / "source-slice"
         lock = typecheck_source.restore(out)
-        self.assertEqual(len(lock["files"]), 77)
+        self.assertEqual(len(lock["files"]), 78)
+        self.assertTrue((out / "src/translation-layer-next/husk-console-abi.h").is_file())
         before = typecheck_source.swift_sources(out)
         typecheck_source.overlay(out)
         after = typecheck_source.swift_sources(out)
@@ -109,6 +112,27 @@ class BundleGuards(unittest.TestCase):
         self.assertTrue((out / "src/translation-layer/husk-tl.h").is_file())
         with self.assertRaises(ValueError):
             typecheck_source.restore(out)
+
+    def test_missing_transitive_header_rejected_even_with_valid_archive_hashes(self):
+        lock = json.loads((stage_husk.ROOT / "husk/source-check.lock.json").read_text())
+        original = stage_husk.ROOT / "husk" / lock["archive"]
+        fake = self.root / "incomplete-source-package"
+        (fake / "husk").mkdir(parents=True)
+        archive = fake / "husk" / lock["archive"]
+        missing = "src/translation-layer-next/husk-console-abi.h"
+        del lock["files"][missing]
+        with tarfile.open(original) as source, tarfile.open(archive, "w:gz") as target:
+            for member in source:
+                if member.name != missing:
+                    target.addfile(member, io.BytesIO(source.extractfile(member).read()))
+        raw = archive.read_bytes()
+        lock.update(archive_size=len(raw), archive_sha256=hashlib.sha256(raw).hexdigest())
+        (fake / "husk/source-check.lock.json").write_text(json.dumps(lock))
+        out = self.root / "must-not-be-created"
+        with patch.object(typecheck_source, "ROOT", fake):
+            with self.assertRaisesRegex(ValueError, "husk-console-abi.h"):
+                typecheck_source.restore(out)
+        self.assertFalse(out.exists())
 
     def test_changed_overlay_input_rejected(self):
         original = json.loads((stage_husk.ROOT / "husk/overlay.lock.json").read_text())

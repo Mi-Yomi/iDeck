@@ -52,7 +52,14 @@ The first staging run used a sparse checkout; that directory is retained as an
 intermediate, not a complete app source result. The final run used the full
 checkout and the tool now rejects sparse inputs.
 
-## Apple compiler gate (prepared, NOT RUN)
+## Apple compiler gate (first run failed; corrected source archive pending)
+
+The first `ideck-linux-probe-ipa` run used this gate at transport commit e9dfb4b.
+Profile/evidence iOS checks and Mac validator tests passed, but upstream app
+typechecking stopped at a missing `husk-console-abi.h` in the offline archive.
+The archive now includes the original pinned header and validates the bridge's
+literal local-include chain before restoration. The supplied Apple log and a
+real local Clang before/after check are retained in `../evidence/`.
 
 The manual `ideck-linux-guest-profile-check` has a 480-second aggregate budget
 and a 10-minute provider limit. Current free-quota/private-source checks and the
@@ -63,7 +70,7 @@ The worker performs:
 
 1. Real iOS SDK typechecking of profile/evidence code; native Mac validator tests
    against a captured real guest log and negative fixtures.
-2. Integrity-checked restoration of 77 exact upstream Swift/header/license files
+2. Integrity-checked restoration of 78 exact upstream Swift/header/license files
    from `husk119-source-check.tar.gz` into `.work/linux-profile-apple`.
 3. Whole-app Swift typechecking for `arm64-apple-ios16.0`, Swift 5 mode, using
    the real `HuskBridge.h`, app Swift sources, Shared Swift sources and
@@ -79,10 +86,13 @@ is installed. No Swift compiler or Apple SDK check has run on this Windows host.
 
 ## Measured locally
 
-- All 77 upstream files match SHA-256 and their original Git blob IDs.
+- All 78 upstream files match SHA-256 and their original Git blob IDs; the
+  previous 77 files are unchanged.
 - Patch application and the complete independent staged worktree match the lock.
-- Twenty host integrity/staging tests passed. Synthetic fixtures are not device
-  execution. The original C bridge also passed host Clang syntax checking.
+- Thirty-one host tests passed, including rejection of the missing transitive
+  header even with valid archive hashes. Synthetic fixtures are not device
+  execution. Host Clang reproduced the old archive's missing-header failure and
+  passed syntax checking of the corrected staged archive with the same flags.
 - Kernel/initramfs bytes after resource staging matched the previous images.
   A real Windows QEMU run from that bundle passed both full pixel comparisons
   and guest key/pointer checks in 25.125 seconds.

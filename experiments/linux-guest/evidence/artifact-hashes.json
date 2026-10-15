@@ -5,6 +5,11 @@
     "sha256": "3fc8a9e18b37ca5e57d1517ad8abd485726c52f3f197d67341c5aed32618ff6b"
   },
   {
+    "path": "codemagic-ipa-e9dfb4b-user-log.txt",
+    "size": 5277,
+    "sha256": "ccb2237608de3220ce8c353fa3fa6f7e9398a826f2571cb37e884fe0c84e1c4c"
+  },
+  {
     "path": "diagnostic-wip-check.json",
     "size": 274,
     "sha256": "4f42c1b3eb3f3a314a27263db462778b95657e3866c3dbf3d0c10888828b6a10"
@@ -73,6 +78,21 @@
     "path": "repositories.lock.json",
     "size": 13531,
     "sha256": "95909847a74a203b782d1647b556addb51215562ab436f0da6f2731d3605dce0"
+  },
+  {
+    "path": "source-header-clang-check.txt",
+    "size": 1216,
+    "sha256": "a4f92d5653ab951d2a00cb4dba42781337ef0208941630b8ceb9a7156a6523cb"
+  },
+  {
+    "path": "source-header-fix-tests.txt",
+    "size": 4031,
+    "sha256": "1c29984e001cf0c81b30f5e0b726755f476ccf84e0639eb4dc1c0ecccd59393a"
+  },
+  {
+    "path": "source-header-fix.json",
+    "size": 2903,
+    "sha256": "a002846663483e16217819f2b14ef4ad149e3a59912cc44e95c715fef3353714"
   },
   {
     "path": "source-inventory.json",

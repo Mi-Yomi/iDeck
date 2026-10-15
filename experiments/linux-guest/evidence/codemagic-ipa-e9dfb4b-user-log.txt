@@ -1,0 +1,54 @@
+Сборка завершилась failed:
+https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad126603ffd2c7f0ad3b258
+Фактический SHA: e9dfb4b3dcfc68b58da5b6ea389b502e4a17a927 — совпадает.
+Workflow: ideck-linux-probe-ipa.
+Первый упавший шаг: Step 3, Build real native dependencies, link Linux Probe and package IPA. Внутри остановился swift-source-check: отсутствует husk-console-abi.h. До native-сборки и линковки не дошло, IPA не создан. Выполнен ровно один запуск, код не изменён.
+Полный лог шага отправляю следующим сообщением.
+
+
+
+
+
+
+
+
+
+IDECK_BUILD_REQUEST={"status": "accepted", "workflow": "ideck-linux-probe-ipa", "branch": "codex/linux-guest-feasibility-20261015", "checkout_commit": "e9dfb4b3dcfc68b58da5b6ea389b502e4a17a927", "errors": []}
+IDECK_BUILD_STEP=checkout
+IDECK_BUILD_STEP=xcode
+IDECK_BUILD_STEP=swift-source-check
+error: generate-pch command failed with exit code 1 (use -v to see invocation)
+/Users/builder/clone/.work/linux-profile-apple/husk-source-check/src/app/Husk/HuskBridge.h:113:10: note: in file included from /Users/builder/clone/.work/linux-profile-apple/husk-source-check/src/app/Husk/HuskBridge.h:113:
+111 | #include "../../translation-layer/husk-tl.h"
+112 | #include "../../translation-layer-next/husk-tl-unity-app.h"
+113 | #include "../../translation-layer-next/husk-console-host.h"
+    |          `- note: in file included from /Users/builder/clone/.work/linux-profile-apple/husk-source-check/src/app/Husk/HuskBridge.h:113:
+114 |
+115 | #endif /* HUSK_BRIDGE_H */
+1 error generated.
+/Users/builder/clone/.work/linux-profile-apple/husk-source-check/src/app/Husk/../../translation-layer-next/husk-console-host.h:17:10: error: 'husk-console-abi.h' file not found
+15 | #include <stdint.h>
+16 |
+17 | #include "husk-console-abi.h"
+   |          `- error: 'husk-console-abi.h' file not found
+18 |
+19 | #ifdef __cplusplus
+<unknown>:0: error: failed to emit precompiled header '/Users/builder/clone/.work/linux-profile-apple/TemporaryDirectory.fG0aUX/HuskBridge.pch' for bridging header '/Users/builder/clone/.work/linux-profile-apple/husk-source-check/src/app/Husk/HuskBridge.h'
+LINUX_PROFILE_CHECK_RESULT={"status": "failed", "commit": "e9dfb4b3dcfc68b58da5b6ea389b502e4a17a927", "steps": [{"name": "xcode", "exit_code": 0}, {"name": "swift", "exit_code": 0}, {"name": "ios-sdk-path", "exit_code": 0}, {"name": "ios-sdk-version", "exit_code": 0}, {"name": "ios-typecheck", "exit_code": 0}, {"name": "native-syntax", "exit_code": 0}, {"name": "mac-sdk", "exit_code": 0}, {"name": "mac-compile", "exit_code": 0}, {"name": "mac-tests", "exit_code": 0}, {"name": "husk-upstream-typecheck", "exit_code": 1}], "runtime_linked": false, "ipa_created": false, "device_tested": false, "xcode": "Xcode 27.0\nBuild version 27A266a", "swift": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx27.0.0", "ios_sdk": "27.0", "source_sha256": "e97fd87121fe14d71a286bab61ea29889586604d232b82af3e794983123084e1", "input_sha256": {"LinuxGuestProfile.swift": "e97fd87121fe14d71a286bab61ea29889586604d232b82af3e794983123084e1", "LinuxProbeEvidence.swift": "e17ee28c23a8879a6e74dd783f901297d2bcd8d089ad4e515c972b0016f034d4", "LinuxProbeSession.swift": "41012830eda0d37ab75e078f76a57300d554afcfdd9f37b6b490d8286e3231e9", "LinuxProbeView.swift": "f955df2def8592a0882180da7c05a3c4f18fc4bb3c1b7085e6b1070248215930"}, "integrated_husk_typechecked": false, "host_test_output": "LINUX_PROFILE_HOST_CHECKS_PASS (synthetic assets; no QEMU/device execution)\nLINUX_EVIDENCE_HOST_CHECKS_PASS (recorded guest events + synthetic pixel guards)", "husk_source_archive_sha256": "044316e0de837a47c5dd1b765b5f15a939a07030ae8415fdd6add8f6bceb823f", "elapsed_seconds": 10.248}
+Traceback (most recent call last):
+  File "/Users/builder/clone/ci/check_linux_guest_profile.py", line 93, in <module>
+    main()
+  File "/Users/builder/clone/ci/check_linux_guest_profile.py", line 80, in main
+    run("husk-upstream-typecheck", app_command())
+  File "/Users/builder/clone/ci/check_linux_guest_profile.py", line 42, in run
+    raise RuntimeError(label + " failed")
+RuntimeError: husk-upstream-typecheck failed
+LINUX_IPA_BUILD_RESULT={"status": "failed", "ipa_created": false, "device_tested": false, "steam_executed": false, "steps": [{"name": "checkout", "exit_code": 0, "seconds": 0.007}, {"name": "xcode", "exit_code": 0, "seconds": 0.079}, {"name": "swift-source-check", "exit_code": 1, "seconds": 10.339}], "commit": "e9dfb4b3dcfc68b58da5b6ea389b502e4a17a927", "xcode": "Xcode 27.0\nBuild version 27A266a", "failure": "swift-source-check failed; see its log", "elapsed_seconds": 10.428}
+Traceback (most recent call last):
+  File "/Users/builder/clone/ci/build_linux_probe_ipa.py", line 240, in <module>
+    main()
+  File "/Users/builder/clone/ci/build_linux_probe_ipa.py", line 149, in main
+    worker.run("swift-source-check", [sys.executable, "-I", "ci/check_linux_guest_profile.py"])
+  File "/Users/builder/clone/ci/build_linux_probe_ipa.py", line 97, in run
+    raise RuntimeError(name + " failed; see its log")
+RuntimeError: swift-source-check failed; see its log

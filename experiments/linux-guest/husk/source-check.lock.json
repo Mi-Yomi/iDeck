@@ -3,8 +3,8 @@
   "repository": "https://github.com/Leviidev/Husk",
   "commit": "0695248f491cda877f7969d1f0cc89aeede1482e",
   "archive": "husk119-source-check.tar.gz",
-  "archive_sha256": "044316e0de837a47c5dd1b765b5f15a939a07030ae8415fdd6add8f6bceb823f",
-  "archive_size": 340363,
+  "archive_sha256": "4f534374ef02d9de14203705afc58228b859ce978c66707c42e35b3e3b38c0d6",
+  "archive_size": 341837,
   "files": {
     "LICENSE": {
       "size": 17992,
@@ -375,6 +375,11 @@
       "size": 15878,
       "sha256": "4fa127b04ed6dadb778f3b188f6eba8fd2691765f7638128d791512989df222d",
       "git_blob": "7a0e8b897ef3ad6345ef89b159ee53f495e161b9"
+    },
+    "src/translation-layer-next/husk-console-abi.h": {
+      "size": 4792,
+      "sha256": "a90f0a62da7e62a572119acd087d560481df6d529a1ce82f6f299c732efecfae",
+      "git_blob": "18221e15875818efc166d37513fadea61dc37e57"
     },
     "src/translation-layer-next/husk-console-host.h": {
       "size": 2352,

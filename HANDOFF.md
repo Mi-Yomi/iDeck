@@ -1,5 +1,44 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Исправление неполного Swift source archive — 2026-10-16
+
+Пользователь передал полный вывод build `6ad126603ffd2c7f0ad3b258`:
+`ideck-linux-probe-ipa`, правильная ветка и SHA
+`e9dfb4b3dcfc68b58da5b6ea389b502e4a17a927`. Guard принял запрос. Xcode 27.0
+(27A266a), iOS SDK 27.0: profile/evidence typecheck, native syntax и Mac validator
+tests прошли; `husk-upstream-typecheck` упал при создании PCH из-за отсутствующего
+`husk-console-abi.h`. Native libraries, linker и упаковка IPA не запускались.
+Источник этих Apple-результатов — переданный пользователем лог, сохранённый в
+`experiments/linux-guest/evidence/codemagic-ipa-e9dfb4b-user-log.txt`.
+
+Причина — неполный подготовленный нами offline source slice: включили
+`husk-console-host.h`, но пропустили его локальный include `husk-console-abi.h`.
+В архив добавлен **оригинальный** файл из того же Husk commit
+`0695248f491cda877f7969d1f0cc89aeede1482e` (blob
+`18221e15875818efc166d37513fadea61dc37e57`); прежние 77 файлов byte-identical.
+Теперь в архиве 78 файлов. Обновлены archive/overlay locks. Restore проверяет
+цепочку всех literal quoted includes из HuskBridge.h до записи файлов на диск.
+Это проверка комплектности; Apple compiler gate сохранён полностью.
+
+Проверки исправления: **31 host tests PASS**; новый regression воспроизводит
+неполный пакет с корректными хешами и проверяет отказ. Реальный Windows Clang
+20.1.3 на старом source slice повторил `husk-console-abi.h file not found`
+(exit 1), на исправленном slice с overlay прошёл `-fsyntax-only -x c -Wall
+-Wextra -Werror` (exit 0). Системный компилятор использован без установки;
+все новые файлы и временные каталоги на E. Распаковка source slice и применение
+overlay проверены.
+Протокол и хеши — `experiments/linux-guest/evidence/source-header-fix.json`.
+Старый `ipa-build-preparation.json` остаётся историческим отчётом предыдущего SHA.
+
+Повтор Apple-сборки здесь **не запускался**. Новый полный SHA после push нужно
+указать в том же `ideck-linux-probe-ipa`, на той же Linux-ветке. Не повторять
+старый e9dfb4b. Остальные inputs и требование свежей проверки 120 бесплатных
+macOS минут/отключённой оплаты не изменены. IPA пока нет; Apple Swift success,
+native link, device execution и Steam не заявлены.
+
+Ниже сохранены предыдущие этапы; их «NOT RUN» и 77 файлов относятся к состоянию
+до этого запуска и исправления.
+
 ## Исправление Codemagic и отдельный IPA workflow — 2026-10-16
 
 Работа остаётся на `codex/linux-guest-feasibility-20261015` в `E:\Freddy Fazbear\iDeck`.

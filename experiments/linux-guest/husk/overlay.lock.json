@@ -11,9 +11,9 @@
     "tools/stage_husk.py": "8ee9d7b363b900429923a74d3f4f4918800ac348b65baaa9d36af942b9e4d305",
     "husk/patches/series": "f8aaddc8d6862e03d676780d18d2a7ff46aa6e1c3721ebaf0a336c92e03e4233",
     "husk/patches/0001-isolated-linux-probe-route.patch": "d037311ec48784fa03c3191cbb19c60b9c811c8f01c7e119dbebaca054d2c8cf",
-    "tools/typecheck_source.py": "2c65cbb1c477c08a44d20e5490205cb1f6fed52a6c66eac251b5e681708dd6f6",
-    "husk/source-check.lock.json": "b6db59046812aa6767cf8b394880fc398edc1951d10f185857bd7691911de1b9",
-    "husk/husk119-source-check.tar.gz": "044316e0de837a47c5dd1b765b5f15a939a07030ae8415fdd6add8f6bceb823f"
+    "tools/typecheck_source.py": "5a5418cb654db1ae704142b8e75a99870fb01cb1bfa72e9469f98ddda1e3d360",
+    "husk/source-check.lock.json": "44db4e8620229cd07dbf302312eda0ff86d358284d0ebe9b96b89ca85fe2457d",
+    "husk/husk119-source-check.tar.gz": "4f534374ef02d9de14203705afc58228b859ce978c66707c42e35b3e3b38c0d6"
   },
   "copies": {
     "ios/LinuxGuestProfile.swift": "src/app/Husk/LinuxGuestProfile.swift",

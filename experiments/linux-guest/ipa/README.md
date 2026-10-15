@@ -1,8 +1,11 @@
 # iDeck Linux Probe IPA build
 
 The `ideck-linux-probe-ipa` Codemagic workflow is a **native source build recipe**.
-It has not yet run on Apple hardware. A committed recipe and passing host tests
-are not a built IPA, a linker result or device acceptance.
+Its first Apple run at e9dfb4b stopped in the Swift source gate because the offline
+Husk archive missed `husk-console-abi.h`. The original pinned header is now
+included, with a local-include completeness check and a regression test. The
+corrected revision has not run on Apple hardware yet; native builds/linking were
+not reached and there is no IPA. See `../evidence/source-header-fix.json`.
 
 Select branch `codex/linux-guest-feasibility-20261015` **before** selecting the
 workflow. Set `expected_commit` to the full current pushed SHA. `main` deliberately
@@ -76,10 +79,13 @@ downloaded old Husk109 IPA is substituted for Husk119 output.
 
 ## Local checks performed
 
-Thirty host tests passed, including wrong branch/SHA/default-input rejection,
+Thirty-one host tests passed, including wrong branch/SHA/default-input rejection,
 real guest archive restoration, source staging, simulator/incorrect app identity
-rejection and a real nonzero child-process failure. They do not execute Xcode.
+rejection, a real nonzero child-process failure and rejection of the missing
+transitive header with valid package hashes. Host Clang reproduced the exact
+old-archive error and passed the corrected archive. These do not execute Xcode.
 The canonical Git version of the patched shell script passes `bash -n`.
 The 15 existing workflows preserve their original execution bodies after the
 new request guard; YAML defaults no longer resolve omitted required inputs to
-empty environment strings. Codemagic's server-side validation is still pending.
+empty environment strings. The first Apple run passed YAML/request validation;
+the remaining Swift/native build results are still pending the corrected run.

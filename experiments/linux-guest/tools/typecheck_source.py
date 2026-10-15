@@ -6,10 +6,38 @@ remain external build prerequisites. Every included file is pinned upstream.
 """
 import hashlib
 import json
+import posixpath
+import re
 import subprocess
 import tarfile
 from pathlib import Path
 from stage_husk import ROOT, PIN, load_overlay, local_path
+
+
+def validate_bridge_headers(files):
+    """Check the pinned bridge's literal quoted includes without an Apple SDK.
+
+    This is a source-package completeness check, not a C preprocessor/typecheck.
+    System includes still belong to the real compiler and SDK. Check every
+    literal local include, including those inside conditional compilation.
+    """
+    pending = ["src/app/Husk/HuskBridge.h"]
+    visited = set()
+    while pending:
+        name = pending.pop()
+        if name in visited:
+            continue
+        if name not in files:
+            raise ValueError("missing bridge header: " + name)
+        visited.add(name)
+        source = files[name].decode("utf-8")
+        source = re.sub(r"/\*.*?\*/|//[^\n]*", "", source, flags=re.DOTALL)
+        for include in re.findall(r'^\s*#\s*(?:include|import)\s*"([^"\n]+)"', source, re.MULTILINE):
+            dependency = posixpath.normpath(posixpath.join(posixpath.dirname(name), include))
+            if dependency not in files:
+                raise ValueError(f"incomplete bridge headers: {name} requires {dependency}")
+            pending.append(dependency)
+    return sorted(visited)
 
 
 def restore(output):
@@ -38,6 +66,7 @@ def restore(output):
             files[entry.name] = data
     if set(files) != set(lock["files"]):
         raise ValueError("incomplete source slice")
+    validate_bridge_headers(files)
     output.mkdir(parents=True, exist_ok=False)
     for name, data in files.items():
         target = output / name

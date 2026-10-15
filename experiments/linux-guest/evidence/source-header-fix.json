@@ -1,0 +1,67 @@
+{
+  "status": "source_header_packaging_fixed_host_verified_apple_rerun_pending",
+  "date": "2026-10-16",
+  "failed_build": {
+    "url": "https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad126603ffd2c7f0ad3b258",
+    "workflow": "ideck-linux-probe-ipa",
+    "commit": "e9dfb4b3dcfc68b58da5b6ea389b502e4a17a927",
+    "evidence_source": "user-provided full step log, not fetched directly",
+    "original_attachment_sha256": "fa46d7fe34e7f77a354ef7520fedd421703f74deab7265031dee6775c8503d94",
+    "stage": "swift-source-check / husk-upstream-typecheck",
+    "diagnostic": "husk-console-abi.h file not found while creating HuskBridge.h PCH",
+    "xcode": "27.0 (27A266a)",
+    "ios_sdk": "27.0",
+    "profile_evidence_ios_typecheck": true,
+    "native_swift_syntax": true,
+    "mac_validator_tests": true,
+    "upstream_husk_typechecked": false,
+    "native_library_build_reached": false
+  },
+  "upstream_commit": "0695248f491cda877f7969d1f0cc89aeede1482e",
+  "original_77_files_unchanged": true,
+  "source_file_count": 78,
+  "all_git_blobs_match_pinned_upstream": true,
+  "added_header": {
+    "path": "src/translation-layer-next/husk-console-abi.h",
+    "size": 4792,
+    "sha256": "a90f0a62da7e62a572119acd087d560481df6d529a1ce82f6f299c732efecfae",
+    "git_blob": "18221e15875818efc166d37513fadea61dc37e57"
+  },
+  "bridge_local_header_closure": [
+    "src/app/Husk/HuskBridge.h",
+    "src/app/Husk/HuskRPPairing.h",
+    "src/translation-layer-next/husk-console-abi.h",
+    "src/translation-layer-next/husk-console-host.h",
+    "src/translation-layer-next/husk-tl-unity-app.h",
+    "src/translation-layer/husk-tl.h"
+  ],
+  "host_tests_passed": 31,
+  "regression": "Valid-hash archive missing the transitive header rejected before output creation",
+  "host_clang": {
+    "version": "20.1.3",
+    "target": "i686-w64-windows-gnu",
+    "flags": [
+      "-fsyntax-only",
+      "-x",
+      "c",
+      "-Wall",
+      "-Wextra",
+      "-Werror"
+    ],
+    "old_archive_exit_code": 1,
+    "corrected_staged_archive_exit_code": 0,
+    "scope": "Real host C header compilation; not Apple SDK/Swift or runtime linking"
+  },
+  "apple_rerun_performed": false,
+  "runtime_linked": false,
+  "ipa_created": false,
+  "device_tested": false,
+  "steam_executed": false,
+  "hashes": {
+    "experiments/linux-guest/husk/source-check.lock.json": "44db4e8620229cd07dbf302312eda0ff86d358284d0ebe9b96b89ca85fe2457d",
+    "experiments/linux-guest/husk/husk119-source-check.tar.gz": "4f534374ef02d9de14203705afc58228b859ce978c66707c42e35b3e3b38c0d6",
+    "experiments/linux-guest/husk/overlay.lock.json": "b70bc4bfe6ad22b053d5392603ec93fe5176726a851ad5236080cc050e5afeb8",
+    "experiments/linux-guest/tools/typecheck_source.py": "5a5418cb654db1ae704142b8e75a99870fb01cb1bfa72e9469f98ddda1e3d360",
+    "experiments/linux-guest/tests/test_staging.py": "73aa2e8b205b88fc2f2aa106bcd3e5985db60a42a1333d0435798b015157a338"
+  }
+}

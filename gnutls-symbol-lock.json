@@ -1,0 +1,2967 @@
+{
+  "schema": 1,
+  "status": "source-reviewed; all target compile/link/runtime validation pending",
+  "madeira": "279fd0f83170425db002fe25d6bd62f6355f497d",
+  "wine": "9129e9684daaeae70da9435e7c6060e59392634e",
+  "gnutls": {
+    "version": "3.8.9",
+    "source_tarball_sha256": "69e113d802d1670c4d5ac1b99040b1f2d5c7c05daec5003813c049b5184820ed"
+  },
+  "producer_headers": {
+    "zip_sha256": "7049a985768cf3bcd100c0fea2fcbdb2cd28d8cf3087a63b24936f023055ebc2",
+    "config_sha256": "22332cb47937d006792e911322c2978a953d25fb5c883837c952b05e7e4077e4",
+    "header_manifest_entries_verified": 356,
+    "recipe_sha256": "c31e77940f4ed7ce45b9bcda507aa30ac3cc0e8cff413e494400233930287f03",
+    "wrapper_sha256": "9a7107f2bac23755450b77784d2c15b2ab404e662b5674c98e40a6b28046e2d7"
+  },
+  "feature_macros": {
+    "HAVE_GNUTLS_CIPHER_INIT": {
+      "input": "undefined",
+      "config_line": 98,
+      "required_by": [
+        "bcrypt"
+      ]
+    },
+    "SONAME_LIBGNUTLS": {
+      "input": "undefined",
+      "config_line": 767,
+      "required_by": [
+        "bcrypt",
+        "schannel",
+        "crypt32"
+      ]
+    }
+  },
+  "source_sha256s": {
+    "bcrypt": {
+      "path": "dlls/bcrypt/gnutls.c",
+      "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+      "sha256": "8ca6b05d1f5882cc66bad4a5559cdc03315182aa56b754939b86375696f8d6fd"
+    },
+    "schannel": {
+      "path": "dlls/secur32/schannel_gnutls.c",
+      "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+      "sha256": "996197b9d9f1f98ca6687fa4ba1ca754e4942f94cf000c354ae45aad84f335a4"
+    },
+    "crypt32": {
+      "path": "build/crypto-unix/crypt32_unixlib_ios.c",
+      "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+      "sha256": "d56fff221b03fd8257e0e34b6c72edc45e43b225d819147eecf2cea4b53606f2"
+    }
+  },
+  "counts": {
+    "total": 106,
+    "unique_wine_required": 69,
+    "unique_wine_optional": 37,
+    "per_translation_unit": {
+      "bcrypt": {
+        "required": 20,
+        "optional": 30
+      },
+      "schannel": {
+        "required": 40,
+        "optional": 8
+      },
+      "crypt32": {
+        "required": 25,
+        "optional": 0
+      }
+    }
+  },
+  "direct_dlsym_classification": "All eight direct schannel lookups at lines1541-1576 are optional: each missing symbol assigns an existing compat fallback. This source-reviewed classification is distinct from the stricter all106 control gate.",
+  "tracked_symtab": {
+    "sha256": "c63e089ce0d43619257601218cfff60db0ed91bda784755e8d976bffe64bb428",
+    "symbols": 106,
+    "matches_current_wanted_set": true,
+    "proves_built_iOS_exports": false
+  },
+  "symbols": [
+    {
+      "symbol": "gnutls_alert_get",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1499,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1327,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 29
+      }
+    },
+    {
+      "symbol": "gnutls_alert_get_name",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1500,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1331,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 30
+      }
+    },
+    {
+      "symbol": "gnutls_alert_send",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1501,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1328,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 31
+      }
+    },
+    {
+      "symbol": "gnutls_alpn_get_selected_protocol",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1556,
+          "wine_requirement": "optional_direct_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1773,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 839
+      }
+    },
+    {
+      "symbol": "gnutls_alpn_set_protocols",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1551,
+          "wine_requirement": "optional_direct_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1775,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 840
+      }
+    },
+    {
+      "symbol": "gnutls_certificate_allocate_credentials",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1502,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 2072,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 46
+      }
+    },
+    {
+      "symbol": "gnutls_certificate_free_credentials",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1503,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 2071,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 51
+      }
+    },
+    {
+      "symbol": "gnutls_certificate_get_peers",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1504,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 2795,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 55
+      }
+    },
+    {
+      "symbol": "gnutls_certificate_set_x509_key",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1505,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 2180,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 72
+      }
+    },
+    {
+      "symbol": "gnutls_cipher_add_auth",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 428,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/crypto.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/crypto.h",
+          "line": 70,
+          "header_source_sha256": "7ff7c90b487905003c06353dcd41953a52c1dd8d7e85b9178785ed13ce422308"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 619
+      }
+    },
+    {
+      "symbol": "gnutls_cipher_decrypt2",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 398,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/crypto.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/crypto.h",
+          "line": 41,
+          "header_source_sha256": "7ff7c90b487905003c06353dcd41953a52c1dd8d7e85b9178785ed13ce422308"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 596
+      }
+    },
+    {
+      "symbol": "gnutls_cipher_deinit",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 399,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/crypto.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/crypto.h",
+          "line": 73,
+          "header_source_sha256": "7ff7c90b487905003c06353dcd41953a52c1dd8d7e85b9178785ed13ce422308"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 517
+      }
+    },
+    {
+      "symbol": "gnutls_cipher_encrypt2",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 400,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/crypto.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/crypto.h",
+          "line": 43,
+          "header_source_sha256": "7ff7c90b487905003c06353dcd41953a52c1dd8d7e85b9178785ed13ce422308"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 595
+      }
+    },
+    {
+      "symbol": "gnutls_cipher_get",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1506,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1355,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 85
+      }
+    },
+    {
+      "symbol": "gnutls_cipher_get_block_size",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1541,
+          "wine_requirement": "optional_direct_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/crypto.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/crypto.h",
+          "line": 74,
+          "header_source_sha256": "7ff7c90b487905003c06353dcd41953a52c1dd8d7e85b9178785ed13ce422308"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 518
+      }
+    },
+    {
+      "symbol": "gnutls_cipher_get_key_size",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1507,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1402,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 87
+      }
+    },
+    {
+      "symbol": "gnutls_cipher_init",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 401,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/crypto.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/crypto.h",
+          "line": 34,
+          "header_source_sha256": "7ff7c90b487905003c06353dcd41953a52c1dd8d7e85b9178785ed13ce422308"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 514
+      }
+    },
+    {
+      "symbol": "gnutls_cipher_tag",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 427,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/crypto.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/crypto.h",
+          "line": 69,
+          "header_source_sha256": "7ff7c90b487905003c06353dcd41953a52c1dd8d7e85b9178785ed13ce422308"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 618
+      }
+    },
+    {
+      "symbol": "gnutls_credentials_set",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1508,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 2009,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 97
+      }
+    },
+    {
+      "symbol": "gnutls_decode_rs_value",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 429,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/crypto.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/crypto.h",
+          "line": 291,
+          "header_source_sha256": "7ff7c90b487905003c06353dcd41953a52c1dd8d7e85b9178785ed13ce422308"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 1161
+      }
+    },
+    {
+      "symbol": "gnutls_deinit",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1509,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1310,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        },
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1311,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 106
+      }
+    },
+    {
+      "symbol": "gnutls_dh_params_deinit",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 402,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 2341,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 113
+      }
+    },
+    {
+      "symbol": "gnutls_dh_params_export_raw",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 403,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 2366,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 115
+      }
+    },
+    {
+      "symbol": "gnutls_dh_params_import_raw",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 404,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 2342,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 118
+      }
+    },
+    {
+      "symbol": "gnutls_dh_params_init",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 405,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 2340,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 119
+      }
+    },
+    {
+      "symbol": "gnutls_dtls_set_mtu",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1561,
+          "wine_requirement": "optional_direct_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/dtls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/dtls.h",
+          "line": 45,
+          "header_source_sha256": "e2ce062cf599dc13d9be1907d2908294065fd75bcf819dae5ad8456da9f98758"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 623
+      }
+    },
+    {
+      "symbol": "gnutls_dtls_set_timeouts",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1566,
+          "wine_requirement": "optional_direct_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/dtls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/dtls.h",
+          "line": 38,
+          "header_source_sha256": "e2ce062cf599dc13d9be1907d2908294065fd75bcf819dae5ad8456da9f98758"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 620
+      }
+    },
+    {
+      "symbol": "gnutls_global_deinit",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 406,
+          "wine_requirement": "required"
+        },
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1510,
+          "wine_requirement": "required"
+        },
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 121,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 2264,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 125
+      }
+    },
+    {
+      "symbol": "gnutls_global_init",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 407,
+          "wine_requirement": "required"
+        },
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1511,
+          "wine_requirement": "required"
+        },
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 122,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 2263,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 126
+      }
+    },
+    {
+      "symbol": "gnutls_global_set_log_function",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 408,
+          "wine_requirement": "required"
+        },
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1512,
+          "wine_requirement": "required"
+        },
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 123,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 2315,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 127
+      }
+    },
+    {
+      "symbol": "gnutls_global_set_log_level",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 409,
+          "wine_requirement": "required"
+        },
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1513,
+          "wine_requirement": "required"
+        },
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 124,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 2317,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 128
+      }
+    },
+    {
+      "symbol": "gnutls_handshake",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1514,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1315,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 130
+      }
+    },
+    {
+      "symbol": "gnutls_init",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1515,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1309,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 139
+      }
+    },
+    {
+      "symbol": "gnutls_kx_get",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1516,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1357,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 140
+      }
+    },
+    {
+      "symbol": "gnutls_mac_get",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1517,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1358,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 144
+      }
+    },
+    {
+      "symbol": "gnutls_mac_get_key_size",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1518,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1405,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 146
+      }
+    },
+    {
+      "symbol": "gnutls_perror",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 410,
+          "wine_requirement": "required"
+        },
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1519,
+          "wine_requirement": "required"
+        },
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 125,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1492,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 218
+      }
+    },
+    {
+      "symbol": "gnutls_pk_to_sign",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 430,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1423,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 725
+      }
+    },
+    {
+      "symbol": "gnutls_pkcs12_bag_decrypt",
+      "uses": [
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 126,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/pkcs12.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/pkcs12.h",
+          "line": 65,
+          "header_source_sha256": "726d1dadab84994043bc50c792f1764a306866885952ab070a815c45e8ded0e1"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 223
+      }
+    },
+    {
+      "symbol": "gnutls_pkcs12_bag_deinit",
+      "uses": [
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 127,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/pkcs12.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/pkcs12.h",
+          "line": 128,
+          "header_source_sha256": "726d1dadab84994043bc50c792f1764a306866885952ab070a815c45e8ded0e1"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 224
+      }
+    },
+    {
+      "symbol": "gnutls_pkcs12_bag_get_count",
+      "uses": [
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 128,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/pkcs12.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/pkcs12.h",
+          "line": 129,
+          "header_source_sha256": "726d1dadab84994043bc50c792f1764a306866885952ab070a815c45e8ded0e1"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 226
+      }
+    },
+    {
+      "symbol": "gnutls_pkcs12_bag_get_data",
+      "uses": [
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 129,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/pkcs12.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/pkcs12.h",
+          "line": 115,
+          "header_source_sha256": "726d1dadab84994043bc50c792f1764a306866885952ab070a815c45e8ded0e1"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 227
+      }
+    },
+    {
+      "symbol": "gnutls_pkcs12_bag_get_type",
+      "uses": [
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 130,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/pkcs12.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/pkcs12.h",
+          "line": 114,
+          "header_source_sha256": "726d1dadab84994043bc50c792f1764a306866885952ab070a815c45e8ded0e1"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 230
+      }
+    },
+    {
+      "symbol": "gnutls_pkcs12_bag_init",
+      "uses": [
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 131,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/pkcs12.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/pkcs12.h",
+          "line": 127,
+          "header_source_sha256": "726d1dadab84994043bc50c792f1764a306866885952ab070a815c45e8ded0e1"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 231
+      }
+    },
+    {
+      "symbol": "gnutls_pkcs12_deinit",
+      "uses": [
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 132,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/pkcs12.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/pkcs12.h",
+          "line": 41,
+          "header_source_sha256": "726d1dadab84994043bc50c792f1764a306866885952ab070a815c45e8ded0e1"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 237
+      }
+    },
+    {
+      "symbol": "gnutls_pkcs12_get_bag",
+      "uses": [
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 133,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/pkcs12.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/pkcs12.h",
+          "line": 49,
+          "header_source_sha256": "726d1dadab84994043bc50c792f1764a306866885952ab070a815c45e8ded0e1"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 240
+      }
+    },
+    {
+      "symbol": "gnutls_pkcs12_import",
+      "uses": [
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 134,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/pkcs12.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/pkcs12.h",
+          "line": 42,
+          "header_source_sha256": "726d1dadab84994043bc50c792f1764a306866885952ab070a815c45e8ded0e1"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 241
+      }
+    },
+    {
+      "symbol": "gnutls_pkcs12_init",
+      "uses": [
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 135,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/pkcs12.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/pkcs12.h",
+          "line": 40,
+          "header_source_sha256": "726d1dadab84994043bc50c792f1764a306866885952ab070a815c45e8ded0e1"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 242
+      }
+    },
+    {
+      "symbol": "gnutls_pkcs12_verify_mac",
+      "uses": [
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 136,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/pkcs12.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/pkcs12.h",
+          "line": 63,
+          "header_source_sha256": "726d1dadab84994043bc50c792f1764a306866885952ab070a815c45e8ded0e1"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 244
+      }
+    },
+    {
+      "symbol": "gnutls_priority_set_direct",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1521,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1798,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 264
+      }
+    },
+    {
+      "symbol": "gnutls_privkey_decrypt_data",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 431,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 495,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 565
+      }
+    },
+    {
+      "symbol": "gnutls_privkey_deinit",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 411,
+          "wine_requirement": "required"
+        },
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1522,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 285,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 559
+      }
+    },
+    {
+      "symbol": "gnutls_privkey_derive_secret",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 432,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 544,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 1430
+      }
+    },
+    {
+      "symbol": "gnutls_privkey_export_dh_raw",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 433,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 525,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 1428
+      }
+    },
+    {
+      "symbol": "gnutls_privkey_export_dsa_raw",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 434,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 516,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 876
+      }
+    },
+    {
+      "symbol": "gnutls_privkey_export_ecc_raw",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 435,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 529,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 875
+      }
+    },
+    {
+      "symbol": "gnutls_privkey_export_rsa_raw",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 436,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 504,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 877
+      }
+    },
+    {
+      "symbol": "gnutls_privkey_export_x509",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1571,
+          "wine_requirement": "optional_direct_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 373,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 868
+      }
+    },
+    {
+      "symbol": "gnutls_privkey_generate2",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 437,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 297,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 1068
+      }
+    },
+    {
+      "symbol": "gnutls_privkey_import_dh_raw",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 438,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 446,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 1426
+      }
+    },
+    {
+      "symbol": "gnutls_privkey_import_dsa_raw",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 412,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 440,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 879
+      }
+    },
+    {
+      "symbol": "gnutls_privkey_import_ecc_raw",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 439,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 456,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 880
+      }
+    },
+    {
+      "symbol": "gnutls_privkey_import_rsa_raw",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 440,
+          "wine_requirement": "optional_macro_fallback"
+        },
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1576,
+          "wine_requirement": "optional_direct_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 451,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 878
+      }
+    },
+    {
+      "symbol": "gnutls_privkey_init",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 413,
+          "wine_requirement": "required"
+        },
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1523,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 284,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 558
+      }
+    },
+    {
+      "symbol": "gnutls_privkey_set_spki",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 441,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 302,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 1175
+      }
+    },
+    {
+      "symbol": "gnutls_privkey_sign_hash",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 414,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 481,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        },
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 484,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 604
+      }
+    },
+    {
+      "symbol": "gnutls_protocol_get_version",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1520,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1838,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 267
+      }
+    },
+    {
+      "symbol": "gnutls_pubkey_deinit",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 415,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 125,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 571
+      }
+    },
+    {
+      "symbol": "gnutls_pubkey_encrypt_data",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 442,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 264,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 697
+      }
+    },
+    {
+      "symbol": "gnutls_pubkey_export_dh_raw",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 443,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 193,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 1427
+      }
+    },
+    {
+      "symbol": "gnutls_pubkey_export_dsa_raw",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 444,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 185,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 883
+      }
+    },
+    {
+      "symbol": "gnutls_pubkey_export_ecc_raw",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 445,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 208,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 882
+      }
+    },
+    {
+      "symbol": "gnutls_pubkey_export_rsa_raw",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 446,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 178,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 884
+      }
+    },
+    {
+      "symbol": "gnutls_pubkey_import_dh_raw",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 447,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 244,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 1425
+      }
+    },
+    {
+      "symbol": "gnutls_pubkey_import_dsa_raw",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 448,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 240,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 579
+      }
+    },
+    {
+      "symbol": "gnutls_pubkey_import_ecc_raw",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 449,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 254,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 653
+      }
+    },
+    {
+      "symbol": "gnutls_pubkey_import_privkey",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 416,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 159,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 606
+      }
+    },
+    {
+      "symbol": "gnutls_pubkey_import_rsa_raw",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 450,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 247,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 580
+      }
+    },
+    {
+      "symbol": "gnutls_pubkey_init",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 417,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 124,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 570
+      }
+    },
+    {
+      "symbol": "gnutls_pubkey_set_spki",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 451,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 134,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 1173
+      }
+    },
+    {
+      "symbol": "gnutls_pubkey_verify_hash2",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 452,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/abstract.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/abstract.h",
+          "line": 272,
+          "header_source_sha256": "3854e085de5fe83991173648c3d114f238d05483a4b4d38c688a1bd7fb9828c0"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 724
+      }
+    },
+    {
+      "symbol": "gnutls_record_get_max_size",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1524,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1581,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 287
+      }
+    },
+    {
+      "symbol": "gnutls_record_recv",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1525,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1549,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 288
+      }
+    },
+    {
+      "symbol": "gnutls_record_send",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1526,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1540,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 289
+      }
+    },
+    {
+      "symbol": "gnutls_server_name_set",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1527,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1622,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 294
+      }
+    },
+    {
+      "symbol": "gnutls_session_channel_binding",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1528,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1925,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 599
+      }
+    },
+    {
+      "symbol": "gnutls_set_default_priority",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1529,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 1824,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 303
+      }
+    },
+    {
+      "symbol": "gnutls_transport_get_ptr",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1530,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 2408,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 333
+      }
+    },
+    {
+      "symbol": "gnutls_transport_set_errno",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1531,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 2426,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 334
+      }
+    },
+    {
+      "symbol": "gnutls_transport_set_ptr",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1532,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 2402,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 336
+      }
+    },
+    {
+      "symbol": "gnutls_transport_set_pull_function",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1533,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 2417,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 337
+      }
+    },
+    {
+      "symbol": "gnutls_transport_set_pull_timeout_function",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1546,
+          "wine_requirement": "optional_direct_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 2420,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 621
+      }
+    },
+    {
+      "symbol": "gnutls_transport_set_push_function",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1534,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/gnutls.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/gnutls.h.in",
+          "line": 2415,
+          "header_source_sha256": "06772d56008d0d1b8105b2683ded208da1dd48bd1a328b2c6bca4dc01d88fdee"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 338
+      }
+    },
+    {
+      "symbol": "gnutls_x509_crt_deinit",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1535,
+          "wine_requirement": "required"
+        },
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 137,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/x509.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/x509.h",
+          "line": 134,
+          "header_source_sha256": "472bd24f5d03715bc6d52852112bcafdcee06ed1c0ffc72aa2f0da292b9dfb5a"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 386
+      }
+    },
+    {
+      "symbol": "gnutls_x509_crt_export",
+      "uses": [
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 138,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/x509.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/x509.h",
+          "line": 176,
+          "header_source_sha256": "472bd24f5d03715bc6d52852112bcafdcee06ed1c0ffc72aa2f0da292b9dfb5a"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 387
+      }
+    },
+    {
+      "symbol": "gnutls_x509_crt_import",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1536,
+          "wine_requirement": "required"
+        },
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 139,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/x509.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/x509.h",
+          "line": 154,
+          "header_source_sha256": "472bd24f5d03715bc6d52852112bcafdcee06ed1c0ffc72aa2f0da292b9dfb5a"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 426
+      }
+    },
+    {
+      "symbol": "gnutls_x509_crt_init",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1537,
+          "wine_requirement": "required"
+        },
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 140,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/x509.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/x509.h",
+          "line": 133,
+          "header_source_sha256": "472bd24f5d03715bc6d52852112bcafdcee06ed1c0ffc72aa2f0da292b9dfb5a"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 427
+      }
+    },
+    {
+      "symbol": "gnutls_x509_privkey_deinit",
+      "uses": [
+        {
+          "translation_unit": "schannel",
+          "source": "dlls/secur32/schannel_gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 1538,
+          "wine_requirement": "required"
+        },
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 141,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/x509.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/x509.h",
+          "line": 1063,
+          "header_source_sha256": "472bd24f5d03715bc6d52852112bcafdcee06ed1c0ffc72aa2f0da292b9dfb5a"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 462
+      }
+    },
+    {
+      "symbol": "gnutls_x509_privkey_export_rsa_raw2",
+      "uses": [
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 142,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/x509.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/x509.h",
+          "line": 1209,
+          "header_source_sha256": "472bd24f5d03715bc6d52852112bcafdcee06ed1c0ffc72aa2f0da292b9dfb5a"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 585
+      }
+    },
+    {
+      "symbol": "gnutls_x509_privkey_get_pk_algorithm2",
+      "uses": [
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 143,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/x509.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/x509.h",
+          "line": 1137,
+          "header_source_sha256": "472bd24f5d03715bc6d52852112bcafdcee06ed1c0ffc72aa2f0da292b9dfb5a"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 765
+      }
+    },
+    {
+      "symbol": "gnutls_x509_privkey_import_pkcs8",
+      "uses": [
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 144,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/x509.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/x509.h",
+          "line": 1075,
+          "header_source_sha256": "472bd24f5d03715bc6d52852112bcafdcee06ed1c0ffc72aa2f0da292b9dfb5a"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 473
+      }
+    },
+    {
+      "symbol": "gnutls_x509_privkey_init",
+      "uses": [
+        {
+          "translation_unit": "crypt32",
+          "source": "build/crypto-unix/crypt32_unixlib_ios.c",
+          "commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+          "line": 145,
+          "wine_requirement": "required"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "required",
+      "declarations": [
+        {
+          "installed_header": "gnutls/x509.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/x509.h",
+          "line": 1062,
+          "header_source_sha256": "472bd24f5d03715bc6d52852112bcafdcee06ed1c0ffc72aa2f0da292b9dfb5a"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 475
+      }
+    },
+    {
+      "symbol": "gnutls_x509_spki_deinit",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 453,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/x509.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/x509.h",
+          "line": 403,
+          "header_source_sha256": "472bd24f5d03715bc6d52852112bcafdcee06ed1c0ffc72aa2f0da292b9dfb5a"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 1164
+      }
+    },
+    {
+      "symbol": "gnutls_x509_spki_init",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 454,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/x509.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/x509.h",
+          "line": 402,
+          "header_source_sha256": "472bd24f5d03715bc6d52852112bcafdcee06ed1c0ffc72aa2f0da292b9dfb5a"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 1163
+      }
+    },
+    {
+      "symbol": "gnutls_x509_spki_set_rsa_oaep_params",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 455,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/x509.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/x509.h",
+          "line": 413,
+          "header_source_sha256": "472bd24f5d03715bc6d52852112bcafdcee06ed1c0ffc72aa2f0da292b9dfb5a"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 1439
+      }
+    },
+    {
+      "symbol": "gnutls_x509_spki_set_rsa_pss_params",
+      "uses": [
+        {
+          "translation_unit": "bcrypt",
+          "source": "dlls/bcrypt/gnutls.c",
+          "commit": "9129e9684daaeae70da9435e7c6060e59392634e",
+          "line": 456,
+          "wine_requirement": "optional_macro_fallback"
+        }
+      ],
+      "control_requirement": "required_all_106",
+      "wine_requirement": "optional_with_existing_fallback",
+      "declarations": [
+        {
+          "installed_header": "gnutls/x509.h",
+          "source": "gnutls-3.8.9/lib/includes/gnutls/x509.h",
+          "line": 409,
+          "header_source_sha256": "472bd24f5d03715bc6d52852112bcafdcee06ed1c0ffc72aa2f0da292b9dfb5a"
+        }
+      ],
+      "export_map": {
+        "source": "gnutls-3.8.9/lib/libgnutls.map",
+        "line": 1166
+      }
+    }
+  ]
+}

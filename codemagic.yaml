@@ -250,3 +250,46 @@ workflows:
       - .work/ffmpeg-control-artifacts/ffmpeg-evidence.zip
       - .work/ffmpeg-control-artifacts/ffmpeg-ios-prefix.zip
 # Manual only, no cache/triggers/install/signing/publication. Four build jobs.
+
+  ideck-crypto-ios-control:
+    name: iDeck pinned iOS crypto prefix and typed API link proof
+    instance_type: mac_mini_m2
+    max_build_duration: 25
+    inputs:
+      expected_crypto_inputs_sha256:
+        description: Exact reviewed ci/crypto-inputs-lock.json SHA256
+        type: string
+      free_quota_verified:
+        description: Free macOS quota and disabled paid subscription checked for this manual run
+        type: string
+        default: "false"
+      private_source_verified:
+        description: Approved private Mi-Yomi/iDeck repository selected
+        type: string
+        default: "false"
+    environment:
+      xcode: "26.6"
+      vars:
+        EXPECTED_CRYPTO_INPUTS_SHA256: ${{ inputs.expected_crypto_inputs_sha256 }}
+        FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
+        PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
+        GIT_TERMINAL_PROMPT: "0"
+        JOBS: "4"
+    scripts:
+      - name: Build exact source crypto prefix and strictly link all 106 source-used APIs
+        script: |
+          set -euo pipefail
+          test "${FREE_QUOTA_VERIFIED:-false}" = true
+          test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
+          python3 -I ci/run_crypto_control.py
+    artifacts:
+      - .work/crypto-control-artifacts/crypto-evidence.zip
+      - .work/crypto-control-artifacts/crypto-prefix.zip
+      - .work/crypto-control-artifacts/crypto-target-proof.zip
+# Manual proposal only: no triggers, cache, retries, publishing, credentials or signing.
+# Exact public tracked GMP 6.3.0 / Nettle 3.10.1 / GnuTLS 3.8.9 release sources.
+# Existing Apple tools, Python 3.12.7, make 3.81, m4 and pkg-config; no installation.
+# 23-minute aggregate process-group deadline; provider hard limit 25 minutes; jobs 4.
+# Prefix-only product is preserved if the subsequent target-link proof fails.
+# Target probe has no ad-hoc signature and is never executed. No Wine overlay is emitted.
+# Prefix, link and eventual runtime/device tests are distinct evidence gates.

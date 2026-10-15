@@ -337,3 +337,44 @@ workflows:
 # Existing official Xcode 27.0 (27A266a), Swift 6.4 and iPhoneOS 27.0 SDK only.
 # Exact CPU labels accepted: Apple M2 or Apple M2 (Virtual); host must be arm64.
 # 510-second aggregate subprocess budget; 10-minute provider hard limit.
+  ideck-llvm-native-control:
+    name: iDeck pinned LLVM 15.0.7 native arm64 table generator control
+    instance_type: mac_mini_m2
+    max_build_duration: 25
+    inputs:
+      expected_recipe_sha256:
+        description: Exact reviewed ci/llvm-core-control.sh SHA256
+        type: string
+      expected_llvm_source_lock_sha256:
+        description: Exact reviewed ci/llvm-source-lock.json SHA256
+        type: string
+      free_quota_verified:
+        description: Free quota and disabled paid subscription verified for this manual run
+        type: string
+        default: "false"
+      private_source_verified:
+        description: Approved private Mi-Yomi/iDeck repository selected
+        type: string
+        default: "false"
+    environment:
+      xcode: "26.6"
+      vars:
+        EXPECTED_RECIPE_SHA256: ${{ inputs.expected_recipe_sha256 }}
+        EXPECTED_LLVM_SOURCE_LOCK_SHA256: ${{ inputs.expected_llvm_source_lock_sha256 }}
+        FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
+        PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
+        GIT_TERMINAL_PROMPT: "0"
+        JOBS: "4"
+    scripts:
+      - name: Build and validate only the native LLVM table generator
+        script: |
+          set -euo pipefail
+          test "${FREE_QUOTA_VERIFIED:-false}" = true
+          test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
+          python3 ci/run_llvm_control.py
+    artifacts:
+      - .work/llvm-control-artifacts/llvm-native-evidence.zip
+      - .work/llvm-control-artifacts/llvm-tblgen-native.zip
+# Manual proposal only: no triggers, installs, dispatch, publication or target stage.
+# The wrapper's process-group aggregate budget is 23 minutes; provider cap is 25.
+# Every later job imports an independently verified ZIP and manifest, never a prior workspace.

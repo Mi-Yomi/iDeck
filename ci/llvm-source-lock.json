@@ -1,0 +1,341 @@
+{
+  "schema": 1,
+  "llvm_commit": "8dfdcc7b7bf66834a761bd8de445840ef68e4d1a",
+  "llvm_version": "15.0.7",
+  "madeira_commit": "279fd0f83170425db002fe25d6bd62f6355f497d",
+  "dxmt_commit": "128b297c6e9a00014408dc68b4c2c2373b5813de",
+  "dxmt_meson_git_blob_sha1": "41f3eb0b67f0d9e1c592799922dade7ae14b2eb3",
+  "dxmt_meson_sha256": "0e5d77da70e8ee4aee7859e0afe8713a242a8bb3c9898e2f89e9f8ade7237c64",
+  "target_libraries": [
+    "LLVMPasses",
+    "LLVMTarget",
+    "LLVMObjCARCOpts",
+    "LLVMCoroutines",
+    "LLVMipo",
+    "LLVMInstrumentation",
+    "LLVMVectorize",
+    "LLVMLinker",
+    "LLVMIRReader",
+    "LLVMAsmParser",
+    "LLVMFrontendOpenMP",
+    "LLVMScalarOpts",
+    "LLVMInstCombine",
+    "LLVMAggressiveInstCombine",
+    "LLVMTransformUtils",
+    "LLVMBitWriter",
+    "LLVMAnalysis",
+    "LLVMProfileData",
+    "LLVMSymbolize",
+    "LLVMDebugInfoPDB",
+    "LLVMDebugInfoMSF",
+    "LLVMDebugInfoDWARF",
+    "LLVMObject",
+    "LLVMTextAPI",
+    "LLVMMCParser",
+    "LLVMMC",
+    "LLVMDebugInfoCodeView",
+    "LLVMBitReader",
+    "LLVMCore",
+    "LLVMRemarks",
+    "LLVMBitstreamReader",
+    "LLVMBinaryFormat",
+    "LLVMSupport",
+    "LLVMDemangle"
+  ],
+  "source_guards": [
+    {
+      "path": "llvm/CMakeLists.txt",
+      "file": "research/llvm__CMakeLists.txt",
+      "git_blob_sha1": "db207e3328bebc7d0d1b2117cca7f210aa1ec535",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/CMakeLists.txt",
+      "sha256": "4ff6d5c1170efe8a8cb43be404efeb617273493efc667ce806ba0b2cc2163b3e"
+    },
+    {
+      "path": "llvm/cmake/modules/AddLLVM.cmake",
+      "file": "research/llvm__cmake__modules__AddLLVM.cmake",
+      "git_blob_sha1": "1f0507f395cf6868e73d4ce931df5d6b9cae1f79",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/cmake/modules/AddLLVM.cmake",
+      "sha256": "fff2a108bbda5ee26311d64d29da93aedbdb98f4733b94cb2cb9a06b30f6d264"
+    },
+    {
+      "path": "llvm/cmake/config-ix.cmake",
+      "file": "research/llvm__cmake__config-ix.cmake",
+      "git_blob_sha1": "7e657fd1532de6585959c3adb83ebef8d8af2424",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/cmake/config-ix.cmake",
+      "sha256": "e4adb02abdc53cbd467fa6ecb0c3b9da9c90f3f0a92aa2445966952123665e72"
+    },
+    {
+      "path": "llvm/cmake/modules/HandleLLVMOptions.cmake",
+      "file": "research/llvm__cmake__modules__HandleLLVMOptions.cmake",
+      "git_blob_sha1": "0fca934be9cf33fd93738c4f98f21c2845a107b7",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/cmake/modules/HandleLLVMOptions.cmake",
+      "sha256": "9b3ccc9e9c949a637b96820b37efea612e82565b117397d7adc8b3f97791ebe1"
+    },
+    {
+      "path": "llvm/cmake/modules/CheckCompilerVersion.cmake",
+      "file": "research/llvm__cmake__modules__CheckCompilerVersion.cmake",
+      "git_blob_sha1": "c73135864c9eabec4e218c1941a6f1d28db253da",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/cmake/modules/CheckCompilerVersion.cmake",
+      "sha256": "e93db567e93e8ebd1e37546d2664713a9a8f1365fa235caf528d8bbce0f83f4a"
+    },
+    {
+      "path": "llvm/cmake/modules/CrossCompile.cmake",
+      "file": "research/llvm__cmake__modules__CrossCompile.cmake",
+      "git_blob_sha1": "52b893dd0214b6a6eb3c75628a6185797f86e160",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/cmake/modules/CrossCompile.cmake",
+      "sha256": "5c4e2ac729fb79c2ff68f45b6c6674290abebae9d2aca94b9b03dcef049cca80"
+    },
+    {
+      "path": "llvm/cmake/modules/TableGen.cmake",
+      "file": "research/llvm__cmake__modules__TableGen.cmake",
+      "git_blob_sha1": "4711456776c8670c5176af9bae7c20284edbf369",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/cmake/modules/TableGen.cmake",
+      "sha256": "b3ac4684d578871a9550a5213e67c7f7449d30950d3f606b2d0efaf34bd8edf8"
+    },
+    {
+      "path": "llvm/utils/TableGen/CMakeLists.txt",
+      "file": "research/llvm__utils__TableGen__CMakeLists.txt",
+      "git_blob_sha1": "725c99b8e08ef938638f046960d397ffae4662fa",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/utils/TableGen/CMakeLists.txt",
+      "sha256": "6b822bfbe5558d0e4b61ba8dd3c2b6e9cb3838f40fda1729d00c2c59c7216952"
+    },
+    {
+      "path": "llvm/lib/Support/CMakeLists.txt",
+      "file": "research/llvm__lib__Support__CMakeLists.txt",
+      "git_blob_sha1": "ff23ec74df9628533e07701374c15ead6edaa78f",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/lib/Support/CMakeLists.txt",
+      "sha256": "8bd04a7b118190a8c400114efa57ba68e5893b371d32d6e7bbfb71dd8f8bd7f8"
+    },
+    {
+      "path": "llvm/cmake/modules/LLVMConfig.cmake.in",
+      "file": "research/llvm__cmake__modules__LLVMConfig.cmake.in",
+      "git_blob_sha1": "f1362fa032c2b59f34c9e2ee0ca3f048780b3fc1",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/cmake/modules/LLVMConfig.cmake.in",
+      "sha256": "a3b8a22cb1f64031542895cab4d14205338ee1de042691e6a12032703f400202"
+    },
+    {
+      "path": "llvm/cmake/modules/GetHostTriple.cmake",
+      "file": "research/llvm__cmake__modules__GetHostTriple.cmake",
+      "git_blob_sha1": "1be13bc01ab9b255f70994938e3fb167a569d367",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/cmake/modules/GetHostTriple.cmake",
+      "sha256": "05a0861f9b37db628698eabcc20231ec1268d491b3ebdcfe2668f837fe57d08e"
+    },
+    {
+      "path": "llvm/cmake/modules/CheckAtomic.cmake",
+      "file": "research/llvm__cmake__modules__CheckAtomic.cmake",
+      "git_blob_sha1": "f11cadf39ff6b68b7b1fda34944387b499a20264",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/cmake/modules/CheckAtomic.cmake",
+      "sha256": "69f60d47fe7238f6828529adc7be610c2c77454f9f0626c405876922e98f7afd"
+    },
+    {
+      "path": "llvm/cmake/modules/FindLibpfm.cmake",
+      "file": "research/llvm__cmake__modules__FindLibpfm.cmake",
+      "git_blob_sha1": "38cf3af3953d91718c930cfb6c499b8b9b32eb40",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/cmake/modules/FindLibpfm.cmake",
+      "sha256": "535f90a113021096102cf8c5fedb98cb0e18c6e2a634f384aab15597a69ad498"
+    },
+    {
+      "path": "llvm/cmake/platforms/iOS.cmake",
+      "file": "research/llvm__cmake__platforms__iOS.cmake",
+      "git_blob_sha1": "ccb06536d354c300cd3a1b3770a5487608a374f6",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/cmake/platforms/iOS.cmake",
+      "sha256": "f0a618ef6543dc73479fbd5710b31258fe461ad18aa2238c16721bbcfe2ac03b"
+    },
+    {
+      "path": "llvm/include/llvm/CMakeLists.txt",
+      "file": "research/llvm__include__llvm__CMakeLists.txt",
+      "git_blob_sha1": "b46319f24fc8e55f981a469f2de6158966e5825a",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/include/llvm/CMakeLists.txt",
+      "sha256": "4e4a9549ed943201143a476de810dd5c10ea3435d73d5656c472689063f2ef49"
+    },
+    {
+      "path": "llvm/lib/CMakeLists.txt",
+      "file": "research/llvm__lib__CMakeLists.txt",
+      "git_blob_sha1": "5ecdf5af956a31a5b75f8645624ce81a1fba9f3a",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/lib/CMakeLists.txt",
+      "sha256": "da4ab7960a09dc5a63eb0468d623d8587cfe2cabeeb300ebdfd8ac914814ee72"
+    },
+    {
+      "path": "llvm/projects/CMakeLists.txt",
+      "file": "research/llvm__projects__CMakeLists.txt",
+      "git_blob_sha1": "08f2fa522420b0e8c9a6da6d3daebddaeac8a4d1",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/projects/CMakeLists.txt",
+      "sha256": "b97399fa0cce0db6fc35eae138f0f154ef464d3b594856b941daa475628b1340"
+    },
+    {
+      "path": "llvm/lib/Support/Unix/Program.inc",
+      "file": "research/llvm__lib__Support__Unix__Program.inc",
+      "git_blob_sha1": "089342030b97e178d749a54b2d43ae5338b5b097",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/lib/Support/Unix/Program.inc",
+      "sha256": "0c19f279bab4e9563d54d1276fce66004fda924c549463255d17e987ca089451"
+    },
+    {
+      "path": "llvm/LICENSE.TXT",
+      "file": "research/llvm__LICENSE.TXT",
+      "git_blob_sha1": "fa6ac540007032cbd0ec772a1c72e6cb5527a4fe",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/LICENSE.TXT",
+      "sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee"
+    },
+    {
+      "path": "llvm/lib/Support/BLAKE3/CMakeLists.txt",
+      "file": "research/llvm__lib__Support__BLAKE3__CMakeLists.txt",
+      "git_blob_sha1": "e5d227b0c4862a349ebe9eae2148c848507327f4",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/lib/Support/BLAKE3/CMakeLists.txt",
+      "sha256": "105e8c5a9c29027eb3b68e5624adaaff29854269c985bf3e34e4c5b612c68857"
+    },
+    {
+      "path": "llvm/lib/Support/BLAKE3/LICENSE",
+      "file": "research/llvm__lib__Support__BLAKE3__LICENSE",
+      "git_blob_sha1": "f5892efc3b9bac4beeb60e554e85f32e8692599e",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/lib/Support/BLAKE3/LICENSE",
+      "sha256": "6a94bedb8b707ed97f6e310d0d015ab14e0683ffa0a612b02958581b9cc9fc0e"
+    },
+    {
+      "path": "llvm/lib/Support/BLAKE3/blake3_sse2_x86-64_unix.S",
+      "file": "research/llvm__lib__Support__BLAKE3__blake3_sse2_x86-64_unix.S",
+      "git_blob_sha1": "0106b13ba851e75f2866795b2dc9e394506d41d7",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/lib/Support/BLAKE3/blake3_sse2_x86-64_unix.S",
+      "sha256": "abf67524730e2f34ef55ec450015455532a21f41e52e9358711a3f2e2bb6fcc8"
+    },
+    {
+      "path": "llvm/lib/Support/BLAKE3/blake3_sse41_x86-64_unix.S",
+      "file": "research/llvm__lib__Support__BLAKE3__blake3_sse41_x86-64_unix.S",
+      "git_blob_sha1": "4e918c5bb2cc44404505fc23dd7590824dabd1ff",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/lib/Support/BLAKE3/blake3_sse41_x86-64_unix.S",
+      "sha256": "93c07ec7e7a87ee8ae2f505d92f30e2d25956f4199fcc91deb8ccd94f6bcbd84"
+    },
+    {
+      "path": "llvm/lib/Support/BLAKE3/blake3_avx2_x86-64_unix.S",
+      "file": "research/llvm__lib__Support__BLAKE3__blake3_avx2_x86-64_unix.S",
+      "git_blob_sha1": "449e074928324bb6f343972fb24d481fb1e9b953",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/lib/Support/BLAKE3/blake3_avx2_x86-64_unix.S",
+      "sha256": "b4b39f6e140772924d17e69721bc23c7ded6e70a76470890548a270a4840bdd5"
+    },
+    {
+      "path": "llvm/lib/Support/BLAKE3/blake3_avx512_x86-64_unix.S",
+      "file": "research/llvm__lib__Support__BLAKE3__blake3_avx512_x86-64_unix.S",
+      "git_blob_sha1": "3afc0e2250e2d9a8a24eddbd35f277e20931f838",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/lib/Support/BLAKE3/blake3_avx512_x86-64_unix.S",
+      "sha256": "fabed09b33ee0706c6a4db6d1b4dc573f922e95df8fd3eb0f8ee20627e8d3810"
+    },
+    {
+      "path": "llvm/include/llvm/Support/xxhash.h",
+      "file": "research/llvm__include__llvm__Support__xxhash.h",
+      "git_blob_sha1": "6fd67ff9ce1c557170510acc1ed6ade9f1cb6502",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/include/llvm/Support/xxhash.h",
+      "sha256": "638c5b87837c53cdb63b388a1d5fde4915f8860d07cbecaa4b732b2d7a128c19"
+    },
+    {
+      "path": "llvm/include/llvm/Support/ConvertUTF.h",
+      "file": "research/llvm__include__llvm__Support__ConvertUTF.h",
+      "git_blob_sha1": "1e05cfe1f4241dfddfed36acc98a716fc37e4a18",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/include/llvm/Support/ConvertUTF.h",
+      "sha256": "bf9dd4d0b31bd4df563fe48d17f35706e3a84ec675f38aa3752944c24896283a"
+    },
+    {
+      "path": "llvm/lib/Support/regex_impl.h",
+      "file": "research/llvm__lib__Support__regex_impl.h",
+      "git_blob_sha1": "8ddac7dcf9982de7193302d00b9bffc94b2f99a4",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/lib/Support/regex_impl.h",
+      "sha256": "b8ddb7da51e01bf22e58a60ce9e4d56dab5676fc303db7e380e0d35328504db1"
+    },
+    {
+      "path": "llvm/lib/Support/regutils.h",
+      "file": "research/llvm__lib__Support__regutils.h",
+      "git_blob_sha1": "49a975cd2703e702904e1bf3ed2f2d96aeafddcf",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/lib/Support/regutils.h",
+      "sha256": "80606b2d8f0f063b9ddaa7b909fc1ef9c344807f22fd2f3a8cb4187f88734ac3"
+    },
+    {
+      "path": "llvm/lib/Support/regex2.h",
+      "file": "research/llvm__lib__Support__regex2.h",
+      "git_blob_sha1": "19d14cd14abbbd507e617d3f7ce9b169316c21ef",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/lib/Support/regex2.h",
+      "sha256": "ce6f38306170673c9bda3a5d2d638e7af858662d388e0b3884372677998fb7dd"
+    },
+    {
+      "path": "llvm/cmake/modules/CheckProblematicConfigurations.cmake",
+      "file": "research/llvm__cmake__modules__CheckProblematicConfigurations.cmake",
+      "git_blob_sha1": "e133873d756c131e3c4a0a82cf6304a3728bf14b",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/cmake/modules/CheckProblematicConfigurations.cmake",
+      "sha256": "17eec4c4d79b0455eb3dac957bef7262c8717f64ba9b4760daca0f615b02aa99"
+    },
+    {
+      "path": "llvm/cmake/modules/HandleLLVMStdlib.cmake",
+      "file": "research/llvm__cmake__modules__HandleLLVMStdlib.cmake",
+      "git_blob_sha1": "7afc10cff74ff054d9fe607c173a04aa19e53f3f",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/cmake/modules/HandleLLVMStdlib.cmake",
+      "sha256": "b3dc309d3c971dfb79bada0a3a0e1cff56ee512bba05b9f6ac72e1ad2cdd356c"
+    },
+    {
+      "path": "llvm/cmake/modules/UseLibtool.cmake",
+      "file": "research/llvm__cmake__modules__UseLibtool.cmake",
+      "git_blob_sha1": "38d197d4846fd364b43bbe9ced7727fe01b80e30",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/cmake/modules/UseLibtool.cmake",
+      "sha256": "c88d3cff98cd1cf5d2f0bd9fbf4a3af0177c7a0a37277b4335cc19923ed47d3b"
+    },
+    {
+      "path": "llvm/cmake/modules/CMakeLists.txt",
+      "file": "research/llvm__cmake__modules__CMakeLists.txt",
+      "git_blob_sha1": "470881516915a4ce269939c476f62a7f84aebf2b",
+      "url": "https://github.com/llvm/llvm-project/blob/8dfdcc7b7bf66834a761bd8de445840ef68e4d1a/llvm/cmake/modules/CMakeLists.txt",
+      "sha256": "aeaf1d6780ab449846195e39daa298ef090fc1a7193b4590b4ed0f262b387e9e"
+    }
+  ],
+  "patch": {
+    "path": "llvm/cmake/modules/AddLLVM.cmake",
+    "before_sha256": "fff2a108bbda5ee26311d64d29da93aedbdb98f4733b94cb2cb9a06b30f6d264",
+    "after_sha256": "d44bfaa08333db83543cead28d9e8888fa976cbf53f6554bdad3328042799772",
+    "old": "if(NOT LLVM_NO_DEAD_STRIP)\n      if(${CMAKE_SYSTEM_NAME} MATCHES \"Darwin\")",
+    "new": "if(NOT LLVM_NO_DEAD_STRIP)\n      if(${CMAKE_SYSTEM_NAME} MATCHES \"Darwin|iOS\")"
+  },
+  "source_copy_paths": [
+    "llvm root regular files",
+    "llvm/cmake/",
+    "llvm/include/",
+    "llvm/lib/",
+    "llvm/utils/TableGen/",
+    "llvm/projects/CMakeLists.txt",
+    "cmake/"
+  ],
+  "source_copy_limit_bytes": 1610612736,
+  "source_copy_limit_files": 40000,
+  "notice_sources": [
+    "llvm/lib/Support/BLAKE3/LICENSE",
+    "llvm/include/llvm/Support/xxhash.h",
+    "llvm/include/llvm/Support/ConvertUTF.h",
+    "llvm/lib/Support/regex_impl.h",
+    "llvm/lib/Support/regutils.h",
+    "llvm/lib/Support/regex2.h"
+  ],
+  "assembly_unspecified_sdk": [
+    {
+      "source": "llvm/lib/Support/BLAKE3/blake3_sse2_x86-64_unix.S",
+      "sha256": "abf67524730e2f34ef55ec450015455532a21f41e52e9358711a3f2e2bb6fcc8",
+      "member": "blake3_sse2_x86-64_unix.S.o",
+      "archive": "libLLVMSupport.a",
+      "qualification": "SDK field may be zero only for these preprocessor-guarded assembly objects; platform/minimum and exact compile SDK remain required."
+    },
+    {
+      "source": "llvm/lib/Support/BLAKE3/blake3_sse41_x86-64_unix.S",
+      "sha256": "93c07ec7e7a87ee8ae2f505d92f30e2d25956f4199fcc91deb8ccd94f6bcbd84",
+      "member": "blake3_sse41_x86-64_unix.S.o",
+      "archive": "libLLVMSupport.a",
+      "qualification": "SDK field may be zero only for these preprocessor-guarded assembly objects; platform/minimum and exact compile SDK remain required."
+    },
+    {
+      "source": "llvm/lib/Support/BLAKE3/blake3_avx2_x86-64_unix.S",
+      "sha256": "b4b39f6e140772924d17e69721bc23c7ded6e70a76470890548a270a4840bdd5",
+      "member": "blake3_avx2_x86-64_unix.S.o",
+      "archive": "libLLVMSupport.a",
+      "qualification": "SDK field may be zero only for these preprocessor-guarded assembly objects; platform/minimum and exact compile SDK remain required."
+    },
+    {
+      "source": "llvm/lib/Support/BLAKE3/blake3_avx512_x86-64_unix.S",
+      "sha256": "fabed09b33ee0706c6a4db6d1b4dc573f922e95df8fd3eb0f8ee20627e8d3810",
+      "member": "blake3_avx512_x86-64_unix.S.o",
+      "archive": "libLLVMSupport.a",
+      "qualification": "SDK field may be zero only for these preprocessor-guarded assembly objects; platform/minimum and exact compile SDK remain required."
+    }
+  ]
+}

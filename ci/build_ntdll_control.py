@@ -333,17 +333,26 @@ class Control:
         for name in parse_dependencies(regular(path).read_text(),obj):
             reported=Path(name)
             p=reported.resolve(strict=True)
-            require(p==Path(os.path.normpath(name)),'Dependency symlink/lexical path disagreement')
+            lexical=Path(os.path.normpath(name))
             identity=str(p)
             if identity in self.identities:
+                require(p==lexical,'Dependency symlink/lexical disagreement: origin=verified-source/generated/prefix reported='+name+' resolved='+str(p))
                 p=regular(p,64*MIB,allow_empty=True);expected=self.identities[identity]
                 require(digest(p)==expected['sha256'] and p.stat().st_size==expected['size'],'Dependency changed: '+name)
                 entries.append({'path':identity,'reported_path':name,'origin':'verified-source/generated/prefix','sha256':expected['sha256'],'size':expected['size']})
             else:
-                # Compiler resource and SDK headers may use Apple installation symlinks.
-                require(p.is_file() and (p.is_relative_to(sdk) or p.is_relative_to(resource)),'Unverified source/non-iPhoneOS-SDK include dependency: '+name)
+                # Only internal symlinks of the same selected Apple root are allowed.
+                # A source/external symlink into that root is not an SDK dependency.
+                roots=[(root,origin) for root,origin in ((sdk,'sdk'),(resource,'selected-clang-resource'))
+                       if reported.is_relative_to(root) and p.is_relative_to(root)]
+                require(p.is_file() and '..' not in reported.parts and len(roots)==1,
+                        'Unverified include dependency: reported='+name+' resolved='+str(p)+
+                        ' lexical_origin='+('sdk' if reported.is_relative_to(sdk) else 'selected-clang-resource' if reported.is_relative_to(resource) else 'unverified')+
+                        ' resolved_origin='+('sdk' if p.is_relative_to(sdk) else 'selected-clang-resource' if p.is_relative_to(resource) else 'unverified'))
+                root,origin=roots[0]
                 require(p.stat().st_size<=16*MIB,'Oversized SDK/compiler header')
-                entries.append({'path':name,'resolved':str(p),'origin':'sdk' if p.is_relative_to(sdk) else 'selected-clang-resource','sha256':digest(p),'size':p.stat().st_size})
+                entries.append({'path':name,'resolved':str(p),'origin':origin,'trusted_root':str(root),
+                                'symlink_resolved':p!=lexical,'sha256':digest(p),'size':p.stat().st_size})
         return entries
 
     def execute(self):

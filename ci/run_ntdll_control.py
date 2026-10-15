@@ -29,7 +29,7 @@ AGGREGATE_SECONDS = 23 * 60
 FINALIZE_RESERVE = 60
 ARTIFACT_KINDS = frozenset(('wine-headers', 'freetype', 'ffmpeg', 'crypto-prefix', 'crypto-proof'))
 PINS = {
-    'ci/build_ntdll_control.py': 'ea4c70c204039b1f399e0f98df038c94d5dc3c483cbbfbebb3a6eeb191ccc0b7',
+    'ci/build_ntdll_control.py': 'a37622ec50e659604ff32c93c9758fd2be4f3cdb3d5c33817fc4ef8dfc7ff2fb',
     'ntdll-source-manifest.json': '8d487906f5bf8c402456584631bf8cb142242c2f6193eb30f1257f48a0dc1b6d',
     'ci/prove_crypto_features.py': '6d3a662a0760a17d329675bea3d3445959f9e85ed7d0d37ff7e608f3a055af9f',
     'gnutls-symbol-lock.json': 'cc8924fdaef69921bbe27a2cfc7323ed22fbd2f1ca969a48dcc0b55aeb75bae4',

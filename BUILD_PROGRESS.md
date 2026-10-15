@@ -1,6 +1,6 @@
 # iDeck build progress
 
-Updated: 2026-10-15, 05:48 UTC.
+Updated: 2026-10-15, 06:17 UTC.
 
 ## Goal and current boundary
 
@@ -23,6 +23,7 @@ separately from application linking and device operation.
 | FFmpeg | Four real iOS archives, 209 object files, 45 required API definitions and 127 public headers verified. | [FFmpeg control](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad06029546ce6236ceebdf7) |
 | Crypto prefix and API link | Four real iOS archives, 1,312 objects and 91 headers verified; all 106 source-used APIs linked into an unsigned, nonexecuted target probe. | [Crypto control](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad06780546ce6236ceebf48) |
 | Current Madeira Swift and StikJIT | Real StikJIT interface import compiled; both helper inputs and all 67 unchanged main Swift sources typechecked with Xcode 27.0 / Swift 6.4. | [Current-app preflight](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad0666e546ce6236ceebf0b) |
+| LLVM native generator | LLVM 15.0.7 table generator built; original package, macOS arm64 linkage and 237 compiled source inputs verified. | [Native LLVM control](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad06eef546ce6236ceec0c5) |
 
 Downloaded native runtime archive objects were checked for arm64 iOS device targeting
 and minimum iOS 17.0. They encode SDK 26.5 except exactly 18 source-qualified crypto
@@ -37,8 +38,8 @@ Playport baseline and do not silently upgrade its dependency pins.
 
 ## In progress
 
-- Import verified source-built prefixes into the native ntdll control, with explicit metadata relocation and a fresh API-link proof.
-- The Xcode 27.0 runner lacks the optional Metal Toolchain payload: `metal` is only a driver and `metallib` is unavailable. The own AIR probe stopped there; nothing was installed.
+- The ntdll control imported the verified source-built prefixes and reached real compilation, then stopped at a strict dependency-path check. The SDK path alias is being reviewed before a narrow retry.
+- The Xcode 27.0 runner lacks the optional Metal Toolchain payload. Installation of official Apple Metal tools and official Rust on a temporary Mac is approved; the bounded build recipes are being prepared.
 - Remaining native ntdll and LLVM/DXMT closure, with exact ABI checks for reusable upstream PE components.
 
 Current source supports an in-tree SM5 shader-conversion path separate from
@@ -70,6 +71,6 @@ The user reports that Madeira's built-in JIT worked stably on this phone about a
 week earlier. That is useful device history, but it does not replace testing the
 new signed iDeck build.
 
-Last verified Codemagic usage: **36 of 500 free macOS minutes**. Paid subscription
+Last verified Codemagic usage: **41 of 500 free macOS minutes**. Paid subscription
 is disabled. All workflows are manual and bounded; no public repository release
 or paid build is authorized by this document.

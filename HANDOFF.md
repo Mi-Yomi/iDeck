@@ -1,5 +1,82 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Исправление Codemagic и отдельный IPA workflow — 2026-10-16
+
+Работа остаётся на `codex/linux-guest-feasibility-20261015` в `E:\Freddy Fazbear\iDeck`.
+Точный новый commit: `git rev-parse HEAD` после фиксации этой части. Старый
+`aea73cfe2ca4b5661a56863ab6dea2908071ed2e` больше не является вершиной после push.
+
+По переданному пользователем результату, build `6ad11d5f3ffd2c7f0ad3af4f` выбрал
+**main / a77ab500cdf8c8307af36a58b25816a3fa4d66db**, а не запрошенную Linux-ветку.
+Пустой `EXPECTED_SOURCE_COMMIT` старого workflow был отклонён схемой до запуска
+компилятора. Это не Swift/linker failure. Raw log этой сборки здесь не получен.
+
+Исправлено в Linux-ветке:
+
+- Все обязательные hash/commit inputs получили непустой sentinel `REQUIRED`.
+  Его нельзя принять за разрешённый SHA: новый первый шаг проверяет формат и
+  отказывает с понятным сообщением. Defaults подтверждений остаются `false`.
+- Linux workflows дополнительно требуют правильные CM_BRANCH, CM_REPO_SLUG,
+  CM_COMMIT, точный EXPECTED_COMMIT и clean checkout. Отчёт guard сохраняется.
+- Первые 15 workflow сохраняют исходные execution bodies после нового guard.
+  Linux source check поднят первым в списке. **main не изменён**; сначала выбрать
+  Linux-ветку, затем workflow, иначе CI снова прочитает старый YAML.
+- Добавлен шестнадцатый workflow **ideck-linux-probe-ipa**: реальные native builds,
+  XcodeGen, xcodebuild, проверка bundle и ad-hoc IPA. Подробности в
+  `experiments/linux-guest/ipa/README.md`.
+- Отдельный project spec сохраняет реальные app/native sources, QEMU, ANGLE,
+  pairing/StikJIT, но исключает embedded MoltenVK/PS4 и Android resource staging.
+  Probe-only entry открывает Linux; отдельный bundle ID `dev.ideck.linuxprobe`.
+- Проверенные Linux kernel/initramfs/profile теперь действительно включены в Git
+  как архив 19 623 827 байт, SHA256
+  `f973fe00e1cf54772589c3e54c8bc22a7396604ec927004267f9a4aea9d39efb`.
+- Семь официальных native source archives реально скачаны и прочитаны локально;
+  размеры/SHA закреплены. Git dependencies и Rust 1.99.1 закреплены. Новый WebKit
+  ANGLE pin ещё не проверен Apple-компилятором. Homebrew tool versions фиксируются
+  в отчёте каждого запуска; они не объявлены детерминированными.
+- Отдельный format-patch исправляет игнорирование ошибок patch/отсутствующего
+  dylib в upstream native recipe. Verifiers не ослаблены.
+
+**Проверено здесь:** 30 host tests PASS; nonempty substitutions и сохранение старых
+execution bodies в YAML; AST/JSON; полный source+guest stage в
+`.work/husk-linux-ipa-staged`; применение native patch; `bash -n` canonical Git
+версии shell recipe. Исходный Windows checkout имеет CRLF, поэтому его первый
+прямой bash -n отказал на переводах строк; LF-версия из Git прошла. CI checkout
+использует core.autocrlf=false. Индекс прежнего source export остаётся
+`a305e267ebdb87ec4d202f4f8d5c499cc5ffbe44`; Husk base clean; main не менялся.
+
+**Не выполнено:** server-side YAML validation новой версии, Apple Swift/native
+компиляция, линковка, создание IPA, подпись владельцем, device run, Steam. Код
+workflow — подготовленный путь сборки, не доказательство её успешности. Новая
+сборка из этой сессии не запускалась: browser tool остаётся недоступен; текущая
+квота не проверена. Dots, по сообщению пользователя, выполняет отдельную Swift
+проверку предыдущего SHA; её итог пока не передан.
+
+Для следующего запуска IPA: выбрать эту ветку и workflow `ideck-linux-probe-ipa`,
+новый полный SHA в `expected_commit`, свежие private/free-quota attestations и
+`native_build_approved=true`. Нужно **минимум 120 бесплатных macOS минут**, paid
+disabled; worker aggregate 6900 секунд, provider cap 120 минут. Это лимит, не ETA.
+Настройка Meson/Ninja/pkg-config/XcodeGen/rustup выполняется только на временном
+runner. Локальная Windows-система, сертификаты/ключи и телефон не изменяются.
+Сам workflow сначала выполняет Swift gate; отдельный повтор source check перед
+ним не обязателен. При успехе артефакт `iDeck-Linux-Probe.ipa`, SHA в result.json;
+IPA требует обычной подписи владельца для sideload. Нативные outputs сохраняются
+в `native-products.tar.gz`, даже если следующая сборка приложения упадёт.
+
+Локальные проверки:
+
+```powershell
+$env:TEMP = 'E:\Freddy Fazbear\work\temp'
+$env:TMP = $env:TEMP
+$env:PYTHONDONTWRITEBYTECODE = '1'
+& 'C:\Users\Sevex\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' -m unittest discover -s experiments/linux-guest/tests -v
+git diff --check
+git -C .work/source write-tree
+```
+
+Ниже сохранены предыдущие состояния; старые формулировки об отсутствии guest
+в Git/IPA workflow и старые SHA относятся к прошлым этапам.
+
 ## Запрос компиляции: подготовка запуска
 
 Пользователь попросил «скомпиль давай чекать». Ветка для существующего Codemagic:

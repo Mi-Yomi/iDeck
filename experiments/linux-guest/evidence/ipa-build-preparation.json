@@ -1,0 +1,28 @@
+{
+  "status": "host_preparation_pass_apple_execution_pending",
+  "host_tests_passed": 30,
+  "yaml_workflows": 16,
+  "old_workflow_execution_bodies_preserved": true,
+  "guest_restored": true,
+  "source_and_native_patch_staged": true,
+  "native_recipe_shell_syntax": "pass on canonical Git LF bytes",
+  "apple_compiled": false,
+  "runtime_linked": false,
+  "ipa_created": false,
+  "device_tested": false,
+  "steam_executed": false,
+  "hashes": {
+    "ci/check_build_request.py": "ff9edc6ba5590aa615f8f182f86018a189bad304e84ac903549cab430dc8ea35",
+    "ci/build_linux_probe_ipa.py": "c67f4c6f02312f819abd9ef3e7e7428315397903f417e0dbc73d92a15cdd3424",
+    "codemagic.yaml": "3c2e59974e14d71be151bcf7f8c8dd09f501527e745e0121c44608959f2d900a",
+    "experiments/linux-guest/ios/LinuxProbeView.swift": "f955df2def8592a0882180da7c05a3c4f18fc4bb3c1b7085e6b1070248215930",
+    "experiments/linux-guest/husk/overlay.lock.json": "4fdfee9968703bb61041ebce354b7ae167e410cf709541702260a982dfa9a0fc",
+    "experiments/linux-guest/husk/linux-probe-guest.tar.gz": "f973fe00e1cf54772589c3e54c8bc22a7396604ec927004267f9a4aea9d39efb",
+    "experiments/linux-guest/ipa/0001-fail-closed-native-build.patch": "9a886cb57c10f491f92a3a6f0cf4f2cfc2a68b36f147fa8c34e0ba7eefd308f5",
+    "experiments/linux-guest/ipa/guest.lock.json": "585b166602c61df1e0524e5563469ef94e73cece4ba2aab88229245d61bffc7b",
+    "experiments/linux-guest/ipa/native-sources.lock.json": "b8ea18358a5d9a3dfd437ef733283bcb33a30d385f2d643c82d1af84592e8a78",
+    "experiments/linux-guest/ipa/package_probe.py": "a0c9e3abca5f4b8bd307ab0960afda8b0ce48ba1947fc9f86f1eff7983490d02",
+    "experiments/linux-guest/ipa/project.json": "0b161227e0a8562aff4b32bcc636d34b26e48755719f123d2d0267f0284864e2",
+    "experiments/linux-guest/ipa/README.md": "4b186748e2ffbebe6ef5854438cb9fe971b4afc7c30efd46042159db6160807c"
+  }
+}

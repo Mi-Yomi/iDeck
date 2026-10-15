@@ -1,4 +1,42 @@
 workflows:
+  # Manual Linux source check on the existing Apple worker. No automatic trigger,
+  # dependency downloads, signing, app link or device action. 480-second worker
+  # budget, 10-minute provider cap; retain only compiler diagnostics and the report.
+  ideck-linux-guest-profile-check:
+    name: iDeck Linux profile and pinned Husk source compiler check
+    instance_type: mac_mini_m2
+    max_build_duration: 10
+    inputs:
+      expected_commit:
+        description: Exact reviewed local branch commit after owner-approved push
+        type: string
+        default: REQUIRED
+      free_quota_verified:
+        description: Current free macOS quota and disabled paid subscription checked before dispatch
+        type: string
+        default: 'false'
+      private_source_verified:
+        description: Selected repository is the private Mi-Yomi/iDeck repository
+        type: string
+        default: 'false'
+    environment:
+      xcode: '27.0'
+      vars:
+        EXPECTED_COMMIT: ${{ inputs.expected_commit }}
+        FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
+        PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
+        IDECK_WORKFLOW_ID: ideck-linux-guest-profile-check
+    scripts:
+      - name: Validate required inputs and intended checkout
+        script: python3 -I ci/check_build_request.py
+      - name: Check Linux validators and actual upstream and patched Husk Swift against the Apple SDK
+        script: |
+          set -euo pipefail
+          python3 -I ci/check_linux_guest_profile.py
+    artifacts:
+      - .work/linux-profile-apple/result.json
+      - .work/linux-profile-apple/*.log
+      - .work/build-request/result.json
   ideck-main-apple-source-check:
     name: iDeck real-source Apple compiler check (no runtime link)
     instance_type: mac_mini_m2
@@ -7,14 +45,13 @@ workflows:
       expected_source_commit:
         description: Exact audited iDeck source commit recorded in source-manifest.json
         type: string
+        default: REQUIRED
       free_quota_verified:
-        description: Personal free macOS allowance and disabled paid subscription
-          verified before this manual run
+        description: Personal free macOS allowance and disabled paid subscription verified before this manual run
         type: string
         default: 'false'
       private_source_verified:
-        description: This approved private Mi-Yomi/iDeck source package is the selected
-          repository
+        description: This approved private Mi-Yomi/iDeck source package is the selected repository
         type: string
         default: 'false'
     environment:
@@ -24,33 +61,53 @@ workflows:
         FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
         PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
         GIT_TERMINAL_PROMPT: '0'
+        IDECK_WORKFLOW_ID: ideck-main-apple-source-check
     scripts:
-    - name: Verify approved source and reconstruct exact audited tree
-      script: "set -euo pipefail\ntest \"$(uname -s)\" = Darwin\ntest \"${FREE_QUOTA_VERIFIED:-false}\"\
-        \ = true\ntest \"${PRIVATE_SOURCE_VERIFIED:-false}\" = true\npython3 - <<'PY'\n\
-        import json, os, re\nfrom pathlib import Path\nexpected = os.environ.get(\"\
-        EXPECTED_SOURCE_COMMIT\", \"\")\nif not re.fullmatch(r\"[0-9a-f]{40}\", expected):\n\
-        \    raise SystemExit(\"Expected source must be the full audited commit SHA\"\
-        )\nmanifest = json.loads(Path(\"source-manifest.json\").read_text())\nif manifest[\"\
-        source_commit\"] != expected:\n    raise SystemExit(\"Source package does\
-        \ not match the approved commit\")\nPY\npython3 ci/reconstruct_source.py\n"
-    - name: Compile actual iDeck packages and typecheck main app with Apple SDK
-      script: "set -euo pipefail\nSOURCE_TREE=\"$(python3 -c 'import json; print(json.load(open(\"\
-        source-manifest.json\"))[\"source_tree\"])')\"\ncd .work/source\nresult=0\n\
-        python3 tools/apple_source_check.py --expected-tree \"$SOURCE_TREE\" --seconds\
-        \ 1020 || result=$?\npython3 - <<'PYREPORT'\nimport json\nfrom pathlib import\
-        \ Path\npaths = list(Path(\".work/ideck/apple-source-check\").glob(\"run-*/result.json\"\
-        ))\nif len(paths) != 1:\n    raise SystemExit(\"Exactly one compiler result\
-        \ report was expected\")\nreport = json.loads(paths[0].read_text())\nkeys\
-        \ = (\"result\", \"failure\", \"scope\", \"expected_tree\", \"checkout_head\"\
-        , \"xcode\",\n        \"sdk_version\", \"swift\", \"target\", \"dev_source_count\"\
-        , \"release_source_count\",\n        \"runtime_linked\", \"ipa_created\",\
-        \ \"device_tested\")\nsummary = {key: report[key] for key in keys if key in\
-        \ report}\nsummary[\"dependency_modules\"] = sorted(report.get(\"dependency_modules\"\
-        , {}))\nsummary[\"steps\"] = [{key: step[key] for key in (\"label\", \"exit_code\"\
-        , \"elapsed_seconds\", \"timed_out\") if key in step}\n                  \
-        \  for step in report.get(\"steps\", [])]\nprint(\"APPLE_SOURCE_CHECK_RESULT=\"\
-        \ + json.dumps(summary, sort_keys=True))\nPYREPORT\nexit \"$result\"\n"
+      - name: Validate required inputs and intended checkout
+        script: python3 -I ci/check_build_request.py
+      - name: Verify approved source and reconstruct exact audited tree
+        script: |
+          set -euo pipefail
+          test "$(uname -s)" = Darwin
+          test "${FREE_QUOTA_VERIFIED:-false}" = true
+          test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
+          python3 - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          expected = os.environ.get("EXPECTED_SOURCE_COMMIT", "")
+          if not re.fullmatch(r"[0-9a-f]{40}", expected):
+              raise SystemExit("Expected source must be the full audited commit SHA")
+          manifest = json.loads(Path("source-manifest.json").read_text())
+          if manifest["source_commit"] != expected:
+              raise SystemExit("Source package does not match the approved commit")
+          PY
+          python3 ci/reconstruct_source.py
+      - name: Compile actual iDeck packages and typecheck main app with Apple SDK
+        script: |
+          set -euo pipefail
+          SOURCE_TREE="$(python3 -c 'import json; print(json.load(open("source-manifest.json"))["source_tree"])')"
+          cd .work/source
+          result=0
+          python3 tools/apple_source_check.py --expected-tree "$SOURCE_TREE" --seconds 1020 || result=$?
+          python3 - <<'PYREPORT'
+          import json
+          from pathlib import Path
+          paths = list(Path(".work/ideck/apple-source-check").glob("run-*/result.json"))
+          if len(paths) != 1:
+              raise SystemExit("Exactly one compiler result report was expected")
+          report = json.loads(paths[0].read_text())
+          keys = ("result", "failure", "scope", "expected_tree", "checkout_head", "xcode",
+                  "sdk_version", "swift", "target", "dev_source_count", "release_source_count",
+                  "runtime_linked", "ipa_created", "device_tested")
+          summary = {key: report[key] for key in keys if key in report}
+          summary["dependency_modules"] = sorted(report.get("dependency_modules", {}))
+          summary["steps"] = [{key: step[key] for key in ("label", "exit_code", "elapsed_seconds", "timed_out") if key in step}
+                              for step in report.get("steps", [])]
+          print("APPLE_SOURCE_CHECK_RESULT=" + json.dumps(summary, sort_keys=True))
+          PYREPORT
+          exit "$result"
+    artifacts:
+      - .work/build-request/result.json
   ideck-fex-ios-control:
     name: iDeck current Madeira FEX iOS archive control
     instance_type: mac_mini_m2
@@ -59,9 +116,9 @@ workflows:
       expected_recipe_sha256:
         description: Exact reviewed ci/mac-core-control.sh SHA256
         type: string
+        default: REQUIRED
       free_quota_verified:
-        description: Free macOS quota and disabled paid subscription checked for this
-          manual run
+        description: Free macOS quota and disabled paid subscription checked for this manual run
         type: string
         default: 'false'
       private_source_verified:
@@ -76,20 +133,20 @@ workflows:
         PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
         GIT_TERMINAL_PROMPT: '0'
         JOBS: '4'
+        IDECK_WORKFLOW_ID: ideck-fex-ios-control
     scripts:
-    - name: Build seven pinned real FEX iOS archives and validate platform evidence
-      script: 'set -euo pipefail
-
-        test "${FREE_QUOTA_VERIFIED:-false}" = true
-
-        test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
-
-        python3 ci/run_fex_control.py
-
-        '
+      - name: Validate required inputs and intended checkout
+        script: python3 -I ci/check_build_request.py
+      - name: Build seven pinned real FEX iOS archives and validate platform evidence
+        script: |
+          set -euo pipefail
+          test "${FREE_QUOTA_VERIFIED:-false}" = true
+          test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
+          python3 ci/run_fex_control.py
     artifacts:
-    - .work/runtime-control-artifacts/fex-evidence.zip
-    - .work/runtime-control-artifacts/fex-ios-archives.zip
+      - .work/runtime-control-artifacts/fex-evidence.zip
+      - .work/runtime-control-artifacts/fex-ios-archives.zip
+      - .work/build-request/result.json
   ideck-wine-ios-control:
     name: iDeck pinned Wine headers and source-only iOS wineserver control
     instance_type: mac_mini_m2
@@ -98,20 +155,21 @@ workflows:
       expected_recipe_sha256:
         description: Exact reviewed ci/wine-core-control.sh SHA256
         type: string
+        default: REQUIRED
       expected_tools_prepare_sha256:
         description: Exact reviewed ci/prepare_wine_tools.py SHA256
         type: string
+        default: REQUIRED
       expected_tools_lock_sha256:
         description: Exact reviewed ci/homebrew-wine-tools-lock.json SHA256
         type: string
+        default: REQUIRED
       wine_tools_install_approved:
-        description: Explicit approval to install locked official Homebrew Bison and
-          LLVM bottles on the temporary runner
+        description: Explicit approval to install locked official Homebrew Bison and LLVM bottles on the temporary runner
         type: string
         default: 'false'
       free_quota_verified:
-        description: Free macOS quota and disabled paid subscription checked for this
-          manual run
+        description: Free macOS quota and disabled paid subscription checked for this manual run
         type: string
         default: 'false'
       private_source_verified:
@@ -129,23 +187,22 @@ workflows:
         PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
         GIT_TERMINAL_PROMPT: '0'
         JOBS: '4'
+        IDECK_WORKFLOW_ID: ideck-wine-ios-control
     scripts:
-    - name: Generate pinned Wine headers and compile all 49 iOS server objects
-      script: 'set -euo pipefail
-
-        test "${FREE_QUOTA_VERIFIED:-false}" = true
-
-        test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
-
-        test "${WINE_TOOLS_INSTALL_APPROVED:-false}" = true
-
-        python3 ci/run_wine_control.py
-
-        '
+      - name: Validate required inputs and intended checkout
+        script: python3 -I ci/check_build_request.py
+      - name: Generate pinned Wine headers and compile all 49 iOS server objects
+        script: |
+          set -euo pipefail
+          test "${FREE_QUOTA_VERIFIED:-false}" = true
+          test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
+          test "${WINE_TOOLS_INSTALL_APPROVED:-false}" = true
+          python3 ci/run_wine_control.py
     artifacts:
-    - .work/wine-control-artifacts/wine-evidence.zip
-    - .work/wine-control-artifacts/wine-headers.zip
-    - .work/wine-control-artifacts/wineserver-ios-archive.zip
+      - .work/wine-control-artifacts/wine-evidence.zip
+      - .work/wine-control-artifacts/wine-headers.zip
+      - .work/wine-control-artifacts/wineserver-ios-archive.zip
+      - .work/build-request/result.json
   ideck-win32u-ios-control:
     name: iDeck pinned FreeType and complete source-only iOS win32u control
     instance_type: mac_mini_m2
@@ -154,19 +211,21 @@ workflows:
       expected_recipe_sha256:
         description: Exact reviewed ci/win32u-core-control.sh SHA256
         type: string
+        default: REQUIRED
       expected_importer_sha256:
         description: Exact reviewed ci/import_wine_headers.py SHA256
         type: string
+        default: REQUIRED
       expected_source_lock_sha256:
         description: Exact reviewed ci/source-lock.json SHA256
         type: string
+        default: REQUIRED
       expected_header_lock_sha256:
-        description: Exact reviewed successful producer ci/header-artifact-lock.json
-          SHA256
+        description: Exact reviewed successful producer ci/header-artifact-lock.json SHA256
         type: string
+        default: REQUIRED
       free_quota_verified:
-        description: Free macOS quota and disabled paid subscription checked for this
-          manual run
+        description: Free macOS quota and disabled paid subscription checked for this manual run
         type: string
         default: 'false'
       private_source_verified:
@@ -184,21 +243,21 @@ workflows:
         PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
         GIT_TERMINAL_PROMPT: '0'
         JOBS: '4'
+        IDECK_WORKFLOW_ID: ideck-win32u-ios-control
     scripts:
-    - name: Validate locked Wine headers and compile FreeType plus all 46 win32u objects
-      script: 'set -euo pipefail
-
-        test "${FREE_QUOTA_VERIFIED:-false}" = true
-
-        test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
-
-        python3 ci/run_win32u_control.py
-
-        '
+      - name: Validate required inputs and intended checkout
+        script: python3 -I ci/check_build_request.py
+      - name: Validate locked Wine headers and compile FreeType plus all 46 win32u objects
+        script: |
+          set -euo pipefail
+          test "${FREE_QUOTA_VERIFIED:-false}" = true
+          test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
+          python3 ci/run_win32u_control.py
     artifacts:
-    - .work/win32u-control-artifacts/win32u-evidence.zip
-    - .work/win32u-control-artifacts/freetype-ios-archive.zip
-    - .work/win32u-control-artifacts/win32u-ios-archive.zip
+      - .work/win32u-control-artifacts/win32u-evidence.zip
+      - .work/win32u-control-artifacts/freetype-ios-archive.zip
+      - .work/win32u-control-artifacts/win32u-ios-archive.zip
+      - .work/build-request/result.json
   ideck-ffmpeg-ios-control:
     name: iDeck pinned FFmpeg iOS source prefix control
     instance_type: mac_mini_m2
@@ -207,12 +266,13 @@ workflows:
       expected_recipe_sha256:
         description: Exact reviewed FFmpeg shell recipe SHA256
         type: string
+        default: REQUIRED
       expected_lock_sha256:
         description: Exact reviewed FFmpeg source and feature lock SHA256
         type: string
+        default: REQUIRED
       free_quota_verified:
-        description: Free quota and disabled paid subscription checked before this
-          run
+        description: Free quota and disabled paid subscription checked before this run
         type: string
         default: 'false'
       private_source_verified:
@@ -227,16 +287,18 @@ workflows:
         FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
         PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
         GIT_TERMINAL_PROMPT: '0'
+        IDECK_WORKFLOW_ID: ideck-ffmpeg-ios-control
     scripts:
-    - name: Build four real FFmpeg iOS libraries and verify source/config/platform
-      script: 'set -euo pipefail
-
-        python3 ci/run_ffmpeg_control.py
-
-        '
+      - name: Validate required inputs and intended checkout
+        script: python3 -I ci/check_build_request.py
+      - name: Build four real FFmpeg iOS libraries and verify source/config/platform
+        script: |
+          set -euo pipefail
+          python3 ci/run_ffmpeg_control.py
     artifacts:
-    - .work/ffmpeg-control-artifacts/ffmpeg-evidence.zip
-    - .work/ffmpeg-control-artifacts/ffmpeg-ios-prefix.zip
+      - .work/ffmpeg-control-artifacts/ffmpeg-evidence.zip
+      - .work/ffmpeg-control-artifacts/ffmpeg-ios-prefix.zip
+      - .work/build-request/result.json
   ideck-crypto-ios-control:
     name: iDeck pinned iOS crypto prefix and typed API link proof
     instance_type: mac_mini_m2
@@ -245,9 +307,9 @@ workflows:
       expected_crypto_inputs_sha256:
         description: Exact reviewed ci/crypto-inputs-lock.json SHA256
         type: string
+        default: REQUIRED
       free_quota_verified:
-        description: Free macOS quota and disabled paid subscription checked for this
-          manual run
+        description: Free macOS quota and disabled paid subscription checked for this manual run
         type: string
         default: 'false'
       private_source_verified:
@@ -262,22 +324,21 @@ workflows:
         PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
         GIT_TERMINAL_PROMPT: '0'
         JOBS: '4'
+        IDECK_WORKFLOW_ID: ideck-crypto-ios-control
     scripts:
-    - name: Build exact source crypto prefix and strictly link all 106 source-used
-        APIs
-      script: 'set -euo pipefail
-
-        test "${FREE_QUOTA_VERIFIED:-false}" = true
-
-        test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
-
-        python3 -I ci/run_crypto_control.py
-
-        '
+      - name: Validate required inputs and intended checkout
+        script: python3 -I ci/check_build_request.py
+      - name: Build exact source crypto prefix and strictly link all 106 source-used APIs
+        script: |
+          set -euo pipefail
+          test "${FREE_QUOTA_VERIFIED:-false}" = true
+          test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
+          python3 -I ci/run_crypto_control.py
     artifacts:
-    - .work/crypto-control-artifacts/crypto-evidence.zip
-    - .work/crypto-control-artifacts/crypto-prefix.zip
-    - .work/crypto-control-artifacts/crypto-target-proof.zip
+      - .work/crypto-control-artifacts/crypto-evidence.zip
+      - .work/crypto-control-artifacts/crypto-prefix.zip
+      - .work/crypto-control-artifacts/crypto-target-proof.zip
+      - .work/build-request/result.json
   ideck-current-app-toolchain-preflight:
     name: iDeck current Madeira Swift and StikJIT compiler preflight
     instance_type: mac_mini_m2
@@ -286,12 +347,13 @@ workflows:
       expected_runner_sha256:
         description: SHA256 of the reviewed ci/run_app_preflight.py
         type: string
+        default: REQUIRED
       expected_source_lock_sha256:
         description: SHA256 of the reviewed ci/app-preflight-source-lock.json
         type: string
+        default: REQUIRED
       free_quota_verified:
-        description: Free macOS quota and disabled paid subscription checked for this
-          run
+        description: Free macOS quota and disabled paid subscription checked for this run
         type: string
         default: 'false'
       private_source_verified:
@@ -299,8 +361,7 @@ workflows:
         type: string
         default: 'false'
       app_preflight_reviewed:
-        description: Compiler-only scope and exact source inputs reviewed for this
-          run
+        description: Compiler-only scope and exact source inputs reviewed for this run
         type: string
         default: 'false'
     environment:
@@ -311,15 +372,17 @@ workflows:
         FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
         PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
         APP_PREFLIGHT_REVIEWED: ${{ inputs.app_preflight_reviewed }}
+        IDECK_WORKFLOW_ID: ideck-current-app-toolchain-preflight
     scripts:
-    - name: Verify exact source inputs and run direct compiler-only checks
-      script: 'set -euo pipefail
-
-        python3 ci/run_app_preflight.py
-
-        '
+      - name: Validate required inputs and intended checkout
+        script: python3 -I ci/check_build_request.py
+      - name: Verify exact source inputs and run direct compiler-only checks
+        script: |
+          set -euo pipefail
+          python3 ci/run_app_preflight.py
     artifacts:
-    - .work/app-preflight-artifacts/app-preflight-evidence.zip
+      - .work/app-preflight-artifacts/app-preflight-evidence.zip
+      - .work/build-request/result.json
   ideck-llvm-native-control:
     name: iDeck pinned LLVM 15.0.7 native arm64 table generator control
     instance_type: mac_mini_m2
@@ -328,12 +391,13 @@ workflows:
       expected_recipe_sha256:
         description: Exact reviewed ci/llvm-core-control.sh SHA256
         type: string
+        default: REQUIRED
       expected_llvm_source_lock_sha256:
         description: Exact reviewed ci/llvm-source-lock.json SHA256
         type: string
+        default: REQUIRED
       free_quota_verified:
-        description: Free quota and disabled paid subscription verified for this manual
-          run
+        description: Free quota and disabled paid subscription verified for this manual run
         type: string
         default: 'false'
       private_source_verified:
@@ -344,26 +408,25 @@ workflows:
       xcode: '26.6'
       vars:
         EXPECTED_RECIPE_SHA256: ${{ inputs.expected_recipe_sha256 }}
-        EXPECTED_LLVM_SOURCE_LOCK_SHA256: ${{ inputs.expected_llvm_source_lock_sha256
-          }}
+        EXPECTED_LLVM_SOURCE_LOCK_SHA256: ${{ inputs.expected_llvm_source_lock_sha256 }}
         FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
         PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
         GIT_TERMINAL_PROMPT: '0'
         JOBS: '4'
+        IDECK_WORKFLOW_ID: ideck-llvm-native-control
     scripts:
-    - name: Build and validate only the native LLVM table generator
-      script: 'set -euo pipefail
-
-        test "${FREE_QUOTA_VERIFIED:-false}" = true
-
-        test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
-
-        python3 ci/run_llvm_control.py
-
-        '
+      - name: Validate required inputs and intended checkout
+        script: python3 -I ci/check_build_request.py
+      - name: Build and validate only the native LLVM table generator
+        script: |
+          set -euo pipefail
+          test "${FREE_QUOTA_VERIFIED:-false}" = true
+          test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
+          python3 ci/run_llvm_control.py
     artifacts:
-    - .work/llvm-control-artifacts/llvm-native-evidence.zip
-    - .work/llvm-control-artifacts/llvm-tblgen-native.zip
+      - .work/llvm-control-artifacts/llvm-native-evidence.zip
+      - .work/llvm-control-artifacts/llvm-tblgen-native.zip
+      - .work/build-request/result.json
   ideck-ntdll-ios-control:
     name: iDeck pinned SDK27 source-only iOS ntdll archive control
     instance_type: mac_mini_m2
@@ -372,12 +435,13 @@ workflows:
       expected_ntdll_wrapper_sha256:
         description: Exact separately reviewed ci/run_ntdll_control.py SHA256
         type: string
+        default: REQUIRED
       expected_ntdll_dependency_lock_sha256:
         description: Exact reviewed ci/ntdll-dependency-artifacts-lock.json SHA256
         type: string
+        default: REQUIRED
       free_quota_verified:
-        description: Free macOS quota available and paid subscription disabled for
-          this manual run
+        description: Free macOS quota available and paid subscription disabled for this manual run
         type: string
         default: 'false'
       private_source_verified:
@@ -388,32 +452,30 @@ workflows:
       xcode: '27.0'
       vars:
         EXPECTED_NTDLL_WRAPPER_SHA256: ${{ inputs.expected_ntdll_wrapper_sha256 }}
-        EXPECTED_NTDLL_DEPENDENCY_LOCK_SHA256: ${{ inputs.expected_ntdll_dependency_lock_sha256
-          }}
+        EXPECTED_NTDLL_DEPENDENCY_LOCK_SHA256: ${{ inputs.expected_ntdll_dependency_lock_sha256 }}
         FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
         PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
         JOBS: '4'
         GIT_TERMINAL_PROMPT: '0'
+        IDECK_WORKFLOW_ID: ideck-ntdll-ios-control
     scripts:
-    - name: Verify originals, reprove scoped crypto, compile and validate exact ntdll
-        archive
-      script: 'set -euo pipefail
-
-        test "${FREE_QUOTA_VERIFIED:-false}" = true
-
-        test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
-
-        python3 -I ci/run_ntdll_control.py
-
-        '
+      - name: Validate required inputs and intended checkout
+        script: python3 -I ci/check_build_request.py
+      - name: Verify originals, reprove scoped crypto, compile and validate exact ntdll archive
+        script: |
+          set -euo pipefail
+          test "${FREE_QUOTA_VERIFIED:-false}" = true
+          test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
+          python3 -I ci/run_ntdll_control.py
     artifacts:
-    - .work/ntdll-control-artifacts/ntdll-evidence.zip
-    - .work/ntdll-control-artifacts/ntdll-archive.zip
-    - .work/ntdll-control-artifacts/result.json
-    - .work/ntdll-control-artifacts/worker-exit.json
-    - .work/ntdll-control-artifacts/wrapper-exit.json
-    - .work/ntdll-control-artifacts/worker.log
-    - .work/ntdll-control-artifacts/finalize.log
+      - .work/ntdll-control-artifacts/ntdll-evidence.zip
+      - .work/ntdll-control-artifacts/ntdll-archive.zip
+      - .work/ntdll-control-artifacts/result.json
+      - .work/ntdll-control-artifacts/worker-exit.json
+      - .work/ntdll-control-artifacts/wrapper-exit.json
+      - .work/ntdll-control-artifacts/worker.log
+      - .work/ntdll-control-artifacts/finalize.log
+      - .work/build-request/result.json
   ideck-llvm-target-control:
     name: iDeck pinned LLVM 15.0.7 arm64 iOS static prefix control
     instance_type: mac_mini_m2
@@ -422,12 +484,13 @@ workflows:
       expected_llvm_target_wrapper_sha256:
         description: Exact reviewed ci/run_llvm_target_control.py SHA256
         type: string
+        default: REQUIRED
       expected_llvm_target_input_lock_sha256:
         description: Exact reviewed ci/llvm-target-input-lock.json SHA256
         type: string
+        default: REQUIRED
       free_quota_verified:
-        description: Free quota and disabled paid subscription verified for this manual
-          run
+        description: Free quota and disabled paid subscription verified for this manual run
         type: string
         default: 'false'
       private_source_verified:
@@ -437,28 +500,26 @@ workflows:
     environment:
       xcode: '26.6'
       vars:
-        EXPECTED_LLVM_TARGET_WRAPPER_SHA256: ${{ inputs.expected_llvm_target_wrapper_sha256
-          }}
-        EXPECTED_LLVM_TARGET_INPUT_LOCK_SHA256: ${{ inputs.expected_llvm_target_input_lock_sha256
-          }}
+        EXPECTED_LLVM_TARGET_WRAPPER_SHA256: ${{ inputs.expected_llvm_target_wrapper_sha256 }}
+        EXPECTED_LLVM_TARGET_INPUT_LOCK_SHA256: ${{ inputs.expected_llvm_target_input_lock_sha256 }}
         FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
         PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
         GIT_TERMINAL_PROMPT: '0'
         JOBS: '4'
+        IDECK_WORKFLOW_ID: ideck-llvm-target-control
     scripts:
-    - name: Build and validate only the LLVM arm64 iOS static prefix
-      script: 'set -euo pipefail
-
-        test "${FREE_QUOTA_VERIFIED:-false}" = true
-
-        test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
-
-        python3 -I ci/run_llvm_target_control.py
-
-        '
+      - name: Validate required inputs and intended checkout
+        script: python3 -I ci/check_build_request.py
+      - name: Build and validate only the LLVM arm64 iOS static prefix
+        script: |
+          set -euo pipefail
+          test "${FREE_QUOTA_VERIFIED:-false}" = true
+          test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
+          python3 -I ci/run_llvm_target_control.py
     artifacts:
-    - .work/llvm-target-artifacts/llvm-target-evidence.zip
-    - .work/llvm-target-artifacts/llvm-target-prefix.zip
+      - .work/llvm-target-artifacts/llvm-target-evidence.zip
+      - .work/llvm-target-artifacts/llvm-target-prefix.zip
+      - .work/build-request/result.json
   ideck-ntdll-sdk27-field-probe:
     name: iDeck ntdll SDK27 real header field probe
     instance_type: mac_mini_m2
@@ -467,6 +528,7 @@ workflows:
       expected_probe_sha256:
         description: SHA256 read directly from reviewed ci/run_ntdll_sdk27_probe.py
         type: string
+        default: REQUIRED
       free_quota_verified:
         description: Free quota and disabled paid subscription checked
         type: string
@@ -481,15 +543,17 @@ workflows:
         EXPECTED_NTDLL_SDK27_PROBE_SHA256: ${{ inputs.expected_probe_sha256 }}
         FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
         PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
+        IDECK_WORKFLOW_ID: ideck-ntdll-sdk27-field-probe
     scripts:
-    - name: Compile own field and offset constants against actual SDK27
-      script: 'set -euo pipefail
-
-        python3 -I ci/run_ntdll_sdk27_probe.py
-
-        '
+      - name: Validate required inputs and intended checkout
+        script: python3 -I ci/check_build_request.py
+      - name: Compile own field and offset constants against actual SDK27
+        script: |
+          set -euo pipefail
+          python3 -I ci/run_ntdll_sdk27_probe.py
     artifacts:
-    - .work/ntdll-sdk27-probe/ntdll-sdk27-evidence.zip
+      - .work/ntdll-sdk27-probe/ntdll-sdk27-evidence.zip
+      - .work/build-request/result.json
   ideck-pairing-ios-control:
     name: iDeck pinned Rust on-device pairing source control
     instance_type: mac_mini_m2
@@ -502,9 +566,11 @@ workflows:
       expected_supervisor_sha256:
         description: Exact reviewed outer supervisor SHA256
         type: string
+        default: REQUIRED
       expected_lock_sha256:
         description: Exact reviewed source, tool and inner-control lock SHA256
         type: string
+        default: REQUIRED
       free_quota_verified:
         description: Fresh free quota and disabled paid subscription checked
         type: string
@@ -522,16 +588,18 @@ workflows:
         FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
         PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
         GIT_TERMINAL_PROMPT: '0'
+        IDECK_WORKFLOW_ID: ideck-pairing-ios-control
     scripts:
-    - name: Verify pinned Rust tools and real iOS pairing archive
-      script: 'set -euo pipefail
-
-        python3 ci/run_pairing_control.py
-
-        '
+      - name: Validate required inputs and intended checkout
+        script: python3 -I ci/check_build_request.py
+      - name: Verify pinned Rust tools and real iOS pairing archive
+        script: |
+          set -euo pipefail
+          python3 ci/run_pairing_control.py
     artifacts:
-    - .work/pairing-control-artifacts/pairing-evidence.zip
-    - .work/pairing-control-artifacts/pairing-ios-prefix.zip
+      - .work/pairing-control-artifacts/pairing-evidence.zip
+      - .work/pairing-control-artifacts/pairing-ios-prefix.zip
+      - .work/build-request/result.json
   ideck-llvm15-air-reader-native:
     name: iDeck native LLVM15 actual AIR reader prerequisite
     instance_type: mac_mini_m2
@@ -540,6 +608,7 @@ workflows:
       expected_reader_recipe_sha256:
         description: Exact reviewed reader-recipe-lock.json SHA256
         type: string
+        default: REQUIRED
       free_quota_verified:
         description: Current free quota and disabled paid subscription verified
         type: string
@@ -554,14 +623,22 @@ workflows:
         EXPECTED_READER_RECIPE_SHA256: ${{ inputs.expected_reader_recipe_sha256 }}
         FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
         PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
+        IDECK_WORKFLOW_ID: ideck-llvm15-air-reader-native
     scripts:
-    - name: Build only source-pinned native AIR reader
-      script: "set -euo pipefail\ntest \"${FREE_QUOTA_VERIFIED:-false}\" = true\n\
-        test \"${PRIVATE_SOURCE_VERIFIED:-false}\" = true\npython3 -I ci/llvm-air-reader/ci/run_llvm_air_reader.py\
-        \ \\\n  --native-chunks ci/llvm-target-native-chunks \\\n  --reassembler ci/reassemble_ntdll_artifact.py\n"
+      - name: Validate required inputs and intended checkout
+        script: python3 -I ci/check_build_request.py
+      - name: Build only source-pinned native AIR reader
+        script: |
+          set -euo pipefail
+          test "${FREE_QUOTA_VERIFIED:-false}" = true
+          test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
+          python3 -I ci/llvm-air-reader/ci/run_llvm_air_reader.py \
+            --native-chunks ci/llvm-target-native-chunks \
+            --reassembler ci/reassemble_ntdll_artifact.py
     artifacts:
-    - ci/llvm-air-reader/.work/reader-producer/artifacts/llvm15-air-reader-evidence.zip
-    - ci/llvm-air-reader/.work/reader-producer/artifacts/llvm15-air-reader-native.zip
+      - ci/llvm-air-reader/.work/reader-producer/artifacts/llvm15-air-reader-evidence.zip
+      - ci/llvm-air-reader/.work/reader-producer/artifacts/llvm15-air-reader-native.zip
+      - .work/build-request/result.json
 
   ideck-fex-generated-headers-control:
     name: iDeck original FEX generated headers and compile-only ABI witness
@@ -571,6 +648,7 @@ workflows:
       expected_fex_header_wrapper_sha256:
         description: Exact separately reviewed ci/fex-header/run.py SHA256
         type: string
+        default: REQUIRED
       free_quota_verified:
         description: Existing free macOS quota verified; paid subscription disabled
         type: string
@@ -585,7 +663,10 @@ workflows:
         EXPECTED_FEX_HEADER_WRAPPER_SHA256: ${{ inputs.expected_fex_header_wrapper_sha256 }}
         FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
         PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
+        IDECK_WORKFLOW_ID: ideck-fex-generated-headers-control
     scripts:
+      - name: Validate required inputs and intended checkout
+        script: python3 -I ci/check_build_request.py
       - name: Generate exact FEX configuration headers and original-compiler data witness
         script: |
           set -euo pipefail
@@ -597,36 +678,47 @@ workflows:
       - .work/fex-header-control-artifacts/result.json
       - .work/fex-header-control-artifacts/worker.log
       - .work/fex-header-control-artifacts/diagnostics/**
-# Manual Linux source check on the existing Apple worker. No automatic trigger,
-# dependency downloads, signing, app link or device action. 480-second worker
-# budget, 10-minute provider cap; retain only compiler diagnostics and the report.
-  ideck-linux-guest-profile-check:
-    name: iDeck Linux profile and pinned Husk source compiler check
+      - .work/build-request/result.json
+  ideck-linux-probe-ipa:
+    name: iDeck Linux Probe - native build and sideload IPA
     instance_type: mac_mini_m2
-    max_build_duration: 10
+    max_build_duration: 120
     inputs:
       expected_commit:
-        description: Exact reviewed local branch commit after owner-approved push
+        description: Full reviewed HEAD of codex/linux-guest-feasibility-20261015; select this branch first
         type: string
+        default: REQUIRED
       free_quota_verified:
-        description: Current free macOS quota and disabled paid subscription checked before dispatch
+        description: At least 120 free macOS minutes remain; paid subscription is disabled; checked for THIS run
         type: string
-        default: 'false'
+        default: "false"
       private_source_verified:
-        description: Selected repository is the private Mi-Yomi/iDeck repository
+        description: Selected source is private Mi-Yomi/iDeck
         type: string
-        default: 'false'
+        default: "false"
+      native_build_approved:
+        description: Approve source downloads, build tools and locked Rust toolchain on this disposable runner; ad-hoc IPA only
+        type: string
+        default: "false"
     environment:
-      xcode: '27.0'
+      xcode: "27.0"
       vars:
         EXPECTED_COMMIT: ${{ inputs.expected_commit }}
         FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
         PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
+        NATIVE_BUILD_APPROVED: ${{ inputs.native_build_approved }}
+        IDECK_WORKFLOW_ID: ideck-linux-probe-ipa
     scripts:
-      - name: Check Linux validators and actual upstream and patched Husk Swift against the Apple SDK
-        script: |
-          set -euo pipefail
-          python3 -I ci/check_linux_guest_profile.py
+      - name: Validate required inputs and intended checkout
+        script: python3 -I ci/check_build_request.py
+      - name: Build real native dependencies, link Linux Probe and package IPA
+        script: python3 -I ci/build_linux_probe_ipa.py
     artifacts:
+      - .work/build-request/result.json
       - .work/linux-profile-apple/result.json
       - .work/linux-profile-apple/*.log
+      - .work/linux-ipa/result.json
+      - .work/linux-ipa/iDeck-Linux-Probe.ipa
+      - .work/linux-ipa/*.log
+      - .work/linux-ipa/husk/build/logs/**
+      - .work/linux-ipa/native-products.tar.gz

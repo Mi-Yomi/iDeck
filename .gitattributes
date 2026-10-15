@@ -4,3 +4,6 @@
 # A format-patch blank context line has a required leading space.
 /experiments/linux-guest/husk/patches/*.patch whitespace=-blank-at-eol
 /ci/check_linux_guest_profile.py text eol=lf
+/ci/check_build_request.py text eol=lf
+/ci/build_linux_probe_ipa.py text eol=lf
+/experiments/linux-guest/ipa/*.patch whitespace=-blank-at-eol

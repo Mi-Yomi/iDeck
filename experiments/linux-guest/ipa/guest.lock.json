@@ -1,0 +1,19 @@
+{
+  "archive": "husk/linux-probe-guest.tar.gz",
+  "size": 19623827,
+  "sha256": "f973fe00e1cf54772589c3e54c8bc22a7396604ec927004267f9a4aea9d39efb",
+  "files": {
+    "profile.json": {
+      "size": 1599,
+      "sha256": "65ae64e005b9fa29f3e0ee6a9bed079366b16633e2dbebd8ca08aa15bdce0fb6"
+    },
+    "vmlinuz-virt": {
+      "size": 10351104,
+      "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+    },
+    "initramfs-ideck.gz": {
+      "size": 9402391,
+      "sha256": "5f64312eeef340991c6b0d97bd9d1fb01649c1763e14d7fb8231ad16551e9343"
+    }
+  }
+}

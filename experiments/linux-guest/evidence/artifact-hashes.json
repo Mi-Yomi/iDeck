@@ -55,6 +55,16 @@
     "sha256": "6d57358526a4c8ff9fda107d6eb0ab9d2c79a3e27157dfc57ee66290f5f3ee41"
   },
   {
+    "path": "ipa-build-preparation.json",
+    "size": 1853,
+    "sha256": "3c6e60dbe7da1f9ce2597a2796480cb013eb92b04404630a417dc81ed98debf5"
+  },
+  {
+    "path": "ipa-host-tests.txt",
+    "size": 3854,
+    "sha256": "43c9df82e006045feb41aebe6d898acc14769b3b0fb80cbf89372fcb43907864"
+  },
+  {
     "path": "readelf-key-objects.txt",
     "size": 5463,
     "sha256": "4995fb02142bbe20be0611d83457ea50aec9efbac7b5db8b590f0f59118c19ce"

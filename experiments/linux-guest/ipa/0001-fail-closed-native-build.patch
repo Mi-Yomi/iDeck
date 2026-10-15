@@ -1,0 +1,55 @@
+From 56663980cf8f9b0b236b42ff1fd8d9ef86afff19 Mon Sep 17 00:00:00 2001
+From: iDeck local development <ideck-local@users.noreply.github.com>
+Date: Fri, 16 Oct 2026 00:00:03 +0500
+Subject: [PATCH] Fail native source builds on rejected patches and missing
+ dylibs
+
+Class: build-fix
+
+Evidence: local patch application and shell syntax checks; Apple execution pending
+
+Offered-upstream: no, local experiment
+---
+ scripts/build_ios.sh | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/scripts/build_ios.sh b/scripts/build_ios.sh
+index 22a6ff9..97a22fc 100755
+--- a/scripts/build_ios.sh
++++ b/scripts/build_ios.sh
+@@ -8,7 +8,7 @@
+ #
+ # Usage: ./scripts/build_ios.sh [stage ...]      (no args = all stages)
+ #        stages: libffi glib pixman libucontext libslirp qemu
+-set -uo pipefail
++set -euo pipefail
+ 
+ HUSK_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+ SRC="$HUSK_ROOT/third_party/build"
+@@ -139,7 +139,8 @@ apply_patch() {
+     [ -f "$stamp" ] && return 0
+     [ -f "$HUSK_ROOT/patches/$patch" ] || return 0
+     echo "[patch] $dir <- $patch"
+-    ( cd "$SRC/$dir" && patch -p1 -N -r - < "$HUSK_ROOT/patches/$patch" ) >/dev/null 2>&1
++    ( cd "$SRC/$dir" && patch -p1 -N -r - < "$HUSK_ROOT/patches/$patch" ) >"$LOGS/patch-$dir.log" 2>&1 \
++        || fail "patch $dir" "$LOGS/patch-$dir.log"
+     touch "$stamp"
+ }
+ 
+@@ -206,7 +207,7 @@ stage_qemurebuild() {
+ # break the app target.
+ husk_stage_dylib() {
+     local src="$SRC/qemu-10.0.12-utm/_husk_build/libqemu-aarch64-softmmu.dylib"
+-    [ -f "$src" ] || return 0
++    [ -f "$src" ] || { echo "missing built QEMU dylib: $src" >&2; return 1; }
+     mkdir -p "$PREFIX/../lib"
+     cp "$src" "$PREFIX/../lib/"
+     echo "[stage] $(cd "$PREFIX/../lib" && pwd)/libqemu-aarch64-softmmu.dylib"
+@@ -219,4 +220,4 @@ echo "HUSK build: PREFIX=$PREFIX"
+ echo "            SDK=$SDKROOT ($SDKVERSION), min=$SDKMINVER, ncpu=$NCPU"
+ for s in "${STAGES[@]}"; do "stage_$s"; done
+ banner "build complete"
+-ls -la "$PREFIX/lib" 2>/dev/null | head -20
++ls -la "$PREFIX/lib"
+-- 
+2.53.0.windows.2

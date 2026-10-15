@@ -1,0 +1,194 @@
+{
+  "name": "iDeckLinuxProbe",
+  "options": {
+    "bundleIdPrefix": "dev.ideck",
+    "deploymentTarget": {
+      "iOS": "16.0"
+    },
+    "createIntermediateGroups": true
+  },
+  "settings": {
+    "base": {
+      "HUSK_BUNDLE_IDENTIFIER": "dev.ideck.linuxprobe",
+      "HUSK_ENTITLEMENTS": "Husk/Husk.entitlements",
+      "ARCHS": "arm64",
+      "ONLY_ACTIVE_ARCH": "YES",
+      "ENABLE_BITCODE": "NO",
+      "SWIFT_VERSION": "5.0",
+      "SWIFT_OPTIMIZATION_LEVEL": "-O",
+      "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "$(inherited) IDECK_LINUX_PROBE_ONLY"
+    }
+  },
+  "targets": {
+    "Husk": {
+      "type": "application",
+      "platform": "iOS",
+      "sources": [
+        {
+          "path": "Husk",
+          "excludes": [
+            "Resources/**"
+          ]
+        },
+        {
+          "path": "Husk/Resources",
+          "buildPhase": "resources"
+        },
+        {
+          "path": "../translation-layer"
+        },
+        {
+          "path": "../translation-layer-next",
+          "excludes": [
+            "husk-tl-unity-app.h"
+          ]
+        },
+        {
+          "path": "HuskJITHelper/HuskJITMessages.swift"
+        },
+        {
+          "path": "Shared"
+        }
+      ],
+      "settings": {
+        "base": {
+          "PRODUCT_BUNDLE_IDENTIFIER": "$(HUSK_BUNDLE_IDENTIFIER)",
+          "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon",
+          "ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES": "AppIconClearLight AppIconClearDark AppIconTintedLight AppIconTintedDark",
+          "ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS": "YES",
+          "CODE_SIGN_STYLE": "Automatic",
+          "INFOPLIST_FILE": "Husk/Info.plist",
+          "CODE_SIGN_ENTITLEMENTS": "$(HUSK_ENTITLEMENTS)",
+          "SWIFT_OBJC_BRIDGING_HEADER": "Husk/HuskBridge.h",
+          "LD_RUNPATH_SEARCH_PATHS": [
+            "$(inherited)",
+            "@executable_path/Frameworks"
+          ],
+          "TARGETED_DEVICE_FAMILY": "1,2",
+          "LIBRARY_SEARCH_PATHS": [
+            "$(inherited)",
+            "$(SRCROOT)/../../build/ios-arm64/lib",
+            "$(SRCROOT)/Frameworks"
+          ],
+          "OTHER_LDFLAGS": [
+            "$(inherited)",
+            "-lz",
+            "-lresolv",
+            "-lsqlite3",
+            "-framework",
+            "AudioToolbox",
+            "-framework",
+            "CoreText",
+            "-framework",
+            "CoreGraphics",
+            "-framework",
+            "ImageIO",
+            "-framework",
+            "WebKit",
+            "-framework",
+            "VideoToolbox",
+            "-framework",
+            "CoreMedia",
+            "-framework",
+            "CoreVideo",
+            "-framework",
+            "Accelerate",
+            "-framework",
+            "Security",
+            "-lhusk_rppairing"
+          ]
+        }
+      },
+      "dependencies": [
+        {
+          "target": "HuskJITHelper"
+        },
+        {
+          "target": "HuskDownloadsWidget"
+        },
+        {
+          "framework": "../../build/ios-arm64/lib/libqemu-aarch64-softmmu.dylib",
+          "embed": true,
+          "codeSign": true
+        },
+        {
+          "framework": "Frameworks/libFilePickerFix.dylib",
+          "embed": true,
+          "codeSign": true
+        },
+        {
+          "framework": "../../build/ios-arm64/sysroot/lib/libANGLE-shared.dylib",
+          "embed": true,
+          "codeSign": true,
+          "link": false
+        }
+      ],
+      "preBuildScripts": [
+        {
+          "name": "Stage verified iDeck Linux probe",
+          "script": "set -e\npython3 \"$SRCROOT/../../scripts/ideck-stage-linux-guest.py\" \\\n  \"$SRCROOT/../../guests/ideck-linux\" \\\n  \"$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/iDeckLinuxProbe\"\n"
+        }
+      ],
+      "postBuildScripts": [
+        {
+          "name": "Embed StikJIT",
+          "script": "set -e\nSRC=\"$SRCROOT/Frameworks/StikJIT.xcframework/ios-arm64/StikJIT.framework\"\nDST=\"$TARGET_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH/StikJIT.framework\"\nrm -rf \"$DST\"\nmkdir -p \"$(dirname \"$DST\")\"\nditto \"$SRC\" \"$DST\"\nrm -rf \"$DST/Headers\" \"$DST/Modules\"\nPLIST=\"$DST/Info.plist\"\nif [ ! -f \"$PLIST\" ]; then\n  plutil -create xml1 \"$PLIST\"\n  plutil -insert CFBundleIdentifier -string \"$PRODUCT_BUNDLE_IDENTIFIER.StikJIT\" \"$PLIST\"\n  plutil -insert CFBundleExecutable -string StikJIT \"$PLIST\"\n  plutil -insert CFBundleName -string StikJIT \"$PLIST\"\n  plutil -insert CFBundlePackageType -string FMWK \"$PLIST\"\n  plutil -insert CFBundleInfoDictionaryVersion -string 6.0 \"$PLIST\"\n  plutil -insert CFBundleShortVersionString -string 1.9.0 \"$PLIST\"\n  plutil -insert CFBundleVersion -string 1.9.0 \"$PLIST\"\n  plutil -insert MinimumOSVersion -string 17.4 \"$PLIST\"\n  plutil -insert CFBundleSupportedPlatforms -array \"$PLIST\"\n  plutil -insert CFBundleSupportedPlatforms.0 -string iPhoneOS \"$PLIST\"\nfi\nif [ -n \"$EXPANDED_CODE_SIGN_IDENTITY\" ] && [ \"$CODE_SIGNING_ALLOWED\" != \"NO\" ]; then\n  codesign --force --sign \"$EXPANDED_CODE_SIGN_IDENTITY\" --timestamp=none \"$DST\"\nfi\n",
+          "basedOnDependencyAnalysis": false
+        }
+      ]
+    },
+    "HuskJITHelper": {
+      "type": "app-extension",
+      "platform": "iOS",
+      "deploymentTarget": "26.0",
+      "sources": [
+        {
+          "path": "HuskJITHelper"
+        }
+      ],
+      "settings": {
+        "base": {
+          "PRODUCT_BUNDLE_IDENTIFIER": "$(HUSK_BUNDLE_IDENTIFIER).JITHelper",
+          "INFOPLIST_FILE": "HuskJITHelper/Info.plist",
+          "GENERATE_INFOPLIST_FILE": "NO",
+          "APPLICATION_EXTENSION_API_ONLY": "YES",
+          "CODE_SIGN_STYLE": "Automatic",
+          "TARGETED_DEVICE_FAMILY": "1,2",
+          "LD_RUNPATH_SEARCH_PATHS": [
+            "$(inherited)",
+            "@executable_path/../../Frameworks"
+          ]
+        }
+      },
+      "dependencies": [
+        {
+          "framework": "Frameworks/StikJIT.xcframework",
+          "embed": false
+        }
+      ]
+    },
+    "HuskDownloadsWidget": {
+      "type": "app-extension",
+      "platform": "iOS",
+      "deploymentTarget": "16.1",
+      "sources": [
+        {
+          "path": "HuskDownloadsWidget"
+        },
+        {
+          "path": "Shared"
+        }
+      ],
+      "settings": {
+        "base": {
+          "PRODUCT_BUNDLE_IDENTIFIER": "$(HUSK_BUNDLE_IDENTIFIER).Downloads",
+          "INFOPLIST_FILE": "HuskDownloadsWidget/Info.plist",
+          "GENERATE_INFOPLIST_FILE": "NO",
+          "APPLICATION_EXTENSION_API_ONLY": "YES",
+          "CODE_SIGN_STYLE": "Automatic",
+          "TARGETED_DEVICE_FAMILY": "1"
+        }
+      }
+    }
+  }
+}

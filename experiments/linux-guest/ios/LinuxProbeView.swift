@@ -29,6 +29,10 @@ struct LinuxProbeRoot: View {
     @ObservedObject private var route = LinuxProbeRoute.shared
 
     var body: some View {
+        #if IDECK_LINUX_PROBE_ONLY
+        // The separately installed probe has no Android/PS4 library route.
+        LinuxProbeView()
+        #else
         Group {
             switch route.destination {
             case .choose:
@@ -53,6 +57,7 @@ struct LinuxProbeRoot: View {
             guard route.destination == .library else { return }
             if !AppClip.handle(url) { IncomingFiles.shared.receive(url) }
         }
+        #endif
     }
 }
 

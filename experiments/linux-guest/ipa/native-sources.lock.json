@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "husk_commit": "0695248f491cda877f7969d1f0cc89aeede1482e",
+  "rust_toolchain": "1.99.1",
+  "archives": [
+    {
+      "name": "QEMU",
+      "url": "https://github.com/utmapp/qemu/releases/download/v10.0.12-utm/qemu-10.0.12-utm.tar.xz",
+      "filename": "qemu-10.0.12-utm.tar.xz",
+      "size": 142836072,
+      "sha256": "7c9605290b34152debb842e965a55d2e4fbba4793e536ab677b4027e5dc0ba1a"
+    },
+    {
+      "name": "FFI",
+      "url": "https://github.com/libffi/libffi/releases/download/v3.5.0/libffi-3.5.0.tar.gz",
+      "filename": "libffi-3.5.0.tar.gz",
+      "size": 1420475,
+      "sha256": "8c72678628a5dd8782f08ad421d5a441e42c1c5c1b33e0bc211cbfcf1f3b3978"
+    },
+    {
+      "name": "ICONV",
+      "url": "https://ftp.gnu.org/gnu/libiconv/libiconv-1.16.tar.gz",
+      "filename": "libiconv-1.16.tar.gz",
+      "size": 5166734,
+      "sha256": "e6a1b1b589654277ee790cce3734f07876ac4ccfaecbee8afa0b649cf529cc04"
+    },
+    {
+      "name": "GETTEXT",
+      "url": "https://ftp.gnu.org/gnu/gettext/gettext-0.22.5.tar.gz",
+      "filename": "gettext-0.22.5.tar.gz",
+      "size": 26861674,
+      "sha256": "ec1705b1e969b83a9f073144ec806151db88127f5e40fe5a94cb6c8fa48996a0"
+    },
+    {
+      "name": "GLIB",
+      "url": "https://download.gnome.org/sources/glib/2.83/glib-2.83.0.tar.xz",
+      "filename": "glib-2.83.0.tar.xz",
+      "size": 5595320,
+      "sha256": "a07d9e1a57a4279c5ece71c26dc44eea12bd518ea9ff695d53e722997032b614"
+    },
+    {
+      "name": "PIXMAN",
+      "url": "https://www.cairographics.org/releases/pixman-0.38.0.tar.gz",
+      "filename": "pixman-0.38.0.tar.gz",
+      "size": 891291,
+      "sha256": "a7592bef0156d7c27545487a52245669b00cf7e70054505381cff2136d890ca8"
+    },
+    {
+      "name": "SLIRP",
+      "url": "https://github.com/utmapp/libslirp/releases/download/v4.9.1-release-mirror/libslirp-v4.9.1.tar.gz",
+      "filename": "libslirp-v4.9.1.tar.gz",
+      "size": 173320,
+      "sha256": "3970542143b7c11e6a09a4d2b50f30a133473c41f15ed0bdcc3b7a1c450d9a5c"
+    }
+  ],
+  "git": [
+    {
+      "name": "libucontext",
+      "url": "https://github.com/utmapp/libucontext.git",
+      "commit": "9b1d8f01a6e99166f9808c79966abe10786de8b6",
+      "destination": "third_party/build/libucontext"
+    },
+    {
+      "name": "epoxy",
+      "url": "https://github.com/utmapp/libepoxy.git",
+      "commit": "bf98587477fe68d07b93319ece7b40a7d0e2eabe",
+      "destination": "third_party/gpu/epoxy"
+    },
+    {
+      "name": "virgl",
+      "url": "https://github.com/utmapp/virglrenderer.git",
+      "commit": "482f9d8b8c2d2288efa10a027116216909d2c226",
+      "destination": "third_party/gpu/virgl"
+    },
+    {
+      "name": "webkit",
+      "url": "https://github.com/WebKit/WebKit.git",
+      "commit": "c97bebb62d97264061ee02b0e5def971a053e6e3",
+      "destination": "third_party/gpu/webkit",
+      "sparse": [
+        "Source/ThirdParty/ANGLE",
+        "Configurations",
+        "Tools/Scripts",
+        "Tools/ccache"
+      ]
+    }
+  ]
+}

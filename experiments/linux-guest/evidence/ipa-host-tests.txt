@@ -1,0 +1,37 @@
+test_failed_build_command_is_not_a_successful_step (test_ci_build.IPAInputs.test_failed_build_command_is_not_a_successful_step) ... IDECK_BUILD_STEP=compiler
+ok
+test_package_rejects_husk_identity_and_simulator (test_ci_build.IPAInputs.test_package_rejects_husk_identity_and_simulator) ... ok
+test_probe_project_excludes_unused_embedded_runtimes (test_ci_build.IPAInputs.test_probe_project_excludes_unused_embedded_runtimes) ... ok
+test_real_committed_guest_restores_with_original_hashes (test_ci_build.IPAInputs.test_real_committed_guest_restores_with_original_hashes) ... ok
+test_exact_request_accepted (test_ci_build.RequestGuards.test_exact_request_accepted) ... ok
+test_legacy_expected_source_commit_remains_distinct_from_transport_commit (test_ci_build.RequestGuards.test_legacy_expected_source_commit_remains_distinct_from_transport_commit) ... ok
+test_missing_input_and_default_sentinel_do_not_authorize_run (test_ci_build.RequestGuards.test_missing_input_and_default_sentinel_do_not_authorize_run) ... ok
+test_old_checkout_and_provider_mismatch_rejected (test_ci_build.RequestGuards.test_old_checkout_and_provider_mismatch_rejected) ... ok
+test_quota_and_private_verification_still_required (test_ci_build.RequestGuards.test_quota_and_private_verification_still_required) ... ok
+test_wrong_branch_even_at_same_commit_rejected (test_ci_build.RequestGuards.test_wrong_branch_even_at_same_commit_rejected) ... ok
+test_independent_linux_event_decode (test_guards.InputGuards.test_independent_linux_event_decode) ... ok
+test_listing_and_syn_are_not_input (test_guards.InputGuards.test_listing_and_syn_are_not_input) ... ok
+test_missing_release_rejected (test_guards.InputGuards.test_missing_release_rejected) ... ok
+test_truncated_event_rejected (test_guards.InputGuards.test_truncated_event_rejected) ... ok
+test_bad_elfs_rejected (test_guards.IntegrityGuards.test_bad_elfs_rejected) ... ok
+test_corrupt_and_traversal_assets_rejected (test_guards.IntegrityGuards.test_corrupt_and_traversal_assets_rejected) ... ok
+test_empty_screenshot_rejected (test_guards.IntegrityGuards.test_empty_screenshot_rejected) ... ok
+test_manifest_paths_and_hashes_rejected (test_guards.IntegrityGuards.test_manifest_paths_and_hashes_rejected) ... ok
+test_valid_elf32_and_missing_program_headers (test_guards.IntegrityGuards.test_valid_elf32_and_missing_program_headers) ... ok
+test_changed_overlay_input_rejected (test_staging.BundleGuards.test_changed_overlay_input_rejected) ... ok
+test_corruption_cannot_mutate_existing_bundle (test_staging.BundleGuards.test_corruption_cannot_mutate_existing_bundle) ... ok
+test_dirty_or_wrong_upstream_rejected_before_worktree (test_staging.BundleGuards.test_dirty_or_wrong_upstream_rejected_before_worktree) ... ok
+test_exact_offline_source_slice_and_patch (test_staging.BundleGuards.test_exact_offline_source_slice_and_patch) ... ok
+test_only_validated_three_files_are_copied (test_staging.BundleGuards.test_only_validated_three_files_are_copied) ... ok
+test_output_cannot_be_source_or_its_child (test_staging.BundleGuards.test_output_cannot_be_source_or_its_child) ... ok
+test_output_directory_cannot_replace_an_asset (test_staging.BundleGuards.test_output_directory_cannot_replace_an_asset) ... ok
+test_overlay_paths_must_stay_under_root (test_staging.BundleGuards.test_overlay_paths_must_stay_under_root) ... ok
+test_oversized_profile_rejected_before_read (test_staging.BundleGuards.test_oversized_profile_rejected_before_read) ... ok
+test_profile_filename_and_dimensions_cannot_override_scope (test_staging.BundleGuards.test_profile_filename_and_dimensions_cannot_override_scope) ... ok
+test_sparse_checkout_is_not_a_build_source (test_staging.BundleGuards.test_sparse_checkout_is_not_a_build_source) ... ok
+
+----------------------------------------------------------------------
+Ran 30 tests in 2.541s
+
+OK
+real child failure

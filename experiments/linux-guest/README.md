@@ -2,6 +2,11 @@
 
 This branch advances the requested **real Linux kernel + Linux Steam + Big Picture on iPhone** route. It preserves the previous Playport/Madeira source snapshot and all existing CI workflows. It does not replace the application, provide an IPA, or claim an iPhone Steam session.
 
+2026-10-16: [A separate native IPA build recipe](ipa/README.md) is now available
+as `ideck-linux-probe-ipa`, alongside the ten-minute Swift source check. The
+verified guest bytes are included in Git. Host guards/staging pass; Apple
+compilation, linking and an actual IPA are still pending execution of that recipe.
+
 ## Measured in this session
 
 - Reconstructed all 2,023 source entries to the original declared Git tree. The transport repository and the reconstructed source have distinct identities; see `evidence/source-inventory.json`.

@@ -102,3 +102,57 @@ workflows:
       - .work/runtime-control-artifacts/fex-ios-archives.zip
 # Manual-only. No triggers, retries, caches, credentials, signing or publication.
 # Add this workflow alongside the source gate only after review and coordination.
+  ideck-wine-ios-control:
+    name: iDeck pinned Wine headers and source-only iOS wineserver control
+    instance_type: mac_mini_m2
+    max_build_duration: 43
+    inputs:
+      expected_recipe_sha256:
+        description: Exact reviewed ci/wine-core-control.sh SHA256
+        type: string
+      expected_tools_prepare_sha256:
+        description: Exact reviewed ci/prepare_wine_tools.py SHA256
+        type: string
+      expected_tools_lock_sha256:
+        description: Exact reviewed ci/homebrew-wine-tools-lock.json SHA256
+        type: string
+      wine_tools_install_approved:
+        description: Explicit approval to install locked official Homebrew Bison and LLVM bottles on the temporary runner
+        type: string
+        default: "false"
+      free_quota_verified:
+        description: Free macOS quota and disabled paid subscription checked for this manual run
+        type: string
+        default: "false"
+      private_source_verified:
+        description: Approved private Mi-Yomi/iDeck repository selected
+        type: string
+        default: "false"
+    environment:
+      xcode: "26.6"
+      vars:
+        EXPECTED_RECIPE_SHA256: ${{ inputs.expected_recipe_sha256 }}
+        EXPECTED_TOOLS_PREPARE_SHA256: ${{ inputs.expected_tools_prepare_sha256 }}
+        EXPECTED_TOOLS_LOCK_SHA256: ${{ inputs.expected_tools_lock_sha256 }}
+        WINE_TOOLS_INSTALL_APPROVED: ${{ inputs.wine_tools_install_approved }}
+        FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
+        PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
+        GIT_TERMINAL_PROMPT: "0"
+        JOBS: "4"
+    scripts:
+      - name: Generate pinned Wine headers and compile all 49 iOS server objects
+        script: |
+          set -euo pipefail
+          test "${FREE_QUOTA_VERIFIED:-false}" = true
+          test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
+          test "${WINE_TOOLS_INSTALL_APPROVED:-false}" = true
+          python3 ci/run_wine_control.py
+    artifacts:
+      - .work/wine-control-artifacts/wine-evidence.zip
+      - .work/wine-control-artifacts/wine-headers.zip
+      - .work/wine-control-artifacts/wineserver-ios-archive.zip
+# PROPOSAL ONLY: no triggers, retries, caches, credentials, signing or publication.
+# Wrapper's aggregate budget is 41 minutes: tool setup <=8, source control <=33.
+# Xcode 26.6 / iPhoneOS SDK 26.5 are verified by preflight before Wine fetch.
+# Approved official Homebrew bottle setup is bounded and pinned before source fetch.
+# Preflight still fails closed if Bison 3 or Mach-O-capable llvm-objcopy is unavailable.

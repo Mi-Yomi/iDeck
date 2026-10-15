@@ -8,7 +8,15 @@ EXPECTED=279fd0f83170425db002fe25d6bd62f6355f497d
 WINE_EXPECTED=9129e9684daaeae70da9435e7c6060e59392634e
 [ "$(uname -s)" = Darwin ] || { echo 'macOS runner required'; exit 2; }
 [ "$(uname -m)" = arm64 ] || { echo 'Apple silicon runner required'; exit 2; }
-xcodebuild -version | grep -qx 'Xcode 26.6' || { echo 'Unreviewed Xcode'; exit 2; }
+# Capture first: grep -q can close a pipe early and fail its producer under pipefail.
+# Keep exact version acceptance, expose actual output, and preserve producer failure.
+if ! XCODE_VERSION=$(xcodebuild -version 2>&1); then
+    printf '%s\n' "$XCODE_VERSION"
+    echo 'xcodebuild version probe failed'; exit 2
+fi
+printf '%s\n' "$XCODE_VERSION"
+XCODE_FIRST=${XCODE_VERSION%%$'\n'*}
+[ "$XCODE_FIRST" = 'Xcode 26.6' ] || { echo 'Unreviewed Xcode'; exit 2; }
 [ "$(git -C "$R" rev-parse HEAD)" = "$EXPECTED" ] || { echo 'Wrong Madeira pin'; exit 2; }
 git -C "$R" diff --exit-code HEAD -- .
 E="$R/build/control-evidence"
@@ -22,7 +30,12 @@ SDK=$(xcrun --sdk iphoneos --show-sdk-path)
 BISON_BIN=$(command -v bison || true)
 if [ -x /opt/homebrew/opt/bison/bin/bison ]; then BISON_BIN=/opt/homebrew/opt/bison/bin/bison; fi
 [ -n "$BISON_BIN" ] || { echo 'Prerequisite missing: Bison >=3'; exit 2; }
-"$BISON_BIN" --version | head -1 | grep -Eq ' [3-9]\.' || { echo 'Prerequisite missing: Bison >=3'; exit 2; }
+if ! BISON_VERSION=$("$BISON_BIN" --version 2>&1); then
+    printf '%s\n' "$BISON_VERSION"
+    echo 'Bison version probe failed'; exit 2
+fi
+BISON_FIRST=${BISON_VERSION%%$'\n'*}
+grep -E ' [3-9]\.' <<< "$BISON_FIRST" >/dev/null || { echo 'Prerequisite missing: Bison >=3'; exit 2; }
 OBJCOPY_BIN=$(command -v llvm-objcopy || true)
 if [ -z "$OBJCOPY_BIN" ]; then OBJCOPY_BIN=$(xcrun --find llvm-objcopy 2>/dev/null || true); fi
 if [ -z "$OBJCOPY_BIN" ] && [ -x /opt/homebrew/opt/llvm/bin/llvm-objcopy ]; then

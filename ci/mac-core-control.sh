@@ -52,7 +52,11 @@ fex-ios)
     }
     verify_pin FEX f59cab95659e8add0c88f0c76ec1cf483c536dbf
     for p in External/fmt External/range-v3 External/xxhash External/unordered_dense; do
-        test -f "$R/FEX/$p/CMakeLists.txt" || { echo "Missing pinned FEX/$p"; exit 2; }
+        cmake_file="$R/FEX/$p/CMakeLists.txt"
+        if [ "$p" = External/xxhash ]; then
+            cmake_file="$R/FEX/$p/cmake_unofficial/CMakeLists.txt"
+        fi
+        test -f "$cmake_file" || { echo "Missing pinned CMake input $cmake_file"; exit 2; }
         expected_sub=$(git -C "$R/FEX" ls-tree HEAD "$p" | awk '{print $3}')
         [ "$(git -C "$R/FEX/$p" rev-parse HEAD)" = "$expected_sub" ] || {
           echo "Wrong pinned FEX/$p revision"; exit 2;
@@ -62,7 +66,12 @@ fex-ios)
     # Explicit tuning avoids the source's /proc/cpuinfo probe on Apple hosts.
     # Explicit archive targets close omissions in upstream's build.sh.
     # LTO off is a recorded control-build deviation, not a claim of byte identity.
-    cmake -S "$R/FEX" -B "$R/FEX/build-ios" -G Ninja \
+    # The observed Apple image has no Ninja; use its Xcode-provided make.
+    MAKE_PROGRAM=$(xcrun --find make)
+    test -x "$MAKE_PROGRAM"
+    "$MAKE_PROGRAM" --version | head -1
+    cmake -S "$R/FEX" -B "$R/FEX/build-ios" -G "Unix Makefiles" \
+      -DCMAKE_MAKE_PROGRAM="$MAKE_PROGRAM" \
       -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_SYSTEM_PROCESSOR=arm64 \
       -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_SYSROOT="$SDK" \
       -DCMAKE_OSX_DEPLOYMENT_TARGET=17.0 -DCMAKE_BUILD_TYPE=Release \

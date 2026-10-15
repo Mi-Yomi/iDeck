@@ -13,7 +13,7 @@ import zipfile
 
 MADEIRA = "279fd0f83170425db002fe25d6bd62f6355f497d"
 FEX = "f59cab95659e8add0c88f0c76ec1cf483c536dbf"
-RECIPE = "6a3145c0544fae7210ebd3be4f501db3e6226dd1a4d18253431e05f6964c0cd1"
+RECIPE = "771a972aebdd92fe1209b91929d65c573217210eb5408bb3f4f3fdcbbf07cba1"
 PINS = {
     "External/fmt": "407c905e45ad75fc29bf0f9bb7c5c2fd3475976f",
     "External/range-v3": "ca1388fb9da8e69314dda222dc7b139ca84e092f",

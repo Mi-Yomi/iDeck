@@ -1,0 +1,13 @@
+{
+  "base_commit": "412de5f8c0bdd26d84e0127eb5776ba992e3b152",
+  "compressed_patch_sha256": "26f824ebc438802833d16e5aac317cf5c28359bf0ff37fe3cb9431fdd83afa5c",
+  "inventory_sha256": "91cb90f76ab28f08068a136e63ce64e511fe63377d341ef8d16e1b18318cd81c",
+  "madeira_commit": "8c050d03f4d89096e1e2e2c8bb44479fffd86619",
+  "patch_sha256": "cb6906f015ef18cd8451e79b877ce3be31e82b54672f5b09c63ce92118c3bfa9",
+  "schema": 1,
+  "scope": "source-only pinned baseline plus exact-tree diff; not a full Git history mirror",
+  "source_commit": "cd00bd9a21aac15328c9ce18dd821d48e520c4ac",
+  "source_tree": "417b1ba66d9f9495217a4462974b893998373bcb",
+  "tracked_entry_count": 2021,
+  "upstream_url": "https://github.com/playportdev/playport.git"
+}

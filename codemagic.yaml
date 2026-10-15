@@ -1,0 +1,68 @@
+workflows:
+  ideck-main-apple-source-check:
+    name: iDeck real-source Apple compiler check (no runtime link)
+    instance_type: mac_mini_m2
+    max_build_duration: 25
+    inputs:
+      expected_source_commit:
+        description: Exact audited iDeck source commit recorded in source-manifest.json
+        type: string
+      free_quota_verified:
+        description: Personal free macOS allowance and disabled paid subscription verified before this manual run
+        type: boolean
+        default: false
+      private_source_verified:
+        description: This approved private Mi-Yomi/iDeck source package is the selected repository
+        type: boolean
+        default: false
+    environment:
+      xcode: "26.6"
+      vars:
+        EXPECTED_SOURCE_COMMIT: ${{ inputs.expected_source_commit }}
+        FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}
+        PRIVATE_SOURCE_VERIFIED: ${{ inputs.private_source_verified }}
+        GIT_TERMINAL_PROMPT: "0"
+    scripts:
+      - name: Verify approved source and reconstruct exact audited tree
+        script: |
+          set -euo pipefail
+          test "$(uname -s)" = Darwin
+          test "${FREE_QUOTA_VERIFIED:-false}" = true
+          test "${PRIVATE_SOURCE_VERIFIED:-false}" = true
+          python3 - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          expected = os.environ.get("EXPECTED_SOURCE_COMMIT", "")
+          if not re.fullmatch(r"[0-9a-f]{40}", expected):
+              raise SystemExit("Expected source must be the full audited commit SHA")
+          manifest = json.loads(Path("source-manifest.json").read_text())
+          if manifest["source_commit"] != expected:
+              raise SystemExit("Source package does not match the approved commit")
+          PY
+          python3 ci/reconstruct_source.py
+      - name: Compile actual iDeck packages and typecheck main app with Apple SDK
+        script: |
+          set -euo pipefail
+          SOURCE_TREE="$(python3 -c 'import json; print(json.load(open("source-manifest.json"))["source_tree"])')"
+          cd .work/source
+          result=0
+          python3 tools/apple_source_check.py --expected-tree "$SOURCE_TREE" --seconds 1020 || result=$?
+          python3 - <<'PYREPORT'
+          import json
+          from pathlib import Path
+          paths = list(Path(".work/ideck/apple-source-check").glob("run-*/result.json"))
+          if len(paths) != 1:
+              raise SystemExit("Exactly one compiler result report was expected")
+          report = json.loads(paths[0].read_text())
+          keys = ("result", "failure", "scope", "expected_tree", "checkout_head", "xcode",
+                  "sdk_version", "swift", "target", "dev_source_count", "release_source_count",
+                  "runtime_linked", "ipa_created", "device_tested")
+          summary = {key: report[key] for key in keys if key in report}
+          summary["dependency_modules"] = sorted(report.get("dependency_modules", {}))
+          summary["steps"] = [{key: step[key] for key in ("label", "exit_code", "elapsed_seconds", "timed_out") if key in step}
+                              for step in report.get("steps", [])]
+          print("APPLE_SOURCE_CHECK_RESULT=" + json.dumps(summary, sort_keys=True))
+          PYREPORT
+          exit "$result"
+# Manual-only: no triggering, publishing, artifact upload, cache or secret groups.
+# This does not link guest runtime binaries, package an IPA, sign or install apps.

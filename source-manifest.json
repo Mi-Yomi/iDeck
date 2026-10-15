@@ -1,13 +1,13 @@
 {
   "base_commit": "412de5f8c0bdd26d84e0127eb5776ba992e3b152",
-  "compressed_patch_sha256": "8582c5441828eb2ddac5ec80e4ccfad7a842dec26abf5f49a9c35c0a045ee57b",
-  "inventory_sha256": "1e3679ae57af87d38e80d9906618565687db294f9069fc34fa7c6cae3a67e705",
+  "compressed_patch_sha256": "7de11bfae521936cc5de07eaaf769a4781eab91cb69e8a490fbf5bf3ab82e0d6",
+  "inventory_sha256": "e78c298283d68ab1ec01872392e92251f0122e9d4064468ea55de7c612ed8a11",
   "madeira_commit": "8c050d03f4d89096e1e2e2c8bb44479fffd86619",
-  "patch_sha256": "83cfa3b45b2a2b3554fbf367e13fc71a4e7a36af9c01da95420e63507e07131a",
+  "patch_sha256": "eed2c9a2bed0cba86d39789037d5c3dcea2e94a2bdef31b6fb9b19a271e8a115",
   "schema": 1,
   "scope": "source-only pinned baseline plus exact-tree diff; not a full Git history mirror",
-  "source_commit": "d6ea6023ad1255759423fae7fce82d74341312f5",
-  "source_tree": "ca66124408610d4d89c81441fffe43fbb28646fb",
-  "tracked_entry_count": 2022,
+  "source_commit": "1b07a996efe8cec2e12e3d3c1e19805c198fcccf",
+  "source_tree": "a305e267ebdb87ec4d202f4f8d5c499cc5ffbe44",
+  "tracked_entry_count": 2023,
   "upstream_url": "https://github.com/playportdev/playport.git"
 }

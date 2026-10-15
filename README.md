@@ -4,8 +4,8 @@ This private repository transports a reproducible, audited development-source sn
 
 ## Source provenance
 
-- Original source checkpoint: `d6ea6023ad1255759423fae7fce82d74341312f5`
-- Exact reconstructed Git tree: `ca66124408610d4d89c81441fffe43fbb28646fb`
+- Original source checkpoint: `1b07a996efe8cec2e12e3d3c1e19805c198fcccf`
+- Exact reconstructed Git tree: `a305e267ebdb87ec4d202f4f8d5c499cc5ffbe44`
 - Public Playport baseline: `412de5f8c0bdd26d84e0127eb5776ba992e3b152`, https://github.com/playportdev/playport
 - Nonrecursive Madeira header pin: `8c050d03f4d89096e1e2e2c8bb44479fffd86619`, https://github.com/willfaust/Madeira
 

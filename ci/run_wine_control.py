@@ -16,7 +16,7 @@ MADEIRA = "279fd0f83170425db002fe25d6bd62f6355f497d"
 WINE = "9129e9684daaeae70da9435e7c6060e59392634e"
 # Executable recipes and prerequisite metadata are pinned to reviewed byte hashes.
 RECIPE = "3ccb07ef0eea6fd1f7d3ed3316d09dba8fd6161d4f9e345980e512e19029848e"
-PREPARE_RECIPE = "0baf7016b30e2bb8f65bd636cd4eb5c434e121957c9d96d904789799bf301e15"
+PREPARE_RECIPE = "fc1102ad569ba4f3a9f86ce4b4defd9f6248f698d2a31e40ada591ef76e2d23b"
 TOOLS_LOCK = "376d136f4d7f6d4e7d4edc2b329e355686cb0c4aadd239517928f9ba8db228fe"
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / ".work/madeira-wine-control"

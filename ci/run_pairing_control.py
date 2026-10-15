@@ -12,8 +12,8 @@ import sys
 import time
 import zipfile
 
-SELF_PIN = '244658dc21dddb3dd899fe092fbdd5c7d90b05e5642222fd76453accdb845891'
-LOCK_PIN = '8a09a1d4400840e0b632aa4fff23efbfe2c0e5415b96791f7eaaacd34e28313d'
+SELF_PIN = 'f13f9b175582085d25c87fca2c516b4949c373ce215fd38355548d8f7110d5e0'
+LOCK_PIN = 'd1babdf1236886f6391cb7b1eb5fe4b30ac01e36d4d17abd1b8d8f02e5f7136c'
 ROOT = Path(__file__).resolve().parents[1]
 MIB = 1024 * 1024
 AGGREGATE_SECONDS = 1380
@@ -23,6 +23,7 @@ EVIDENCE_NAMES = {
     'installed-toolchain-provenance.json', 'rust-std-members.json', 'crate-downloads.json',
     'build-environment.json', 'rustc-wrapper-source.py', 'rustc-argv.jsonl',
     'archive-raw-members.json', 'archive-members.json', 'ring-members.json',
+    'ring-prevalidation-diagnostics.json', 'validation-failure-context.json',
     'own-rust-object-binding.json', 'api_probe.c', 'api_probe.dylib',
     'native-link-closure.json', 'all-crate-notices.json', 'output-manifest.json',
 }

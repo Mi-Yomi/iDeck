@@ -1233,8 +1233,8 @@
   },
   "rust_commit": "b940084d7eb6a299eb4bfeb8e34901bc051e7ac4",
   "control_hashes": {
-    "pairing_control.py": "555ddad91a564ad452463715288f57e023bbba18c8ee99a6dcc00418af355de7",
-    "pairing_validate.py": "a4c0ac0158f5b96a105c67a02e18b1791b45ec7efcaf87e0c01ad96c0048aa40",
+    "pairing_control.py": "b1fc1c8a3f5d597a8fb8b5d3e7b7c61bdb2e87d90e19515a21c614dad48c4a17",
+    "pairing_validate.py": "c5fc35f124bb8c07858f307892dc6b7703d22f2b398da921f2abe4c0a7fd80f0",
     "rustc_wrapper.py": "32351ee2b62b02ad361ee094ae8ee2900057e294848cf49bed58f0dee5b9eeb1",
     "tool_provenance.py": "adbfe86237b34851edbc0a8638bca3c00ca76d04943fb8fedf48186f78f47238"
   },
@@ -1244,5 +1244,6 @@
   "diagnostic_codegen_delta": [
     "-C",
     "save-temps"
-  ]
+  ],
+  "diagnostic_revision": "Capture raw final/native metadata and exact ring source/object/argv hash ties before unchanged validation; no native SDK0 allowance"
 }

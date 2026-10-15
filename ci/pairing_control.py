@@ -10,6 +10,7 @@ from pathlib import Path
 import platform
 import re
 import shutil
+import shlex
 import signal
 import stat
 import subprocess
@@ -24,7 +25,7 @@ import zipfile
 
 from pairing_validate import (Rejected, ar_members, macho, native_flags, require,
                               safe_relative, sha, shipped_crates, source_members,
-                              validate_member, bind_own_rust, final_definitions)
+                              validate_member, bind_own_rust, final_definitions, raw_macho_metadata)
 from tool_provenance import component_payload, verify_installed
 
 CI = Path(__file__).resolve().parent
@@ -387,9 +388,12 @@ class Control:
         self.archive = self.work / "target/aarch64-apple-ios/release/libmadeira_rppairing.a"
         require(self.archive.is_file() and self.archive.stat().st_size <= 512 * 1024**2, "archive missing/oversized")
         data = self.archive.read_bytes()
-        raw_members = [dict(name=name, sha256=sha(b), size=len(b), magic=b[:16].hex()) for name, b in ar_members(data)]
-        (self.evidence / "archive-raw-members.json").write_text(json.dumps(dict(archive_sha256=sha(data),
-                archive_size=len(data), members=raw_members), indent=2) + "\n")
+        raw_members = [dict(name=name, sha256=sha(b), size=len(b), magic=b[:16].hex(), raw_macho=raw_macho_metadata(b))
+                       for name, b in ar_members(data)]
+        raw_report = json.dumps(dict(archive_sha256=sha(data), archive_size=len(data), members=raw_members), indent=2) + "\n"
+        require(len(raw_report.encode()) <= self.lock["log_cap_bytes"], "raw archive diagnostic evidence cap")
+        (self.evidence / "archive-raw-members.json").write_text(raw_report)
+        self.capture_ring_diagnostics(raw_members)
         self.validate_archive()
         self.link_proof()
         self.verify_inputs()
@@ -407,6 +411,73 @@ class Control:
             for name, expected in checksum["files"].items():
                 require(sha((folder / name).read_bytes()) == expected, "vendor source changed during build")
 
+    def capture_ring_diagnostics(self, final_members):
+        # Diagnostics precede every native member policy guard. No acceptance rule changes.
+        target = self.work / "target/aarch64-apple-ios/release"
+        package = next(x for x in self.lock["crates"] if x["name"] == "ring" and x["version"] == "0.17.14")
+        vendor = self.work / "vendor/ring-0.17.14"
+        checksum = json.loads((vendor / ".cargo-checksum.json").read_text())
+        log_row = next(x for x in self.commands if x["log"].endswith("-cargo-build.log"))
+        text = (self.evidence / log_row["log"]).read_text()
+        compiles, issues = [], []
+        final_by_hash = {}
+        for member in final_members:
+            final_by_hash.setdefault(member["sha256"], []).append(member["name"])
+        for line_number, line in enumerate(text.splitlines(), 1):
+            if not line.startswith("[ring 0.17.14] running: "):
+                continue
+            try:
+                args = shlex.split(line.split("running: ", 1)[1])
+                if "-c" not in args or "-o" not in args:
+                    continue
+                require(len(compiles) < 256, "native diagnostic command count cap")
+                source = Path(args[args.index("-c") + 1])
+                obj = Path(args[args.index("-o") + 1])
+                row = dict(log=log_row["log"], log_line=line_number, argv=args,
+                           source=str(source), object=str(obj), language_suffix=source.suffix)
+                compiles.append(row)
+                require(source.resolve().is_relative_to(vendor.resolve()) and not source.is_symlink(),
+                        "native diagnostic source outside exact ring package")
+                require(obj.resolve().is_relative_to(target / "build") and not obj.is_symlink(),
+                        "native diagnostic object outside fresh target build")
+                relative = str(source.relative_to(vendor))
+                require(source.stat().st_size <= 4 * 1024**2 and obj.stat().st_size <= 16 * 1024**2,
+                        "native diagnostic input size cap")
+                row.update(source_relative=relative, source_sha256=sha(source.read_bytes()),
+                           vendor_manifest_sha256=checksum["files"].get(relative),
+                           object_sha256=sha(obj.read_bytes()), object_size=obj.stat().st_size,
+                           raw_macho=raw_macho_metadata(obj.read_bytes()))
+                row["source_matches_materialized_package"] = row["source_sha256"] == row["vendor_manifest_sha256"]
+                row["final_member_names"] = final_by_hash.get(row["object_sha256"], [])
+            except Exception as error:
+                issues.append(dict(log_line=line_number, error=str(error)))
+        self.native_diagnostic_paths = list((target / "build").rglob("*.a"))
+        archives = []
+        for p in self.native_diagnostic_paths:
+            archive_row = dict(path=str(p.relative_to(self.work)), members=[])
+            archives.append(archive_row)
+            try:
+                require(p.is_file() and not p.is_symlink() and p.stat().st_size <= 512 * 1024**2,
+                        "native diagnostic archive cap/type")
+                content = p.read_bytes()
+                archive_row.update(sha256=sha(content), size=len(content))
+                for ordinal, (name, data) in enumerate(ar_members(content)):
+                    matches = [i for i, row in enumerate(compiles)
+                               if row.get("object_sha256") == sha(data) and
+                               Path(row["object"]).name == name and Path(row["object"]).parent == p.parent]
+                    archive_row["members"].append(dict(ordinal=ordinal, name=name, size=len(data),
+                            sha256=sha(data), raw_macho=raw_macho_metadata(data),
+                            compile_rows=matches, final_member_names=final_by_hash.get(sha(data), [])))
+            except Exception as error:
+                archive_row["diagnostic_error"] = str(error)
+        result = dict(package=package, materialized_package_checksum=checksum["package"],
+                      source_checksum_manifest_sha256=sha((vendor / ".cargo-checksum.json").read_bytes()),
+                      compile_count=len(compiles), compilation_rows=compiles, archives=archives,
+                      diagnostic_issues=issues, acceptance_policy_changed=False)
+        diagnostic_report = json.dumps(result, indent=2) + "\n"
+        require(len(diagnostic_report.encode()) <= self.lock["log_cap_bytes"], "native diagnostic evidence cap")
+        (self.evidence / "ring-prevalidation-diagnostics.json").write_text(diagnostic_report)
+
     def validate_archive(self):
         target = self.work / "target/aarch64-apple-ios/release"
         rust_hashes, native_hashes = set(), set()
@@ -415,11 +486,18 @@ class Control:
             for name, b in ar_members(p.read_bytes()):
                 if name.endswith(".o"):
                     rust_hashes.add(sha(b))
-        for p in (target / "build").rglob("*.a"):
+        for p in self.native_diagnostic_paths:
             require(p.name.startswith("libring_core_0_17_14_"), "unreviewed native crate archive")
             for name, b in ar_members(p.read_bytes()):
-                info = macho(b)
-                require(info["minimum"] == 0x120000 and info["sdk"] == 0x1A0500, "ring target flags mismatch")
+                try:
+                    info = macho(b)
+                    require(info["minimum"] == 0x120000 and info["sdk"] == 0x1A0500, "ring target flags mismatch: " + str(p.relative_to(self.work)) + " : " + name +
+                            " minimum=" + hex(info["minimum"]) + " sdk=" + hex(info["sdk"]))
+                except Exception as error:
+                    (self.evidence / "validation-failure-context.json").write_text(json.dumps(dict(
+                        stage="native-ring-member", archive=str(p.relative_to(self.work)), member=name,
+                        sha256=sha(b), error=str(error), raw_macho=raw_macho_metadata(b)), indent=2) + "\n")
+                    raise
                 native_hashes.add(sha(b))
                 native_origins.append(dict(path=str(p.relative_to(self.work)), name=name, sha256=sha(b), **info))
         logs = [json.loads(line) for line in (self.evidence / "rustc-argv.jsonl").read_text().splitlines()]

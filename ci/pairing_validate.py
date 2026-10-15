@@ -142,6 +142,42 @@ def macho(data, filetype=1):
                 load_commands=commands)
 
 
+def raw_macho_metadata(data):
+    """Diagnostic only: record all header/platform fields without accepting any object."""
+    result = dict(header_hex=data[:32].hex(), magic=data[:4].hex(), load_commands=[])
+    if len(data) < 32 or data[:4] != b"\xcf\xfa\xed\xfe":
+        result["parse_error"] = "not little-endian Mach-O 64"
+        return result
+    keys = ("magic_number", "cpu", "subtype", "filetype", "ncmds", "sizeofcmds", "flags", "reserved")
+    result.update(zip(keys, struct.unpack_from("<8I", data)))
+    size, count = result["sizeofcmds"], result["ncmds"]
+    if count > 10000 or size > len(data) - 32:
+        result["parse_error"] = "load-command bounds invalid"
+        return result
+    result["load_command_bytes_hex"] = data[32:32 + min(size, 65536)].hex()
+    result["load_command_bytes_truncated"] = size > 65536
+    offset = 32
+    for index in range(count):
+        if offset + 8 > 32 + size:
+            result["parse_error"] = "truncated load-command header"
+            break
+        cmd, length = struct.unpack_from("<II", data, offset)
+        row = dict(index=index, offset=offset, command=cmd, length=length)
+        result["load_commands"].append(row)
+        if length < 8 or length % 4 or offset + length > 32 + size:
+            result["parse_error"] = "load-command length invalid"
+            break
+        if cmd == 0x32 and length >= 24:
+            row.update(zip(("platform", "minimum", "sdk", "tool_count"),
+                           struct.unpack_from("<4I", data, offset + 8)))
+        elif cmd in (0x24, 0x25, 0x2F, 0x30) and length >= 16:
+            row.update(zip(("minimum", "sdk"), struct.unpack_from("<II", data, offset + 8)))
+        offset += length
+    if offset != 32 + size and "parse_error" not in result:
+        result["parse_error"] = "load-command extent mismatch"
+    return result
+
+
 def validate_member(name, data, std_hashes, rust_hashes, native_hashes, own_binding):
     info = macho(data)
     digest = sha(data)

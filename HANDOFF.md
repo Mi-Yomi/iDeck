@@ -5,6 +5,59 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## Ночной итог: исправление pushed, Apple-запуск заблокирован проверкой квоты
+
+Code commit: [`d849a307727faf374b1bd8a60035a3afdd3e28fa`](https://github.com/Mi-Yomi/iDeck/commit/d849a307727faf374b1bd8a60035a3afdd3e28fa),
+ветка `codex/linux-guest-feasibility-20261015`. Исправление bounded retry и
+56 host tests PASS уже закоммичены и pushed; Apple-проверка этого кода **не
+запускалась**. Этот раздел и два новых evidence-файла — последующее изменение
+только документации. Его полный итоговый SHA после commit/push нужно получить
+через `git rev-parse HEAD` и сверить с удалённой веткой; code SHA указан отдельно.
+
+**Точный внешний блокер:** автоматическая проверка одобрения повторно не
+разрешила отправку `ideck-linux-probe-ipa`: показание billing **83/500** не дало
+независимого явного подтверждения **не менее 120 оставшихся бесплатных macOS
+минут**. Счётчик рос 76 → 77 → 78 → 80 → 83, что похоже на израсходованные
+минуты, но эта интерпретация и арифметический остаток не приняты как требуемое
+явное доказательство. Browser-координатор проверял DOM, tooltips и официальную
+billing/pricing документацию; однозначного подтверждения remaining quota не
+получил. Это отказ approval review до запуска CI, **не ошибка кода, compiler
+или linker**. Нового build URL для `d849a30` нет.
+
+По browser-сводке координатора private repository, exact pushed code SHA,
+отсутствие активной CI и отключённая платная подписка проверены. Полный raw
+browser log автору этого раздела не передан. Оплата не включалась, ресурсы и
+лимиты не менялись, обход review/access denial не предпринимался. Все четыре
+роли команды выполнены: native/QEMU, Swift/Xcode/IPA audit, независимая
+проверка, artifacts/provenance/HANDOFF. Дополнительных CI не запускали.
+
+Последний **реальный** [Apple build `6ad130983ffd2c7f0ad3b5a1`](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad130983ffd2c7f0ad3b5a1)
+по-прежнему относится к [`ab86fe490027cf35a184f08745b3e4f12b80aa11`](https://github.com/Mi-Yomi/iDeck/commit/ab86fe490027cf35a184f08745b3e4f12b80aa11)
+и остановился на pixman TLS reset; native compilation/linking не достигнуты.
+Он не проверяет исправление retry в `d849a30`. Подробности этой попытки
+и host-проверок сохранены ниже и в
+`experiments/linux-guest/evidence/native-download-retry.json`.
+
+Один реальный cloud preflight исправленного helper по точному locked pixman
+URL остановился на первой попытке: proxy `403 Forbidden`, **0 bytes**, retry
+не выполнен, partial files не осталось. Это подтверждает остановку при access
+denial в этой облачной среде; доступность origin и Apple runner этим не
+доказана. Локальный `preflight-result.json` проверен на отсутствие секретов и
+скопирован **побайтно** в
+`experiments/linux-guest/evidence/pixman-cloud-preflight.json` (SHA-256
+`c59d5876f740528b6d2b19b035228f8ca121d69579037c099bf049f66bd0dafe`). Никакой новой сетевой проверки при
+подготовке этого раздела не выполнялось. Итог блокера:
+`experiments/linux-guest/evidence/overnight-quota-blocker.json`.
+
+**Утренний следующий шаг:** получить явное независимое подтверждение ≥120
+оставшихся бесплатных macOS минут при отключённой оплате и обычное одобрение
+review для отправки. Затем заново проверить private repo, отсутствие активной
+CI, clean checkout и полный текущий pushed HEAD, выбрать эту ветку и
+`ideck-linux-probe-ipa`, запустить ровно одну сборку с этим SHA. Лимиты
+6900 секунд / 120 минут сохраняются; billing и access ограничения не обходить.
+После результата сохранить URL, exact SHA, первый реальный отказ и артефакты.
+**IPA и его SHA-256 отсутствуют; Linux/JIT на iPhone и Steam не проверены.**
+
 ## Последняя Apple-попытка: pixman download reset
 
 [Build `6ad130983ffd2c7f0ad3b5a1`](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad130983ffd2c7f0ad3b5a1)

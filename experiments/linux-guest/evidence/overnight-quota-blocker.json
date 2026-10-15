@@ -1,0 +1,91 @@
+{
+  "status": "host_reviewed_code_pushed_apple_dispatch_blocked_by_unproven_free_quota",
+  "working_branch": "codex/linux-guest-feasibility-20261015",
+  "code_commit": "d849a307727faf374b1bd8a60035a3afdd3e28fa",
+  "code_commit_url": "https://github.com/Mi-Yomi/iDeck/commit/d849a307727faf374b1bd8a60035a3afdd3e28fa",
+  "final_documentation_commit": {
+    "included_here": false,
+    "resolution": "After coordinator commits and pushes these documentation-only changes, use git rev-parse HEAD and compare against the remote working branch; code commit above is separate."
+  },
+  "evidence_scope": "Coordinator-provided browser/action-review summary, not a full raw browser log. Local preflight JSON and repository files were read directly by the evidence author.",
+  "apple_dispatch": {
+    "workflow": "ideck-linux-probe-ipa",
+    "requested_code_commit": "d849a307727faf374b1bd8a60035a3afdd3e28fa",
+    "started": false,
+    "build_url": null,
+    "automatic_approval_review": "Repeated automatic review did not approve dispatch: billing displayed 83/500 and no independent explicit proof of at least 120 remaining free macOS minutes was obtained.",
+    "rejection_is_code_or_compilation_failure": false,
+    "billing_display_observations": [
+      "76/500",
+      "77/500",
+      "78/500",
+      "80/500",
+      "83/500"
+    ],
+    "display_interpretation": "The increasing counter suggests usage, but neither that inference nor arithmetic was accepted as independent explicit remaining-quota evidence.",
+    "browser_inspections_reported": [
+      "DOM",
+      "tooltips",
+      "official billing/pricing documentation"
+    ],
+    "private_repository_verified_by_browser_coordinator": true,
+    "exact_pushed_code_sha_verified_by_browser_coordinator": true,
+    "no_active_ci_verified_by_browser_coordinator": true,
+    "disabled_paid_subscription_verified_by_browser_coordinator": true,
+    "explicit_remaining_free_macos_minutes_at_least_120_verified": false,
+    "paid_subscription_enabled": false,
+    "billing_or_resource_changes_made": false,
+    "approval_or_access_bypass_attempted": false,
+    "worker_aggregate_seconds_unchanged": 6900,
+    "provider_max_minutes_unchanged": 120
+  },
+  "last_actual_apple_build": {
+    "url": "https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad130983ffd2c7f0ad3b5a1",
+    "commit": "ab86fe490027cf35a184f08745b3e4f12b80aa11",
+    "status": "failed",
+    "first_error": "Locked pixman download: TLS do_handshake ConnectionResetError errno 54 wrapped by urllib.error.URLError.",
+    "swift_source_check_passed": true,
+    "native_library_compilation_reached": false,
+    "runtime_linked": false,
+    "ipa_created": false,
+    "source_for_details": "native-download-retry.json; coordinator browser summary, not full raw log"
+  },
+  "code_validation": {
+    "source": "Existing host-reviewed evidence native-download-retry.json and coordinator confirmation",
+    "tests_passed": 56,
+    "new_network_free_download_regressions": 20,
+    "apple_validation_for_retry_code_performed": false,
+    "four_roles_completed": [
+      "native dependencies and QEMU",
+      "Swift/Xcode/IPA read-only audit",
+      "independent regression and security review",
+      "artifacts/provenance/HANDOFF"
+    ]
+  },
+  "cloud_preflight": {
+    "evidence": "pixman-cloud-preflight.json",
+    "original_local_evidence": ".work/pixman-preflight-ap05vnvo/preflight-result.json",
+    "copied_byte_for_byte": true,
+    "size": 1582,
+    "sha256": "c59d5876f740528b6d2b19b035228f8ca121d69579037c099bf049f66bd0dafe",
+    "result": "access_denied_stopped",
+    "attempts": 1,
+    "received_bytes": 0,
+    "error": "URLError: Tunnel connection failed: 403 Forbidden",
+    "retryable": false,
+    "remaining_partial_files": [],
+    "demonstrates_fatal_access_denial_handling": true,
+    "demonstrates_apple_or_origin_availability": false,
+    "access_bypass_attempted": false
+  },
+  "artifacts": {
+    "ipa_created": false,
+    "ipa_url": null,
+    "ipa_size": null,
+    "ipa_sha256": null
+  },
+  "device_tested": false,
+  "linux_jit_on_iphone_verified": false,
+  "steam_executed": false,
+  "next_action": "Obtain independent explicit evidence of at least 120 remaining free macOS minutes with paid subscription disabled; then obtain normal automatic dispatch approval, recheck private repository/no active CI/clean exact pushed HEAD, and launch only one ideck-linux-probe-ipa run on that full current SHA. Do not enable billing or bypass denial."
+}

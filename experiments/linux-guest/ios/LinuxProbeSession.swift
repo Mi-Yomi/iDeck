@@ -1,6 +1,7 @@
 import Foundation
 import Combine
 import CryptoKit
+import UIKit
 
 /// One QEMU invocation per process. All published state is changed on main;
 /// file IO and pixel validation run on the worker's serial queue.
@@ -11,6 +12,8 @@ final class LinuxProbeSession: ObservableObject {
     @Published private(set) var displayReady = false
     @Published private(set) var inputReady = false
     @Published private(set) var shareFiles: [URL] = []
+    @Published private(set) var markdownFile: URL?
+    @Published private(set) var exportError: String?
     @Published private(set) var jitExecutionReady = false
     @Published private(set) var jitExecutionMessage = "JIT execution has not been verified."
     private var worker: LinuxProbeWorker?
@@ -58,7 +61,11 @@ final class LinuxProbeSession: ObservableObject {
         let session = documents.appendingPathComponent("iDeckLinuxSessions", isDirectory: true)
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
         let next = LinuxProbeWorker(owner: self, assets: Bundle.main.bundleURL.appendingPathComponent("iDeckLinuxProbe"),
-                                    session: session, prewarmed: JITBootstrap.prewarmed)
+                                    session: session, prewarmed: JITBootstrap.prewarmed,
+                                    metadata: ["app_version": Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown",
+                                               "ideck_source_commit": Bundle.main.object(forInfoDictionaryKey: "iDeckSourceCommit") as? String ?? "unknown",
+                                               "device_class": UIDevice.current.model,
+                                               "jit_execution_check_passed": jitExecutionReady])
         worker = next
         next.start()
     }
@@ -73,12 +80,19 @@ final class LinuxProbeSession: ObservableObject {
         }
     }
 
-    fileprivate func publish(_ text: String, display: Bool? = nil, input: Bool? = nil, files: [URL]? = nil) {
+    fileprivate func publish(_ text: String, display: Bool? = nil, input: Bool? = nil) {
         DispatchQueue.main.async {
             self.message = text
             if let display { self.displayReady = display }
             if let input { self.inputReady = input }
-            if let files { self.shareFiles = files }
+        }
+    }
+
+    fileprivate func publishExports(files: [URL], markdown: URL?, error: String?) {
+        DispatchQueue.main.async {
+            self.shareFiles = files
+            self.markdownFile = markdown
+            self.exportError = error
         }
     }
 }
@@ -88,6 +102,7 @@ private final class LinuxProbeWorker {
     let assets: URL
     let session: URL
     let prewarmed: Bool
+    let metadata: [String: Any]
     let queue = DispatchQueue(label: "ideck.linux.evidence", qos: .utility)
     var timer: DispatchSourceTimer?
     // QEMU retains argv. Both the strings AND pointer array must outlive init.
@@ -97,9 +112,14 @@ private final class LinuxProbeWorker {
     var frames = Set<Int>()
     var began = Date()
     var terminal = false
+    var latestSerial: String?
+    var markdownAvailable = false
+    var markdownError: String?
+    var serialPublished = false
 
-    init(owner: LinuxProbeSession, assets: URL, session: URL, prewarmed: Bool) {
+    init(owner: LinuxProbeSession, assets: URL, session: URL, prewarmed: Bool, metadata: [String: Any]) {
         self.owner = owner; self.assets = assets; self.session = session; self.prewarmed = prewarmed
+        self.metadata = metadata
     }
 
     func start() {
@@ -117,8 +137,12 @@ private final class LinuxProbeWorker {
                     "started_utc": ISO8601DateFormatter().string(from: Date()),
                     "prewarmed_region_mib": self.prewarmed ? 512 : 0,
                     "requested_tcg_mib": profile.tcgCacheMib,
+                    "profile_cpu": profile.cpu, "profile_memory_mib": profile.memoryMib,
+                    "profile_vcpus": profile.vcpus, "profile_width": profile.width, "profile_height": profile.height,
+                    "linux_boot_observed": false, "guest_probe_completed": false,
                     "steam_executed": false, "physical_screen_verified": false,
                     "accelerated_guest_gpu_verified": false]
+                self.report.merge(self.metadata) { _, captured in captured }
                 if let executable = Bundle.main.executableURL {
                     let handle = try FileHandle(forReadingFrom: executable)
                     defer { try? handle.close() }
@@ -128,7 +152,7 @@ private final class LinuxProbeWorker {
                 }
                 self.report["app_bundle_version"] = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "unknown"
                 try self.saveReport()
-                self.owner.publish("Starting the Linux kernel…", files: [self.resultURL, self.serialURL])
+                self.owner.publish("Starting the Linux kernel…")
                 let pointers = UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>.allocate(capacity: args.count + 1)
                 pointers.initialize(repeating: nil, count: args.count + 1)
                 for (index, argument) in args.enumerated() {
@@ -176,12 +200,44 @@ private final class LinuxProbeWorker {
 
     var serialURL: URL { session.appendingPathComponent("linux-serial.log") }
     var resultURL: URL { session.appendingPathComponent("result.json") }
+    var markdownURL: URL { session.appendingPathComponent(LinuxProbeReport.filename) }
+
+    func refreshExportFiles() {
+        let files = [resultURL, serialURL].filter { FileManager.default.fileExists(atPath: $0.path) }
+        serialPublished = files.contains(serialURL)
+        let markdown = markdownAvailable && FileManager.default.fileExists(atPath: markdownURL.path) ? markdownURL : nil
+        owner.publishExports(files: files, markdown: markdown, error: markdownError)
+    }
+
+    func invalidateMarkdown() {
+        markdownAvailable = false
+        markdownError = "Markdown export failed. You can still save the available raw JSON and serial log."
+        try? FileManager.default.removeItem(at: markdownURL)
+        refreshExportFiles()
+    }
 
     func saveReport() throws {
         report["matched_frame_phases"] = frames.sorted()
         report["elapsed_seconds"] = Date().timeIntervalSince(began)
-        try JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted, .sortedKeys])
-            .write(to: resultURL, options: .atomic)
+        do {
+            // Preserve every raw field; Markdown is an additional presentation
+            // of this same snapshot, never a replacement for the evidence JSON.
+            try JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted, .sortedKeys])
+                .write(to: resultURL, options: .atomic)
+        } catch {
+            invalidateMarkdown()
+            throw error
+        }
+        do {
+            try LinuxProbeReport.render(report: report, serial: latestSerial)
+                .write(to: markdownURL, atomically: true, encoding: .utf8)
+            markdownAvailable = true
+            markdownError = nil
+            refreshExportFiles()
+        } catch {
+            // A presentation export failure must not change the guest outcome.
+            invalidateMarkdown()
+        }
     }
 
     func finish(_ status: String, _ text: String) {
@@ -212,6 +268,7 @@ private final class LinuxProbeWorker {
                 finish("probe_timeout", "The probe timed out. Save the report, then close the app."); return
             }
             guard FileManager.default.fileExists(atPath: serialURL.path) else { return }
+            if !serialPublished { refreshExportFiles() }
             let handle = try FileHandle(forReadingFrom: serialURL)
             defer { try? handle.close() }
             let data = try handle.read(upToCount: 2 * 1024 * 1024 + 1) ?? Data()
@@ -219,6 +276,15 @@ private final class LinuxProbeWorker {
                 finish("serial_limit", "The serial log exceeded the probe limit. Save the report."); return
             }
             let serial = String(decoding: data, as: UTF8.self).replacingOccurrences(of: "\r\n", with: "\n")
+            latestSerial = serial
+            let serialLines = serial.components(separatedBy: "\n")
+            let bootObserved = report["linux_boot_observed"] as? Bool == true || serialLines.contains("IDECK_BOOT_BEGIN")
+            let probeCompleted = report["guest_probe_completed"] as? Bool == true || serialLines.contains("IDECK_PROBE_DONE")
+            if report["linux_boot_observed"] as? Bool != bootObserved || report["guest_probe_completed"] as? Bool != probeCompleted {
+                report["linux_boot_observed"] = bootObserved
+                report["guest_probe_completed"] = probeCompleted
+                try saveReport()
+            }
             if serial.contains("IDECK_PROBE_FAILED:") || serial.contains("Kernel panic") {
                 finish("guest_failed", "The Linux guest reported a failure. Save the report."); return
             }

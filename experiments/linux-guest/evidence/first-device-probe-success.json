@@ -1,0 +1,80 @@
+{
+  "status": "first_owner_device_linux_jit_framebuffer_input_probe_pass",
+  "working_branch": "codex/linux-guest-feasibility-20261015",
+  "documentation_base_commit": "52ff8966390a83d5caef696d4407fb12df5cadc2",
+  "reported_installed_ipa_build_commit": "660e27e515f666040a5959fa845fe85b3290a740",
+  "protected_original_ipa": {
+    "size": 49212045,
+    "sha256": "30ea8480333ae2002dd6e8fa8fd0416ce9317280f8d1536430b9e8fd3283108f",
+    "preserved": true
+  },
+  "provenance": {
+    "source": "Owner-provided device screenshot, serial log and result.json; parent/root independently audited the supplied evidence and relayed findings. Documentation author did not operate or observe the device directly.",
+    "device_model": "iPhone 16 Pro Max",
+    "device_model_source": "Owner provided",
+    "installation_method": "SideStore",
+    "installation_method_source": "Owner provided",
+    "device_result_size": 2141,
+    "raw_device_result_or_serial_committed": false,
+    "private_artifact_urls_ids_or_screenshots_committed": false
+  },
+  "device_result": {
+    "status": "guest_frames_and_input_verified",
+    "started_utc": "2026-10-16T02:38:28Z",
+    "os_version": "27.0",
+    "os_build": "24A5430a",
+    "app_bundle_version": "119",
+    "app_executable_sha256": "cbfcb81585c200a02f49257d0817a9c7bae5a3c53d98e1d45e0bfada62db15ba",
+    "qemu_init_returned": true,
+    "jit_available_after_init": true,
+    "guest_input_verified": true,
+    "matched_frame_phases": [
+      0,
+      1
+    ],
+    "frame_0_pixels_checked": 480000,
+    "frame_1_pixels_checked": 480000,
+    "frame_0_bgra_sha256": "e8863c335217e021bca1ec62372ec27a7d569818ec085180162cbf6539e8fd97",
+    "frame_1_bgra_sha256": "a6c7820146e38170a5bc6b4c247acd838098b64ac1b61847c343ace2dea02f4f",
+    "serial_sha256": "bd34d1c9132449428b69d0f7f00c8e4fd771af3b1e36b2455414602b67c5bae0",
+    "physical_screen_verified": false,
+    "accelerated_guest_gpu_verified": false,
+    "steam_executed": false,
+    "elapsed_seconds": 21.536118,
+    "elapsed_scope": "Polling after qemu_init returned, including owner interaction/capture; not pure kernel boot time, total initialization time or a benchmark."
+  },
+  "independent_parent_root_checks": {
+    "serial_size": 40988,
+    "serial_sha256_matches_device_result": true,
+    "linux_kernel_release": "6.18.35-0-virt",
+    "guest_probe_completed": true,
+    "keyboard_events_decoded": 24,
+    "keyboard_KEY_A_press_release_pairs": 6,
+    "tablet_events_decoded": 493,
+    "tablet_BTN_LEFT_press_release_pairs": 69,
+    "event_count_interpretation": "Decoded guest evdev events; not an asserted count of distinct physical taps.",
+    "both_exact_frame_sha256_reproduced": true,
+    "expected_frame_format": "800x600 BGRA, alpha 255",
+    "both_expected_pixels_per_frame": 480000,
+    "screenshot_review": "Parent/root saw phase B four-quadrant image and app labels Both frame buffers and Linux input verified and JIT execution check passed.",
+    "screenshot_file_committed": false,
+    "physical_A_to_B_transition_video_verified": false
+  },
+  "identity_limit": {
+    "device_executable_differs_from_original_ci_executable": true,
+    "interpretation": "Difference is compatible with SideStore re-signing; no signed-binary proof establishes that signature bytes are the only difference.",
+    "all_requested_entitlements_granted_verified": false,
+    "specific_pairing_or_jit_method_cryptographically_proven": false
+  },
+  "acceptance_boundary": {
+    "linux_kernel_boot": true,
+    "jit_execution_after_qemu_init": true,
+    "software_framebuffers": true,
+    "guest_keyboard_pointer_input": true,
+    "basis": "Owner-provided evidence with parent/root independent audit.",
+    "physical_screen_transition_automation": false,
+    "accelerated_guest_gpu": false,
+    "steam_or_games": false
+  },
+  "preservation": "Historical evidence snapshots and original successful IPAs remain unchanged. No raw private device artifacts are added to Git."
+}

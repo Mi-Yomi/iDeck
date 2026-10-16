@@ -1,0 +1,151 @@
+import Foundation
+
+/// Runs the app's actual Foundation renderer on the Apple host. These fixtures
+/// test report export only; they do not execute QEMU, pair a device or prove JIT.
+func runMarkdownReportChecks() throws {
+    var assertions = 0
+    func expect(_ condition: @autoclosure () -> Bool, _ message: String) {
+        precondition(condition(), "Markdown report: " + message)
+        assertions += 1
+    }
+    func cell(_ markdown: String, _ label: String) -> String {
+        for line in markdown.split(separator: "\n") {
+            let columns = line.split(separator: "|", omittingEmptySubsequences: false)
+            if columns.count >= 3,
+               columns[1].trimmingCharacters(in: .whitespaces) == label {
+                return columns[2].trimmingCharacters(in: .whitespaces)
+                    .replacingOccurrences(of: "**", with: "")
+            }
+        }
+        preconditionFailure("Markdown report: missing row " + label)
+    }
+    let complete: [String: Any] = [
+        "schema": 1, "status": "guest_frames_and_input_verified",
+        "app_version": "2.0.0", "app_bundle_version": "119",
+        "ideck_source_commit": String(repeating: "a", count: 40),
+        "husk_commit": "0695248f491cda877f7969d1f0cc89aeede1482e",
+        "device_class": "iPhone17,2", "os": "iOS 27.0", "started_utc": "2026-10-16T02:00:00Z",
+        "jit_execution_check_passed": true, "jit_available_after_init": true,
+        "qemu_init_returned": true, "linux_boot_observed": true, "guest_probe_completed": true,
+        "guest_input_verified": true, "physical_screen_verified": false,
+        "accelerated_guest_gpu_verified": false, "steam_executed": false,
+        "profile_cpu": "cortex-a72", "profile_memory_mib": 1024, "profile_vcpus": 4,
+        "profile_width": 800, "profile_height": 600,
+        "prewarmed_region_mib": 512, "requested_tcg_mib": 256, "elapsed_seconds": 25.5,
+        "matched_frame_phases": [0, 1], "frame_0_pixels_checked": 480000, "frame_1_pixels_checked": 480000,
+        "frame_0_bgra_sha256": String(repeating: "1", count: 64),
+        "frame_1_bgra_sha256": String(repeating: "2", count: 64),
+        "serial_sha256": String(repeating: "3", count: 64),
+        "app_executable_sha256": String(repeating: "4", count: 64)
+    ]
+    let full = LinuxProbeReport.render(report: complete)
+    expect(full.hasPrefix("# iDeck Linux Probe Report"), "stable human-readable title")
+    for (label, expected) in [("JIT execution before start", "PASS"), ("JIT available after QEMU init", "PASS"),
+                              ("QEMU init returned", "RETURNED"), ("Linux init marker", "OBSERVED (Linux init started)"),
+                              ("Guest completion marker", "OBSERVED (validation below)"),
+                              ("Guest input", "PASS (keyboard and tablet evdev)")] {
+        expect(cell(full, label) == expected, label + " explicit true preserves its specific meaning")
+    }
+    expect(cell(full, "Physical screen") == "NOT VERIFIED", "framebuffer pass is not physical-screen proof")
+    expect(cell(full, "Accelerated guest GPU") == "NOT VERIFIED", "software probe is not accelerated GPU proof")
+    expect(cell(full, "Steam") == "NOT RUN", "Linux/input success is not Steam execution")
+    expect(full.contains("25.5"), "elapsed evidence preserved")
+    expect(full.lowercased().contains("not pure boot"), "polling/interaction elapsed must not be called pure boot time")
+    expect(full.contains(String(repeating: "a", count: 40)), "source identity included")
+    expect(cell(full, "Device class") == "iPhone17&#44;2", "device class safely escaped without adding a personal identifier")
+    for (label, expected) in [("Version", "2&#46;0&#46;0"), ("Build", "119"), ("Schema", "1"),
+                              ("Frame A RGB validation", "PASS"), ("Frame B RGB validation", "PASS"),
+                              ("Frame A pixels checked", "480000"), ("Frame B pixels checked", "480000"),
+                              ("CPU", "cortex&#45;a72"), ("Guest memory MiB", "1024"), ("Guest vCPUs", "4"),
+                              ("Guest width", "800"), ("Guest height", "600"),
+                              ("Prewarmed region MiB", "512"), ("Requested TCG MiB", "256")] {
+        expect(cell(full, label) == expected, label + " is present in the safe summary")
+    }
+    for (label, character) in [("Frame A BGRA SHA-256", "1"), ("Frame B BGRA SHA-256", "2"),
+                               ("Serial SHA-256", "3"), ("Installed executable SHA-256", "4")] {
+        expect(cell(full, label) == String(repeating: character, count: 64), label + " identity retained")
+    }
+
+    for label in ["Husk commit", "OS", "Status", "Started UTC", "Matched framebuffer phases", "Elapsed seconds"] {
+        expect(cell(full, label) != "UNKNOWN", label + " approved metadata/evidence must not be dropped")
+    }
+    let unknownStatus = LinuxProbeReport.render(report: ["status": "UNRECOGNIZED_PRIVATE_STATUS_CANARY"])
+    expect(cell(unknownStatus, "Status") == "UNKNOWN", "unknown status is not promoted to success")
+    expect(!unknownStatus.contains("UNRECOGNIZED_PRIVATE_STATUS_CANARY"), "unknown status text excluded")
+
+    let runtimeFields = [
+        ("jit_execution_check_passed", "JIT execution before start", "NOT VERIFIED"),
+        ("jit_available_after_init", "JIT available after QEMU init", "NOT VERIFIED"),
+        ("qemu_init_returned", "QEMU init returned", "NOT OBSERVED"),
+        ("linux_boot_observed", "Linux init marker", "NOT OBSERVED"),
+        ("guest_probe_completed", "Guest completion marker", "NOT COMPLETED"),
+        ("guest_input_verified", "Guest input", "NOT VERIFIED"),
+        ("physical_screen_verified", "Physical screen", "NOT VERIFIED"),
+        ("accelerated_guest_gpu_verified", "Accelerated guest GPU", "NOT VERIFIED"),
+        ("steam_executed", "Steam", "NOT RUN")
+    ]
+    for (key, label, falseValue) in runtimeFields {
+        expect(cell(LinuxProbeReport.render(report: [key: false]), label) == falseValue,
+               key + " explicit false must remain distinct from unknown")
+        let invalidBooleans: [Any] = [NSNull(), NSNumber(value: 1), "true", [true], ["value": true]]
+        for invalid in invalidBooleans {
+            expect(cell(LinuxProbeReport.render(report: [key: invalid]), label) == "UNKNOWN",
+                   key + " must reject null, number, string and container booleans")
+        }
+        expect(cell(LinuxProbeReport.render(report: [:]), label) == "UNKNOWN", key + " absent is unknown")
+    }
+    for state in ["prepared", "booting", "prepare_failed", "guest_failed", "probe_timeout", "evidence_failed"] {
+        let early = LinuxProbeReport.render(report: ["status": state])
+        expect(!early.contains("| PASS |"), state + " must not synthesize runtime passes")
+        expect(cell(early, "Guest input") == "UNKNOWN", state + " missing input evidence remains unknown")
+    }
+
+    let maliciousOS = "iOS 27 | `code` ```\r\n<script>alert(1)</script> [click](https://example.invalid) Привет 👋\u{202E}"
+    let escaped = LinuxProbeReport.render(report: ["os": maliciousOS])
+    expect(!escaped.contains(maliciousOS), "untrusted metadata not emitted verbatim")
+    expect(!escaped.contains("<script>"), "HTML cannot become active markup")
+    expect(!escaped.contains("[click](https://example.invalid)"), "Markdown link cannot become active markup")
+    expect(!escaped.contains("```"), "metadata cannot inject a fenced code block")
+    expect(escaped.contains("Привет 👋"), "UTF-8 metadata remains readable")
+    expect(cell(escaped, "OS").contains("&#91;U+D&#93;") && cell(escaped, "OS").contains("&#91;U+A&#93;"), "CR/LF made visible without creating rows")
+    expect(escaped.contains("&#91;U+202E&#93;"), "bidi formatting control made visible")
+    let tail = "TRUNCATION_SECRET_CANARY"
+    let bounded = LinuxProbeReport.render(report: ["os": String(repeating: "x", count: 200) + tail])
+    expect(!bounded.contains(tail), "metadata is bounded before long-tail content")
+
+    let secret = "DO_NOT_EXPORT_PAIRING_TOKEN_7D922"
+    var sensitive = complete
+    sensitive["argv"] = ["qemu", "-kernel", "/private/" + secret]
+    sensitive["pairing"] = ["private_key": secret]
+    sensitive["token"] = secret
+    sensitive["future_unknown_field"] = ["nested": [secret]]
+    sensitive["error"] = secret
+    let before = try JSONSerialization.data(withJSONObject: sensitive, options: [.sortedKeys])
+    let safe = LinuxProbeReport.render(report: sensitive, serial:
+        "IDECK_FRAME_A\nIDECK_FRAME_A " + secret + "\n" + secret + "\nLinux version 6.18.35-0-virt " + secret + "\n")
+    let after = try JSONSerialization.data(withJSONObject: sensitive, options: [.sortedKeys])
+    expect(before == after, "renderer cannot mutate authoritative report/JSON values")
+    expect(!safe.contains(secret), "unknown/nested fields, argv, errors and arbitrary serial text excluded")
+    expect(safe.contains("IDECK_FRAME_A"), "whole allowlisted serial marker preserved")
+    expect(safe.contains("6.18.35-0-virt"), "only safe kernel-version token retained")
+    expect(safe == LinuxProbeReport.render(report: sensitive, serial:
+        "IDECK_FRAME_A\nIDECK_FRAME_A " + secret + "\n" + secret + "\nLinux version 6.18.35-0-virt " + secret + "\n"),
+        "same snapshot produces deterministic Markdown")
+    expect(!LinuxProbeReport.render(report: [:], serial: "IDECK_FRAME_A " + secret).contains("IDECK_FRAME_A"),
+           "serial marker with an unapproved suffix is not accepted")
+    let invalidPhaseLists: [Any] = [[true, false], [0, 2], "0,1", NSNull()]
+    for invalidPhases in invalidPhaseLists {
+        let output = LinuxProbeReport.render(report: ["matched_frame_phases": invalidPhases])
+        expect(!output.contains("| PASS |"), "invalid frame phase evidence cannot synthesize a pass")
+    }
+    let malformedNumbers: [Any] = [true, NSNumber(value: true), -1, Double.nan, Double.infinity, "25.5", NSNull()]
+    for invalid in malformedNumbers {
+        let output = LinuxProbeReport.render(report: ["elapsed_seconds": invalid, "profile_vcpus": invalid])
+        expect(cell(output, "Elapsed seconds") == "UNKNOWN", "elapsed rejects boolean, nonfinite, negative or wrong-typed numbers")
+        expect(cell(output, "Guest vCPUs") == "UNKNOWN", "integer count rejects malformed numbers")
+    }
+    expect(cell(LinuxProbeReport.render(report: ["profile_vcpus": 1.5]), "Guest vCPUs") == "UNKNOWN", "fractional integer rejected")
+    expect(cell(LinuxProbeReport.render(report: ["elapsed_seconds": 0]), "Elapsed seconds") == "0.000", "valid zero duration retained")
+    expect(LinuxProbeReport.filename == "iDeck-Linux-Probe-Report.md", "fixed .md filename")
+    print("LINUX_MARKDOWN_REPORT_CHECKS_PASS (\(assertions) assertions; actual Foundation renderer, no device/runtime execution)")
+}

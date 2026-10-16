@@ -5,6 +5,75 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## Первый device Linux/JIT/framebuffer/input gate прошёл
+
+Owner сообщил результат на **iPhone 16 Pro Max / iOS 27**, SideStore, после IPA
+build `660e27e515f666040a5959fa845fe85b3290a740`. Parent/root независимо проверили
+переданные screenshot, serial и device result.json; автор HANDOFF получил их
+findings и сам устройством не управлял. Device report: **2141 bytes**,
+`status=guest_frames_and_input_verified`, `qemu_init_returned=true`,
+`jit_available_after_init=true`, `guest_input_verified=true`, phases **[0,1]**,
+**480000 pixels** проверено в каждом кадре. OS 27.0 build 24A5430a, bundle 119.
+
+Serial **40988 bytes**, SHA-256
+`bd34d1c9132449428b69d0f7f00c8e4fd771af3b1e36b2455414602b67c5bae0`
+совпал с device JSON. Реальный kernel **6.18.35-0-virt** дошёл до завершения
+probe. Независимо decoded **24 keyboard events / 6 KEY_A press-release pairs**
+и **493 tablet events / 69 BTN_LEFT pairs**; это evdev counts, не утверждение
+числа отдельных физических taps. Parent/root также воспроизвели exact SHA-256
+обоих ожидаемых 800×600 BGRA кадров (alpha 255):
+
+- frame 0: `e8863c335217e021bca1ec62372ec27a7d569818ec085180162cbf6539e8fd97`
+- frame 1: `a6c7820146e38170a5bc6b4c247acd838098b64ac1b61847c343ace2dea02f4f`
+
+Screenshot показывает phase B с четырьмя quadrants и UI labels о JIT execution
+и verified buffers/input. **A→B physical-screen video не проверено**;
+`physical_screen_verified=false` в JSON сохранено как есть. Guest GPU acceleration
+и Steam также false. **21.536118 s** — polling после `qemu_init` с owner input,
+не pure boot time, не весь init и не benchmark; start UTC 2026-10-16T02:38:28Z.
+
+Device executable SHA-256
+`cbfcb81585c200a02f49257d0817a9c7bae5a3c53d98e1d45e0bfada62db15ba`
+отличается от original CI executable. Это совместимо с SideStore re-signing,
+но byte proof «отличается только подпись» не получен. Выдача всех requested
+entitlements и конкретный pairing/JIT method этим отдельно не доказаны.
+**Gate PASS: real Linux boot, JIT-after-init, software framebuffer и guest input**,
+по owner evidence и parent/root audit. **Steam/игры/accelerated guest GPU не
+проверены.** Sanitized summary: `evidence/first-device-probe-success.json` внутри
+`experiments/linux-guest`; raw JSON/serial, container UUIDs, private Drive/Library
+URLs/IDs и screenshots в Git не добавляются. Baseline IPAs/старые snapshots
+сохранены без изменений.
+
+Parent уже отдельно превратил текущий owner report в Markdown и доставил его
+по запросу; это **one-off document**, не доказательство встроенного app export.
+Source feature реализована отдельно: `ios/LinuxProbeReport.swift` создаёт
+`iDeck-Linux-Probe-Report.md` из того же snapshot после atomic JSON write.
+Save report даёт **Markdown-only основной action**, а raw JSON/log — отдельный
+secondary. Renderer допускает только известные поля/typed values; missing/type
+mismatch остаётся UNKNOWN. Text ограничен/escaped; serial даёт лишь fixed
+whole-line markers и kernel token. Нет unknown/secret appendix, raw argv,
+container paths или произвольного serial text. Markdown failure не меняет guest
+result; stale MD недоступен, export error видим, raw files остаются доступны.
+
+Pinned source restore/full overlay/fifth Swift file и input hashes проверены.
+Actual Foundation renderer tests включены в existing Apple gate, но **Swift
+compiler здесь отсутствует и эти tests пока не выполнялись**. Coordinator run:
+`PYTHONDONTWRITEBYTECODE=1 TMPDIR=/workspace/iDeck/.work python3 -m unittest
+discover -s experiments/linux-guest/tests -v` — **126 Python tests PASS**,
+exit 0, **1.042 секунды**; 8 новых package/source/staging checks отдельно прошли
+за 0.096 секунды, плюс 118 прежних. Independent source/compile-visible review
+PASS, blocker не найден. Это не исполнение Swift renderer и не проверка app
+Markdown на устройстве. Source feature **локально проверена, готова к Apple gate**.
+
+Новая CI/IPA и app Markdown device test не выполнялись. Final source/test/input
+hashes: `experiments/linux-guest/evidence/markdown-report-export.json`.
+Native pins и boot/JIT/input gates сохраняются; лимиты worker **6900 секунд /
+120 минут provider** не увеличиваются. Следующий шаг — coordinator review,
+commit/push/exact remote SHA и один Apple workflow после свежих quota/private/
+disabled-billing проверок. Actual Foundation checks должны исполниться там;
+затем новый IPA и отдельная device export проверка. Старый доказанный device
+probe относится к build 660e, не к ещё не собранной Markdown версии.
+
 ## JIT setup fix собран в новом IPA и доставлен; ожидается device test
 
 [Build `6ad18a803ffd2c7f0ad3ca15`](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad18a803ffd2c7f0ad3ca15)

@@ -76,3 +76,6 @@ pixels[599 * 3216 + 799 * 4] ^= 1
 precondition(!LinuxProbeEvidence.matchesFrame(pixels, stride: 3216, phase: 0))
 precondition(!LinuxProbeEvidence.matchesFrame(Data(), stride: 0, phase: 0))
 print("LINUX_EVIDENCE_HOST_CHECKS_PASS (recorded guest events + synthetic pixel guards)")
+
+// Exercise the same pure Foundation Markdown renderer shipped in the app.
+try runMarkdownReportChecks()

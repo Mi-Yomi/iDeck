@@ -1,0 +1,82 @@
+{
+  "status": "markdown_report_export_locally_validated_ready_for_apple_gate",
+  "working_branch": "codex/linux-guest-feasibility-20261015",
+  "preparation_base_commit": "52ff8966390a83d5caef696d4407fb12df5cadc2",
+  "request": "Export a human-readable Markdown report alongside existing JSON; Markdown is the primary share and raw JSON/serial are secondary.",
+  "source": "User request and coordinator validation results; documentation author read frozen source and verified final file hashes. Actual Foundation Swift checks await the Apple gate.",
+  "design": {
+    "same_snapshot_as_json": true,
+    "allowlisted_known_values_only": true,
+    "missing_values_not_inferred_as_success": true,
+    "unknown_fields_or_secret_appendix": false,
+    "raw_private_paths_argv_serial_pairing_credentials_urls_ids_in_markdown": false,
+    "markdown_failure_changes_probe_result": false,
+    "historical_device_evidence_mutated": false
+  },
+  "host_validation": {
+    "status": "passed",
+    "source": "Coordinator full suite and independent focused reviewer run; source/compile-visible review found no blocker.",
+    "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/workspace/iDeck/.work python3 -m unittest discover -s experiments/linux-guest/tests -v",
+    "python_tests_passed": 126,
+    "elapsed_seconds": 1.042,
+    "exit_code": 0,
+    "new_package_source_staging_tests_passed": 8,
+    "focused_elapsed_seconds": 0.096,
+    "previous_tests_included": 118,
+    "environment": "Existing Linux cloud /workspace/iDeck; Python 3.12.14",
+    "actual_pinned_restore_full_overlay_fifth_source_and_hashes_passed": true,
+    "independent_source_compile_visible_review_passed": true,
+    "actual_foundation_renderer_checks_written": true,
+    "actual_foundation_renderer_checks_wired_into_apple_gate": true,
+    "actual_foundation_renderer_checks_executed_locally": false,
+    "swift_compiler_available_locally": false,
+    "boundary": "Python tests cover actual package plist/source/staging behavior and preserve real overlay inputs; no local Swift renderer execution, Apple IPA build or app Markdown device test."
+  },
+  "new_apple_build_performed": false,
+  "new_ipa_created": false,
+  "markdown_export_device_verified": false,
+  "prior_device_probe_success_evidence": "first-device-probe-success.json",
+  "implementation": {
+    "renderer": "experiments/linux-guest/ios/LinuxProbeReport.swift",
+    "filename": "iDeck-Linux-Probe-Report.md",
+    "renderer_scope": "Pure Foundation/CoreFoundation allowlisted renderer; no file, pairing or runtime access. Typed booleans/numbers/hash/status validation, unknown stays UNKNOWN, bounded escaped text and no unknown-field appendix.",
+    "serial_scope": "Optional at most 2 MiB serial snapshot; include only whole-line fixed allowlisted probe markers and bounded kernel release token, never arbitrary serial suffixes/log lines.",
+    "snapshot_writes": "LinuxProbeSession.saveReport atomically writes unchanged raw field set plus added reporting metadata to result.json, then renders/writes Markdown atomically from the same report snapshot.",
+    "failure_behavior": "JSON write failure invalidates Markdown then propagates as before. Markdown-only write failure removes/marks unavailable stale Markdown, displays export error, leaves guest outcome and existing raw JSON/log sharing intact.",
+    "share_ui": "Save report menu uses Markdown-only primary action; Raw JSON and serial log is a separate secondary action filtered to existing files.",
+    "new_metadata": "App version/source commit, generic device class, pre-start execution check, profile dimensions/resources and whole-line Linux init/completion observations. Generic class is not a device serial number.",
+    "package_declaration": "Import net.daringfireball.markdown as UTF-8 text with md extension/text/markdown MIME; use file URL sharing.",
+    "apple_gate": "Fifth Swift source restored through overlay; actual Foundation renderer checks wired into existing Mac/Apple validation gate, not executed locally."
+  },
+  "one_off_existing_report_markdown_delivery": {
+    "completed_by_parent": true,
+    "source": "Coordinator confirmation that the owner current report was separately converted to Markdown and delivered.",
+    "app_feature_validation_implied": false,
+    "private_urls_or_ids_recorded": false
+  },
+  "source_staging": {
+    "source": "Coordinator actual pinned restore/full overlay/fifth-source/all input hashes check; overlay hash directly verified by evidence author.",
+    "passed": true,
+    "overlay_lock_sha256": "5af59c64de4ae88afa27f28ac5609ba7a6326bec8e726776e739364cead89b5b",
+    "actual_foundation_renderer_tests_executed": false,
+    "swift_compiler_available_locally": false
+  },
+  "hashes": {
+    "experiments/linux-guest/ios/LinuxProbeReport.swift": "6a673929074eed528502c37a4519040b4853a3b3b0f5578c6aee03cd14c84565",
+    "experiments/linux-guest/ios/LinuxProbeSession.swift": "b9c21e1e97673e3a47dd8a376d69d14e19593d421d303d13e141ff69645d78e3",
+    "experiments/linux-guest/ios/LinuxProbeView.swift": "61148109f1e3adfec5b9955a9f6a59631e840fea9808e40643824f08e710c308",
+    "experiments/linux-guest/ios/tests/MarkdownReportChecks.swift": "192f347fc6730f2197e305a5f2fc663963194c73e0069df1f0daeede4851183e",
+    "experiments/linux-guest/ios/tests/main.swift": "fcf06eea7b00ef49e8ede5601461bcb6ae2c1f05bbaed53f4080a21616e1ba11",
+    "experiments/linux-guest/husk/overlay.lock.json": "5af59c64de4ae88afa27f28ac5609ba7a6326bec8e726776e739364cead89b5b",
+    "experiments/linux-guest/ipa/package_probe.py": "3aba1c9b0496bc4797df90e91b7840aac74bfdddf6c67afb2252da5fb0ca12e4",
+    "ci/check_linux_guest_profile.py": "582a21106aa6b3ca8b28cdb753e07d3a47eb327098a8432631dafe0be72926a8",
+    "experiments/linux-guest/tests/test_markdown_report.py": "81dc30fe23f58dbbc33ae9fac941f185e633adf6e24c516df6a1b1dcf8777011",
+    "experiments/linux-guest/tests/test_staging.py": "238e435ba949ded16ad862aba687d534ffbb02ed6c94f277bb75645edbf8d5da"
+  },
+  "build_limits_unchanged": {
+    "worker_aggregate_seconds": 6900,
+    "provider_max_minutes": 120,
+    "new_ci_started": false
+  },
+  "next_step": "Coordinator reviews, commits/pushes and verifies exact remote SHA, then runs only one approved Apple workflow after fresh quota/private/disabled-billing checks. That gate must compile/run the real Foundation checks, typecheck the fifth source, build a new IPA and retain device export validation as separate work."
+}

@@ -25,6 +25,23 @@ def check_ios_build_output(text):
         raise ValueError("Non-device Mach-O platform present")
 
 
+def configure_markdown_type(info):
+    """Describe the existing Markdown file format for URL-based sharing."""
+    identifier = "net.daringfireball.markdown"
+    declarations = [item for item in info.get("UTImportedTypeDeclarations", [])
+                    if item.get("UTTypeIdentifier") != identifier]
+    declarations.append({
+        "UTTypeIdentifier": identifier,
+        "UTTypeDescription": "Markdown document",
+        "UTTypeConformsTo": ["public.utf8-plain-text"],
+        "UTTypeTagSpecification": {
+            "public.filename-extension": ["md"],
+            "public.mime-type": ["text/markdown"],
+        },
+    })
+    info["UTImportedTypeDeclarations"] = declarations
+
+
 def package(worker, built, source, commit):
     if not built.is_dir():
         raise ValueError("No freshly built app; refusing to package")
@@ -42,6 +59,7 @@ def package(worker, built, source, commit):
     info.pop("CFBundleDocumentTypes", None)
     info["CFBundleURLTypes"] = [{"CFBundleURLName": "dev.ideck.linuxprobe",
                                  "CFBundleURLSchemes": ["ideck-linux-probe"]}]
+    configure_markdown_type(info)
     plist_path.write_bytes(plistlib.dumps(info))
     required = ["Husk", "default.metallib", "husk-jit.js", "Frameworks/libqemu-aarch64-softmmu.dylib",
                 "Frameworks/libANGLE-shared.dylib", "Frameworks/libFilePickerFix.dylib",

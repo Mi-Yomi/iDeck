@@ -14,18 +14,32 @@ Parent/root independently audited the real artifacts: seven ARM64 iOS-device
 Mach-O files, preserved bundle IDs/helper/requested ad-hoc entitlements, three
 unchanged guest assets, and exact-SHA source/overlay receipts for the setup UI,
 TrollStore marker guard, registered VPN callback and JIT execution gate.
-The owner-requested file was privately delivered to Drive; it awaits device
-acceptance. Static requested entitlements do not prove device grants, pairing,
-JIT or Linux boot. See `../evidence/jit-setup-ipa-success.json`.
+The owner-requested file was privately delivered to Drive. Owner device
+JSON/serial/screenshot subsequently passed parent/root independent audit for
+Linux boot, JIT-after-init, both software framebuffers and guest keyboard/pointer
+input on iPhone 16 Pro Max/iOS 27 via SideStore. See
+`../evidence/first-device-probe-success.json`. The report's physical_screen flag
+remains false; a phase-B screenshot was seen, with no verified A-to-B video.
+Static requested entitlements still do not prove every device permission grant.
+The build audit remains in `../evidence/jit-setup-ipa-success.json`.
 
 Preserve the successful build revision/native pins and original artifacts,
 including the earlier 5cd442c IPA. Owner re-signing must use a copy and record
 the new signed hash separately. The earlier SideStore attempt exposed the
-Magnifier/setup issue; this source fix is now Apple-built, but its device
-installation/pairing/JIT/boot/display/input and Steam remain unverified.
-Use JIT setup and method, pairing/import, LocalDevVPN, Check setup/DDI, Enable
-and actual execution verification before starting Linux and saving its probe
-report. Earlier evidence remains historical.
+Magnifier/setup issue; the later device probe gate passed with this Apple-built
+fix. The signed device executable hash differs from the original CI executable,
+consistent with re-signing, without proof that signature bytes are the only
+change. The 21.536118-second report interval covers post-init polling and owner
+interaction, not pure boot time. Steam, games and accelerated guest GPU remain
+unverified. The owner current report was separately converted to Markdown and
+delivered by the coordinator. The in-app Markdown-primary export is a separate
+source change: allowlisted snapshot renderer, Markdown-only primary sharing,
+secondary raw JSON/log sharing, and nonfatal Markdown export errors. The
+source change passed 126 Python package/source/staging tests and independent
+review; its actual Foundation Swift checks are written/wired but not executed
+locally. They await the Apple gate; no new IPA or device export validation is
+claimed. See `../evidence/markdown-report-export.json`. Earlier evidence
+remains historical.
 
 Select branch `codex/linux-guest-feasibility-20261015` **before** selecting the
 workflow. Set `expected_commit` to the full current pushed SHA. `main` deliberately

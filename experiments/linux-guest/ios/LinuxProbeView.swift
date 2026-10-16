@@ -66,11 +66,12 @@ struct LinuxProbeView: View {
     @ObservedObject private var jit = JITCoordinator.shared
     @Environment(\.scenePhase) private var scenePhase
     @State private var showShare = false
+    @State private var shareItems: [URL] = []
 
     var body: some View {
         ScrollView { content }
             .sheet(isPresented: $jit.showSetup) { JITSetupFlow() }
-            .sheet(isPresented: $showShare) { ShareSheet(items: session.shareFiles) }
+            .sheet(isPresented: $showShare) { ShareSheet(items: shareItems) }
             .onChange(of: jit.attachGeneration) { _ in claimJIT() }
             .onChange(of: scenePhase) { if $0 == .active { claimJIT() } }
             .onAppear { claimJIT() }
@@ -121,7 +122,21 @@ struct LinuxProbeView: View {
                 Button("Start Linux") { session.start() }.disabled(session.attempted || jit.busy)
                 Button("Send A") { session.sendA() }.disabled(!session.inputReady)
             }.buttonStyle(.bordered)
-            Button("Save report") { showShare = true }.disabled(session.shareFiles.isEmpty)
+            Menu("Save report") {
+                Button("Markdown report (.md)") {
+                    guard let file = session.markdownFile else { return }
+                    shareItems = [file]
+                    showShare = true
+                }.disabled(session.markdownFile == nil)
+                Button("Raw JSON and serial log") {
+                    shareItems = session.shareFiles
+                    showShare = true
+                }.disabled(session.shareFiles.isEmpty)
+            }.disabled(session.markdownFile == nil && session.shareFiles.isEmpty)
+            if let error = session.exportError {
+                Text(error).font(.footnote).foregroundStyle(.orange)
+                    .multilineTextAlignment(.center)
+            }
             Text("This checks Linux boot, display and input. Steam is not included yet.")
                 .font(.footnote).foregroundStyle(.secondary)
         }

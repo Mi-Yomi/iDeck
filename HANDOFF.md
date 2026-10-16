@@ -5,6 +5,49 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## Apple gate: исправление sparse FAT16 fixture в mac-tests
+
+Parent сообщил отказ [build 6ad1a04a3ffd2c7f0ad3ce47](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad1a04a3ffd2c7f0ad3ce47):
+iOS typecheck и Mac compilation прошли, затем **mac-tests exit -5** с
+`Swift/ErrorType.swift:254` и `main.LinuxTerminalProfile.Invalid.disk`.
+Parent связывает запуск с `f1d3bd1912f4d17a2ff6476fff05f55d6b97c432`;
+actual checkout receipt/full result.json независимо не получены. Это переданный
+parent результат/raw-log finding; автор этой записи сам raw log не читал. Отказ произошёл в Foundation helper tests до native/app build;
+нового app-link/IPA результата для terminal stage нет.
+
+Причина подтверждена source review и сообщённым parent Apple API contract:
+`TerminalChecks.swift.makeSeed` после `FileHandle.truncate(atOffset: 134217728)`
+не возвращал cursor к началу. Следующий 512-byte boot-sector write шёл в EOF:
+fixture становился **134218240 bytes**, а BPB/signature на offset 0 оставались
+нулевыми. Production provision correctly отклоняет `count > 134217728` уже
+при первом open; ослаблять disk guard, менять production FAT16 seed или runtime
+не требуется. Native owner независимо сравнил BPB offsets 11/19/32/54/510 с
+actual prepared seed: при правильном размещении header согласован.
+Primary API: [Apple FileHandle.truncate(atOffset:)](https://developer.apple.com/documentation/foundation/filehandle/truncate%28atoffset%3A%29).
+
+Fixture-only explicit seek(0) реализован; добавлены offset/size/BPB/last-byte
+EOF assertions и real Foundation regression старого layout с typed catch только
+`Invalid.disk` и проверкой отсутствия published userdata. Fixed stderr checkpoints
+не печатают пути. Source SHA-256
+`d584f5de8fc0cc9d7b7e71f1562c1390a447cc0eb425c2000261d52021a504e4`;
+исходник fixture проверен и **готов к Apple rerun**. Root full suite:
+**141 Python tests PASS, 4.891 s**, exit 0; команда
+`PYTHONDONTWRITEBYTECODE=1 TMPDIR=/workspace/iDeck/.work python3 -m unittest discover -s experiments/linux-guest/tests -q`.
+Новый Python source guard отвергает old f1d3 fixture и принимает corrected source
+через `Path.read_text` mock; это не выполнение Swift/Foundation API.
+Root подтвердил: остальные tracked production/runtime/CI/locks не изменены,
+все 38 base evidence snapshots побайтно сохранены, все 21 overlay input hashes
+соответствуют прежнему lock; diff check PASS. Здесь Swift/QEMU не
+устанавливались и не запускались; fix ещё не прошёл новый Apple gate.
+Probe/terminal payloads, native pins и старые evidence snapshots сохраняются.
+Новые CI/IPA/device actions этой документацией не выполняются. Evidence:
+`experiments/linux-guest/evidence/terminal-mac-fixture-fix.json`.
+
+Исправление фиксируется отдельным коммитом в рабочей ветке. Для следующего
+запуска использовать его полный pushed SHA; только parent запускает отдельно
+авторизованный Apple rerun с прежними request/quota checks. До фактического результата не объявлять
+mac-tests/terminal IPA/device two-boot persistence успешными.
+
 ## Новый этап: local terminal и файл после orderly stop / следующего запуска
 
 Работа начинается от `28d862fd4fcddd9421688756e6fa1e5cea7021fb`. Авторизован

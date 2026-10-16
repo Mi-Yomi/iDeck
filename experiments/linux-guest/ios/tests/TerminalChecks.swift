@@ -10,15 +10,24 @@ func runTerminalChecks() throws {
     try manager.createDirectory(at: root, withIntermediateDirectories: true)
     defer { try? manager.removeItem(at: root) }
 
-    func check(_ condition: Bool) { precondition(condition) }
+    func check(_ condition: Bool, _ message: String = "assertion failed") {
+        precondition(condition, "Linux terminal host check: " + message)
+    }
+    func checkpoint(_ label: String) {
+        // stderr is written directly, so a later uncaught throw still leaves
+        // the last reached substep in a captured Apple host-test log.
+        FileHandle.standardError.write(Data("LINUX_TERMINAL_CHECKPOINT \(label)\n".utf8))
+    }
+    func fileSize(_ url: URL) throws -> Int {
+        guard let count = try manager.attributesOfItem(atPath: url.path)[.size] as? NSNumber else {
+            preconditionFailure("Linux terminal host check: missing fixture file size")
+        }
+        return count.intValue
+    }
     func expectFailure(_ body: () throws -> Void) {
         do { try body(); fatalError("unsafe terminal input accepted") } catch { }
     }
-    func makeSeed(_ url: URL) throws {
-        check(manager.createFile(atPath: url.path, contents: nil))
-        let file = try FileHandle(forWritingTo: url)
-        defer { try? file.close() }
-        try file.truncate(atOffset: UInt64(LinuxTerminalProfile.diskSize))
+    func bootSector() -> Data {
         var boot = Data(repeating: 0, count: 512)
         boot[11] = 0; boot[12] = 2 // 512-byte sectors
         boot[13] = 8; boot[14] = 1; boot[16] = 2
@@ -27,8 +36,32 @@ func runTerminalChecks() throws {
         boot[32] = 0; boot[33] = 0; boot[34] = 4 // 262144 sectors
         boot.replaceSubrange(54..<62, with: Data("FAT16   ".utf8))
         boot[510] = 0x55; boot[511] = 0xaa
+        return boot
+    }
+    func makeSeed(_ url: URL) throws {
+        check(manager.createFile(atPath: url.path, contents: nil), "create synthetic seed")
+        let file = try FileHandle(forWritingTo: url)
+        defer { try? file.close() }
+        check(try file.offset() == 0, "new seed handle starts at zero")
+        check(try fileSize(url) == 0, "new seed is empty")
+        try file.truncate(atOffset: UInt64(LinuxTerminalProfile.diskSize))
+        check(try file.offset() == UInt64(LinuxTerminalProfile.diskSize), "truncate moves the file pointer to EOF")
+        check(try fileSize(url) == LinuxTerminalProfile.diskSize, "truncate creates exactly 128 MiB")
+        // FileHandle.truncate moves the pointer; reset it before writing BPB.
+        // Without this seek the fixture grows by 512 bytes and sector zero is
+        // empty, which the production size/format guards correctly reject.
+        try file.seek(toOffset: 0)
+        check(try file.offset() == 0, "explicit seek positions the BPB at sector zero")
+        let boot = bootSector()
         try file.write(contentsOf: boot)
+        check(try file.offset() == 512, "boot write ends at byte 512")
         try file.synchronize()
+        check(try fileSize(url) == LinuxTerminalProfile.diskSize, "boot write must not grow the seed")
+        let reader = try FileHandle(forReadingFrom: url)
+        defer { try? reader.close() }
+        check(try reader.read(upToCount: 512) == boot, "sector zero contains the complete expected BPB and signature")
+        try reader.seek(toOffset: UInt64(LinuxTerminalProfile.diskSize - 1))
+        check(try reader.read(upToCount: 2) == Data([0]), "last sparse byte is zero and no appended sector exists")
     }
     func byte(_ url: URL, at offset: UInt64) throws -> Data {
         let file = try FileHandle(forReadingFrom: url)
@@ -49,8 +82,33 @@ func runTerminalChecks() throws {
     }
 
     let seed = root.appendingPathComponent("userdata-seed.raw")
+    checkpoint("seed-layout")
     try makeSeed(seed)
+    // Reproduce the old missing-seek mistake with the real Foundation API.
+    // This synthetic malformed seed must fail before any disk is published.
+    checkpoint("appended-header-regression")
+    let appended = root.appendingPathComponent("appended-header.raw")
+    check(manager.createFile(atPath: appended.path, contents: nil))
+    let appendedWriter = try FileHandle(forWritingTo: appended)
+    try appendedWriter.truncate(atOffset: UInt64(LinuxTerminalProfile.diskSize))
+    check(try appendedWriter.offset() == UInt64(LinuxTerminalProfile.diskSize), "regression starts at EOF after truncate")
+    try appendedWriter.write(contentsOf: bootSector())
+    check(try appendedWriter.offset() == UInt64(LinuxTerminalProfile.diskSize + 512), "missing seek appends the header")
+    try appendedWriter.synchronize(); try appendedWriter.close()
+    check(try fileSize(appended) == LinuxTerminalProfile.diskSize + 512, "malformed seed is exactly one sector oversized")
+    let appendedReader = try FileHandle(forReadingFrom: appended)
+    check(try appendedReader.read(upToCount: 512) == Data(repeating: 0, count: 512), "malformed seed has an empty first sector")
+    try appendedReader.seek(toOffset: UInt64(LinuxTerminalProfile.diskSize))
+    check(try appendedReader.read(upToCount: 512) == bootSector(), "malformed seed BPB is at EOF instead of zero")
+    try appendedReader.close()
+    let rejected = root.appendingPathComponent("appended-header-data")
+    do {
+        _ = try LinuxTerminalDisk.open(directory: rejected, seed: appended)
+        preconditionFailure("Linux terminal host check: oversized seed was accepted")
+    } catch LinuxTerminalProfile.Invalid.disk { }
+    check(!manager.fileExists(atPath: rejected.appendingPathComponent("userdata.raw").path), "oversized seed must not publish a persistent disk")
     let directory = root.appendingPathComponent("persistent")
+    checkpoint("disk-first-open")
     let disk = try LinuxTerminalDisk.open(directory: directory, seed: seed)
     check(disk.url.lastPathComponent == "userdata.raw")
     check(try byte(disk.url, at: 2 * 1024 * 1024) == Data([0]))
@@ -65,12 +123,14 @@ func runTerminalChecks() throws {
     expectFailure { _ = try LinuxTerminalDisk.open(directory: directory, seed: seed) }
     try disk.synchronizeAndClose()
     expectFailure { try disk.synchronize() }
+    checkpoint("disk-reopen")
     let reopened = try LinuxTerminalDisk.open(directory: directory, seed: seed)
     check(try byte(reopened.url, at: 2 * 1024 * 1024) == Data([0x7b]))
     check(try byte(seed, at: 2 * 1024 * 1024) == Data([0]))
     try reopened.synchronizeAndClose()
 
     // Rejection preserves existing bytes; no retry replaces a user's disk.
+    checkpoint("disk-rejection-guards")
     let wrong = root.appendingPathComponent("wrong-size")
     try manager.createDirectory(at: wrong, withIntermediateDirectories: true)
     let wrongDisk = wrong.appendingPathComponent("userdata.raw")
@@ -92,6 +152,7 @@ func runTerminalChecks() throws {
     expectFailure { _ = try LinuxTerminalDisk.open(directory: root.appendingPathComponent("bad-size-option"), seed: seed, size: 512) }
 
     let probeAssets = root.appendingPathComponent("probe")
+    checkpoint("profile-fixtures")
     let terminalAssets = root.appendingPathComponent("terminal")
     try manager.createDirectory(at: probeAssets, withIntermediateDirectories: true)
     try manager.createDirectory(at: terminalAssets, withIntermediateDirectories: true)
@@ -116,9 +177,11 @@ func runTerminalChecks() throws {
     let profileURL = terminalAssets.appendingPathComponent("terminal-profile.json")
     try JSONSerialization.data(withJSONObject: description).write(to: profileURL)
     let profile = try LinuxTerminalProfile.load(from: terminalAssets)
+    checkpoint("profile-disk-open")
     let profileDisk = try profile.openDisk(in: root.appendingPathComponent("profile-data,one"), assets: terminalAssets)
     defer { profileDisk.closeUnused() }
     let session = root.appendingPathComponent("session,one")
+    checkpoint("terminal-argv")
     let args = try profile.arguments(probeAssets: probeAssets, terminalAssets: terminalAssets,
         session: session, diskURL: profileDisk.url, serialFD: 51, controlFD: 52)
     check(args.contains("tcg,thread=multi,tb-size=256,split-wx=on"))
@@ -151,6 +214,7 @@ func runTerminalChecks() throws {
 
     // The shipped renderer must separate a clean-stop receipt from block-layer
     // teardown, diagnostic probe success and real second-boot verification.
+    checkpoint("terminal-report-renderer")
     let cleanReport = LinuxProbeReport.render(report: ["mode": "terminal", "status": "terminal_clean_stopped",
         "terminal_ready": true, "terminal_clean_unmount": true, "qemu_main_loop_returned": true,
         "host_disk_fsync_passed": true, "terminal_clean_stop": true,

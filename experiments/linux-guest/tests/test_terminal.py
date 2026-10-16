@@ -300,6 +300,22 @@ class TerminalBundleChecks(unittest.TestCase):
 
 class TerminalSourceContracts(unittest.TestCase):
     """Source-level safety contracts, explicitly not Swift/runtime execution."""
+    def test_actual_swift_seed_fixture_rewinds_after_truncate_before_writing_header(self):
+        # Guards the exact regression that reached Apple's mac-tests: FileHandle
+        # truncate moves its cursor. This inspects the real Swift fixture, and
+        # does not claim to execute FileHandle or reproduce it in Python.
+        checks = (EXPERIMENT / "ios/tests/TerminalChecks.swift").read_text()
+        fixture = swift_block(checks, "func makeSeed(")
+        truncate = fixture.index("file.truncate(atOffset:")
+        rewind = fixture.index("file.seek(toOffset: 0)")
+        write = fixture.index("file.write(contentsOf: boot)")
+        self.assertLess(truncate, rewind)
+        self.assertLess(rewind, write)
+        self.assertGreater(fixture.rindex("fileSize(url) == LinuxTerminalProfile.diskSize"), write)
+        self.assertIn("reader.read(upToCount: 512) == boot", fixture)
+        self.assertIn("catch LinuxTerminalProfile.Invalid.disk", checks)
+        self.assertLess(checks.index("try makeSeed(seed)"), checks.index('checkpoint("disk-first-open")'))
+
     def test_clean_claim_requires_independent_unmount_loop_return_and_host_fsync(self):
         session = (EXPERIMENT / "ios/LinuxTerminalSession.swift").read_text()
         serial = swift_block(session, "private func receiveSerial(")

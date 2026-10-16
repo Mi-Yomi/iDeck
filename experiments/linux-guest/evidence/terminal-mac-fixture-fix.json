@@ -1,0 +1,65 @@
+{
+  "status": "fixture_only_fix_locally_validated_ready_for_apple_rerun",
+  "working_branch": "codex/linux-guest-feasibility-20261015",
+  "preparation_base_commit": "f1d3bd1912f4d17a2ff6476fff05f55d6b97c432",
+  "apple_failure": {
+    "build_id": "6ad1a04a3ffd2c7f0ad3ce47",
+    "build_url": "https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad1a04a3ffd2c7f0ad3ce47",
+    "provenance": "Parent reports actual raw-log findings; this documentation agent has not directly read the raw Apple log.",
+    "ios_typecheck_passed": true,
+    "mac_compile_passed": true,
+    "failing_step": "mac-tests",
+    "exit_code": -5,
+    "diagnostic": "Swift/ErrorType.swift:254 fatal error: main.LinuxTerminalProfile.Invalid.disk",
+    "native_or_app_link_result_claimed": false,
+    "new_ipa_created": false,
+    "reported_source_commit": "f1d3bd1912f4d17a2ff6476fff05f55d6b97c432",
+    "reported_commit_provenance": "Parent delegation ties this failure to f1d3bd1912f4d17a2ff6476fff05f55d6b97c432; actual checkout receipt/full result.json has not been independently retrieved.",
+    "actual_verified_build_commit": null
+  },
+  "cause": {
+    "source_file": "experiments/linux-guest/ios/tests/TerminalChecks.swift",
+    "helper": "makeSeed",
+    "confirmed_by": "Documentation agent read source; root coordinator independently read the primary Apple API abstract via web search, and native/IPA reviewers corroborated semantics/BPB comparison. No local Swift API execution.",
+    "truncate_offset": 134217728,
+    "next_write_bytes": 512,
+    "actual_broken_fixture_size": 134218240,
+    "effect": "truncate places current offset at EOF; boot write without seek appends instead of populating offset 0. Initial BPB/signature remain zero.",
+    "production_rejection": "LinuxTerminalDisk.provision correctly rejects count > 134217728 during first open; production size/format/no-clobber guards must remain unchanged.",
+    "bpb_offsets_compared_by_native_owner": [
+      11,
+      19,
+      32,
+      54,
+      510
+    ],
+    "bpb_comparison": "The synthetic header agrees with actual prepared seed for fields validated by production once placed at offset 0.",
+    "primary_api_reference": "https://developer.apple.com/documentation/foundation/filehandle/truncate%28atoffset%3A%29"
+  },
+  "fix": {
+    "status": "source_frozen_reviewed_host_validated",
+    "scope": "Only host fixture checks and regression coverage; production runtime/disk guards unchanged.",
+    "production_runtime_changes_needed": false,
+    "swift_fixture_sha256": "d584f5de8fc0cc9d7b7e71f1562c1390a447cc0eb425c2000261d52021a504e4",
+    "implemented": "Explicit seek(0) before BPB write, offset/size/sector-zero/last-byte EOF assertions, real Foundation old-layout regression with typed Invalid.disk-only catch and no published userdata, fixed checkpoint labels on stderr without paths.",
+    "python_source_regression_sha256": "98fb0c6273795653923fc9bf7b2d3c0d08b052098078d836d5f814409e480b50"
+  },
+  "validation": {
+    "status": "root_integrated_host_suite_passed_apple_rerun_pending",
+    "local_swift_execution_performed": false,
+    "local_qemu_execution_performed": false,
+    "apple_rerun_performed": false,
+    "actual_device_two_boot_persistence_proven": false,
+    "source": "Root coordinator full-suite/protection receipt; documentation agent independently checked source hashes and historical documentation preservation.",
+    "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/workspace/iDeck/.work python3 -m unittest discover -s experiments/linux-guest/tests -q",
+    "tests_passed": 141,
+    "elapsed_seconds": 4.891,
+    "exit_code": 0,
+    "source_regression": "New source regression rejects old f1d3 fixture text and accepts fixed source via Path.read_text mock only. This is source validation, not Swift/Foundation API execution.",
+    "preservation": "Root reports tracked diff limited to HANDOFF.md, TerminalChecks.swift and test_terminal.py; all other tracked production/runtime/CI/locks unchanged. All 38 prior evidence snapshots byte-identical; all 21 overlay input hashes match the unchanged overlay lock.",
+    "diff_check_passed": true
+  },
+  "preservation": "Keep original probe and terminal resources, native/guest source locks, runtime guards, successful baseline IPAs and earlier evidence snapshots unchanged.",
+  "privacy": "No private artifact URLs/IDs, Library IDs, raw device paths, credentials or raw logs included.",
+  "next_action": "Parent may perform a separately authorized Apple rerun on the exact pushed repair SHA under unchanged request/quota checks. Do not claim successful mac-tests, terminal IPA or device two-boot persistence until actual results."
+}

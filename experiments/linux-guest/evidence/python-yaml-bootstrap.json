@@ -1,0 +1,128 @@
+{
+  "status": "host_reviewed_python_yaml_bootstrap_apple_rerun_pending",
+  "working_branch": "codex/linux-guest-feasibility-20261015",
+  "preparation_base_commit": "efa674191ea9b337d30d2aa8e2185584dba1fe3d",
+  "failed_build": {
+    "url": "https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad15ff23ffd2c7f0ad3c239",
+    "workflow": "ideck-linux-probe-ipa",
+    "commit": "efa674191ea9b337d30d2aa8e2185584dba1fe3d",
+    "status": "failed",
+    "evidence_source": "Latest coordinator-provided browser summary, not a full raw log; artifact bytes not yet independently verified locally.",
+    "first_failed_step": "native-gpu",
+    "first_error": "virglrenderer meson.build:72:16: Python 3.12.7 is missing the yaml module.",
+    "native_base": {
+      "exit_code": 0,
+      "elapsed_seconds": 83.179
+    },
+    "metal_toolchain": {
+      "download_succeeded": true,
+      "download_elapsed_seconds": 18.208,
+      "real_air_probe_passed": true,
+      "air_probe_size": 2944
+    },
+    "native_angle": {
+      "exit_code": 0,
+      "elapsed_seconds": 241.068
+    },
+    "integrated_qemu_husk_runtime_built": false,
+    "app_linked": false,
+    "ipa_created": false,
+    "device_tested": false,
+    "steam_executed": false
+  },
+  "reported_artifact": {
+    "library_file_id": "libfile_e6c01d01964c81918895c27f477ced07",
+    "zip_size": 193432,
+    "zip_sha256": "9fce05976bca43f89ba9097671437eb7a595a289d6402aefe2d1726cabfc147d",
+    "source": "Parent-provided artifact identity and expected digest; official Library materialization helper failed before yielding a ZIP payload.",
+    "locally_verified": false,
+    "materialization": {
+      "prepare_succeeded": true,
+      "workspace_path": null,
+      "helper_location": ".work/python-yaml-bootstrap/library-helper",
+      "helper_exit_code": 1,
+      "error": "library file transfer failed: download failed",
+      "zip_payload_obtained": false,
+      "http_status_exposed_by_helper": false,
+      "http_status": null,
+      "access_bypass_attempted": false
+    }
+  },
+  "bootstrap_change": {
+    "status": "implemented_host_reviewed_apple_rerun_pending",
+    "intended_scope": "Pinned PyYAML 6.0.2 cp312 macOS arm64 wheel with hash verification in a build-only venv placed first on child PATH before native-base; probe the exact Python yaml import/version.",
+    "worker_aggregate_seconds_unchanged": 6900,
+    "provider_max_minutes_unchanged": 120,
+    "accounts_or_credentials_created": false,
+    "billing_changes": false,
+    "script": "ci/build_linux_probe_ipa.py",
+    "requirements_lock": "experiments/linux-guest/ipa/python-requirements.lock.txt",
+    "version": "6.0.2",
+    "wheel_filename": "PyYAML-6.0.2-cp312-cp312-macosx_11_0_arm64.whl",
+    "wheel_url": "https://files.pythonhosted.org/packages/a8/0c/38374f5bb272c051e2a69281d71cba6fdb983413e6758b84482905e29a5d/PyYAML-6.0.2-cp312-cp312-macosx_11_0_arm64.whl",
+    "wheel_size": 173302,
+    "wheel_sha256": "ce826d6ef20b1bc864f0a68340c8b3287705cae2f8b4b1d932177dcc76721725",
+    "wheel_verification": {
+      "source": "Coordinator relayed Role2 primary verification: actual wheel bytes checked in memory only, metadata cp312/macOS arm64 and no Requires-Dist. Not repeated by this evidence author.",
+      "official_pypi_metadata": "https://pypi.org/pypi/PyYAML/6.0.2/json",
+      "memory_only_wheel_size_sha256_verified_by_role2": true
+    },
+    "host_guard": "Fail before setup unless CPython 3.12 on Darwin arm64; pre-existing environment path rejected.",
+    "installation": "New worker-output venv created with sys.executable -I -m venv. Venv Python uses pip --isolated --no-input --no-cache-dir --no-index --no-deps --only-binary=:all: --require-hashes against the exact public wheel requirement; system site packages are not modified.",
+    "probe": "Same venv interpreter runs -I import json, sys, yaml; exact key/type/version checks plus sys.executable/sys.prefix and yaml.__file__ within venv site-packages are required before success.",
+    "meson_selection": "Prepend venv/bin to child PATH and set VIRTUAL_ENV before native-base, so build_ios.sh captures this python3 in cross-darwin.meson and virglrenderer host generation gets yaml.",
+    "failure_behavior": "pip, import, identity, permission and timeout failures propagate through existing Worker.run; no insecure flags, system pip install, alternate index or module stub.",
+    "scope_boundary": "No Mako/Jinja additions. QEMU configure/pythondeps/own environment unchanged by diff; no QEMU build success or fresh extraction of the locked QEMU archive is claimed.",
+    "selection_sources": {
+      "husk_cross_python": "https://github.com/Leviidev/Husk/blob/0695248f491cda877f7969d1f0cc89aeede1482e/scripts/build_ios.sh#L65-L107",
+      "meson_python_priority": "https://github.com/mesonbuild/meson/blob/1.12.0/mesonbuild/modules/python.py#L528-L544",
+      "virgl_yaml_requirement": "https://github.com/utmapp/virglrenderer/blob/482f9d8b8c2d2288efa10a027116216909d2c226/src/gallium/meson.build#L71-L89"
+    },
+    "source_verification_note": "Links checked by Role2 and relayed by coordinator, not fetched by this evidence author; QEMU source boundary inspected through official v10.0.12-utm tag without fresh archive re-extraction.",
+    "generated_cross_file_check": "After native-base, parse both actual cross-ios.meson and cross-darwin.meson; require binaries.python to be one absolute command path exactly equal to the verified venv/bin/python3 and record each file SHA-256 before cross-darwin copy and ANGLE/GPU. Missing/malformed/mismatched files fail closed."
+  },
+  "host_validation": {
+    "status": "passed",
+    "source": "Coordinator executed final integrated suite; evidence author verified saved log and final file hashes.",
+    "command": "python3 -B -m unittest discover -s experiments/linux-guest/tests -v",
+    "environment": "Existing Linux cloud environment /workspace/iDeck; Python 3.12.14",
+    "exit_code": 0,
+    "tests_passed": 87,
+    "new_python_bootstrap_tests": 19,
+    "previous_tests_included": 68,
+    "elapsed_seconds": 0.717,
+    "log": ".work/python-yaml-bootstrap/host-tests.log",
+    "log_size": 12939,
+    "log_sha256": "a8bb516d4ba71eb0694f025d6c74ad20088855a5bdf279a2934bd6ce5133d7ee",
+    "log_committed": false,
+    "scope": "Network-free host tests with simulated subprocess/Apple/pip outputs; no actual pip install, Apple build or source runtime execution.",
+    "coverage": [
+      "strict CPython/Darwin/arm64 and new-directory guards",
+      "exact requirement/hash/isolated install arguments",
+      "same-interpreter yaml import/version/executable/prefix/site-package identity",
+      "no PATH publication before successful identity probe",
+      "actual generated Meson cross file interpreter checks and hashes",
+      "setup/probe/cross mismatch/error propagation and worker deadlines"
+    ],
+    "ast_and_diff_checks_passed": true,
+    "both_independent_reviews_approved": true,
+    "protected_inputs_unchanged": [
+      "codemagic.yaml",
+      "ci/check_build_request.py",
+      "experiments/linux-guest/ipa/native-sources.lock.json",
+      "experiments/linux-guest/ipa/0001-fail-closed-native-build.patch",
+      "experiments/linux-guest/ipa/guest.lock.json"
+    ]
+  },
+  "apple_rerun_performed_for_yaml_bootstrap": false,
+  "integrated_qemu_husk_runtime_built": false,
+  "app_linked": false,
+  "ipa_created": false,
+  "device_tested": false,
+  "steam_executed": false,
+  "hashes": {
+    "ci/build_linux_probe_ipa.py": "fe2ee658400550cd4e40dc16d450478d2a8d1341c0bde7383b9cef40f74b8bb6",
+    "experiments/linux-guest/tests/test_python_toolchain.py": "bb232dcac06f7f963f1804edc377079697603bf82ec9590d11223d0f036e2168",
+    "experiments/linux-guest/ipa/python-requirements.lock.txt": "5cb51fa6488db2f64cc20cd1d272f52614f6d4ea67d3f139cffd3f9a7f1e7ac5"
+  }
+}

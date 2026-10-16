@@ -1,0 +1,3 @@
+# Official PyPI 6.0.2 metadata: https://pypi.org/pypi/PyYAML/6.0.2/json
+# CPython 3.12 / macOS 11+ arm64 wheel for the disposable M2 worker; 173302 bytes.
+PyYAML @ https://files.pythonhosted.org/packages/a8/0c/38374f5bb272c051e2a69281d71cba6fdb983413e6758b84482905e29a5d/PyYAML-6.0.2-cp312-cp312-macosx_11_0_arm64.whl --hash=sha256:ce826d6ef20b1bc864f0a68340c8b3287705cae2f8b4b1d932177dcc76721725

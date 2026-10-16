@@ -1,14 +1,15 @@
 # iDeck Linux Probe IPA build
 
 The `ideck-linux-probe-ipa` Codemagic workflow is a **native source build recipe**.
-The latest [Apple run at 86d4ac0](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad15b143ffd2c7f0ad3c111) passed the Swift source gate,
-verified all seven source archives (pixman on its first attempt), and completed
-`native-base`. It stopped at `native-angle` because the Xcode 27 runner lacked
-the Metal toolchain. These results come from the coordinator's browser summary,
-not a full raw log. Full QEMU/Husk compilation, app linking and IPA packaging
-remain unverified. See `../evidence/metal-toolchain-bootstrap.json`; earlier
-source-header, extraction/JSON and download-retry evidence are preserved as
-historical snapshots. There is no IPA or device Linux/Steam proof yet.
+The latest [Apple run at efa6741](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad15ff23ffd2c7f0ad3c239) completed
+`native-base`, downloaded the official Metal component, compiled a real 2944-byte
+AIR probe, and passed `native-angle`. It stopped at `native-gpu`: virglrenderer's
+Meson setup selected Python 3.12.7 without the `yaml` module. These results are
+from the coordinator's browser summary; raw artifact bytes are not yet verified
+locally. Integrated QEMU/Husk compilation, app linking and IPA packaging remain
+unverified. See `../evidence/python-yaml-bootstrap.json`; previous source,
+download and Metal preparation evidence remains historical. There is no IPA or
+device Linux/Steam proof yet.
 
 Select branch `codex/linux-guest-feasibility-20261015` **before** selecting the
 workflow. Set `expected_commit` to the full current pushed SHA. `main` deliberately
@@ -34,6 +35,20 @@ finishes within it. No automatic build trigger or build rerun is configured.
 Source archive fetches have bounded transient retries with unchanged TLS and
 integrity checks; access denial, certificate errors and hash mismatches fail.
 
+Before `native-base` generates the Meson cross file, the worker creates a
+build-only venv using CPython 3.12 on macOS arm64. It installs only the exact
+[PyYAML 6.0.2](https://pypi.org/pypi/PyYAML/6.0.2/json) cp312/macOS arm64 wheel
+from `python-requirements.lock.txt`, using isolated pip, no index/dependencies,
+binary-only mode and required SHA-256 verification. The venv interpreter must
+import the expected yaml version with executable, prefix and module paths
+inside that environment before its bin directory is prepended to child PATH.
+After native-base, both generated `cross-ios.meson` and `cross-darwin.meson`
+must name that exact absolute venv Python; each file hash is recorded before
+ANGLE/GPU starts. This also checks the actual files rather than assuming PATH
+selection. System packages and QEMU's own Python setup are not changed. Setup,
+identity or import failures stop the build. This new preparation still needs
+its Apple CI rerun; wheel identity and host tests cannot prove native linking.
+
 Before ANGLE, the worker compiles a minimal Metal shader using
 `xcrun --sdk iphoneos metal -c`, requiring a newly produced nonempty AIR
 file. If that probe explicitly reports a missing Metal Toolchain and Apple's
@@ -47,7 +62,8 @@ compiler. Compiler version, AIR size/hash and booleans for ignored overrides
 are recorded in `result.json`. Generic compiler, license, permission, component
 download or reprobe failures remain fatal; there is no automatic license
 acceptance or alternate compiler. The component uses the disposable runner and
-existing aggregate budget. This preparation still needs its Apple CI rerun.
+existing aggregate budget. This preparation passed in the Apple run at efa6741;
+full runtime and app linking remain separate gates.
 
 ## Scope and provenance
 
@@ -108,10 +124,10 @@ downloaded old Husk109 IPA is substituted for Husk119 output.
 
 ## Local checks performed
 
-The integrated suite passes 68 network-free host tests (12 Metal bootstrap,
-20 bounded-download and 36 earlier tests), with independent review. Bootstrap
-tests simulate subprocess/Apple outputs; they do not execute an Apple compiler
-or download a component. The earlier tests include wrong branch/SHA/default-input rejection,
+The integrated suite passes 87 network-free host tests (19 Python setup/cross
+file tests, 12 Metal bootstrap, 20 bounded-download and 36 earlier tests), with
+independent review. Setup tests simulate subprocess/pip/Apple outputs; they do
+not install packages, execute an Apple compiler or download a component. The earlier tests include wrong branch/SHA/default-input rejection,
 real guest archive restoration, source staging, simulator/incorrect app identity
 rejection, a real nonzero child-process failure and rejection of the missing
 transitive header with valid package hashes. Extraction tests reject other
@@ -123,9 +139,9 @@ The canonical Git version of the patched shell script passes `bash -n`.
 The 15 existing workflows preserve their original execution bodies after the
 new request guard; YAML defaults no longer resolve omitted required inputs to
 empty environment strings. The first Apple run passed YAML/request validation;
-the next run passed Swift typechecking. The latest Apple run completed native-base;
-Metal component preparation, full QEMU/Husk runtime and app linking remain
-pending a new Apple run.
+the next run passed Swift typechecking. The latest Apple run completed native-base,
+Metal component preparation and ANGLE; Python yaml preparation, integrated
+QEMU/Husk runtime and app linking remain pending a new Apple run.
 
 The new extraction helper fully unpacked all seven locked source archives on
 Windows/Python 3.12.14 and wrote a valid result with real guest metadata. Only

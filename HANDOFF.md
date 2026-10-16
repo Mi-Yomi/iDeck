@@ -5,6 +5,74 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## Последняя Apple-попытка: Metal и ANGLE прошли, Python не находит yaml
+
+[Build `6ad15ff23ffd2c7f0ad3c239`](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad15ff23ffd2c7f0ad3c239)
+на [`efa674191ea9b337d30d2aa8e2185584dba1fe3d`](https://github.com/Mi-Yomi/iDeck/commit/efa674191ea9b337d30d2aa8e2185584dba1fe3d)
+завершился **failed** на `native-gpu`: virglrenderer `meson.build:72:16`,
+Python **3.12.7** не находит module `yaml`. Источник здесь — краткая browser-сводка
+координатора, не полный raw log; локальная независимая проверка artifact bytes
+пока не выполнена.
+
+- `native-base`: exit 0, **83.179 секунды**.
+- Официальная загрузка MetalToolchain: **18.208 секунды**, затем настоящий
+  compile probe создал AIR **2944 bytes** и прошёл.
+- `native-angle`: exit 0, **241.068 секунды**.
+- Integrated QEMU/Husk runtime, app linking и IPA ещё не получены.
+  Device Linux/JIT и Steam не проверены.
+
+Таким образом, bootstrap Metal из предыдущего раздела уже проверен этой Apple
+попыткой. Старый Metal evidence JSON и все нижние HANDOFF snapshots сохранены
+как история, не переписываются задним числом. Новый blocker — конкретный
+Python build dependency, а не ошибка Metal toolchain или app linker.
+
+В worker добавлена новая build-only venv перед `native-base`: CPython 3.12,
+Darwin arm64, pinned **PyYAML 6.0.2**, wheel
+`PyYAML-6.0.2-cp312-cp312-macosx_11_0_arm64.whl`, **173302 bytes**, SHA-256
+`ce826d6ef20b1bc864f0a68340c8b3287705cae2f8b4b1d932177dcc76721725`.
+Role2 проверил реальные wheel bytes в памяти и metadata (нет Requires-Dist),
+сверил [официальный PyPI manifest](https://pypi.org/pypi/PyYAML/6.0.2/json);
+автор HANDOFF загрузку не повторял. Lock задаёт один exact public wheel URL;
+pip использует `--isolated --no-index --no-deps --only-binary=:all:
+--require-hashes`, без system install или дополнительных пакетов.
+
+До изменения child PATH тот же venv interpreter с `-I` импортирует `yaml`;
+проверяются версия, executable/prefix и module path внутри новой venv. Только
+после этого venv/bin ставится первой в PATH и задаётся VIRTUAL_ENV, до генерации
+cross-файла в `native-base`. После него проверяются **оба фактических**
+`cross-ios.meson` и `cross-darwin.meson`: `binaries.python` должен содержать ровно
+один абсолютный путь к проверенному venv/bin/python3; в отчёт идут hashes файлов.
+Проверка выполняется до копирования cross-darwin и ANGLE/GPU. Отсутствующий,
+malformed или иной interpreter даёт отказ. Ошибки install/import/identity/
+permissions/timeout сохраняются. Не добавлены Mako/Jinja; QEMU configure/pythondeps и его собственная
+среда не менялись, успешная сборка QEMU не заявлена. Лимиты **6900 секунд /
+120 минут** сохраняются; подготовка только на disposable runner, без
+аккаунтов/credentials/оплаты.
+
+**Проверено координатором:** `python3 -B -m unittest discover -s
+experiments/linux-guest/tests -v` — **87 host tests PASS**, exit 0, 0.717 секунды,
+Python 3.12.14/Linux: **19 новых** Python setup/cross-file tests и 68 прежних.
+Это network-free controls с моделированием subprocess/pip/Apple outputs,
+не фактическая установка pip или Apple build. Оба независимых review одобрены;
+AST и whitespace checks PASS. Request/workflow/native lock/native patch/guest
+lock не менялись. Log: `.work/python-yaml-bootstrap/host-tests.log`, 12939 bytes,
+SHA-256 `a8bb516d4ba71eb0694f025d6c74ad20088855a5bdf279a2934bd6ce5133d7ee`;
+не добавлен в Git. Script/test/requirements hashes и полное evidence:
+`experiments/linux-guest/evidence/python-yaml-bootstrap.json`.
+
+Parent передал Library ZIP `libfile_e6c01d01964c81918895c27f477ced07`, size
+193432 bytes, SHA-256
+`9fce05976bca43f89ba9097671437eb7a595a289d6402aefe2d1726cabfc147d`.
+Это **reported / unverified locally**. Library prepare прошёл с
+`workspace_path=null`, но официальный materialization helper
+`.work/python-yaml-bootstrap/library-helper` завершился exit 1:
+`library file transfer failed: download failed`. ZIP payload не получен;
+helper не раскрыл HTTP status, поэтому этот отказ не называется 403.
+Локальная независимая проверка digest не выполнена, обхода не было.
+Новая CI для yaml fix ещё не запускалась. Следующий запуск — только
+browser-координатором после свежих quota/disabled-billing/private/exact pushed
+HEAD/no-active-CI проверок.
+
 ## Новая Apple-попытка: native-base прошёл, отсутствует Metal toolchain
 
 [Build `6ad15b143ffd2c7f0ad3c111`](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad15b143ffd2c7f0ad3c111)

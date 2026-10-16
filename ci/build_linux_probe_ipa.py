@@ -4,6 +4,8 @@
 No device installation or Apple account credentials. The IPA needs the owner's
 normal sideload signing before installation. No Steam/GPU acceptance is implied.
 """
+import ast
+import configparser
 import contextlib
 import errno
 import hashlib
@@ -34,6 +36,8 @@ from stage_bundle import verify
 DOWNLOAD_MAX_ATTEMPTS = 3
 DOWNLOAD_TIMEOUT_SECONDS = 300
 DOWNLOAD_BACKOFF_SECONDS = (2, 4)
+NATIVE_PYTHON_REQUIREMENTS = EXPERIMENT / "ipa/python-requirements.lock.txt"
+NATIVE_PYYAML_VERSION = "6.0.2"
 
 
 class DownloadDeadlineExceeded(TimeoutError):
@@ -157,6 +161,69 @@ def write_result(output, report):
     payload = json.dumps(report, indent=2) + "\n"
     (output / "result.json").write_text(payload, encoding="utf-8")
     print("LINUX_IPA_BUILD_RESULT=" + json.dumps(report), flush=True)
+
+
+def ensure_native_python(worker, report):
+    """Prepare the host generator's Python without modifying system packages."""
+    directory = worker.output / "native-python"
+    receipt = {"status": "failed", "venv": str(directory),
+               "requirements_sha256": sha(NATIVE_PYTHON_REQUIREMENTS),
+               "base_python": sys.version.split()[0], "base_implementation": sys.implementation.name,
+               "host_system": platform.system(), "host_machine": platform.machine()}
+    report["native_python"] = receipt
+    if (receipt["base_implementation"] != "cpython" or sys.version_info[:2] != (3, 12)
+            or receipt["host_system"] != "Darwin" or receipt["host_machine"] != "arm64"):
+        raise RuntimeError("Locked native Python wheel requires CPython 3.12 on macOS arm64")
+    if os.path.lexists(directory):
+        raise FileExistsError("Native Python environment must be new")
+    worker.run("python-venv", [sys.executable, "-I", "-m", "venv", directory])
+    interpreter = directory / "bin/python3"
+    worker.run("python-install", [interpreter, "-I", "-m", "pip", "--isolated", "--disable-pip-version-check",
+               "install", "--no-input", "--no-cache-dir", "--no-index", "--no-deps", "--only-binary=:all:",
+               "--require-hashes", "--requirement", NATIVE_PYTHON_REQUIREMENTS])
+    probe = worker.run("python-probe", [interpreter, "-I", "-c",
+        "import json, sys, yaml; print(json.dumps({'python_version': sys.version.split()[0], "
+        "'executable': sys.executable, 'prefix': sys.prefix, 'pyyaml_version': yaml.__version__, "
+        "'pyyaml_module': yaml.__file__}))"])
+    identity = json.loads(probe)
+    keys = {"python_version", "executable", "prefix", "pyyaml_version", "pyyaml_module"}
+    if (not isinstance(identity, dict) or set(identity) != keys
+            or not all(isinstance(value, str) for value in identity.values())):
+        raise ValueError("Unexpected native Python probe identity")
+    receipt.update(identity)
+    if (identity["pyyaml_version"] != NATIVE_PYYAML_VERSION
+            or not identity["python_version"].startswith("3.12.")
+            or Path(identity["executable"]).absolute() != interpreter.absolute()
+            or Path(identity["prefix"]).resolve() != directory.resolve()
+            or not Path(identity["pyyaml_module"]).resolve().is_relative_to(
+                (directory / "lib/python3.12/site-packages").resolve())):
+        raise ValueError("Native Python probe differs from the isolated locked environment")
+    # build_ios.sh writes command -v python3 into cross-darwin.meson; install
+    # this PATH before native-base generates it, so later Meson uses this same
+    # interpreter for virglrenderer host generators and their yaml import.
+    worker.env["PATH"] = str(directory / "bin") + os.pathsep + worker.env["PATH"]
+    worker.env["VIRTUAL_ENV"] = str(directory)
+    receipt["status"] = "ready"
+
+
+def verify_native_python_cross_files(report, cross):
+    """Check the actual generated Meson files bind the verified interpreter."""
+    receipt = report["native_python"]
+    receipt["status"] = "failed"
+    receipt["cross_files"] = {}
+    interpreter = Path(receipt["venv"]) / "bin/python3"
+    for filename in ("cross-ios.meson", "cross-darwin.meson"):
+        path = cross / filename
+        parser = configparser.ConfigParser(interpolation=None)
+        with path.open(encoding="utf-8") as stream:
+            parser.read_file(stream)
+        command = ast.literal_eval(parser["binaries"]["python"])
+        if (not isinstance(command, list) or len(command) != 1 or not isinstance(command[0], str)
+                or not Path(command[0]).is_absolute()
+                or Path(command[0]).absolute() != interpreter.absolute()):
+            raise ValueError("Generated Meson cross file uses a different Python: " + filename)
+        receipt["cross_files"][filename] = {"sha256": sha(path), "python": command[0]}
+    receipt["status"] = "ready"
 
 
 def ensure_metal_toolchain(worker, report):
@@ -385,8 +452,10 @@ def main():
             dest = source / item["destination"]
             dest.parent.mkdir(parents=True, exist_ok=True)
             worker.clone(item["name"], item["url"], item["commit"], dest, item.get("sparse"))
+        ensure_native_python(worker, report)
         worker.run("native-base", ["bash", "scripts/build_ios.sh", "libffi", "glib", "pixman", "libucontext", "libslirp"], source)
         cross = source / "build/ios-arm64"
+        verify_native_python_cross_files(report, cross)
         shutil.copyfile(cross / "cross-darwin.meson", cross / "cross-ios-darwin.meson")
         ensure_metal_toolchain(worker, report)
         worker.run("native-angle", ["bash", "scripts/build_angle_ios.sh"], source)

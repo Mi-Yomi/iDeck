@@ -10,7 +10,13 @@ struct LinuxTerminalProfile: Decodable {
         let sha256: String
         let size: Int
     }
-    enum Invalid: Error { case configuration, asset, disk, diskLocked, io }
+    enum Invalid: Error {
+        case configuration, asset, disk, diskLocked, io
+        // Static stage names identify a failed guard without exposing paths.
+        case diskTrustedDirectory, diskDirectoryURL, diskDirectoryComponent
+        case diskDirectoryType, diskDirectoryInspection, diskInspection, diskOpen, diskLinks
+        case diskMetadata, diskSize, diskHeaderRead, diskFormat, diskSeedSize
+    }
     static let diskSize = 128 * 1024 * 1024
     let schema: Int
     let mode: String
@@ -115,27 +121,42 @@ final class LinuxTerminalDisk {
     private init(url: URL, fd: Int32) { self.url = url; self.fd = fd }
     deinit { if fd >= 0 { Darwin.close(fd) } }
 
+    /// Resolve only an existing system-provided Documents/temporary prefix,
+    /// before appending app-owned/untrusted children. Foundation URL path
+    /// standardization may shorten /private aliases, so use POSIX realpath.
+    static func trustedDirectory(_ existing: URL) throws -> URL {
+        guard existing.isFileURL, let resolved = realpath(existing.path, nil) else {
+            throw LinuxTerminalProfile.Invalid.diskTrustedDirectory
+        }
+        defer { free(resolved) }
+        let resolvedPath = String(cString: resolved)
+        let directory = URL(fileURLWithPath: resolvedPath, isDirectory: true)
+        guard directory.path == resolvedPath else { throw LinuxTerminalProfile.Invalid.diskTrustedDirectory }
+        try validateDirectory(directory, allowingMissing: false)
+        return directory
+    }
+
     static func open(directory: URL, seed: URL, size: Int = LinuxTerminalProfile.diskSize) throws -> LinuxTerminalDisk {
-        guard size == LinuxTerminalProfile.diskSize else { throw LinuxTerminalProfile.Invalid.disk }
+        guard size == LinuxTerminalProfile.diskSize else { throw LinuxTerminalProfile.Invalid.diskSize }
         let manager = FileManager.default
         try validateDirectory(directory, allowingMissing: true)
         if !manager.fileExists(atPath: directory.path) {
             try manager.createDirectory(at: directory, withIntermediateDirectories: true)
         }
-        let values = try directory.resourceValues(forKeys: [.isDirectoryKey, .isSymbolicLinkKey])
-        guard values.isDirectory == true, values.isSymbolicLink != true else { throw LinuxTerminalProfile.Invalid.disk }
+        try validateDirectory(directory, allowingMissing: false)
         let url = directory.appendingPathComponent("userdata.raw")
         var state = stat()
         if lstat(url.path, &state) != 0 {
-            guard errno == ENOENT else { throw LinuxTerminalProfile.Invalid.disk }
+            guard errno == ENOENT else { throw LinuxTerminalProfile.Invalid.diskInspection }
             try provision(seed: seed, destination: url, size: size)
         }
         let fd = Darwin.open(url.path, O_RDWR | O_NOFOLLOW)
-        guard fd >= 0 else { throw LinuxTerminalProfile.Invalid.disk }
+        guard fd >= 0 else { throw LinuxTerminalProfile.Invalid.diskOpen }
         var accepted = false
         defer { if !accepted { Darwin.close(fd) } }
         guard flock(fd, LOCK_EX | LOCK_NB) == 0 else { throw LinuxTerminalProfile.Invalid.diskLocked }
-        guard fstat(fd, &state) == 0, state.st_nlink == 1 else { throw LinuxTerminalProfile.Invalid.disk }
+        guard fstat(fd, &state) == 0 else { throw LinuxTerminalProfile.Invalid.diskMetadata }
+        guard state.st_nlink == 1 else { throw LinuxTerminalProfile.Invalid.diskLinks }
         try validateFormat(fd: fd, size: size)
         accepted = true
         return LinuxTerminalDisk(url: url, fd: fd)
@@ -143,30 +164,45 @@ final class LinuxTerminalDisk {
 
     private static func validateFormat(fd: Int32, size: Int) throws {
         var state = stat()
-        guard fstat(fd, &state) == 0, (state.st_mode & S_IFMT) == S_IFREG,
-              state.st_size == off_t(size) else { throw LinuxTerminalProfile.Invalid.disk }
+        guard fstat(fd, &state) == 0, (state.st_mode & S_IFMT) == S_IFREG else { throw LinuxTerminalProfile.Invalid.diskMetadata }
+        guard state.st_size == off_t(size) else { throw LinuxTerminalProfile.Invalid.diskSize }
         var boot = [UInt8](repeating: 0, count: 512)
-        guard pread(fd, &boot, 512, 0) == 512 else { throw LinuxTerminalProfile.Invalid.disk }
+        guard pread(fd, &boot, 512, 0) == 512 else { throw LinuxTerminalProfile.Invalid.diskHeaderRead }
         func le16(_ offset: Int) -> Int { Int(boot[offset]) | Int(boot[offset + 1]) << 8 }
         func le32(_ offset: Int) -> Int { le16(offset) | le16(offset + 2) << 16 }
         let sectors = le16(19) == 0 ? le32(32) : le16(19)
         guard boot[510] == 0x55, boot[511] == 0xaa, le16(11) == 512,
               sectors * 512 == size, String(bytes: boot[54..<62], encoding: .ascii) == "FAT16   " else {
-            throw LinuxTerminalProfile.Invalid.disk
+            throw LinuxTerminalProfile.Invalid.diskFormat
         }
     }
 
     static func validateDirectory(_ directory: URL, allowingMissing: Bool) throws {
-        guard directory.isFileURL, directory == directory.standardizedFileURL else { throw LinuxTerminalProfile.Invalid.disk }
-        var current = directory
-        while current.path != "/" {
+        guard directory.isFileURL, directory.baseURL == nil, directory.query == nil, directory.fragment == nil,
+              directory.host == nil || directory.host == "" || directory.host == "localhost",
+              let rawPath = URLComponents(url: directory, resolvingAgainstBaseURL: false)?.path,
+              rawPath.hasPrefix("/"), directory.path.hasPrefix("/") else {
+            throw LinuxTerminalProfile.Invalid.diskDirectoryURL
+        }
+        let path = directory.path
+        let components = path.split(separator: "/", omittingEmptySubsequences: true)
+        let rawComponents = rawPath.split(separator: "/", omittingEmptySubsequences: true)
+        guard !rawPath.contains("\0"), !path.contains("\0"),
+              !rawComponents.contains("."), !rawComponents.contains(".."),
+              !components.contains("."), !components.contains("..") else {
+            throw LinuxTerminalProfile.Invalid.diskDirectoryComponent
+        }
+        // Inspect each ORIGINAL pathname prefix. Do not standardize or resolve
+        // this caller-supplied path: doing so could hide a symlink ancestor.
+        var current = ""
+        for component in components {
+            current += "/" + String(component)
             var state = stat()
-            if lstat(current.path, &state) == 0 {
-                guard (state.st_mode & S_IFMT) == S_IFDIR else { throw LinuxTerminalProfile.Invalid.disk }
+            if lstat(current, &state) == 0 {
+                guard (state.st_mode & S_IFMT) == S_IFDIR else { throw LinuxTerminalProfile.Invalid.diskDirectoryType }
             } else {
-                guard allowingMissing, errno == ENOENT else { throw LinuxTerminalProfile.Invalid.disk }
+                guard allowingMissing, errno == ENOENT else { throw LinuxTerminalProfile.Invalid.diskDirectoryInspection }
             }
-            current = current.deletingLastPathComponent()
         }
     }
 
@@ -180,7 +216,7 @@ final class LinuxTerminalDisk {
         var count = 0
         while let bytes = try source.read(upToCount: 1024 * 1024), !bytes.isEmpty {
             count += bytes.count
-            guard count <= size else { throw LinuxTerminalProfile.Invalid.disk }
+            guard count <= size else { throw LinuxTerminalProfile.Invalid.diskSeedSize }
             try bytes.withUnsafeBytes { buffer in
                 var offset = 0
                 while offset < buffer.count {
@@ -191,7 +227,8 @@ final class LinuxTerminalDisk {
                 }
             }
         }
-        guard count == size, fsync(fd) == 0 else { throw LinuxTerminalProfile.Invalid.io }
+        guard count == size else { throw LinuxTerminalProfile.Invalid.diskSeedSize }
+        guard fsync(fd) == 0 else { throw LinuxTerminalProfile.Invalid.io }
         try validateFormat(fd: fd, size: size)
         // link is an atomic, same-directory, no-clobber publish. A racing first
         // creator may win; its existing disk is validated and locked below.

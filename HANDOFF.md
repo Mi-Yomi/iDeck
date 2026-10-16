@@ -5,6 +5,56 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## Второй mac-tests Invalid.disk: filesystem path validation
+
+Parent сообщил [build 6ad1a9933ffd2c7f0ad3cfc8](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad1a9933ffd2c7f0ad3cfc8)
+после source revision `512aa6e9d7f41e70f0d8c0d9d94b0de970b80fc4`: checkpoints
+`seed-layout` и `appended-header-regression` пройдены, затем mac-tests падает
+на `disk-first-open` с `LinuxTerminalProfile.Invalid.disk`. Это parent-reported
+log findings; полный raw log/result.json/actual checkout receipt автором записи
+не получены. Native/app build из этого source-check stage не достигнуты;
+ошибок линкера и нового terminal IPA этим не подтверждено.
+
+Подтверждён portability defect: Foundation URL normalization использовался как
+строгая filesystem canonicalization. Это шире одного equality guard:
+`standardizedFileURL` и Foundation symlink resolution могут убирать системный
+`/private` prefix, а последующий ancestor lstat может встретить alias/symlink.
+**Actual temp/Documents path failing CI не получен**, поэтому конкретный alias
+или единственный throwing guard по этим checkpoints не установлен. CI
+настраивает TMPDIR под worker output; нельзя выдавать пример `/var` alias за
+прочитанное фактическое окружение.
+
+Реализована проверка trusted root через POSIX realpath, проверка исходных raw path
+components через lstat и повторная POSIX-проверка после создания каталога.
+Trusted Documents call site обновлён; production disk size/BPB, no-follow,
+lock/no-clobber и запрет destructive reset сохранены. Именованные
+ошибки различают остальные возможные first-open failures без private path dump. Старый negative
+appended-header test мог принять любой `Invalid.disk` из directory guard как
+нужный отказ seed-size; новый regression требует `diskSeedSize` failure и
+отдельно подтверждает positive path checks. Base-relative URL и dot/dot-dot
+components отклоняются, symlink ancestors не скрываются нормализацией.
+
+**Source fix проверен локально и готов к Apple rerun**: root full suite
+**142 Python tests PASS, 4.917 s**, exit 0; команда
+`PYTHONDONTWRITEBYTECODE=1 TMPDIR=/workspace/iDeck/.work python3 -m unittest discover -s experiments/linux-guest/tests -q`.
+Это Python source/staging/resource validation, не исполнение Swift/Foundation
+на Mac. Frozen Profile/Session/Swift tests hashes и overlay проверены;
+overlay SHA-256 `b6ca36b66827fa24a60434f91351b7e8152e5b3e059115801b87f335998219cd`.
+Все 21 overlay inputs valid; изменились только два existing runtime Swift hashes,
+copy mapping/upstream patched bytes прежние. Root подтвердил: все 39 prior
+evidence snapshots побайтно сохранены; Codemagic/build worker/request gate,
+native/guest locks и payloads не менялись; diff check PASS. Локального
+Swift/QEMU исполнения, Apple rerun и device persistence проверки нет.
+Точный старый throwing guard остаётся недоказанным; новый named error поможет
+локализовать повторный отказ, если он возникнет. Исторические sections/snapshots
+сохраняются; новый evidence:
+`experiments/linux-guest/evidence/terminal-disk-path-fix.json`.
+
+Для следующего запуска использовать полный pushed SHA исправления.
+Только parent выполняет отдельно авторизованный Apple rerun с прежними
+request/quota gates. Новый terminal IPA/mac-tests/device persistence PASS
+объявлять только после фактического результата.
+
 ## Apple gate: исправление sparse FAT16 fixture в mac-tests
 
 Parent сообщил отказ [build 6ad1a04a3ffd2c7f0ad3ce47](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad1a04a3ffd2c7f0ad3ce47):

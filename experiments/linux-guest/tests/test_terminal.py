@@ -300,6 +300,47 @@ class TerminalBundleChecks(unittest.TestCase):
 
 class TerminalSourceContracts(unittest.TestCase):
     """Source-level safety contracts, explicitly not Swift/runtime execution."""
+    def test_trusted_system_prefix_uses_posix_realpath_before_untrusted_leaf_checks(self):
+        # Darwin rewrites system aliases in Foundation URL normalization. The
+        # real Swift host cases exercise /var and /private; these are wiring
+        # and safety guards, not a Python reproduction of Darwin/Foundation.
+        profile = (EXPERIMENT / "ios/LinuxTerminalProfile.swift").read_text()
+        trusted = swift_block(profile, "static func trustedDirectory(")
+        validate = swift_block(profile, "static func validateDirectory(")
+        self.assertIn("realpath(", trusted)
+        for operation in ("standardizedFileURL", "resolvingSymlinksInPath"):
+            self.assertNotIn(operation, validate)
+        self.assertIn('"."', validate)
+        self.assertIn('".."', validate)
+        self.assertIn("lstat(", validate)
+        self.assertIn("S_IFDIR", validate)
+        session = (EXPERIMENT / "ios/LinuxTerminalSession.swift").read_text()
+        self.assertLess(session.index("LinuxTerminalDisk.trustedDirectory("),
+                        session.index('appendingPathComponent("iDeckLinux"'))
+        checks = (EXPERIMENT / "ios/tests/TerminalChecks.swift").read_text()
+        self.assertLess(checks.index("LinuxTerminalDisk.trustedDirectory(manager.temporaryDirectory)"),
+                        checks.index('appendingPathComponent("ideck-terminal-checks-'))
+        self.assertIn('URL(fileURLWithPath: "/var", isDirectory: true)', checks)
+        self.assertIn("LinuxTerminalDisk.trustedDirectory(rawVar)", checks)
+        self.assertIn("LinuxTerminalDisk.validateDirectory(trustedVar, allowingMissing: false)", checks)
+        self.assertIn('"/%2E/child"', checks)
+        self.assertIn('"/%2E%2E/child"', checks)
+        self.assertIn("catch LinuxTerminalProfile.Invalid.diskDirectoryComponent", checks)
+        self.assertIn("catch LinuxTerminalProfile.Invalid.diskDirectoryType", checks)
+        self.assertIn('linkedDirectory.appendingPathComponent("child")', checks)
+        self.assertIn('linkedDirectory.absoluteString + "/%2E%2E/hidden-data"', checks)
+        self.assertLess(checks.index("LinuxTerminalDisk.validateDirectory(rejected, allowingMissing: true)"),
+                        checks.index("LinuxTerminalDisk.open(directory: rejected, seed: appended)"))
+        # Static enum cases and checkpoint labels expose the failed guard, not
+        # the owner's directory names. No surrogate path-validator runs here.
+        errors = swift_block(profile, "enum Invalid: Error")
+        self.assertIn("diskDirectoryComponent", errors)
+        self.assertIn("diskSeedSize", errors)
+        self.assertNotIn("String", errors)
+        checkpoint = swift_block(checks, "func checkpoint(")
+        self.assertNotIn(".path", checkpoint)
+        self.assertNotIn(".absoluteString", checkpoint)
+
     def test_actual_swift_seed_fixture_rewinds_after_truncate_before_writing_header(self):
         # Guards the exact regression that reached Apple's mac-tests: FileHandle
         # truncate moves its cursor. This inspects the real Swift fixture, and
@@ -313,7 +354,7 @@ class TerminalSourceContracts(unittest.TestCase):
         self.assertLess(rewind, write)
         self.assertGreater(fixture.rindex("fileSize(url) == LinuxTerminalProfile.diskSize"), write)
         self.assertIn("reader.read(upToCount: 512) == boot", fixture)
-        self.assertIn("catch LinuxTerminalProfile.Invalid.disk", checks)
+        self.assertIn("catch LinuxTerminalProfile.Invalid.diskSeedSize", checks)
         self.assertLess(checks.index("try makeSeed(seed)"), checks.index('checkpoint("disk-first-open")'))
 
     def test_clean_claim_requires_independent_unmount_loop_return_and_host_fsync(self):

@@ -5,7 +5,8 @@ import CryptoKit
 /// kernel bytes validate host file handling; they do not execute a Linux guest.
 func runTerminalChecks() throws {
     let manager = FileManager.default
-    let root = manager.temporaryDirectory.resolvingSymlinksInPath()
+    let trustedTemporary = try LinuxTerminalDisk.trustedDirectory(manager.temporaryDirectory)
+    let root = trustedTemporary
         .appendingPathComponent("ideck-terminal-checks-\(UUID().uuidString)")
     try manager.createDirectory(at: root, withIntermediateDirectories: true)
     defer { try? manager.removeItem(at: root) }
@@ -81,6 +82,35 @@ func runTerminalChecks() throws {
                 "sha256": hash.finalize().map { String(format: "%02x", $0) }.joined()]
     }
 
+    checkpoint("trusted-directory-positive")
+    try LinuxTerminalDisk.validateDirectory(trustedTemporary, allowingMissing: false)
+    try LinuxTerminalDisk.validateDirectory(root, allowingMissing: false)
+    // Exercise the actual Darwin system alias independently of CI's TMPDIR,
+    // which may point inside the checkout rather than under /var.
+    let rawVar = URL(fileURLWithPath: "/var", isDirectory: true)
+    let trustedVar = try LinuxTerminalDisk.trustedDirectory(rawVar)
+    try LinuxTerminalDisk.validateDirectory(trustedVar, allowingMissing: false)
+    if (try? manager.destinationOfSymbolicLink(atPath: rawVar.path)) != nil {
+        do {
+            try LinuxTerminalDisk.validateDirectory(rawVar, allowingMissing: false)
+            preconditionFailure("Linux terminal host check: original system symlink alias was accepted")
+        } catch LinuxTerminalProfile.Invalid.diskDirectoryType { }
+    }
+    checkpoint("directory-lexical-rejections")
+    let relative = URL(string: "linked-directory/../persistent", relativeTo: root)!
+    check(relative.baseURL != nil, "relative fixture retains its base URL")
+    do {
+        try LinuxTerminalDisk.validateDirectory(relative, allowingMissing: true)
+        preconditionFailure("Linux terminal host check: unresolved relative directory URL was accepted")
+    } catch LinuxTerminalProfile.Invalid.diskDirectoryURL { }
+    for suffix in ["/%2E/child", "/%2E%2E/child"] {
+        let untrusted = URL(string: root.absoluteString + suffix)!
+        do {
+            try LinuxTerminalDisk.validateDirectory(untrusted, allowingMissing: true)
+            preconditionFailure("Linux terminal host check: raw dot path component was accepted")
+        } catch LinuxTerminalProfile.Invalid.diskDirectoryComponent { }
+    }
+
     let seed = root.appendingPathComponent("userdata-seed.raw")
     checkpoint("seed-layout")
     try makeSeed(seed)
@@ -102,13 +132,17 @@ func runTerminalChecks() throws {
     check(try appendedReader.read(upToCount: 512) == bootSector(), "malformed seed BPB is at EOF instead of zero")
     try appendedReader.close()
     let rejected = root.appendingPathComponent("appended-header-data")
+    // Prove directory validation accepts this target before a typed size
+    // rejection; an unrelated directory failure must not satisfy this test.
+    try LinuxTerminalDisk.validateDirectory(rejected, allowingMissing: true)
     do {
         _ = try LinuxTerminalDisk.open(directory: rejected, seed: appended)
         preconditionFailure("Linux terminal host check: oversized seed was accepted")
-    } catch LinuxTerminalProfile.Invalid.disk { }
+    } catch LinuxTerminalProfile.Invalid.diskSeedSize { }
     check(!manager.fileExists(atPath: rejected.appendingPathComponent("userdata.raw").path), "oversized seed must not publish a persistent disk")
     let directory = root.appendingPathComponent("persistent")
     checkpoint("disk-first-open")
+    try LinuxTerminalDisk.validateDirectory(directory, allowingMissing: true)
     let disk = try LinuxTerminalDisk.open(directory: directory, seed: seed)
     check(disk.url.lastPathComponent == "userdata.raw")
     check(try byte(disk.url, at: 2 * 1024 * 1024) == Data([0]))
@@ -144,7 +178,19 @@ func runTerminalChecks() throws {
     expectFailure { _ = try LinuxTerminalDisk.open(directory: linked, seed: seed) }
     let linkedDirectory = root.appendingPathComponent("linked-directory")
     try manager.createSymbolicLink(at: linkedDirectory, withDestinationURL: directory)
-    expectFailure { _ = try LinuxTerminalDisk.open(directory: linkedDirectory, seed: seed) }
+    do {
+        try LinuxTerminalDisk.validateDirectory(linkedDirectory.appendingPathComponent("child"), allowingMissing: true)
+        preconditionFailure("Linux terminal host check: original symlink ancestor was accepted")
+    } catch LinuxTerminalProfile.Invalid.diskDirectoryType { }
+    do {
+        _ = try LinuxTerminalDisk.open(directory: linkedDirectory, seed: seed)
+        preconditionFailure("Linux terminal host check: symlink disk directory was accepted")
+    } catch LinuxTerminalProfile.Invalid.diskDirectoryType { }
+    let hiddenLink = URL(string: linkedDirectory.absoluteString + "/%2E%2E/hidden-data")!
+    do {
+        try LinuxTerminalDisk.validateDirectory(hiddenLink, allowingMissing: true)
+        preconditionFailure("Linux terminal host check: dotdot hid a symlink ancestor")
+    } catch LinuxTerminalProfile.Invalid.diskDirectoryComponent { }
     let corrupt = try FileHandle(forWritingTo: directory.appendingPathComponent("userdata.raw"))
     try corrupt.seek(toOffset: 510); try corrupt.write(contentsOf: Data([0, 0])); try corrupt.close()
     expectFailure { _ = try LinuxTerminalDisk.open(directory: directory, seed: seed) }

@@ -1,0 +1,62 @@
+{
+  "status": "path_portability_fix_locally_validated_ready_for_apple_rerun",
+  "working_branch": "codex/linux-guest-feasibility-20261015",
+  "preparation_base_commit": "512aa6e9d7f41e70f0d8c0d9d94b0de970b80fc4",
+  "apple_failure": {
+    "build_id": "6ad1a9933ffd2c7f0ad3cfc8",
+    "build_url": "https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad1a9933ffd2c7f0ad3cfc8",
+    "reported_source_commit": "512aa6e9d7f41e70f0d8c0d9d94b0de970b80fc4",
+    "source_commit_provenance": "Parent ties this iteration to 512aa6e; full checkout receipt/result.json not independently retrieved.",
+    "provenance": "Parent-reported log checkpoints; documentation agent has not directly read complete raw Apple log.",
+    "passed_checkpoints": [
+      "seed-layout",
+      "appended-header-regression"
+    ],
+    "failing_checkpoint": "disk-first-open",
+    "diagnostic": "LinuxTerminalProfile.Invalid.disk",
+    "native_app_build_reached": false,
+    "linker_error_claimed": false,
+    "new_terminal_ipa_created": false
+  },
+  "analysis": {
+    "confirmed_defect": "Foundation URL normalization was used as strict filesystem canonicalization; URL standardization and resolvingSymlinksInPath can elide system /private prefix, leaving equality/ancestor-lstat portability issues.",
+    "exact_throwing_guard_independently_proven": false,
+    "actual_failing_ci_temp_or_documents_path_retrieved": false,
+    "ci_tmpdir_note": "The gate configures TMPDIR beneath worker .work/linux-profile-apple; do not assert that a particular /var alias was the actual CI path.",
+    "primary_source_analysis_attribution": "Native reviewer compared Foundation primary-source standardization and symlink-resolution behavior; documentation agent received coordinator findings.",
+    "old_negative_test_false_positive": "A broad Invalid.disk catch could accept a directory-guard failure before reaching oversized-seed validation."
+  },
+  "fix": {
+    "status": "implemented_frozen_source_reviewed_host_validated",
+    "regression_requirement": "Positive path validation and named diskSeedSize rejection for appended-header fixture instead of broad Invalid.disk acceptance.",
+    "protected_guards": "Preserve disk size/BPB, no-follow, ownership locks/no-clobber and no destructive reset.",
+    "implemented_scope": "POSIX realpath for trusted roots; lstat walk over original raw path components; fresh POSIX check after creation; trusted Documents call site update; named disk/path failures.",
+    "source_sha256": {
+      "ios/LinuxTerminalProfile.swift": "96044d1fd7ef0906f8cdb3269cc9fba522bcaba6653b9a12710776e0e109ed7a",
+      "ios/LinuxTerminalSession.swift": "9a4e5f05e75000f9be6343056413365c53b2b1a8068d157f3bc92c8e5513aba9",
+      "ios/tests/TerminalChecks.swift": "e2155c871f540952b245bdae4ab7ae4a73b5ccc86ad00ed24d64d4c5e9d2a74f",
+      "husk/overlay.lock.json": "b6ca36b66827fa24a60434f91351b7e8152e5b3e059115801b87f335998219cd"
+    },
+    "raw_path_validation": "Reject base-relative URLs (baseURL must be nil), remote/query/fragment URLs, NUL and dot/dot-dot components from original URLComponents without base resolution. Walk original pathname prefixes with lstat; do not normalize untrusted children. Validate again after creating directory.",
+    "test_changes": "Positive trusted temporary/root checks, system-alias trusted resolution, raw/relative/dot/symlink rejections, and named diskSeedSize appended-header regression after positive target-directory validation.",
+    "python_source_regression_sha256": "ef34e7e88df7b2072e4ecec7e6932492c521ffc08dc4d7f6da19aac648e138ee"
+  },
+  "validation": {
+    "status": "root_full_suite_passed_apple_rerun_pending",
+    "local_swift_execution_performed": false,
+    "local_qemu_execution_performed": false,
+    "apple_rerun_performed": false,
+    "device_two_boot_persistence_proven": false,
+    "source": "Root coordinator final full-suite/protection receipt; documentation agent verified frozen source hashes and historical HANDOFF preservation.",
+    "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/workspace/iDeck/.work python3 -m unittest discover -s experiments/linux-guest/tests -q",
+    "tests_passed": 142,
+    "elapsed_seconds": 4.917,
+    "exit_code": 0,
+    "diff_check_passed": true,
+    "host_test_boundary": "Python tests check source/staging and resources; no Mac Swift/Foundation API execution or QEMU runtime run occurred locally.",
+    "preservation": "Root verified only six authorized tracked files changed (HANDOFF, runtime Profile/Session, Swift/Python tests, overlay lock). All 39 prior evidence snapshots byte-identical. All 21 overlay inputs valid; only two existing runtime Swift input hashes changed, while copy mapping/upstream patched bytes, Codemagic/build worker/request gate/native and guest locks/payloads remain unchanged."
+  },
+  "preservation": "Keep all 39 earlier evidence snapshots and prior HANDOFF history; preserve baseline artifacts/native and guest pins.",
+  "privacy": "No actual private device/container paths, credentials, raw logs or private artifact URLs/IDs are recorded.",
+  "next_action": "Parent may perform a separately authorized Apple rerun on the exact pushed repair SHA under unchanged request/quota checks. The original specific failing guard is not established by the old generic diagnostic; new static error cases identify any remaining failure. No terminal IPA or device persistence pass is claimed."
+}

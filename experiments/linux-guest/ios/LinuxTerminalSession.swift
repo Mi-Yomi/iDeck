@@ -50,7 +50,17 @@ final class LinuxTerminalSession: ObservableObject {
             message = "Another runtime owns this process. Close and reopen the app."; return
         }
         attempted = true
-        let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].resolvingSymlinksInPath()
+        let documents: URL
+        do {
+            // Resolve only the system-provided existing prefix. The userdata
+            // directory is appended afterwards and must pass its own lstat walk.
+            documents = try LinuxTerminalDisk.trustedDirectory(
+                FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0])
+        } catch {
+            HuskLog.log("ideck-terminal", "Documents validation failed: \(error)")
+            message = "The app's Documents directory could not be validated. Close and reopen the app."
+            return
+        }
         let root = documents.appendingPathComponent("iDeckLinux", isDirectory: true)
         let session = documents.appendingPathComponent("iDeckLinuxSessions", isDirectory: true)
             .appendingPathComponent(UUID().uuidString, isDirectory: true)

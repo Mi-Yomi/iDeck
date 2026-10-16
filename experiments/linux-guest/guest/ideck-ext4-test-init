@@ -1,0 +1,50 @@
+#!/bin/sh
+# Disposable host acceptance VM only; never used as the production startup path.
+export PATH=/run/ideck-bin:/usr/sbin:/usr/bin:/sbin:/bin
+BB=/usr/bin/busybox
+fail() {
+    echo "IDECK_EXT4_FAILED:$1"
+    $BB sync
+    $BB poweroff -f
+    while :; do $BB sleep 3600; done
+}
+$BB mkdir -p /proc /sys /dev /run /sysroot || fail directories
+$BB mount -t proc proc /proc || fail proc
+$BB mount -t sysfs sysfs /sys || fail sysfs
+$BB mount -t devtmpfs devtmpfs /dev || fail devtmpfs
+exec </dev/console >/dev/console 2>&1
+$BB mkdir -p /run/ideck-bin || fail applet_directory
+$BB --install -s /run/ideck-bin || fail applet_links
+phase=
+for arg in $(cat /proc/cmdline); do
+    case "$arg" in ideck.phase=1) phase=1;; ideck.phase=2) phase=2;; esac
+done
+[ -n "$phase" ] || fail phase
+echo "IDECK_EXT4_BOOT:$phase"
+uname -a || fail uname
+# MMIO transport must exist before the block driver can discover virtio-blk-device.
+modprobe virtio_mmio || fail virtio_mmio
+modprobe virtio_blk || fail virtio_blk
+while IFS= read -r module; do
+    insmod "/lib/modules/6.18.35-0-virt/$module" || fail "insmod_$module"
+done < /ideck/ext4-load-order
+n=0
+while [ ! -b /dev/vda ] && [ "$n" -lt 20 ]; do sleep 1; n=$((n + 1)); done
+[ -b /dev/vda ] || fail no_disk
+mount -t ext4 -o rw /dev/vda /sysroot || fail ext4_mount
+echo IDECK_EXT4_MOUNTED
+for name in proc sys dev; do
+    mount -o bind "/$name" "/sysroot/$name" || fail "bind_$name"
+done
+mount -t tmpfs tmpfs /sysroot/run || fail run_mount
+cp /ideck/expected-packages.tsv /sysroot/run/expected-packages.tsv || fail package_manifest
+cp /ideck/posix-check /sysroot/run/posix-check || fail test_script
+chroot /sysroot /usr/bin/env -i PATH=/usr/sbin:/usr/bin:/sbin:/bin HOME=/root LC_ALL=C \
+    /bin/sh /run/posix-check "$phase" || fail debian_checks
+sync || fail sync
+for name in run dev sys proc; do umount "/sysroot/$name" || fail "unmount_$name"; done
+umount /sysroot || fail unmount_ext4
+sync || fail final_sync
+echo "IDECK_EXT4_CLEAN_UNMOUNT:$phase"
+poweroff -f
+fail poweroff_returned

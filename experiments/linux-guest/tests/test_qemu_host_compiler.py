@@ -45,10 +45,18 @@ class QemuHostCompilerTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.output = Path(self.temp.name)
-        self.clang = self.output / "Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
+        fixture_root = self.output
+        if sys.platform == "linux" and " " in str(fixture_root):
+            # Model valid (space-free) Apple SDK paths even when Linux TMPDIR
+            # lives on a Windows volume named "Freddy Fazbear". The actual
+            # files remain in that caller-selected directory; no guard changes.
+            descriptor = os.open(fixture_root, os.O_RDONLY | os.O_DIRECTORY)
+            self.addCleanup(os.close, descriptor)
+            fixture_root = Path(f"/proc/{os.getpid()}/fd/{descriptor}")
+        self.clang = fixture_root / "Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
         self.clang.parent.mkdir(parents=True)
         self.clang.write_text("mock compiler path, never executed\n")
-        self.sdk = self.output / "Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX27.sdk"
+        self.sdk = fixture_root / "Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX27.sdk"
         self.sdk.mkdir(parents=True)
         self.worker = build.Worker(self.output)
         self.worker.env.update(SDKROOT="/SDKs/iPhoneOS27.sdk", CC="clang -target arm64-apple-ios15.5",

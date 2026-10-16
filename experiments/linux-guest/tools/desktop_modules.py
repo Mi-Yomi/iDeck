@@ -66,7 +66,35 @@ def dependencies(data):
     return result
 
 
-def soft_dependencies(data):
+class SoftDependencyIndex:
+    """Index every declaration, validate bodies when the closure reaches them.
+
+    A pinned distro file may contain unrelated driver declarations that our
+    strict grammar does not accept. They remain preserved in the manifest;
+    malformed headers with no identifiable owner still fail immediately.
+    """
+    def __init__(self, data):
+        self.rows = {}
+        for line in data.decode("utf-8").splitlines():
+            fields = line.split()
+            if not fields or fields[0].startswith("#"):
+                continue
+            if (len(fields) < 2 or fields[0] != "softdep"
+                    or not re.fullmatch(r"[A-Za-z0-9_-]+", fields[1])):
+                raise ValueError("malformed modules.softdep header")
+            self.rows.setdefault(fields[1].replace("-", "_"), []).append(line)
+
+    def get(self, name, default=None):
+        rows = self.rows.get(name)
+        if rows is None:
+            return default
+        # The same strict parser rejects malformed and duplicate reachable rows.
+        return soft_dependencies("\n".join(rows).encode())[name]
+
+
+def soft_dependencies(data, *, reachable_only=False):
+    if reachable_only:
+        return SoftDependencyIndex(data)
     result = {}
     for line in data.decode("utf-8").splitlines():
         fields = line.split()
@@ -76,11 +104,14 @@ def soft_dependencies(data):
                 or not re.fullmatch(r"[A-Za-z0-9_-]+", fields[1])
                 or fields[1].replace("-", "_") in result):
             raise ValueError("malformed modules.softdep")
-        pre, post, target = [], [], None
+        pre, post, target, markers = [], [], None, set()
         for item in fields[2:]:
             if item in ("pre:", "post:"):
+                if item in markers:
+                    raise ValueError("duplicate soft dependency section")
+                markers.add(item)
                 target = pre if item == "pre:" else post
-            elif target is None or not item.replace("_", "").replace("-", "").isalnum():
+            elif target is None or not re.fullmatch(r"[A-Za-z0-9_-]+", item):
                 raise ValueError("malformed soft dependency")
             else:
                 target.append(item.replace("-", "_"))
@@ -99,20 +130,21 @@ def closure(dep, soft, builtin, requested="ext4"):
     ordered, active, seen = [], set(), set()
 
     def visit(name):
-        if name in seen or name in builtins:
+        if name in seen:
             return
-        if name not in names or name in active:
+        if (name not in names and name not in builtins) or name in active:
             raise ValueError("missing or cyclic module dependency")
         active.add(name)
-        path = names[name]
+        path = names.get(name) if name not in builtins else None
         pre, post = soft.get(name, ([], []))
         for item in pre:
             visit(item)
-        for item in dep[path]:
+        for item in dep[path] if path is not None else []:
             visit(module_name(item))
         active.remove(name)
         seen.add(name)
-        ordered.append(path)
+        if path is not None:
+            ordered.append(path)
         for item in post:
             visit(item)
 
@@ -195,7 +227,8 @@ def extract_closure(image, out, unsquashfs, verification):
                                 allow_empty=name == "modules.softdep")
                 for name in ("modules.dep", "modules.softdep", "modules.builtin")}
     dep = dependencies(metadata["modules.dep"])
-    paths = closure(dep, soft_dependencies(metadata["modules.softdep"]), metadata["modules.builtin"])
+    paths = closure(dep, soft_dependencies(metadata["modules.softdep"], reachable_only=True),
+                    metadata["modules.builtin"])
     modules, contents = [], {}
     for path in paths:
         data = cat_image(unsquashfs, image, MODULE_PREFIX + path, 16 * 1024**2)

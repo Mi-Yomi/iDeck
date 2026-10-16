@@ -1,5 +1,65 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Локальный Debian/ext4: две настоящие VM-загрузки PASS — 2026-10-16
+
+Продолжение от remote `5adc493570f3cc41cc1a70925d95e74f2ebab37d` в
+`E:\Freddy Fazbear\iDeck`, та же рабочая ветка. Новая инструкция владельца
+заменила старый ночной план: **только локальный host Debian/ext4, без Codemagic,
+GUI и Steam**. Все новые инструменты, кэши, образы и отчёты сохранены на E:.
+
+**Результат:** [полный receipt](experiments/linux-guest/evidence/local-debian-ext4.json),
+два полных serial logs и fsck/tests/build/module receipts рядом в evidence.
+Локальный комплект: `E:\Freddy Fazbear\iDeck.work\local-debian-ext4`,
+основные `result.json` и читаемый `result.md`; успешный запуск — `two-boot-002`.
+
+- Найден уже имевшийся Alpine netboot на E:. Архив **431008592 B** и modloop
+  **17670144 B** совпали с исходными закреплёнными SHA. Перенос из облака не нужен.
+- Получено фактическое замыкание; порядок загрузки: `crc16, mbcache, jbd2, ext4`, суммарно
+  **1908556 B**. Проверены AArch64 ELF, vermagic `6.18.35-0-virt`, зависимости
+  и структура подписей. Исходные modules.dep/softdep/builtin сохранены.
+- Debian seed пересобран полным builder из 90 официальных пакетов, с проверкой
+  Debian signatures/indexes/hashes. Raw **536870912 B**, SHA
+  `a081d86594a0c59e585541ae26fa586468f267767dc081796f51186ea9c01217`;
+  gzip **53918211 B**, SHA
+  `97e55ebdf61892848e55a45e4016163e6c55b737afb2c31ccb3939a23e12a747`.
+  Оба **побайтово совпали с прежними эталонами**, несмотря на другую среду.
+- Windows system-QEMU **11.1.0**, `virt`, Cortex-A72, 4 CPU, 1024MiB RAM,
+  TCG/256MiB, `-nic none`. Только новая копия seed подключалась на запись.
+  Boot 1: **4.485 s**, boot 2: **4.281 s**, оба QEMU exit 0. В каждом реально
+  загрузилось ядро 6.18.35, смонтировался ext4 и выполнился Debian/glibc 2.41.
+- На обоих boot совпали пакетная база, содержимое, UID/GID, chmod/exec, symlink,
+  hardlink/inode/link count и результат rename. Запись сделана с `dd conv=fsync`,
+  исполняемый файл запущен также как UID/GID1000. Оба раза проверены sync,
+  unmount и poweroff. Это последовательные корректные выключения/старты,
+  не тест аварийного питания.
+- После остановки `e2fsck -fn` **exit 0**, проверка не меняла тестовый диск.
+  SHA исходного seed после обоих boot остался прежним. Действующий userdata
+  не открывался. **190 tests: 189 PASS, 1 SKIP** (нет установленного Swift
+  toolchain); реальный ARM64 BusyBox/PTY regression прошёл. Shell syntax PASS.
+
+Исправления: softdep теперь строго проверяется в достижимом hard/soft closure,
+включая builtin owners; посторонние cifs/ksmbd/btrfs declarations не блокируют
+ext4, нераспознаваемые headers и ошибки/дубликаты достижимых записей отклоняются.
+`dpkg --audit` отдельно проверяет exit code и output. Builder обходит разбор
+пробелов в PRoot `-q` через повторно проверенную копию QEMU с относительным
+именем и контролируемым cwd. Тестовые Apple compiler fixtures работают на E:
+с пробелом без ослабления production guard. Новый host runner и bootstrap
+изолированы от production iOS assets/locks.
+
+Сохранены неуспешные подготовительные попытки. У первого boot тестовый suffix
+заменял Alpine `/lib` symlink каталогом; kernel не находил shell interpreter.
+Исправлено размещением модулей в `/usr/lib/modules`; regression запрещает
+замену merged-/usr aliases. `two-boot-001` не считается успешным. Первые host
+попытки выявили NTFS FIFO/permissions и PRoot space-path ограничения; свежая
+сборка прошла в отдельном ext4 scratch image на E:, после работы размонтированном.
+
+**Следующий шаг для Гвен:** отдельно интегрировать подтверждённые Debian seed
+и ext4 bootstrap с существующим `LinuxDesktopDisk`/profile и управляемым clean
+Stop, сохранив terminal/probe. Затем отдельная Apple/IPA и owner device проверка
+Debian. Здесь новая IPA/CI не запускались, Debian/ext4 на iPhone, GUI и Steam
+**не проверены**. Успех терминала на iPhone из прежней передачи остаётся отдельным
+пользовательским подтверждением. `main` и индекс `.work/source` сохранены.
+
 Ночная передача Dots: [DOTS_OVERNIGHT.md](DOTS_OVERNIGHT.md). В ней указаны
 текущий этап, работа четырёх подагентов и порядок сборки/фиксации результата.
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая

@@ -25,6 +25,33 @@ class DebianRootfsChecks(unittest.TestCase):
     def setUp(self):
         self.lock = json.loads((EXPERIMENT / "ipa/desktop-rootfs.lock.json").read_text())
 
+    @unittest.skipUnless(shutil.which("sh"), "POSIX shell required")
+    def test_audit_requires_successful_command_and_empty_output(self):
+        for body, success in (("return 0", True), ("return 42", False),
+                              ("echo broken-package; return 0", False),
+                              ("echo broken-package; return 42", False)):
+            with self.subTest(body=body):
+                # Run the actual guard with a controlled command: an empty
+                # failing audit must never reach the acceptance marker.
+                script = ("set -eu\ndpkg() { " + body + "; }\n"
+                          + builder.DPKG_AUDIT_CHECK + "echo AUDIT_ACCEPTED\n")
+                result = subprocess.run(["sh", "-c", script], capture_output=True, text=True)
+                self.assertEqual(result.returncode == 0, success)
+                self.assertEqual("AUDIT_ACCEPTED" in result.stdout, success)
+
+    def test_qemu_staging_handles_space_path_and_rechecks_digest(self):
+        with tempfile.TemporaryDirectory(prefix="ideck spaced ") as temporary:
+            root = Path(temporary)
+            source = root / "input with spaces"
+            source.write_bytes(b"reviewed helper fixture")
+            output = root / "build with spaces"
+            output.mkdir()
+            relative = builder.stage_qemu_helper(source, output, builder.sha256(source))
+            self.assertNotIn(" ", relative)
+            self.assertEqual((output / relative).read_bytes(), source.read_bytes())
+            with self.assertRaisesRegex(ValueError, "digest mismatch"):
+                builder.stage_qemu_helper(source, output, "0" * 64)
+
     def test_locked_closure_is_exact_and_small_base_without_gui(self):
         builder.validate_lock(self.lock)
         packages = self.lock["packages"]

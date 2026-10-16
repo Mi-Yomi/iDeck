@@ -1,0 +1,621 @@
+{
+  "schema": 2,
+  "status": "pass",
+  "scope": "host system-QEMU Debian/ext4 two-boot acceptance",
+  "seed": {
+    "size": 536870912,
+    "sha256": "a081d86594a0c59e585541ae26fa586468f267767dc081796f51186ea9c01217"
+  },
+  "boots": [
+    {
+      "phase": 1,
+      "command": [
+        "E:\\Freddy Fazbear\\iDeck\\.work\\linux-boot\\qemu\\qemu-system-aarch64.exe",
+        "-machine",
+        "virt",
+        "-cpu",
+        "cortex-a72",
+        "-smp",
+        "4",
+        "-m",
+        "1024",
+        "-accel",
+        "tcg,tb-size=256",
+        "-nodefaults",
+        "-display",
+        "none",
+        "-monitor",
+        "none",
+        "-serial",
+        "stdio",
+        "-nic",
+        "none",
+        "-no-reboot",
+        "-kernel",
+        "E:\\Freddy Fazbear\\iDeck.work\\local-debian-ext4\\two-boot-002\\vmlinuz-virt",
+        "-initrd",
+        "E:\\Freddy Fazbear\\iDeck.work\\local-debian-ext4\\two-boot-002\\initramfs-ext4-test.gz",
+        "-append",
+        "console=ttyAMA0 rdinit=/ideck-ext4-test-init ideck.phase=1",
+        "-drive",
+        "if=none,id=debian,file=E:\\Freddy Fazbear\\iDeck.work\\local-debian-ext4\\two-boot-002\\disposable.raw,format=raw,cache=writeback",
+        "-device",
+        "virtio-blk-device,drive=debian"
+      ],
+      "exit_code": 0,
+      "status": "pass",
+      "elapsed_seconds": 4.485,
+      "log": {
+        "size": 12862,
+        "sha256": "3da13ebcf9da9e95afee787f774bbea34a65d3a52c74492469bac62907cb0488"
+      }
+    },
+    {
+      "phase": 2,
+      "command": [
+        "E:\\Freddy Fazbear\\iDeck\\.work\\linux-boot\\qemu\\qemu-system-aarch64.exe",
+        "-machine",
+        "virt",
+        "-cpu",
+        "cortex-a72",
+        "-smp",
+        "4",
+        "-m",
+        "1024",
+        "-accel",
+        "tcg,tb-size=256",
+        "-nodefaults",
+        "-display",
+        "none",
+        "-monitor",
+        "none",
+        "-serial",
+        "stdio",
+        "-nic",
+        "none",
+        "-no-reboot",
+        "-kernel",
+        "E:\\Freddy Fazbear\\iDeck.work\\local-debian-ext4\\two-boot-002\\vmlinuz-virt",
+        "-initrd",
+        "E:\\Freddy Fazbear\\iDeck.work\\local-debian-ext4\\two-boot-002\\initramfs-ext4-test.gz",
+        "-append",
+        "console=ttyAMA0 rdinit=/ideck-ext4-test-init ideck.phase=2",
+        "-drive",
+        "if=none,id=debian,file=E:\\Freddy Fazbear\\iDeck.work\\local-debian-ext4\\two-boot-002\\disposable.raw,format=raw,cache=writeback",
+        "-device",
+        "virtio-blk-device,drive=debian"
+      ],
+      "exit_code": 0,
+      "status": "pass",
+      "elapsed_seconds": 4.281,
+      "log": {
+        "size": 12862,
+        "sha256": "6f0953d50fb320218b2c168d899184df6659ec0c71704e286b452f023afe621e"
+      }
+    }
+  ],
+  "legacy_userdata_accessed": false,
+  "iphone_debian_tested": false,
+  "network": "-nic none",
+  "checks_passed": [
+    "boot 1: kernel, ext4 mount, glibc, exact package DB, POSIX properties, clean unmount",
+    "boot 2: kernel, ext4 mount, glibc, exact package DB, POSIX properties, clean unmount",
+    "read-only e2fsck -fn; test image unchanged by check",
+    "original seed size/SHA-256 unchanged"
+  ],
+  "checks_failed": [],
+  "checks_not_run": [
+    "iPhone Debian/ext4",
+    "GUI",
+    "Steam"
+  ],
+  "inputs": {
+    "module_manifest": {
+      "size": 3665,
+      "sha256": "0281b08b8d9eacd2c07a8475ebd5ebf61d5eeeed0e2ad1561f13048409f2b403"
+    },
+    "guest_archive": {
+      "size": 19623827,
+      "sha256": "f973fe00e1cf54772589c3e54c8bc22a7396604ec927004267f9a4aea9d39efb"
+    },
+    "load_order": [
+      "kernel/lib/crc/crc16.ko",
+      "kernel/fs/mbcache.ko",
+      "kernel/fs/jbd2/jbd2.ko",
+      "kernel/fs/ext4/ext4.ko"
+    ],
+    "rootfs_lock": {
+      "size": 34408,
+      "sha256": "0e596b6cd43f8872649f0b813dfbe57cf3d6e3f8f94922d1af75594d7fd1b015"
+    },
+    "kernel": {
+      "size": 10351104,
+      "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+    },
+    "initramfs": {
+      "size": 9941097,
+      "sha256": "280a072cce1b5834d715d8a68e55d190f739593c7b9402481660a4b40aa5172f"
+    }
+  },
+  "qemu": {
+    "size": 30987160,
+    "sha256": "952f897511177803722efed6fefe79bc3e7e5a51a026112dfc40f9a37fb0dad2",
+    "version": "QEMU emulator version 11.1.0 (v11.1.0-12130-ge470268ff4)\nCopyright (c) 2003-2026 Fabrice Bellard and the QEMU Project developers"
+  },
+  "fsck": {
+    "command": [
+      "wsl",
+      "-d",
+      "archlinux",
+      "--exec",
+      "/usr/bin/e2fsck",
+      "-fn",
+      "/mnt/e/Freddy Fazbear/iDeck.work/local-debian-ext4/two-boot-002/disposable.raw"
+    ],
+    "exit_code": 0,
+    "log": {
+      "size": 353,
+      "sha256": "e86a62880c2f3da39d2a6c315e5387fe1e705a6ba664ead2902e6cca35e85828"
+    },
+    "image_unchanged": true
+  },
+  "disposable_image": {
+    "size": 536870912,
+    "sha256": "f4537a465a2012c7fc5a7e76b908cf79d4a2d9a220d506094bd0de172e5f3216"
+  },
+  "seed_unchanged": true,
+  "elapsed_seconds": 19.891,
+  "date": "2026-10-16",
+  "branch": "codex/linux-guest-feasibility-20261015",
+  "source_base_commit": "5adc493570f3cc41cc1a70925d95e74f2ebab37d",
+  "final_commit_location": "local COMMIT.txt and Git history; source hashes below identify tested changes",
+  "local_output_directory": "E:\\Freddy Fazbear\\iDeck.work\\local-debian-ext4",
+  "source_files": {
+    "experiments/linux-guest/tools/debian_rootfs.py": {
+      "size": 39678,
+      "sha256": "87f0bc11d97b4faf3e55dad2f1fa0a2d45237013fd12e6cb5adcf32a78e57a10"
+    },
+    "experiments/linux-guest/tools/desktop_modules.py": {
+      "size": 15225,
+      "sha256": "41961d1f57c7360731aa662454f19423a29a3784710b3fc7d85a0eb20f340a71"
+    },
+    "experiments/linux-guest/tools/check_debian_ext4_boot.py": {
+      "size": 11044,
+      "sha256": "92b583da912a134cb9ec0338e37e6f7c35d65c04292731681e4575ca752bcb90"
+    },
+    "experiments/linux-guest/guest/ideck-ext4-test-init": {
+      "size": 2021,
+      "sha256": "017920defabafef653ca2804558a04ca811f3362489a15ea743e6946625fac25"
+    },
+    "experiments/linux-guest/guest/ideck-ext4-posix-check": {
+      "size": 2297,
+      "sha256": "cfa6923d9b516cd588e0e0a3e8f130d4f1410596ebe4ba60eb4cbbf370ca6da3"
+    },
+    "experiments/linux-guest/tests/test_debian_rootfs.py": {
+      "size": 15900,
+      "sha256": "ab8b4b8ef5aba45fd855b04410b9dc2ff11adc74521d3760fd230873662569d2"
+    },
+    "experiments/linux-guest/tests/test_desktop_modules.py": {
+      "size": 15053,
+      "sha256": "1a6573f1c0b17e76fb22e81dc541a197d201e17159f86e124edea82d68c92093"
+    },
+    "experiments/linux-guest/tests/test_ext4_boot.py": {
+      "size": 1569,
+      "sha256": "c04a63f325c991800098d4f417d3c0d64b930c6049b2ebc6bd556b67a9dea869"
+    },
+    "experiments/linux-guest/tests/test_qemu_host_compiler.py": {
+      "size": 16394,
+      "sha256": "b2c06814d858744efbb8fbb56d6eebda430dc592852693e58fa1a44b709763f9"
+    },
+    "experiments/linux-guest/ipa/desktop-rootfs.lock.json": {
+      "size": 34408,
+      "sha256": "0e596b6cd43f8872649f0b813dfbe57cf3d6e3f8f94922d1af75594d7fd1b015"
+    }
+  },
+  "preparation": {
+    "kernel_and_modloop": {
+      "schema": 1,
+      "kernel_release": "6.18.35-0-virt",
+      "expected_kernel_sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+      "input_mode": "verified_archive",
+      "archive_bytes_verified": true,
+      "kernel_bytes_verified": true,
+      "archive_url": "https://dl-cdn.alpinelinux.org/alpine/v3.24/releases/aarch64/alpine-netboot-3.24.1-aarch64.tar.gz",
+      "archive_size": 431008592,
+      "archive_sha256": "54fe38fa41cce740ba379458ed63cfcd89ab06ae5e6a47a06dafe0a34e8427e8",
+      "kernel_sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+      "modloop_sha256": "f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b",
+      "modloop_size": 17670144,
+      "metadata": {
+        "modules.dep": {
+          "sha256": "8cd0e53b89ef000dd6270a91da70334f6696c7d089523da75746c08594e815c9",
+          "size": 79770
+        },
+        "modules.softdep": {
+          "sha256": "7d211e6d22125a59819964da6c98395da2f892cb2f88c738264466d1c6c500b5",
+          "size": 818
+        },
+        "modules.builtin": {
+          "sha256": "01969d14f424e6c02778adb9e4bb8b561f1cce085d1b23e62206f79bdda590c4",
+          "size": 4315
+        }
+      },
+      "load_order": [
+        "kernel/lib/crc/crc16.ko",
+        "kernel/fs/mbcache.ko",
+        "kernel/fs/jbd2/jbd2.ko",
+        "kernel/fs/ext4/ext4.ko"
+      ],
+      "modules": [
+        {
+          "path": "kernel/lib/crc/crc16.ko",
+          "size": 10983,
+          "sha256": "aa3b4ec2b12323f416110ad11f6d0009faa0af0754c4de74e77e3e6c00e4001b",
+          "vermagic": "6.18.35-0-virt SMP preempt mod_unload modversions aarch64",
+          "depends": [],
+          "signature": {
+            "kind": "PKCS#7",
+            "size": 695,
+            "sha256": "d54e7777d13b22f29f41d109e3d61173f2f8e9a7dc963b33fdfcae73f7a8efa6",
+            "algorithm_id": 0,
+            "hash_id": 0,
+            "public_key_verification": "not_performed; pinned modloop digest authenticates bytes"
+          }
+        },
+        {
+          "path": "kernel/fs/mbcache.ko",
+          "size": 28495,
+          "sha256": "7dbb40f7268e2bdabd80ca16d21e84c869134aea15b511d302c63f3095d6103d",
+          "vermagic": "6.18.35-0-virt SMP preempt mod_unload modversions aarch64",
+          "depends": [],
+          "signature": {
+            "kind": "PKCS#7",
+            "size": 695,
+            "sha256": "c20d8c751d113f17c7567ed48cee53b869acecbfae5070cbec430140c028af38",
+            "algorithm_id": 0,
+            "hash_id": 0,
+            "public_key_verification": "not_performed; pinned modloop digest authenticates bytes"
+          }
+        },
+        {
+          "path": "kernel/fs/jbd2/jbd2.ko",
+          "size": 285463,
+          "sha256": "d4e7753266771b7682afdcac4efbd5195d24e69d0c09054252f754092aaee840",
+          "vermagic": "6.18.35-0-virt SMP preempt mod_unload modversions aarch64",
+          "depends": [],
+          "signature": {
+            "kind": "PKCS#7",
+            "size": 695,
+            "sha256": "bc19842eb953eef7679d1de108ccd215aed6bb7cb819af4c9b77301ef9df9da1",
+            "algorithm_id": 0,
+            "hash_id": 0,
+            "public_key_verification": "not_performed; pinned modloop digest authenticates bytes"
+          }
+        },
+        {
+          "path": "kernel/fs/ext4/ext4.ko",
+          "size": 1583615,
+          "sha256": "bfdaa7958c82ad518a9e798a6cf550bc4408f0b4039c4dfac2376184b1ed732b",
+          "vermagic": "6.18.35-0-virt SMP preempt mod_unload modversions aarch64",
+          "depends": [
+            "crc16",
+            "jbd2",
+            "mbcache"
+          ],
+          "signature": {
+            "kind": "PKCS#7",
+            "size": 695,
+            "sha256": "fe33411c4be148c311a640677fb3f4c69be952958e78ae2bb2fc0c74a0f229e0",
+            "algorithm_id": 0,
+            "hash_id": 0,
+            "public_key_verification": "not_performed; pinned modloop digest authenticates bytes"
+          }
+        }
+      ],
+      "total_module_bytes": 1908556,
+      "kernel_load_and_ext4_mount": "not_tested"
+    },
+    "module_receipt_scope": "extraction-time receipt says not_tested; actual kernel load/mount proven by later two-boot logs",
+    "seed_build": {
+      "schema": 1,
+      "lock_sha256": "0e596b6cd43f8872649f0b813dfbe57cf3d6e3f8f94922d1af75594d7fd1b015",
+      "builder_source_sha256": "87f0bc11d97b4faf3e55dad2f1fa0a2d45237013fd12e6cb5adcf32a78e57a10",
+      "end_to_end_replay_of_final_source": true,
+      "network_mode": "verified cache only",
+      "network_namespace_isolation": "not provided; offline restricts builder fetches",
+      "keyring_sha256": "506b815cbb32d9b6066b4a2aa524071e071761e7e7f68c3ac74f3061ba852017",
+      "qemu_user_sha256": "73cc2584f119f9e74c85c0a8549dbb6fd104ae3897a06a7500797f9e5b4d0943",
+      "compat_source_sha256": "665d8c89a74e353ee6516bb5a0c56d8687d589169322abe6614e126ab8ddd3fc",
+      "compat_executable_sha256": "f85ef926fd59daf795323cf2595d3c0e5d63cd0792ec5e472127ea6c5b2df786",
+      "host_tools": [
+        {
+          "name": "e2fsprogs",
+          "version": "1.47.2-3+b12",
+          "architecture": "amd64",
+          "filename": "pool/main/e/e2fsprogs/e2fsprogs_1.47.2-3+b12_amd64.deb",
+          "sha256": "e9e638eb3e22b5f14d01ce0b28aa512a5a22fcc0e70d1c733444579b67ea236b",
+          "size": 591288,
+          "installed_size_kib": 1537
+        },
+        {
+          "name": "libext2fs2t64",
+          "version": "1.47.2-3+b12",
+          "architecture": "amd64",
+          "filename": "pool/main/e/e2fsprogs/libext2fs2t64_1.47.2-3+b12_amd64.deb",
+          "sha256": "9f5783fa48239e42260d41846fbc6c8b19c233251063524456096195660eaa09",
+          "size": 212664,
+          "installed_size_kib": 557
+        },
+        {
+          "name": "libcom-err2",
+          "version": "1.47.2-3+b12",
+          "architecture": "amd64",
+          "filename": "pool/main/e/e2fsprogs/libcom-err2_1.47.2-3+b12_amd64.deb",
+          "sha256": "bd43e020b8fed399db3eebf098111f10fba4c436fff99ccad72cc7e27c9764ec",
+          "size": 25036,
+          "installed_size_kib": 64
+        },
+        {
+          "name": "libss2",
+          "version": "1.47.2-3+b12",
+          "architecture": "amd64",
+          "filename": "pool/main/e/e2fsprogs/libss2_1.47.2-3+b12_amd64.deb",
+          "sha256": "c5d38d71984c1bf774c1254238636e605fc4e0dc24d853f709921eb740327f4a",
+          "size": 29724,
+          "installed_size_kib": 80
+        },
+        {
+          "name": "logsave",
+          "version": "1.47.2-3+b12",
+          "architecture": "amd64",
+          "filename": "pool/main/e/e2fsprogs/logsave_1.47.2-3+b12_amd64.deb",
+          "sha256": "aa028720743b79bd054749af34c501c093f0ab5e044e4dc44273765be5e95de5",
+          "size": 24864,
+          "installed_size_kib": 59
+        },
+        {
+          "name": "proot",
+          "version": "5.1.0-1.3+b1",
+          "architecture": "amd64",
+          "filename": "pool/main/p/proot/proot_5.1.0-1.3+b1_amd64.deb",
+          "sha256": "7ca9260edf1ca6666f9b33e1da551638055934d673117acd135ff5367f420744",
+          "size": 75876,
+          "installed_size_kib": 212
+        },
+        {
+          "name": "libtalloc2",
+          "version": "2:2.4.3+samba4.22.11+dfsg-0+deb13u1",
+          "architecture": "amd64",
+          "filename": "pool/main/s/samba/libtalloc2_2.4.3+samba4.22.11+dfsg-0+deb13u1_amd64.deb",
+          "sha256": "b4cc8aa74c8b7c05a64efb6577acc955f522a8e39d8f37fe60b1b3fe6634ce96",
+          "size": 63644,
+          "installed_size_kib": 126
+        }
+      ],
+      "package_count": 90,
+      "configured_package_audit": "pass",
+      "glibc_execution": "pass",
+      "elf_closure": {
+        "arm64_elf_files": 700,
+        "dt_needed_edges": 1888,
+        "result": "pass"
+      },
+      "persisted_ownership_inodes_checked": 6744,
+      "package_manifest_sha256": "a9f5e60fe889ab81389cc1660ea507114dc9a8076e9da958cf75a271585739aa",
+      "ownership_manifest_sha256": "4686ff37a1d31f59d23d5df05fa462735d59963ff5fa6ed014138ecd9e634ae4",
+      "filesystem_bytes": {
+        "allocated_blocks_bytes": 175714304,
+        "free_blocks_bytes": 361156608,
+        "minimum_estimate_bytes": 168038400,
+        "minimum_is_estimate_only": true
+      },
+      "directory_hash_seed": "29c758bc-0416-4d87-b1ba-a922238a07f5",
+      "canonical_seed_epoch": 1789199741,
+      "canonical_inode_timestamps": "all manifest atime/mtime/ctime/crtime and nanoseconds audited",
+      "canonical_seed_content": "generated alternatives installation log cleared; all locked seed account last-change days pinned",
+      "image": {
+        "schema": 1,
+        "mode": "desktop-rootfs",
+        "filesystem": "ext4",
+        "rootfs": {
+          "file": "rootfs-v1.raw",
+          "size": 536870912,
+          "sha256": "a081d86594a0c59e585541ae26fa586468f267767dc081796f51186ea9c01217"
+        },
+        "image": {
+          "size_bytes": 536870912,
+          "uuid": "29c758bc-0416-4d87-b1ba-a922238a07f5",
+          "block_size": 4096,
+          "features": {
+            "compat": 44,
+            "incompat": 194,
+            "ro_compat": 1091
+          }
+        }
+      },
+      "compressed": {
+        "size": 53918211,
+        "sha256": "97e55ebdf61892848e55a45e4016163e6c55b737afb2c31ccb3939a23e12a747"
+      },
+      "filesystem_tool_check": "e2fsck -fn pass",
+      "ownership_sample_check": "pass",
+      "reproducibility": "signed exact inputs; canonical seed content/inode timestamps/hash seed; independent byte comparison required",
+      "replay_requires_retained_authenticated_cache": true,
+      "future_mirror_availability": "not guaranteed; snapshot endpoint blocked in this executor",
+      "replay_freshness": "all replay rechecks release expiry and 90-day maximum age; repin afterwards",
+      "guest_boot": "not tested",
+      "vm_posix_persistence": "not tested",
+      "legacy_userdata_accessed": false
+    },
+    "seed_raw_matches_cloud_reference": true,
+    "seed_gzip_matches_cloud_reference": true,
+    "gzip_stream_sha256": "a081d86594a0c59e585541ae26fa586468f267767dc081796f51186ea9c01217",
+    "host_tools_authenticated_by_locked_amd64_index": [
+      {
+        "name": "dpkg",
+        "version": "1.22.22",
+        "architecture": "amd64",
+        "filename": "pool/main/d/dpkg/dpkg_1.22.22_amd64.deb",
+        "sha256": "3e800c6d75e8e709007ed1c356e5fa8509a75c1694fb0a1183709abc9cfdc1f3",
+        "size": 1537216,
+        "installed_size_kib": 6587
+      },
+      {
+        "name": "libmd0",
+        "version": "1.1.0-2+b1",
+        "architecture": "amd64",
+        "filename": "pool/main/libm/libmd/libmd0_1.1.0-2+b1_amd64.deb",
+        "sha256": "7244ec3839b61fac0c1884fe08aaa040f26e8f1f35f1f5d3482eacefd30d1b44",
+        "size": 36272,
+        "installed_size_kib": 94
+      },
+      {
+        "name": "qemu-user",
+        "version": "1:10.0.13+ds-0+deb13u1",
+        "architecture": "amd64",
+        "filename": "pool/main/q/qemu/qemu-user_10.0.13+ds-0+deb13u1_amd64.deb",
+        "sha256": "ca6ede739327a20ae5a3498230c8a3a9a072c586e131bc6bcc1201eb1725e336",
+        "size": 71089852,
+        "installed_size_kib": 465171
+      },
+      {
+        "name": "squashfs-tools",
+        "version": "1:4.6.1-1",
+        "architecture": "amd64",
+        "filename": "pool/main/s/squashfs-tools/squashfs-tools_4.6.1-1_amd64.deb",
+        "sha256": "0e185122f5858132bbc709e26228ba28cf7f0c41f6ed26e3f55f518f2a53b59d",
+        "size": 193888,
+        "installed_size_kib": 494
+      },
+      {
+        "name": "liblzo2-2",
+        "version": "2.10-3+b1",
+        "architecture": "amd64",
+        "filename": "pool/main/l/lzo2/liblzo2-2_2.10-3+b1_amd64.deb",
+        "sha256": "f3032201fe2928a87e13f05ce256ff3ac2a7860c7e594dc51ae6d7348a4466ce",
+        "size": 55100,
+        "installed_size_kib": 173
+      }
+    ],
+    "versions": "Python 3.14.7\ngcc (GCC) 16.2.1 20260810\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\ngpg (GnuPG) 2.4.9\nlibgcrypt 1.12.4\nCopyright (C) 2025 g10 Code GmbH\nLicense GNU GPL-3.0-or-later <https://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n\nHome: /root/.gnupg\nSupported algorithms:\nPubkey: RSA, ELG, DSA, ECDH, ECDSA, EDDSA\nCipher: IDEA, 3DES, CAST5, BLOWFISH, AES, AES192, AES256, TWOFISH,\n        CAMELLIA128, CAMELLIA192, CAMELLIA256\nHash: SHA1, RIPEMD160, SHA256, SHA384, SHA512, SHA224\nCompression: Uncompressed, ZIP, ZLIB, BZIP2\ne2fsck 1.47.4 (6-Mar-2025)\n\tUsing EXT2FS Library version 1.47.4, 6-Mar-2025\n",
+    "posix_build_storage": "fresh 3GiB ext4 scratch.raw on E:, mounted temporarily in existing WSL archlinux; unmounted after build/tests",
+    "software_installation": "portable verified packages only; no new WSL distribution or system package installation"
+  },
+  "regression_suite": {
+    "run": 190,
+    "failures": 0,
+    "errors": 0,
+    "skipped": [
+      [
+        "test_actual_swift_owner_and_validation_regressions (test_desktop_disk.DesktopDiskChecks.test_actual_swift_owner_and_validation_regressions)",
+        "explicit existing Swift toolchain required"
+      ]
+    ],
+    "scratch_storage": "/mnt/e/Freddy Fazbear/iDeck.work/local-debian-ext4/posix-build/tmp",
+    "temp_alias": "/mnt/e/Freddy Fazbear/iDeck.work/local-debian-ext4/posix-build/tmp",
+    "qemu_user": "/mnt/e/Freddy Fazbear/iDeck.work/local-debian-ext4/host-tools/usr/bin/qemu-aarch64",
+    "successful": true,
+    "passed": 189,
+    "log": {
+      "size": 30604,
+      "sha256": "e72b45ec0aa82e225928eb88f279ee69941dc6d17388b99420fb583f59414075"
+    },
+    "shell_syntax": "pass"
+  },
+  "earlier_failed_attempts": [
+    {
+      "name": "module-extract",
+      "reason": "portable unsquashfs lacked liblzo2; authenticated Debian liblzo2 package added locally"
+    },
+    {
+      "name": "build-001",
+      "reason": "WSL had restarted and scratch mount was gone; interrupted incomplete NTFS build, never accepted"
+    },
+    {
+      "name": "build-002",
+      "reason": "PRoot -q split QEMU path at space; fixed with checked helper copy and controlled relative cwd"
+    },
+    {
+      "name": "two-boot-001",
+      "reason": "test CPIO suffix replaced merged-/usr lib alias; kernel init failed before ext4 mount; stopped own VM and retained failure logs"
+    },
+    {
+      "name": "full-tests / full-tests-v2",
+      "reason": "fixtures assumed space-free TMPDIR; whole-suite proc alias conflicts with symlink rejection; corrected only compiler fixtures, final suite passed"
+    }
+  ],
+  "not_run": [
+    "Swift helper runtime regression (no installed Swift compiler)",
+    "Apple SDK / new IPA / Codemagic",
+    "iPhone Debian/ext4",
+    "GUI",
+    "Steam",
+    "power-loss recovery"
+  ],
+  "next_step": "Integrate separately verified seed/bootstrap into iOS LinuxDesktopDisk/profile and clean Stop, then Apple/IPA and owner device acceptance; preserve current terminal/probe.",
+  "preserved": {
+    "main": "a77ab500cdf8c8307af36a58b25816a3fa4d66db",
+    "source_export_index_tree": "a305e267ebdb87ec4d202f4f8d5c499cc5ffbe44",
+    "legacy_userdata_opened": false
+  },
+  "committed_evidence_files": {
+    "local-debian-ext4-boot-1.log": {
+      "size": 12862,
+      "sha256": "3da13ebcf9da9e95afee787f774bbea34a65d3a52c74492469bac62907cb0488"
+    },
+    "local-debian-ext4-boot-2.log": {
+      "size": 12862,
+      "sha256": "6f0953d50fb320218b2c168d899184df6659ec0c71704e286b452f023afe621e"
+    },
+    "local-debian-ext4-fsck.log": {
+      "size": 353,
+      "sha256": "e86a62880c2f3da39d2a6c315e5387fe1e705a6ba664ead2902e6cca35e85828"
+    },
+    "local-debian-ext4-tests.txt": {
+      "size": 30604,
+      "sha256": "e72b45ec0aa82e225928eb88f279ee69941dc6d17388b99420fb583f59414075"
+    },
+    "local-debian-ext4-modules.json": {
+      "size": 3665,
+      "sha256": "0281b08b8d9eacd2c07a8475ebd5ebf61d5eeeed0e2ad1561f13048409f2b403"
+    },
+    "local-debian-ext4-build.json": {
+      "size": 5142,
+      "sha256": "67c15b5e8dbf01f49417da813b38f204ac2c4c7372b6d9794b13bf4c031cbf80"
+    }
+  },
+  "local_support_files": {
+    "prepare-host.py": {
+      "size": 2056,
+      "sha256": "3dda69c8e83d2809d56713f9257b35e597d9d023093b9c8aa3dd987c0c286284"
+    },
+    "build-seed.sh": {
+      "size": 965,
+      "sha256": "3773f768fb445eca808efdab3bc15156109e287b9f64a4a14b217e9569926815"
+    },
+    "final-checks.sh": {
+      "size": 638,
+      "sha256": "3b98e2f98fd27beb2b227e43fa0a335ce6125d2adeeb039909e4cf0fe4512a0f"
+    },
+    "run-tests.py": {
+      "size": 945,
+      "sha256": "67f39198cc444be4cadb83f888cdefce6fd34f4c4db8c77dd4c0157cf19eb2fe"
+    },
+    "host-tool-inputs.json": {
+      "size": 1480,
+      "sha256": "3fa2e7517450ac6349c913800ce8c517b9164fb4bdfe877d8621744baa0d0cc7"
+    },
+    "host-versions.log": {
+      "size": 867,
+      "sha256": "b8a50085b6bf2bdd758ed2d392ade9f3968e843faa629fac390074fe43b102d2"
+    },
+    "two-boot-001/result.json": {
+      "size": 3092,
+      "sha256": "a1a02416d3ab18e1f1f7e0350a7bf896f8ee4ea650b116872d06a9440d55920b"
+    },
+    "two-boot-001/boot-1.log": {
+      "size": 13859,
+      "sha256": "0e6297dfcf3e9f27e3afb54b76d1d9a17c96ae9e1be5e5a167e368bfa957c941"
+    }
+  }
+}

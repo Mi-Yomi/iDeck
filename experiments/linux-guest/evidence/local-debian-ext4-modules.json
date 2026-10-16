@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "kernel_release": "6.18.35-0-virt",
+  "expected_kernel_sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+  "input_mode": "verified_archive",
+  "archive_bytes_verified": true,
+  "kernel_bytes_verified": true,
+  "archive_url": "https://dl-cdn.alpinelinux.org/alpine/v3.24/releases/aarch64/alpine-netboot-3.24.1-aarch64.tar.gz",
+  "archive_size": 431008592,
+  "archive_sha256": "54fe38fa41cce740ba379458ed63cfcd89ab06ae5e6a47a06dafe0a34e8427e8",
+  "kernel_sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+  "modloop_sha256": "f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b",
+  "modloop_size": 17670144,
+  "metadata": {
+    "modules.dep": {
+      "sha256": "8cd0e53b89ef000dd6270a91da70334f6696c7d089523da75746c08594e815c9",
+      "size": 79770
+    },
+    "modules.softdep": {
+      "sha256": "7d211e6d22125a59819964da6c98395da2f892cb2f88c738264466d1c6c500b5",
+      "size": 818
+    },
+    "modules.builtin": {
+      "sha256": "01969d14f424e6c02778adb9e4bb8b561f1cce085d1b23e62206f79bdda590c4",
+      "size": 4315
+    }
+  },
+  "load_order": [
+    "kernel/lib/crc/crc16.ko",
+    "kernel/fs/mbcache.ko",
+    "kernel/fs/jbd2/jbd2.ko",
+    "kernel/fs/ext4/ext4.ko"
+  ],
+  "modules": [
+    {
+      "path": "kernel/lib/crc/crc16.ko",
+      "size": 10983,
+      "sha256": "aa3b4ec2b12323f416110ad11f6d0009faa0af0754c4de74e77e3e6c00e4001b",
+      "vermagic": "6.18.35-0-virt SMP preempt mod_unload modversions aarch64",
+      "depends": [],
+      "signature": {
+        "kind": "PKCS#7",
+        "size": 695,
+        "sha256": "d54e7777d13b22f29f41d109e3d61173f2f8e9a7dc963b33fdfcae73f7a8efa6",
+        "algorithm_id": 0,
+        "hash_id": 0,
+        "public_key_verification": "not_performed; pinned modloop digest authenticates bytes"
+      }
+    },
+    {
+      "path": "kernel/fs/mbcache.ko",
+      "size": 28495,
+      "sha256": "7dbb40f7268e2bdabd80ca16d21e84c869134aea15b511d302c63f3095d6103d",
+      "vermagic": "6.18.35-0-virt SMP preempt mod_unload modversions aarch64",
+      "depends": [],
+      "signature": {
+        "kind": "PKCS#7",
+        "size": 695,
+        "sha256": "c20d8c751d113f17c7567ed48cee53b869acecbfae5070cbec430140c028af38",
+        "algorithm_id": 0,
+        "hash_id": 0,
+        "public_key_verification": "not_performed; pinned modloop digest authenticates bytes"
+      }
+    },
+    {
+      "path": "kernel/fs/jbd2/jbd2.ko",
+      "size": 285463,
+      "sha256": "d4e7753266771b7682afdcac4efbd5195d24e69d0c09054252f754092aaee840",
+      "vermagic": "6.18.35-0-virt SMP preempt mod_unload modversions aarch64",
+      "depends": [],
+      "signature": {
+        "kind": "PKCS#7",
+        "size": 695,
+        "sha256": "bc19842eb953eef7679d1de108ccd215aed6bb7cb819af4c9b77301ef9df9da1",
+        "algorithm_id": 0,
+        "hash_id": 0,
+        "public_key_verification": "not_performed; pinned modloop digest authenticates bytes"
+      }
+    },
+    {
+      "path": "kernel/fs/ext4/ext4.ko",
+      "size": 1583615,
+      "sha256": "bfdaa7958c82ad518a9e798a6cf550bc4408f0b4039c4dfac2376184b1ed732b",
+      "vermagic": "6.18.35-0-virt SMP preempt mod_unload modversions aarch64",
+      "depends": [
+        "crc16",
+        "jbd2",
+        "mbcache"
+      ],
+      "signature": {
+        "kind": "PKCS#7",
+        "size": 695,
+        "sha256": "fe33411c4be148c311a640677fb3f4c69be952958e78ae2bb2fc0c74a0f229e0",
+        "algorithm_id": 0,
+        "hash_id": 0,
+        "public_key_verification": "not_performed; pinned modloop digest authenticates bytes"
+      }
+    }
+  ],
+  "total_module_bytes": 1908556,
+  "kernel_load_and_ext4_mount": "not_tested"
+}

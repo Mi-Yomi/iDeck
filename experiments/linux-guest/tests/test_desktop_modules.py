@@ -106,6 +106,36 @@ class DesktopModuleChecks(unittest.TestCase):
         with self.assertRaises(ValueError):
             modules.closure({"kernel/ext4.ko": []}, {"ext4": (["missing"], [])}, b"")
 
+    def test_unrelated_alpine_softdep_rows_do_not_block_ext4(self):
+        data = (b"softdep cifs gcm\nsoftdep other pre: x\nsoftdep other pre: y\n"
+                b"softdep ext4 pre: crc16\n")
+        graph = {"kernel/ext4.ko": [], "kernel/crc16.ko": []}
+        soft = modules.soft_dependencies(data, reachable_only=True)
+        self.assertEqual(modules.closure(graph, soft, b""),
+                         ["kernel/crc16.ko", "kernel/ext4.ko"])
+
+    def test_reachable_softdep_errors_are_not_ignored(self):
+        graph = {"kernel/ext4.ko": ["kernel/crc16.ko"], "kernel/crc16.ko": []}
+        for data in (b"softdep crc16 gcm\n",
+                     b"softdep crc16 pre: x\nsoftdep crc16 post: y\n",
+                     b"softdep ext4 pre: crc16 pre: crc16\n",
+                     b"softdep ext4 post: unknown\n",
+                     b"softdep ext4 pre: foo-bar\nsoftdep foo_bar pre: x\nsoftdep foo-bar pre: y\n"):
+            with self.subTest(data=data), self.assertRaises(ValueError):
+                modules.closure({**graph, "kernel/foo_bar.ko": []},
+                                modules.soft_dependencies(data, reachable_only=True), b"")
+
+    def test_reachable_builtin_softdep_is_validated(self):
+        with self.assertRaises(ValueError):
+            modules.closure({"kernel/ext4.ko": []}, modules.soft_dependencies(
+                b"softdep ext4 pre: builtin\nsoftdep builtin invalid\n", reachable_only=True),
+                b"kernel/builtin.ko\n")
+
+    def test_unattributable_softdep_header_still_rejected(self):
+        for data in (b"softdep\n", b"garbage driver pre: other\n", b"softdep ../driver pre: x\n"):
+            with self.assertRaises(ValueError):
+                modules.soft_dependencies(data, reachable_only=True)
+
     def test_bad_or_duplicate_metadata_paths_rejected(self):
         for data in (b"kernel/../ext4.ko:\n", b"/kernel/ext4.ko:\n",
                      b"kernel/ext4.ko:\nkernel/ext4.ko:\n", b"kernel//ext4.ko:\n",

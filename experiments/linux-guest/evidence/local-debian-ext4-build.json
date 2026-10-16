@@ -1,0 +1,131 @@
+{
+  "schema": 1,
+  "lock_sha256": "0e596b6cd43f8872649f0b813dfbe57cf3d6e3f8f94922d1af75594d7fd1b015",
+  "builder_source_sha256": "87f0bc11d97b4faf3e55dad2f1fa0a2d45237013fd12e6cb5adcf32a78e57a10",
+  "end_to_end_replay_of_final_source": true,
+  "network_mode": "verified cache only",
+  "network_namespace_isolation": "not provided; offline restricts builder fetches",
+  "keyring_sha256": "506b815cbb32d9b6066b4a2aa524071e071761e7e7f68c3ac74f3061ba852017",
+  "qemu_user_sha256": "73cc2584f119f9e74c85c0a8549dbb6fd104ae3897a06a7500797f9e5b4d0943",
+  "compat_source_sha256": "665d8c89a74e353ee6516bb5a0c56d8687d589169322abe6614e126ab8ddd3fc",
+  "compat_executable_sha256": "f85ef926fd59daf795323cf2595d3c0e5d63cd0792ec5e472127ea6c5b2df786",
+  "host_tools": [
+    {
+      "name": "e2fsprogs",
+      "version": "1.47.2-3+b12",
+      "architecture": "amd64",
+      "filename": "pool/main/e/e2fsprogs/e2fsprogs_1.47.2-3+b12_amd64.deb",
+      "sha256": "e9e638eb3e22b5f14d01ce0b28aa512a5a22fcc0e70d1c733444579b67ea236b",
+      "size": 591288,
+      "installed_size_kib": 1537
+    },
+    {
+      "name": "libext2fs2t64",
+      "version": "1.47.2-3+b12",
+      "architecture": "amd64",
+      "filename": "pool/main/e/e2fsprogs/libext2fs2t64_1.47.2-3+b12_amd64.deb",
+      "sha256": "9f5783fa48239e42260d41846fbc6c8b19c233251063524456096195660eaa09",
+      "size": 212664,
+      "installed_size_kib": 557
+    },
+    {
+      "name": "libcom-err2",
+      "version": "1.47.2-3+b12",
+      "architecture": "amd64",
+      "filename": "pool/main/e/e2fsprogs/libcom-err2_1.47.2-3+b12_amd64.deb",
+      "sha256": "bd43e020b8fed399db3eebf098111f10fba4c436fff99ccad72cc7e27c9764ec",
+      "size": 25036,
+      "installed_size_kib": 64
+    },
+    {
+      "name": "libss2",
+      "version": "1.47.2-3+b12",
+      "architecture": "amd64",
+      "filename": "pool/main/e/e2fsprogs/libss2_1.47.2-3+b12_amd64.deb",
+      "sha256": "c5d38d71984c1bf774c1254238636e605fc4e0dc24d853f709921eb740327f4a",
+      "size": 29724,
+      "installed_size_kib": 80
+    },
+    {
+      "name": "logsave",
+      "version": "1.47.2-3+b12",
+      "architecture": "amd64",
+      "filename": "pool/main/e/e2fsprogs/logsave_1.47.2-3+b12_amd64.deb",
+      "sha256": "aa028720743b79bd054749af34c501c093f0ab5e044e4dc44273765be5e95de5",
+      "size": 24864,
+      "installed_size_kib": 59
+    },
+    {
+      "name": "proot",
+      "version": "5.1.0-1.3+b1",
+      "architecture": "amd64",
+      "filename": "pool/main/p/proot/proot_5.1.0-1.3+b1_amd64.deb",
+      "sha256": "7ca9260edf1ca6666f9b33e1da551638055934d673117acd135ff5367f420744",
+      "size": 75876,
+      "installed_size_kib": 212
+    },
+    {
+      "name": "libtalloc2",
+      "version": "2:2.4.3+samba4.22.11+dfsg-0+deb13u1",
+      "architecture": "amd64",
+      "filename": "pool/main/s/samba/libtalloc2_2.4.3+samba4.22.11+dfsg-0+deb13u1_amd64.deb",
+      "sha256": "b4cc8aa74c8b7c05a64efb6577acc955f522a8e39d8f37fe60b1b3fe6634ce96",
+      "size": 63644,
+      "installed_size_kib": 126
+    }
+  ],
+  "package_count": 90,
+  "configured_package_audit": "pass",
+  "glibc_execution": "pass",
+  "elf_closure": {
+    "arm64_elf_files": 700,
+    "dt_needed_edges": 1888,
+    "result": "pass"
+  },
+  "persisted_ownership_inodes_checked": 6744,
+  "package_manifest_sha256": "a9f5e60fe889ab81389cc1660ea507114dc9a8076e9da958cf75a271585739aa",
+  "ownership_manifest_sha256": "4686ff37a1d31f59d23d5df05fa462735d59963ff5fa6ed014138ecd9e634ae4",
+  "filesystem_bytes": {
+    "allocated_blocks_bytes": 175714304,
+    "free_blocks_bytes": 361156608,
+    "minimum_estimate_bytes": 168038400,
+    "minimum_is_estimate_only": true
+  },
+  "directory_hash_seed": "29c758bc-0416-4d87-b1ba-a922238a07f5",
+  "canonical_seed_epoch": 1789199741,
+  "canonical_inode_timestamps": "all manifest atime/mtime/ctime/crtime and nanoseconds audited",
+  "canonical_seed_content": "generated alternatives installation log cleared; all locked seed account last-change days pinned",
+  "image": {
+    "schema": 1,
+    "mode": "desktop-rootfs",
+    "filesystem": "ext4",
+    "rootfs": {
+      "file": "rootfs-v1.raw",
+      "size": 536870912,
+      "sha256": "a081d86594a0c59e585541ae26fa586468f267767dc081796f51186ea9c01217"
+    },
+    "image": {
+      "size_bytes": 536870912,
+      "uuid": "29c758bc-0416-4d87-b1ba-a922238a07f5",
+      "block_size": 4096,
+      "features": {
+        "compat": 44,
+        "incompat": 194,
+        "ro_compat": 1091
+      }
+    }
+  },
+  "compressed": {
+    "size": 53918211,
+    "sha256": "97e55ebdf61892848e55a45e4016163e6c55b737afb2c31ccb3939a23e12a747"
+  },
+  "filesystem_tool_check": "e2fsck -fn pass",
+  "ownership_sample_check": "pass",
+  "reproducibility": "signed exact inputs; canonical seed content/inode timestamps/hash seed; independent byte comparison required",
+  "replay_requires_retained_authenticated_cache": true,
+  "future_mirror_availability": "not guaranteed; snapshot endpoint blocked in this executor",
+  "replay_freshness": "all replay rechecks release expiry and 90-day maximum age; repin afterwards",
+  "guest_boot": "not tested",
+  "vm_posix_persistence": "not tested",
+  "legacy_userdata_accessed": false
+}

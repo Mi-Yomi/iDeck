@@ -41,6 +41,9 @@ IMAGE_UUID = "29c758bc-0416-4d87-b1ba-a922238a07f5"
 FEATURES = {"compat": 44, "incompat": 194, "ro_compat": 1091}
 FEATURE_NAMES = "none,has_journal,ext_attr,dir_index,filetype,extent,64bit,sparse_super,large_file,extra_isize,metadata_csum"
 OFFLINE = False
+DPKG_AUDIT_CHECK = """audit_output=$(dpkg --audit) || { echo 'dpkg audit command failed' >&2; exit 1; }
+test -z "$audit_output" || { printf '%s\\n' "$audit_output" >&2; exit 1; }
+"""
 
 
 def sha256(path):
@@ -502,6 +505,18 @@ def inode_publication_commands(manifest, epoch):
     return commands
 
 
+def stage_qemu_helper(qemu, output, expected_digest):
+    # PRoot 5.1 splits -q on spaces without shell quoting. Resolve a relative
+    # filename from a controlled cwd, then let PRoot canonicalize it itself.
+    # The staged copy is still the exact reviewed executable, not a wrapper.
+    helper = output / "qemu-user"
+    shutil.copyfile(qemu, helper)
+    helper.chmod(0o755)
+    if sha256(helper) != expected_digest:
+        raise ValueError("staged QEMU helper digest mismatch")
+    return "./qemu-user"
+
+
 def build(lock, cache, output, keyring, qemu, qemu_digest):
     """Rootless configured ARM64 tree -> unmounted ext4 using pinned host tools.
 
@@ -516,6 +531,7 @@ def build(lock, cache, output, keyring, qemu, qemu_digest):
         raise ValueError("QEMU user-mode helper digest mismatch")
     # Never resume/overwrite an existing image or tree, including interrupted runs.
     output.mkdir(parents=True, exist_ok=False)
+    qemu_command = stage_qemu_helper(qemu, output, qemu_digest)
     paths = download(lock, cache, keyring)
     host = output / "host-tools"
     for package in lock["host_tools"]:
@@ -543,27 +559,26 @@ def build(lock, cache, output, keyring, qemu, qemu_digest):
     policy = root / "usr/sbin/policy-rc.d"
     policy.write_text("#!/bin/sh\nexit 101\n")
     policy.chmod(0o755)
-    proot = [compat, host / "usr/bin/proot", "-0", "-q", qemu, "-r", root,
+    proot = [compat, host / "usr/bin/proot", "-0", "-q", qemu_command, "-r", root,
              "-b", "/proc", "-b", "/dev", "-b", str(cache / "debs") + ":/packages", "-w", "/",
              "/usr/bin/env", "-i", "DEBIAN_FRONTEND=noninteractive", "LC_ALL=C",
              "PATH=/usr/sbin:/usr/bin:/sbin:/bin", "HOME=/root", "TERM=dumb"]
     debs = ["/packages/" + Path(p["filename"]).name for p in lock["packages"]]
     # Pre-extraction breaks bootstrap pre-dependency cycles. Final configure,
     # audit, exact dpkg state/version list are mandatory, without force flags.
-    script = "set -eu\n" + "dpkg --force-depends --unpack " + shlex.join(debs) + "\n" + """dpkg --configure -a
-test -z "$(dpkg --audit)"
-useradd --uid 1000 --user-group --create-home --shell /bin/bash ideck
+    script = ("set -eu\n" + "dpkg --force-depends --unpack " + shlex.join(debs)
+              + "\ndpkg --configure -a\n" + DPKG_AUDIT_CHECK + """useradd --uid 1000 --user-group --create-home --shell /bin/bash ideck
 chmod 0700 /home/ideck
 passwd --lock root
 passwd --lock ideck
 test -x /lib/ld-linux-aarch64.so.1
 getconf GNU_LIBC_VERSION
 dpkg-query -W '-f=${Package}\t${Version}\t${Architecture}\t${Status}\n'
-"""
+""")
     with (output / "configure.log").open("w") as log:
         subprocess.run([str(a) for a in proot] + ["/bin/sh", "-ec", script],
-                       check=True, env=env, stdout=log, stderr=subprocess.STDOUT, timeout=1200)
-    query = run(proot + ["dpkg-query", "-W", "-f=${Package}\t${Version}\t${Architecture}\t${Status}\n"], env=env).stdout
+                       check=True, env=env, cwd=output, stdout=log, stderr=subprocess.STDOUT, timeout=1200)
+    query = run(proot + ["dpkg-query", "-W", "-f=${Package}\t${Version}\t${Architecture}\t${Status}\n"], env=env, cwd=output).stdout
     installed = {tuple(line.split("\t")[:3]): line.split("\t")[3] for line in query.splitlines()}
     expected = {(p["name"], p["version"], p["architecture"]) for p in lock["packages"]}
     if set(installed) != expected or set(installed.values()) != {"install ok installed"}:

@@ -1,0 +1,51 @@
+#!/bin/sh
+set -eu
+phase=$1
+[ "$(dpkg --print-architecture)" = arm64 ]
+glibc=$(getconf GNU_LIBC_VERSION)
+case "$glibc" in 'glibc '*) printf 'IDECK_DEBIAN_GLIBC:%s\n' "$glibc";; *) exit 1;; esac
+audit_output=$(dpkg --audit) || { echo 'dpkg audit command failed' >&2; exit 1; }
+test -z "$audit_output" || { printf '%s\n' "$audit_output" >&2; exit 1; }
+dpkg-query -W '-f=${Package}\t${Version}\t${Architecture}\t${Status}\n' > /run/packages.tsv
+LC_ALL=C sort /run/packages.tsv > /run/packages-sorted.tsv
+cmp /run/expected-packages.tsv /run/packages-sorted.tsv
+echo IDECK_DEBIAN_PACKAGE_AUDIT_PASS
+base=/home/ideck/.ideck-ext4-acceptance
+case "$phase" in
+1)
+    test ! -e "$base"
+    mkdir -m 0700 "$base"
+    chown 1000:1000 "$base"
+    printf 'persistent Debian ARM64 ext4\n' > "$base/expected"
+    # GNU dd conv=fsync requires a successful fsync on the output descriptor.
+    dd if="$base/expected" of="$base/pending" conv=fsync status=none
+    chown 1000:1000 "$base/pending"
+    chmod 0640 "$base/pending"
+    ln "$base/pending" "$base/hard"
+    mv "$base/pending" "$base/file"
+    ln -s file "$base/symbolic"
+    chown -h 1000:1000 "$base/symbolic"
+    printf '#!/bin/sh\nprintf "IDECK_EXECUTABLE_PASS\\n"\n' > "$base/execute"
+    chmod 0750 "$base/execute"
+    chown 1000:1000 "$base/execute"
+    stat -c '%i' "$base/file" > "$base/inode"
+    sync "$base/file" "$base/execute" "$base"
+    ;;
+2) test -d "$base";;
+*) exit 1;;
+esac
+test ! -e "$base/pending"
+cmp "$base/expected" "$base/file"
+cmp "$base/file" "$base/hard"
+cmp "$base/file" "$base/symbolic"
+test "$(cat "$base/file")" = 'persistent Debian ARM64 ext4'
+test "$(readlink "$base/symbolic")" = file
+test "$(stat -c '%u:%g:%a' "$base")" = '1000:1000:700'
+test "$(stat -c '%u:%g:%a:%h' "$base/file")" = '1000:1000:640:2'
+test "$(stat -c '%u:%g:%a' "$base/execute")" = '1000:1000:750'
+test "$(stat -c '%u:%g' "$base/symbolic")" = '1000:1000'
+test "$(stat -c '%i' "$base/file")" = "$(cat "$base/inode")"
+test "$(stat -c '%i' "$base/hard")" = "$(cat "$base/inode")"
+# Verify executable permission and content as the unprivileged owner, too.
+test "$(setpriv --reuid=1000 --regid=1000 --clear-groups "$base/execute")" = IDECK_EXECUTABLE_PASS
+printf 'IDECK_POSIX_PASS:%s uid/gid mode exec symlink hardlink inode rename fsync content\n' "$phase"

@@ -4,6 +4,68 @@ This is an offline host preparation and storage change. It does not select a
 desktop route, mount ext4 in the VM, modify the terminal FAT image, or add Xorg.
 The next gates remain in [DESKTOP-MILESTONE.md](DESKTOP-MILESTONE.md).
 
+**2026-10-16 local continuation:** real host Linux/Debian/ext4 two-boot acceptance
+now passed. See [the measured result](evidence/local-debian-ext4.json). The seed
+rebuilt locally from authenticated pins matches the historical raw/gzip hashes
+below exactly. Both system-QEMU boots mounted ext4, executed glibc 2.41 and all
+POSIX checks, then unmounted cleanly; read-only fsck exited 0 and the seed was
+unchanged. This resolves the host input/boot blocker, not the iPhone Debian gate.
+The older cloud results and unavailable-input observations below are historical.
+
+## Local host two-boot runner
+
+`tools/check_debian_ext4_boot.py` adds a host-only acceptance path. Supply a
+reviewed seed/profile from the existing builder, a real `desktop_modules.py`
+output and an existing system-QEMU executable. It verifies seed and module
+inputs, appends a separate test suffix to the unchanged locked probe initramfs,
+and attaches only a **new disposable copy** of the seed. The original seed,
+terminal FAT disk, iOS entry points and production bundle locks are unchanged.
+
+```sh
+python3 tools/check_debian_ext4_boot.py \
+  --seed /absolute/seed/rootfs-v1.raw \
+  --profile /absolute/seed/desktop-rootfs-profile.json \
+  --modules /absolute/verified-module-output \
+  --qemu /absolute/qemu-system-aarch64 \
+  --out /absolute/new/two-boot-output --e2fsck /absolute/e2fsck
+```
+
+On Windows, use Windows paths and system-QEMU, plus `--wsl-distribution archlinux`
+and `--e2fsck /usr/bin/e2fsck` to run the final read-only filesystem check in an
+already installed WSL distribution. No distribution is installed by the runner.
+The source builder needs a POSIX workspace: a plain WSL-mounted NTFS directory
+does not support every required file type/mode. In this task, the temporary
+build filesystem is backed by a new scratch image on E:, never by the user disk.
+
+Both boots use `virt`, Cortex-A72, 4 CPUs, 1024MiB RAM, TCG/256MiB cache and
+`-nic none`. The supervisor loads `virtio_mmio` before `virtio_blk`, loads the
+verified ext4 dependency order, mounts the separate ext4 root and executes real
+Debian processes through chroot. Each boot requires glibc execution and the
+exact configured package manifest. The first creates files using real ownership,
+mode, hardlink/symlink, rename and `dd conv=fsync` operations; the second checks
+content, inode/link count and metadata again. Execution is also checked as
+UID/GID1000. Both require checked sync/unmount and guest poweroff. Finally the
+runner requires `e2fsck -fn` exit 0 without changing the test image, and rehashes
+the untouched seed. Logs, commands, exit codes, input/output hashes and equivalent
+JSON/Markdown reports are retained even on failure. This is not a crash-consistency
+test, GUI test, IPA build or iPhone Debian test.
+
+The module resolver retains the complete original metadata. Softdep declarations
+are indexed by their normalized owner; strict body/duplicate validation applies
+when the hard/soft dependency closure reaches that owner (including builtins).
+Unrelated Alpine rows such as `softdep cifs gcm` and repeated ksmbd/btrfs rows
+no longer block ext4. Unattributable headers and malformed/duplicate reachable
+declarations still fail. The strict whole-file parser remains available.
+
+The seed builder now checks both `dpkg --audit` exit status and empty output.
+It also copies the exact verified QEMU helper to its fresh output directory and
+passes a relative filename with a controlled cwd to PRoot. This handles spaces
+in `E:\Freddy Fazbear`: [PRoot 5.1 parses `-q` by splitting on spaces without
+shell quoting](https://github.com/proot-me/proot/blob/v5.1.0/src/cli/proot.c#L67-L136).
+The helper hash is rechecked; no wrapper, substitute binary or system install is
+introduced. These changes may alter build receipts; compare actual seed hashes
+with the historical baseline rather than assigning the old hashes to new outputs.
+
 ## Full offline CLI replay, 2026-10-16
 
 The [complete replay receipt](evidence/desktop-rootfs-cli-replay.json) supersedes
@@ -182,7 +244,7 @@ CryptoKit profile tests are wired into the existing parent-controlled CI;
 they have not run for this change. Existing terminal/probe/JIT and userdata
 paths remain unchanged. No QEMU argument accepts the new disk yet.
 
-## Same-kernel ext4 blocker
+## Earlier same-kernel ext4 blocker (historical)
 
 `ipa/desktop-kernel-source.lock.json` records the original kernel/archive hashes
 and official aports config observation `CONFIG_EXT4_FS=m`. This is source config

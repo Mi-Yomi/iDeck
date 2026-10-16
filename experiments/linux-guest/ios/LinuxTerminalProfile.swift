@@ -1,0 +1,217 @@
+import Foundation
+import CryptoKit
+import Darwin
+
+/// Validated local terminal assets and a separate, persistent user-data disk.
+/// This helper has no UI, runtime, network or pairing dependencies.
+struct LinuxTerminalProfile: Decodable {
+    struct Asset: Decodable {
+        let file: String
+        let sha256: String
+        let size: Int
+    }
+    enum Invalid: Error { case configuration, asset, disk, diskLocked, io }
+    static let diskSize = 128 * 1024 * 1024
+    let schema: Int
+    let mode: String
+    let kernel: Asset
+    let initramfs: Asset
+    let seed: Asset
+    let diskSizeBytes: Int
+    let filesystem: String
+    let controlPort: String
+    let cpu: String
+    let memoryMib: Int
+    let vcpus: Int
+    let tcgCacheMib: Int
+    let width: Int
+    let height: Int
+
+    static func load(from assets: URL) throws -> Self {
+        let file = assets.appendingPathComponent("terminal-profile.json")
+        let values = try file.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey, .fileSizeKey])
+        guard values.isRegularFile == true, values.isSymbolicLink != true,
+              let count = values.fileSize, count > 0, count <= 65536 else { throw Invalid.asset }
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let profile = try decoder.decode(Self.self, from: Data(contentsOf: file))
+        guard profile.schema == 1, profile.mode == "terminal", profile.filesystem == "fat16",
+              profile.controlPort == "org.ideck.control", profile.diskSizeBytes == diskSize,
+              profile.seed.size == diskSize, profile.cpu == "cortex-a72", profile.memoryMib == 1024,
+              profile.vcpus == 4, profile.tcgCacheMib == 256, profile.width == 800, profile.height == 600 else {
+            throw Invalid.configuration
+        }
+        return profile
+    }
+
+    private func checked(_ asset: Asset, name: String, in assets: URL) throws -> URL {
+        guard asset.file == name, asset.size > 0, asset.size <= Self.diskSize,
+              asset.sha256.utf8.count == 64,
+              asset.sha256.utf8.allSatisfy({ (48...57).contains($0) || (97...102).contains($0) }) else { throw Invalid.asset }
+        let root = assets.standardizedFileURL.resolvingSymlinksInPath()
+        let file = root.appendingPathComponent(name)
+        let values = try file.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey, .fileSizeKey])
+        guard values.isRegularFile == true, values.isSymbolicLink != true, values.fileSize == asset.size,
+              file.resolvingSymlinksInPath().deletingLastPathComponent() == root else { throw Invalid.asset }
+        let handle = try FileHandle(forReadingFrom: file)
+        defer { try? handle.close() }
+        var hash = SHA256()
+        var count = 0
+        while let bytes = try handle.read(upToCount: 1024 * 1024), !bytes.isEmpty {
+            count += bytes.count
+            guard count <= asset.size else { throw Invalid.asset }
+            hash.update(data: bytes)
+        }
+        let digest = hash.finalize().map { String(format: "%02x", $0) }.joined()
+        guard count == asset.size, digest == asset.sha256 else { throw Invalid.asset }
+        return file
+    }
+
+    func openDisk(in directory: URL, assets: URL) throws -> LinuxTerminalDisk {
+        let seedURL = try checked(seed, name: "userdata-seed.raw", in: assets)
+        return try LinuxTerminalDisk.open(directory: directory, seed: seedURL, size: diskSizeBytes)
+    }
+
+    func arguments(probeAssets: URL, terminalAssets: URL, session: URL, diskURL: URL,
+                   serialFD: Int32, controlFD: Int32) throws -> [String] {
+        guard serialFD >= 0, controlFD >= 0, serialFD != controlFD else { throw Invalid.configuration }
+        try LinuxTerminalDisk.validateDirectory(diskURL.deletingLastPathComponent(), allowingMissing: false)
+        let diskValues = try diskURL.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey, .fileSizeKey])
+        guard diskURL.lastPathComponent == "userdata.raw", diskValues.isRegularFile == true,
+              diskValues.isSymbolicLink != true, diskValues.fileSize == Self.diskSize else { throw Invalid.disk }
+        let original = try LinuxGuestProfile.load(from: probeAssets)
+        guard kernel.file == original.kernel.file, kernel.sha256 == original.kernel.sha256,
+              kernel.size == original.kernel.size else { throw Invalid.asset }
+        let ramdisk = try checked(initramfs, name: "initramfs-terminal.gz", in: terminalAssets)
+        // The original validator still checks the kernel AND probe initramfs,
+        // exact CPU/memory/display contract, and a new isolated session path.
+        var args = try original.arguments(assets: probeAssets, session: session)
+        guard let initrd = args.firstIndex(of: "-initrd"), initrd + 1 < args.count,
+              let append = args.firstIndex(of: "-append"), append + 1 < args.count,
+              let chardev = args.firstIndex(of: "-chardev"), chardev + 1 < args.count,
+              let serial = args.firstIndex(of: "-serial"), serial + 1 < args.count else { throw Invalid.configuration }
+        func optionPath(_ url: URL) throws -> String {
+            guard url.isFileURL, !url.path.contains("\0"), !url.path.contains("\n"), !url.path.contains("\r") else { throw Invalid.configuration }
+            return url.path.replacingOccurrences(of: ",", with: ",,")
+        }
+        args[initrd + 1] = ramdisk.path
+        args[append + 1] = "console=ttyAMA0 loglevel=6 rdinit=/ideck-terminal-init fbcon=nodefer vt.global_cursor_default=0"
+        args[chardev + 1] = "socket,id=linuxterm,fd=\(serialFD),server=off"
+        args[serial + 1] = "chardev:linuxterm"
+        args += ["-chardev", "socket,id=linuxcontrol,fd=\(controlFD),server=off",
+                 "-device", "virtio-serial-pci", "-device", "virtserialport,chardev=linuxcontrol,name=org.ideck.control",
+                 "-drive", "if=none,id=userdata,format=raw,cache=writethrough,file=\(try optionPath(diskURL))",
+                 "-device", "virtio-blk-pci,drive=userdata"]
+        return args
+    }
+}
+
+/// Owns an exclusive lock independently of QEMU's open file description.
+/// The runtime worker retains it until process exit, including after an orderly
+/// guest stop. QEMU's block-layer drain is not established by main-loop return.
+final class LinuxTerminalDisk {
+    let url: URL
+    private var fd: Int32
+    private init(url: URL, fd: Int32) { self.url = url; self.fd = fd }
+    deinit { if fd >= 0 { Darwin.close(fd) } }
+
+    static func open(directory: URL, seed: URL, size: Int = LinuxTerminalProfile.diskSize) throws -> LinuxTerminalDisk {
+        guard size == LinuxTerminalProfile.diskSize else { throw LinuxTerminalProfile.Invalid.disk }
+        let manager = FileManager.default
+        try validateDirectory(directory, allowingMissing: true)
+        if !manager.fileExists(atPath: directory.path) {
+            try manager.createDirectory(at: directory, withIntermediateDirectories: true)
+        }
+        let values = try directory.resourceValues(forKeys: [.isDirectoryKey, .isSymbolicLinkKey])
+        guard values.isDirectory == true, values.isSymbolicLink != true else { throw LinuxTerminalProfile.Invalid.disk }
+        let url = directory.appendingPathComponent("userdata.raw")
+        var state = stat()
+        if lstat(url.path, &state) != 0 {
+            guard errno == ENOENT else { throw LinuxTerminalProfile.Invalid.disk }
+            try provision(seed: seed, destination: url, size: size)
+        }
+        let fd = Darwin.open(url.path, O_RDWR | O_NOFOLLOW)
+        guard fd >= 0 else { throw LinuxTerminalProfile.Invalid.disk }
+        var accepted = false
+        defer { if !accepted { Darwin.close(fd) } }
+        guard flock(fd, LOCK_EX | LOCK_NB) == 0 else { throw LinuxTerminalProfile.Invalid.diskLocked }
+        guard fstat(fd, &state) == 0, state.st_nlink == 1 else { throw LinuxTerminalProfile.Invalid.disk }
+        try validateFormat(fd: fd, size: size)
+        accepted = true
+        return LinuxTerminalDisk(url: url, fd: fd)
+    }
+
+    private static func validateFormat(fd: Int32, size: Int) throws {
+        var state = stat()
+        guard fstat(fd, &state) == 0, (state.st_mode & S_IFMT) == S_IFREG,
+              state.st_size == off_t(size) else { throw LinuxTerminalProfile.Invalid.disk }
+        var boot = [UInt8](repeating: 0, count: 512)
+        guard pread(fd, &boot, 512, 0) == 512 else { throw LinuxTerminalProfile.Invalid.disk }
+        func le16(_ offset: Int) -> Int { Int(boot[offset]) | Int(boot[offset + 1]) << 8 }
+        func le32(_ offset: Int) -> Int { le16(offset) | le16(offset + 2) << 16 }
+        let sectors = le16(19) == 0 ? le32(32) : le16(19)
+        guard boot[510] == 0x55, boot[511] == 0xaa, le16(11) == 512,
+              sectors * 512 == size, String(bytes: boot[54..<62], encoding: .ascii) == "FAT16   " else {
+            throw LinuxTerminalProfile.Invalid.disk
+        }
+    }
+
+    static func validateDirectory(_ directory: URL, allowingMissing: Bool) throws {
+        guard directory.isFileURL, directory == directory.standardizedFileURL else { throw LinuxTerminalProfile.Invalid.disk }
+        var current = directory
+        while current.path != "/" {
+            var state = stat()
+            if lstat(current.path, &state) == 0 {
+                guard (state.st_mode & S_IFMT) == S_IFDIR else { throw LinuxTerminalProfile.Invalid.disk }
+            } else {
+                guard allowingMissing, errno == ENOENT else { throw LinuxTerminalProfile.Invalid.disk }
+            }
+            current = current.deletingLastPathComponent()
+        }
+    }
+
+    private static func provision(seed: URL, destination: URL, size: Int) throws {
+        let temporary = destination.deletingLastPathComponent().appendingPathComponent(".userdata-\(UUID().uuidString).tmp")
+        let fd = Darwin.open(temporary.path, O_RDWR | O_CREAT | O_EXCL | O_NOFOLLOW, mode_t(0o600))
+        guard fd >= 0 else { throw LinuxTerminalProfile.Invalid.io }
+        defer { Darwin.close(fd); try? FileManager.default.removeItem(at: temporary) }
+        let source = try FileHandle(forReadingFrom: seed)
+        defer { try? source.close() }
+        var count = 0
+        while let bytes = try source.read(upToCount: 1024 * 1024), !bytes.isEmpty {
+            count += bytes.count
+            guard count <= size else { throw LinuxTerminalProfile.Invalid.disk }
+            try bytes.withUnsafeBytes { buffer in
+                var offset = 0
+                while offset < buffer.count {
+                    let sent = Darwin.write(fd, buffer.baseAddress!.advanced(by: offset), buffer.count - offset)
+                    if sent < 0, errno == EINTR { continue }
+                    guard sent > 0 else { throw LinuxTerminalProfile.Invalid.io }
+                    offset += sent
+                }
+            }
+        }
+        guard count == size, fsync(fd) == 0 else { throw LinuxTerminalProfile.Invalid.io }
+        try validateFormat(fd: fd, size: size)
+        // link is an atomic, same-directory, no-clobber publish. A racing first
+        // creator may win; its existing disk is validated and locked below.
+        if link(temporary.path, destination.path) != 0, errno != EEXIST { throw LinuxTerminalProfile.Invalid.io }
+    }
+
+    func synchronize() throws {
+        guard fd >= 0, fsync(fd) == 0 else { throw LinuxTerminalProfile.Invalid.io }
+    }
+
+    /// For helpers/tests that never handed this disk to QEMU. The runtime uses
+    /// synchronize() and retains its descriptor/lock until the app process exits.
+    func synchronizeAndClose() throws {
+        try synchronize()
+        let descriptor = fd
+        fd = -1
+        guard Darwin.close(descriptor) == 0 else { throw LinuxTerminalProfile.Invalid.io }
+    }
+
+    func closeUnused() {
+        if fd >= 0 { Darwin.close(fd); fd = -1 }
+    }
+}

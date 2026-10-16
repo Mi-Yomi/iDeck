@@ -5,6 +5,78 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## Новый этап: local terminal и файл после orderly stop / следующего запуска
+
+Работа начинается от `28d862fd4fcddd9421688756e6fa1e5cea7021fb`. Авторизован
+отдельный real BusyBox ash с controlling TTY через getty/ttyAMA0 и local **line console** с сохранением
+user file после orderly stop и fresh app process. TERM=dumb, без обещания full
+VT/full-screen terminal apps. **Это source stage, не новый device PASS.**
+Прежний принятый probe остаётся отдельным режимом; original kernel/initramfs/
+profile/archive/locks, native pins, JIT и Markdown не заменяются.
+
+Архитектура: два local AF_UNIX socket pairs — console и независимый fixed
+virtio-control `IDECK_STOP_V1` на `org.ideck.control`. PID1 останавливает children,
+делает sync/unmount/poweroff; app считает остановку чистой только после
+`IDECK_TERMINAL_CLEAN_UNMOUNT`, QEMU return и host
+userdata fsync. Одна VM на процесс; после stop закрыть/открыть приложение,
+без unsafe in-process restart. Networking/Steam не добавляются.
+Disk lock сохраняется до выхода app даже после orderly stop: возврат main loop
+не доказывает полный QEMU block-layer drain. Report сохраняет
+`qemu_block_layer_drained_verified=false`; полного runtime teardown не заявляем.
+Guest shell не наследует control fd3; текст в console сам по себе не является
+подтверждением clean unmount. Таймаут/потеря канала также не дают clean PASS.
+Startup 60 s / Stop 30 s — reporting timeouts без force shutdown/clean PASS;
+явный guest STOP_FAILED сохраняет failure. Serial EOF сам по себе не отключает
+независимый Stop. Terminal elapsed включает disk prep, init, работу и Stop;
+это не boot benchmark и не прежний probe post-init interval.
+
+Новый deterministic **128 MiB FAT16 seed** копируется только при отсутствии
+`Documents/iDeckLinux/userdata.raw`. Только **/data** persistent, не весь rootfs.
+Existing disk не форматируется/не сбрасывается после mount error; изменённый
+userdata не обязан совпадать с seed hash. FAT16 не обещает POSIX permissions,
+symlinks или persistence после uninstall/reset/unclean kill. Приёмка:
+unpredictable nonsecret file → foreground command → app Stop через независимый
+control → все clean-stop условия → fresh process → exact read same file.
+План: `experiments/linux-guest/docs/terminal-device-check.md`.
+
+Baseline initramfs проверен read-only в памяти: kernel 6.18.35-0-virt,
+BusyBox 1.37.0 AArch64 с musl loader; exact musl version не определена.
+virtio_blk/FAT/VFAT доступны как существующие **loadable modules**.
+`modules.builtin` отдельно подтверждает встроенные virtio_console/virtio/
+virtio_ring/virtio_pci. Новая terminal library не требуется. GPL notices/source pins
+сохранять; source fetch 403 и неполный corresponding-source/musl audit фиксируются
+как ограничение, это не license-compliance certification. Primary BusyBox
+license: [официальная страница](https://busybox.net/license.html).
+
+Подготовлены `guest/ideck-terminal-init`, `ideck-terminal-login`,
+`tools/terminal_bundle.py`, `ipa/terminal.lock.json`, provenance NOTICE и три
+Swift source `LinuxTerminalProfile/Session/View`. Новый deterministic CPIO suffix
+содержит только init/login, kernel reused из original validated probe; отдельные
+terminal-profile/initramfs/seed/notice проверяются дополнительно, original probe
+проверки не заменяются. **Source stage локально проверен и готов к Apple build**:
+root full suite **140 Python tests PASS, 4.604 s** (`PYTHONDONTWRITEBYTECODE=1
+TMPDIR=/workspace/iDeck/.work python3 -m unittest discover -s
+experiments/linux-guest/tests -q`). Первоначальный suite имел одну устаревшую
+проверку количества preBuildScripts (1 вместо новых 2); assertion исправлен,
+затем весь suite прошёл. Это host-test fixture mismatch, не Apple failure.
+Native owner проверил actual resource prepare/standalone CLI stage, shell syntax
+и source review/freeze завершены. Root проверил все 21 overlay input hashes,
+11 source copies; overlay SHA-256
+`fc359df97048aa83aa7e50a2e735a75f6c24bc3f7440301bb275da6ac508135e`.
+14 protected файлов и все 37 прежних evidence snapshots побайтно сохранены;
+старый HANDOFF начиная с first-device heading также не изменён.
+Foundation/Swift checks написаны и подключены к Apple gate, но здесь нет
+QEMU/Swift compiler: actual two-boot persistence и foreground-stop на устройстве
+не проверены. Новых CI/IPA/Steam/network actions нет; лимиты
+6900 s / 120 min сохраняются. Evidence:
+`experiments/linux-guest/evidence/terminal-persistence-preparation.json`.
+Старые snapshots и baseline артефакты остаются без изменений.
+Следующий шаг: root review/commit/push этой source stage, затем отдельный
+авторизованный Apple build точного pushed SHA с обычной quota/request проверкой.
+После полученного IPA owner выполняет device check выше; до этого не объявлять
+terminal/persistence работоспособными. SHA build должен быть отдельным от
+последующих doc-only коммитов; полный итоговый SHA получать через git rev-parse HEAD.
+
 ## Первый device Linux/JIT/framebuffer/input gate прошёл
 
 Owner сообщил результат на **iPhone 16 Pro Max / iOS 27**, SideStore, после IPA

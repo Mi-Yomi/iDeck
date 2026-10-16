@@ -9,12 +9,21 @@ enum LinuxProbeReport {
     static func render(report: [String: Any], serial: String? = nil) -> String {
         let statuses: Set<String> = ["prepared", "booting", "guest_stopped", "prepare_failed", "report_write_failed",
                                      "probe_timeout", "serial_limit", "guest_failed", "evidence_failed",
-                                     "guest_frames_and_input_verified", "first_frame_not_observed"]
+                                     "guest_frames_and_input_verified", "first_frame_not_observed",
+                                     "terminal_prepared", "terminal_running", "terminal_stopping", "terminal_clean_stopped",
+                                     "terminal_unclean_stopped", "terminal_prepare_failed", "terminal_stop_failed",
+                                     "terminal_startup_timeout", "terminal_stop_timeout"]
         let status = (report["status"] as? String).flatMap { statuses.contains($0) ? $0 : nil }
         let summary: String
         switch status {
         case .some("guest_frames_and_input_verified"):
             summary = "Reported outcome: Linux framebuffer and input probe completed; stage evidence follows."
+        case .some("terminal_clean_stopped"):
+            summary = "Reported outcome: terminal stopped after guest unmount, QEMU loop return and host disk sync. Close and reopen the app before the next session."
+        case .some("terminal_prepared"), .some("terminal_running"), .some("terminal_stopping"):
+            summary = "Reported outcome: terminal session is active or stopping; the disk is not yet declared safe to close."
+        case .some(let value) where value.hasPrefix("terminal_"):
+            summary = "Reported outcome: terminal startup or shutdown is incomplete or failed; orderly stop is not established."
         case .some("prepared"), .some("booting"):
             summary = "Reported outcome: probe in progress; completed checks and pending observations follow."
         case .some(_):
@@ -31,6 +40,7 @@ enum LinuxProbeReport {
         row("Device class", text(report["device_class"]))
         row("OS", text(report["os"]))
         row("Schema", integer(report["schema"]))
+        row("Mode", report["mode"] as? String == "terminal" ? "TERMINAL" : "DIAGNOSTIC PROBE")
         row("Status", status.map(escape) ?? "UNKNOWN")
         row("Started UTC", text(report["started_utc"]))
         row("Installed executable SHA-256", hex(report["app_executable_sha256"], count: 64))
@@ -47,9 +57,27 @@ enum LinuxProbeReport {
         row("Accelerated guest GPU", flag(report["accelerated_guest_gpu_verified"], yes: "VERIFIED (reported)"))
         row("Steam", flag(report["steam_executed"], yes: "REPORTED EXECUTED", no: "NOT RUN"))
         row("Elapsed seconds", decimal(report["elapsed_seconds"]))
-        row("Elapsed scope", bool(report["qemu_init_returned"]) == true
-            ? "Polling after QEMU init, including input interaction; not pure boot time or whole launch time"
-            : "UNKNOWN: preparation or early runtime; not an established boot duration")
+        row("Elapsed scope", report["mode"] as? String == "terminal"
+            ? "Session time including asset and disk preparation, terminal use and shutdown; not kernel boot time"
+            : (bool(report["qemu_init_returned"]) == true
+                ? "Polling after QEMU init, including input interaction; not pure boot time or whole launch time"
+                : "UNKNOWN: preparation or early runtime; not an established boot duration"))
+
+        if report["mode"] as? String == "terminal" {
+            lines += ["", "## Persistent terminal", "", "| Check | Result |", "| --- | --- |"]
+            row("Terminal ready", flag(report["terminal_ready"]))
+            row("Guest disk unmounted", flag(report["terminal_clean_unmount"]))
+            row("QEMU loop returned", flag(report["qemu_main_loop_returned"]))
+            row("Host disk sync", flag(report["host_disk_fsync_passed"]))
+            row("Orderly stop", flag(report["terminal_clean_stop"]))
+            row("Disk lock retained until app exits", flag(report["userdata_lock_retained_until_process_exit"], yes: "RETAINED", no: "NOT RETAINED"))
+            row("QEMU block layer drained", flag(report["qemu_block_layer_drained_verified"], yes: "VERIFIED (reported)", no: "NOT VERIFIED"))
+            row("Serial log truncated", flag(report["log_truncated"], yes: "YES (bounded capture)", no: "NO"))
+            lines += ["", "Files in /data use the persistent VFAT volume. The initramfs root is temporary.",
+                      "Orderly stop records guest unmount, QEMU loop return and host sync. It does not establish QEMU block-layer teardown; the disk lock stays held until this app exits.",
+                      "The framebuffer/input diagnostic checks below are not run in terminal mode.",
+                      "This report does not itself verify a file after a second guest boot."]
+        }
 
         lines += ["", "## Framebuffer evidence", "", "| Check | Result |", "| --- | --- |"]
         let phases = framePhases(report["matched_frame_phases"])

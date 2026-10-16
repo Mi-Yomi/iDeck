@@ -4,7 +4,7 @@ import SwiftUI
 /// QEMU and the translation runtimes own global state and a shared JIT region.
 @MainActor
 final class LinuxProbeRoute: ObservableObject {
-    enum Destination { case choose, linux, library }
+    enum Destination { case choose, linux, terminal, library }
     static let shared = LinuxProbeRoute()
     @Published private(set) var destination: Destination = .choose
 
@@ -30,24 +30,24 @@ struct LinuxProbeRoot: View {
 
     var body: some View {
         #if IDECK_LINUX_PROBE_ONLY
-        // The separately installed probe has no Android/PS4 library route.
-        LinuxProbeView()
+        // Both Linux modes remain isolated from the Android/PS4 library.
+        Group {
+            switch route.destination {
+            case .choose: chooser
+            case .linux: LinuxProbeView()
+            case .terminal: LinuxTerminalView()
+            case .library: Text("Close and reopen the app to choose a Linux mode.")
+            }
+        }
         #else
         Group {
             switch route.destination {
             case .choose:
-                VStack(spacing: 24) {
-                    Text("iDeck Linux experiment").font(.title)
-                    Text("Choose the environment for this launch.")
-                    Button("Linux boot and input probe") { route.choose(.linux) }
-                        .buttonStyle(.borderedProminent)
-                    Button("Open Husk library") { route.choose(.library) }
-                        .buttonStyle(.bordered)
-                    Text("To switch environments, close and reopen the app.")
-                        .font(.footnote).foregroundStyle(.secondary)
-                }.padding()
+                chooser
             case .linux:
                 LinuxProbeView()
+            case .terminal:
+                LinuxTerminalView()
             case .library:
                 ContentView()
             }
@@ -58,6 +58,21 @@ struct LinuxProbeRoot: View {
             if !AppClip.handle(url) { IncomingFiles.shared.receive(url) }
         }
         #endif
+    }
+
+    private var chooser: some View {
+        VStack(spacing: 24) {
+            Text("iDeck Linux").font(.title)
+            Button("Linux terminal and saved files") { route.choose(.terminal) }
+                .buttonStyle(.borderedProminent)
+            Button("Boot, display and input diagnostic") { route.choose(.linux) }
+                .buttonStyle(.bordered)
+            #if !IDECK_LINUX_PROBE_ONLY
+            Button("Open Husk library") { route.choose(.library) }.buttonStyle(.bordered)
+            #endif
+            Text("One environment per app launch. Shut Linux down before closing; reopen the app for another session.")
+                .font(.footnote).foregroundStyle(.secondary)
+        }.padding()
     }
 }
 

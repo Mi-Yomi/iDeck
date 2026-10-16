@@ -1,0 +1,31 @@
+iDeck local Linux terminal guest
+
+This mode reuses the unchanged kernel and initramfs from the locked Alpine
+3.24.1 AArch64 netboot archive. Its added files are shell scripts and an empty,
+deterministically generated FAT16 data volume; it includes no Steam software.
+
+Upstream archive:
+https://dl-cdn.alpinelinux.org/alpine/v3.24/releases/aarch64/alpine-netboot-3.24.1-aarch64.tar.gz
+SHA-256: 54fe38fa41cce740ba379458ed63cfcd89ab06ae5e6a47a06dafe0a34e8427e8
+Kernel: 6.18.35-0-virt (Linux, GPL-2.0-only with applicable file exceptions).
+BusyBox binary identifies itself as 1.37.0 (GPL-2.0-only).
+musl dynamic loader and C library are included upstream (MIT license).
+Retain the upstream notices, applicable license texts and corresponding-source
+availability when distributing the combined app/guest. These component names
+are provenance information, not a complete file-level distribution review.
+
+Source references:
+https://www.kernel.org/
+https://busybox.net/
+https://musl.libc.org/
+https://gitlab.alpinelinux.org/alpine/aports
+
+The exact Alpine BusyBox package revision/configuration and corresponding
+source archive have not been independently reconstructed here. Official
+BusyBox source endpoints were unavailable to this workspace (HTTP 403); no
+source access restriction was bypassed. The original locked archive and its
+preserved bytes remain the binary provenance. No new distro package is added.
+
+Husk and QEMU keep their existing file-level notices and source locks. The
+terminal does not change their licensing or combine the separate Playport
+target with this runtime. FAT16 supplies user-file storage, not a Unix rootfs.

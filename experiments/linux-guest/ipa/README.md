@@ -41,6 +41,29 @@ locally. They await the Apple gate; no new IPA or device export validation is
 claimed. See `../evidence/markdown-report-export.json`. Earlier evidence
 remains historical.
 
+The next source stage is separate local BusyBox ash with a real controlling TTY
+via getty/ttyAMA0 and a line console (TERM=dumb,
+not full VT/full-screen terminal emulation) with a copy-once
+128 MiB FAT16 userdata seed mounted at /data. Console and fixed orderly-stop
+control use independent local AF_UNIX socket pairs. Clean stop requires guest
+sync/unmount/CLEAN, QEMU return and host fsync; reopen the app for the next VM.
+The disk lock remains held until app exit even after orderly stop. Main-loop
+return does not establish full QEMU block-layer drain; the report keeps
+`qemu_block_layer_drained_verified=false`.
+The shell does not inherit the control descriptor; console text, channel loss
+or a stop timeout cannot establish a clean-stop result.
+The original probe bytes/JIT/Markdown stay protected. Only /data persists, with
+no POSIX-permission/symlink/full-rootfs or unclean-kill guarantee. No networking
+or Steam is added. Scripts/resource builder/Swift mode passed the root's
+140-test Python suite (4.604 seconds), resource preparation/standalone staging,
+shell syntax and source review. All 21 overlay input hashes and 11 source
+copies were verified; protected probe/native inputs and 37 prior evidence
+snapshots remain unchanged. This source stage is ready for an Apple build.
+Foundation/Swift checks are wired into that gate but have not run locally;
+actual two-boot device acceptance is pending. No new IPA/CI result is claimed. See
+`../evidence/terminal-persistence-preparation.json` and
+`../docs/terminal-device-check.md`.
+
 Select branch `codex/linux-guest-feasibility-20261015` **before** selecting the
 workflow. Set `expected_commit` to the full current pushed SHA. `main` deliberately
 remains unchanged and does not contain this workflow. Do not reuse the old build

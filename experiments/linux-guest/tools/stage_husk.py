@@ -11,6 +11,7 @@ import os
 import subprocess
 from pathlib import Path, PurePosixPath
 from stage_bundle import stage, verify
+from terminal_bundle import prepare as prepare_terminal
 
 ROOT = Path(__file__).resolve().parents[1]
 PIN = "0695248f491cda877f7969d1f0cc89aeede1482e"
@@ -81,10 +82,11 @@ def prepare(upstream, guest, output):
         target.write_bytes(local_path(ROOT, source).read_bytes())
         changed[destination] = hashlib.sha256(target.read_bytes()).hexdigest()
     guest_assets = stage(guest, output / "guests/ideck-linux")
+    terminal_assets = prepare_terminal(guest, output / "guests/ideck-linux-terminal")
     git(output, "diff", "--check")
     report = {"schema": 1, "status": "source_and_guest_staged", "upstream_commit": PIN,
               "overlay_lock_sha256": hashlib.sha256((ROOT / "husk/overlay.lock.json").read_bytes()).hexdigest(),
-              "changed_files": changed, "guest_assets": guest_assets,
+              "changed_files": changed, "guest_assets": guest_assets, "terminal_assets": terminal_assets,
               "ios_compiled": False, "runtime_linked": False, "device_executed": False,
               "next": "On an existing Husk Apple build host: regenerate Xcode project, build unsigned, then perform authorized device test."}
     (output / "ideck-linux-stage.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")

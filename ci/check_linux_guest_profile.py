@@ -52,12 +52,15 @@ def main():
         evidence = source.parent / "LinuxProbeEvidence.swift"
         markdown = source.parent / "LinuxProbeReport.swift"
         markdown_tests = source.parent / "tests/MarkdownReportChecks.swift"
-        native = [source.parent / name for name in ("LinuxProbeSession.swift", "LinuxProbeView.swift")]
+        terminal = source.parent / "LinuxTerminalProfile.swift"
+        terminal_tests = source.parent / "tests/TerminalChecks.swift"
+        native = [source.parent / name for name in ("LinuxProbeSession.swift", "LinuxProbeView.swift",
+                                                    "LinuxTerminalSession.swift", "LinuxTerminalView.swift")]
         report["source_sha256"] = hashlib.sha256(source.read_bytes()).hexdigest()
         report["input_sha256"] = {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
-                                  for p in [source, evidence, markdown, markdown_tests, *native]}
+                                  for p in [source, evidence, markdown, markdown_tests, terminal, terminal_tests, *native]}
         run("ios-typecheck", ["xcrun", "swiftc", "-typecheck", "-sdk", sdk, "-target", "arm64-apple-ios16.0",
-                              str(source), str(evidence), str(markdown)])
+                              str(source), str(evidence), str(markdown), str(terminal)])
         # Syntax-only for the Husk-integrated sources. No fake JIT/QEMU/UI types
         # are substituted to make a standalone typecheck appear to pass.
         run("native-syntax", ["xcrun", "swiftc", "-frontend", "-parse", *map(str, native)])
@@ -65,6 +68,7 @@ def main():
         macsdk = run("mac-sdk", ["xcrun", "--sdk", "macosx", "--show-sdk-path"])
         executable = out / "profile-tests"
         run("mac-compile", ["xcrun", "swiftc", "-sdk", macsdk, str(source), str(evidence), str(markdown), str(markdown_tests),
+                            str(terminal), str(terminal_tests),
                             str(source.parent / "tests/main.swift"), "-o", str(executable)])
         report["host_test_output"] = run("mac-tests", [str(executable), str(out / "fixtures"),
             str(ROOT / "experiments/linux-guest/evidence/guest-serial.log")])

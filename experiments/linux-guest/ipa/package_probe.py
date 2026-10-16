@@ -42,6 +42,24 @@ def configure_markdown_type(info):
     info["UTImportedTypeDeclarations"] = declarations
 
 
+def check_terminal_assets(app):
+    lock = json.loads((Path(__file__).parent / "terminal.lock.json").read_text())
+    expected_names = {"terminal-profile.json", "initramfs-terminal.gz", "userdata-seed.raw", "LICENSES-terminal.txt"}
+    if set(lock["files"]) != expected_names:
+        raise ValueError("Unexpected terminal resource manifest")
+    directory = app / "iDeckLinuxTerminal"
+    if directory.is_symlink() or not directory.is_dir() or {path.name for path in directory.iterdir()} != expected_names:
+        raise ValueError("Required terminal resource directory missing or changed")
+    for name, expected in lock["files"].items():
+        path = directory / name
+        if path.is_symlink() or not path.is_file() or path.stat().st_size != expected["size"]:
+            raise ValueError("Required terminal resource missing or changed: " + name)
+        with path.open("rb") as handle:
+            digest = hashlib.file_digest(handle, "sha256").hexdigest()
+        if digest != expected["sha256"]:
+            raise ValueError("Terminal resource integrity failure: " + name)
+
+
 def package(worker, built, source, commit):
     if not built.is_dir():
         raise ValueError("No freshly built app; refusing to package")
@@ -76,6 +94,7 @@ def package(worker, built, source, commit):
         file = app / "iDeckLinuxProbe" / name
         if file.stat().st_size != expected["size"] or hashlib.sha256(file.read_bytes()).hexdigest() != expected["sha256"]:
             raise ValueError("Guest bytes changed or were not bundled: " + name)
+    check_terminal_assets(app)
     for extension in (app / "PlugIns").glob("*.appex"):
         metadata = plistlib.loads((extension / "Info.plist").read_bytes())
         if not metadata.get("CFBundleIdentifier", "").startswith("dev.ideck.linuxprobe."):

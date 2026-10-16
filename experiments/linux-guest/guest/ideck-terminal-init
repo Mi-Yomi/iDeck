@@ -1,0 +1,76 @@
+#!/bin/sh
+# Separate real Linux terminal mode. The existing framebuffer probe is unchanged.
+export PATH=/usr/sbin:/usr/bin:/sbin:/bin
+BB=/usr/bin/busybox
+stopping=0
+mounted=0
+control_open=0
+fail() {
+    echo "IDECK_TERMINAL_FAILED:$1"
+    if [ "$control_open" = 1 ]; then echo "IDECK_TERMINAL_STOP_FAILED" >&3; fi
+    while :; do $BB sleep 3600; done
+}
+shutdown() {
+    [ "$stopping" = 0 ] || return
+    stopping=1
+    trap '' USR2 TERM INT
+    # PID 1 is excluded by Linux kill(-1). Stop all writers before unmounting.
+    $BB kill -TERM -1 || true
+    $BB sleep 2
+    $BB kill -KILL -1 || true
+    wait 2>/dev/null || true
+    $BB sync || fail sync
+    if [ "$mounted" != 1 ]; then fail data_not_mounted; fi
+    $BB umount /data || fail unmount
+    mounted=0
+    $BB sync || fail sync_after_unmount
+    echo IDECK_TERMINAL_CLEAN_UNMOUNT
+    echo IDECK_TERMINAL_CLEAN_UNMOUNT >&3
+    $BB poweroff -f
+    fail poweroff_returned
+}
+trap shutdown USR2 TERM INT
+$BB mkdir -p /proc /sys /dev /run /data || fail directories
+$BB mount -t proc proc /proc || fail proc
+$BB mount -t sysfs sysfs /sys || fail sysfs
+$BB mount -t devtmpfs devtmpfs /dev || fail devtmpfs
+exec </dev/console >/dev/console 2>&1
+for driver in virtio_blk vfat nls_cp437 nls_iso8859-1; do
+    $BB modprobe "$driver" || fail "module_$driver"
+done
+n=0
+control=
+while [ "$n" -lt 30 ]; do
+    for port in /sys/class/virtio-ports/*; do
+        [ -r "$port/name" ] || continue
+        if [ "$($BB cat "$port/name")" = org.ideck.control ]; then
+            control=/dev/${port##*/}
+        fi
+    done
+    [ -b /dev/vda ] && [ -c "$control" ] && break
+    $BB sleep 1
+    n=$((n + 1))
+done
+[ -b /dev/vda ] || fail no_disk
+[ -c "$control" ] || fail no_control
+exec 3<>"$control" || fail open_control
+control_open=1
+# This image is prepared and verified by the host. Never format a reused disk.
+$BB mount -t vfat -o rw,uid=0,gid=0,umask=077 /dev/vda /data || fail mount_data
+mounted=1
+(
+    while IFS= read -r command <&3; do
+        if [ "$command" = IDECK_STOP_V1 ]; then
+            $BB kill -USR2 1
+            exit
+        fi
+    done
+) &
+echo IDECK_TERMINAL_READY
+echo IDECK_TERMINAL_READY >&3
+# getty establishes ttyAMA0 as the controlling tty; login starts real ash.
+# The interactive guest never inherits the supervisor's control descriptor.
+$BB getty -n -l /ideck-terminal-login -L 115200 ttyAMA0 dumb 3>&- &
+shell_pid=$!
+wait "$shell_pid"
+shutdown

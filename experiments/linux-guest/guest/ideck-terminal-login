@@ -1,0 +1,9 @@
+#!/bin/sh
+# getty invokes this explicitly; no host or network authentication service.
+export PATH=/usr/sbin:/usr/bin:/sbin:/bin
+export HOME=/data USER=root LOGNAME=root TERM=dumb
+export PS1='ideck# '
+cd /data || exit 1
+printf '\nLocal Linux terminal. Files in /data persist after orderly Stop.\n'
+printf 'Use exit or the app Stop action to unmount and power off.\n\n'
+exec /usr/bin/busybox sh -i

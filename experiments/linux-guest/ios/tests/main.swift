@@ -79,3 +79,6 @@ print("LINUX_EVIDENCE_HOST_CHECKS_PASS (recorded guest events + synthetic pixel 
 
 // Exercise the same pure Foundation Markdown renderer shipped in the app.
 try runMarkdownReportChecks()
+
+// Real disk/configuration helpers; not a Linux boot or persistence claim.
+try runTerminalChecks()

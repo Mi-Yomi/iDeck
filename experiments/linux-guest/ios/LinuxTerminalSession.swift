@@ -1,0 +1,551 @@
+import Foundation
+import Combine
+import UIKit
+import Darwin
+import CryptoKit
+
+/// A real local serial console. One QEMU invocation is allowed per process.
+final class LinuxTerminalSession: ObservableObject {
+    static let shared = LinuxTerminalSession()
+    @Published fileprivate(set) var message = "Enable JIT, then start the local Linux terminal."
+    @Published fileprivate(set) var attempted = false
+    @Published fileprivate(set) var running = false
+    @Published fileprivate(set) var ready = false
+    @Published fileprivate(set) var stopping = false
+    @Published fileprivate(set) var canStop = false
+    @Published fileprivate(set) var cleanStopped = false
+    @Published fileprivate(set) var transcript = ""
+    @Published fileprivate(set) var shareFiles: [URL] = []
+    @Published fileprivate(set) var markdownFile: URL?
+    @Published fileprivate(set) var exportError: String?
+    @Published fileprivate(set) var jitExecutionReady = false
+    @Published fileprivate(set) var jitExecutionMessage = "JIT execution has not been verified."
+    private var worker: LinuxTerminalWorker?
+
+    func claimJIT() {
+        precondition(Thread.isMainThread)
+        guard !attempted else { return }
+        guard JITBootstrap.ready else {
+            recordJIT(false); return
+        }
+        recordJIT(JITBootstrap.prewarm() || JITBootstrap.isLive || JITBootstrap.mapJITResult == true)
+    }
+
+    private func recordJIT(_ passed: Bool) {
+        jitExecutionReady = passed
+        jitExecutionMessage = passed ? "JIT execution check passed."
+            : "JIT execution has not been verified. Open JIT setup."
+    }
+
+    func start() {
+        precondition(Thread.isMainThread)
+        guard !attempted else { return }
+        guard JITBootstrap.ready else { recordJIT(false); message = "Enable JIT first."; return }
+        guard JITBootstrap.prewarm() || JITBootstrap.isLive || JITBootstrap.mapJITWorks else {
+            recordJIT(false); message = "JIT did not pass its execution check. Open JIT setup."; return
+        }
+        recordJIT(true)
+        guard !LinuxProbeSession.shared.attempted, !QemuRunner.shared.isRunning,
+              husk_console_loaded_game() == nil else {
+            message = "Another runtime owns this process. Close and reopen the app."; return
+        }
+        attempted = true
+        let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].resolvingSymlinksInPath()
+        let root = documents.appendingPathComponent("iDeckLinux", isDirectory: true)
+        let session = documents.appendingPathComponent("iDeckLinuxSessions", isDirectory: true)
+            .appendingPathComponent(UUID().uuidString, isDirectory: true)
+        let metadata: [String: Any] = [
+            "app_version": Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown",
+            "app_bundle_version": Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "unknown",
+            "ideck_source_commit": Bundle.main.object(forInfoDictionaryKey: "iDeckSourceCommit") as? String ?? "unknown",
+            "device_class": UIDevice.current.model,
+            "os": ProcessInfo.processInfo.operatingSystemVersionString,
+            "jit_execution_check_passed": jitExecutionReady,
+            "prewarmed_region_mib": JITBootstrap.prewarmed ? 512 : 0,
+        ]
+        let next = LinuxTerminalWorker(owner: self, bundle: Bundle.main.bundleURL, session: session,
+                                       dataDirectory: root, metadata: metadata)
+        worker = next
+        message = "Checking terminal assets and the persistent user-data disk…"
+        next.start()
+    }
+
+    func send(_ text: String) {
+        precondition(Thread.isMainThread)
+        guard ready, !stopping, text.utf8.count <= 16384 else { return }
+        worker?.send(Data(text.utf8))
+    }
+
+    func sendLine(_ line: String) { send(line + "\r") }
+    func sendControl(_ byte: UInt8) {
+        precondition(Thread.isMainThread)
+        guard ready, !stopping, byte == 3 || byte == 4 || byte == 9 || byte == 27 else { return }
+        worker?.send(Data([byte]))
+    }
+
+    func stop() {
+        precondition(Thread.isMainThread)
+        guard canStop, !stopping else { return }
+        stopping = true
+        canStop = false
+        ready = false
+        message = "Stopping guest processes, syncing and unmounting user data…"
+        worker?.stop()
+    }
+
+    fileprivate func publish(_ update: @escaping (LinuxTerminalSession) -> Void) {
+        DispatchQueue.main.async { update(self) }
+    }
+}
+
+/// A bounded, nonblocking peer of QEMU's already-connected Unix socket.
+private final class LinuxTerminalSocket {
+    let queue: DispatchQueue
+    private(set) var peer: Int32 = -1
+    private(set) var qemu: Int32 = -1
+    private var handedToQEMU = false
+    private var reader: DispatchSourceRead?
+    private var writer: DispatchSourceWrite?
+    private var pending = Data()
+    var received: ((Data) -> Void)?
+    var disconnected: (() -> Void)?
+
+    init(queue: DispatchQueue) throws {
+        self.queue = queue
+        var sockets: [Int32] = [-1, -1]
+        guard socketpair(AF_UNIX, SOCK_STREAM, 0, &sockets) == 0 else { throw LinuxTerminalProfile.Invalid.io }
+        peer = sockets[0]; qemu = sockets[1]
+        var enabled: Int32 = 1
+        guard setsockopt(peer, SOL_SOCKET, SO_NOSIGPIPE, &enabled, socklen_t(MemoryLayout<Int32>.size)) == 0,
+              setsockopt(qemu, SOL_SOCKET, SO_NOSIGPIPE, &enabled, socklen_t(MemoryLayout<Int32>.size)) == 0,
+              fcntl(peer, F_SETFL, fcntl(peer, F_GETFL) | O_NONBLOCK) == 0 else {
+            Darwin.close(peer); Darwin.close(qemu); peer = -1; qemu = -1
+            throw LinuxTerminalProfile.Invalid.io
+        }
+    }
+
+    func beginReading() {
+        let source = DispatchSource.makeReadSource(fileDescriptor: peer, queue: queue)
+        source.setEventHandler { [weak self] in self?.readAvailable() }
+        reader = source
+        source.resume()
+    }
+
+    func handToQEMU() { handedToQEMU = true }
+
+    func enqueue(_ data: Data) throws {
+        guard peer >= 0, data.count <= 16384, pending.count + data.count <= 65536 else { throw LinuxTerminalProfile.Invalid.io }
+        pending.append(data)
+        try flush()
+    }
+
+    private func flush() throws {
+        while peer >= 0, !pending.isEmpty {
+            let count = pending.withUnsafeBytes { Darwin.write(peer, $0.baseAddress, $0.count) }
+            if count < 0, errno == EINTR { continue }
+            if count < 0, errno == EAGAIN || errno == EWOULDBLOCK {
+                if writer == nil {
+                    let source = DispatchSource.makeWriteSource(fileDescriptor: peer, queue: queue)
+                    source.setEventHandler { [weak self] in
+                        guard let self else { return }
+                        do { try self.flush() } catch { self.closePeer(); self.disconnected?() }
+                    }
+                    writer = source; source.resume()
+                }
+                return
+            }
+            guard count > 0 else { throw LinuxTerminalProfile.Invalid.io }
+            pending.removeFirst(count)
+        }
+        writer?.cancel(); writer = nil
+    }
+
+    private func readAvailable() {
+        guard peer >= 0 else { return }
+        var bytes = [UInt8](repeating: 0, count: 4096)
+        var total = 0
+        while peer >= 0, total < 65536 {
+            let count = Darwin.read(peer, &bytes, 4096)
+            if count < 0, errno == EINTR { continue }
+            if count < 0, errno == EAGAIN || errno == EWOULDBLOCK { return }
+            guard count > 0 else { closePeer(); disconnected?(); return }
+            total += count
+            received?(Data(bytes.prefix(count)))
+        }
+    }
+
+    func drainAvailable() { readAvailable() }
+
+    func closePeer() {
+        reader?.cancel(); reader = nil
+        writer?.cancel(); writer = nil
+        pending.removeAll()
+        if peer >= 0 { Darwin.close(peer); peer = -1 }
+    }
+
+    func closeUnused() {
+        closePeer()
+        if !handedToQEMU, qemu >= 0 { Darwin.close(qemu); qemu = -1 }
+    }
+}
+
+private final class LinuxTerminalWorker {
+    let owner: LinuxTerminalSession
+    let bundle: URL
+    let session: URL
+    let dataDirectory: URL
+    let metadata: [String: Any]
+    let queue = DispatchQueue(label: "ideck.linux.terminal", qos: .userInitiated)
+    var disk: LinuxTerminalDisk?
+    var serial: LinuxTerminalSocket?
+    var control: LinuxTerminalSocket?
+    var argv: UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>?
+    var report: [String: Any] = [:]
+    var transcript = Data()
+    var controlLines = Data()
+    var enteredQEMU = false
+    var ready = false
+    var guestWasReady = false
+    var stopRequested = false
+    var cleanUnmount = false
+    var loopReturned = false
+    var finalized = false
+    var stopFailed = false
+    var began = Date()
+    var markdownAvailable = false
+    var exportError: String?
+    var logHandle: FileHandle?
+    var loggedBytes = 0
+    var logTruncated = false
+    var transcriptPublishScheduled = false
+    var transcriptRevision: UInt64 = 0
+
+    init(owner: LinuxTerminalSession, bundle: URL, session: URL, dataDirectory: URL, metadata: [String: Any]) {
+        self.owner = owner; self.bundle = bundle; self.session = session
+        self.dataDirectory = dataDirectory; self.metadata = metadata
+    }
+
+    func start() {
+        queue.async {
+            do {
+                let assets = self.bundle.appendingPathComponent("iDeckLinuxTerminal")
+                let probe = self.bundle.appendingPathComponent("iDeckLinuxProbe")
+                let profile = try LinuxTerminalProfile.load(from: assets)
+                self.disk = try profile.openDisk(in: self.dataDirectory, assets: assets)
+                self.serial = try LinuxTerminalSocket(queue: self.queue)
+                self.control = try LinuxTerminalSocket(queue: self.queue)
+                guard let disk = self.disk, let serial = self.serial, let control = self.control else { throw LinuxTerminalProfile.Invalid.io }
+                let args = try profile.arguments(probeAssets: probe, terminalAssets: assets, session: self.session,
+                                                 diskURL: disk.url, serialFD: serial.qemu, controlFD: control.qemu)
+                guard FileManager.default.createFile(atPath: self.serialURL.path, contents: Data()) else { throw LinuxTerminalProfile.Invalid.io }
+                self.logHandle = try FileHandle(forWritingTo: self.serialURL)
+                self.report = self.metadata
+                self.report.merge(["schema": 1, "mode": "terminal", "status": "terminal_prepared", "argv": args,
+                    "husk_commit": "0695248f491cda877f7969d1f0cc89aeede1482e",
+                    "started_utc": ISO8601DateFormatter().string(from: Date()),
+                    "profile_cpu": profile.cpu, "profile_memory_mib": profile.memoryMib, "profile_vcpus": profile.vcpus,
+                    "profile_width": profile.width, "profile_height": profile.height, "requested_tcg_mib": profile.tcgCacheMib,
+                    "userdata_size_bytes": profile.diskSizeBytes, "userdata_filesystem": profile.filesystem, "log_truncated": false,
+                    "elapsed_scope": "terminal_session_including_preparation",
+                    "qemu_block_layer_drained_verified": false,
+                    "terminal_initramfs_sha256": profile.initramfs.sha256,
+                    "steam_executed": false, "physical_screen_verified": false, "accelerated_guest_gpu_verified": false]) { _, next in next }
+                self.report["terminal_profile_sha256"] = try self.digest(assets.appendingPathComponent("terminal-profile.json"))
+                if let executable = Bundle.main.executableURL { self.report["app_executable_sha256"] = try self.digest(executable) }
+                try self.saveReport()
+                serial.received = { [weak self] bytes in self?.receiveSerial(bytes) }
+                control.received = { [weak self] bytes in self?.receiveControl(bytes) }
+                serial.disconnected = { [weak self] in self?.channelDisconnected(control: false) }
+                control.disconnected = { [weak self] in self?.channelDisconnected(control: true) }
+                serial.beginReading(); control.beginReading()
+                let pointers = UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>.allocate(capacity: args.count + 1)
+                pointers.initialize(repeating: nil, count: args.count + 1)
+                for (index, argument) in args.enumerated() {
+                    guard let value = strdup(argument) else {
+                        for offset in 0..<index { free(pointers[offset]) }
+                        pointers.deinitialize(count: args.count + 1); pointers.deallocate()
+                        throw LinuxTerminalProfile.Invalid.io
+                    }
+                    pointers[index] = value
+                }
+                self.argv = pointers
+                self.enteredQEMU = true
+                self.report["userdata_lock_retained_until_process_exit"] = true
+                self.persist()
+                serial.handToQEMU(); control.handToQEMU()
+                self.scheduleStartupTimeout()
+                let thread = Thread {
+                    qemu_init(Int32(args.count), pointers)
+                    let jitAvailable = husk_ios_jit_is_available()
+                    // Keep the established software display lifecycle. No cleanup
+                    // or second initialization is safe with its live listener.
+                    husk_display_init()
+                    self.queue.async {
+                        self.report["qemu_init_returned"] = true
+                        self.report["jit_available_after_init"] = jitAvailable
+                        self.report["status"] = "terminal_running"
+                        self.persist()
+                        let alreadyReady = self.ready
+                        self.owner.publish {
+                            $0.running = true
+                            if !alreadyReady { $0.message = "Linux is starting the local terminal…" }
+                        }
+                    }
+                    qemu_main_loop()
+                    self.queue.async { self.didReturnFromQEMU() }
+                }
+                thread.name = "ideck.linux.terminal.qemu"
+                thread.qualityOfService = .userInteractive
+                thread.stackSize = 16 * 1024 * 1024
+                thread.start()
+            } catch {
+                self.serial?.closeUnused(); self.control?.closeUnused()
+                try? self.logHandle?.close(); self.logHandle = nil
+                if !self.enteredQEMU { self.disk?.closeUnused() }
+                self.report["mode"] = "terminal"
+                self.report["status"] = "terminal_prepare_failed"
+                self.persist()
+                self.owner.publish { $0.message = "Terminal preparation failed. The existing user-data disk was not replaced. Close and reopen the app." }
+            }
+        }
+    }
+
+    func send(_ bytes: Data) {
+        queue.async {
+            guard self.ready, !self.stopRequested, !self.loopReturned else { return }
+            do { try self.serial?.enqueue(bytes) } catch { self.channelDisconnected(control: false) }
+        }
+    }
+
+    func stop() {
+        queue.async {
+            guard self.guestWasReady, !self.stopRequested, !self.loopReturned,
+                  let control = self.control, control.peer >= 0 else { return }
+            self.stopRequested = true
+            self.report["status"] = "terminal_stopping"
+            self.persist()
+            do { try control.enqueue(Data("IDECK_STOP_V1\n".utf8)) }
+            catch { self.channelDisconnected(control: true) }
+            self.scheduleStopTimeout()
+        }
+    }
+
+    private func receiveSerial(_ bytes: Data) {
+        if let logHandle {
+            let remaining = max(0, 2 * 1024 * 1024 - loggedBytes)
+            do {
+                let kept = Data(bytes.prefix(remaining))
+                try logHandle.write(contentsOf: kept)
+                loggedBytes += kept.count
+                if bytes.count > remaining, !logTruncated {
+                    logTruncated = true
+                    report["log_truncated"] = true
+                    persist()
+                }
+            } catch {
+                report["serial_log_write_failed"] = true
+                try? logHandle.close(); self.logHandle = nil
+                persist()
+            }
+        }
+        transcript.append(bytes)
+        if transcript.count > 256 * 1024 { transcript.removeFirst(transcript.count - 256 * 1024) }
+        transcriptRevision &+= 1
+        scheduleTranscriptPublication()
+    }
+
+    private func scheduleTranscriptPublication() {
+        // Coalesce fast guest output: a command such as `yes` must not enqueue
+        // an unbounded number of large strings on the UI's main queue.
+        if !transcriptPublishScheduled {
+            transcriptPublishScheduled = true
+            queue.asyncAfter(deadline: .now() + .milliseconds(100)) {
+                let text = String(decoding: self.transcript, as: UTF8.self)
+                let revision = self.transcriptRevision
+                self.owner.publish {
+                    $0.transcript = text
+                    self.queue.async {
+                        self.transcriptPublishScheduled = false
+                        if self.transcriptRevision != revision { self.scheduleTranscriptPublication() }
+                    }
+                }
+            }
+        }
+    }
+
+    private func receiveControl(_ bytes: Data) {
+        guard !finalized else { return }
+        guard controlLines.count + bytes.count <= 4096 else { control?.closePeer(); channelDisconnected(control: true); return }
+        controlLines.append(bytes)
+        while let newline = controlLines.firstIndex(of: 10) {
+            guard !finalized else { return }
+            var line = controlLines.subdata(in: controlLines.startIndex..<newline)
+            controlLines.removeSubrange(controlLines.startIndex...newline)
+            if line.last == 13 { line.removeLast() }
+            // Only this independent guest supervisor port can acknowledge
+            // readiness/unmount. A shell echo in the serial transcript cannot.
+            if line == Data("IDECK_TERMINAL_READY".utf8), !ready, !loopReturned, !stopRequested {
+                guestWasReady = true
+                ready = (serial?.peer ?? -1) >= 0
+                let consoleReady = ready
+                report["terminal_ready"] = true
+                report["status"] = "terminal_running"
+                persist()
+                owner.publish {
+                    $0.ready = consoleReady; $0.canStop = true
+                    $0.message = consoleReady ? "Local Linux console ready. User files are stored in /data; use Stop Linux before closing the app."
+                        : "The console channel is unavailable. Use Stop Linux to stop the guest through its separate control channel."
+                }
+            } else if line == Data("IDECK_TERMINAL_CLEAN_UNMOUNT".utf8) {
+                ready = false
+                stopRequested = true
+                cleanUnmount = true
+                report["terminal_clean_unmount"] = true
+                owner.publish { $0.ready = false; $0.canStop = false; $0.message = "User data was unmounted. Waiting for Linux to stop…" }
+                persist()
+                // Parse the rest of this control batch before considering a
+                // pass: poweroff may have returned and emitted STOP_FAILED.
+                queue.async { self.finalizeIfClean() }
+            } else if line == Data("IDECK_TERMINAL_STOP_FAILED".utf8) {
+                stopFailed = true
+                stopRequested = true
+                ready = false
+                report["terminal_stop_failed"] = true
+                report["terminal_clean_stop"] = false
+                report["status"] = "terminal_stop_failed"
+                persist()
+                owner.publish {
+                    $0.ready = false; $0.stopping = false; $0.canStop = false
+                    $0.message = "Linux could not confirm a clean stop. User data was not replaced and remains locked until the app exits. Save the report before closing the app."
+                }
+            }
+        }
+    }
+
+    private func channelDisconnected(control controlClosed: Bool) {
+        guard !finalized, !stopFailed else { return }
+        ready = false
+        let canStop = !controlClosed && guestWasReady && !stopRequested && !loopReturned && (control?.peer ?? -1) >= 0
+        report[controlClosed ? "terminal_control_channel_failed" : "terminal_serial_channel_failed"] = true
+        persist()
+        owner.publish {
+            $0.ready = false
+            $0.canStop = canStop
+            if controlClosed { $0.stopping = false }
+            $0.message = canStop ? "The console channel closed. You can still use Stop Linux through its separate control channel."
+                : "The local console/control channel closed. Clean shutdown is not confirmed; the disk remains locked until this app exits."
+        }
+    }
+
+    private func didReturnFromQEMU() {
+        guard !loopReturned else { return }
+        loopReturned = true
+        ready = false
+        report["qemu_main_loop_returned"] = true
+        report["status"] = stopFailed ? "terminal_stop_failed" : "terminal_unclean_stopped"
+        persist()
+        owner.publish { $0.running = false; $0.ready = false; $0.stopping = false; $0.canStop = false }
+        finalizeIfClean()
+        queue.asyncAfter(deadline: .now() + 2) {
+            guard !self.finalized, !self.stopFailed else { return }
+            self.owner.publish { $0.message = "Linux stopped without a confirmed clean unmount and disk sync. Close and reopen the app; user data may need recovery." }
+        }
+    }
+
+    private func finalizeIfClean() {
+        guard cleanUnmount, loopReturned, !finalized, !stopFailed, let disk else { return }
+        control?.drainAvailable()
+        guard !stopFailed, controlLines.isEmpty else { return }
+        do {
+            // Main-loop return is not QEMU block-layer cleanup. Sync the host
+            // file, but keep its descriptor and exclusive lock until app exit.
+            try disk.synchronize()
+            finalized = true
+            report["host_disk_fsync_passed"] = true
+            report["terminal_clean_stop"] = true
+            report["status"] = "terminal_clean_stopped"
+            persist()
+            try? logHandle?.synchronize()
+            try? logHandle?.close(); logHandle = nil
+            serial?.closePeer(); control?.closePeer()
+            owner.publish {
+                $0.cleanStopped = true; $0.running = false; $0.ready = false; $0.stopping = false; $0.canStop = false
+                $0.message = "Guest unmount and data sync were confirmed. Close and reopen the app for the next session; the disk stays locked until this app exits."
+            }
+        } catch {
+            report["host_disk_fsync_passed"] = false
+            persist()
+            owner.publish { $0.message = "Guest unmount completed, but host disk sync failed. Clean stop is not confirmed. Close the app." }
+        }
+    }
+
+    private func scheduleStartupTimeout() {
+        queue.asyncAfter(deadline: .now() + 60) {
+            guard !self.ready, !self.stopRequested, !self.loopReturned, !self.finalized else { return }
+            self.report["terminal_startup_timed_out"] = true
+            self.report["status"] = "terminal_startup_timeout"
+            self.persist()
+            self.owner.publish {
+                $0.message = "Linux terminal readiness was not confirmed within 60 seconds. No forced stop was attempted. Save the report; the disk remains locked until app exit."
+            }
+        }
+    }
+
+    private func scheduleStopTimeout() {
+        queue.asyncAfter(deadline: .now() + 30) {
+            guard !self.finalized, !self.stopFailed, !self.loopReturned else { return }
+            self.report["terminal_stop_timed_out"] = true
+            self.report["status"] = "terminal_stop_timeout"
+            self.persist()
+            self.owner.publish {
+                $0.stopping = false; $0.ready = false
+                $0.message = "Orderly shutdown was not confirmed within 30 seconds. No forced stop was attempted. Save the report before closing the app; the disk remains locked."
+            }
+        }
+    }
+
+    private func digest(_ url: URL) throws -> String {
+        let handle = try FileHandle(forReadingFrom: url)
+        defer { try? handle.close() }
+        var hash = SHA256()
+        while let chunk = try handle.read(upToCount: 1024 * 1024), !chunk.isEmpty { hash.update(data: chunk) }
+        return hash.finalize().map { String(format: "%02x", $0) }.joined()
+    }
+
+    private var resultURL: URL { session.appendingPathComponent("result.json") }
+    private var serialURL: URL { session.appendingPathComponent("linux-serial.log") }
+    private var markdownURL: URL { session.appendingPathComponent(LinuxProbeReport.filename) }
+
+    private func refreshExports() {
+        let files = [resultURL, serialURL].filter { FileManager.default.fileExists(atPath: $0.path) }
+        let markdown = markdownAvailable && FileManager.default.fileExists(atPath: markdownURL.path) ? markdownURL : nil
+        let error = exportError
+        owner.publish { $0.shareFiles = files; $0.markdownFile = markdown; $0.exportError = error }
+    }
+
+    private func saveReport() throws {
+        report["elapsed_seconds"] = Date().timeIntervalSince(began)
+        do {
+            try JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted, .sortedKeys]).write(to: resultURL, options: .atomic)
+        } catch {
+            markdownAvailable = false
+            try? FileManager.default.removeItem(at: markdownURL)
+            exportError = "Could not update the report. Available raw files are preserved."
+            refreshExports()
+            throw error
+        }
+        do {
+            try LinuxProbeReport.render(report: report).write(to: markdownURL, atomically: true, encoding: .utf8)
+            markdownAvailable = true
+            exportError = nil
+            refreshExports()
+        } catch {
+            markdownAvailable = false
+            try? FileManager.default.removeItem(at: markdownURL)
+            exportError = "Markdown export failed. You can still save the available raw JSON and serial log."
+            refreshExports()
+        }
+    }
+
+    private func persist() { do { try saveReport() } catch { HuskLog.log("ideck-terminal", "could not update terminal report") } }
+}

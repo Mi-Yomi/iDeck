@@ -1,0 +1,177 @@
+import Foundation
+import CryptoKit
+
+/// Actual Foundation/Darwin helper checks. Synthetic sparse FAT headers and
+/// kernel bytes validate host file handling; they do not execute a Linux guest.
+func runTerminalChecks() throws {
+    let manager = FileManager.default
+    let root = manager.temporaryDirectory.resolvingSymlinksInPath()
+        .appendingPathComponent("ideck-terminal-checks-\(UUID().uuidString)")
+    try manager.createDirectory(at: root, withIntermediateDirectories: true)
+    defer { try? manager.removeItem(at: root) }
+
+    func check(_ condition: Bool) { precondition(condition) }
+    func expectFailure(_ body: () throws -> Void) {
+        do { try body(); fatalError("unsafe terminal input accepted") } catch { }
+    }
+    func makeSeed(_ url: URL) throws {
+        check(manager.createFile(atPath: url.path, contents: nil))
+        let file = try FileHandle(forWritingTo: url)
+        defer { try? file.close() }
+        try file.truncate(atOffset: UInt64(LinuxTerminalProfile.diskSize))
+        var boot = Data(repeating: 0, count: 512)
+        boot[11] = 0; boot[12] = 2 // 512-byte sectors
+        boot[13] = 8; boot[14] = 1; boot[16] = 2
+        boot[17] = 0; boot[18] = 2 // 512 root entries
+        boot[21] = 0xf8; boot[22] = 128
+        boot[32] = 0; boot[33] = 0; boot[34] = 4 // 262144 sectors
+        boot.replaceSubrange(54..<62, with: Data("FAT16   ".utf8))
+        boot[510] = 0x55; boot[511] = 0xaa
+        try file.write(contentsOf: boot)
+        try file.synchronize()
+    }
+    func byte(_ url: URL, at offset: UInt64) throws -> Data {
+        let file = try FileHandle(forReadingFrom: url)
+        defer { try? file.close() }
+        try file.seek(toOffset: offset)
+        return try file.read(upToCount: 1) ?? Data()
+    }
+    func asset(_ url: URL) throws -> [String: Any] {
+        let file = try FileHandle(forReadingFrom: url)
+        defer { try? file.close() }
+        var hash = SHA256()
+        var count = 0
+        while let data = try file.read(upToCount: 1024 * 1024), !data.isEmpty {
+            hash.update(data: data); count += data.count
+        }
+        return ["file": url.lastPathComponent, "size": count,
+                "sha256": hash.finalize().map { String(format: "%02x", $0) }.joined()]
+    }
+
+    let seed = root.appendingPathComponent("userdata-seed.raw")
+    try makeSeed(seed)
+    let directory = root.appendingPathComponent("persistent")
+    let disk = try LinuxTerminalDisk.open(directory: directory, seed: seed)
+    check(disk.url.lastPathComponent == "userdata.raw")
+    check(try byte(disk.url, at: 2 * 1024 * 1024) == Data([0]))
+    expectFailure { _ = try LinuxTerminalDisk.open(directory: directory, seed: seed) }
+    let writer = try FileHandle(forWritingTo: disk.url)
+    try writer.seek(toOffset: 2 * 1024 * 1024)
+    try writer.write(contentsOf: Data([0x7b]))
+    try writer.close()
+    try disk.synchronize()
+    // Runtime sync must retain the lock: main_loop returning is not proof
+    // that QEMU has released/drained all block-layer file descriptions.
+    expectFailure { _ = try LinuxTerminalDisk.open(directory: directory, seed: seed) }
+    try disk.synchronizeAndClose()
+    expectFailure { try disk.synchronize() }
+    let reopened = try LinuxTerminalDisk.open(directory: directory, seed: seed)
+    check(try byte(reopened.url, at: 2 * 1024 * 1024) == Data([0x7b]))
+    check(try byte(seed, at: 2 * 1024 * 1024) == Data([0]))
+    try reopened.synchronizeAndClose()
+
+    // Rejection preserves existing bytes; no retry replaces a user's disk.
+    let wrong = root.appendingPathComponent("wrong-size")
+    try manager.createDirectory(at: wrong, withIntermediateDirectories: true)
+    let wrongDisk = wrong.appendingPathComponent("userdata.raw")
+    let sentinel = Data("preserve existing wrong-sized disk".utf8)
+    try sentinel.write(to: wrongDisk)
+    expectFailure { _ = try LinuxTerminalDisk.open(directory: wrong, seed: seed) }
+    check(try Data(contentsOf: wrongDisk) == sentinel)
+    let linked = root.appendingPathComponent("linked-disk")
+    try manager.createDirectory(at: linked, withIntermediateDirectories: true)
+    try manager.createSymbolicLink(at: linked.appendingPathComponent("userdata.raw"), withDestinationURL: seed)
+    expectFailure { _ = try LinuxTerminalDisk.open(directory: linked, seed: seed) }
+    let linkedDirectory = root.appendingPathComponent("linked-directory")
+    try manager.createSymbolicLink(at: linkedDirectory, withDestinationURL: directory)
+    expectFailure { _ = try LinuxTerminalDisk.open(directory: linkedDirectory, seed: seed) }
+    let corrupt = try FileHandle(forWritingTo: directory.appendingPathComponent("userdata.raw"))
+    try corrupt.seek(toOffset: 510); try corrupt.write(contentsOf: Data([0, 0])); try corrupt.close()
+    expectFailure { _ = try LinuxTerminalDisk.open(directory: directory, seed: seed) }
+    check(try byte(directory.appendingPathComponent("userdata.raw"), at: 510) == Data([0]))
+    expectFailure { _ = try LinuxTerminalDisk.open(directory: root.appendingPathComponent("bad-size-option"), seed: seed, size: 512) }
+
+    let probeAssets = root.appendingPathComponent("probe")
+    let terminalAssets = root.appendingPathComponent("terminal")
+    try manager.createDirectory(at: probeAssets, withIntermediateDirectories: true)
+    try manager.createDirectory(at: terminalAssets, withIntermediateDirectories: true)
+    for name in ["vmlinuz-virt", "initramfs-ideck.gz"] {
+        try Data("synthetic host validator bytes".utf8).write(to: probeAssets.appendingPathComponent(name))
+    }
+    let terminalInit = terminalAssets.appendingPathComponent("initramfs-terminal.gz")
+    try Data("synthetic terminal initramfs validator bytes".utf8).write(to: terminalInit)
+    let bundledSeed = terminalAssets.appendingPathComponent("userdata-seed.raw")
+    try manager.copyItem(at: seed, to: bundledSeed)
+    let kernel = try asset(probeAssets.appendingPathComponent("vmlinuz-virt"))
+    var probe: [String: Any] = ["schema": 1, "width": 800, "height": 600, "cpu": "cortex-a72",
+        "memory_mib": 1024, "vcpus": 4, "tcg_cache_mib": 256, "kernel": kernel,
+        "initramfs": try asset(probeAssets.appendingPathComponent("initramfs-ideck.gz"))]
+    try JSONSerialization.data(withJSONObject: probe).write(to: probeAssets.appendingPathComponent("profile.json"))
+    var description = probe
+    description["mode"] = "terminal"; description["filesystem"] = "fat16"
+    description["disk_size_bytes"] = LinuxTerminalProfile.diskSize
+    description["control_port"] = "org.ideck.control"
+    description["initramfs"] = try asset(terminalInit)
+    description["seed"] = try asset(seed)
+    let profileURL = terminalAssets.appendingPathComponent("terminal-profile.json")
+    try JSONSerialization.data(withJSONObject: description).write(to: profileURL)
+    let profile = try LinuxTerminalProfile.load(from: terminalAssets)
+    let profileDisk = try profile.openDisk(in: root.appendingPathComponent("profile-data,one"), assets: terminalAssets)
+    defer { profileDisk.closeUnused() }
+    let session = root.appendingPathComponent("session,one")
+    let args = try profile.arguments(probeAssets: probeAssets, terminalAssets: terminalAssets,
+        session: session, diskURL: profileDisk.url, serialFD: 51, controlFD: 52)
+    check(args.contains("tcg,thread=multi,tb-size=256,split-wx=on"))
+    check(args[args.firstIndex(of: "-nic")! + 1] == "none" && !args.contains("-netdev"))
+    check(args.contains("virtserialport,chardev=linuxcontrol,name=org.ideck.control"))
+    check(args.contains("socket,id=linuxcontrol,fd=52,server=off"))
+    check(args.contains("socket,id=linuxterm,fd=51,server=off"))
+    check(args.contains(where: { $0.contains("format=raw,cache=writethrough,file=") && $0.contains("profile-data,,one/userdata.raw") }))
+    check(args.contains(where: { $0.contains("rdinit=/ideck-terminal-init") }))
+    check(!args.contains(where: { $0.contains("tcp:") || $0.contains("hostfwd") || $0.contains("snapshot=on") }))
+    expectFailure { _ = try profile.arguments(probeAssets: probeAssets, terminalAssets: terminalAssets,
+        session: session, diskURL: profileDisk.url, serialFD: 51, controlFD: 52) }
+    expectFailure { _ = try profile.arguments(probeAssets: probeAssets, terminalAssets: terminalAssets,
+        session: root.appendingPathComponent("invalid-fd"), diskURL: profileDisk.url, serialFD: 51, controlFD: 51) }
+    var badSeed = try asset(bundledSeed)
+    badSeed["sha256"] = String(repeating: "0", count: 64)
+    description["seed"] = badSeed
+    try JSONSerialization.data(withJSONObject: description).write(to: profileURL)
+    let badSeedProfile = try LinuxTerminalProfile.load(from: terminalAssets)
+    let absentData = root.appendingPathComponent("bad-seed-data")
+    expectFailure { _ = try badSeedProfile.openDisk(in: absentData, assets: terminalAssets) }
+    check(!manager.fileExists(atPath: absentData.path))
+    description["control_port"] = "unexpected.port"
+    try JSONSerialization.data(withJSONObject: description).write(to: profileURL)
+    expectFailure { _ = try LinuxTerminalProfile.load(from: terminalAssets) }
+    probe["cpu"] = "host"
+    try JSONSerialization.data(withJSONObject: probe).write(to: probeAssets.appendingPathComponent("profile.json"))
+    expectFailure { _ = try profile.arguments(probeAssets: probeAssets, terminalAssets: terminalAssets,
+        session: root.appendingPathComponent("wrong-probe"), diskURL: profileDisk.url, serialFD: 51, controlFD: 52) }
+
+    // The shipped renderer must separate a clean-stop receipt from block-layer
+    // teardown, diagnostic probe success and real second-boot verification.
+    let cleanReport = LinuxProbeReport.render(report: ["mode": "terminal", "status": "terminal_clean_stopped",
+        "terminal_ready": true, "terminal_clean_unmount": true, "qemu_main_loop_returned": true,
+        "host_disk_fsync_passed": true, "terminal_clean_stop": true,
+        "userdata_lock_retained_until_process_exit": true, "qemu_block_layer_drained_verified": false,
+        "steam_executed": false, "physical_screen_verified": false, "accelerated_guest_gpu_verified": false])
+    check(cleanReport.contains("| Orderly stop | PASS |"))
+    check(cleanReport.contains("| Disk lock retained until app exits | RETAINED |"))
+    check(cleanReport.contains("| QEMU block layer drained | NOT VERIFIED |"))
+    check(cleanReport.contains("| Frame A RGB validation | UNKNOWN |"))
+    check(cleanReport.contains("| Guest input | UNKNOWN |"))
+    check(cleanReport.contains("| Physical screen | NOT VERIFIED |"))
+    check(cleanReport.contains("| Accelerated guest GPU | NOT VERIFIED |"))
+    check(cleanReport.contains("| Steam | NOT RUN |"))
+    check(cleanReport.contains("does not itself verify a file after a second guest boot"))
+    for status in ["terminal_startup_timeout", "terminal_stop_timeout", "terminal_stop_failed"] {
+        let failedReport = LinuxProbeReport.render(report: ["mode": "terminal", "status": status,
+            "host_disk_fsync_passed": NSNumber(value: 1)])
+        check(failedReport.contains("orderly stop is not established"))
+        check(failedReport.contains("| Host disk sync | UNKNOWN |"))
+        check(failedReport.contains("| Orderly stop | UNKNOWN |"))
+        check(failedReport.contains("| QEMU block layer drained | UNKNOWN |"))
+    }
+    print("LINUX_TERMINAL_HOST_CHECKS_PASS (actual disk/config helpers; synthetic assets; no guest/device execution)")
+}

@@ -1,0 +1,187 @@
+{
+  "status": "locally_validated_ready_for_apple_build_device_persistence_pending",
+  "working_branch": "codex/linux-guest-feasibility-20261015",
+  "preparation_base_commit": "28d862fd4fcddd9421688756e6fa1e5cea7021fb",
+  "goal": "A real local interactive Linux shell with a user file surviving orderly stop and a fresh app process, separate from the existing accepted probe.",
+  "approved_architecture": {
+    "shell": "Existing guest BusyBox 1.37.0 ash with a real controlling TTY established by getty/ttyAMA0, TERM=dumb. Local interactive line console with basic control keys, not full VT/full-screen terminal emulation.",
+    "transport": "Two local AF_UNIX socket pairs: bidirectional terminal and independent virtio control. No networking/listening service added.",
+    "storage_seed": "Separate deterministic preformatted FAT16 128 MiB seed; copy once to Documents/iDeckLinux/userdata.raw.",
+    "guest_mount": "/data is the only persistent guest location; initramfs/root remains volatile.",
+    "reuse_rule": "Verify bundled resources independently, copy seed only when userdata is absent; never format an existing disk or reset after a mount error, and never require modified userdata to equal the empty seed hash.",
+    "storage_limit": "FAT16 does not provide full POSIX permissions, symlinks or a persistent Linux rootfs; survival across uninstall/reset or unclean termination is not promised.",
+    "stop_protocol": "Fixed IDECK_STOP_V1 on org.ideck.control independent virtio port reaches PID1. Stop children, sync/unmount/poweroff; host requires IDECK_TERMINAL_CLEAN_UNMOUNT, QEMU loop return and userdata fsync before terminal_clean_stopped.",
+    "lifecycle": "One VM per app process. Choose probe or terminal before start; after stop fully close/reopen into a fresh process. Disk lock retained until app exit even after orderly stop; no in-process restart or full QEMU teardown/drain claim.",
+    "preservation": "Original probe assets/archive/guest lock, native pins and existing JIT/Markdown functionality remain protected."
+  },
+  "dependency_review": {
+    "source": "Documentation agent read the locked original guest archive in memory without extraction, installation or execution; future interactive guest runtime tests are pending.",
+    "kernel_release": "6.18.35-0-virt",
+    "busybox_banner_version": "1.37.0",
+    "busybox_aarch64_elf_size": 919304,
+    "busybox_dynamic_interpreter": "/lib/ld-musl-aarch64.so.1",
+    "busybox_needed": [
+      "libc.musl-aarch64.so.1"
+    ],
+    "musl_exact_version_independently_determined": false,
+    "existing_loadable_modules": [
+      "virtio_blk.ko",
+      "fat.ko",
+      "msdos.ko",
+      "vfat.ko"
+    ],
+    "ext2_ext4_module_or_mke2fs_presence_confirmed": false,
+    "license_observations": [
+      "Pinned Husk source slice includes GPLv2 LICENSE; relevant source headers GPL-2.0-or-later.",
+      "Listed filesystem/block module binary metadata contains license=GPL.",
+      "BusyBox primary license page identifies GPLv2."
+    ],
+    "primary_license_references": [
+      "https://busybox.net/license.html",
+      "https://github.com/torvalds/linux/blob/v6.18/COPYING"
+    ],
+    "source_availability_limit": "Coordinator reports source fetch access denial (403); exact correspondence/source-package and musl license audit is incomplete. Official musl site could not be fetched by this documentation agent. No access bypass attempted.",
+    "legal_scope": "Dependency/provenance observations, not license-compliance certification. Preserve upstream notices and record source acquisition gaps in the new guest NOTICE; no new terminal library or network package assumed.",
+    "kernel_builtins_from_modules_builtin": [
+      "virtio_console",
+      "virtio",
+      "virtio_ring",
+      "virtio_pci"
+    ],
+    "builtin_verification_source": "Read exact usr/lib/modules/6.18.35-0-virt/modules.builtin from original locked initramfs; distinct from filesystem/block loadable modules."
+  },
+  "implementation": {
+    "status": "implemented_source_reviewed_and_host_validated",
+    "guest_scripts": [
+      "guest/ideck-terminal-init",
+      "guest/ideck-terminal-login"
+    ],
+    "resource_builder": "tools/terminal_bundle.py",
+    "resource_lock": "ipa/terminal.lock.json",
+    "notice": "guest/TERMINAL-LICENSES.txt",
+    "new_resources": [
+      "terminal-profile.json",
+      "initramfs-terminal.gz",
+      "userdata-seed.raw",
+      "LICENSES-terminal.txt"
+    ],
+    "probe_preservation": "Build verifies original archive/files, appends a deterministic independent compressed CPIO containing two new rdinit/login scripts to the original probe initramfs bytes; original three probe resources remain untouched.",
+    "kernel": "Reuse original verified vmlinuz-virt through LinuxGuestProfile; terminal profile cannot choose another kernel.",
+    "swift_sources": [
+      "ios/LinuxTerminalProfile.swift",
+      "ios/LinuxTerminalSession.swift",
+      "ios/LinuxTerminalView.swift"
+    ],
+    "disk_handling": "New copied-once userdata.raw is checked as a bounded regular non-symlink file and retained with an independent exclusive lock. Existing contents are reused instead of re-seeded; only a failure before entering QEMU releases ownership early. Once QEMU is entered, retain disk ownership until process exit even after guest CLEAN, main-loop return and host fsync.",
+    "qemu_transport": "Two already-connected AF_UNIX SOCK_STREAM socket pairs handed to QEMU chardev fd with server=off; original -nic none retained. Console uses ttyAMA0; independent virtio serial port is org.ideck.control.",
+    "stop": "PID1 handles fixed control STOP even while a shell foreground child runs, kills writers, syncs, unmounts /data, syncs again, acknowledges clean unmount then powers off. Host finalizes only after acknowledgement plus QEMU return and disk fsync.",
+    "ui": "Probe/terminal chosen before any VM starts; local line entry plus Send/Ctrl-C/Ctrl-D/Tab/Esc and Stop Linux; original JIT setup and Markdown/raw sharing retained.",
+    "failure_truth": "Channel loss, timeout, missing clean ack, failed unmount/fsync or mere VM return is not a clean-stop pass; no destructive mount-failure disk reset.",
+    "control_isolation": "Guest getty/shell closes inherited fd3. Readiness and clean-unmount acknowledgements are accepted only from the independent supervisor control port, not console text.",
+    "qemu_block_layer_drained_verified": false,
+    "full_runtime_teardown_claimed": false,
+    "timeouts": "Startup 60 seconds and Stop 30 seconds record/report failure without force shutdown or clean PASS. Guest STOP_FAILED is sticky; serial EOF does not disable the independent Stop control.",
+    "elapsed_scope": "Whole terminal worker session including disk preparation, initialization, interactive use and Stop; not pure boot time or the original probe post-init polling interval."
+  },
+  "host_validation": {
+    "source": "Root coordinator final integrated-suite/protection receipt; documentation agent did not run QEMU, Swift or a device.",
+    "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/workspace/iDeck/.work python3 -m unittest discover -s experiments/linux-guest/tests -q",
+    "tests_passed": 140,
+    "elapsed_seconds": 4.604,
+    "exit_code": 0,
+    "initial_run": "139 of 140 passed; one obsolete preBuildScripts-count assertion expected 1 rather than the new 2. Assertion corrected and full suite rerun passed; not an Apple/runtime failure.",
+    "native_owner_checks": "Resource preparation and standalone CLI staging passed; shell syntax and source review/freeze completed.",
+    "overlay_input_hashes_verified": 21,
+    "overlay_source_copies_verified": 11,
+    "overlay_lock_sha256": "fc359df97048aa83aa7e50a2e735a75f6c24bc3f7440301bb275da6ac508135e",
+    "protected_files_byte_unchanged": 14,
+    "prior_evidence_snapshots_byte_unchanged": 37,
+    "historical_handoff": "Documentation agent compared exact historical suffix from first-device heading with preparation base: byte unchanged.",
+    "apple_foundation_swift_checks": "Written and wired into the existing Apple gate; not executed locally because Swift is unavailable.",
+    "qemu_guest_two_boot_test": "Not executed; actual owner nonce/file survival remains pending."
+  },
+  "acceptance": {
+    "test_plan": "docs/terminal-device-check.md",
+    "required": "Owner chooses an unpredictable nonsensitive file value, writes it under /data, starts a foreground command, requests Stop, waits for all clean-stop conditions, fully closes app, reopens fresh process and reads exactly the same file.",
+    "original_probe_jit_markdown_regressions_required": true,
+    "actual_two_boot_persistence_passed": false,
+    "foreground_control_stop_device_verified": false
+  },
+  "limits": {
+    "local_qemu_runtime_available": false,
+    "local_swift_compiler_available": false,
+    "new_apple_build_performed": false,
+    "new_ipa_created": false,
+    "device_terminal_test_performed": false,
+    "steam_or_networking_added": false,
+    "worker_aggregate_seconds": 6900,
+    "provider_max_minutes": 120
+  },
+  "privacy": "No private artifact URLs/IDs, pairing credentials, arbitrary terminal output, user file contents or raw device logs in Git. Keep owner raw exports private and commit sanitized outcomes/hashes only.",
+  "native_freeze_receipt": {
+    "source": "Native owner freeze message and documentation agent read of current terminal lock; no guest runtime execution.",
+    "terminal_lock_sha256": "0f366dea776a5e1aecd55a7a4d001eee1b720e23cea51d609659bcfa7821b530",
+    "inputs": {
+      "probe_archive": {
+        "archive": "husk/linux-probe-guest.tar.gz",
+        "size": 19623827,
+        "sha256": "f973fe00e1cf54772589c3e54c8bc22a7396604ec927004267f9a4aea9d39efb"
+      },
+      "probe_files": {
+        "profile.json": {
+          "size": 1599,
+          "sha256": "65ae64e005b9fa29f3e0ee6a9bed079366b16633e2dbebd8ca08aa15bdce0fb6"
+        },
+        "vmlinuz-virt": {
+          "size": 10351104,
+          "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+        },
+        "initramfs-ideck.gz": {
+          "size": 9402391,
+          "sha256": "5f64312eeef340991c6b0d97bd9d1fb01649c1763e14d7fb8231ad16551e9343"
+        }
+      },
+      "scripts": {
+        "ideck-terminal-init": {
+          "size": 2414,
+          "sha256": "021086a65c2129f65b5cd2aaedd886fd56a2374b28d239df6d70907d1393e76c"
+        },
+        "ideck-terminal-login": {
+          "size": 396,
+          "sha256": "3ff671268b2c296d76ec390590a91078db471174a9e38c4d1d840d982f8d01fe"
+        },
+        "TERMINAL-LICENSES.txt": {
+          "size": 1635,
+          "sha256": "50cf68a71ffa53f5bbd8b9cdaab3ad93b37157399ff7b787eabaa1c635b7ac3a"
+        }
+      }
+    },
+    "files": {
+      "terminal-profile.json": {
+        "size": 717,
+        "sha256": "3ee1f4f33b93806322fcfc73a07c98163a66ab9ba185053858670ca39efaad94"
+      },
+      "initramfs-terminal.gz": {
+        "size": 9405614,
+        "sha256": "b78519528a035a4409aab8adeaa67c72765c532a5acf974ccc95336fa04ceaaf"
+      },
+      "userdata-seed.raw": {
+        "size": 134217728,
+        "sha256": "a09478ab12b7238eb929de5f3780f1107e6f9348821e68b74686690d32310552"
+      },
+      "LICENSES-terminal.txt": {
+        "size": 1635,
+        "sha256": "50cf68a71ffa53f5bbd8b9cdaab3ad93b37157399ff7b787eabaa1c635b7ac3a"
+      }
+    }
+  },
+  "swift_freeze_receipt": {
+    "source": "IPA owner freeze message checked against current source bytes; no local Swift execution.",
+    "sha256": {
+      "ios/LinuxTerminalProfile.swift": "b0021f1e63fb750b96e5237ade059d805665bfc187ffe93f22a2cf7c57f7b894",
+      "ios/LinuxTerminalSession.swift": "8842535119e142e8c6afdb54d3860504399e5b2a8cfe272ace7a12a645202734",
+      "ios/LinuxTerminalView.swift": "c62ff32eca4d3efb441353d437b31139c78970a29e6e881f55956eb54a3d8370"
+    }
+  },
+  "next_action": "Coordinator reviews/commits/pushes the source stage, records full pushed SHA, then obtains a separately authorized Apple build under unchanged request/quota gates. Owner re-signs a copy and performs the two-launch device acceptance and original probe/JIT/Markdown regressions. No CI started by this documentation task."
+}

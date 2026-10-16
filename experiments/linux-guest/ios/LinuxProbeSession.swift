@@ -50,6 +50,9 @@ final class LinuxProbeSession: ObservableObject {
             message = "JIT did not pass its execution check. Open JIT setup."; return
         }
         recordJITExecution(true)
+        guard !LinuxTerminalSession.shared.attempted else {
+            message = "The terminal owns this process. Close and reopen the app."; return
+        }
         // The root chooser never creates ContentView/native-runtime screens in
         // this route. These additional guards defend against future routing edits.
         guard !QemuRunner.shared.isRunning, husk_console_loaded_game() == nil else {

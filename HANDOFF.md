@@ -5,6 +5,55 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## JIT setup fix собран в новом IPA и доставлен; ожидается device test
+
+[Build `6ad18a803ffd2c7f0ad3ca15`](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad18a803ffd2c7f0ad3ca15)
+завершился **SUCCESS / finished**, provider index 9, **9m 32s**. Защищённый
+build SHA — [`660e27e515f666040a5959fa845fe85b3290a740`](https://github.com/Mi-Yomi/iDeck/commit/660e27e515f666040a5959fa845fe85b3290a740),
+ветка `codex/linux-guest-feasibility-20261015`, workflow `ideck-linux-probe-ipa`.
+Это новая Apple-сборка source fix после owner feedback о Magnifier.
+Координатор независимо прочитал полный structured result.json (729 строк):
+**`status=linux_probe_ipa_built`, `ipa_created=true`, `runtime_linked=true`**,
+correct commit, device/Steam false; worker elapsed **531.351 секунды**. В 92
+шагах 91 exit 0, единственный nonzero — `metal-probe-before=1` (0.553 s), затем
+официальный download (14.079 s) и after probe (2.45 s) exit 0. Native QEMU
+110.227 s, integrate 0.148 s, integrated rebuild 8.453 s, pairing **library build**
+25.5 s, app build 50.603 s, signature verification 0.055 s — exit 0. Content
+read не является локальной проверкой raw-byte hash result; file hash ниже
+передан parent как внешне проверенный. Последующий **doc-only SHA** получить после commit/push через `git rev-parse HEAD`, сверить
+с remote и сообщить отдельно от build SHA выше.
+
+**`iDeck-Linux-Probe.ipa`: 49212045 bytes**, SHA-256
+`30ea8480333ae2002dd6e8fa8fd0416ce9317280f8d1536430b9e8fd3283108f`.
+**`result.json`: 19032 bytes**, SHA-256
+`6e6195433213a19933446e959e0298bc40a3d949ac47d1d886e112760f2286d2`.
+Parent/root независимо выполнили static delta audit **реальных артефактов** —
+PASS; автор раздела получил findings, локальную materialization не заявляет.
+Проверены 7 ARM64 iOS-device Mach-O, сохранённые bundle IDs/helper и embedded
+**requested ad-hoc entitlements**, три побайтно неизменных guest assets.
+Exact-SHA source/overlay receipts подтверждают JIT setup UI, TrollStore marker,
+registered `ideck-linux-probe` VPN callback и actual JIT execution gate.
+Это **не** доказательство выдачи requested entitlements на устройстве, работы
+pairing/helper, JIT execution или Linux boot. Minimum OS unchanged: app 16.0,
+helper 26.0, StikJIT 17.4; JIT на iOS 16 не обещается.
+
+По явному запросу владельца parent приватно доставил новый файл в Drive в
+**02:35**. Private URL/ID, Library identifiers и screenshots в Git не сохраняются.
+Статус — **delivered, awaiting device test**; доставка не означает установку
+или успешный device run. Первый baseline IPA `5cd442c…`, его исходные bytes и
+старые evidence snapshots сохранены. Новая запись:
+`experiments/linux-guest/evidence/jit-setup-ipa-success.json`.
+
+Следующий шаг выполняет owner: re-sign **копии** нового IPA обычным SideStore
+путём, отдельно записать новый signed hash; открыть **JIT setup and method** →
+on-device pairing либо import owner pairing file → Settings/Privacy & Security/
+Developer Mode/PIN для on-device pairing → LocalDevVPN → Check setup/DDI →
+Enable JIT → actual execution check → Start Linux. Затем frame A, touch +
+Send A, frame B и probe report с signed app identity/OS. Pairing credentials
+остаются у owner. **Pairing, JIT, Linux boot/display/input нового IPA и Steam
+на iPhone пока не проверены.** Code/native pins, baseline IPA и CI этим doc-only
+обновлением не менялись; новых CI/device/credential действий здесь нет.
+
 ## Первый owner device attempt: JIT открыл Magnifier, Linux boot не подтверждён
 
 После установки первого IPA пользователь сообщил: **Enable JIT открывает

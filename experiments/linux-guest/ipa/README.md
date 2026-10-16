@@ -1,26 +1,31 @@
 # iDeck Linux Probe IPA build
 
 The `ideck-linux-probe-ipa` Codemagic workflow is a **native source build recipe**.
-The [Apple run at 5cd442c](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad174a63ffd2c7f0ad3c64c)
-built the real runtime, linked the app and produced `iDeck-Linux-Probe.ipa`:
-**49,205,131 bytes**, SHA-256
-`2c38939b7c0d03586879b69451a4e42afa3d62399ab165fe76e8810f472a6513`.
-The result status is `linux_probe_ipa_built`; parent/root independently audited
-the downloaded bytes, ARM64 iOS-device binaries, bundled dependencies, guest
-assets and matching provenance. Of 92 steps, 91 exited zero; the initial missing
-Metal probe was the one expected nonzero and recovered through Apple's download.
-See `../evidence/first-ipa-success.json`. Preserve the successful build revision,
-native pins and original artifacts. Owner sideload re-signing must use a copy.
-The owner now reports a SideStore installation, but Enable JIT opens Magnifier,
-the expected pairing/settings flow was not accessible, and Linux did not boot.
-The first device attempt is not a pass. Source analysis found the stock
-apple-magnifier URL being misidentified as TrollStore plus a hard-coded Husk VPN
-callback that does not match the probe scheme. A marker/callback and explicit
-JIT setup/status UI fix is locally validated (118 host tests, including 8
-new source/staging checks, plus independent review). Its new Apple build and
-device validation remain pending; host source checks do not execute Swift/JIT. See `../evidence/jit-setup-routing.json`. Keep debugger attach
-separate from actual JIT execution. Device Linux/JIT/input and Steam remain
-unverified; earlier evidence remains historical.
+The [Apple run at 660e27e](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad18a803ffd2c7f0ad3ca15) successfully built the JIT setup/routing fix
+and produced `iDeck-Linux-Probe.ipa`: **49,212,045 bytes**, SHA-256
+`30ea8480333ae2002dd6e8fa8fd0416ce9317280f8d1536430b9e8fd3283108f`. `result.json` is 19,032 bytes,
+SHA-256 `6e6195433213a19933446e959e0298bc40a3d949ac47d1d886e112760f2286d2`.
+The coordinator independently read result content: `linux_probe_ipa_built`,
+correct commit, ipa_created/runtime_linked true, device_tested/steam_executed
+false. The 92 steps contain 91 zero exits and one expected initial Metal probe
+failure recovered by the official download and successful re-probe. Result
+content confirmation is separate from its parent-reported file hash.
+Parent/root independently audited the real artifacts: seven ARM64 iOS-device
+Mach-O files, preserved bundle IDs/helper/requested ad-hoc entitlements, three
+unchanged guest assets, and exact-SHA source/overlay receipts for the setup UI,
+TrollStore marker guard, registered VPN callback and JIT execution gate.
+The owner-requested file was privately delivered to Drive; it awaits device
+acceptance. Static requested entitlements do not prove device grants, pairing,
+JIT or Linux boot. See `../evidence/jit-setup-ipa-success.json`.
+
+Preserve the successful build revision/native pins and original artifacts,
+including the earlier 5cd442c IPA. Owner re-signing must use a copy and record
+the new signed hash separately. The earlier SideStore attempt exposed the
+Magnifier/setup issue; this source fix is now Apple-built, but its device
+installation/pairing/JIT/boot/display/input and Steam remain unverified.
+Use JIT setup and method, pairing/import, LocalDevVPN, Check setup/DDI, Enable
+and actual execution verification before starting Linux and saving its probe
+report. Earlier evidence remains historical.
 
 Select branch `codex/linux-guest-feasibility-20261015` **before** selecting the
 workflow. Set `expected_commit` to the full current pushed SHA. `main` deliberately

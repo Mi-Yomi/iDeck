@@ -1,0 +1,133 @@
+{
+  "status": "jit_setup_ipa_build_and_static_delta_audit_passed_delivered_awaiting_device",
+  "working_branch": "codex/linux-guest-feasibility-20261015",
+  "protected_build_commit": "660e27e515f666040a5959fa845fe85b3290a740",
+  "build": {
+    "url": "https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad18a803ffd2c7f0ad3ca15",
+    "workflow": "ideck-linux-probe-ipa",
+    "commit": "660e27e515f666040a5959fa845fe85b3290a740",
+    "ci_status": "success",
+    "provider_status": "finished",
+    "provider_index": 9,
+    "provider_duration": "9m 32s",
+    "source": "Coordinator-reported finished CI plus parent/root independent static delta audit of real artifacts. This documentation author received findings and does not claim local materialization or device execution.",
+    "result_status": "linux_probe_ipa_built",
+    "runtime_linked": true,
+    "ipa_created": true,
+    "worker_elapsed_seconds": 531.351,
+    "result_content_confirmation": {
+      "source": "Coordinator independently read complete structured result.json content through Library; no Library identifiers/URLs retained.",
+      "lines": 729,
+      "metadata_size": 19032,
+      "commit": "660e27e515f666040a5959fa845fe85b3290a740",
+      "status": "linux_probe_ipa_built",
+      "runtime_linked": true,
+      "ipa_created": true,
+      "device_tested": false,
+      "steam_executed": false,
+      "raw_file_hash_independently_verified_locally_by_coordinator": false
+    },
+    "step_summary": {
+      "total": 92,
+      "exit_zero": 91,
+      "only_nonzero": "metal-probe-before",
+      "only_nonzero_exit_code": 1,
+      "only_nonzero_seconds": 0.553,
+      "recovery": "Official component download and after-probe exited 0.",
+      "official_metal_download_seconds": 14.079,
+      "metal_after_probe_seconds": 2.45
+    },
+    "verified_successful_step_seconds": {
+      "native_qemu": 110.227,
+      "native_integrate_husk": 0.148,
+      "native_qemu_integrated_rebuild": 8.453,
+      "native_pairing_library_build": 25.5,
+      "app_build": 50.603,
+      "verify_signatures": 0.055
+    }
+  },
+  "artifacts": {
+    "ipa": {
+      "name": "iDeck-Linux-Probe.ipa",
+      "size": 49212045,
+      "sha256": "30ea8480333ae2002dd6e8fa8fd0416ce9317280f8d1536430b9e8fd3283108f",
+      "identity_and_bytes_verified_by_parent_root": true
+    },
+    "result": {
+      "name": "result.json",
+      "size": 19032,
+      "sha256": "6e6195433213a19933446e959e0298bc40a3d949ac47d1d886e112760f2286d2",
+      "size_sha256_source": "Parent-reported externally verified file identity; coordinator separately confirmed structured content without local raw-byte hash verification.",
+      "content_independently_confirmed_by_coordinator": true,
+      "raw_file_hash_independently_verified_locally_by_coordinator": false
+    }
+  },
+  "static_delta_audit": {
+    "status": "passed",
+    "source": "Parent/root independent audit of real artifacts, relayed to this documentation author.",
+    "local_materialization_claimed_by_documentation_author": false,
+    "actual_macho_files": 7,
+    "macho_architecture": "ARM64",
+    "macho_platform": "iOS device",
+    "bundle_ids_and_helper_preserved": true,
+    "embedded_requested_ad_hoc_entitlements_preserved": true,
+    "requested_entitlements_granted_on_device_verified": false,
+    "guest_file_count": 3,
+    "guest_files_byte_identical_to_baseline": true,
+    "exact_build_sha_source_and_overlay_receipts_match": true,
+    "jit_fix_source_receipts_confirm": [
+      "explicit JIT setup UI and busy/error state",
+      "per-app TrollStore marker guard",
+      "registered ideck-linux-probe VPN callback",
+      "separate actual JIT execution gate"
+    ],
+    "minimum_os": {
+      "app": "16.0",
+      "JITHelper": "26.0",
+      "StikJIT": "17.4"
+    },
+    "limits": "Static contents and requested entitlements do not establish device permission grants, helper/pairing operation, JIT execution or Linux boot.",
+    "overlay_lock_sha256": "149c4348e01e7a7b57e3c043b93cc5ee558d7f1ae1ce3b59f5909cd3543d14d3"
+  },
+  "private_delivery": {
+    "completed_by_parent": true,
+    "destination": "Owner private Drive file",
+    "time_as_reported": "02:35",
+    "authorization": "Explicit owner request, confirmed by coordinator.",
+    "private_urls_ids_library_identifiers_or_screenshots_recorded": false,
+    "delivery_is_device_acceptance": false
+  },
+  "protected_baseline": {
+    "build_commit": "5cd442c7670932c551459f015c71e295c4b6610a",
+    "ipa_size": 49205131,
+    "ipa_sha256": "2c38939b7c0d03586879b69451a4e42afa3d62399ab165fe76e8810f472a6513",
+    "preserved": true,
+    "existing_evidence_snapshots_unchanged": true
+  },
+  "documentation_commit": {
+    "same_as_build_commit": false,
+    "resolution": "After coordinator documentation-only commit/push, obtain git rev-parse HEAD and compare to remote working branch; report that SHA separately from successful build SHA."
+  },
+  "device_acceptance": {
+    "state": "delivered_awaiting_owner_device_test",
+    "new_ipa_installation_verified": false,
+    "pairing_verified": false,
+    "jit_execution_verified": false,
+    "linux_boot_verified": false,
+    "display_input_probe_verified": false,
+    "steam_executed": false,
+    "owner_flow": [
+      "Preserve original IPA and re-sign a copy with normal SideStore flow; keep new signed hash separate.",
+      "Open JIT setup and method; use the built-in on-device pairing flow or import the owner pairing file.",
+      "For on-device pairing follow Settings/Privacy & Security/Developer Mode/PIN; connect LocalDevVPN.",
+      "Run Check setup/DDI, Enable JIT, and require actual JIT execution verification before Start Linux.",
+      "Check frame A, touch plus Send A, frame B and save probe report; record signed identity and OS."
+    ],
+    "privacy": "Pairing and credentials remain owner-driven; do not add pairing files, private delivery URLs, IDs or screenshots to Git."
+  },
+  "actions_this_documentation_task": {
+    "code_or_native_pin_changes": false,
+    "ci_started": false,
+    "device_pairing_or_credential_actions": false
+  }
+}

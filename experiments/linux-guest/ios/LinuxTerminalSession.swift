@@ -20,15 +20,81 @@ final class LinuxTerminalSession: ObservableObject {
     @Published fileprivate(set) var exportError: String?
     @Published fileprivate(set) var jitExecutionReady = false
     @Published fileprivate(set) var jitExecutionMessage = "JIT execution has not been verified."
+    @Published fileprivate(set) var diagnosticReports: [URL] = []
+    @Published fileprivate(set) var diagnosticsMessage = "Startup reports can be exported without starting Linux."
+    @Published fileprivate(set) var diagnosticsError: String?
+    private var diagnostics: LinuxTerminalDiagnostics?
+    private var diagnosticJournal: LinuxTerminalDiagnostics.Journal?
+    private var recoveredDiagnostics = false
     private var worker: LinuxTerminalWorker?
+
+    /// Recovery/export has no JIT, QEMU or userdata dependencies. Run before
+    /// any automatic JIT check; reading reports never starts a new attempt.
+    func recoverDiagnostics() {
+        precondition(Thread.isMainThread)
+        diagnosticReports = []
+        do {
+            let store = try diagnosticStore()
+            var previous = try store.recover(excluding: diagnosticJournal?.id)
+            if !recoveredDiagnostics {
+                if let latest = previous.first { try store.preservePreviousLogs(id: latest.id) }
+                recoveredDiagnostics = true
+                previous = try store.recover(excluding: diagnosticJournal?.id)
+            }
+            var files = [URL]()
+            if let current = diagnosticJournal { files.append(try store.export(current.snapshot(), previousProcess: false)) }
+            for snapshot in previous { files.append(try store.export(snapshot, previousProcess: true)) }
+            diagnosticReports = files
+            diagnosticsError = nil
+            diagnosticsMessage = files.isEmpty ? "No saved startup attempt yet. Linux has not been started by this action."
+                : "Saved startup reports are available. An interrupted previous process is not a diagnosed crash cause."
+        } catch { diagnosticFailure() }
+    }
+
+    private func diagnosticStore() throws -> LinuxTerminalDiagnostics {
+        if let diagnostics { return diagnostics }
+        let store = try LinuxTerminalDiagnostics(documents:
+            FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0])
+        diagnostics = store
+        return store
+    }
+    private func journal() throws -> LinuxTerminalDiagnostics.Journal {
+        if let diagnosticJournal { return diagnosticJournal }
+        // Capture previous logs before creating an attempt that could otherwise
+        // be mistaken for the previous launch during subsequent UI refreshes.
+        if !recoveredDiagnostics { recoverDiagnostics() }
+        guard recoveredDiagnostics else { throw LinuxTerminalDiagnostics.Problem.read }
+        let next = try diagnosticStore().begin(
+            source: Bundle.main.object(forInfoDictionaryKey: "iDeckSourceCommit") as? String ?? "UNKNOWN",
+            build: Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "UNKNOWN")
+        diagnosticJournal = next
+        return next
+    }
+    fileprivate func diagnosticFailure() {
+        diagnosticsError = "Startup diagnostics could not be fully saved or recovered. No complete diagnostic record is promised; preserve existing files before another launch."
+        HuskLog.log("ideck-terminal", "startup diagnostic IO failed; raw error text omitted")
+    }
+
+
+    func noteJITEnable(dispatched: Bool = false) -> Bool {
+        precondition(Thread.isMainThread)
+        do { try journal().record(dispatched ? .jitEnableDispatched : .jitEnableBegin); return true }
+        catch { diagnosticFailure(); return false }
+    }
 
     func claimJIT() {
         precondition(Thread.isMainThread)
         guard !attempted else { return }
-        guard JITBootstrap.ready else {
-            recordJIT(false); return
-        }
-        recordJIT(JITBootstrap.prewarm() || JITBootstrap.isLive || JITBootstrap.mapJITResult == true)
+        do {
+            let journal = try journal()
+            try journal.record(.jitClaimBegin)
+            guard JITBootstrap.ready else {
+                try journal.record(.jitUnavailable); recordJIT(false); return
+            }
+            let passed = JITBootstrap.prewarm() || JITBootstrap.isLive || JITBootstrap.mapJITResult == true
+            try journal.record(.jitClaimReturned)
+            recordJIT(passed)
+        } catch { diagnosticFailure() }
     }
 
     private func recordJIT(_ passed: Bool) {
@@ -40,24 +106,46 @@ final class LinuxTerminalSession: ObservableObject {
     func start() {
         precondition(Thread.isMainThread)
         guard !attempted else { return }
-        guard JITBootstrap.ready else { recordJIT(false); message = "Enable JIT first."; return }
-        guard JITBootstrap.prewarm() || JITBootstrap.isLive || JITBootstrap.mapJITWorks else {
-            recordJIT(false); message = "JIT did not pass its execution check. Open JIT setup."; return
-        }
-        recordJIT(true)
-        guard !LinuxProbeSession.shared.attempted, !QemuRunner.shared.isRunning,
-              husk_console_loaded_game() == nil else {
-            message = "Another runtime owns this process. Close and reopen the app."; return
+        let diagnostic: LinuxTerminalDiagnostics.Journal
+        do {
+            diagnostic = try journal()
+            try diagnostic.record(.startRequested)
+            try diagnostic.record(.jitReadyBegin)
+            let ready = JITBootstrap.ready
+            try diagnostic.record(.jitReadyReturned)
+            guard ready else {
+                try diagnostic.record(.startRejected); recordJIT(false); message = "Enable JIT first."; return
+            }
+            try diagnostic.record(.jitExecutionBegin)
+            let passed = JITBootstrap.prewarm() || JITBootstrap.isLive || JITBootstrap.mapJITWorks
+            try diagnostic.record(.jitExecutionReturned)
+            guard passed else {
+                try diagnostic.record(.startRejected)
+                recordJIT(false); message = "JIT did not pass its execution check. Open JIT setup."; return
+            }
+            recordJIT(true)
+            try diagnostic.record(.runtimeOwnershipBegin)
+            let runtimeFree = !LinuxProbeSession.shared.attempted && !QemuRunner.shared.isRunning && husk_console_loaded_game() == nil
+            try diagnostic.record(.runtimeOwnershipReturned)
+            guard runtimeFree else {
+                try diagnostic.record(.startRejected)
+                message = "Another runtime owns this process. Close and reopen the app."; return
+            }
+        } catch {
+            diagnosticFailure(); message = "Startup journal is unavailable. Export existing diagnostics before trying again."; return
         }
         attempted = true
         let documents: URL
         do {
             // Resolve only the system-provided existing prefix. The userdata
             // directory is appended afterwards and must pass its own lstat walk.
+            try diagnostic.record(.documentsBegin)
             documents = try LinuxTerminalDisk.trustedDirectory(
                 FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0])
+            try diagnostic.record(.documentsReturned)
         } catch {
-            HuskLog.log("ideck-terminal", "Documents validation failed: \(error)")
+            do { try diagnostic.record(.preparationFailed, failure: Self.failure(error)) } catch { diagnosticFailure() }
+            HuskLog.log("ideck-terminal", "Documents validation or diagnostic write failed")
             message = "The app's Documents directory could not be validated. Close and reopen the app."
             return
         }
@@ -74,10 +162,20 @@ final class LinuxTerminalSession: ObservableObject {
             "prewarmed_region_mib": JITBootstrap.prewarmed ? 512 : 0,
         ]
         let next = LinuxTerminalWorker(owner: self, bundle: Bundle.main.bundleURL, session: session,
-                                       dataDirectory: root, metadata: metadata)
+                                       dataDirectory: root, metadata: metadata, diagnostic: diagnostic)
         worker = next
         message = "Checking terminal assets and the persistent user-data disk…"
         next.start()
+    }
+
+    fileprivate static func failure(_ error: Error) -> LinuxTerminalDiagnostics.Failure {
+        if let value = error as? LinuxTerminalProfile.Invalid {
+            return LinuxTerminalDiagnostics.Failure(rawValue: String(describing: value)) ?? .unknown
+        }
+        if let value = error as? LinuxGuestProfile.Invalid {
+            return LinuxTerminalDiagnostics.Failure(rawValue: String(describing: value)) ?? .unknown
+        }
+        return .unknown
     }
 
     func send(_ text: String) {
@@ -206,6 +304,7 @@ private final class LinuxTerminalWorker {
     let dataDirectory: URL
     let metadata: [String: Any]
     let queue = DispatchQueue(label: "ideck.linux.terminal", qos: .userInitiated)
+    let diagnostic: LinuxTerminalDiagnostics.Journal
     var disk: LinuxTerminalDisk?
     var serial: LinuxTerminalSocket?
     var control: LinuxTerminalSocket?
@@ -214,6 +313,7 @@ private final class LinuxTerminalWorker {
     var transcript = Data()
     var controlLines = Data()
     var enteredQEMU = false
+    var startupAborted = false
     var ready = false
     var guestWasReady = false
     var stopRequested = false
@@ -230,9 +330,47 @@ private final class LinuxTerminalWorker {
     var transcriptPublishScheduled = false
     var transcriptRevision: UInt64 = 0
 
-    init(owner: LinuxTerminalSession, bundle: URL, session: URL, dataDirectory: URL, metadata: [String: Any]) {
+    init(owner: LinuxTerminalSession, bundle: URL, session: URL, dataDirectory: URL, metadata: [String: Any],
+         diagnostic: LinuxTerminalDiagnostics.Journal) {
         self.owner = owner; self.bundle = bundle; self.session = session
-        self.dataDirectory = dataDirectory; self.metadata = metadata
+        self.dataDirectory = dataDirectory; self.metadata = metadata; self.diagnostic = diagnostic
+    }
+
+    /// Called synchronously on the thread reaching the boundary, including the
+    /// QEMU thread. A post-entry diagnostic IO error must not tear down QEMU or
+    /// release the userdata lock; it is made visible on the UI instead.
+    private func checkpoint(_ stage: LinuxTerminalDiagnostics.Stage, failure: LinuxTerminalDiagnostics.Failure? = nil) {
+        do { try diagnostic.record(stage, failure: failure) }
+        catch { owner.publish { $0.diagnosticFailure() } }
+    }
+
+    /// Before C has adopted either socket or touched the disk, a journal
+    /// synchronization failure can safely prevent entry. After entry the
+    /// checkpoint helper preserves runtime ownership even if diagnostics fail.
+    private func prepareNativeEntry(serial: LinuxTerminalSocket, control: LinuxTerminalSocket) -> Bool {
+        do { try diagnostic.record(.qemuInitBegin) }
+        catch {
+            queue.async {
+                self.startupAborted = true
+                serial.closeUnused(); control.closeUnused()
+                try? self.logHandle?.close(); self.logHandle = nil
+                self.disk?.closeUnused()
+                self.report["status"] = "terminal_prepare_failed"
+                self.persist()
+                self.owner.publish {
+                    $0.diagnosticFailure()
+                    $0.message = "Startup journal could not be synchronized. Linux was not started. Existing user data was preserved; close and reopen the app."
+                }
+            }
+            return false
+        }
+        queue.sync {
+            self.enteredQEMU = true
+            self.report["userdata_lock_retained_until_process_exit"] = true
+            self.persist()
+            serial.handToQEMU(); control.handToQEMU()
+        }
+        return true
     }
 
     func start() {
@@ -240,13 +378,22 @@ private final class LinuxTerminalWorker {
             do {
                 let assets = self.bundle.appendingPathComponent("iDeckLinuxTerminal")
                 let probe = self.bundle.appendingPathComponent("iDeckLinuxProbe")
+                try self.diagnostic.record(.assetsBegin)
                 let profile = try LinuxTerminalProfile.load(from: assets)
+                try self.diagnostic.record(.assetsReturned)
+                try self.diagnostic.record(.diskBegin)
                 self.disk = try profile.openDisk(in: self.dataDirectory, assets: assets)
+                try self.diagnostic.record(.diskReturned)
+                try self.diagnostic.record(.socketsBegin)
                 self.serial = try LinuxTerminalSocket(queue: self.queue)
                 self.control = try LinuxTerminalSocket(queue: self.queue)
                 guard let disk = self.disk, let serial = self.serial, let control = self.control else { throw LinuxTerminalProfile.Invalid.io }
+                try self.diagnostic.record(.socketsReturned)
+                try self.diagnostic.record(.argumentsBegin)
                 let args = try profile.arguments(probeAssets: probe, terminalAssets: assets, session: self.session,
                                                  diskURL: disk.url, serialFD: serial.qemu, controlFD: control.qemu)
+                try self.diagnostic.record(.argumentsReturned)
+                try self.diagnostic.record(.reportBegin)
                 guard FileManager.default.createFile(atPath: self.serialURL.path, contents: Data()) else { throw LinuxTerminalProfile.Invalid.io }
                 self.logHandle = try FileHandle(forWritingTo: self.serialURL)
                 self.report = self.metadata
@@ -263,11 +410,13 @@ private final class LinuxTerminalWorker {
                 self.report["terminal_profile_sha256"] = try self.digest(assets.appendingPathComponent("terminal-profile.json"))
                 if let executable = Bundle.main.executableURL { self.report["app_executable_sha256"] = try self.digest(executable) }
                 try self.saveReport()
+                try self.diagnostic.record(.reportReturned)
                 serial.received = { [weak self] bytes in self?.receiveSerial(bytes) }
                 control.received = { [weak self] bytes in self?.receiveControl(bytes) }
                 serial.disconnected = { [weak self] in self?.channelDisconnected(control: false) }
                 control.disconnected = { [weak self] in self?.channelDisconnected(control: true) }
                 serial.beginReading(); control.beginReading()
+                try self.diagnostic.record(.argvBegin)
                 let pointers = UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>.allocate(capacity: args.count + 1)
                 pointers.initialize(repeating: nil, count: args.count + 1)
                 for (index, argument) in args.enumerated() {
@@ -279,17 +428,21 @@ private final class LinuxTerminalWorker {
                     pointers[index] = value
                 }
                 self.argv = pointers
-                self.enteredQEMU = true
-                self.report["userdata_lock_retained_until_process_exit"] = true
-                self.persist()
-                serial.handToQEMU(); control.handToQEMU()
+                try self.diagnostic.record(.argvReturned)
+                try self.diagnostic.record(.threadStarting)
                 self.scheduleStartupTimeout()
                 let thread = Thread {
+                    guard self.prepareNativeEntry(serial: serial, control: control) else { return }
                     qemu_init(Int32(args.count), pointers)
+                    self.checkpoint(.qemuInitReturned)
+                    self.checkpoint(.nativeJITCheckBegin)
                     let jitAvailable = husk_ios_jit_is_available()
+                    self.checkpoint(.nativeJITCheckReturned)
                     // Keep the established software display lifecycle. No cleanup
                     // or second initialization is safe with its live listener.
+                    self.checkpoint(.displayInitBegin)
                     husk_display_init()
+                    self.checkpoint(.displayInitReturned)
                     self.queue.async {
                         self.report["qemu_init_returned"] = true
                         self.report["jit_available_after_init"] = jitAvailable
@@ -301,7 +454,9 @@ private final class LinuxTerminalWorker {
                             if !alreadyReady { $0.message = "Linux is starting the local terminal…" }
                         }
                     }
+                    self.checkpoint(.mainLoopBegin)
                     qemu_main_loop()
+                    self.checkpoint(.mainLoopReturned)
                     self.queue.async { self.didReturnFromQEMU() }
                 }
                 thread.name = "ideck.linux.terminal.qemu"
@@ -309,6 +464,9 @@ private final class LinuxTerminalWorker {
                 thread.stackSize = 16 * 1024 * 1024
                 thread.start()
             } catch {
+                self.checkpoint(.preparationFailed, failure: LinuxTerminalSession.failure(error))
+                HuskLog.log("ideck-terminal", "terminal preparation failed: \(LinuxTerminalSession.failure(error).rawValue)")
+                if error is LinuxTerminalDiagnostics.Problem { self.owner.publish { $0.diagnosticFailure() } }
                 self.serial?.closeUnused(); self.control?.closeUnused()
                 try? self.logHandle?.close(); self.logHandle = nil
                 if !self.enteredQEMU { self.disk?.closeUnused() }
@@ -331,6 +489,7 @@ private final class LinuxTerminalWorker {
         queue.async {
             guard self.guestWasReady, !self.stopRequested, !self.loopReturned,
                   let control = self.control, control.peer >= 0 else { return }
+            self.checkpoint(.stopRequested)
             self.stopRequested = true
             self.report["status"] = "terminal_stopping"
             self.persist()
@@ -395,6 +554,7 @@ private final class LinuxTerminalWorker {
             // Only this independent guest supervisor port can acknowledge
             // readiness/unmount. A shell echo in the serial transcript cannot.
             if line == Data("IDECK_TERMINAL_READY".utf8), !ready, !loopReturned, !stopRequested {
+                checkpoint(.terminalReady)
                 guestWasReady = true
                 ready = (serial?.peer ?? -1) >= 0
                 let consoleReady = ready
@@ -410,6 +570,7 @@ private final class LinuxTerminalWorker {
                 ready = false
                 stopRequested = true
                 cleanUnmount = true
+                checkpoint(.guestCleanUnmount)
                 report["terminal_clean_unmount"] = true
                 owner.publish { $0.ready = false; $0.canStop = false; $0.message = "User data was unmounted. Waiting for Linux to stop…" }
                 persist()
@@ -417,6 +578,7 @@ private final class LinuxTerminalWorker {
                 // pass: poweroff may have returned and emitted STOP_FAILED.
                 queue.async { self.finalizeIfClean() }
             } else if line == Data("IDECK_TERMINAL_STOP_FAILED".utf8) {
+                checkpoint(.stopFailed)
                 stopFailed = true
                 stopRequested = true
                 ready = false
@@ -453,6 +615,7 @@ private final class LinuxTerminalWorker {
         ready = false
         report["qemu_main_loop_returned"] = true
         report["status"] = stopFailed ? "terminal_stop_failed" : "terminal_unclean_stopped"
+        if !cleanUnmount { checkpoint(.uncleanStopped) }
         persist()
         owner.publish { $0.running = false; $0.ready = false; $0.stopping = false; $0.canStop = false }
         finalizeIfClean()
@@ -469,11 +632,14 @@ private final class LinuxTerminalWorker {
         do {
             // Main-loop return is not QEMU block-layer cleanup. Sync the host
             // file, but keep its descriptor and exclusive lock until app exit.
+            checkpoint(.hostSyncBegin)
             try disk.synchronize()
+            checkpoint(.hostDiskSynced)
             finalized = true
             report["host_disk_fsync_passed"] = true
             report["terminal_clean_stop"] = true
             report["status"] = "terminal_clean_stopped"
+            checkpoint(.cleanStopped)
             persist()
             try? logHandle?.synchronize()
             try? logHandle?.close(); logHandle = nil
@@ -491,7 +657,8 @@ private final class LinuxTerminalWorker {
 
     private func scheduleStartupTimeout() {
         queue.asyncAfter(deadline: .now() + 60) {
-            guard !self.ready, !self.stopRequested, !self.loopReturned, !self.finalized else { return }
+            guard !self.ready, !self.stopRequested, !self.loopReturned, !self.finalized, !self.startupAborted else { return }
+            self.checkpoint(.startupTimeout)
             self.report["terminal_startup_timed_out"] = true
             self.report["status"] = "terminal_startup_timeout"
             self.persist()
@@ -504,6 +671,7 @@ private final class LinuxTerminalWorker {
     private func scheduleStopTimeout() {
         queue.asyncAfter(deadline: .now() + 30) {
             guard !self.finalized, !self.stopFailed, !self.loopReturned else { return }
+            self.checkpoint(.stopTimeout)
             self.report["terminal_stop_timed_out"] = true
             self.report["status"] = "terminal_stop_timeout"
             self.persist()

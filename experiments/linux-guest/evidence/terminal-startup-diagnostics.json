@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "date_utc": "2026-10-16",
+  "base_commit": "68c80dcdc8fee85a00fc2f16ca4bfc7ee77b7b19",
+  "branch": "codex/linux-guest-feasibility-20261015",
+  "purpose": "Diagnostic source version for owner-reported immediate Start terminal crash with JIT on SideStore/iPhone16ProMax/iOS27; crash cause remains unknown.",
+  "installed_ipa_source_commit": "46582b44b577651679155efe60c56256496415b8",
+  "crash_cause_confirmed": false,
+  "new_ipa_created": false,
+  "ci_started": false,
+  "implementation": {
+    "journal": "One UUID journal session per process, opened before explicit terminal JIT/Start checks. Previous sessions preserved, append-only records serialized with NSLock and synchronized before returning.",
+    "directory": "Documents/iDeckDiagnostics (fixed app-relative location, not a personal container path).",
+    "limits": {
+      "journal_bytes": 131072,
+      "records": 256,
+      "record_bytes": 1024,
+      "previous_attempts_shown": 8,
+      "native_snapshot_bytes_each": 1048576
+    },
+    "stages": [
+      "JIT enable/claim/readiness/execution/ownership",
+      "Documents/assets/disk/sockets/arguments/report/argv/thread",
+      "QEMU init before/return synchronously on QEMU thread",
+      "native JIT check before/return",
+      "display init before/return",
+      "main loop before/return",
+      "terminal ready/stop/unmount/host sync/clean stop/failures/timeouts"
+    ],
+    "failure_semantics": "Pre-entry diagnostic IO failure prevents JIT/start/native entry as appropriate; post-entry diagnostic errors warn without tearing down QEMU or releasing disk ownership.",
+    "recovery": "Root chooser and terminal UI recovery/export do not run JIT/VM, open userdata or create attempts. No automatic terminal onAppear prewarm; explicit Enable/attach/Start retains execution gates.",
+    "classification": "Previous incomplete process has unknown termination cause. Native exit/crash/manual close/Jetsam cannot be distinguished. Clean-stop requires guest-unmount, loop-return and host-sync receipts; rejected/JIT-only sessions remain separate.",
+    "native_logs": "Existing Husk stderr mechanism unchanged. Fixed previous native/app log snapshots preserved locally once, with first-attempt receipt including missing slots; association explicitly UNKNOWN.",
+    "privacy": "Markdown emits only whitelisted checkpoints/known failures, validated source/build, UTC/elapsed and snapshot byte availability. No argv, commands/transcript, arbitrary raw native text, pairing data/tokens or personal paths. Raw local snapshots are separate and are not certified secret-free or automatically shared.",
+    "new_signal_handlers": false,
+    "system_ips_access_claimed": false,
+    "auto_upload": false,
+    "userdata_reset_or_delete": false
+  },
+  "local_verification": {
+    "python": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s experiments/linux-guest/tests -q",
+      "tests": 147,
+      "exit_code": 0,
+      "elapsed_seconds": 6.545
+    },
+    "actual_swift_helper": {
+      "toolchain": "Swift 6.2.1 x86_64-unknown-linux-gnu; local official HTTPS archive, no Apple SDK",
+      "source": "The shipped diagnostics helper compiled unchanged; conditional Glibc/POSIX/Foundation branch executes on Linux.",
+      "command": "swiftc -module-cache-path <workspace-cache> experiments/linux-guest/ios/LinuxTerminalDiagnostics.swift experiments/linux-guest/ios/tests/DiagnosticsChecks.swift experiments/linux-guest/ios/tests/diagnostics/main.swift -o <workspace>/diagnostics-checks; <workspace>/diagnostics-checks",
+      "exit_code": 0,
+      "elapsed_seconds": 0.236,
+      "stdout": "LINUX_TERMINAL_DIAGNOSTICS_CHECKS_PASS (actual journal/process interruption/export; no guest/device execution)",
+      "cases": [
+        "Actual subprocess _exit(23) after fsync, relaunch and stable repeated Markdown export without VM",
+        "Torn final record, malformed and oversized reads",
+        "Full clean-stop receipts vs lone marker, interrupted/rejected/JIT-only outcomes",
+        "Concurrent append sequence",
+        "Injected fsync failure and atomic export preservation",
+        "Symlink root/leaf rejection and fixed ID validation",
+        "Bounded actual FIFO subprocesses for journal/native log opens",
+        "Raw metadata/log privacy and local native snapshot preservation",
+        "Missing original log never replaced with unrelated later launch",
+        "Record limit preserves previous evidence"
+      ]
+    },
+    "swift_parse": "Terminal Session/View/Root parsed successfully with real Swift frontend; no Apple API/typecheck claim.",
+    "independent_review": {
+      "agent": "independent_review",
+      "status": "No blocking findings after review fixes; independently rebuilt/ran latest actual helper PASS and diff check PASS.",
+      "resolved": [
+        "FIFO blocking read",
+        "Pre-QEMU checkpoint IO failure must stop C entry",
+        "Unknown rotating-log association and absent-slot preservation"
+      ]
+    },
+    "overlay_inputs_valid": 22,
+    "overlay_copies_valid": 12,
+    "historical_evidence_files_unchanged": 43,
+    "protected_runtime_native_guest_ci_files_unchanged": 12,
+    "git_diff_check": "pass"
+  },
+  "input_sha256": {
+    "ios/LinuxTerminalDiagnostics.swift": "0057fa6c9e17e2a7e6cdbadc4c6a9a3f8d1d3c73ae30263404dc6a82be8960d8",
+    "ios/LinuxTerminalSession.swift": "26c1f0a08d11604d6420b4dd4f0dd4cf2ac8e9d70cfacbd967d420f7e6463740",
+    "ios/LinuxTerminalView.swift": "f032f37052b41b53b7a176c3dbc716f7860cf858b747f9d96b6890e1f66f4b09",
+    "ios/LinuxProbeView.swift": "cdf8a209819d6adf9ef5e04087f98252ee3665d0c0d78c3df129245e765d49b1",
+    "ios/tests/DiagnosticsChecks.swift": "0013a79e8a03d7fe5e069347c620eb551364b756b14e5519476d8c2b26f70476",
+    "ios/tests/diagnostics/main.swift": "e0084f464dc0195e11171c2bc380357525c4c39d25b35f99f1e6251fc37d804d",
+    "ios/tests/main.swift": "62c8455d3f77320c4c6dad706d41d18420c9b77e40cd6a901c93739b7e2213e8",
+    "tests/test_diagnostics.py": "2bb2b9f8774728d450d9030ea5f061270a033b799913642ca59a6a5f4c69eccc",
+    "tests/test_staging.py": "845c1c5255022fd4a9a1b0730fe85a23a7f4c11f4bd68416f9a079a3bca2375d",
+    "husk/overlay.lock.json": "aac95fbe8fa54bf5492dc46315038024e31ab040c48d32b945d992f19c9831c4"
+  },
+  "ci_check_source_sha256": "aad6325c7651d8a2e7b4c939f3774aa2d94340d37e0b241e9c3e237c266331eb",
+  "not_run": [
+    "Apple Darwin branch execution",
+    "Apple SDK/full app typecheck or link/package of this version",
+    "New diagnostic IPA installation",
+    "Actual iPhone crash/Jetsam/relaunch diagnostic export",
+    "Terminal readiness/foreground orderly Stop/two-process userdata persistence"
+  ],
+  "owner_steps": [
+    "After parent-controlled build/install, enable JIT and press Start terminal once.",
+    "After exit relaunch app; do not start VM again. Choose Linux terminal, Startup diagnostics (.md), Refresh saved startup reports if needed, Saved startup report 1 (.md). Export needs no JIT.",
+    "Manually send Markdown; preserve original IPS/Jetsam if available. Raw local snapshots can be separately requested/reviewed privately. Do not uninstall/reset/delete userdata for diagnosis."
+  ],
+  "next_step": "Parent performs fresh >=120 free minutes/paid-off/private/exact pushed SHA checks, then one coordinated Apple build. No CI dispatched here."
+}

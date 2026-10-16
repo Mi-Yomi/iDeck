@@ -5,6 +5,96 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## Диагностическая версия startup: журнал/relaunch/Markdown готовы к Apple build
+
+Новая задача реализации от **`68c80dcdc8fee85a00fc2f16ca4bfc7ee77b7b19`**:
+owner попросил версию с crash log для немедленного вылета terminal Start с JIT.
+Причина вылета установленной IPA source `46582b44b577651679155efe60c56256496415b8`
+**остаётся неизвестной**. Ниже реализована диагностика, а не доказанное исправление
+этого вылета. Новый IPA ещё не собран; CI запускает только parent после свежих
+quota >=120 free / paid off / private repository / exact SHA checks.
+
+`LinuxTerminalDiagnostics.swift` — отдельный Foundation/POSIX helper. В
+`Documents/iDeckDiagnostics` каждой диагностической попытке даётся новый
+append-only `attempt-<time>-<UUID>.jsonl`; прежние попытки не переписываются и
+не удаляются. NSLock сериализует main/worker/QEMU записи, каждый checkpoint
+записывается синхронно с **fsync до возврата**. Journal ограничен 128 KiB /
+256 records; reader использует только полный корректный prefix, отмечает torn
+final record/corruption, отвергает symlinks/hardlinks/non-regular files. Reads
+nonblocking, чтобы FIFO не подвесил UI. Это сохранение после выхода процесса,
+не обещание пережить аппаратную потерю питания или поймать любой сигнал.
+
+Checkpoints стоят до/после JIT claim/execution/ownership, Documents, assets,
+disk validation/provision, sockets, argv/session, report, thread startup,
+`qemu_init`, native JIT check, display init и main loop; также ready/Stop/
+guest unmount/host sync/clean-stop и failures/timeouts. **qemuInitReturned теперь
+пишется прямо на QEMU thread до display init**, независимо от async result.json.
+До входа в C сбой записи останавливает запуск и закрывает только unused
+endpoints/disk. После входа диагностическая ошибка показывается в UI, не
+разрушает runtime и не снимает disk lock. Известные validation enums имеют
+статические коды, arbitrary error.localizedDescription в journal не попадает.
+
+Recovery выполняется на root chooser и terminal screen до нового Start; он
+не запускает JIT/VM, не открывает userdata и не создаёт новую попытку.
+Terminal screen больше не prewarm-ит JIT просто для чтения/export reports:
+Enable/attach/Start сохраняют обычные execution gates с checkpoints.
+UI **Startup diagnostics (.md)** доступен без VM/JIT. Показываются текущая и
+до 8 последних предыдущих попыток; более старые файлы остаются на диске.
+Незавершённый previous process обозначается как interrupted/unconfirmed с
+последним сохранённым checkpoint, **без guessed cause**. Clean-stop требует
+journal receipts guest unmount + QEMU loop return + host disk sync; lone clean
+marker PASS не даёт. Это не device two-boot persistence proof.
+
+Существующий Husk stderr capture сохраняется. При первом recovery bounded
+snapshots `husk-native-prev.log`/`husk-prev.log` (до 1 MiB каждый) сохраняются
+локально отдельно. Capture receipt не позволяет дополнять отсутствующие logs
+текстом другого последующего запуска; association явно UNKNOWN. Raw snapshots
+могут содержать private text/paths и **не включаются в Markdown/автоотправку**.
+Markdown содержит только enum checkpoints, UTC/elapsed, validated build/SHA,
+known errors и наличие/размер snapshots; исключены argv, commands/transcript,
+личные paths, pairing data/tokens и arbitrary native text. Новых signal/crash
+handlers нет, системные IPS/Jetsam через sandbox не обещаются.
+
+Проверено локально:
+
+- **147 Python tests PASS, 6.545 s**, exit 0: `PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s experiments/linux-guest/tests -q`.
+- **Actual Swift 6.2.1 Linux helper compile + execution PASS**, run 0.236 s,
+  marker `LINUX_TERMINAL_DIAGNOSTICS_CHECKS_PASS`. Реальный child пишет checkpoint
+  и вызывает `_exit(23)` без Swift destructors, parent/relaunch восстанавливает
+  его и экспортирует MD. Проверены torn/malformed/oversized records, clean vs
+  interrupted/rejected/JIT-only, concurrency, fsync failure, bounded FIFO child
+  regressions, symlink rejection, privacy и first-capture preservation.
+- Swift parser проверил Session/View/Root syntax. Это **не Apple SDK typecheck**.
+  Linux helper использует реальный Glibc/POSIX/Foundation; Apple Darwin branch
+  и полный app typecheck/link/device проверит существующий CI gate, куда
+  подключены тот же helper и реальные Swift tests.
+- Независимый reviewer повторно собрал/исполнил actual helper: PASS; блокирующих
+  замечаний после исправления FIFO/pre-entry failure/capture association нет.
+- Все **22 overlay input hashes / 12 copies** проверены. Все **43 прежних
+  evidence snapshots** и 12 protected runtime/native/guest/CI files побайтно
+  сохранены; probe payload, JIT native code, original MD renderer, userdata
+  guards/locks и quota/request gates не менялись. Новый evidence:
+  `experiments/linux-guest/evidence/terminal-startup-diagnostics.json`.
+
+Инструкция после parent build/install диагностической IPA:
+
+1. Открыть Linux terminal, Enable JIT, нажать Start terminal один раз.
+2. После вылета открыть приложение снова. **Не запускать VM повторно**:
+   выбрать Linux terminal → **Startup diagnostics (.md)** → при необходимости
+   **Refresh saved startup reports** → **Saved startup report 1 (.md)** и
+   передать этот Markdown вручную. Export не требует JIT.
+3. Сохранить original IPS/Jetsam, если iOS его создала. Для неизвестной native
+   ошибки parent может отдельно запросить локальные snapshots/оригинальные
+   logs; проверять их на private content перед ручной передачей. Ничего не
+   загружается автоматически. Диск Documents/iDeckLinux/userdata.raw не
+   удалять/не reset и приложение не uninstall ради диагностики.
+
+Source готов к parent-controlled Apple build **нового полного pushed SHA**.
+Не проверены: Apple compilation/typecheck/link/package этой версии, survival
+после actual device crash/Jetsam, новый diagnostic export на iPhone, terminal
+readiness/Stop/two-process persistence. Готовой новой диагностической IPA и
+подтверждённой причины прежнего crash пока нет; main не изменялся.
+
 ## Текущий device blocker: немедленный вылет при Start console с JIT
 
 Owner через parent подтвердил: terminal IPA source

@@ -73,6 +73,7 @@ struct LinuxProbeRoot: View {
             Text("One environment per app launch. Shut Linux down before closing; reopen the app for another session.")
                 .font(.footnote).foregroundStyle(.secondary)
         }.padding()
+            .onAppear { LinuxTerminalSession.shared.recoverDiagnostics() }
     }
 }
 

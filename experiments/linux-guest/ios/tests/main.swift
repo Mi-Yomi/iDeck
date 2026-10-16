@@ -1,6 +1,14 @@
 import Foundation
 import CryptoKit
 
+if CommandLine.arguments.count == 3, ["--diagnostic-fifo", "--diagnostic-native-fifo"].contains(CommandLine.arguments[1]) {
+    try runDiagnosticFIFOChild(URL(fileURLWithPath: CommandLine.arguments[2], isDirectory: true),
+                               nativeLog: CommandLine.arguments[1] == "--diagnostic-native-fifo")
+}
+if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--diagnostic-interruption" {
+    try runDiagnosticInterruptionChild(URL(fileURLWithPath: CommandLine.arguments[2], isDirectory: true))
+}
+
 // Host-only validation; synthetic bytes are not a Linux boot test.
 let root = URL(fileURLWithPath: CommandLine.arguments[1], isDirectory: true)
 try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
@@ -82,3 +90,6 @@ try runMarkdownReportChecks()
 
 // Real disk/configuration helpers; not a Linux boot or persistence claim.
 try runTerminalChecks()
+
+// Durable journal recovery/export with a real native-exit child process.
+try runTerminalDiagnosticsChecks()

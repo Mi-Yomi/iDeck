@@ -47,6 +47,16 @@ struct LinuxTerminalView: View {
                     Button("Tab") { session.sendControl(9) }
                     Button("Esc") { session.sendControl(27) }
                 }.buttonStyle(.bordered).disabled(!session.ready || session.stopping)
+                Menu("Startup diagnostics (.md)") {
+                    Button("Refresh saved startup reports") { session.recoverDiagnostics() }
+                    ForEach(Array(session.diagnosticReports.enumerated()), id: \.element) { index, file in
+                        Button("Saved startup report \(index + 1) (.md)") {
+                            shareItems = [file]; showShare = true
+                        }
+                    }
+                }
+                Text(session.diagnosticsMessage).font(.footnote)
+                if let error = session.diagnosticsError { Text(error).font(.footnote).foregroundStyle(.orange) }
                 Menu("Save report") {
                     Button("Markdown report (.md)") {
                         guard let file = session.markdownFile else { return }
@@ -62,9 +72,9 @@ struct LinuxTerminalView: View {
         }
         .sheet(isPresented: $jit.showSetup) { JITSetupFlow() }
         .sheet(isPresented: $showShare) { ShareSheet(items: shareItems) }
-        .onAppear { claimJIT() }
+        .onAppear { session.recoverDiagnostics() }
         .onChange(of: jit.attachGeneration) { _ in claimJIT() }
-        .onChange(of: scenePhase) { if $0 == .active { claimJIT() } }
+        .onChange(of: scenePhase) { if $0 == .active { session.recoverDiagnostics() } }
     }
 
     private func submit() {
@@ -77,8 +87,10 @@ struct LinuxTerminalView: View {
 
     private func enableJIT() {
         guard !session.attempted, !jit.busy else { return }
+        guard session.noteJITEnable() else { return }
         jit.refreshPairingStatus()
         if jit.method == .automatic, HuskBuiltInJIT.isAvailable { jit.method = .builtIn }
         jit.enable()
+        _ = session.noteJITEnable(dispatched: true)
     }
 }

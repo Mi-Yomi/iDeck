@@ -34,7 +34,10 @@
     },
     "local_cache_check": {
       "date": "2026-10-16",
-      "roots": ["/workspace", "/tmp"],
+      "roots": [
+        "/workspace",
+        "/tmp"
+      ],
       "regular_files_scanned": 31493,
       "read_errors": 0,
       "result": "not found by name, exact archive size, SquashFS magic, local artifact archive member lists or reachable Git payload paths",
@@ -61,5 +64,15 @@
   "ext4_module_manifest": null,
   "ext4_module_bytes": null,
   "kernel_load_and_ext4_mount": "not_tested",
-  "blocker": "2026-10-16: official Alpine CDN, dl-2 and listed mirrors.edge.kernel.org archive transfer returned HTTP403 in executor; original archive not cached. Do not infer module closure or hashes."
+  "blocker": "2026-10-16: official Alpine CDN, dl-2 and listed mirrors.edge.kernel.org archive transfer returned HTTP403 in executor; original archive not cached. Do not infer module closure or hashes.",
+  "latest_input_transfer": {
+    "date": "2026-10-16",
+    "source": "user-provided Google Drive archive; private identifiers omitted",
+    "metadata_name": "alpine-netboot-3.24.1-aarch64.tar.gz",
+    "metadata_size": 431008592,
+    "bytes_received": 0,
+    "archive_and_modloop_hashes_newly_verified": false,
+    "blocker": "Supported raw fetch rejected before action invocation: HTTP413, declared431008592B exceeds268435456B limit; separate streaming download action unavailable",
+    "receipt": "evidence/desktop-netboot-drive-transfer-blocked.json"
+  }
 }

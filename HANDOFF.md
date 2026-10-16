@@ -5,6 +5,38 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## Owner-provided netboot: Drive transfer BLOCKED — 2026-10-16
+
+Продолжение от pushed **b59e209b7a9ec55aef7bfb2bf6f968805a4a9727**.
+Owner передал Drive-ссылку на файл с именем официального netboot. Поддерживаемый
+connector metadata read вернул `alpine-netboot-3.24.1-aarch64.tar.gz`, MIME
+`application/x-gzip`, **431,008,592 B** — ожидаемый размер совпадает.
+
+Raw fetch с `download_raw_file:true, include_base64:false` отклонён **до action
+invocation**: **HTTP413**, `431008592 bytes exceeds the 268435456-byte limit`.
+Это лимит Drive connector **256MiB**, не доказанный запрет доступа владельцем
+и не ошибка SHA. Bytes не получены; actual archive SHA и modloop SHA **не
+проверены**. Среди доступных tools отдельного streaming `download_file` нет;
+native-file export неприменим к сохранённому .tar.gz. Другой executor, proxy,
+альтернативные download URL, дробление/encoding не использовались.
+
+[Точный transfer receipt](experiments/linux-guest/evidence/desktop-netboot-drive-transfer-blocked.json)
+содержит provider error без private Drive ID/URL. Expected archive по-прежнему
+**431,008,592 B**, SHA-256
+**54fe38fa41cce740ba379458ed63cfcd89ab06ae5e6a47a06dafe0a34e8427e8**.
+Минимальный payload — `boot/modloop-virt`, expected SHA-256
+**f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b**;
+actual размер неизвестен. Для следующего шага нужен поддерживаемо
+материализованный exact archive/member в выбранном execution environment.
+До проверки bytes нельзя извлекать closure, собирать проверенный bootstrap
+или заявлять Debian/ext4 guest mount/two-boot PASS.
+
+Прежние byte-identical Debian images, terminal/probe, legacy userdata,
+JIT/SideStore/MD export сохранены. Runtime и main не менялись; CI/новая IPA/
+payload publication, Drive sharing changes, новые keys/connections/payment
+не выполнялись. Эта запись фиксирует конкретный transfer blocker; она не
+заменяет отсутствие guest/iPhone validation host metadata evidence.
+
 ## Полный offline CLI replay и воспроизводимость — 2026-10-16
 
 Новая реализация/проверка от pushed **be432d6283d0f47ca5e9ad5f1bd60cbd8627c728**.

@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "observed_utc": "2026-10-16 13:07:03 UTC",
+  "base_commit": "b59e209b7a9ec55aef7bfb2bf6f968805a4a9727",
+  "branch": "codex/linux-guest-feasibility-20261015",
+  "result": "BLOCKED: Drive connector raw-file download size limit before action invocation",
+  "source": "User-provided Google Drive archive; private file ID/share URL deliberately omitted",
+  "metadata": {
+    "name": "alpine-netboot-3.24.1-aarch64.tar.gz",
+    "mime_type": "application/x-gzip",
+    "size": 431008592,
+    "size_matches_expected": true,
+    "content_access_verified": false
+  },
+  "expected_archive": {
+    "size": 431008592,
+    "sha256": "54fe38fa41cce740ba379458ed63cfcd89ab06ae5e6a47a06dafe0a34e8427e8"
+  },
+  "fetch": {
+    "action": "google_drive_fetch",
+    "download_raw_file": true,
+    "include_base64": false,
+    "is_error": true,
+    "error_code": "INVALID_ARGUMENT",
+    "http_status": 413,
+    "limit_bytes": 268435456,
+    "error": "HTTP error prior to action invocation. HTTPException: 413: File too large to download: 431008592 bytes exceeds the 268435456-byte limit."
+  },
+  "supported_action_check": {
+    "separate_streaming_download_file_available": false,
+    "native_export_applicable": false,
+    "no_other_executor_proxy_alternate_url_chunking_or_encoding_used": true
+  },
+  "verification": {
+    "archive_bytes_received": 0,
+    "archive_sha256": "not verified; no bytes available",
+    "modloop_sha256": "not verified; no bytes available",
+    "ext4_module_closure": "not resolved",
+    "guest_mount_two_boot": "not performed",
+    "new_ipa": "not prepared"
+  },
+  "preserved": {
+    "previous_verified_debian_images": true,
+    "legacy_userdata": true,
+    "terminal_probe_jit_sideload_markdown_export": true
+  },
+  "scope": {
+    "runtime_changed": false,
+    "ci_dispatched": false,
+    "payload_published": false,
+    "main_modified": false,
+    "drive_organization_or_sharing_changed": false,
+    "new_keys_connections_payment": false
+  }
+}

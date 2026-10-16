@@ -54,9 +54,11 @@ def check_terminal_assets(app):
         path = directory / name
         if path.is_symlink() or not path.is_file() or path.stat().st_size != expected["size"]:
             raise ValueError("Required terminal resource missing or changed: " + name)
+        digest = hashlib.sha256()
         with path.open("rb") as handle:
-            digest = hashlib.file_digest(handle, "sha256").hexdigest()
-        if digest != expected["sha256"]:
+            while chunk := handle.read(1024 * 1024):
+                digest.update(chunk)
+        if digest.hexdigest() != expected["sha256"]:
             raise ValueError("Terminal resource integrity failure: " + name)
 
 

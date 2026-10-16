@@ -1,5 +1,72 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Debian staging: SHA-256 без Python file_digest — 2026-10-16
+
+Исправление выполнено в сохранённом облачном Codex `/workspace/iDeck`,
+ветка `codex/linux-guest-feasibility-20261015`, от проверенного remote SHA
+`00725bf78da543c62910d1b9d5c105521b4f5508`. Начальное дерево было чистым;
+окружение открылось на `work`, затем явно переключено на рабочую ветку.
+`origin` — `https://github.com/Mi-Yomi/iDeck.git`; применимых `AGENTS.md`
+в репозитории и родительских каталогах нет. `main` не менялся.
+
+По переданной пользователем диагностике build
+[`6ad271b37550aed8108f5fff`](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad271b37550aed8108f5fff)
+прошёл Swift gate, payload size/SHA и native dependencies, включая QEMU
+integrated и pairing, затем `app-build` завершился exit 65. Первый отказ —
+`Stage verified iDeck Debian console`: `hashlib.file_digest` отсутствует в
+Xcode `python3`. Точная версия этого Python из переданного лога неизвестна;
+сам build/log заново здесь не запрашивался. Исторический fetch blocker ниже
+не является первым отказом этой попытки.
+
+`tools/debian_bundle.py:metadata`, `ci/build_linux_probe_ipa.py:sha` и
+`ipa/package_probe.py:check_terminal_assets` теперь вычисляют `hashlib.sha256`
+потоково, блоками **1 MiB**, включая корректный SHA пустого файла. Staging CLI
+самодостаточен: общего импортируемого helper не добавлено. В
+`husk/overlay.lock.json` изменён только SHA исходника `tools/debian_bundle.py`:
+`e1bb0b89a87c4f95b3169c6f2772c37a515d5e6873c2db00e1d9a541e702a450`.
+Проверки размера/SHA, самостоятельное перечитывание записанных файлов, fsync,
+отказы для symlink/лишних файлов/небезопасного destination сохранены.
+
+Добавлены **10 offline-регрессий** в `tests/test_streaming_hashes.py`:
+пустой, малый и многоблочный файл для всех трёх функций; реальные чтения
+ограничены 1 MiB; metadata/verify/stage/повторный stage без API; fsync и отказ
+при его ошибке; обнаружение порчи записанных bytes как с изменённым размером,
+так и при прежнем размере; отсутствующие/повреждённые/лишние файлы, symlink,
+overlap и symlink ancestors. Отдельный subprocess с `-I` удаляет API **до
+runpy**, исполняет побайтную копию `scripts/ideck-stage-debian.py` с
+синтетическим lock и ресурсами теми же CLI-аргументами, что в Xcode phase:
+verify → stage → повторный stage → verify, затем независимое сравнение bytes.
+
+**Фактический полный прогон:** Python **3.12.14**, `hashlib.file_digest`
+удалён перед unittest discovery: **236 tests, 234 PASS, 2 SKIP, 0 failures,
+0 errors**, 7.954 s. Все **22 fetch diagnostics regression tests** и все
+10 новых тестов PASS. SKIP: actual Swift owner/validation и ARM64 BusyBox/PTY —
+здесь нет explicit Swift toolchain и user-mode QEMU. Python 3.9 не найден;
+это **проверка отсутствующего API, не полная проверка Python 3.9 совместимости**.
+Никакая версия toolchain/runtime не устанавливалась и не менялась.
+
+Независимая offline-проверка overlay PASS: все **28 input hashes**,
+восстановление **78** закреплённых оригинальных source files, применение
+патчей и **5 patched hashes**, **18 byte-identical copies**. Semantic diff
+overlay lock подтверждает единственное изменение соответствующего SHA.
+`git diff --check` PASS. Логи и receipts в облачном workspace:
+`.work/debian-python-compat-20261016/full-tests.log`, `tests-result.json`,
+`overlay-result.json`; restored source — `overlay-source` рядом.
+
+Payload, guest inputs и `ipa/debian.lock.json` не менялись. Lock побайтно
+сравнён с исходным commit: **75601920 bytes**, SHA-256
+`84851a3597901f1e3ef293c1490dc9c8a4a78b286bea8d2a10c330cb1413c558`.
+Реальный payload здесь не загружался и повторно не хешировался; тесты используют
+только synthetic fixtures. Release asset/secrets не менялись, токены не читались,
+live credential/payload requests не выполнялись; пользовательские диски не
+открывались. Commit/push разрешены владельцем в ту же ветку, без force;
+полный итоговый SHA получить через `git rev-parse HEAD` и сверить с remote.
+
+**NOT RUN:** Codemagic/другие CI, новые Apple Swift/native/app builds,
+IPA packaging/signing/install, device execution и Debian на iPhone.
+Host-тесты не являются доказательством запуска Debian на iPhone. Следующий
+шаг — ревью нового pushed SHA; CI запускает владелец отдельно после ревью.
+
 ## Безопасная диагностика Debian fetch — 2026-10-16
 
 Продолжение от `a63c8a7238bc6eafc8be1b015d9857798b28d5c2`, та же ветка

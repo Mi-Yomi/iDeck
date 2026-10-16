@@ -60,9 +60,11 @@ def prepare(seed, modules, output, lock_path):
 
 
 def metadata(path):
+    digest = hashlib.sha256()
     with path.open("rb") as stream:
-        digest = hashlib.file_digest(stream, "sha256").hexdigest()
-    return {"size": path.stat().st_size, "sha256": digest}
+        while chunk := stream.read(1024 * 1024):
+            digest.update(chunk)
+    return {"size": path.stat().st_size, "sha256": digest.hexdigest()}
 
 
 def real_directory(path):

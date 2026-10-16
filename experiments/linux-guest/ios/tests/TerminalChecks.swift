@@ -206,6 +206,7 @@ func runTerminalChecks() throws {
     try writer.write(contentsOf: Data([0x7b]))
     try writer.close()
     try disk.synchronize()
+    try runConsoleHostSyncFailureCheck(disk: disk)
     // Runtime sync must retain the lock: main_loop returning is not proof
     // that QEMU has released/drained all block-layer file descriptions.
     expectTerminalFailure(.diskLocked) { _ = try LinuxTerminalDisk.open(directory: directory, seed: seed) }

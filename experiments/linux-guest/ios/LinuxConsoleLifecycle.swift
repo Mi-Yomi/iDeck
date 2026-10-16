@@ -16,6 +16,20 @@ struct LinuxConsoleLifecycle {
     var canStart: Bool { !entered }
     var maySyncForCleanStop: Bool { entered && ready && requested && unmounted && returned && !failed && !timedOut }
 
+    /// A failed host sync is terminal for this session, even if the disk could
+    /// be synced later. Queued finalizers must not retry and erase that failure.
+    mutating func synchronizeForCleanStop(_ synchronize: () throws -> Void) throws -> Bool {
+        guard maySyncForCleanStop, !clean else { return false }
+        do {
+            try synchronize()
+            record(.hostSynced)
+            return clean
+        } catch {
+            record(.failed)
+            throw error
+        }
+    }
+
     mutating func record(_ event: Event) {
         switch event {
         case .entered: entered = true

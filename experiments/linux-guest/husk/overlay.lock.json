@@ -17,7 +17,7 @@
     "husk/patches/0002-jit-setup-routing.patch": "a93a4af2b82418280c14c1b7e7ec64c8e6f2395602987dc59b95a1c841ed3ec4",
     "ios/LinuxProbeReport.swift": "391e86c35b85eeb6670ba35e32396ef9d44b4c7c1fd20f505bce9cf966c90e27",
     "ios/LinuxTerminalProfile.swift": "04d488d0052ab0f1fc3fbf9e3976aa72fb722e492f535ff7dd5f1e6a18149bc7",
-    "ios/LinuxTerminalSession.swift": "16078700822ae8f329244204f481693863a8a19f5c84f6176e6fb0adb207b3b6",
+    "ios/LinuxTerminalSession.swift": "b8f2c2e4018481c8396362343a83f2027e70718be7a9361750154b66323f3677",
     "ios/LinuxTerminalView.swift": "32cb24c27024f26628caa7d7fbe1b17532cc0f271dad8c91e49d587301bd733c",
     "tools/terminal_bundle.py": "c1c696498690085c6ddd4dc1eaf06dc4afa51b4dea738d883f498194cbbdef61",
     "ipa/terminal.lock.json": "e39514b53a2ae33de96b300b2578c760fb95b2b2685bb7a99502f0f2d0c6a98e",
@@ -28,7 +28,7 @@
     "ios/LinuxDesktopDisk.swift": "45b4626f6227d438bf6b63a12e73df96e0b742f14ed82584df1b41dc69db4bcf",
     "ios/LinuxDesktopProfile.swift": "aeee17701ba6aab2e2b847ccc85fb77f00cf7f3154271adafa5215bcf769c1f8",
     "ios/LinuxDebianProfile.swift": "6b1486e22819220aea29830a31fcec25bb6b31fd1fcacf52ca7c4fd2c3185912",
-    "ios/LinuxConsoleLifecycle.swift": "98d3f7551300b759af1cd2981f69ce04b549e1babe5c7d2ca220269b06f8f5df",
+    "ios/LinuxConsoleLifecycle.swift": "2bf85f1e63231388b7d9636513cf2aef9f5f6e56b967acf903c6082fb3ef3bcf",
     "tools/debian_bundle.py": "387c6d6fcac3883762d0b0f02d7e4e37815a9b355cc47dd284f1ec4c04331294",
     "ipa/debian.lock.json": "45f3985e5ca35e95849f56a658811601b923168abc714bbdadaa329d81e1e9bd"
   },

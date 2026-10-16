@@ -437,6 +437,31 @@ class TerminalSourceContracts(unittest.TestCase):
         self.assertIn('Data("IDECK_STOP_V1\\n".utf8)', session)
         self.assertIn("socketpair(AF_UNIX, SOCK_STREAM", session)
 
+    def test_host_sync_failure_latches_worker_lifecycle_and_failed_report(self):
+        session = (EXPERIMENT / "ios/LinuxTerminalSession.swift").read_text()
+        finalize = swift_block(session, "private func finalizeIfClean()")
+        self.assertIn("guard try lifecycle.synchronizeForCleanStop({ try disk.synchronize() }) else { return }", finalize)
+        failure = finalize[finalize.index("} catch {"):]
+        for latch in ["stopFailed = true", "checkpoint(.stopFailed)",
+                      'report["host_disk_fsync_passed"] = false', 'report["terminal_stop_failed"] = true',
+                      'report["terminal_clean_stop"] = false', 'report["status"] = "terminal_stop_failed"']:
+            self.assertLess(failure.index(latch), failure.index("persist()"))
+        self.assertIn("$0.cleanStopped = false", failure)
+        for forbidden in ["isDebian", "closeUnused", "disk = nil", "stopFailed = false"]:
+            self.assertNotIn(forbidden, finalize)
+        lifecycle = (EXPERIMENT / "ios/LinuxConsoleLifecycle.swift").read_text()
+        sync = swift_block(lifecycle, "mutating func synchronizeForCleanStop(")
+        self.assertLess(sync.index("guard maySyncForCleanStop, !clean"), sync.index("try synchronize()"))
+        self.assertLess(sync.index("record(.failed)"), sync.index("throw error"))
+        checks = (EXPERIMENT / "ios/tests/ConsoleLifecycleChecks.swift").read_text()
+        self.assertIn("if attempts == 1 { throw Injected.hostSync }", checks)
+        self.assertIn("!finalized && attempts == 2 && state.failed && !state.clean", checks)
+        self.assertIn("try disk.validateOwnership()", checks)
+        terminal = (EXPERIMENT / "ios/tests/TerminalChecks.swift").read_text()
+        self.assertIn("try runConsoleHostSyncFailureCheck(disk: disk)", terminal)
+        main = (EXPERIMENT / "ios/tests/main.swift").read_text()
+        self.assertIn("try runDesktopDiskChecks(fixture: desktopGolden) { try runConsoleHostSyncFailureCheck(disk: $0) }", main)
+
     def test_control_failure_and_timeouts_do_not_confirm_clean_or_release_the_disk(self):
         session = (EXPERIMENT / "ios/LinuxTerminalSession.swift").read_text()
         control = swift_block(session, "private func receiveControl(")

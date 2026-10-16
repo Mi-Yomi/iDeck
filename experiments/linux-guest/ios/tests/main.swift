@@ -112,6 +112,6 @@ try runTerminalChecks()
 try runTerminalDiagnosticsChecks()
 
 let desktopGolden = URL(fileURLWithPath: "experiments/linux-guest/ios/tests/fixtures/desktop-ext4-superblock.json")
-try runDesktopDiskChecks(fixture: desktopGolden)
+try runDesktopDiskChecks(fixture: desktopGolden) { try runConsoleHostSyncFailureCheck(disk: $0) }
 try runDesktopProfileChecks(fixture: desktopGolden)
-runConsoleLifecycleChecks()
+try runConsoleLifecycleChecks()

@@ -49,7 +49,7 @@ func runDesktopInterruptedImport(directory: URL, fixture: URL) throws {
 
 /// Actual storage helper checks. Golden header came from real mke2fs; sparse
 /// unit-test bodies do not claim a complete filesystem or Linux mount/boot.
-func runDesktopDiskChecks(fixture: URL) throws {
+func runDesktopDiskChecks(fixture: URL, afterSync: ((LinuxDesktopDisk) throws -> Void)? = nil) throws {
     let golden = try DesktopGolden.load(fixture)
     let spec = golden.specification
     let header = golden.header
@@ -132,6 +132,7 @@ func runDesktopDiskChecks(fixture: URL) throws {
     let file = try FileHandle(forWritingTo: disk.url)
     try file.seek(toOffset: 2 * 1024 * 1024); try file.write(contentsOf: Data([0x7b])); try file.close()
     try disk.synchronize(); try disk.validateOwnership()
+    try afterSync?(disk)
     try children(directory, locked: true)
     disk.closeUnused()
     expect(.ownership) { try disk.validateOwnership() }

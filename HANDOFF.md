@@ -1,5 +1,38 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Stop: необратимая ошибка host fsync — 2026-10-16
+
+Продолжение от `1cb1cb1a0f22fea9a5af6f16fbe6a0c167a02ef8`, та же ветка
+`codex/linux-guest-feasibility-20261015`. В общем пути Terminal/Debian ошибка
+host fsync теперь фиксирует `lifecycle.failed` до выхода из синхронизации,
+а `finalizeIfClean()` устанавливает `stopFailed`, checkpoint `.stopFailed`,
+`terminal_stop_failed = true`, `terminal_clean_stop = false` и status
+`terminal_stop_failed` до сохранения отчёта. UI тоже остаётся без clean Stop.
+Повторный/уже поставленный в очередь finalize не повторяет fsync и не может
+объявить эту сессию clean. Владелец, дескриптор и эксклюзивная блокировка
+сохраняются до выхода приложения; возврат QEMU loop не доказывает cleanup.
+
+Swift-регрессия вызывает production `synchronizeForCleanStop` для обоих
+реальных владельцев диска: первый sync получает внедрённую ошибку, повторный
+finalize отклоняется, отдельный следующий настоящий sync проходит, но даже
+поздний `.hostSynced` оставляет состояние failed. Проверяются оба порядка
+unmount/loop-return, владение диском и последующие отдельные процессы,
+которым по-прежнему недоступна блокировка. Успешный Stop и повторный finalize
+после успеха также проверяются через этот production helper. Это обязательная
+часть существующего Apple runtime/storage gate, не симуляция QEMU.
+
+Локально: **204 Python tests, 203 PASS, 1 SKIP**, включая новый контракт
+необратимого failure, прежние Terminal/Debian/Probe и применение overlay
+к закреплённым настоящим исходникам Husk. **Swift runtime / Apple SDK:
+NOT RUN** — toolchain отсутствует, SKIP не заменяет обязательный Apple gate.
+Новые логи: `E:\Freddy Fazbear\iDeck.work\stop-fsync-20261016\full-tests.log`
+и `tests-result.json`. Guest/bootstrap/storage inputs не менялись, поэтому
+host VM и payload не пересобирались. Повторно проверен SHA-256 существующего
+`debian-console-20261016\payload-final\ideck-debian-console-v1.tar`:
+`84851a3597901f1e3ef293c1490dc9c8a4a78b286bea8d2a10c330cb1413c558`.
+Блокер доставки payload в Apple CI остаётся прежним (см. ниже).
+Codemagic/CI **не запускались**; main, чужие изменения и userdata не тронуты.
+
 ## Отдельная Debian-консоль и production payload — 2026-10-16
 
 Продолжение от **`3bcb4811726c690a988b95c828c11661090869ca`**, в той же

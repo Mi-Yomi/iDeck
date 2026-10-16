@@ -742,8 +742,7 @@ private final class LinuxTerminalWorker {
             // Main-loop return is not QEMU block-layer cleanup. Sync the host
             // file, but keep its descriptor and exclusive lock until app exit.
             checkpoint(.hostSyncBegin)
-            try disk.synchronize()
-            lifecycle.record(.hostSynced)
+            guard try lifecycle.synchronizeForCleanStop({ try disk.synchronize() }) else { return }
             checkpoint(.hostDiskSynced)
             finalized = true
             report["host_disk_fsync_passed"] = true
@@ -759,9 +758,19 @@ private final class LinuxTerminalWorker {
                 $0.message = "Guest unmount and data sync were confirmed. Close and reopen the app for the next session; the disk stays locked until this app exits."
             }
         } catch {
+            // The lifecycle already latched failure before rethrowing. Keep
+            // the worker/report failed too, before any queued finalize runs.
+            stopFailed = true
+            checkpoint(.stopFailed)
             report["host_disk_fsync_passed"] = false
+            report["terminal_stop_failed"] = true
+            report["terminal_clean_stop"] = false
+            report["status"] = "terminal_stop_failed"
             persist()
-            owner.publish { $0.message = "Guest unmount completed, but host disk sync failed. Clean stop is not confirmed. Close the app." }
+            owner.publish {
+                $0.cleanStopped = false; $0.running = false; $0.ready = false; $0.stopping = false; $0.canStop = false
+                $0.message = "Guest unmount completed, but host disk sync failed. Clean stop is not confirmed; the disk remains locked until the app exits. Save the report before closing the app."
+            }
         }
     }
 

@@ -13,6 +13,7 @@ import http.client
 import json
 import os
 import platform
+import re
 import shutil
 import signal
 import socket
@@ -272,6 +273,49 @@ def ensure_metal_toolchain(worker, report):
     receipt["status"] = "ready"
 
 
+def ensure_qemu_build_compiler(worker, report):
+    """Prove QEMU's generator compiler targets and runs on the macOS build host."""
+    receipt = {"status": "failed", "inherited_sdkroot": worker.env.get("SDKROOT")}
+    report["qemu_host_compiler"] = receipt
+    clang = worker.run("qemu-host-clang", ["xcrun", "--sdk", "macosx", "--find", "clang"])
+    sdk = worker.run("qemu-host-sdk", ["xcrun", "--sdk", "macosx", "--show-sdk-path"])
+    # QEMU's meson_quote splits on spaces without interpreting shell quotes.
+    # Reject tokens it cannot faithfully transport instead of inventing quoting.
+    def safe_token(value):
+        return isinstance(value, str) and re.fullmatch(r"[A-Za-z0-9_./:+-]+", value) is not None
+
+    if (not safe_token(clang) or not Path(clang).is_absolute() or not Path(clang).is_file()
+            or not safe_token(sdk) or not Path(sdk).is_absolute() or not Path(sdk).is_dir()
+            or not Path(sdk).name.startswith("MacOSX") or not Path(sdk).name.endswith(".sdk")):
+        raise ValueError("Unsafe or unexpected macOS build compiler/SDK path")
+    triple = worker.run("qemu-host-triple", [clang, "-isysroot", sdk, "-dumpmachine"])
+    if (not safe_token(triple)
+            or re.fullmatch(r"(?:arm64|aarch64)-apple-(?:darwin|macosx?)[0-9]+(?:\.[0-9]+)*", triple) is None):
+        raise ValueError("Unexpected macOS build compiler default triple")
+    command = [clang, "-target", triple, "-isysroot", sdk]
+    receipt.update(clang=clang, sdk=sdk, compiler_default_triple=triple)
+    directory = worker.output / "qemu-host-compiler"
+    directory.mkdir()
+    source = directory / "probe.c"
+    executable = directory / "probe"
+    source.write_text("#include <TargetConditionals.h>\n#include <stdio.h>\n"
+                      "#if !TARGET_OS_OSX || TARGET_OS_IPHONE\n#error macOS build compiler required\n#endif\n"
+                      "int main(void) { puts(\"IDECK_QEMU_HOST_COMPILER_OK\"); return 0; }\n", encoding="utf-8")
+    worker.run("qemu-host-compile", [*command, source, "-o", executable])
+    if not executable.is_file() or executable.stat().st_size == 0:
+        raise ValueError("macOS build compiler did not produce a nonempty executable")
+    output = worker.run("qemu-host-execute", [executable])
+    if output != "IDECK_QEMU_HOST_COMPILER_OK":
+        raise ValueError("macOS build compiler executable probe returned unexpected output")
+    receipt["probe"] = {"path": str(executable.relative_to(worker.output)), "size": executable.stat().st_size,
+                        "sha256": sha(executable), "stdout": output}
+    receipt["host_cc"] = " ".join(command)
+    # The iOS compiler, flags and ambient SDKROOT remain intact. Only QEMU's
+    # documented --host-cc receives the separate proven build-machine command.
+    worker.env["IDECK_QEMU_HOST_CC"] = receipt["host_cc"]
+    receipt["status"] = "ready"
+
+
 class Worker:
     def __init__(self, output):
         self.output = output
@@ -461,6 +505,11 @@ def main():
         worker.run("native-angle", ["bash", "scripts/build_angle_ios.sh"], source)
         worker.env["PKG_CONFIG_LIBDIR"] = str(cross / "sysroot/lib/pkgconfig") + ":" + str(cross / "sysroot/share/pkgconfig")
         worker.run("native-gpu", ["bash", "scripts/build_gpu_ios.sh"], source)
+        ensure_qemu_build_compiler(worker, report)
+        qemu_host_patch = EXPERIMENT / "ipa/0003-qemu-macos-build-compiler.patch"
+        report["qemu_host_compiler"]["recipe_patch_sha256"] = sha(qemu_host_patch)
+        worker.run("qemu-host-patch-check", ["git", "apply", "--check", qemu_host_patch], source)
+        worker.run("qemu-host-patch-apply", ["git", "apply", qemu_host_patch], source)
         qemu_cross_patch = EXPERIMENT / "ipa/0002-qemu-ios-needs-exe-wrapper.patch"
         report["qemu_cross_patch_sha256"] = sha(qemu_cross_patch)
         qemu_directory = "--directory=third_party/build/qemu-10.0.12-utm"

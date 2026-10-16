@@ -1,14 +1,16 @@
 # iDeck Linux Probe IPA build
 
 The `ideck-linux-probe-ipa` Codemagic workflow is a **native source build recipe**.
-The latest [Apple run at c9bd25b](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad169bc3ffd2c7f0ad3c451) passed native Python
-setup/import/cross-file checks, native-base, Metal preparation, ANGLE and
-native-gpu. It stopped during native-qemu setup: QEMU 10.0.12-utm's Meson 1.5.0
-tried to run the arm64 iOS compiler output on the macOS host. These are
-coordinator-reported browser results; full raw log bytes are not yet read
-locally. Integrated QEMU/Husk compilation, app linking and IPA packaging remain
-unverified. See `../evidence/qemu-cross-build.json`; earlier evidence remains
-historical. There is no IPA or device Linux/Steam proof yet.
+The latest [Apple run at 9e2e481](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad16f883ffd2c7f0ad3c55b) passed the QEMU
+`needs_exe_wrapper` control, then stopped in native-qemu while obtaining a
+runnable build-machine C compiler for `target/hexagon/gen_semantics.c`. The forwarded
+native file names `cc`; its sanity program did not run, and linker paths
+referenced the iPhoneOS SDK despite the compiler's Darwin default target.
+These are coordinator/parent-reported excerpts, not locally read full raw ZIP
+bytes. SDK selection leaking into the host build is a strong inference, not a
+proven SDKROOT environment value. See `../evidence/qemu-host-compiler.json`.
+Integrated QEMU/Husk compilation, app linking and IPA remain unverified; earlier
+evidence is preserved. There is no device Linux/Steam proof yet.
 
 Select branch `codex/linux-guest-feasibility-20261015` **before** selecting the
 workflow. Set `expected_commit` to the full current pushed SHA. `main` deliberately
@@ -53,9 +55,20 @@ cross-file properties with `needs_exe_wrapper = true` only for a configure
 cross build. It keeps the actual iOS compiler and machine settings, while
 preventing Meson's host-execution heuristic from running device binaries on
 macOS. The worker checks/applies the patch and records its SHA before QEMU
-setup. This adjustment still requires Apple CI verification. Exact QEMU
+setup. This control passed in the Apple run at 9e2e481; a native host compiler
+probe is the next separate setup boundary. Exact QEMU
 `meson-logs/meson-log.txt`, `config-meson.cross` and `config-meson.native` paths
 are retained as artifacts when produced; a missing previous log is not rebuilt.
+
+Before QEMU, the worker resolves clang and the macOS SDK explicitly, queries
+that compiler's actual default Apple arm64 Darwin/macOS triple, and builds a
+new C executable with explicit `-target` and `-isysroot`. The probe includes
+TargetConditionals.h and rejects an iPhone/non-macOS target; it must compile,
+link and execute with the expected marker. Only then does the worker publish
+`IDECK_QEMU_HOST_CC`, which `0003-qemu-macos-build-compiler.patch` passes via
+QEMU's `--host-cc` for build-machine generators. Invalid paths/triples and
+compile/link/execute failures stop the build. Ambient SDKROOT and iOS target
+compiler flags stay intact. This gate still needs its Apple CI rerun.
 
 Before ANGLE, the worker compiles a minimal Metal shader using
 `xcrun --sdk iphoneos metal -c`, requiring a newly produced nonempty AIR
@@ -133,9 +146,11 @@ downloaded old Husk109 IPA is substituted for Husk119 output.
 
 ## Local checks performed
 
-The integrated suite passes 95 network-free host tests (8 QEMU cross-build,
-19 Python setup/cross-file, 12 Metal bootstrap, 20 bounded-download and 36 earlier
-tests), with independent review. The QEMU tests isolate their Git repositories
+The integrated suite passes 110 network-free host tests (15 QEMU host compiler,
+8 QEMU cross-build, 19 Python setup/cross-file, 12 Metal bootstrap,
+20 bounded-download and 36 earlier tests), with independent review. The host
+compiler tests simulate xcrun/clang/probe subprocess results; they do not execute
+an Apple compiler or a real macOS binary. The QEMU tests isolate their Git repositories
 and verify conditional property emission and fail-closed patch application;
 a full primary configure control differs by exactly four inserted lines. Setup tests simulate subprocess/pip/Apple outputs; they do
 not install packages, execute an Apple compiler or download a component. The earlier tests include wrong branch/SHA/default-input rejection,
@@ -152,7 +167,8 @@ new request guard; YAML defaults no longer resolve omitted required inputs to
 empty environment strings. The first Apple run passed YAML/request validation;
 the next run passed Swift typechecking. The latest Apple run completed native-base,
 Metal component preparation, ANGLE, Python yaml preparation and GPU dependencies;
-QEMU setup failed before integrated runtime and app linking.
+QEMU setup then failed at the build-machine C compiler, before integrated
+runtime and app linking.
 
 The new extraction helper fully unpacked all seven locked source archives on
 Windows/Python 3.12.14 and wrote a valid result with real guest metadata. Only

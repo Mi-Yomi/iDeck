@@ -5,6 +5,71 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## Последняя Apple-попытка: cross wrapper исправлен, build-machine C compiler не исполняется
+
+[Build `6ad16f883ffd2c7f0ad3c55b`](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad16f883ffd2c7f0ad3c55b)
+на [`9e2e481ced29de05ab63deb6404330b6bf0e2061`](https://github.com/Mi-Yomi/iDeck/commit/9e2e481ced29de05ab63deb6404330b6bf0e2061)
+завершился **failed** в `native-qemu`. `needs_exe_wrapper` прошёл; следующий
+отказ связан с build-machine C compiler для native generator
+`target/hexagon/gen_semantics.c`, не app linker или запуском guest. Parent передал
+actual `config-meson.native`: **77 bytes**, `c = ['cc']`; в Meson log sanity
+compile не дал stderr, но запуск host sanity program отказал. Линкерные пути
+ссылаются на iPhoneOS27.0.sdk, при этом default target `cc` — Darwin.
+
+Источник — browser-сводка координатора и переданные parent config/log excerpts,
+**не локально прочитанный полный raw ZIP**. Это сильное основание проверить
+утечку iOS SDK selection в native host build, но фактическое значение `SDKROOT`
+из этих excerpts не доказано и не утверждается.
+
+Реализован `ensure_qemu_build_compiler`: `xcrun --sdk macosx` получает absolute
+clang/MacOSX SDK, затем clang `-isysroot <MacSDK> -dumpmachine` даёт фактический
+compiler default Apple arm64/aarch64 Darwin/macOS triple. Это проверка default
+target, не независимое доказательство runtime OS. Safe-token validation
+отклоняет пути/значения, которые QEMU meson_quote не сможет передать корректно.
+Explicit `-target <triple> -isysroot <MacSDK>` компилирует и линкует C program с
+`TargetConditionals.h`: `#error`, если не macOS или iPhone. Новый binary обязан
+быть непустым и **реально исполниться** с точным marker. Только после этого
+публикуется `IDECK_QEMU_HOST_CC`; новый Husk patch
+`ipa/0003-qemu-macos-build-compiler.patch` передаёт его через documented
+`--host-cc`. SDKROOT/CC/CFLAGS/iOS target environment не меняются. Ошибки SDK,
+compiler/platform/compile/link/execute/marker/timeout не маскируются.
+
+Full pinned Husk `build_ios.sh` materialized root и проверен автором evidence:
+8825 bytes, Git blob `22a6ff932eccc51e1d58ddce8ee334884c9ac8b9`, SHA-256
+`9f039b008da5ab56e0f7581b3d84f6e4b8f1e74adc9d8c608f26d94e0a8ef176`.
+Это source proof, не Apple execution. Native agent проверил полный recipe
+в isolated Git root `.work/qemu-host-compiler/native-verify`: existing `0001`
+check/apply, затем `0003` check/apply, `bash -n` PASS; byte compare показывает
+только одну добавленную `--host-cc` строку относительно 0001-patched recipe,
+original сохранён. New patch SHA-256
+`f95fbe471fdddea4fd593e9af7201a96d6f7aef81416730881acd4d34a9d1579`,
+resulting recipe SHA-256
+`02729ae1e0a5b50aed33b79c1e459a21f45ddaa531c53934a9ed3e08cddeea55`.
+Оба независимых review одобрили итог. Координатор выполнил
+`python3 -B -m unittest discover -s experiments/linux-guest/tests -v` —
+**110 tests PASS**, exit 0, **0.813 секунды**, Python 3.12.14/Linux: 15 новых и
+95 прежних. Это network-free host controls с моделированием xcrun/clang/probe,
+**не actual Apple compile/link/execute probe**. Log:
+`.work/qemu-host-compiler/host-tests.log`, 16858 bytes, SHA-256
+`a44166fc7eda8a499a635bc32d2713afd46e07229a36697ce98e9baf6f6fb3b4`;
+не добавлен в Git. AST/diff checks PASS. Workflow/request/native lock/0001/0002/
+guest lock/Python lock не менялись. Final script/test/patch hashes в новом
+evidence; Apple-проверка host compiler fix ещё требуется.
+
+Parent предоставил Library ZIP `libfile_d2ac800c3dd081918e780006cf73c064`,
+239601 bytes, SHA-256
+`df9a6489fee2837e98043bec0aad544f22c4f6ad491198b9189813b2bada0d73`.
+Это **reported / unverified locally**: официальный helper отказал с
+`library file transfer failed: download failed`, ZIP payload не получен,
+HTTP status не раскрыт. Этот отказ не называется 403; access bypass не было.
+Evidence: `experiments/linux-guest/evidence/qemu-host-compiler.json`.
+
+Старые evidence и HANDOFF snapshots сохранены. Integrated QEMU/Husk runtime,
+app linking и IPA ещё не получены; device Linux/JIT и Steam не проверены.
+Лимиты **6900 секунд / 120 минут** не меняются. Новая CI для host compiler fix
+ещё не запускалась; следующий запуск только browser-координатором после свежих
+quota/disabled-billing/private/exact pushed HEAD/no-active-CI проверок.
+
 ## Последняя Apple-попытка: Python и GPU прошли, QEMU ошибочно проверяет device binary на host
 
 [Build `6ad169bc3ffd2c7f0ad3c451`](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad169bc3ffd2c7f0ad3c451)

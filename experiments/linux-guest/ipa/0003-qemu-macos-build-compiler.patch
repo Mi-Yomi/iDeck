@@ -1,0 +1,25 @@
+From: iDeck local development <ideck-local@users.noreply.github.com>
+Subject: [PATCH] Give QEMU generators the verified macOS build compiler
+
+Class: build-fix
+
+Evidence: experiments/linux-guest/evidence/qemu-host-compiler.json; Apple execution pending
+
+The dedicated Linux Probe worker proves the separate build compiler with an
+explicit macOS SDK and compiler default triple, then compiles, links and runs
+a macOS-only probe. Pass those same validated tokens to QEMU's --host-cc.
+Keep the iOS target compiler, flags, SDK and dependency search paths intact.
+
+Offered-upstream: no, local experiment
+---
+diff --git a/scripts/build_ios.sh b/scripts/build_ios.sh
+--- a/scripts/build_ios.sh
++++ b/scripts/build_ios.sh
+@@ -165,6 +165,7 @@ stage_qemu() {
+     ( cd "$dir/_husk_build" \
+       && ../configure \
+             --prefix="$PREFIX" \
+             --cross-prefix="" \
++            --host-cc="${IDECK_QEMU_HOST_CC:?verified macOS build compiler is required}" \
+             --target-list=aarch64-softmmu \
+             --enable-shared-lib \

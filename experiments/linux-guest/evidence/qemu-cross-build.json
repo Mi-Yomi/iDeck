@@ -1,0 +1,159 @@
+{
+  "status": "host_reviewed_qemu_cross_build_fix_apple_rerun_pending",
+  "working_branch": "codex/linux-guest-feasibility-20261015",
+  "preparation_base_commit": "c9bd25b8ee7eea1f88f44895430c3d3c0ac9f9fc",
+  "failed_build": {
+    "url": "https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad169bc3ffd2c7f0ad3c451",
+    "workflow": "ideck-linux-probe-ipa",
+    "commit": "c9bd25b8ee7eea1f88f44895430c3d3c0ac9f9fc",
+    "status": "failed",
+    "evidence_source": "Coordinator terminal browser summary plus parent-forwarded complete QEMU log text (reported size 1302); raw artifact bytes have not been read or independently verified locally by this evidence author.",
+    "native_python_venv_import_and_cross_file_checks_passed": true,
+    "native_base_passed": true,
+    "metal_probe_passed": true,
+    "native_angle_passed": true,
+    "native_gpu": {
+      "exit_code": 0,
+      "elapsed_seconds": 19.916
+    },
+    "first_failed_step": "native-qemu",
+    "native_qemu_elapsed_seconds": 12.853,
+    "first_error": "../meson.build:1:0: ERROR: Executables created by C compiler clang -target arm64-apple-ios15.5 are not runnable.",
+    "qemu_version": "10.0.12-utm",
+    "meson_version": "1.5.0",
+    "integrated_qemu_husk_runtime_built": false,
+    "app_linked": false,
+    "ipa_created": false,
+    "device_tested": false,
+    "steam_executed": false,
+    "qemu_environment_observations": {
+      "source": "Parent-forwarded QEMU log text summarized by coordinator; not local bytes",
+      "verified_native_python_version": "3.12.7",
+      "qemu_creates_own_pyvenv": true,
+      "qemu_pyvenv_installs": {
+        "Meson": "1.5.0",
+        "pycotap": "1.3.1"
+      },
+      "meson_recognized_cross_build": true
+    }
+  },
+  "raw_artifact": {
+    "status": "materialization_failed_payload_not_obtained",
+    "reported_full_qemu_log_size": 1302,
+    "full_qemu_text_forwarded_by_parent": true,
+    "raw_local_bytes_read_or_verified": false,
+    "library_file_id": "libfile_02d08571e5c0819184cb6ad380b712c4",
+    "reported_zip_size": 197312,
+    "reported_zip_sha256": "e9611d2da2bc6e47441c38f6392cce0487e8b219878263c1447b4c3da3ff1ceb",
+    "digest_source": "Parent reported; not independently verified locally.",
+    "deep_meson_log_present_in_zip": false,
+    "zip_namelist_checked_by_parent": true,
+    "deep_meson_log_local_read": false,
+    "materialization": {
+      "official_library_helper_exit_code": 1,
+      "error": "library file transfer failed: download failed",
+      "zip_payload_obtained": false,
+      "http_status_exposed": false,
+      "http_status": null,
+      "access_bypass_attempted": false
+    }
+  },
+  "fix": {
+    "status": "implemented_host_reviewed_apple_rerun_pending",
+    "worker_aggregate_seconds_unchanged": 6900,
+    "provider_max_minutes_unchanged": 120,
+    "intended_change": "Set needs_exe_wrapper=true in the QEMU-generated Meson cross-file properties, without pretending the iOS target is macOS or suppressing compiler failures.",
+    "patch": "experiments/linux-guest/ipa/0002-qemu-ios-needs-exe-wrapper.patch",
+    "source_change": "In QEMU configure-generated cross-file [properties], emit needs_exe_wrapper = true only when cross_compile=yes. Keep actual iOS compiler/target/machine settings unchanged; native configure condition does not emit the property.",
+    "application": "Worker records patch SHA-256, runs git apply --check then applies using the exact --directory path before native-qemu to the locked QEMU directory. Native agent verified the same application route against the full primary tag configure file, including an ignored third_party path.",
+    "diagnostic_artifacts_added_by_coordinator": [
+      ".work/linux-ipa/husk/third_party/build/qemu-10.0.12-utm/_husk_build/meson-logs/meson-log.txt",
+      ".work/linux-ipa/husk/third_party/build/qemu-10.0.12-utm/_husk_build/config-meson.cross",
+      ".work/linux-ipa/husk/third_party/build/qemu-10.0.12-utm/_husk_build/config-meson.native"
+    ],
+    "artifact_scope": "Only three exact artifact paths added; diagnostics do not reconstruct the missing prior Meson log."
+  },
+  "host_validation": {
+    "status": "passed",
+    "initial_integrated_run": {
+      "status": "failed_test_fixture_corrected_in_final_run",
+      "tests_run": 95,
+      "new_cases_failed": 6,
+      "source": "Coordinator-reported root test result; evidence author verified preserved log size/hash.",
+      "cause": "New test temporary directories under .work had no isolated git repository; git apply discovered the parent repository/cwd prefix and skipped the patch while reporting success. Reviewer fixed test setUp to git init; final integrated run passed.",
+      "runtime_fix_changed_due_to_this_failure": false,
+      "apple_failure": false,
+      "log": ".work/qemu-cross-build/host-tests-initial.log",
+      "log_size": 20361,
+      "log_sha256": "730f45129acf39232baacdf87f8d8ed2f56963f2cbb4879507116e70590d4fc4",
+      "log_committed": false
+    },
+    "yaml_structural_check": "Coordinator parsed YAML and confirmed only three explicit QEMU diagnostic artifact paths added; all other workflow config unchanged.",
+    "ast_and_diff_checks_passed": true,
+    "source": "Coordinator final integrated suite; evidence author checked saved log and final file hashes.",
+    "command": "python3 -B -m unittest discover -s experiments/linux-guest/tests -v",
+    "environment": "Existing Linux cloud /workspace/iDeck; Python 3.12.14",
+    "exit_code": 0,
+    "tests_passed": 95,
+    "new_qemu_cross_tests": 8,
+    "previous_tests_included": 87,
+    "elapsed_seconds": 0.723,
+    "log": ".work/qemu-cross-build/host-tests.log",
+    "log_size": 14233,
+    "log_sha256": "2d55f01b1994e855e190af12651e41303b5bef5ec90b74acc6338a10d6b0134e",
+    "log_committed": false,
+    "fixture_fix": "New test setUp uses an isolated git init so patch application cannot discover the parent repository. Initial failing log preserved separately.",
+    "coverage": [
+      "git apply check/apply/rejection and changed source context",
+      "exact conditional cross property emission and native no-emission control",
+      "unchanged compiler/machine settings",
+      "worker ordering and fail-closed patch checks",
+      "three explicit diagnostic artifacts only"
+    ],
+    "scope": "Host source/patch/control tests only, not actual QEMU configure execution, iOS native build, app linking or device run.",
+    "native_swift_xcode_review_approved": true,
+    "independent_regression_review_completed": true
+  },
+  "apple_rerun_performed_for_cross_build_fix": false,
+  "integrated_qemu_husk_runtime_built": false,
+  "app_linked": false,
+  "ipa_created": false,
+  "device_tested": false,
+  "steam_executed": false,
+  "primary_source": {
+    "path": ".work/qemu-cross-build/primary/configure",
+    "source_url": "https://github.com/utmapp/qemu/blob/v10.0.12-utm/configure",
+    "source_revision": "v10.0.12-utm",
+    "size": 60470,
+    "sha256": "dced6162c1d2de70924b90e94ad508fa46bec1ab820417d83a366f379428093b",
+    "git_blob": "000309cf610ec058e147b9b0a21d5994a6e61c0b",
+    "bytes_verified_by_evidence_author": true,
+    "scope": "Tag configure file only, materialized by coordinator; not a full extraction/verification of the locked QEMU source archive or an actual QEMU build."
+  },
+  "patch_application_control": {
+    "source": "Coordinator-reported Native agent control in .work/qemu-cross-build/native-verify; patch hash directly verified by evidence author.",
+    "git_apply_check_and_apply_passed": true,
+    "exact_worker_directory_path_used": true,
+    "ignored_third_party_directory_covered": true,
+    "bash_n_passed": true,
+    "byte_comparison": "Only four inserted source lines differ from original primary configure.",
+    "original_primary_unchanged": true,
+    "patch_sha256": "a14a585823b7a5401ceea4f29524d33b81837ecfb1c7d77d81325ca7951b99a3",
+    "patched_configure_sha256": "8aa188b69bc674f0ec754b944dce413b5aba96e4e9143fa9439bc64550b28f41",
+    "scope": "Full primary tag configure file only; not extraction of the locked archive, actual configure execution or an Apple build.",
+    "coordinator_independent_full_configure_compare": "Confirmed exactly four inserted source lines; original primary unchanged."
+  },
+  "hashes": {
+    "ci/build_linux_probe_ipa.py": "99b20354eaed77ff4bc3d577e096de04786850fbbaa750ea38ba83f7c63aef38",
+    "experiments/linux-guest/tests/test_qemu_cross.py": "8a4e28e6cad2659da5161aac50d97eff968a0c51d0b61c6cc2fcfaad599cd198",
+    "experiments/linux-guest/ipa/0002-qemu-ios-needs-exe-wrapper.patch": "a14a585823b7a5401ceea4f29524d33b81837ecfb1c7d77d81325ca7951b99a3",
+    "codemagic.yaml": "2286ff72846486a4c68a9a1b24a28c4ff12a263abc8d1c5eb6325f69d5b269f1"
+  },
+  "primary_analysis_sources": {
+    "verification_source": "Role2 verified these primary sources and relayed them through the coordinator; not fetched by this evidence author.",
+    "meson_host_execution_heuristic": "https://github.com/mesonbuild/meson/blob/1.5.0/mesonbuild/environment.py#L501-L516",
+    "meson_explicit_property": "https://github.com/mesonbuild/meson/blob/1.5.0/mesonbuild/environment.py#L955-L959",
+    "meson_compiler_sanity": "https://github.com/mesonbuild/meson/blob/1.5.0/mesonbuild/compilers/mixins/clike.py#L279-L325",
+    "meson_cross_properties_documentation": "https://mesonbuild.com/Cross-compilation.html#properties"
+  }
+}

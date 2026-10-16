@@ -461,6 +461,11 @@ def main():
         worker.run("native-angle", ["bash", "scripts/build_angle_ios.sh"], source)
         worker.env["PKG_CONFIG_LIBDIR"] = str(cross / "sysroot/lib/pkgconfig") + ":" + str(cross / "sysroot/share/pkgconfig")
         worker.run("native-gpu", ["bash", "scripts/build_gpu_ios.sh"], source)
+        qemu_cross_patch = EXPERIMENT / "ipa/0002-qemu-ios-needs-exe-wrapper.patch"
+        report["qemu_cross_patch_sha256"] = sha(qemu_cross_patch)
+        qemu_directory = "--directory=third_party/build/qemu-10.0.12-utm"
+        worker.run("qemu-cross-patch-check", ["git", "apply", "--check", qemu_directory, qemu_cross_patch], source)
+        worker.run("qemu-cross-patch-apply", ["git", "apply", qemu_directory, qemu_cross_patch], source)
         worker.run("native-qemu", ["bash", "scripts/build_ios.sh", "qemu"], source)
         worker.run("native-integrate-husk", ["bash", "scripts/integrate_husk.sh"], source)
         worker.run("native-qemu-integrated", ["bash", "scripts/build_ios.sh", "qemurebuild"], source)

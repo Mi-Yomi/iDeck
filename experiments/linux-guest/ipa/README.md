@@ -1,15 +1,14 @@
 # iDeck Linux Probe IPA build
 
 The `ideck-linux-probe-ipa` Codemagic workflow is a **native source build recipe**.
-The latest [Apple run at efa6741](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad15ff23ffd2c7f0ad3c239) completed
-`native-base`, downloaded the official Metal component, compiled a real 2944-byte
-AIR probe, and passed `native-angle`. It stopped at `native-gpu`: virglrenderer's
-Meson setup selected Python 3.12.7 without the `yaml` module. These results are
-from the coordinator's browser summary; raw artifact bytes are not yet verified
+The latest [Apple run at c9bd25b](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad169bc3ffd2c7f0ad3c451) passed native Python
+setup/import/cross-file checks, native-base, Metal preparation, ANGLE and
+native-gpu. It stopped during native-qemu setup: QEMU 10.0.12-utm's Meson 1.5.0
+tried to run the arm64 iOS compiler output on the macOS host. These are
+coordinator-reported browser results; full raw log bytes are not yet read
 locally. Integrated QEMU/Husk compilation, app linking and IPA packaging remain
-unverified. See `../evidence/python-yaml-bootstrap.json`; previous source,
-download and Metal preparation evidence remains historical. There is no IPA or
-device Linux/Steam proof yet.
+unverified. See `../evidence/qemu-cross-build.json`; earlier evidence remains
+historical. There is no IPA or device Linux/Steam proof yet.
 
 Select branch `codex/linux-guest-feasibility-20261015` **before** selecting the
 workflow. Set `expected_commit` to the full current pushed SHA. `main` deliberately
@@ -46,8 +45,17 @@ After native-base, both generated `cross-ios.meson` and `cross-darwin.meson`
 must name that exact absolute venv Python; each file hash is recorded before
 ANGLE/GPU starts. This also checks the actual files rather than assuming PATH
 selection. System packages and QEMU's own Python setup are not changed. Setup,
-identity or import failures stop the build. This new preparation still needs
-its Apple CI rerun; wheel identity and host tests cannot prove native linking.
+identity or import failures stop the build. This preparation passed in the
+Apple run at c9bd25b; wheel identity and host tests alone do not prove linking.
+
+The QEMU-specific patch `0002-qemu-ios-needs-exe-wrapper.patch` marks generated
+cross-file properties with `needs_exe_wrapper = true` only for a configure
+cross build. It keeps the actual iOS compiler and machine settings, while
+preventing Meson's host-execution heuristic from running device binaries on
+macOS. The worker checks/applies the patch and records its SHA before QEMU
+setup. This adjustment still requires Apple CI verification. Exact QEMU
+`meson-logs/meson-log.txt`, `config-meson.cross` and `config-meson.native` paths
+are retained as artifacts when produced; a missing previous log is not rebuilt.
 
 Before ANGLE, the worker compiles a minimal Metal shader using
 `xcrun --sdk iphoneos metal -c`, requiring a newly produced nonempty AIR
@@ -79,7 +87,8 @@ Husk), with the matching helper/widget IDs. Normal Husk source/target is retaine
 `native-sources.lock.json` fixes the seven official source archive sizes/hashes,
 Husk/GPU/libucontext Git revisions, and Rust version. WebKit ANGLE is now pinned
 to a concrete revision, instead of upstream's moving shallow default branch;
-its compatibility with this recipe is **not yet measured**. Homebrew tool
+its ANGLE build passed on Apple at c9bd25b. Full runtime integration remains
+separate and unverified. Homebrew tool
 versions are recorded per build, not claimed to be reproducibly pinned.
 Cargo dependencies remain locked by upstream `Cargo.lock`.
 
@@ -124,9 +133,11 @@ downloaded old Husk109 IPA is substituted for Husk119 output.
 
 ## Local checks performed
 
-The integrated suite passes 87 network-free host tests (19 Python setup/cross
-file tests, 12 Metal bootstrap, 20 bounded-download and 36 earlier tests), with
-independent review. Setup tests simulate subprocess/pip/Apple outputs; they do
+The integrated suite passes 95 network-free host tests (8 QEMU cross-build,
+19 Python setup/cross-file, 12 Metal bootstrap, 20 bounded-download and 36 earlier
+tests), with independent review. The QEMU tests isolate their Git repositories
+and verify conditional property emission and fail-closed patch application;
+a full primary configure control differs by exactly four inserted lines. Setup tests simulate subprocess/pip/Apple outputs; they do
 not install packages, execute an Apple compiler or download a component. The earlier tests include wrong branch/SHA/default-input rejection,
 real guest archive restoration, source staging, simulator/incorrect app identity
 rejection, a real nonzero child-process failure and rejection of the missing
@@ -140,8 +151,8 @@ The 15 existing workflows preserve their original execution bodies after the
 new request guard; YAML defaults no longer resolve omitted required inputs to
 empty environment strings. The first Apple run passed YAML/request validation;
 the next run passed Swift typechecking. The latest Apple run completed native-base,
-Metal component preparation and ANGLE; Python yaml preparation, integrated
-QEMU/Husk runtime and app linking remain pending a new Apple run.
+Metal component preparation, ANGLE, Python yaml preparation and GPU dependencies;
+QEMU setup failed before integrated runtime and app linking.
 
 The new extraction helper fully unpacked all seven locked source archives on
 Windows/Python 3.12.14 and wrote a valid result with real guest metadata. Only

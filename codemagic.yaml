@@ -721,4 +721,7 @@ workflows:
       - .work/linux-ipa/iDeck-Linux-Probe.ipa
       - .work/linux-ipa/*.log
       - .work/linux-ipa/husk/build/logs/**
+      - .work/linux-ipa/husk/third_party/build/qemu-10.0.12-utm/_husk_build/meson-logs/meson-log.txt
+      - .work/linux-ipa/husk/third_party/build/qemu-10.0.12-utm/_husk_build/config-meson.cross
+      - .work/linux-ipa/husk/third_party/build/qemu-10.0.12-utm/_husk_build/config-meson.native
       - .work/linux-ipa/native-products.tar.gz

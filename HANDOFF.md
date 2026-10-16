@@ -5,6 +5,80 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## Последняя Apple-попытка: Python и GPU прошли, QEMU ошибочно проверяет device binary на host
+
+[Build `6ad169bc3ffd2c7f0ad3c451`](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad169bc3ffd2c7f0ad3c451)
+на [`c9bd25b8ee7eea1f88f44895430c3d3c0ac9f9fc`](https://github.com/Mi-Yomi/iDeck/commit/c9bd25b8ee7eea1f88f44895430c3d3c0ac9f9fc)
+завершился **failed**. Python venv/import и проверки actual Meson cross files
+прошли; native-base, Metal probe и ANGLE также прошли. `native-gpu`: exit 0,
+**19.916 секунды**. Первый отказ — `native-qemu`, **12.853 секунды**:
+`../meson.build:1:0: ERROR: Executables created by C compiler clang -target
+arm64-apple-ios15.5 are not runnable`. QEMU **10.0.12-utm**, его Meson **1.5.0**.
+Это ошибка configure/Meson host-versus-device проверки, не app linker failure.
+Источник — terminal browser-сводка координатора и переданный parent полный
+QEMU log text (1302), **не локально прочитанные artifact bytes**. В тексте:
+Python 3.12.7, собственный QEMU pyvenv с Meson 1.5.0/pycotap 1.3.1; Meson уже
+распознал cross build. Это не доказательство отсутствующего cross-файла.
+
+Предыдущий yaml fix этой Apple попыткой проверен. Старые evidence и нижние
+HANDOFF sections сохраняются как исторические snapshots. Integrated QEMU/Husk
+runtime ещё не собран, app не слинкован, IPA нет; device Linux/JIT и Steam не
+проверены. Реализован минимальный source-backed fix: `needs_exe_wrapper=true`
+в properties сгенерированного QEMU cross-файла, без подмены host/target platform.
+Патч `ipa/0002-qemu-ios-needs-exe-wrapper.patch` добавляет property только при
+`cross_compile=yes`; actual compiler/target/machine settings сохраняются.
+Worker фиксирует patch SHA, делает `git apply --check` и apply в locked QEMU
+directory до `native-qemu`. Source evidence: materialized tag configure
+(v10.0.12-utm), **60470 bytes**, Git blob
+`000309cf610ec058e147b9b0a21d5994a6e61c0b`, SHA-256
+`dced6162c1d2de70924b90e94ad508fa46bec1ab820417d83a366f379428093b`;
+автор evidence проверил bytes/hash. Это не полная распаковка locked QEMU archive
+или native build. Native agent проверил полный primary configure в
+`.work/qemu-cross-build/native-verify`: worker-equivalent `git apply --check` и
+apply с точным `--directory` (включая ignored third_party path), `bash -n` PASS;
+byte compare показывает только 4 добавленные строки. Original не менялся.
+Patch SHA-256 `a14a585823b7a5401ceea4f29524d33b81837ecfb1c7d77d81325ca7951b99a3`,
+patched configure SHA-256
+`8aa188b69bc674f0ec754b944dce413b5aba96e4e9143fa9439bc64550b28f41`.
+Это source-control proof, без исполнения actual configure или Apple compiler.
+Role2 одобрил fix/diagnostics. Первый общий host run выполнил 95 tests, но
+6 новых cases отказали из-за fixture: временные каталоги под `.work` не имели
+собственного Git repo; git apply обнаружил parent/cwd prefix и пропустил patch.
+Это ошибка нового test setup, не Apple/runtime failure; reviewer добавил
+изолированный `git init`, runtime fix не менялся. Initial log сохранён:
+`.work/qemu-cross-build/host-tests-initial.log`, 20361 bytes, SHA-256
+`730f45129acf39232baacdf87f8d8ed2f56963f2cbb4879507116e70590d4fc4`.
+После изоляции fixtures финальный coordinator run:
+`python3 -B -m unittest discover -s experiments/linux-guest/tests -v` —
+**95 tests PASS**, exit 0, **0.723 секунды**, Python 3.12.14/Linux; 8 новых +
+87 прежних. Final log `.work/qemu-cross-build/host-tests.log`, 14233 bytes,
+SHA-256 `2d55f01b1994e855e190af12651e41303b5bef5ec90b74acc6338a10d6b0134e`;
+логи не добавлены в Git. Native/Swift-Xcode review и независимые regressions
+завершены; root независимо подтвердил только 4 source insertions. YAML
+structural check подтвердил только три новых diagnostic artifact paths;
+AST/diff checks PASS. Эти host controls не запускают actual QEMU configure,
+iOS compiler или app linker; Apple rerun этого fix ещё нужен. Лимиты **6900 секунд /
+120 минут** сохраняются. Evidence:
+`experiments/linux-guest/evidence/qemu-cross-build.json`.
+
+Parent передал ZIP Library `libfile_02d08571e5c0819184cb6ad380b712c4`,
+197312 bytes, SHA-256
+`e9611d2da2bc6e47441c38f6392cce0487e8b219878263c1447b4c3da3ff1ceb`:
+**reported / unverified locally**: официальный Library helper завершился
+exit 1, `library file transfer failed: download failed`; payload не получен,
+HTTP status helper не показал. Это не называется 403; bypass не было.
+По проверенному parent ZIP namelist глубокий `meson-logs/meson-log.txt` в архив
+не попал; его содержание не заявляется прочитанным. Root добавил три exact
+artifact paths для будущих попыток: `_husk_build/meson-logs/meson-log.txt`,
+`_husk_build/config-meson.cross` и `_husk_build/config-meson.native` внутри
+staged QEMU. Это не восстанавливает старый log.
+
+Новая CI для этого fix ещё не запускалась. Следующий запуск — только
+browser-координатором после свежих quota/disabled-billing/private/exact pushed
+HEAD/no-active-CI проверок. Полный новый SHA брать после commit/push через
+`git rev-parse HEAD` и сверять с удалённой Linux-веткой; SHA выше — уже завершённый
+build, не будущий результат.
+
 ## Последняя Apple-попытка: Metal и ANGLE прошли, Python не находит yaml
 
 [Build `6ad15ff23ffd2c7f0ad3c239`](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad15ff23ffd2c7f0ad3c239)

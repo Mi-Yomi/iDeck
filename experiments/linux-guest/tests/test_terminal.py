@@ -427,6 +427,42 @@ class TerminalSourceContracts(unittest.TestCase):
         self.assertIn('"qemu_block_layer_drained_verified": false', session)
         self.assertIn('report["userdata_lock_retained_until_process_exit"] = true', session)
 
+    def test_qemu_duplicate_lock_requires_live_host_disk_owner(self):
+        profile = (EXPERIMENT / "ios/LinuxTerminalProfile.swift").read_text()
+        arguments = swift_block(profile, "func arguments(")
+        self.assertIn("disk: LinuxTerminalDisk", profile)
+        self.assertNotIn("diskURL: URL", profile)
+        self.assertLess(arguments.index("try disk.validateOwnership()"), arguments.index("original.arguments("))
+        self.assertEqual(arguments.count("file.locking=off"), 1)
+        self.assertIn("format=raw,cache=writethrough,file.locking=off,file=", arguments)
+        ownership = swift_block(profile, "func validateOwnership()")
+        for guard in ["fd >= 0", "flock(fd, LOCK_EX | LOCK_NB)", "fstat(fd", "lstat(url.path",
+                      "opened.st_dev == named.st_dev", "opened.st_ino == named.st_ino",
+                      "opened.st_nlink == 1", "named.st_nlink == 1", "opened.st_size", "S_IFREG"]:
+            self.assertIn(guard, ownership)
+        for forbidden in ["LOCK_UN", "close(", "unlink(", "provision(", "truncate("]:
+            self.assertNotIn(forbidden, ownership)
+        session = (EXPERIMENT / "ios/LinuxTerminalSession.swift").read_text()
+        entry = swift_block(session, "private func prepareNativeEntry(")
+        self.assertLess(entry.index("try disk.validateOwnership()"), entry.index("try diagnostic.record(.qemuInitBegin)"))
+        self.assertLess(entry.index("try disk.validateOwnership()"), entry.index("handToQEMU()"))
+        probe = (EXPERIMENT / "ios/LinuxGuestProfile.swift").read_text()
+        self.assertNotIn("locking=off", probe)
+        diagnostics = (EXPERIMENT / "ios/LinuxTerminalDiagnostics.swift").read_text()
+        self.assertIn("diskOwnership", diagnostics)
+
+    def test_apple_disk_checks_exercise_conflict_and_independent_processes(self):
+        checks = (EXPERIMENT / "ios/tests/TerminalChecks.swift").read_text()
+        self.assertIn("F_OFD_SETLK", checks)
+        self.assertIn("l_start: 100, l_len: 1", checks)
+        self.assertIn("errno == EAGAIN || errno == EACCES", checks)
+        self.assertEqual(checks.count("try contenders(directory, seed: seed, locked: true)"), 2)
+        self.assertIn("try contenders(directory, seed: seed, locked: false)", checks)
+        self.assertIn("replacement inode never reseeded or modified", checks)
+        self.assertIn("closed-disk-token-argv", checks)
+        main = (EXPERIMENT / "ios/tests/main.swift").read_text()
+        self.assertIn("try runTerminalDiskContender(", main)
+
     def test_console_log_and_ui_publication_are_bounded_without_qemu_logfile(self):
         session = (EXPERIMENT / "ios/LinuxTerminalSession.swift").read_text()
         serial = swift_block(session, "private func receiveSerial(")

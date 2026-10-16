@@ -1,5 +1,19 @@
 import Foundation
 import CryptoKit
+import Darwin
+
+/// A fresh process must acquire the same production host lock as the runtime.
+func runTerminalDiskContender(directory: URL, seed: URL, expectLocked: Bool) throws {
+    do {
+        let disk = try LinuxTerminalDisk.open(directory: directory, seed: seed)
+        precondition(!expectLocked, "separate process acquired an already owned disk")
+        try disk.validateOwnership()
+        try disk.synchronizeAndClose()
+    } catch LinuxTerminalProfile.Invalid.diskLocked {
+        precondition(expectLocked, "released disk remained locked")
+    }
+    exit(0)
+}
 
 /// Actual Foundation/Darwin helper checks. Synthetic sparse FAT headers and
 /// kernel bytes validate host file handling; they do not execute a Linux guest.
@@ -37,6 +51,25 @@ func runTerminalChecks() throws {
         do { try body(); preconditionFailure("unsafe probe asset accepted") }
         catch let error as LinuxGuestProfile.Invalid { check(error == expected, "expected \(expected), received \(error)") }
         catch { preconditionFailure("unexpected probe asset error type") }
+    }
+    func contenders(_ directory: URL, seed: URL, locked: Bool) throws {
+        var children: [(Process, DispatchSemaphore)] = []
+        for _ in 0..<(locked ? 3 : 1) {
+            let child = Process()
+            let done = DispatchSemaphore(value: 0)
+            child.executableURL = URL(fileURLWithPath: CommandLine.arguments[0])
+            child.arguments = ["--terminal-disk-contender", directory.path, seed.path, locked ? "locked" : "free"]
+            child.terminationHandler = { _ in done.signal() }
+            try child.run()
+            children.append((child, done))
+        }
+        for (child, done) in children {
+            if done.wait(timeout: .now() + 10) != .success {
+                child.terminate()
+                preconditionFailure("disk contender hung instead of failing nonblocking")
+            }
+            check(child.terminationReason == .exit && child.terminationStatus == 0, "independent process disk ownership")
+        }
     }
     func bootSector() -> Data {
         var boot = Data(repeating: 0, count: 512)
@@ -156,7 +189,18 @@ func runTerminalChecks() throws {
     let disk = try LinuxTerminalDisk.open(directory: directory, seed: seed)
     check(disk.url.lastPathComponent == "userdata.raw")
     check(try byte(disk.url, at: 2 * 1024 * 1024) == Data([0]))
-    expectFailure { _ = try LinuxTerminalDisk.open(directory: directory, seed: seed) }
+    expectTerminalFailure(.diskLocked) { _ = try LinuxTerminalDisk.open(directory: directory, seed: seed) }
+    try disk.validateOwnership()
+    try contenders(directory, seed: seed, locked: true)
+    // Reproduce the pinned QEMU primitive on Darwin: a second fileglob's OFD
+    // read lock overlaps our whole-file flock. Linux has separate namespaces.
+    checkpoint("darwin-qemu-byte100-conflict")
+    let qemuFD = Darwin.open(disk.url.path, O_RDWR | O_NOFOLLOW)
+    check(qemuFD >= 0)
+    var range = Darwin.flock(l_start: 100, l_len: 1, l_pid: 0,
+                             l_type: Int16(F_RDLCK), l_whence: Int16(SEEK_SET))
+    check(fcntl(qemuFD, F_OFD_SETLK, &range) == -1 && (errno == EAGAIN || errno == EACCES),
+          "Darwin reproduces QEMU byte100 lock conflict while host retains flock")
     let writer = try FileHandle(forWritingTo: disk.url)
     try writer.seek(toOffset: 2 * 1024 * 1024)
     try writer.write(contentsOf: Data([0x7b]))
@@ -164,9 +208,16 @@ func runTerminalChecks() throws {
     try disk.synchronize()
     // Runtime sync must retain the lock: main_loop returning is not proof
     // that QEMU has released/drained all block-layer file descriptions.
-    expectFailure { _ = try LinuxTerminalDisk.open(directory: directory, seed: seed) }
+    expectTerminalFailure(.diskLocked) { _ = try LinuxTerminalDisk.open(directory: directory, seed: seed) }
+    try disk.validateOwnership()
+    try contenders(directory, seed: seed, locked: true)
+    check(try byte(disk.url, at: 2 * 1024 * 1024) == Data([0x7b]), "contenders never rewrite user bytes")
     try disk.synchronizeAndClose()
+    expectTerminalFailure(.diskOwnership) { try disk.validateOwnership() }
     expectFailure { try disk.synchronize() }
+    check(fcntl(qemuFD, F_OFD_SETLK, &range) == 0, "same QEMU lock succeeds after host lock release")
+    check(Darwin.close(qemuFD) == 0)
+    try contenders(directory, seed: seed, locked: false)
     checkpoint("disk-reopen")
     let reopened = try LinuxTerminalDisk.open(directory: directory, seed: seed)
     check(try byte(reopened.url, at: 2 * 1024 * 1024) == Data([0x7b]))
@@ -243,13 +294,17 @@ func runTerminalChecks() throws {
     let session = root.appendingPathComponent("session,one")
     checkpoint("terminal-argv")
     let args = try profile.arguments(probeAssets: probeAssets, terminalAssets: terminalAssets,
-        session: session, diskURL: profileDisk.url, serialFD: 51, controlFD: 52)
+        session: session, disk: profileDisk, serialFD: 51, controlFD: 52)
     check(args.contains("tcg,thread=multi,tb-size=256,split-wx=on"))
     check(args[args.firstIndex(of: "-nic")! + 1] == "none" && !args.contains("-netdev"))
     check(args.contains("virtserialport,chardev=linuxcontrol,name=org.ideck.control"))
     check(args.contains("socket,id=linuxcontrol,fd=52,server=off"))
     check(args.contains("socket,id=linuxterm,fd=51,server=off"))
-    check(args.contains(where: { $0.contains("format=raw,cache=writethrough,file=") && $0.contains("profile-data,,one/userdata.raw") }))
+    check(args.contains(where: { $0.contains("format=raw,cache=writethrough,file.locking=off,file=") && $0.contains("profile-data,,one/userdata.raw") }))
+    check(args.filter { $0.contains("file.locking=off") }.count == 1, "only userdata disables duplicate QEMU locking")
+    check(args.contains("virtio-blk-pci,drive=userdata"))
+    try profileDisk.validateOwnership()
+    expectTerminalFailure(.diskLocked) { _ = try profile.openDisk(in: profileDisk.url.deletingLastPathComponent(), assets: terminalAssets) }
     check(args.contains(where: { $0.contains("rdinit=/ideck-terminal-init") }))
     check(!args.contains(where: { $0.contains("tcp:") || $0.contains("hostfwd") || $0.contains("snapshot=on") }))
 
@@ -278,7 +333,7 @@ func runTerminalChecks() throws {
             defer { alternateDisk.closeUnused() }
             let alternateSession = root.appendingPathComponent("asset-session-" + suffix)
             let alternateArgs = try alternate.arguments(probeAssets: probeRoot, terminalAssets: terminalRoot,
-                session: alternateSession, diskURL: alternateDisk.url, serialFD: 51, controlFD: 52)
+                session: alternateSession, disk: alternateDisk, serialFD: 51, controlFD: 52)
             check(alternateArgs[alternateArgs.firstIndex(of: "-kernel")! + 1] == probeAssets.appendingPathComponent("vmlinuz-virt").path,
                   "probe uses the exact canonical kernel path")
             check(alternateArgs[alternateArgs.firstIndex(of: "-initrd")! + 1] == terminalInit.path,
@@ -290,7 +345,7 @@ func runTerminalChecks() throws {
     let rejectedSession = root.appendingPathComponent("rejected-asset-session")
     func terminalArguments() throws {
         _ = try profile.arguments(probeAssets: probeAssets, terminalAssets: terminalAssets,
-            session: rejectedSession, diskURL: profileDisk.url, serialFD: 51, controlFD: 52)
+            session: rejectedSession, disk: profileDisk, serialFD: 51, controlFD: 52)
     }
     // Same size corruption must reach the digest check, before session creation.
     let savedInit = try Data(contentsOf: terminalInit)
@@ -323,9 +378,9 @@ func runTerminalChecks() throws {
         }
     }
     expectFailure { _ = try profile.arguments(probeAssets: probeAssets, terminalAssets: terminalAssets,
-        session: session, diskURL: profileDisk.url, serialFD: 51, controlFD: 52) }
+        session: session, disk: profileDisk, serialFD: 51, controlFD: 52) }
     expectFailure { _ = try profile.arguments(probeAssets: probeAssets, terminalAssets: terminalAssets,
-        session: root.appendingPathComponent("invalid-fd"), diskURL: profileDisk.url, serialFD: 51, controlFD: 51) }
+        session: root.appendingPathComponent("invalid-fd"), disk: profileDisk, serialFD: 51, controlFD: 51) }
     var badSeed = try asset(bundledSeed)
     badSeed["sha256"] = String(repeating: "0", count: 64)
     description["seed"] = badSeed
@@ -346,7 +401,46 @@ func runTerminalChecks() throws {
     probe["cpu"] = "host"
     try JSONSerialization.data(withJSONObject: probe).write(to: probeAssets.appendingPathComponent("profile.json"))
     expectFailure { _ = try profile.arguments(probeAssets: probeAssets, terminalAssets: terminalAssets,
-        session: root.appendingPathComponent("wrong-probe"), diskURL: profileDisk.url, serialFD: 51, controlFD: 52) }
+        session: root.appendingPathComponent("wrong-probe"), disk: profileDisk, serialFD: 51, controlFD: 52) }
+
+    checkpoint("disk-owner-path-mutations")
+    // Each mutation preserves a valid same-size disk, so inode/ownership guards
+    // (rather than an incidental format/size error) must prevent QEMU entry.
+    let mutationDir = root.appendingPathComponent("owner-mutations")
+    let mutationDisk = try LinuxTerminalDisk.open(directory: mutationDir, seed: seed)
+    defer { mutationDisk.closeUnused() }
+    let originalURL = mutationDir.appendingPathComponent("held.raw")
+    try manager.moveItem(at: mutationDisk.url, to: originalURL)
+    expectTerminalFailure(.diskOwnership) { try mutationDisk.validateOwnership() }
+    try manager.copyItem(at: seed, to: mutationDisk.url)
+    let mutationWriter = try FileHandle(forWritingTo: mutationDisk.url)
+    try mutationWriter.seek(toOffset: 2 * 1024 * 1024)
+    try mutationWriter.write(contentsOf: Data([0x6c])); try mutationWriter.close()
+    expectTerminalFailure(.diskOwnership) { try mutationDisk.validateOwnership() }
+    check(try byte(mutationDisk.url, at: 2 * 1024 * 1024) == Data([0x6c]), "replacement inode never reseeded or modified")
+    try manager.removeItem(at: mutationDisk.url)
+    try manager.createSymbolicLink(at: mutationDisk.url, withDestinationURL: originalURL)
+    expectTerminalFailure(.diskOwnership) { try mutationDisk.validateOwnership() }
+    try manager.removeItem(at: mutationDisk.url)
+    try manager.moveItem(at: originalURL, to: mutationDisk.url)
+    try mutationDisk.validateOwnership()
+    check(link(mutationDisk.url.path, originalURL.path) == 0)
+    expectTerminalFailure(.diskOwnership) { try mutationDisk.validateOwnership() }
+    try manager.removeItem(at: originalURL)
+    try mutationDisk.validateOwnership()
+    let shrinker = try FileHandle(forWritingTo: mutationDisk.url)
+    try shrinker.truncate(atOffset: UInt64(LinuxTerminalProfile.diskSize - 1)); try shrinker.close()
+    expectTerminalFailure(.diskOwnership) { try mutationDisk.validateOwnership() }
+
+    // Closed token must fail BEFORE assets/session processing or a native call.
+    checkpoint("closed-disk-token-argv")
+    profileDisk.closeUnused()
+    let closedSession = root.appendingPathComponent("closed-disk-session")
+    expectTerminalFailure(.diskOwnership) {
+        _ = try profile.arguments(probeAssets: probeAssets, terminalAssets: terminalAssets,
+                                  session: closedSession, disk: profileDisk, serialFD: 51, controlFD: 52)
+    }
+    check(!manager.fileExists(atPath: closedSession.path))
 
     // The shipped renderer must separate a clean-stop receipt from block-layer
     // teardown, diagnostic probe success and real second-boot verification.

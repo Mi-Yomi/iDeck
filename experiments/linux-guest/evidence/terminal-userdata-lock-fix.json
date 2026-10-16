@@ -1,0 +1,119 @@
+{
+  "schema": 1,
+  "date_utc": "2026-10-16",
+  "base_commit": "224f5f7d08280598a3e006c92f60e7247b9941d8",
+  "branch": "codex/linux-guest-feasibility-20261015",
+  "device_evidence": {
+    "provenance": "Parent-provided exact sanitized final native log line and chronology; raw private snapshot not copied to repository.",
+    "installed_source_commit": "eed2a5eda400056c1550d6588662e4186e5cf00c",
+    "app_build": "119",
+    "native_snapshot_bytes": 1644,
+    "sanitized_final_line": "qemu-system-aarch64: -drive if=none,id=userdata,format=raw,cache=writethrough,file=<APP>/Documents/iDeckLinux/userdata.raw: Failed to lock byte 100.",
+    "preceding_native_events": [
+      "JIT self-test PASS generated code 42",
+      "512 MiB dual mapping",
+      "debugger detached",
+      "audio driver registered"
+    ],
+    "native_time_local": "13:14:53.125",
+    "jit_elapsed_milliseconds_approx": 5082,
+    "chronologically_consistent_markdown_start_utc": "2026-10-16T08:14:54Z",
+    "matching_markdown_final_checkpoint": "qemuInitBegin",
+    "checkpoint_utc": "2026-10-16T08:14:57.600Z",
+    "association": "UNKNOWN: rotating previous-launch candidate; chronology is consistent, not independently proven identity",
+    "scope": "Explains the explicit QEMU userdata open failure in this native log. Does not attribute every saved attempt, prove a signal type or establish a completed guest boot."
+  },
+  "pinned_qemu": {
+    "version": "10.0.12-utm",
+    "archive_sha256": "7c9605290b34152debb842e965a55d2e4fbba4793e536ab677b4027e5dc0ba1a",
+    "source_sha256": {
+      "block/file-posix.c": "520ae8498321a1d98ddd271e9cf243ecfacca02b330f128b64c9f8c83b3bd889",
+      "util/osdep.c": "29a404eac934a6958850f187aa16f4841372f456eda5ad1b943ac9a998baacf8",
+      "blockdev.c": "c6decd6f759c43cdb0478b448fdceae012a7533219f4678d361e0577e80c00e7",
+      "block.c": "5e0654ebdf3925f046df33486a9344aeb938f9860493065c850df0133e5c09bb"
+    },
+    "call_chain": [
+      "raw_open_common: locking=auto uses qemu_has_ofd_lock()",
+      "qemu_probe_lock_ops: F_OFD_GETLK on /dev/null selects OFD commands when supported",
+      "raw_apply_lock_bytes: first RAW_LOCK_PERM_BASE=100 requests qemu_lock_fd(..., false)",
+      "qemu_lock_fcntl: F_OFD_SETLK F_RDLCK overlaps existing whole-file flock EX on a different open file description",
+      "raw_lock_error_setg_errno omits errno details only for EAGAIN/EACCES; exact line has no strerror suffix"
+    ],
+    "argv_validation": "Source-verified exact syntax file.locking=off. -drive drive_new converts all options to QDict, common/legacy option absorption leaves file.locking; bdrv_open_child_bs extracts file. suboptions; file-posix locking option parses off and bypasses only duplicate byte-lock operations. No pinned QEMU executable was built/run locally."
+  },
+  "apple_source": {
+    "provenance": "Public Apple XNU main fetched 2026-10-16 for corroboration, not claimed to be exact installed iOS kernel source.",
+    "files": {
+      "bsd/sys/fcntl.h": {
+        "url": "https://raw.githubusercontent.com/apple-oss-distributions/xnu/main/bsd/sys/fcntl.h",
+        "sha256": "0f93c8918a70ffafe20bfe9c72e671fde67438cbee9f9de8c2f87b5c704c9a9e"
+      },
+      "bsd/kern/kern_descrip.c": {
+        "url": "https://raw.githubusercontent.com/apple-oss-distributions/xnu/main/bsd/kern/kern_descrip.c",
+        "sha256": "480cfed4e987be874bd71fb6933c254adf9fb1f36de8496dee8f351b18da13b1"
+      },
+      "bsd/kern/kern_lockf.c": {
+        "url": "https://raw.githubusercontent.com/apple-oss-distributions/xnu/main/bsd/kern/kern_lockf.c",
+        "sha256": "9930f62387f87379789b59974b4db0edda514e5b1b27ee2d3cd6338c4fc5b6c3"
+      }
+    },
+    "finding": "flock and OFD operations share VNOP_ADVLOCK/lockf overlap checks. Different fileglobs have distinct ownership. Whole-file flock EX conflicts with overlapping OFD read lock and returns EAGAIN for nonblocking acquisition.",
+    "correction": "Earlier source-only assumption that Darwin auto locking is necessarily disabled was incorrect. Apple exposes F_OFD_SETLK and the actual device byte100 message shows QEMU lock code executed. Linux flock/OFD independence cannot establish Darwin behavior."
+  },
+  "implementation": {
+    "scope": "Only terminal userdata -drive gains file.locking=off; original probe argv and JIT/SideStore paths unchanged.",
+    "single_writer": "Exclusive nonblocking flock remains on userdata.raw itself from validated open until process exit, also after clean stop. Every app disk owner acquires this lock. synchronize never closes/unlocks. No sidecar lock, reset, replacement, unlink or format during validation.",
+    "capability": "arguments accepts LinuxTerminalDisk, no diskURL-only overload; validates live owner before assets/session. Worker validates again before qemuInitBegin and handing native endpoints to C.",
+    "ownership_guards": [
+      "live fd",
+      "reaffirm exclusive nonblocking flock",
+      "regular named and opened file",
+      "matching device and inode",
+      "single link",
+      "128 MiB size",
+      "original directory path guards"
+    ],
+    "failure": "Static diskOwnership diagnostic code; fail closed before C; preserve existing data. Manual safe native summary labels exact byte100 failure without copying arbitrary log text; association remains UNKNOWN.",
+    "limits": "Advisory ownership protects cooperating app launches/writers. It does not exclude an arbitrary noncooperating external writer or make pathname-based QEMU open atomic against hostile concurrent replacement. App-owned private directory and repeated identity checks preserve existing trust model."
+  },
+  "regressions": {
+    "actual_apple_helpers_added_not_run_locally": [
+      "OFD byte100 failure while host flock retained and success after release",
+      "same-process and three separate-process contenders before and after synchronize",
+      "legitimate reopen after release preserves sentinel and seed unchanged",
+      "closed owner rejected before session creation",
+      "same-size inode replacement/unlink/symlink/hardlink/truncate rejection without repair",
+      "only terminal userdata receives duplicate-lock override"
+    ],
+    "python": {
+      "tests": 150,
+      "elapsed_seconds": 14.33,
+      "exit_code": 0
+    },
+    "actual_swift_diagnostics": "PASS: compiled unchanged helper with Swift6.2.1 Foundation/Glibc, executes IO/process/relaunch/export tests including safe exact byte100 label",
+    "swift_parse": "PASS for changed profile/session/terminal tests/main; not Apple SDK typecheck",
+    "independent_review": {
+      "result": "No blockers",
+      "python_tests": 150,
+      "python_elapsed_seconds": 17.204,
+      "actual_swift_diagnostics": "PASS",
+      "swift_parse": "PASS",
+      "diff_check": "PASS",
+      "overlay_hashes_verified": 22,
+      "qemu_option_routing": "independently source-verified against pinned10.0.12-utm",
+      "apple_sdk_typecheck": "not run; Darwin struct/fcntl source reviewed only"
+    }
+  },
+  "remaining_unverified": [
+    "Apple SDK typecheck and actual Darwin host regressions",
+    "integrated Husk overlay typecheck/build/sign/package IPA",
+    "device QEMU init past disk open",
+    "interactive terminal/input/control ready",
+    "clean guest unmount + host fsync",
+    "second app launch/guest boot reading same /data file"
+  ],
+  "ci_dispatched": false,
+  "ipa_built": false,
+  "device_fix_tested": false,
+  "main_modified": false
+}

@@ -9,6 +9,12 @@ if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--diagnostic-i
     try runDiagnosticInterruptionChild(URL(fileURLWithPath: CommandLine.arguments[2], isDirectory: true))
 }
 
+if CommandLine.arguments.count == 5, CommandLine.arguments[1] == "--terminal-disk-contender" {
+    try runTerminalDiskContender(directory: URL(fileURLWithPath: CommandLine.arguments[2], isDirectory: true),
+                                 seed: URL(fileURLWithPath: CommandLine.arguments[3]),
+                                 expectLocked: CommandLine.arguments[4] == "locked")
+}
+
 // Host-only validation; synthetic bytes are not a Linux boot test.
 let root = URL(fileURLWithPath: CommandLine.arguments[1], isDirectory: true)
 try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)

@@ -17,7 +17,7 @@ struct LinuxTerminalProfile: Decodable {
         // Static stage names identify a failed guard without exposing paths.
         case diskTrustedDirectory, diskDirectoryURL, diskDirectoryComponent
         case diskDirectoryType, diskDirectoryInspection, diskInspection, diskOpen, diskLinks
-        case diskMetadata, diskSize, diskHeaderRead, diskFormat, diskSeedSize
+        case diskMetadata, diskSize, diskHeaderRead, diskFormat, diskSeedSize, diskOwnership
     }
     static let diskSize = 128 * 1024 * 1024
     let schema: Int
@@ -90,13 +90,13 @@ struct LinuxTerminalProfile: Decodable {
         return try LinuxTerminalDisk.open(directory: directory, seed: seedURL, size: diskSizeBytes)
     }
 
-    func arguments(probeAssets: URL, terminalAssets: URL, session: URL, diskURL: URL,
+    func arguments(probeAssets: URL, terminalAssets: URL, session: URL, disk: LinuxTerminalDisk,
                    serialFD: Int32, controlFD: Int32) throws -> [String] {
         guard serialFD >= 0, controlFD >= 0, serialFD != controlFD else { throw Invalid.configuration }
-        try LinuxTerminalDisk.validateDirectory(diskURL.deletingLastPathComponent(), allowingMissing: false)
-        let diskValues = try diskURL.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey, .fileSizeKey])
-        guard diskURL.lastPathComponent == "userdata.raw", diskValues.isRegularFile == true,
-              diskValues.isSymbolicLink != true, diskValues.fileSize == Self.diskSize else { throw Invalid.disk }
+        // Disabling QEMU's duplicate byte locks requires the live host owner,
+        // never an arbitrary path. Recheck again immediately before native entry.
+        try disk.validateOwnership()
+        let diskURL = disk.url
         let original = try LinuxGuestProfile.load(from: probeAssets)
         guard kernel.file == original.kernel.file, kernel.sha256 == original.kernel.sha256,
               kernel.size == original.kernel.size else { throw Invalid.assetKernelMismatch }
@@ -118,13 +118,15 @@ struct LinuxTerminalProfile: Decodable {
         args[serial + 1] = "chardev:linuxterm"
         args += ["-chardev", "socket,id=linuxcontrol,fd=\(controlFD),server=off",
                  "-device", "virtio-serial-pci", "-device", "virtserialport,chardev=linuxcontrol,name=org.ideck.control",
-                 "-drive", "if=none,id=userdata,format=raw,cache=writethrough,file=\(try optionPath(diskURL))",
+                 "-drive", "if=none,id=userdata,format=raw,cache=writethrough,file.locking=off,file=\(try optionPath(diskURL))",
                  "-device", "virtio-blk-pci,drive=userdata"]
         return args
     }
 }
 
-/// Owns an exclusive lock independently of QEMU's open file description.
+/// Owns the whole-file exclusive flock on userdata itself. Darwin flock and
+/// OFD byte locks conflict across separate opens, so this profile alone uses
+/// file.locking=off for QEMU's duplicate lock. All app writers acquire this lock.
 /// The runtime worker retains it until process exit, including after an orderly
 /// guest stop. QEMU's block-layer drain is not established by main-loop return.
 final class LinuxTerminalDisk {
@@ -245,6 +247,23 @@ final class LinuxTerminalDisk {
         // link is an atomic, same-directory, no-clobber publish. A racing first
         // creator may win; its existing disk is validated and locked below.
         if link(temporary.path, destination.path) != 0, errno != EEXIST { throw LinuxTerminalProfile.Invalid.io }
+    }
+
+    /// Fail closed if the owner was closed, the pathname was replaced/unlinked,
+    /// a hard link appeared or the directory contract changed. This never
+    /// releases the host lock and never repairs/reseeds an existing disk.
+    func validateOwnership() throws {
+        guard fd >= 0 else { throw LinuxTerminalProfile.Invalid.diskOwnership }
+        try Self.validateDirectory(url.deletingLastPathComponent(), allowingMissing: false)
+        var opened = stat()
+        var named = stat()
+        guard flock(fd, LOCK_EX | LOCK_NB) == 0,
+              fstat(fd, &opened) == 0, lstat(url.path, &named) == 0,
+              (opened.st_mode & S_IFMT) == S_IFREG, (named.st_mode & S_IFMT) == S_IFREG,
+              opened.st_dev == named.st_dev, opened.st_ino == named.st_ino,
+              opened.st_nlink == 1, named.st_nlink == 1,
+              opened.st_size == off_t(LinuxTerminalProfile.diskSize),
+              named.st_size == opened.st_size else { throw LinuxTerminalProfile.Invalid.diskOwnership }
     }
 
     func synchronize() throws {

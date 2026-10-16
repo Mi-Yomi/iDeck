@@ -378,9 +378,18 @@ private final class LinuxTerminalWorker {
     /// synchronization failure can safely prevent entry. After entry the
     /// checkpoint helper preserves runtime ownership even if diagnostics fail.
     private func prepareNativeEntry(serial: LinuxTerminalSocket, control: LinuxTerminalSocket) -> Bool {
-        do { try diagnostic.record(.qemuInitBegin) }
+        do {
+            try queue.sync {
+                guard let disk = self.disk else { throw LinuxTerminalProfile.Invalid.diskOwnership }
+                try disk.validateOwnership()
+            }
+            try diagnostic.record(.qemuInitBegin)
+        }
         catch {
+            let failure = LinuxTerminalSession.failure(error)
+            let journalFailed = error is LinuxTerminalDiagnostics.Problem
             queue.async {
+                self.checkpoint(.preparationFailed, failure: failure)
                 self.startupAborted = true
                 serial.closeUnused(); control.closeUnused()
                 try? self.logHandle?.close(); self.logHandle = nil
@@ -388,8 +397,8 @@ private final class LinuxTerminalWorker {
                 self.report["status"] = "terminal_prepare_failed"
                 self.persist()
                 self.owner.publish {
-                    $0.diagnosticFailure()
-                    $0.message = "Startup journal could not be synchronized. Linux was not started. Existing user data was preserved; close and reopen the app."
+                    if journalFailed { $0.diagnosticFailure() }
+                    $0.message = "Startup disk ownership or journal check failed. Linux was not started. Existing user data was preserved; close and reopen the app."
                 }
             }
             return false
@@ -421,7 +430,7 @@ private final class LinuxTerminalWorker {
                 try self.diagnostic.record(.socketsReturned)
                 try self.diagnostic.record(.argumentsBegin)
                 let args = try profile.arguments(probeAssets: probe, terminalAssets: assets, session: self.session,
-                                                 diskURL: disk.url, serialFD: serial.qemu, controlFD: control.qemu)
+                                                 disk: disk, serialFD: serial.qemu, controlFD: control.qemu)
                 try self.diagnostic.record(.argumentsReturned)
                 try self.diagnostic.record(.reportBegin)
                 guard FileManager.default.createFile(atPath: self.serialURL.path, contents: Data()) else { throw LinuxTerminalProfile.Invalid.io }

@@ -5,6 +5,74 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## Userdata byte-100 lock: конкретная Darwin-причина и terminal-only fix
+
+Новая реализация от pushed **`224f5f7d08280598a3e006c92f60e7247b9941d8`**.
+Parent передал точную последнюю строку native snapshot **1644 bytes** из
+установленной **eed2a5eda400056c1550d6588662e4186e5cf00c**, build **119**:
+
+```text
+qemu-system-aarch64: -drive if=none,id=userdata,format=raw,cache=writethrough,file=<APP>/Documents/iDeckLinux/userdata.raw: Failed to lock byte 100.
+```
+
+Raw private log/Library ID/attempt UUID в Git не добавлены. До этой строки JIT
+self-test PASS (generated code 42), dual mapping 512 MiB, debugger detached,
+audio driver registered. Native time **13:14:53.125 local**, JIT elapsed ~5082 ms;
+согласующийся MD начинает **08:14:54 UTC**, final **qemuInitBegin 08:14:57.600 UTC**.
+Association остаётся **UNKNOWN**: это rotating previous-launch candidate,
+хронология согласуется, но identity не доказана. Два других MD на той же границе
+не доказывают одинаковую причину; ещё один заканчивается JIT claim без VM.
+Исторические evidence ниже сохранены, их UNKNOWN не переписан как proven.
+
+В exact pinned QEMU **10.0.12-utm** `locking=auto` проверяет **F_OFD_GETLK на
+/dev/null** и выбирает OFD. `raw_apply_lock_bytes` пытается взять **F_RDLCK** на
+byte **100**. Apple XNU направляет и whole-file `flock`, и OFD byte locks в общую
+проверку перекрытия: наш уже удерживаемый **LOCK_EX** на другом fileglob мешает
+этому read lock. Exact message без strerror согласуется с QEMU-веткой, которая
+скрывает suffix только при EAGAIN/EACCES. Это конкретная причина explicit disk
+open failure в полученном native log, а не установленный signal/crash type для
+всех попыток. Ранее высказанное source-only предположение «Darwin обязательно
+отключает auto locking» неверно; Linux-разделение flock/OFD сюда не переносится.
+Public Apple XNU source подтверждает механизм, но не объявляется exact kernel
+revision установленной iOS. URL/hash исходников и цепочка есть в новом evidence.
+
+Исправление: только terminal userdata получает **`file.locking=off`**, точный
+protocol-child option, проверенный по pinned `drive_new` → QDict → `file.` child
+→ file-posix parser. Прежний **exclusive nonblocking flock НА userdata.raw**
+остаётся от validated open до process exit, в том числе после clean stop;
+`synchronize()` не отпускает его. QEMU продолжает I/O через свой descriptor,
+повторный конфликтующий byte lock убран. Probe/JIT/SideStore/MD export сохранены.
+
+`arguments` теперь требует живой **LinuxTerminalDisk**, URL-only bypass удалён.
+До assets/session и повторно перед native entry проверяются active fd, LOCK_EX,
+fstat/lstat same dev/inode, regular file, single link, 128 MiB и прежние directory
+guards. Closed/unlinked/replaced token прекращает запуск до C со статическим
+**diskOwnership**. Никакого reset/reseed/delete user disk. Защита advisory:
+она исключает cooperating app writers, не произвольное внешнее изменение файла;
+pathname open QEMU не стал atomic against hostile concurrent replacement.
+Сохраняется прежняя trust model app-owned private Documents directory.
+
+Добавлены Apple host regressions: настоящий OFD byte100 conflict/success after
+release; same-process и 3 independent processes до/после sync; release/reopen
+с сохранением sentinel; закрытый token до session creation; same-size inode
+replacement, unlink, symlink, hardlink и truncate; only userdata argv override.
+Они подключены к существующему mac-tests gate, **локально ещё не выполнены**.
+Manual safe native summary распознаёт exact byte100 failure фиксированной
+KNOWN ERROR подписью, сохраняя UNKNOWN association и privacy guards.
+
+Локально: **150 Python tests PASS (14.330 s)**, compiled actual Swift diagnostics
+helper **PASS** с exact signature/privacy регрессией; Swift parse changed files
+**PASS**. Apple SDK отсутствует: Darwin runtime tests/full typecheck/IPA/device
+fix ещё не проверены. Независимый review финального diff: **без blockers**; reviewer повторил
+150 tests PASS (17.204 s), actual Swift diagnostics PASS, syntax/diff checks
+PASS, все 22 overlay hashes совпали. Pinned QEMU option routing подтверждён
+независимо. Darwin struct/fcntl проверены по source, SDK execution ещё pending.
+Новый evidence: `experiments/linux-guest/evidence/terminal-userdata-lock-fix.json`.
+CI **не запускался**, parent единолично управляет сборкой/quota/payment;
+main не менять. Следующий acceptance: Apple gates → IPA → qemuInitReturned →
+terminal/input/control ready → /data sentinel → orderly stop → app reopen и
+второй guest boot с чтением того же sentinel. Старый userdata сохранять.
+
 ## Device journal получен: native snapshots доступны через Files; добавлен manual safe export
 
 Parent передал содержание device diagnostic MD (**3514 bytes**) от установленной

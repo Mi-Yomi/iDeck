@@ -14,7 +14,7 @@ final class LinuxTerminalDiagnostics {
         case assetContainment, assetRead, assetContentSize, assetDigest, assetKernelMismatch
         case diskTrustedDirectory, diskDirectoryURL, diskDirectoryComponent, diskDirectoryType
         case diskDirectoryInspection, diskInspection, diskOpen, diskLinks, diskMetadata
-        case diskSize, diskHeaderRead, diskFormat, diskSeedSize
+        case diskSize, diskHeaderRead, diskFormat, diskSeedSize, diskOwnership
     }
     enum Stage: String, Codable, CaseIterable {
         case opened, jitEnableBegin, jitEnableDispatched, jitClaimBegin, jitClaimReturned, jitUnavailable
@@ -269,6 +269,7 @@ final class LinuxTerminalDiagnostics {
             ("Failed to get", "Resource acquisition failure text (generic)"),
             ("Could not open", "File/resource open failure text (generic)"),
             ("Failed to lock byte", "QEMU block byte-lock failure text"),
+            ("Failed to lock byte 100.", "KNOWN ERROR: QEMU block byte 100 lock conflict text (association UNKNOWN)"),
             ("Cannot allocate memory", "Memory allocation failure text"),
             ("Assertion failed:", "Native assertion text"),
             ("assertion failed:", "Native assertion text"),

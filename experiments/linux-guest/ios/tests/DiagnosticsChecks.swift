@@ -191,6 +191,7 @@ func runTerminalDiagnosticsChecks() throws {
     let leak = "PAIRING_TOKEN=do-not-share /private/var/mobile/secret /Users/Owner ``` <script>"
     var nativeRaw = Data(("[husk-jit] prewarm OK: 536870912 bytes " + leak + "\n" +
                           "Failed to create chardev: " + leak + "\n" +
+                          "qemu-system-aarch64: userdata: Failed to lock byte 100. " + leak + "\n" +
                           "unknown raw line " + leak + "\n" + String(repeating: "x", count: 2049) + "\n").utf8)
     nativeRaw.append(contentsOf: [255, 254, 10])
     let appRaw = Data(("Assertion failed: " + leak + "\n").utf8)
@@ -206,6 +207,8 @@ func runTerminalDiagnosticsChecks() throws {
         let text = try String(contentsOf: url, encoding: .utf8)
         check(text.contains("JIT prewarm OK text") && text.contains("QEMU chardev creation failure text") && text.contains("Native assertion text"),
               "recognized native text yields useful fixed labels")
+        check(text.contains("KNOWN ERROR: QEMU block byte 100 lock conflict text (association UNKNOWN)"),
+              "exact byte100 failure is recognized without source values or cause attribution")
         for forbidden in ["PAIRING_TOKEN", "do-not-share", "/private/var", "/Users/Owner", "<script>", "```", "536870912", "unknown raw line"] {
             check(!text.contains(forbidden), "arbitrary sensitive text never reaches native Markdown")
         }

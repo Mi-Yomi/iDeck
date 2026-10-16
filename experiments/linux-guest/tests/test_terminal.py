@@ -300,6 +300,33 @@ class TerminalBundleChecks(unittest.TestCase):
 
 class TerminalSourceContracts(unittest.TestCase):
     """Source-level safety contracts, explicitly not Swift/runtime execution."""
+    def test_asset_containment_uses_posix_paths_and_apple_regressions_are_wired(self):
+        guest = (EXPERIMENT / "ios/LinuxGuestProfile.swift").read_text()
+        terminal = (EXPERIMENT / "ios/LinuxTerminalProfile.swift").read_text()
+        canonical = swift_block(guest, "static func canonical(")
+        self.assertIn("realpath(", canonical)
+        self.assertIn("free(resolved)", canonical)
+        self.assertIn("url.isFileURL", canonical)
+        for source, function, leaf in ((guest, "private func checkedAsset(", "candidate"),
+                                       (terminal, "private func checked(", "file")):
+            checked = swift_block(source, function)
+            self.assertIn("LinuxGuestAssetPath.directory(", checked)
+            self.assertIn(f"LinuxGuestAssetPath.canonical({leaf}) == {leaf}.path", checked)
+            for forbidden in ("standardizedFileURL", "resolvingSymlinksInPath", "== root"):
+                self.assertNotIn(forbidden, checked)
+            for guard in ("asset.file == name", "isRegularFile == true", "isSymbolicLink != true",
+                          "values.fileSize == asset.size", "asset.sha256", "assetDigest",
+                          "assetType", "assetSize", "assetContainment", "assetContentSize"):
+                self.assertIn(guard, checked)
+        checks = (EXPERIMENT / "ios/tests/TerminalChecks.swift").read_text()
+        for required in ('for hint in [false, true]', '"apple-alias"',
+                         'rawVar.appendingPathComponent("tmp")', 'isDirectory: hint',
+                         'expectTerminalFailure(.assetDigest)', 'expectProbeFailure(.assetDigest)',
+                         'expectTerminalFailure(.assetType)', 'expectProbeFailure(.assetType)',
+                         'expectTerminalFailure(.assetDescriptor)', '!manager.fileExists(atPath: rejectedSession.path)',
+                         'sourceSeedDescription["sha256"]', 'bundledSeedDescription["sha256"]'):
+            self.assertIn(required, checks)
+
     def test_trusted_system_prefix_uses_posix_realpath_before_untrusted_leaf_checks(self):
         # Darwin rewrites system aliases in Foundation URL normalization. The
         # real Swift host cases exercise /var and /private; these are wiring

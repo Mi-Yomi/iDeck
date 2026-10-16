@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "date_utc": "2026-10-16",
+  "base_commit": "04cde5f8a296e57305d3ebfe91b1ec790ea90fc0",
+  "reported_apple_build": "6ad1b6843ffd2c7f0ad3d211",
+  "reported_apple_result": {
+    "source": "user delegation; raw logs/checkout receipt not independently fetched",
+    "ios_typecheck": "pass (reported)",
+    "native_syntax": "pass (reported)",
+    "mac_compile": "pass (reported)",
+    "mac_tests": "exit -5 after profile-disk-open; LinuxTerminalProfile.Invalid.asset (reported)"
+  },
+  "source_findings": [
+    "TerminalChecks roots append nonexistent paths without explicit directory hint, unlike the earlier passing main.swift probe root with isDirectory:true.",
+    "Both validators compared complete Foundation URL objects (resolved leaf parent versus root); directory hints/trailing slash and Apple alias representations are not filesystem identity.",
+    "Fixture source seed and bundled copy have matching content; manifest now derives seed metadata from the actual bundled copy and asserts matching source digest.",
+    "Exact former Darwin subguard is inferred from source/checkpoints; not executed or claimed proven in this Linux environment."
+  ],
+  "fix": [
+    "Shared POSIX realpath directory canonicalization; exact allowed leaf canonical pathname must equal canonical root plus leaf.",
+    "Keep explicit basename, regular-file, no-leaf-symlink, size/count, SHA-256 checks; disk guards and production FAT16 seed unchanged.",
+    "Static named asset errors split descriptor, root, inspection, type, metadata size, containment, read, streamed content size, digest, kernel agreement."
+  ],
+  "apple_regressions_written_not_executed": [
+    "Full terminal openDisk/arguments and embedded probe validator with isDirectory false/true, canonical local roots and /var/tmp root aliases independent of TMPDIR.",
+    "Same-size corruption in terminal/probe initramfs requires exact assetDigest before session creation.",
+    "Same-directory and escaping leaf symlinks require exact assetType before session creation.",
+    "Wrong seed digest/name require exact assetDigest/assetDescriptor before userdata directory creation.",
+    "Prior sparse seed, disk lock/reopen/non-destructive rejection, serial/control and Markdown checks retained."
+  ],
+  "local_verification": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s experiments/linux-guest/tests -q",
+    "tests": 143,
+    "status": "pass",
+    "exit_code": 0,
+    "elapsed_seconds": 5.725,
+    "independent_review": {
+      "agent": "independent_review",
+      "findings": "no blocking source issue; guards preserved; Swift syntax reviewed only",
+      "tests": 143,
+      "status": "pass",
+      "exit_code": 0,
+      "elapsed_seconds": 5.83
+    },
+    "overlay_inputs_valid": 21,
+    "historical_evidence_unchanged": 40,
+    "protected_files_unchanged": 14,
+    "git_diff_check": "pass"
+  },
+  "input_sha256": {
+    "ios/LinuxGuestProfile.swift": "ddfea00eba911033c44168103f0727836521849eadab7fed5dfac479ab36bef3",
+    "ios/LinuxTerminalProfile.swift": "bc391bbd05e9f1247c958f2a283bd90188026c54f2b0fa9f31ec8c706c6fd110",
+    "ios/tests/TerminalChecks.swift": "ec7c119506a65939db77e8ded73eae609960bda7ac85fd6f38f930def7275ef1",
+    "ios/tests/main.swift": "541f38bfeba074bf36427271e687f9fba6f44a0e1edf61e6ce0e182f919843ca",
+    "tests/test_terminal.py": "6149725a9f8fba91b0d2c285ff5a95c2c0b531300b41c3102f605d38e316e097",
+    "husk/overlay.lock.json": "d9994ed91c9e6b60724bb0b3268e8db61bef9fad04101582c08ac393453158be"
+  },
+  "not_run": [
+    "Swift/Foundation execution (no Swift compiler)",
+    "Apple SDK typecheck/host gate for this fix",
+    "CI dispatch (explicitly reserved to parent)",
+    "new terminal IPA build/link/package",
+    "device terminal commands and foreground orderly stop",
+    "fresh app process /data exact-file persistence"
+  ],
+  "preserved": [
+    "main",
+    "JIT/SideStore routing",
+    "original device-proven Linux probe payload",
+    "Markdown export",
+    "native/guest/terminal resource locks",
+    "CI request/quota/payment gates"
+  ],
+  "next_step": "Parent-controlled single authorized Apple build of full pushed SHA; if gate passes, obtain terminal IPA and run terminal-device-check.md two-process persistence acceptance."
+}

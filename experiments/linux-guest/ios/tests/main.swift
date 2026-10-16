@@ -29,7 +29,7 @@ try Data("corrupt".utf8).write(to: root.appendingPathComponent("vmlinuz-virt"))
 do {
     _ = try profile.arguments(assets: root, session: root.appendingPathComponent("new-session"))
     fatalError("corrupt asset was accepted")
-} catch LinuxGuestProfile.Invalid.asset { }
+} catch LinuxGuestProfile.Invalid.assetSize { }
 precondition(!FileManager.default.fileExists(atPath: root.appendingPathComponent("new-session").path))
 print("LINUX_PROFILE_HOST_CHECKS_PASS (synthetic assets; no QEMU/device execution)")
 

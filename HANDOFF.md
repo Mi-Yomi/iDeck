@@ -5,6 +5,65 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## mac-tests Invalid.asset после profile-disk-open: исправление asset paths
+
+Задание реализации от 2026-10-16, база **`04cde5f8a296e57305d3ebfe91b1ec790ea90fc0`**.
+Remote рабочей ветки перед изменениями точно совпал с этой базой. Создан чистый
+checkout от pushed HEAD; старый WIP и ограничения исторического read-only аудита
+не переносились. Применимых `AGENTS.md`/`.agents/skills` в checkout нет.
+
+Пользователь сообщил Apple build
+[`6ad1b6843ffd2c7f0ad3d211`](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad1b6843ffd2c7f0ad3d211):
+iOS typecheck/native syntax/mac-compile PASS, disk-first-open/reopen/rejection
+пройдены, затем после `profile-disk-open` mac-tests exit -5 с
+`LinuxTerminalProfile.Invalid.asset`. Это переданный результат; полный raw log
+и actual checkout receipt в этой сессии независимо не получены.
+
+В `checked(seed)` оставалось сравнение **полных Foundation URL**:
+`file.resolvingSymlinksInPath().deletingLastPathComponent() == root`.
+Terminal fixture создаёт URL будущего каталога без directory hint; ранее
+прошедший `main.swift` fixture задаёт `isDirectory: true`. URL representations
+могут различаться завершающим slash и Apple alias normalization, хотя путь
+указывает на один каталог. Аналогичный guard найден в `LinuxGuestProfile`.
+Это source-localized дефект; точный старый Darwin subguard без исполнения нового
+Apple gate не объявляется доказанным. Seed fixture не меняет размер/формат:
+manifest теперь считается от actual bundled copy с отдельной проверкой digest
+исходного seed.
+
+Оба validator используют общий POSIX `realpath` для asset root и проверяют
+точное canonical имя разрешённого файла. Leaf symlink/type, filename whitelist,
+metadata size, actual byte count и SHA-256 guards сохранены; причины разделены
+статическими `assetDescriptor/Directory/Inspection/Type/Size/Containment/Read/
+ContentSize/Digest` errors, kernel agreement — `assetKernelMismatch`. Пути в
+новые error labels не попадают. Disk validation/provision/lock/no-clobber,
+production FAT16 seed, JIT/SideStore, original probe и MD export сохранены.
+
+В Apple helper tests добавлены полноценные terminal openDisk/argv и probe
+asset checks для **обоих directory hints** и `/var/tmp` alias независимо от
+TMPDIR. Negative tests требуют exact typed guard при same-size corruption,
+внутренних/внешних leaf symlinks, wrong seed digest/name, и проверяют отсутствие
+нового userdata/session. Старые disk/layout/reopen/control/report checks остаются.
+Эти Swift tests написаны и уже подключены к существующему gate; **здесь не
+исполнялись**, Swift compiler и Apple SDK отсутствуют.
+
+Локально **143 Python tests PASS, 5.725 s**, exit 0:
+`PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s experiments/linux-guest/tests -q`.
+Независимый reviewer: блокирующих source замечаний нет; отдельно **143 tests
+PASS, 5.830 s**, diff check PASS. Все **21 overlay input hashes** проверены;
+обновлены только два соответствующих runtime Swift hashes. Все **40 прежних
+evidence snapshots** и 14 protected CI/native/probe/terminal/JIT/MD files
+побайтно сохранены. Новый evidence:
+`experiments/linux-guest/evidence/terminal-asset-path-fix.json`.
+
+**CI в этой сессии не запускался** по прямому указанию пользователя: parent
+управляет одной сборкой и quota/payment checks. Новый terminal IPA отсутствует;
+Apple Swift gate/native link/package, terminal commands/foreground orderly Stop
+и exact-file `/data` persistence после fresh app process пока не проверены.
+Следующий шаг — parent-controlled Apple build полного **нового pushed SHA**,
+после успешной упаковки — `docs/terminal-device-check.md`. Main не изменять.
+Полный итоговый remote SHA координатор сообщает после commit/push; это не старый
+expected SHA и не обещание готовой IPA. Оплата/ключи/подключения не создавались.
+
 ## Второй mac-tests Invalid.disk: filesystem path validation
 
 Parent сообщил [build 6ad1a9933ffd2c7f0ad3cfc8](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad1a9933ffd2c7f0ad3cfc8)

@@ -10,8 +10,10 @@ struct LinuxTerminalProfile: Decodable {
         let sha256: String
         let size: Int
     }
-    enum Invalid: Error {
+    enum Invalid: Error, Equatable {
         case configuration, asset, disk, diskLocked, io
+        case assetDescriptor, assetDirectory, assetInspection, assetType, assetSize
+        case assetContainment, assetRead, assetContentSize, assetDigest, assetKernelMismatch
         // Static stage names identify a failed guard without exposing paths.
         case diskTrustedDirectory, diskDirectoryURL, diskDirectoryComponent
         case diskDirectoryType, diskDirectoryInspection, diskInspection, diskOpen, diskLinks
@@ -53,23 +55,33 @@ struct LinuxTerminalProfile: Decodable {
     private func checked(_ asset: Asset, name: String, in assets: URL) throws -> URL {
         guard asset.file == name, asset.size > 0, asset.size <= Self.diskSize,
               asset.sha256.utf8.count == 64,
-              asset.sha256.utf8.allSatisfy({ (48...57).contains($0) || (97...102).contains($0) }) else { throw Invalid.asset }
-        let root = assets.standardizedFileURL.resolvingSymlinksInPath()
+              asset.sha256.utf8.allSatisfy({ (48...57).contains($0) || (97...102).contains($0) }) else { throw Invalid.assetDescriptor }
+        guard let root = LinuxGuestAssetPath.directory(assets) else { throw Invalid.assetDirectory }
         let file = root.appendingPathComponent(name)
-        let values = try file.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey, .fileSizeKey])
-        guard values.isRegularFile == true, values.isSymbolicLink != true, values.fileSize == asset.size,
-              file.resolvingSymlinksInPath().deletingLastPathComponent() == root else { throw Invalid.asset }
-        let handle = try FileHandle(forReadingFrom: file)
+        let values: URLResourceValues
+        do { values = try file.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey, .fileSizeKey]) }
+        catch { throw Invalid.assetInspection }
+        guard values.isRegularFile == true, values.isSymbolicLink != true else { throw Invalid.assetType }
+        guard values.fileSize == asset.size else { throw Invalid.assetSize }
+        guard LinuxGuestAssetPath.canonical(file) == file.path else { throw Invalid.assetContainment }
+        let handle: FileHandle
+        do { handle = try FileHandle(forReadingFrom: file) }
+        catch { throw Invalid.assetRead }
         defer { try? handle.close() }
         var hash = SHA256()
         var count = 0
-        while let bytes = try handle.read(upToCount: 1024 * 1024), !bytes.isEmpty {
+        while true {
+            let bytes: Data
+            do { bytes = try handle.read(upToCount: 1024 * 1024) ?? Data() }
+            catch { throw Invalid.assetRead }
+            if bytes.isEmpty { break }
             count += bytes.count
-            guard count <= asset.size else { throw Invalid.asset }
+            guard count <= asset.size else { throw Invalid.assetContentSize }
             hash.update(data: bytes)
         }
         let digest = hash.finalize().map { String(format: "%02x", $0) }.joined()
-        guard count == asset.size, digest == asset.sha256 else { throw Invalid.asset }
+        guard count == asset.size else { throw Invalid.assetContentSize }
+        guard digest == asset.sha256 else { throw Invalid.assetDigest }
         return file
     }
 
@@ -87,7 +99,7 @@ struct LinuxTerminalProfile: Decodable {
               diskValues.isSymbolicLink != true, diskValues.fileSize == Self.diskSize else { throw Invalid.disk }
         let original = try LinuxGuestProfile.load(from: probeAssets)
         guard kernel.file == original.kernel.file, kernel.sha256 == original.kernel.sha256,
-              kernel.size == original.kernel.size else { throw Invalid.asset }
+              kernel.size == original.kernel.size else { throw Invalid.assetKernelMismatch }
         let ramdisk = try checked(initramfs, name: "initramfs-terminal.gz", in: terminalAssets)
         // The original validator still checks the kernel AND probe initramfs,
         // exact CPU/memory/display contract, and a new isolated session path.

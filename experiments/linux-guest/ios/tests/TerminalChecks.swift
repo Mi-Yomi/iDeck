@@ -28,6 +28,16 @@ func runTerminalChecks() throws {
     func expectFailure(_ body: () throws -> Void) {
         do { try body(); fatalError("unsafe terminal input accepted") } catch { }
     }
+    func expectTerminalFailure(_ expected: LinuxTerminalProfile.Invalid, _ body: () throws -> Void) {
+        do { try body(); preconditionFailure("unsafe terminal asset accepted") }
+        catch let error as LinuxTerminalProfile.Invalid { check(error == expected, "expected \(expected), received \(error)") }
+        catch { preconditionFailure("unexpected terminal asset error type") }
+    }
+    func expectProbeFailure(_ expected: LinuxGuestProfile.Invalid, _ body: () throws -> Void) {
+        do { try body(); preconditionFailure("unsafe probe asset accepted") }
+        catch let error as LinuxGuestProfile.Invalid { check(error == expected, "expected \(expected), received \(error)") }
+        catch { preconditionFailure("unexpected probe asset error type") }
+    }
     func bootSector() -> Data {
         var boot = Data(repeating: 0, count: 512)
         boot[11] = 0; boot[12] = 2 // 512-byte sectors
@@ -219,7 +229,11 @@ func runTerminalChecks() throws {
     description["disk_size_bytes"] = LinuxTerminalProfile.diskSize
     description["control_port"] = "org.ideck.control"
     description["initramfs"] = try asset(terminalInit)
-    description["seed"] = try asset(seed)
+    let sourceSeedDescription = try asset(seed)
+    let bundledSeedDescription = try asset(bundledSeed)
+    description["seed"] = bundledSeedDescription
+    check(sourceSeedDescription["sha256"] as? String == bundledSeedDescription["sha256"] as? String,
+          "bundled seed matches the independently checked source fixture")
     let profileURL = terminalAssets.appendingPathComponent("terminal-profile.json")
     try JSONSerialization.data(withJSONObject: description).write(to: profileURL)
     let profile = try LinuxTerminalProfile.load(from: terminalAssets)
@@ -238,6 +252,76 @@ func runTerminalChecks() throws {
     check(args.contains(where: { $0.contains("format=raw,cache=writethrough,file=") && $0.contains("profile-data,,one/userdata.raw") }))
     check(args.contains(where: { $0.contains("rdinit=/ideck-terminal-init") }))
     check(!args.contains(where: { $0.contains("tcp:") || $0.contains("hostfwd") || $0.contains("snapshot=on") }))
+
+    // Regress the failing fixture representation AND the real Apple system
+    // alias independently of TMPDIR. Root links are permitted bundle aliases;
+    // asset leaf links remain forbidden below. No extra 128 MiB fixture copies.
+    checkpoint("asset-directory-representations")
+    let aliasName = "ideck-asset-checks-\(UUID().uuidString)"
+    let canonicalAlias = trustedVar.appendingPathComponent("tmp").appendingPathComponent(aliasName)
+    try manager.createDirectory(at: canonicalAlias, withIntermediateDirectories: false)
+    defer { try? manager.removeItem(at: canonicalAlias) }
+    try manager.createSymbolicLink(at: canonicalAlias.appendingPathComponent("probe"), withDestinationURL: probeAssets)
+    try manager.createSymbolicLink(at: canonicalAlias.appendingPathComponent("terminal"), withDestinationURL: terminalAssets)
+    let systemAlias = rawVar.appendingPathComponent("tmp").appendingPathComponent(aliasName)
+    for (label, probeRoot, terminalRoot) in [
+        ("local", probeAssets, terminalAssets),
+        ("apple-alias", systemAlias.appendingPathComponent("probe"), systemAlias.appendingPathComponent("terminal"))
+    ] {
+        for hint in [false, true] {
+            let probeRoot = URL(fileURLWithPath: probeRoot.path, isDirectory: hint)
+            let terminalRoot = URL(fileURLWithPath: terminalRoot.path, isDirectory: hint)
+            let suffix = "\(label)-\(hint)"
+            checkpoint("asset-path-" + suffix)
+            let alternate = try LinuxTerminalProfile.load(from: terminalRoot)
+            let alternateDisk = try alternate.openDisk(in: root.appendingPathComponent("asset-data-" + suffix), assets: terminalRoot)
+            defer { alternateDisk.closeUnused() }
+            let alternateSession = root.appendingPathComponent("asset-session-" + suffix)
+            let alternateArgs = try alternate.arguments(probeAssets: probeRoot, terminalAssets: terminalRoot,
+                session: alternateSession, diskURL: alternateDisk.url, serialFD: 51, controlFD: 52)
+            check(alternateArgs[alternateArgs.firstIndex(of: "-kernel")! + 1] == probeAssets.appendingPathComponent("vmlinuz-virt").path,
+                  "probe uses the exact canonical kernel path")
+            check(alternateArgs[alternateArgs.firstIndex(of: "-initrd")! + 1] == terminalInit.path,
+                  "terminal uses the exact canonical initramfs path")
+        }
+    }
+
+    checkpoint("asset-rejection-guards")
+    let rejectedSession = root.appendingPathComponent("rejected-asset-session")
+    func terminalArguments() throws {
+        _ = try profile.arguments(probeAssets: probeAssets, terminalAssets: terminalAssets,
+            session: rejectedSession, diskURL: profileDisk.url, serialFD: 51, controlFD: 52)
+    }
+    // Same size corruption must reach the digest check, before session creation.
+    let savedInit = try Data(contentsOf: terminalInit)
+    var changedInit = savedInit; changedInit[0] ^= 1
+    try changedInit.write(to: terminalInit)
+    expectTerminalFailure(.assetDigest) { try terminalArguments() }
+    check(!manager.fileExists(atPath: rejectedSession.path))
+    try savedInit.write(to: terminalInit)
+    let probeInit = probeAssets.appendingPathComponent("initramfs-ideck.gz")
+    let savedProbeInit = try Data(contentsOf: probeInit)
+    var changedProbeInit = savedProbeInit; changedProbeInit[0] ^= 1
+    try changedProbeInit.write(to: probeInit)
+    expectProbeFailure(.assetDigest) { try terminalArguments() }
+    check(!manager.fileExists(atPath: rejectedSession.path))
+    try savedProbeInit.write(to: probeInit)
+    // Reject leaf links even to correct bytes inside the same asset directory,
+    // and to a sibling outside it. Neither case may be hidden by canonicalizing.
+    for (leaf, expected, contents) in [(terminalInit, "terminal", savedInit), (probeInit, "probe", savedProbeInit)] {
+        for parent in [leaf.deletingLastPathComponent(), root] {
+            let target = parent.appendingPathComponent("saved-" + expected)
+            try contents.write(to: target)
+            try manager.removeItem(at: leaf)
+            try manager.createSymbolicLink(at: leaf, withDestinationURL: target)
+            if expected == "terminal" { expectTerminalFailure(.assetType) { try terminalArguments() } }
+            else { expectProbeFailure(.assetType) { try terminalArguments() } }
+            check(!manager.fileExists(atPath: rejectedSession.path))
+            try manager.removeItem(at: leaf)
+            try contents.write(to: leaf)
+            try manager.removeItem(at: target)
+        }
+    }
     expectFailure { _ = try profile.arguments(probeAssets: probeAssets, terminalAssets: terminalAssets,
         session: session, diskURL: profileDisk.url, serialFD: 51, controlFD: 52) }
     expectFailure { _ = try profile.arguments(probeAssets: probeAssets, terminalAssets: terminalAssets,
@@ -248,7 +332,13 @@ func runTerminalChecks() throws {
     try JSONSerialization.data(withJSONObject: description).write(to: profileURL)
     let badSeedProfile = try LinuxTerminalProfile.load(from: terminalAssets)
     let absentData = root.appendingPathComponent("bad-seed-data")
-    expectFailure { _ = try badSeedProfile.openDisk(in: absentData, assets: terminalAssets) }
+    expectTerminalFailure(.assetDigest) { _ = try badSeedProfile.openDisk(in: absentData, assets: terminalAssets) }
+    check(!manager.fileExists(atPath: absentData.path))
+    badSeed["file"] = "../userdata-seed.raw"
+    description["seed"] = badSeed
+    try JSONSerialization.data(withJSONObject: description).write(to: profileURL)
+    let wrongNameProfile = try LinuxTerminalProfile.load(from: terminalAssets)
+    expectTerminalFailure(.assetDescriptor) { _ = try wrongNameProfile.openDisk(in: absentData, assets: terminalAssets) }
     check(!manager.fileExists(atPath: absentData.path))
     description["control_port"] = "unexpected.port"
     try JSONSerialization.data(withJSONObject: description).write(to: profileURL)

@@ -1,5 +1,24 @@
 import Foundation
 import CryptoKit
+import Darwin
+
+/// Bundle roots may use Apple's system aliases or either URL directory hint.
+/// Compare POSIX canonical filenames, never URL object identity/trailing slashes.
+enum LinuxGuestAssetPath {
+    static func canonical(_ url: URL) -> String? {
+        guard url.isFileURL, !url.path.contains("\0"),
+              let resolved = realpath(url.path, nil) else { return nil }
+        defer { free(resolved) }
+        return String(cString: resolved)
+    }
+
+    static func directory(_ url: URL) -> URL? {
+        guard let path = canonical(url) else { return nil }
+        var state = stat()
+        guard lstat(path, &state) == 0, (state.st_mode & S_IFMT) == S_IFDIR else { return nil }
+        return URL(fileURLWithPath: path, isDirectory: true)
+    }
+}
 
 /// The first direct-Linux experiment only. Construct this off the UI thread.
 /// This does not grant JIT, load QEMU, provide Metal rendering or start Steam.
@@ -9,7 +28,11 @@ struct LinuxGuestProfile: Decodable {
         let sha256: String
         let size: Int
     }
-    enum Invalid: Error { case configuration, asset, unsafePath, sessionAlreadyExists }
+    enum Invalid: Error, Equatable {
+        case configuration, asset, unsafePath, sessionAlreadyExists
+        case assetDescriptor, assetDirectory, assetInspection, assetType, assetSize
+        case assetContainment, assetRead, assetContentSize, assetDigest
+    }
     let schema: Int
     let width: Int
     let height: Int
@@ -21,7 +44,7 @@ struct LinuxGuestProfile: Decodable {
     let initramfs: Asset
 
     static func load(from directory: URL) throws -> LinuxGuestProfile {
-        let root = directory.standardizedFileURL.resolvingSymlinksInPath()
+        guard let root = LinuxGuestAssetPath.directory(directory) else { throw Invalid.assetDirectory }
         let file = root.appendingPathComponent("profile.json")
         let values = try file.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey, .fileSizeKey])
         guard values.isRegularFile == true, values.isSymbolicLink != true,
@@ -34,18 +57,24 @@ struct LinuxGuestProfile: Decodable {
     private func checkedAsset(_ asset: Asset, named name: String, in directory: URL) throws -> URL {
         guard asset.file == name, asset.size > 0, asset.size <= 64 * 1024 * 1024,
               asset.sha256.count == 64,
-              asset.sha256.allSatisfy({ "0123456789abcdef".contains($0) }) else { throw Invalid.asset }
-        let root = directory.standardizedFileURL.resolvingSymlinksInPath()
+              asset.sha256.allSatisfy({ "0123456789abcdef".contains($0) }) else { throw Invalid.assetDescriptor }
+        guard let root = LinuxGuestAssetPath.directory(directory) else { throw Invalid.assetDirectory }
         let candidate = root.appendingPathComponent(name)
-        let values = try candidate.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey, .fileSizeKey])
-        guard values.isRegularFile == true, values.isSymbolicLink != true,
-              values.fileSize == asset.size else { throw Invalid.asset }
-        let url = candidate.resolvingSymlinksInPath()
-        guard url.deletingLastPathComponent() == root else { throw Invalid.unsafePath }
-        let data = try Data(contentsOf: url, options: .mappedIfSafe)
+        let values: URLResourceValues
+        do { values = try candidate.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey, .fileSizeKey]) }
+        catch { throw Invalid.assetInspection }
+        guard values.isRegularFile == true, values.isSymbolicLink != true else { throw Invalid.assetType }
+        guard values.fileSize == asset.size else { throw Invalid.assetSize }
+        // The exact allowed basename was checked above. realpath must leave
+        // this canonical root + leaf unchanged; a link/escape is never accepted.
+        guard LinuxGuestAssetPath.canonical(candidate) == candidate.path else { throw Invalid.assetContainment }
+        let data: Data
+        do { data = try Data(contentsOf: candidate, options: .mappedIfSafe) }
+        catch { throw Invalid.assetRead }
         let hash = SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
-        guard data.count == asset.size, hash == asset.sha256 else { throw Invalid.asset }
-        return url
+        guard data.count == asset.size else { throw Invalid.assetContentSize }
+        guard hash == asset.sha256 else { throw Invalid.assetDigest }
+        return candidate
     }
 
     /// Creates an argv array for in-process qemu_init. A native session owner

@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "date_utc": "2026-10-16",
+  "base_commit": "e0bfdb9f674fbf2cb814f4b45fd57e1e88e44ad7",
+  "branch": "codex/linux-guest-feasibility-20261015",
+  "device_evidence": {
+    "provenance": "Owner statements and parent inspection of screenshots; this executor could not materialize screenshots and does not claim direct visual inspection.",
+    "observed": [
+      "IDECK_TERMINAL_READY and interactive ideck prompt",
+      "cat /data/check.txt reports sh: cat: not found",
+      "literal [6n and clipped output reported",
+      "shell builtin read returned ideck-test",
+      "lowercase exit followed by IDECK_TERMINAL_CLEAN_UNMOUNT and reboot: Powerdown",
+      "Owner explicitly reported restart; parent inspected fresh bootlog and IDECK_TERMINAL_READY, then read -r line < /data/check.txt; echo $line returned ideck-test"
+    ],
+    "manual_two_boot_one_file_persistence": "PASS based on owner restart statement plus parent screenshot inspection; same sentinel was read after second boot following prior guest clean unmount",
+    "limits": [
+      "No crash/power-loss durability claim",
+      "No host fsync diagnostic receipt reviewed here",
+      "No full Linux desktop, accelerated GPU or Steam validation",
+      "Installed screenshot source/build not independently recovered here"
+    ]
+  },
+  "cause": {
+    "busybox_sha256": "97d52efa149563c8d886e3670e2496d4140d3c54138017afd3a105e0397fae2e",
+    "busybox_version": "1.37.0",
+    "compiled_applets": 304,
+    "commands": "cat/uname applets are present but minimal probe initramfs omits their links; CONFIG_FEATURE_SH_STANDALONE is disabled, so ash does not automatically resolve applets.",
+    "cursor_query": "Compiled line editor has FEATURE_EDITING_ASK_TERMINAL; exact locked binary ash -i with TERM=dumb emits ESC[6n on PTY. TERM alone is insufficient."
+  },
+  "implementation": {
+    "commands": "Install BusyBox symlinks into ephemeral /run/ideck-bin before READY; prepend path in supervisor and login. Never install links on FAT userdata.",
+    "shell": "Before real ash -i, run BusyBox stty icanon isig icrnl -igncr -inlcr -echo -echonl. Exact binary takes canonical/noecho plain-input path, preserves controlling TTY and real shell state, converts host CR submit to newline, retains signal/EOF handling.",
+    "input_model": "Line editing remains in app command field; guest no longer echoes typed command or asks cursor position. No vi/emacs shell option guesses and no read/eval replacement.",
+    "preserved": [
+      "Host flock and QEMU lock fix unchanged",
+      "Existing userdata and seed bytes unchanged",
+      "Original kernel/probe initramfs unchanged",
+      "JIT/SideStore/diagnostics/Markdown paths unchanged"
+    ],
+    "seed_sha256_unchanged": "a09478ab12b7238eb929de5f3780f1107e6f9348821e68b74686690d32310552"
+  },
+  "local_verification": {
+    "python_tests": 152,
+    "python_elapsed_seconds": 6.538,
+    "exit_code": 0,
+    "qemu_aarch64_tool": "Locally extracted official Debian qemu-user-static7.2 package; no system install; no CI/download inside committed test tool",
+    "actual_arm64_checks": [
+      "Archive and initramfs digest verified",
+      "Actual embedded BusyBox --list yields304applets",
+      "--install symlinks; execute cat and uname through them",
+      "Actual ash command-v lookup finds links",
+      "Old cursor query reproduced first",
+      "Actual PTY canonical/noecho: CR submission, read state across lines, Ctrl-C interrupts pending builtin read and returns prompt; exit and Ctrl-D pass without ESC bytes. External foreground process signal delivery not tested."
+    ],
+    "scope": "User-mode ARM64 emulation plus real host Linux PTY, not a guest kernel boot or iOS/device test",
+    "command": "IDECK_QEMU_AARCH64=<existing-qemu-aarch64> PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s experiments/linux-guest/tests -q",
+    "standalone_command": "python3 experiments/linux-guest/tools/check_terminal_busybox.py <existing-qemu-aarch64>",
+    "shell_syntax": "PASS",
+    "independent_review": {
+      "result": "No blockers",
+      "full_python_suite": 152,
+      "actual_arm64_busybox_tool": "PASS",
+      "shell_syntax": "PASS",
+      "diff_check": "PASS",
+      "overlay_hashes": 22,
+      "ui_changed": false,
+      "pending_builtin_read_ctrl_c": "Independently rerun strengthened actual ARM64 PTY test: PASS; external foreground process not covered"
+    }
+  },
+  "ui_blocker": {
+    "screenshots_materialized": false,
+    "direct_visual_inspection": false,
+    "failure": "Standard Library transfer helper fails downloading all three resolved images: transport OSError, Tunnel connection failed:403Forbidden. Retried fresh transfers and network permission, no bypass.",
+    "ui_edited": false,
+    "remaining": [
+      "Materialize and inspect original screenshots",
+      "Explicit UIKit smartQuotes/smartDashes disabling with capitalization/correction off",
+      "Narrow safe-area layout and readable long output",
+      "Remove or relabel unsupported lineediting controls if appropriate"
+    ]
+  },
+  "ci_dispatched": false,
+  "new_ipa_built": false,
+  "device_test_of_new_guest_scripts": false,
+  "main_modified": false
+}

@@ -5,6 +5,68 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## Device two-boot persistence PASS; guest commands/plain-shell fix; UI transfer blocked
+
+Новая задача реализации от pushed **e0bfdb9f674fbf2cb814f4b45fd57e1e88e44ad7**.
+Owner/parent подтвердили настоящий interactive boot: **IDECK_TERMINAL_READY**,
+`ideck#`, shell builtins смогли записать/прочитать `/data/check.txt` со значением
+**ideck-test**. Затем lowercase `exit` дал **IDECK_TERMINAL_CLEAN_UNMOUNT** и
+**reboot: Powerdown**. Новое сообщение owner **09:21 UTC**: «Перезапустил и
+отправил команду». Parent осмотрел свежий bootlog/READY и повторный
+`read -r line < /data/check.txt; echo $line` → **ideck-test**.
+
+**Ручной persistence test одного файла между двумя boot — PASS** по явному
+owner restart и parent screenshot inspection. Это не crash/power-loss durability,
+не проверка всего диска/full Linux/Steam. Host fsync receipt здесь не получен.
+Actual installed source/build из скриншотов автором не восстановлен. Старые
+исторические UNKNOWN/evidence ниже сохранены; новый факт supersedes прежнее
+«second boot not yet tested» только в пределах этого ручного sentinel test.
+
+Оставшиеся баги: `cat: not found`, literal **[6n**, smart quotes и clipped output.
+Команды проверены в **actual locked ARM64 BusyBox 1.37.0**, не по списку строк:
+304 applets включая cat/uname есть, но links в минимальном initramfs отсутствуют,
+а standalone lookup отключён. Теперь init ставит links **в RAM /run/ideck-bin**,
+добавляет PATH в init/login и проверяет cat/uname до READY. `/data` не меняется;
+seed остаётся побайтно прежним (**a09478ab12b7238eb929de5f3780f1107e6f9348821e68b74686690d32310552**).
+Terminal asset/overlay locks пересчитаны по детерминированному suffix; исходные
+kernel/probe initramfs, host flock/lockfix, JIT/SideStore/diagnostics не изменены.
+
+Для plain line console **TERM=dumb недостаточно**: actual ash -i на PTY испускает
+ESC[6n. Вместо неподдерживаемых emacs/noediting options login теперь вызывает
+**stty icanon isig icrnl -igncr -inlcr -echo -echonl** перед настоящим `ash -i`.
+Так compiled BusyBox выбирает plain canonical/noecho input path, сохраняя реальный
+shell, controlling tty и Ctrl-C/Ctrl-D. Host CR Send превращается в newline.
+Редактирование — в app command field; guest echo/Tab completion/vi redraw нет.
+Никакого eval-loop вместо shell или отключения shutdown protocol.
+
+Actual ARM64 regression **PASS**: locked archive/initramfs digest → BusyBox/musl
+→ QEMU user-mode → 304 applets → install links → executable cat/uname и ash PATH
+lookup. PTY сначала воспроизводит старый ESC[6n, затем проверяет canonical/noecho:
+CR submit, read state, Ctrl-C прерывает pending builtin read и возвращает prompt,
+exit и Ctrl-D без ESC. External foreground process signal delivery не проверен. Новый offline tool
+`experiments/linux-guest/tools/check_terminal_busybox.py <existing-qemu-aarch64>`
+ничего не скачивает и userdata не открывает. Это user-mode/host PTY check,
+**не guest kernel boot / iOS UI test**. Suite с IDECK_QEMU_AARCH64: **152 tests
+PASS (6.538 s)**; sh -n и diff check PASS. Независимый reviewer повторил
+152 tests с actual ARM64 check: PASS, все 22 overlay hashes совпали; blockers нет.
+Усиленный pending-read Ctrl-C test дополнительно прошёл actual tool.
+
+**UI пока заблокирован, UI-код не изменён.** Parent потребовал сначала перенести
+и осмотреть исходные скриншоты в этом executor. Standard Library helper для всех
+трёх файлов даёт **download failed / OSError: Tunnel connection failed:
+403 Forbidden**, включая fresh transfers и повтор с network permission.
+Обхода, подмены скриншотов summary или заявления о визуальном осмотре нет.
+Запрошены уже материализованные доступные local paths. После их получения:
+explicit smartQuotes/smartDashes/capitalization/correction off; narrow safe-area
+layout/readable long output и подходящие controls для canonical line console.
+Library IDs/raw screenshots/private transfer URLs в Git не внесены.
+
+Новый evidence: `experiments/linux-guest/evidence/terminal-commands-lineconsole.json`.
+**CI не запускался**, IPA этого guest fix не собрана; parent управляет единственной
+сборкой/quota/payment. Перед финальной IPA желательно завершить UI после transfer
+unblock. На device новых scripts ещё проверить cat/uname, quotes/ввод, line output,
+clean Stop и сохранность существующего sentinel после relaunch без reset disk.
+
 ## Userdata byte-100 lock: конкретная Darwin-причина и terminal-only fix
 
 Новая реализация от pushed **`224f5f7d08280598a3e006c92f60e7247b9941d8`**.

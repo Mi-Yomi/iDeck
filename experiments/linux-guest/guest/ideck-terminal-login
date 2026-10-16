@@ -1,8 +1,13 @@
 #!/bin/sh
 # getty invokes this explicitly; no host or network authentication service.
-export PATH=/usr/sbin:/usr/bin:/sbin:/bin
+export PATH=/run/ideck-bin:/usr/sbin:/usr/bin:/sbin:/bin
 export HOME=/data USER=root LOGNAME=root TERM=dumb
 export PS1='ideck# '
+# Editing happens in the app's command field. With canonical/noecho stdin,
+# this exact BusyBox ash uses its plain input path instead of querying cursor
+# position (ESC[6n), while retaining the real shell, controlling tty and ISIG.
+# Host Send submits CR; convert it to newline for canonical reads/fgets.
+/usr/bin/busybox stty icanon isig icrnl -igncr -inlcr -echo -echonl || exit 1
 cd /data || exit 1
 printf '\nLocal Linux terminal. Files in /data persist after orderly Stop.\n'
 printf 'Use exit or the app Stop action to unmount and power off.\n\n'

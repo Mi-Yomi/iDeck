@@ -22,12 +22,12 @@
     },
     "scripts": {
       "ideck-terminal-init": {
-        "size": 2414,
-        "sha256": "021086a65c2129f65b5cd2aaedd886fd56a2374b28d239df6d70907d1393e76c"
+        "size": 2843,
+        "sha256": "9f4a0232b1c8029ba738e1b13aea8a9877753c9d5c23e6c094b542beb0f7eed4"
       },
       "ideck-terminal-login": {
-        "size": 396,
-        "sha256": "3ff671268b2c296d76ec390590a91078db471174a9e38c4d1d840d982f8d01fe"
+        "size": 794,
+        "sha256": "ffe79a95b2e53f15a917b1c4c99d16a95062342dc90dac5d2e02b237747f3de1"
       },
       "TERMINAL-LICENSES.txt": {
         "size": 1635,
@@ -38,11 +38,11 @@
   "files": {
     "terminal-profile.json": {
       "size": 717,
-      "sha256": "3ee1f4f33b93806322fcfc73a07c98163a66ab9ba185053858670ca39efaad94"
+      "sha256": "17867bc21c57c6b616da3cd7e9ca56b362cf5a46b50940941b8ee6008cae676a"
     },
     "initramfs-terminal.gz": {
-      "size": 9405614,
-      "sha256": "b78519528a035a4409aab8adeaa67c72765c532a5acf974ccc95336fa04ceaaf"
+      "size": 9406442,
+      "sha256": "48bc711f2acdd594edcf5ae55adebf0f086e5c7a9664d7779827fc1be5984ab4"
     },
     "userdata-seed.raw": {
       "size": 134217728,

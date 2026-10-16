@@ -7,6 +7,8 @@ import hashlib
 import gzip
 import ast
 import json
+import os
+import subprocess
 import struct
 import sys
 import tarfile
@@ -84,6 +86,31 @@ class TerminalBundleChecks(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.temporary.cleanup()
+
+    def test_guest_installs_commands_in_ram_and_uses_plain_interactive_tty(self):
+        init = (EXPERIMENT / "guest/ideck-terminal-init").read_text()
+        login = (EXPERIMENT / "guest/ideck-terminal-login").read_text()
+        for source in (init, login):
+            self.assertIn("export PATH=/run/ideck-bin:/usr/sbin:/usr/bin:/sbin:/bin", source)
+        self.assertIn("$BB --install -s /run/ideck-bin || fail command_links", init)
+        self.assertLess(init.index("$BB --install -s"), init.index("echo IDECK_TERMINAL_READY"))
+        self.assertIn('[ -x /run/ideck-bin/cat ] && [ -x /run/ideck-bin/uname ]', init)
+        self.assertIn("stty icanon isig icrnl -igncr -inlcr -echo -echonl || exit 1", login)
+        self.assertIn("exec /usr/bin/busybox sh -i", login)
+        self.assertNotIn("+o emacs", login)
+        self.assertNotIn("eval ", login)
+        self.assertNotIn("--install -s /data", init)
+
+    @unittest.skipUnless(os.environ.get("IDECK_QEMU_AARCH64"), "explicit existing user-mode QEMU required")
+    def test_actual_locked_arm64_busybox_commands_and_pty(self):
+        result = subprocess.run([sys.executable, str(EXPERIMENT / "tools/check_terminal_busybox.py"),
+                                 os.environ["IDECK_QEMU_AARCH64"]], check=True, text=True,
+                                capture_output=True, timeout=30)
+        report = json.loads(result.stdout)
+        self.assertEqual(report["status"], "pass")
+        self.assertTrue(report["old_cursor_query_reproduced"])
+        self.assertTrue(report["canonical_noecho_cr_read_ctrl_c_exit_ctrl_d"])
+        self.assertFalse(report["userdata_accessed"])
 
     def test_actual_seed_has_consistent_fat16_geometry_and_two_identical_fats(self):
         seed = self.source / "userdata-seed.raw"

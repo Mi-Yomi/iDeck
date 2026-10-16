@@ -20,9 +20,9 @@
     "ios/LinuxTerminalSession.swift": "88e1cdd71086a8cf5b82b5538410cb59d05fa6c1f0e30d790b4036bd9035cae9",
     "ios/LinuxTerminalView.swift": "c3d31cac6de3edf479d8a5b817614cef0d48856a42d20f54d9060fb214c17548",
     "tools/terminal_bundle.py": "c1c696498690085c6ddd4dc1eaf06dc4afa51b4dea738d883f498194cbbdef61",
-    "ipa/terminal.lock.json": "0f366dea776a5e1aecd55a7a4d001eee1b720e23cea51d609659bcfa7821b530",
-    "guest/ideck-terminal-init": "021086a65c2129f65b5cd2aaedd886fd56a2374b28d239df6d70907d1393e76c",
-    "guest/ideck-terminal-login": "3ff671268b2c296d76ec390590a91078db471174a9e38c4d1d840d982f8d01fe",
+    "ipa/terminal.lock.json": "e39514b53a2ae33de96b300b2578c760fb95b2b2685bb7a99502f0f2d0c6a98e",
+    "guest/ideck-terminal-init": "9f4a0232b1c8029ba738e1b13aea8a9877753c9d5c23e6c094b542beb0f7eed4",
+    "guest/ideck-terminal-login": "ffe79a95b2e53f15a917b1c4c99d16a95062342dc90dac5d2e02b237747f3de1",
     "guest/TERMINAL-LICENSES.txt": "50cf68a71ffa53f5bbd8b9cdaab3ad93b37157399ff7b787eabaa1c635b7ac3a",
     "ios/LinuxTerminalDiagnostics.swift": "39bb8ab91ce99fe3aaa34c2b2ce64da0caba5a7907a96aa08c3f1ca484f3be80"
   },

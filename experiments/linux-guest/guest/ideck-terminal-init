@@ -1,6 +1,6 @@
 #!/bin/sh
 # Separate real Linux terminal mode. The existing framebuffer probe is unchanged.
-export PATH=/usr/sbin:/usr/bin:/sbin:/bin
+export PATH=/run/ideck-bin:/usr/sbin:/usr/bin:/sbin:/bin
 BB=/usr/bin/busybox
 stopping=0
 mounted=0
@@ -35,6 +35,12 @@ $BB mount -t proc proc /proc || fail proc
 $BB mount -t sysfs sysfs /sys || fail sysfs
 $BB mount -t devtmpfs devtmpfs /dev || fail devtmpfs
 exec </dev/console >/dev/console 2>&1
+# The minimal probe initramfs contains BusyBox but omits most applet links.
+# ash was built without standalone applet lookup: install links in RAM, never
+# on the user's FAT volume or by modifying the original probe bundle.
+$BB mkdir -p /run/ideck-bin || fail command_directory
+$BB --install -s /run/ideck-bin || fail command_links
+[ -x /run/ideck-bin/cat ] && [ -x /run/ideck-bin/uname ] || fail commands_missing
 for driver in virtio_blk vfat nls_cp437 nls_iso8859-1; do
     $BB modprobe "$driver" || fail "module_$driver"
 done

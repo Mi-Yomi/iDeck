@@ -1,0 +1,146 @@
+{
+  "schema": 1,
+  "date_utc": "2026-10-16",
+  "diagnosis_base_commit": "457b95305c8eefa61ffee8ae0420ed733bb35db1",
+  "branch": "codex/linux-guest-feasibility-20261015",
+  "owner_report": {
+    "provenance": "Parent delegation quoting owner; raw device logs not yet received.",
+    "ipa_source_commit": "46582b44b577651679155efe60c56256496415b8",
+    "device": "iPhone 16 Pro Max",
+    "os": "iOS 27",
+    "installation": "SideStore; owner confirmed installed",
+    "trigger": "Press Start console with JIT enabled",
+    "observed": "Immediate app exit/crash",
+    "terminal_ready_verified": false,
+    "persistence_verified": false
+  },
+  "previous_device_probe_pass_commit": "660e27e515f666040a5959fa845fe85b3290a740",
+  "source_provenance": {
+    "qemu_archive": "qemu-10.0.12-utm.tar.xz",
+    "size_bytes": 142836072,
+    "sha256": "7c9605290b34152debb842e965a55d2e4fbba4793e536ab677b4027e5dc0ba1a",
+    "lock_size_and_hash_verified": true,
+    "qemu_source_sha256": {
+      "chardev/char-socket.c": "fd40bd0098d34a8c7af85fd561770ac66eeb2f1d0d79d83ee27e83be4591de44",
+      "util/qemu-sockets.c": "29c16e90edb02faf5514a777ab7a9d83bbac262df59ce2698f35ade4b75f88e4",
+      "io/channel-socket.c": "0b130cd7ade31bb7e2885947e1a53afd55cda7c49d6b2356065c7abc2959cc18",
+      "block/file-posix.c": "520ae8498321a1d98ddd271e9cf243ecfacca02b330f128b64c9f8c83b3bd889",
+      "util/osdep.c": "29a404eac934a6958850f187aa16f4841372f456eda5ad1b943ac9a998baacf8",
+      "system/vl.c": "00efc5bee81e7d2f0155b8b0b2c65d735268e92cff0708ebdc4a8273279cd2c6"
+    },
+    "husk_commit": "0695248f491cda877f7969d1f0cc89aeede1482e",
+    "husk_source_check_archive_verified": true,
+    "husk_native_git_blob_verified": true,
+    "husk_native_sha256": {
+      "patches/husk-qemu-ios-jit.patch": "eca4dc619b8d273a00824f7bac187a2862d13396ca99d456ed83ebbf4d1bb1ba",
+      "patches/qemu-10.0.12-utm.patch": "eb3838cbd2e6d44db03dc2f550d0e2bf58f13791fe34614587ab73bd673c00c7",
+      "src/ios-jit/husk-display.c": "4baec7e0595f5a2c27065aaa076a944cd71b990f4442f1eff67204cb5bcd6cb4",
+      "src/ios-jit/husk-ios-jit.c": "0fa4a205d0182f0482d9cf26e69f77fda5e818316db19a9c71eb812079eb3e02"
+    }
+  },
+  "findings": [
+    {
+      "area": "JIT/thread/memory/argv",
+      "result": "Same prewarm/execution gates, 1024 MiB guest, 256 MiB TCG, 16 MiB thread stack and retained argv; qemu_init/display/main_loop sequence matches probe. Source comparison is not a device pass.",
+      "references": [
+        "ios/LinuxTerminalSession.swift:40-49,271-310",
+        "ios/LinuxProbeSession.swift:41-61,159-197"
+      ]
+    },
+    {
+      "area": "Socket chardev",
+      "result": "fd=N,server=off accepted; connected socketpair fd is parsed and adopted without another connect/listen. QEMU owns its endpoint; Swift reads/writes separate peer.",
+      "references": [
+        "ios/LinuxTerminalProfile.swift:117-120",
+        "QEMU chardev/char-socket.c:974-992,1474-1562",
+        "QEMU util/qemu-sockets.c:1117-1181",
+        "QEMU io/channel-socket.c:83-127,148-165"
+      ]
+    },
+    {
+      "area": "Disk",
+      "result": "cache=writethrough uses normal buffered fd; locking=auto uses OFD support detection. No proven host flock conflict or reason to weaken disk guards.",
+      "references": [
+        "ios/LinuxTerminalProfile.swift:121",
+        "QEMU block/file-posix.c:522-556,655-710",
+        "QEMU util/osdep.c:203-250"
+      ]
+    },
+    {
+      "area": "Display",
+      "result": "Pinned husk_display_init registers QEMU listener and has no MTKView/UI dependency; existing virtio-gpu-pci preserved.",
+      "references": [
+        "Husk src/ios-jit/husk-display.c:136-163"
+      ]
+    },
+    {
+      "area": "Callbacks",
+      "result": "Independent source review found no definite startup fd reuse/indexing/unbounded publication bug in serial/control handling.",
+      "references": [
+        "ios/LinuxTerminalSession.swift:173-199,343-432"
+      ]
+    },
+    {
+      "area": "Observability",
+      "result": "Preparation catch discards actual error; diagnostic gap, not proven crash cause. Native exit/abort/signal cannot be caught by Swift do/catch.",
+      "references": [
+        "ios/LinuxTerminalSession.swift:288,311-319"
+      ]
+    },
+    {
+      "area": "Result marker limitation",
+      "result": "qemu_init_returned is queued only after display init; absent marker cannot alone locate a crash inside qemu_init.",
+      "references": [
+        "ios/LinuxTerminalSession.swift:288-304"
+      ]
+    }
+  ],
+  "independent_review": {
+    "agent": "independent_review",
+    "status": "No definite immediate crash cause found from source; native/device logs needed.",
+    "ci_or_device_execution": false,
+    "additional_findings": "Confirmed display init has no MTKView dependency; pinned patches do not modify reviewed socket/block source paths."
+  },
+  "evidence_needed": {
+    "logs": [
+      "Documents/husk-native.log",
+      "Documents/husk-native-prev.log",
+      "Documents/husk.log",
+      "Documents/husk-prev.log",
+      "Documents/iDeckLinuxSessions/<UUID>/result.json",
+      "Documents/iDeckLinuxSessions/<UUID>/linux-serial.log"
+    ],
+    "rotation": "Save before multiple app launches; current/previous logs rotate at startup.",
+    "ips_fields": [
+      "timestamp/captureTime",
+      "bundleInfo app version/build",
+      "osVersion/OS build",
+      "exception type/codes/signal",
+      "termination namespace/code/indicator",
+      "faultingThread or triggered thread",
+      "complete crashed-thread frames",
+      "asi/Application Specific Information",
+      "lastExceptionBacktrace",
+      "usedImages/Binary Images UUID/base/imageOffset"
+    ],
+    "jetsam_fields": [
+      "iDeck/Husk process entry",
+      "reason",
+      "rpages",
+      "lifetimeMax",
+      "pageSize",
+      "physFootprint/footprint if present",
+      "memory-pressure context"
+    ],
+    "full_original_preferred": true,
+    "normal_native_exit_may_have_no_ips": true,
+    "raw_private_logs_committed": false
+  },
+  "cause_confirmed": false,
+  "runtime_fix_justified_yet": false,
+  "changes": "HANDOFF and this evidence only; runtime/guards/disk data/probe/JIT/Markdown unchanged.",
+  "verification": "Source review, exact locked QEMU archive integrity, pinned Husk git-blob identity, docs/JSON scope checks; no new Swift/QEMU/Apple/device execution.",
+  "ci_started": false,
+  "new_ipa_created": false,
+  "next_step": "Read owner native logs/IPS or Jetsam; locate exact boundary/cause, then implement and test evidence-based fix. Parent coordinates CI."
+}

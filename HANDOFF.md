@@ -5,6 +5,61 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## Текущий device blocker: немедленный вылет при Start console с JIT
+
+Owner через parent подтвердил: terminal IPA source
+**`46582b44b577651679155efe60c56256496415b8`** установлена через **SideStore**
+на **iPhone 16 Pro Max / iOS 27**, но приложение немедленно вылетает при Start
+console с включённым JIT. Значит прежний download/install pending уже не текущий
+статус. **Terminal readiness и persistence не пройдены.** Предыдущий device
+probe на `660e27e515f666040a5959fa845fe85b3290a740` остаётся отдельным PASS.
+Crash/IPS или JetsamEvent запрошен parent у владельца; здесь ещё не получен.
+
+Диагностика проведена от чистого remote
+`457b95305c8eefa61ffee8ae0420ed733bb35db1`, без переноса старых WIP. Сравнены
+current terminal/probe, exact pinned Husk native bridge и QEMU 10.0.12-utm.
+Размер/SHA-256 QEMU archive проверены по native lock; полученные Husk native
+файлы/patches проверены Git-blob SHA против дерева pin. Независимый reviewer
+проверил startup/FD/callbacks и native socket paths. Проверенные findings:
+
+- JIT prewarm, guest RAM 1024 MiB, TCG 256 MiB, stack 16 MiB, thread QoS,
+  argv lifetime и `qemu_init → husk_display_init → qemu_main_loop` совпадают
+  с probe. Это source comparison, не новое device исполнение.
+- QEMU принимает `socket,fd=N,server=off` для connected AF_UNIX socketpair;
+  этот fd-path не делает повторный connect/listen. Оснований переключать
+  `server=on` или заменять socketpair нет.
+- `cache=writethrough` использует buffered file I/O; `locking=auto` включает
+  QEMU locks при наличии OFD support. Конфликт с host disk flock не установлен;
+  ослаблять lock/no-clobber/format guards оснований нет.
+- Pinned `husk_display_init()` регистрирует QEMU display listener без MTKView;
+  явной зависимости от отсутствующего в terminal screen view не найдено.
+- Swift preparation errors перехватываются, но worker catch теряет конкретную
+  ошибку. Это диагностический недостаток, **не доказанная причина вылета**.
+  Native `exit/abort/signal` из qemu_init Swift catch не перехватывает.
+
+Нужны существующие **Documents/husk-native.log, husk-native-prev.log, husk.log,
+husk-prev.log** и последний **iDeckLinuxSessions/<UUID>/result.json** с
+**linux-serial.log**. Сохранить до нескольких новых app launches: логи ротируются.
+`terminal_prepared` подтверждает завершение подготовки, но отсутствие
+`qemu_init_returned` **не доказывает падение внутри qemu_init**: flag ставится
+после display init и async queue write. Нужны native last lines/stack.
+Normal QEMU exit может не оставить IPS; поэтому native stderr нужен отдельно.
+
+IPS: timestamp/app version/build, Exception Type/Codes, Termination Reason,
+Triggered by Thread/faultingThread, полный frames упавшего потока, Application
+Specific Information/asi, lastExceptionBacktrace, Binary Images/usedImages
+(UUID, base, imageOffset), OS build. JetsamEvent: запись iDeck/Husk с reason,
+rpages/lifetimeMax, pageSize, footprint и memory-pressure context. Лучше полный
+исходный файл; raw device logs/контейнерные пути/личные данные не добавлять в Git.
+
+Подтверждённой причины или обоснованного runtime-fix пока нет. Новый snapshot:
+`experiments/linux-guest/evidence/terminal-startup-device-blocker.json`.
+В этой диагностической сессии только HANDOFF/evidence; runtime и данные диска,
+probe/JIT/MD export, guards/locks не менялись. Новые CI, IPA, Apple/guest/device
+runs не выполнялись. Следующий шаг — сопоставить owner native logs/IPS/Jetsam
+с startup границами, затем исправлять доказанную причину и передавать parent
+точный source SHA для единственной координируемой им CI.
+
 ## Terminal IPA: Apple build SUCCESS на 46582b44, device gate ещё не пройден
 
 Parent передал результат Apple build

@@ -5,6 +5,56 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## Первый настоящий IPA собран; независимый static package audit прошёл
+
+Успешный [build `6ad174a63ffd2c7f0ad3c64c`](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad174a63ffd2c7f0ad3c64c),
+защищённая build revision
+[`5cd442c7670932c551459f015c71e295c4b6610a`](https://github.com/Mi-Yomi/iDeck/commit/5cd442c7670932c551459f015c71e295c4b6610a),
+workflow `ideck-linux-probe-ipa`, правильная Linux-ветка. Result:
+**`status=linux_probe_ipa_built`, `ipa_created=true`, `runtime_linked=true`**.
+Provider index 8, Mac Mini M2, Xcode 27.0 (27A266a), 8m 32s; worker elapsed
+471.901 секунды. Все этапы actual host compile/link/execute, QEMU, Husk
+integration/rebuild, pairing, XcodeGen, app build и package завершились.
+В 92 шагах 91 exit 0; единственный nonzero — ожидаемый `metal-probe-before=1`,
+после которого официальный download, after probe и version check прошли.
+
+**`iDeck-Linux-Probe.ipa`: 49205131 bytes**, SHA-256
+`2c38939b7c0d03586879b69451a4e42afa3d62399ab165fe76e8810f472a6513`.
+**`native-products.tar.gz`: 10521805 bytes**, SHA-256
+`dd00675f035ed11c3f4647e7e16c452622a9136d0abba4666a709fbf818b3bc3`.
+Исходный workflow output: `.work/linux-ipa/iDeck-Linux-Probe.ipa`; исходные
+артефакты сохранить без изменений. Private Library URLs/IDs и signed download
+URLs в Git не добавляются. Итоговый doc-only SHA после commit/push получить
+через `git rev-parse HEAD`, сверить с remote и сообщить **отдельно от build SHA**.
+
+Parent/root выполнили независимый static audit **реально скачанных bytes**;
+автор этого раздела получил findings. IPA/log ZIP CRC clean; 7 настоящих thin
+ARM64 Mach-O, platform 2 (iOS device), явные bundled load dependencies на месте.
+Три guest assets побайтно совпали с locks на GitHub build SHA и result;
+initramfs содержит реальные `ideck-init`, `fb-probe`, `evdev.ko`. Source/native/
+overlay locks и staged hash receipts совпали, app log содержит BUILD SUCCEEDED.
+CI ad-hoc signature verification прошла; root отдельно Apple `codesign` не
+выполнял. Static reports `independent-static-audit.md/json` доступны у parent,
+SHA-256 JSON `081eec1edb9350d210e8e628cccec761b2c0794f375089402b7b017f959855cc`;
+локально в этом checkout они не материализованы. Evidence:
+`experiments/linux-guest/evidence/first-ipa-success.json`.
+
+Host compiler receipt ready: macOS SDK 27, arm64 Darwin 27, actual probe binary
+33432 bytes, SHA-256
+`c9f33a3fc59736f0ec357b242f512958ceb4611c65dafea40754e427d76f2298`, marker OK.
+Nested runtime=false в source/guest stage — ранние pre-build snapshots;
+верхнеуровневое final `runtime_linked=true` относится к результату сборки.
+Minimum OS: app 16.0, StikJIT 17.4, JITHelper 26.0; это не обещание JIT на iOS 16.
+
+**Сохранить эту code revision, native pins, исходный IPA и native products.**
+Дополнительные CI/code/Steam/device действия здесь не выполняются. Для следующего
+шага owner делает обычный sideload re-signing **копии** IPA; hash новой подписи/
+исполняемого файла фиксировать отдельно от исходного IPA hash. Затем на устройстве:
+JIT self-test → Linux boot → display/input → сохранение probe report.
+**Установка, Linux boot/JIT/input на iPhone и Steam не проверены.** Старые
+HANDOFF/evidence snapshots ниже сохранены; их pending/failed относятся к прежним
+ревизиям и не отменяют этот результат сборки.
+
 ## Последняя Apple-попытка: cross wrapper исправлен, build-machine C compiler не исполняется
 
 [Build `6ad16f883ffd2c7f0ad3c55b`](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad16f883ffd2c7f0ad3c55b)

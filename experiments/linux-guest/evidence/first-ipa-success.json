@@ -1,0 +1,157 @@
+{
+  "status": "linux_probe_ipa_built_and_independent_static_package_audit_passed",
+  "working_branch": "codex/linux-guest-feasibility-20261015",
+  "protected_build_commit": "5cd442c7670932c551459f015c71e295c4b6610a",
+  "build": {
+    "url": "https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad174a63ffd2c7f0ad3c64c",
+    "workflow": "ideck-linux-probe-ipa",
+    "commit": "5cd442c7670932c551459f015c71e295c4b6610a",
+    "source": "Parent browser verified downloaded artifact hashes. Parent/root independently audited actual downloaded IPA/native/log ZIP bytes and structured result content. Audit findings are relayed to this evidence author; no device execution is implied.",
+    "reported_ci_status": "success",
+    "reported_result_status": "linux_probe_ipa_built",
+    "result_status_confirmation_pending": false,
+    "reported_runtime_linked": true,
+    "reported_elapsed_seconds": 471.901,
+    "reported_successful_stages": [
+      "actual macOS host compile/link/execute probe",
+      "native-qemu",
+      "integrate-husk",
+      "integrated qemu rebuild",
+      "native pairing",
+      "xcodegen",
+      "app build",
+      "package"
+    ],
+    "independent_manifest_audit_received": true,
+    "reported_provider_build_index": 8,
+    "reported_provider_duration": "8m 32s",
+    "reported_instance": "Mac Mini M2",
+    "reported_correct_branch_and_commit_verified": true,
+    "result_content_audit": {
+      "source": "Coordinator-reported independent root structured result.json read; no Library identifiers/URLs retained.",
+      "reported_lines": 726,
+      "reported_size": 18710,
+      "raw_local_json_bytes_verified": false,
+      "status": "linux_probe_ipa_built",
+      "commit": "5cd442c7670932c551459f015c71e295c4b6610a",
+      "ipa_created": true,
+      "runtime_linked": true,
+      "device_tested": false,
+      "steam_executed": false,
+      "steps": 92,
+      "only_nonzero_step": "metal-probe-before exited 1; official component download, after probe and version check all exited 0, so recovery is expected.",
+      "xcode": "27.0 (27A266a)",
+      "stage_receipt_note": "Nested source/guest staging runtime=false flags describe pre-build staging only; top-level successful runtime_linked=true describes final build.",
+      "steps_exit_zero": 91,
+      "expected_recovered_nonzero_steps": 1
+    },
+    "verified_step_times_seconds": {
+      "native_base": 56.398,
+      "native_angle": 86.81,
+      "native_gpu": 10.916,
+      "qemu_host_compile": 0.092,
+      "qemu_host_execute": 0.004,
+      "native_qemu": 80.662,
+      "integrate_husk": 0.216,
+      "qemu_integrated_rebuild": 8.658,
+      "native_pairing": 21.524,
+      "xcodegen": 0.092,
+      "app_build": 51.399,
+      "signatures": 0.045,
+      "zip": 1.841
+    },
+    "independent_result_content_audit_received": true
+  },
+  "ipa": {
+    "name": "iDeck-Linux-Probe.ipa",
+    "reported_size": 49205131,
+    "reported_sha256": "2c38939b7c0d03586879b69451a4e42afa3d62399ab165fe76e8810f472a6513",
+    "reported_build_output_path": ".work/linux-ipa/iDeck-Linux-Probe.ipa",
+    "artifact_link": null,
+    "size_sha256_independently_verified": true,
+    "bundle_contents_independently_verified": true,
+    "signing": "Ad-hoc build artifact; requires owner sideload re-signing for installation.",
+    "size_sha256_verified_by_browser_coordinator": true,
+    "verification_source": "Parent/root independent static audit of real downloaded IPA bytes; browser also verified size/hash against result.json. Evidence author received findings, not device proof.",
+    "size_sha256_independently_verified_by_root": true,
+    "size": 49205131,
+    "sha256": "2c38939b7c0d03586879b69451a4e42afa3d62399ab165fe76e8810f472a6513"
+  },
+  "protection": {
+    "build_revision_protected": true,
+    "code_and_native_pins_changed": false,
+    "additional_ci_started": false,
+    "device_or_steam_actions_taken": false
+  },
+  "documentation_gate": "Parent/root static audit completed and coordinator authorized documentation finalization. Preserve successful build revision/artifacts; coordinator alone commits/pushes documentation.",
+  "previous_evidence_preserved": true,
+  "device_tested": false,
+  "linux_jit_on_iphone_verified": false,
+  "steam_executed": false,
+  "native_products": {
+    "name": "native-products.tar.gz",
+    "browser_verified_size": 10521805,
+    "browser_verified_sha256": "dd00675f035ed11c3f4647e7e16c452622a9136d0abba4666a709fbf818b3bc3",
+    "verification_source": "Parent browser verified downloaded size/hash, and parent/root independent static audit of actual downloaded archive bytes passed; findings relayed to evidence author.",
+    "independently_audited_by_root": true
+  },
+  "host_compiler_result": {
+    "source": "Independently read structured result.json content relayed by coordinator.",
+    "status": "ready",
+    "macos_sdk_major": 27,
+    "compiler_default_family": "arm64 Apple Darwin 27",
+    "probe_size": 33432,
+    "probe_sha256": "c9f33a3fc59736f0ec357b242f512958ceb4611c65dafea40754e427d76f2298",
+    "marker_ok": true
+  },
+  "static_package_audit": {
+    "status": "passed",
+    "source": "Parent/root audit of actual downloaded bytes; findings relayed to evidence author.",
+    "report_names": [
+      "independent-static-audit.md",
+      "independent-static-audit.json"
+    ],
+    "report_json_sha256": "081eec1edb9350d210e8e628cccec761b2c0794f375089402b7b017f959855cc",
+    "report_locally_materialized_in_this_checkout": false,
+    "ipa_and_log_zip_crc_clean": true,
+    "actual_macho_files": 7,
+    "macho_architecture": "thin ARM64",
+    "macho_platform": 2,
+    "macho_platform_name": "iOS device",
+    "bundled_explicit_load_dependencies_present": true,
+    "guest_files_match_github_build_commit_lock_and_result": {
+      "profile.json": {
+        "size": 1599,
+        "sha256": "65ae64e005b9fa29f3e0ee6a9bed079366b16633e2dbebd8ca08aa15bdce0fb6"
+      },
+      "vmlinuz-virt": {
+        "size": 10351104,
+        "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+      },
+      "initramfs-ideck.gz": {
+        "size": 9402391,
+        "sha256": "5f64312eeef340991c6b0d97bd9d1fb01649c1763e14d7fb8231ad16551e9343"
+      }
+    },
+    "initramfs_contains_real_guest_inputs": [
+      "ideck-init",
+      "fb-probe",
+      "evdev.ko"
+    ],
+    "source_native_overlay_locks_and_staged_hash_receipts_match": true,
+    "app_log_build_succeeded": true,
+    "ci_ad_hoc_signature_verification_passed": true,
+    "independent_apple_codesign_verification_performed_by_root": false,
+    "minimum_os": {
+      "app": "16.0",
+      "StikJIT": "17.4",
+      "JITHelper": "26.0"
+    },
+    "compatibility_limit": "App minimum OS 16.0 does not imply JIT/helper compatibility on iOS 16; no device JIT or guest execution has been tested."
+  },
+  "final_documentation_commit": {
+    "self_referential_sha_omitted": true,
+    "resolution": "After coordinator documentation commit/push, obtain git rev-parse HEAD and verify remote Linux branch; report that SHA separately from protected successful build commit."
+  },
+  "next_device_step": "Preserve original IPA and native products. Owner re-signs a COPY using normal sideload flow; record newly signed binary/hash separately. Then perform device JIT self-test and Linux boot/display/input/probe report. No device or Steam action performed by this work."
+}

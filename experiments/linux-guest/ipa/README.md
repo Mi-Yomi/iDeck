@@ -1,16 +1,18 @@
 # iDeck Linux Probe IPA build
 
 The `ideck-linux-probe-ipa` Codemagic workflow is a **native source build recipe**.
-The latest [Apple run at 9e2e481](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad16f883ffd2c7f0ad3c55b) passed the QEMU
-`needs_exe_wrapper` control, then stopped in native-qemu while obtaining a
-runnable build-machine C compiler for `target/hexagon/gen_semantics.c`. The forwarded
-native file names `cc`; its sanity program did not run, and linker paths
-referenced the iPhoneOS SDK despite the compiler's Darwin default target.
-These are coordinator/parent-reported excerpts, not locally read full raw ZIP
-bytes. SDK selection leaking into the host build is a strong inference, not a
-proven SDKROOT environment value. See `../evidence/qemu-host-compiler.json`.
-Integrated QEMU/Husk compilation, app linking and IPA remain unverified; earlier
-evidence is preserved. There is no device Linux/Steam proof yet.
+The [Apple run at 5cd442c](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad174a63ffd2c7f0ad3c64c)
+built the real runtime, linked the app and produced `iDeck-Linux-Probe.ipa`:
+**49,205,131 bytes**, SHA-256
+`2c38939b7c0d03586879b69451a4e42afa3d62399ab165fe76e8810f472a6513`.
+The result status is `linux_probe_ipa_built`; parent/root independently audited
+the downloaded bytes, ARM64 iOS-device binaries, bundled dependencies, guest
+assets and matching provenance. Of 92 steps, 91 exited zero; the initial missing
+Metal probe was the one expected nonzero and recovered through Apple's download.
+See `../evidence/first-ipa-success.json`. Preserve the successful build revision,
+native pins and original artifacts. Owner sideload re-signing must use a copy;
+installation, device Linux/JIT/input and Steam remain untested. Earlier evidence
+remains historical.
 
 Select branch `codex/linux-guest-feasibility-20261015` **before** selecting the
 workflow. Set `expected_commit` to the full current pushed SHA. `main` deliberately
@@ -68,7 +70,9 @@ link and execute with the expected marker. Only then does the worker publish
 `IDECK_QEMU_HOST_CC`, which `0003-qemu-macos-build-compiler.patch` passes via
 QEMU's `--host-cc` for build-machine generators. Invalid paths/triples and
 compile/link/execute failures stop the build. Ambient SDKROOT and iOS target
-compiler flags stay intact. This gate still needs its Apple CI rerun.
+compiler flags stay intact. Parent reports this gate passed in the Apple run
+at 5cd442c; structured result content and parent/root static package audit
+confirm the built artifact. This is not device execution proof.
 
 Before ANGLE, the worker compiles a minimal Metal shader using
 `xcrun --sdk iphoneos metal -c`, requiring a newly produced nonempty AIR
@@ -167,8 +171,9 @@ new request guard; YAML defaults no longer resolve omitted required inputs to
 empty environment strings. The first Apple run passed YAML/request validation;
 the next run passed Swift typechecking. The latest Apple run completed native-base,
 Metal component preparation, ANGLE, Python yaml preparation and GPU dependencies;
-QEMU setup then failed at the build-machine C compiler, before integrated
-runtime and app linking.
+the successful run at 5cd442c also passed the build-machine compiler probe,
+QEMU integration/rebuild, app linking and packaging. Parent/root static artifact
+audit passed; device execution remains separate.
 
 The new extraction helper fully unpacked all seven locked source archives on
 Windows/Python 3.12.14 and wrote a valid result with real guest metadata. Only

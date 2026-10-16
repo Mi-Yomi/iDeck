@@ -5,6 +5,87 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## Полный offline CLI replay и воспроизводимость — 2026-10-16
+
+Новая реализация/проверка от pushed **be432d6283d0f47ca5e9ad5f1bd60cbd8627c728**.
+**Два независимых полных окончательных builder CLI, каждый с нуля, PASS.**
+Actual `cmp` raw/gzip/profile, build receipts и manifests совпали побайтово.
+Это заменяет прежнее «full final CLI replay unverified» только для новых
+результатов; исторический staged receipt ниже сохранён без переписывания.
+Полный [replay receipt](experiments/linux-guest/evidence/desktop-rootfs-cli-replay.json)
+и [инструкция](experiments/linux-guest/DESKTOP-ROOTFS.md).
+
+Два отдельных output и cache metadata, общий exact verified package/tool input,
+тот же host/toolchain. CLI `build --offline` повторно проверяет size/SHA каждого
+cache input, GPG/freshness и точные package pins; miss/corruption прекращается
+до fetch/download temporary. Новый lock offline запрещён. Это не network
+namespace isolation для maintainer scripts. Source digest захвачен в начале;
+изменение builder до выдачи profile/receipt отклоняется. Frozen final source SHA
+**4b0492b1e8562b78d23abe5a7538d47fd7b2b1fdbdc399e8b89560c0b0df39ee**,
+`end_to_end_replay_of_final_source:true` в обоих финальных receipts.
+
+Актуальные локальные артефакты: `/workspace/ideck-desktop-build/cli-replay-v2/`
+и независимый `/workspace/ideck-desktop-build/cli-independent-v2/`.
+
+- `rootfs-v1.raw`: **536,870,912 B**, SHA-256
+  **a081d86594a0c59e585541ae26fa586468f267767dc081796f51186ea9c01217**.
+- `rootfs-v1.raw.gz`: **53,918,211 B**, SHA-256
+  **97e55ebdf61892848e55a45e4016163e6c55b737afb2c31ccb3939a23e12a747**.
+- `desktop-rootfs-profile.json`, `build-receipt.json`, manifests, private logs.
+  Used blocks **175,714,304 B**, free **361,156,608 B**; resize2fs -P estimate
+  **168,038,400 B** без actual resize. First import D+C+512MiB =
+  **1,127,660,035 B**, плюс iOS install и optional legacy backup.
+
+Первые два полных CLI уже проходили configure/audit/ELF/fsck, но raw/gzip
+различались. Independent semantic diff всех 6744 entries нашёл только
+timestamped `var/log/alternatives.log`; inode ctime/atime зависели от host.
+Исправлены именно fresh seed outputs: fixed ext4 directory hash seed, sorted
+publication paths, все четыре inode times+extra nanoseconds закреплены и
+проверяются после mke2fs, очищается только generated alternatives install log.
+У всех 19 validated locked accounts в shadow и shadow- last-change day теперь
+release epoch; password fields/остальные поля сохранены, unlocked seed row
+отклоняется. Другие logs/docs, notices и package DB не очищались. Existing
+userdata не открывалась и не нормализовалась.
+
+Independent readonly validation **каждого** нового image: Swift CRC/UUID/
+features/geometry, e2fsck -fn, gzip-stream digest, все 6744 UID/GID/mode entries
+и 26976 inode timestamp fields+extra0, 19 locked rows в каждом shadow/backup,
+source/tool/keyring/manifest hashes — PASS. Root Swift owner и disposable image
+tool roundtrip тоже PASS, seed SHA unchanged. **182 tests PASS, 14.045 s**;
+module13 и builder15 regressions reviewer повторил. Scope byte identity:
+два полных fresh CLI в этом host/toolchain; не универсальное доказательство
+всех платформ/будущих дат. Freshness/expiry/90-day предел cache replay сохранён.
+
+**Точный минимальный внешний input для ext4:** файл **`boot/modloop-virt`**
+(можно передать под именем `modloop-virt`) из исходного
+`alpine-netboot-3.24.1-aarch64.tar.gz`, kernel **6.18.35-0-virt**. SHA-256
+**f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b**;
+его actual size здесь **UNKNOWN**. Historical pin подтверждён original
+commit **36d2463190b1fbac503960a30e0f6bf5dccb7e79**,
+`evidence/guest-profile.json` и profile внутри committed probe bundle.
+`prepare_guest.py` сначала проверяет archive SHA/size, затем вычисляет SHA
+именно этого member. Source pointers в `ipa/desktop-kernel-source.lock.json`.
+
+Ранее проверенный официальный [archive URL](https://dl-cdn.alpinelinux.org/alpine/v3.24/releases/aarch64/alpine-netboot-3.24.1-aarch64.tar.gz),
+[checksum URL](https://dl-cdn.alpinelinux.org/alpine/v3.24/releases/aarch64/alpine-netboot-3.24.1-aarch64.tar.gz.sha256):
+**431,008,592 B**, SHA-256
+**54fe38fa41cce740ba379458ed63cfcd89ab06ae5e6a47a06dafe0a34e8427e8**.
+Эти pins сохранены также в `evidence/boot-inputs.json`. Отдельного проверенного
+прямого URL modloop нет. Existing local cache/artifact search его не нашёл;
+никакого нового download/другого executor/proxy обхода HTTP403 не было.
+Если exact modloop уже сохранён у владельца, полный 431MB archive передавать
+не требуется: `tools/desktop_modules.py --modloop <local-file>` принимает
+snapshot regular/no-follow/bounded input с exact SHA и прежними общими
+deps/ELF/vermagic/signature-container guards. Standalone manifest честно
+помечает archive/kernel bytes verification false/null; expected kernel pin
+отдельно. Actual closure/load/mount остаются UNKNOWN до получения bytes.
+
+**CI/новая IPA/большой payload не публиковались**, main, legacy FAT/userdata,
+terminal/probe, JIT/SideStore/MD export и глобальные network/security settings
+сохранены. No new external accounts/keys/connections/payment. Следом по-прежнему exact
+module closure → реальный ext4 mount/два guest boot POSIX → Xorg/Openbox/xterm.
+Apple/CryptoKit/device/memory/GUI/Steam gates не пройдены этим host replay.
+
 ## G0/G1 Debian/ext4 host preparation — 2026-10-16
 
 Реализация от pushed **d4d447779a4fc1d6e2b45b9de6893fb16722cb8f** на той же

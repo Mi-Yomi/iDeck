@@ -40,6 +40,7 @@ HOST_TOOLS = ["e2fsprogs", "libext2fs2t64", "libcom-err2", "libss2", "logsave",
 IMAGE_UUID = "29c758bc-0416-4d87-b1ba-a922238a07f5"
 FEATURES = {"compat": 44, "incompat": 194, "ro_compat": 1091}
 FEATURE_NAMES = "none,has_journal,ext_attr,dir_index,filetype,extent,64bit,sparse_super,large_file,extra_isize,metadata_csum"
+OFFLINE = False
 
 
 def sha256(path):
@@ -57,6 +58,8 @@ def fetch(url, destination, size=None, digest=None, limit=128 * 1024 * 1024):
         raise ValueError("HTTPS required")
     if p.exists() and size is not None and p.stat().st_size == size and sha256(p) == digest:
         return p
+    if OFFLINE:
+        raise ValueError("offline cache missing or invalid: " + p.name)
     p.parent.mkdir(parents=True, exist_ok=True)
     fd, tmp = tempfile.mkstemp(prefix=".fetch-", dir=p.parent)
     try:
@@ -426,7 +429,7 @@ def check_elf_closure(root):
     return {"arm64_elf_files": count, "dt_needed_edges": edges, "result": "pass"}
 
 
-def verify_image_ownership(host, env, raw, manifest, output, source_tree=None):
+def verify_image_ownership(host, env, raw, manifest, output, source_tree=None, expected_epoch=None):
     batch = output / "ownership-verify.debugfs"
     batch.write_text("".join("stat " + debugfs_quote("/" if p == "." else "/" + p) + "\n" for p in manifest))
     result = run([host / "usr/sbin/debugfs", "-f", batch, raw], env=env)
@@ -437,6 +440,11 @@ def verify_image_ownership(host, env, raw, manifest, output, source_tree=None):
         actual = re.search(r"User:\s+(\d+)\s+Group:\s+(\d+)\b", record)
         if not actual or [int(actual[1]), int(actual[2])] != expected:
             raise ValueError("persisted ownership mismatch: " + name)
+        if expected_epoch is not None:
+            times = re.findall(r"\b(atime|mtime|ctime|crtime):\s+0x([0-9a-f]+):([0-9a-f]+)", record)
+            if (len(times) != 4 or {field for field, _, _ in times} != {"atime", "mtime", "ctime", "crtime"}
+                    or any(int(seconds, 16) != expected_epoch or int(extra, 16) != 0 for _, seconds, extra in times)):
+                raise ValueError("noncanonical persisted inode timestamp: " + name)
         if source_tree:
             actual_mode = re.search(r"Mode:\s+([0-7]+)", record)
             source_mode = stat.S_IMODE((source_tree / name).lstat().st_mode)
@@ -455,6 +463,45 @@ def canonical_guest_modes(root):
         (root / name).chmod(0o644)
 
 
+def canonical_seed_content(root, epoch):
+    """Normalize generated installation state in this fresh seed, never live data."""
+    log = root / "var/log/alternatives.log"
+    if log.exists() and stat.S_ISREG(log.lstat().st_mode):
+        log.write_bytes(b"")
+    # Package account setup uses the current UTC day, including system users.
+    # All fresh-seed accounts must be locked. Retain every password field and
+    # account while fixing only last-change day, including the backup copy.
+    for name in ("etc/shadow", "etc/shadow-"):
+        path = root / name
+        if not path.exists():
+            continue
+        lines = []
+        for line in path.read_text().splitlines():
+            fields = line.split(":")
+            if len(fields) != 9 or not fields[1].startswith(("!", "*")):
+                raise ValueError("expected locked seed account")
+            fields[2] = str(epoch // 86400)
+            lines.append(":".join(fields))
+        path.write_text("\n".join(lines) + "\n")
+
+
+def inode_publication_commands(manifest, epoch):
+    # This exact source pin is from 2026. Refuse an unsupported extended epoch
+    # rather than silently truncating ext4 signed seconds/extra epoch bits.
+    if not 0 <= epoch <= 0x7fffffff:
+        raise ValueError("unsupported seed epoch")
+    commands = []
+    for name, (uid, gid) in sorted(manifest.items()):
+        target = debugfs_quote("/" if name == "." else "/" + name)
+        commands += [f"set_inode_field {target} uid {uid}", f"set_inode_field {target} gid {gid}"]
+        # os.utime cannot set source ctime; mke2fs traversal may update atime.
+        # Canonicalize the resulting ext4 inodes, including nanosecond fields.
+        for field in ("atime", "mtime", "ctime", "crtime"):
+            commands += [f"set_inode_field {target} {field} @{epoch}",
+                         f"set_inode_field {target} {field}_extra 0"]
+    return commands
+
+
 def build(lock, cache, output, keyring, qemu, qemu_digest):
     """Rootless configured ARM64 tree -> unmounted ext4 using pinned host tools.
 
@@ -462,6 +509,8 @@ def build(lock, cache, output, keyring, qemu, qemu_digest):
     Actual ownership is written by debugfs from authenticated .deb tar headers,
     configured statoverrides, and explicit user/shadow metadata, not fake stat.
     """
+    builder_source = Path(__file__).resolve()
+    builder_digest = sha256(builder_source)
     validate_lock(lock)
     if sha256(qemu) != qemu_digest:
         raise ValueError("QEMU user-mode helper digest mismatch")
@@ -560,12 +609,14 @@ dpkg-query -W '-f=${Package}\t${Version}\t${Architecture}\t${Status}\n'
             ownership[normalized_member(path)] = [int(user) if user.isdigit() else uid_map[user],
                                                  int(group) if group.isdigit() else group_ids[group]]
             rooted_path(root, path).chmod(int(mode, 8))
-    # Freeze timestamps for package/input reproducibility. Full raw-image byte
-    # reproducibility is NOT claimed (ext4 internal seeds/build tools may vary).
     epoch = int(email.utils.parsedate_to_datetime(lock["release"]["date"]).timestamp())
+    canonical_seed_content(root, epoch)
+    # Final inode timestamps are pinned again after mke2fs, since host ctime
+    # cannot be set here and file/directory reads can change source atime.
     all_paths = [root]
     for directory, names, files in os.walk(root):
         all_paths += [Path(directory) / name for name in sorted(names + files)]
+    all_paths.sort(key=lambda path: str(path.relative_to(root)))
     for path in all_paths:
         os.utime(path, (epoch, epoch), follow_symlinks=False)
     ownership_manifest = {}
@@ -581,25 +632,30 @@ dpkg-query -W '-f=${Package}\t${Version}\t${Architecture}\t${Status}\n'
     with raw.open("xb") as f:
         f.truncate(lock["image"]["size_bytes"])
     run([host / "usr/sbin/mke2fs", "-q", "-F", "-t", "ext4", "-b", "4096", "-I", "256",
-         "-O", FEATURE_NAMES, "-E", "lazy_itable_init=0,lazy_journal_init=0,root_owner=0:0",
+         "-O", FEATURE_NAMES, "-E", "hash_seed=" + IMAGE_UUID + ",lazy_itable_init=0,lazy_journal_init=0,root_owner=0:0",
          "-e", "remount-ro", "-m", "0", "-U", IMAGE_UUID, "-L", "ideck-root-v1", "-d", root, raw], env=env)
-    commands = []
-    for name, (uid, gid) in ownership_manifest.items():
-        target = debugfs_quote("/" if name == "." else "/" + name)
-        commands += [f"set_inode_field {target} uid {uid}", f"set_inode_field {target} gid {gid}"]
+    commands = inode_publication_commands(ownership_manifest, epoch)
     command_file = output / "ownership.debugfs"
     command_file.write_text("\n".join(commands) + "\n")
     result = run([host / "usr/sbin/debugfs", "-w", "-f", command_file, raw], env=env)
     if any(token in result.stderr for token in ("not found", "Usage:", "File not found", "Command not found")):
         raise ValueError("ext4 ownership publication failed")
-    ownership_checked = verify_image_ownership(host, env, raw, ownership_manifest, output, root)
+    ownership_checked = verify_image_ownership(host, env, raw, ownership_manifest, output, root, expected_epoch=epoch)
     header = ext4_header(raw)
     expected_header = {k: lock["image"][k] for k in header}
     if header != expected_header:
         raise ValueError("ext4 feature/geometry mismatch")
-    run([host / "usr/sbin/e2fsck", "-fn", raw], env=env)
+    fsck = run([host / "usr/sbin/e2fsck", "-fn", raw], env=env)
+    (output / "e2fsck.txt").write_text(fsck.stdout + fsck.stderr)
     stats = run([host / "usr/sbin/dumpe2fs", "-h", raw], env=env).stdout
     (output / "dumpe2fs.txt").write_text(stats)
+    minimum = run([host / "usr/sbin/resize2fs", "-P", raw], env=env)
+    (output / "minimum-estimate.txt").write_text(minimum.stdout + minimum.stderr)
+    fields = dict(line.split(":", 1) for line in stats.splitlines() if ":" in line)
+    blocks, free, block_size = (int(fields[key]) for key in ("Block count", "Free blocks", "Block size"))
+    match = re.search(r"Estimated minimum size of the filesystem: (\d+)", minimum.stdout + minimum.stderr)
+    if not match or not 0 < free < blocks or block_size != 4096:
+        raise ValueError("incomplete filesystem sizing report")
     for path, uid, gid, mode in [("/", 0, 0, "0755"), ("/home/ideck", 1000, 1000, "0700"),
                                 ("/etc/shadow", 0, group_ids["shadow"], "0640")]:
         info = run([host / "usr/sbin/debugfs", "-R", "stat " + debugfs_quote(path), raw], env=env).stdout
@@ -608,17 +664,36 @@ dpkg-query -W '-f=${Package}\t${Version}\t${Architecture}\t${Status}\n'
     compressed = output / "rootfs-v1.raw.gz"
     with raw.open("rb") as src, compressed.open("xb") as dst, gzip.GzipFile(filename="", mode="wb", fileobj=dst, mtime=0) as gz:
         shutil.copyfileobj(src, gz, 1024 * 1024)
+    if sha256(builder_source) != builder_digest:
+        raise ValueError("builder source changed during execution; no accepted profile/receipt")
     profile = {"schema": 1, "mode": "desktop-rootfs", "filesystem": "ext4",
                "rootfs": {"file": raw.name, "size": raw.stat().st_size, "sha256": sha256(raw)},
                "image": {k: lock["image"][k] for k in ("size_bytes", "uuid", "block_size", "features")}}
     (output / "desktop-rootfs-profile.json").write_text(json.dumps(profile, indent=2) + "\n")
     receipt = {"schema": 1, "lock_sha256": None,
+               "builder_source_sha256": builder_digest,
+               "end_to_end_replay_of_final_source": True,
+               "network_mode": "verified cache only" if OFFLINE else "verified HTTPS inputs",
+               "network_namespace_isolation": "not provided; offline restricts builder fetches",
+               "keyring_sha256": sha256(keyring),
                "qemu_user_sha256": qemu_digest, "compat_source_sha256": sha256(compat_source),
+               "compat_executable_sha256": sha256(compat),
+               "host_tools": lock["host_tools"],
                "package_count": len(installed), "configured_package_audit": "pass", "glibc_execution": "pass",
                "elf_closure": elf_report, "persisted_ownership_inodes_checked": ownership_checked,
+               "package_manifest_sha256": sha256(output / "package-manifest.tsv"),
+               "ownership_manifest_sha256": sha256(output / "ownership.json"),
+               "filesystem_bytes": {"allocated_blocks_bytes": (blocks - free) * block_size,
+                                    "free_blocks_bytes": free * block_size,
+                                    "minimum_estimate_bytes": int(match[1]) * block_size,
+                                    "minimum_is_estimate_only": True},
+               "directory_hash_seed": IMAGE_UUID,
+               "canonical_seed_epoch": epoch,
+               "canonical_inode_timestamps": "all manifest atime/mtime/ctime/crtime and nanoseconds audited",
+               "canonical_seed_content": "generated alternatives installation log cleared; all locked seed account last-change days pinned",
                "image": profile, "compressed": {"size": compressed.stat().st_size, "sha256": sha256(compressed)},
                "filesystem_tool_check": "e2fsck -fn pass", "ownership_sample_check": "pass",
-               "reproducibility": "signed exact package inputs; byte-identical raw rebuild not verified",
+               "reproducibility": "signed exact inputs; canonical seed content/inode timestamps/hash seed; independent byte comparison required",
                "replay_requires_retained_authenticated_cache": True,
                "future_mirror_availability": "not guaranteed; snapshot endpoint blocked in this executor",
                "replay_freshness": "all replay rechecks release expiry and 90-day maximum age; repin afterwards",
@@ -628,6 +703,7 @@ dpkg-query -W '-f=${Package}\t${Version}\t${Architecture}\t${Status}\n'
 
 
 def main():
+    global OFFLINE
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=["lock", "download", "build"])
     parser.add_argument("--cache", type=Path, required=True)
@@ -636,7 +712,11 @@ def main():
     parser.add_argument("--output", type=Path)
     parser.add_argument("--qemu", type=Path)
     parser.add_argument("--qemu-sha256")
+    parser.add_argument("--offline", action="store_true", help="require exact verified cache; never fetch missing/invalid inputs")
     args = parser.parse_args()
+    OFFLINE = args.offline
+    if args.command == "lock" and OFFLINE:
+        parser.error("offline mode requires an existing reviewed lock; cannot create a new lock")
     if args.command == "lock":
         lock = create_lock(args.cache / "metadata", args.lock, args.keyring)
         print(json.dumps(lock["totals"], sort_keys=True))

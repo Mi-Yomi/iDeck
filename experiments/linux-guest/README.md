@@ -19,6 +19,10 @@ user-facing importer. Original /data stays intact. Next: actual ext4 mount and
 two-boot POSIX persistence, then Xorg/Openbox/xterm through the existing software
 framebuffer, complete desktop input, then software GL. See the
 [milestone gates](DESKTOP-MILESTONE.md). CI remains parent-controlled.
+The [full offline CLI replay receipt](evidence/desktop-rootfs-cli-replay.json)
+now confirms two complete fresh final CLI runs with byte-identical raw/gzip
+images on this host, superseding the earlier staged-only builder evidence.
+Guest ext4 mount/two-boot persistence still require the exact missing modloop.
 
 The sections below retain the historical probe/research results and their
 original validation limits; older pending statements are superseded only by

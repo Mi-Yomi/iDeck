@@ -18,6 +18,34 @@
     "sha256": "f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b",
     "size": null
   },
+  "minimal_external_input": {
+    "filename": "modloop-virt",
+    "original_archive_member": "boot/modloop-virt",
+    "sha256": "f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b",
+    "size": null,
+    "maximum_size_bytes": 536870912,
+    "offline_cli_option": "--modloop",
+    "source_provenance": {
+      "original_commit": "36d2463190b1fbac503960a30e0f6bf5dccb7e79",
+      "evidence": "experiments/linux-guest/evidence/guest-profile.json",
+      "evidence_sha256": "1848cbe63d569c22da5b2e88d067397e23bb56b81a66969f02327d15f2836ca1",
+      "retained_bundle_copy": "profile.json inside experiments/linux-guest/husk/linux-probe-guest.tar.gz",
+      "derivation": "prepare_guest.py verifies original archive size/SHA256, reads exact boot/modloop-virt member and records SHA256 of those bytes"
+    },
+    "local_cache_check": {
+      "date": "2026-10-16",
+      "roots": ["/workspace", "/tmp"],
+      "regular_files_scanned": 31493,
+      "read_errors": 0,
+      "result": "not found by name, exact archive size, SquashFS magic, local artifact archive member lists or reachable Git payload paths",
+      "network_used_for_this_check": false
+    },
+    "standalone_boundaries": {
+      "archive_bytes_verified": false,
+      "kernel_bytes_verified": false,
+      "actual_ext4_closure_available": false
+    }
+  },
   "official_aports_config_observation": {
     "url": "https://github.com/alpinelinux/aports/blob/v3.24.1/main/linux-lts/virt.aarch64.config",
     "apkbuild_url": "https://github.com/alpinelinux/aports/blob/v3.24.1/main/linux-lts/APKBUILD",

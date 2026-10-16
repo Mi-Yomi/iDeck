@@ -4,7 +4,51 @@ This is an offline host preparation and storage change. It does not select a
 desktop route, mount ext4 in the VM, modify the terminal FAT image, or add Xorg.
 The next gates remain in [DESKTOP-MILESTONE.md](DESKTOP-MILESTONE.md).
 
-## Actual host result, 2026-10-16
+## Full offline CLI replay, 2026-10-16
+
+The [complete replay receipt](evidence/desktop-rootfs-cli-replay.json) supersedes
+the earlier staged-only limit below. **Two fresh complete final builder CLI runs
+passed and produced byte-identical raw, gzip, profile, build receipt, package and
+ownership manifests.** They used separate output/cache metadata directories and
+the same verified package/tool inputs on this host. This is measured same-host
+reproducibility, not a universal across-host/date/VM claim.
+
+Current local outputs: `/workspace/ideck-desktop-build/cli-replay-v2/` and
+`/workspace/ideck-desktop-build/cli-independent-v2/`. Each contains the raw/gzip,
+reviewed seed profile, complete receipt, manifests and private local logs.
+
+| Current measurement | Bytes |
+| --- | ---: |
+| Raw ext4 logical size | 536,870,912 |
+| gzip transfer | 53,918,211 |
+| Allocated filesystem blocks | 175,714,304 |
+| Free filesystem blocks | 361,156,608 |
+| resize2fs -P estimate, not a validated minimum | 168,038,400 |
+
+Raw SHA-256: `a081d86594a0c59e585541ae26fa586468f267767dc081796f51186ea9c01217`.
+gzip SHA-256: `97e55ebdf61892848e55a45e4016163e6c55b737afb2c31ccb3939a23e12a747`.
+Current raw+gzip+512MiB first-import reserve is **1,127,660,035 bytes**, plus
+iOS installation space and optional legacy backup. Images remain local.
+
+The first two full CLI attempts passed every functional gate but differed in
+inode timestamps and generated `var/log/alternatives.log` content. The builder
+now fixes the directory hash seed, sorts publication paths, pins/audits all four
+manifest inode timestamps and nanoseconds after mke2fs, clears only that generated
+installation log, and pins the last-change day of all validated locked seed
+accounts in primary/backup shadow files. Password fields, other account fields,
+package DB, notices and other logs/docs remain intact. This is fresh-seed
+preparation; no existing user image is modified.
+
+Independent checks on each final image: actual cmp/hash/gzip stream, read-only
+Swift/fsck, all 6,744 manifest UID/GID/mode entries and 26,976 timestamp fields,
+all 19 locked rows in each shadow/backup, tool/source/manifest hashes — PASS.
+Final regressions: **182 tests PASS** including actual Swift/ARM64 PTy checks.
+Disposable ext4 tool roundtrip passed and the exact seed hash stayed unchanged.
+`end_to_end_replay_of_final_source:true` now applies to both final receipts;
+builder digest is captured at entry and an edit during execution rejects output
+profile/receipt. Guest mount, two boots, Apple/device and GUI remain untested.
+
+## Earlier staged host result, 2026-10-16 (historical)
 
 [Full receipt](evidence/desktop-rootfs-host-preparation.json), including exact
 raw/gzip hashes, source hashes, staged provenance and independent checks:
@@ -66,12 +110,13 @@ cache: the mutable mirror can remove old pool objects, and snapshot access was
 blocked here. Replay rechecks signatures, index hashes, package hashes and a
 90-day release maximum age (also enforced without Valid-Until). This pin's
 release date is 2026-09-12; repin after its freshness window. No expiry bypass.
-Exact package inputs are reproducible; byte-identical raw rebuild is unproven.
+Exact package inputs and two byte-identical complete raw/gzip rebuilds on this
+host are verified. Broader host/date reproducibility remains unproven.
 
 ```sh
-python3 tools/debian_rootfs.py download --cache /absolute/private/cache \
+python3 tools/debian_rootfs.py download --offline --cache /absolute/private/cache \
   --lock ipa/desktop-rootfs.lock.json
-python3 tools/debian_rootfs.py build --cache /absolute/private/cache \
+python3 tools/debian_rootfs.py build --offline --cache /absolute/private/cache \
   --lock ipa/desktop-rootfs.lock.json --output /absolute/new/output \
   --qemu /absolute/qemu-aarch64-static --qemu-sha256 REVIEWED_HELPER_SHA256
 ```
@@ -81,6 +126,11 @@ dpkg-deb and a C compiler. The QEMU helper is an explicit independently reviewed
 input: the CLI will not discover, download or trust a helper by filename. Output
 must not exist; failures preserve local logs and never resume or replace an image.
 Payload output stays local until size/hash/checks are reviewed.
+These replay commands require the already authenticated retained cache.
+`--offline` rehashes every required cached input and fails before fetching or
+creating a download temporary on a miss/corruption. It cannot create a new lock;
+signature/freshness checks still run. It restricts builder fetches, and does not
+claim network namespace isolation for package scripts.
 
 The builder extracts pinned official host tools locally. It runs actual ARM64
 glibc and package maintainer scripts using QEMU user-mode/PRoot, then requires
@@ -141,15 +191,38 @@ initramfs lacks the ext4 module closure. The original 431,008,592-byte Alpine
 netboot archive was unavailable here (HTTP403 at the official CDN and checked
 official mirrors); no guessed closure or substitute kernel is accepted.
 
-Given that already downloaded, exact archive and a trusted unsquashfs executable:
+The minimum missing external payload is **`boot/modloop-virt`**, taken unchanged
+from `alpine-netboot-3.24.1-aarch64.tar.gz`, for kernel `6.18.35-0-virt`:
+
+SHA-256 **`f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b`**.
+
+Its actual byte size is unknown here. This is the historical committed pin in
+`evidence/guest-profile.json` and retained bundle profile; no newly downloaded
+modloop was measured. A local-only search of `/workspace`, `/tmp`, artifact
+archive member lists and Git payload paths found no matching input. No other
+executor, proxy, mirror attempt or network request was used for this follow-up.
+The complete 431,008,592-byte netboot archive is also accepted, but is not needed
+if the owner already has its exact modloop member saved.
+
+Given that local file and a trusted unsquashfs executable:
+
+```sh
+python3 tools/desktop_modules.py --modloop /absolute/modloop-virt \
+  --unsquashfs /absolute/unsquashfs --out /absolute/new/module-output
+```
+
+The standalone mode snapshots a bounded regular file without following a leaf
+symlink, then requires the exact pinned digest. It explicitly reports original
+archive/kernel bytes as unverified and keeps the expected kernel pin separate.
+Alternatively, provide the original complete pinned archive:
 
 ```sh
 python3 tools/desktop_modules.py --archive /absolute/alpine-netboot-3.24.1-aarch64.tar.gz \
   --unsquashfs /absolute/unsquashfs --out /absolute/new/module-output
 ```
 
-This offline tool checks archive/kernel/modloop hashes, resolves modules.dep plus
-softdeps/builtins, verifies AArch64 ELF .modinfo/vermagic and signature-container
+Archive mode checks archive/kernel/modloop hashes. Both modes resolve modules.dep
+plus softdeps/builtins, verify AArch64 ELF .modinfo/vermagic and signature-container
 structure, then emits load order and per-module size/hash. Signature structure
 does not claim public-key certificate verification; kernel acceptance and ext4
 mount need the actual VM. Exact closure/bytes remain unknown until that input is

@@ -3,6 +3,7 @@ import copy
 import ctypes
 import datetime as dt
 import errno
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -84,6 +85,81 @@ class DebianRootfsChecks(unittest.TestCase):
             self.assertEqual(p.read_bytes(), b"bad")
             with self.assertRaises(ValueError):
                 builder.fetch("http://deb.debian.org/debian/blob", p)
+
+    def test_offline_cache_rehashes_and_never_fetches_or_allocates_on_miss(self):
+        with tempfile.TemporaryDirectory() as temporary, mock.patch.object(builder, "OFFLINE", True):
+            root = Path(temporary)
+            good = root / "good"
+            good.write_bytes(b"verified")
+            digest = hashlib.sha256(b"verified").hexdigest()
+            with mock.patch.object(builder.urllib.request, "urlopen") as network:
+                self.assertEqual(builder.fetch("https://deb.debian.org/debian/blob", good, 8, digest), good)
+                good.write_bytes(b"tampered")
+                missing = root / "uncreated" / "blob"
+                for path in (good, missing):
+                    with self.assertRaisesRegex(ValueError, "offline cache missing or invalid"):
+                        builder.fetch("https://deb.debian.org/debian/blob", path, 8, digest)
+                network.assert_not_called()
+            self.assertEqual(good.read_bytes(), b"tampered")
+            self.assertFalse(missing.parent.exists())
+
+    def test_offline_cannot_create_unreviewed_lock(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            result = subprocess.run([sys.executable, str(EXPERIMENT / "tools/debian_rootfs.py"),
+                                     "lock", "--offline", "--cache", str(root / "cache"),
+                                     "--lock", str(root / "lock.json")], capture_output=True, text=True)
+            self.assertEqual(result.returncode, 2)
+            self.assertIn("existing reviewed lock", result.stderr)
+            self.assertEqual(list(root.iterdir()), [])
+
+    def test_fresh_seed_normalization_preserves_locked_accounts_and_nonlog_data(self):
+        epoch = 1789199741
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary) / "seed"
+            for name in ("etc", "var/log", "var/lib/dpkg", "usr/share/doc"):
+                (root / name).mkdir(parents=True)
+            shadow = "root:!*:22000:0:99999:7:::\nideck:!:23000:0:99999:7:::\ndaemon:*:20000:0:99999:7:::\n"
+            for name in ("shadow", "shadow-"):
+                (root / "etc" / name).write_text(shadow)
+                (root / "etc" / name).chmod(0o640)
+            log = root / "var/log/alternatives.log"
+            log.write_text("variable installation timestamp\n")
+            (root / "var/log/README").write_text("preserve package documentation")
+            outside = Path(temporary) / "not-a-guest-log"
+            outside.write_text("preserve external target")
+            (root / "var/log/linked").symlink_to(outside)
+            for name in ("var/lib/dpkg/status", "usr/share/doc/copyright"):
+                (root / name).write_text("preserve package state/notices")
+            builder.canonical_seed_content(root, epoch)
+            self.assertEqual(log.read_bytes(), b"")
+            self.assertEqual(outside.read_text(), "preserve external target")
+            self.assertTrue((root / "var/log/linked").is_symlink())
+            expected = shadow
+            for day in (22000, 23000, 20000):
+                expected = expected.replace(":" + str(day) + ":", ":" + str(epoch // 86400) + ":")
+            for name in ("shadow", "shadow-"):
+                p = root / "etc" / name
+                self.assertEqual(p.read_text(), expected)
+                self.assertEqual(p.stat().st_mode & 0o777, 0o640)
+            for name in ("var/lib/dpkg/status", "usr/share/doc/copyright"):
+                self.assertEqual((root / name).read_text(), "preserve package state/notices")
+            builder.canonical_seed_content(root, epoch)
+            self.assertEqual((root / "etc/shadow").read_text(), expected)
+            self.assertEqual((root / "var/log/README").read_text(), "preserve package documentation")
+            log.unlink()
+            log.symlink_to(outside)
+            builder.canonical_seed_content(root, epoch)
+            self.assertTrue(log.is_symlink())
+            self.assertEqual(outside.read_text(), "preserve external target")
+            (root / "etc/shadow").write_text(shadow.replace("root:!*:", "root::"))
+            with self.assertRaisesRegex(ValueError, "locked seed account"):
+                builder.canonical_seed_content(root, epoch)
+
+    def test_inode_publication_rejects_unsupported_extended_timestamp(self):
+        for epoch in (-1, 0x80000000):
+            with self.assertRaisesRegex(ValueError, "unsupported seed epoch"):
+                builder.inode_publication_commands({".": [0, 0]}, epoch)
 
     def test_ownership_paths_and_debugfs_commands_reject_injection(self):
         self.assertEqual(builder.normalized_member("./lib/aarch64-linux-gnu/libc.so.6"), "usr/lib/aarch64-linux-gnu/libc.so.6")

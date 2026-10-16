@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 """Resolve ext4 from the original locked Alpine modloop; never guess its closure.
 
-Offline only. Supply an already downloaded archive and a trusted unsquashfs
-executable. The output is build input, not permission to publish a guest payload.
-The archive SHA authenticates module bytes. Signature checks below validate the
+Offline only. Supply the original archive OR its exact pinned boot/modloop-virt,
+and a trusted unsquashfs executable. Output is build input, not permission to
+publish a guest payload. The pinned modloop SHA authenticates module bytes.
+Signature checks below validate the
 PKCS#7 container, not a public-key trust chain; kernel acceptance needs a boot.
 """
 import argparse
 import hashlib
 import json
+import os
 import re
+import stat
 import struct
 import subprocess
 import tarfile
@@ -24,6 +27,7 @@ MODLOOP_SHA256 = "f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb4
 KERNEL_SHA256 = "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
 SIGNATURE_MARKER = b"~Module signature appended~\n"
 MODULE_PREFIX = f"modules/{KERNEL}/"
+MAX_MODLOOP_SIZE = 512 * 1024**2
 
 
 def sha(data):
@@ -174,7 +178,7 @@ def module_metadata(data):
     return {"vermagic": vermagic[0], "depends": sorted(filter(None, depends[0].split(","))),
             "signature": {"kind": "PKCS#7", "size": length, "sha256": sha(signature),
                           "algorithm_id": algorithm, "hash_id": hash_id,
-                          "public_key_verification": "not_performed; locked archive authenticates bytes"}}
+                          "public_key_verification": "not_performed; pinned modloop digest authenticates bytes"}}
 
 
 def cat_image(tool, image, path, limit, allow_empty=False):
@@ -185,9 +189,75 @@ def cat_image(tool, image, path, limit, allow_empty=False):
     return data
 
 
-def prepare(archive, out, unsquashfs):
-    if out.exists():
+def extract_closure(image, out, unsquashfs, verification):
+    """One resolver/validator/publication path for both authenticated input modes."""
+    metadata = {name: cat_image(unsquashfs, image, MODULE_PREFIX + name, 8 * 1024**2,
+                                allow_empty=name == "modules.softdep")
+                for name in ("modules.dep", "modules.softdep", "modules.builtin")}
+    dep = dependencies(metadata["modules.dep"])
+    paths = closure(dep, soft_dependencies(metadata["modules.softdep"]), metadata["modules.builtin"])
+    modules, contents = [], {}
+    for path in paths:
+        data = cat_image(unsquashfs, image, MODULE_PREFIX + path, 16 * 1024**2)
+        info = module_metadata(data)
+        # depmod can list transitives as well as direct modinfo dependencies.
+        expected = {module_name(p) for p in dep[path]}
+        if not {name.replace("-", "_") for name in info["depends"]} <= expected:
+            raise ValueError("ELF dependencies differ from modules.dep")
+        modules.append({"path": path, "size": len(data), "sha256": sha(data), **info})
+        contents[path] = data
+    manifest = {"schema": 1, "kernel_release": KERNEL,
+                "expected_kernel_sha256": KERNEL_SHA256,
+                **verification, "modloop_sha256": MODLOOP_SHA256,
+                "modloop_size": image.stat().st_size,
+                "metadata": {name: {"sha256": sha(data), "size": len(data)}
+                             for name, data in metadata.items()},
+                "load_order": paths, "modules": modules,
+                "total_module_bytes": sum(item["size"] for item in modules),
+                "kernel_load_and_ext4_mount": "not_tested"}
+    out.mkdir()
+    for path, data in contents.items():
+        target = out / MODULE_PREFIX / path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(data)
+    for name, data in metadata.items():
+        (out / MODULE_PREFIX / name).write_bytes(data)
+    (out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
+    return manifest
+
+
+def copy_verified_modloop(source, destination):
+    """Snapshot a bounded regular input before checking its committed digest."""
+    fd = os.open(source, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+    with os.fdopen(fd, "rb") as stream:
+        info = os.fstat(stream.fileno())
+        if not stat.S_ISREG(info.st_mode) or not 0 < info.st_size <= MAX_MODLOOP_SIZE:
+            raise ValueError("modloop must be a bounded regular file")
+        digest, count = hashlib.sha256(), 0
+        with destination.open("xb") as output:
+            while chunk := stream.read(1024 * 1024):
+                count += len(chunk)
+                if count > MAX_MODLOOP_SIZE:
+                    raise ValueError("modloop exceeds size bound")
+                digest.update(chunk)
+                output.write(chunk)
+        if count != info.st_size or digest.hexdigest() != MODLOOP_SHA256:
+            raise ValueError("modloop differs from locked upstream bytes")
+
+
+def prepare(archive, out, unsquashfs, *, modloop=None):
+    if (archive is None) == (modloop is None):
+        raise ValueError("supply exactly one archive or modloop input")
+    if out.exists() or out.is_symlink():
         raise ValueError("output already exists")
+    if modloop is not None:
+        with tempfile.TemporaryDirectory(prefix="ideck-modules-", dir=out.parent) as temporary:
+            image = Path(temporary) / "modloop-virt"
+            copy_verified_modloop(modloop, image)
+            return extract_closure(image, out, unsquashfs, {
+                "input_mode": "standalone_modloop", "archive_bytes_verified": False,
+                "kernel_bytes_verified": False, "archive_url": prepare_guest.URL,
+                "archive_size": None, "archive_sha256": None, "kernel_sha256": None})
     digest = hashlib.sha256()
     size = 0
     with archive.open("rb") as stream:
@@ -201,7 +271,7 @@ def prepare(archive, out, unsquashfs):
         with tarfile.open(archive) as source:
             for name, maximum, expected in (
                     ("boot/vmlinuz-virt", 16 * 1024**2, KERNEL_SHA256),
-                    ("boot/modloop-virt", 512 * 1024**2, MODLOOP_SHA256)):
+                    ("boot/modloop-virt", MAX_MODLOOP_SIZE, MODLOOP_SHA256)):
                 entries = [item for item in source.getmembers() if item.name == name]
                 if len(entries) != 1 or not entries[0].isreg() or entries[0].size > maximum:
                     raise ValueError("unexpected archive member")
@@ -210,44 +280,19 @@ def prepare(archive, out, unsquashfs):
                     raise ValueError("kernel/modloop hash differs")
                 if name.endswith("modloop-virt"):
                     image.write_bytes(data)
-        metadata = {name: cat_image(unsquashfs, image, MODULE_PREFIX + name, 8 * 1024**2,
-                                    allow_empty=name == "modules.softdep")
-                    for name in ("modules.dep", "modules.softdep", "modules.builtin")}
-        dep = dependencies(metadata["modules.dep"])
-        paths = closure(dep, soft_dependencies(metadata["modules.softdep"]), metadata["modules.builtin"])
-        modules, contents = [], {}
-        for path in paths:
-            data = cat_image(unsquashfs, image, MODULE_PREFIX + path, 16 * 1024**2)
-            info = module_metadata(data)
-            # depmod can list transitives as well as direct modinfo dependencies.
-            expected = {module_name(p) for p in dep[path]}
-            if not {name.replace("-", "_") for name in info["depends"]} <= expected:
-                raise ValueError("ELF dependencies differ from modules.dep")
-            modules.append({"path": path, "size": len(data), "sha256": sha(data), **info})
-            contents[path] = data
-        manifest = {"schema": 1, "kernel_release": KERNEL, "kernel_sha256": KERNEL_SHA256,
-                    "archive_url": prepare_guest.URL, "archive_size": size,
-                    "archive_sha256": digest.hexdigest(), "modloop_sha256": MODLOOP_SHA256,
-                    "metadata": {name: {"sha256": sha(data), "size": len(data)}
-                                 for name, data in metadata.items()},
-                    "load_order": paths, "modules": modules,
-                    "total_module_bytes": sum(item["size"] for item in modules),
-                    "kernel_load_and_ext4_mount": "not_tested"}
-        out.mkdir()
-        for path, data in contents.items():
-            target = out / MODULE_PREFIX / path
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes(data)
-        for name, data in metadata.items():
-            (out / MODULE_PREFIX / name).write_bytes(data)
-        (out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
-    return manifest
+        return extract_closure(image, out, unsquashfs, {
+            "input_mode": "verified_archive", "archive_bytes_verified": True,
+            "kernel_bytes_verified": True, "archive_url": prepare_guest.URL,
+            "archive_size": size, "archive_sha256": digest.hexdigest(),
+            "kernel_sha256": KERNEL_SHA256})
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--archive", type=Path, required=True)
+    inputs = parser.add_mutually_exclusive_group(required=True)
+    inputs.add_argument("--archive", type=Path, help="original complete pinned Alpine netboot archive")
+    inputs.add_argument("--modloop", type=Path, help="exact pinned boot/modloop-virt extracted elsewhere")
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--unsquashfs", type=Path, required=True)
     args = parser.parse_args()
-    print(json.dumps(prepare(args.archive, args.out, args.unsquashfs), indent=2))
+    print(json.dumps(prepare(args.archive, args.out, args.unsquashfs, modloop=args.modloop), indent=2))

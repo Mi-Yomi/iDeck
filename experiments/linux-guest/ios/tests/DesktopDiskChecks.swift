@@ -36,6 +36,17 @@ func runDesktopDiskContender(directory: URL, fixture: URL, locked: Bool) throws 
     exit(0)
 }
 
+func runDesktopInterruptedImport(directory: URL, fixture: URL) throws {
+    let spec = try DesktopGolden.load(fixture).specification
+    _ = try LinuxDesktopDisk.provision(directory: directory, specification: spec) { fd in
+        let partial = FileHandle(fileDescriptor: fd, closeOnDealloc: false)
+        try partial.write(contentsOf: Data(repeating: 0x53, count: 4096))
+        try partial.synchronize()
+        _exit(77) // Real process exit bypasses all defer cleanup.
+    }
+    preconditionFailure("interrupted import child returned")
+}
+
 /// Actual storage helper checks. Golden header came from real mke2fs; sparse
 /// unit-test bodies do not claim a complete filesystem or Linux mount/boot.
 func runDesktopDiskChecks(fixture: URL) throws {
@@ -167,6 +178,53 @@ func runDesktopDiskChecks(fixture: URL) throws {
     }
     let interruptedContents = try manager.contentsOfDirectory(atPath: interrupted.path)
     precondition(interruptedContents.isEmpty)
+    let killed = root.appendingPathComponent("killed-import")
+    let child = Process(), completed = DispatchSemaphore(value: 0)
+    child.executableURL = URL(fileURLWithPath: CommandLine.arguments[0])
+    child.arguments = ["--desktop-interrupted-import", killed.path, fixture.path]
+    child.terminationHandler = { _ in completed.signal() }
+    try child.run()
+    if completed.wait(timeout: .now() + 10) != .success { child.terminate(); preconditionFailure("import child blocked") }
+    precondition(child.terminationStatus == 77)
+    precondition(manager.fileExists(atPath: killed.appendingPathComponent(".rootfs-import-v1.partial").path))
+    let retried = try LinuxDesktopDisk.provision(directory: killed, specification: spec, validatedCopy: copyFixture)
+    try retried.validateOwnership(); retried.closeUnused()
+    let killedContents = try manager.contentsOfDirectory(atPath: killed.path)
+    precondition(killedContents == ["rootfs-v1.raw"])
+    // Interrupted atomic publication leaves a second alias, not a second copy.
+    let alias = killed.appendingPathComponent(".rootfs-import-v1.partial")
+    precondition(link(retried.url.path, alias.path) == 0)
+    let published = try LinuxDesktopDisk.openExisting(directory: killed, specification: spec)
+    try published.validateOwnership(); published.closeUnused()
+    precondition(!manager.fileExists(atPath: alias.path))
+    let full = root.appendingPathComponent("space-exhausted")
+    expect(.insufficientSpace) {
+        _ = try LinuxDesktopDisk.provision(directory: full, specification: spec, availableBytes: { _ in 0 }) { _ in
+            preconditionFailure("seed copied without available space")
+        }
+    }
+    let fullContents = try manager.contentsOfDirectory(atPath: full.path)
+    precondition(fullContents.isEmpty)
+    let busy = root.appendingPathComponent("busy-import")
+    try manager.createDirectory(at: busy, withIntermediateDirectories: true)
+    let busyPartial = busy.appendingPathComponent(".rootfs-import-v1.partial")
+    let busyFD = open(busyPartial.path, O_RDWR | O_CREAT | O_EXCL, mode_t(0o600))
+    precondition(busyFD >= 0 && flock(busyFD, LOCK_EX | LOCK_NB) == 0)
+    expect(.locked) { _ = try LinuxDesktopDisk.provision(directory: busy, specification: spec, validatedCopy: copyFixture) }
+    precondition(manager.fileExists(atPath: busyPartial.path), "contender removed active import")
+    _ = close(busyFD)
+    let dirtyDirectory = root.appendingPathComponent("needs-recovery")
+    let dirtyDisk = try LinuxDesktopDisk.provision(directory: dirtyDirectory, specification: spec, validatedCopy: copyFixture)
+    dirtyDisk.closeUnused()
+    var dirty = header; dirty[0x60] |= 4; checksum(&dirty)
+    let dirtyWriter = try FileHandle(forWritingTo: dirtyDisk.url)
+    try dirtyWriter.seek(toOffset: 1024); try dirtyWriter.write(contentsOf: Data(dirty)); try dirtyWriter.close()
+    expect(.needsRecovery) { _ = try LinuxDesktopDisk.openExisting(directory: dirtyDirectory, specification: spec) }
+    expect(.alreadyExists) { _ = try LinuxDesktopDisk.provision(directory: dirtyDirectory, specification: spec, validatedCopy: copyFixture) }
+    let dirtyReader = try FileHandle(forReadingFrom: dirtyDisk.url)
+    try dirtyReader.seek(toOffset: 1024)
+    let preservedHeader = try dirtyReader.read(upToCount: 1024); try dirtyReader.close()
+    precondition(preservedHeader == Data(dirty), "recovery refusal mutated the disk")
     // A trusted copy callback can expose a concurrent directory replacement.
     // Pinning openat/linkat/unlinkat must not publish or delete its substitute.
     let swapped = root.appendingPathComponent("swapped-import")

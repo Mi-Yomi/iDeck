@@ -1,0 +1,17 @@
+iDeck Debian console payload
+
+Debian ARM64 rootfs is built from the 90 authenticated binary packages pinned in
+experiments/linux-guest/ipa/desktop-rootfs.lock.json. Each package's copyright
+and license notices remain inside /usr/share/doc in the ext4 seed. Matching
+source package/version metadata and signed snapshot inputs are in that lock.
+Debian distribution: https://www.debian.org/legal/licenses/
+
+The kernel and original initramfs are the exact Alpine Linux 3.24.1 aarch64
+virt netboot components recorded in ipa/guest.lock.json. Linux is GPL-2.0-only;
+BusyBox is GPL-2.0-only. Alpine package source/build recipes:
+https://gitlab.alpinelinux.org/alpine/aports
+Kernel modules come from the same pinned modloop, kernel 6.18.35-0-virt;
+their exact bytes/load order are recorded in the module manifest.
+
+iDeck adds the small ideck-debian-init and ideck-debian-login shell scripts.
+No Steam, GUI, proprietary game assets or user data are included.

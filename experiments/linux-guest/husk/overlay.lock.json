@@ -5,8 +5,8 @@
   "inputs": {
     "ios/LinuxGuestProfile.swift": "ddfea00eba911033c44168103f0727836521849eadab7fed5dfac479ab36bef3",
     "ios/LinuxProbeEvidence.swift": "e17ee28c23a8879a6e74dd783f901297d2bcd8d089ad4e515c972b0016f034d4",
-    "ios/LinuxProbeSession.swift": "eb39be0a9f7bbfe0f8d14ac3312ec443f2da7f0b95fc138d7e1e6ea12a2c3648",
-    "ios/LinuxProbeView.swift": "cdf8a209819d6adf9ef5e04087f98252ee3665d0c0d78c3df129245e765d49b1",
+    "ios/LinuxProbeSession.swift": "3a629d95e86d16b3c9a88b5cc32895ae527ea41353054b75877ed17c22b5003e",
+    "ios/LinuxProbeView.swift": "bf62258b490f7d1322f10670b53809caef1e650d003591a7300853a98ba243eb",
     "tools/stage_bundle.py": "267a95eb31f50dba82a8f75547925a60533faebb53e3198cdeea83703cd77c83",
     "tools/stage_husk.py": "f211a73db58c51b30750d4c478ab277cd24109c62962172939a8df3816b73d2d",
     "husk/patches/series": "6147087af1e2c4869cfb07a83ccb1d467196f48590ee70a8dd2dee0444282b56",
@@ -15,18 +15,22 @@
     "husk/source-check.lock.json": "44db4e8620229cd07dbf302312eda0ff86d358284d0ebe9b96b89ca85fe2457d",
     "husk/husk119-source-check.tar.gz": "4f534374ef02d9de14203705afc58228b859ce978c66707c42e35b3e3b38c0d6",
     "husk/patches/0002-jit-setup-routing.patch": "a93a4af2b82418280c14c1b7e7ec64c8e6f2395602987dc59b95a1c841ed3ec4",
-    "ios/LinuxProbeReport.swift": "eeec10418ad17967614463e0e89e8b0e2c9e5d18a3a02977fabf993bdc02ee25",
+    "ios/LinuxProbeReport.swift": "391e86c35b85eeb6670ba35e32396ef9d44b4c7c1fd20f505bce9cf966c90e27",
     "ios/LinuxTerminalProfile.swift": "04d488d0052ab0f1fc3fbf9e3976aa72fb722e492f535ff7dd5f1e6a18149bc7",
-    "ios/LinuxTerminalSession.swift": "88e1cdd71086a8cf5b82b5538410cb59d05fa6c1f0e30d790b4036bd9035cae9",
-    "ios/LinuxTerminalView.swift": "c3d31cac6de3edf479d8a5b817614cef0d48856a42d20f54d9060fb214c17548",
+    "ios/LinuxTerminalSession.swift": "16078700822ae8f329244204f481693863a8a19f5c84f6176e6fb0adb207b3b6",
+    "ios/LinuxTerminalView.swift": "32cb24c27024f26628caa7d7fbe1b17532cc0f271dad8c91e49d587301bd733c",
     "tools/terminal_bundle.py": "c1c696498690085c6ddd4dc1eaf06dc4afa51b4dea738d883f498194cbbdef61",
     "ipa/terminal.lock.json": "e39514b53a2ae33de96b300b2578c760fb95b2b2685bb7a99502f0f2d0c6a98e",
     "guest/ideck-terminal-init": "9f4a0232b1c8029ba738e1b13aea8a9877753c9d5c23e6c094b542beb0f7eed4",
     "guest/ideck-terminal-login": "ffe79a95b2e53f15a917b1c4c99d16a95062342dc90dac5d2e02b237747f3de1",
     "guest/TERMINAL-LICENSES.txt": "50cf68a71ffa53f5bbd8b9cdaab3ad93b37157399ff7b787eabaa1c635b7ac3a",
     "ios/LinuxTerminalDiagnostics.swift": "39bb8ab91ce99fe3aaa34c2b2ce64da0caba5a7907a96aa08c3f1ca484f3be80",
-    "ios/LinuxDesktopDisk.swift": "fea2fa069bb9bd7b926645352cd1975bcf76874445c693fa2d9edc4c04f5e5c3",
-    "ios/LinuxDesktopProfile.swift": "2c3cc879fcc01ae2bf21a88027ed5c327acbcd890b977faabd492664b776f60b"
+    "ios/LinuxDesktopDisk.swift": "45b4626f6227d438bf6b63a12e73df96e0b742f14ed82584df1b41dc69db4bcf",
+    "ios/LinuxDesktopProfile.swift": "aeee17701ba6aab2e2b847ccc85fb77f00cf7f3154271adafa5215bcf769c1f8",
+    "ios/LinuxDebianProfile.swift": "6b1486e22819220aea29830a31fcec25bb6b31fd1fcacf52ca7c4fd2c3185912",
+    "ios/LinuxConsoleLifecycle.swift": "98d3f7551300b759af1cd2981f69ce04b549e1babe5c7d2ca220269b06f8f5df",
+    "tools/debian_bundle.py": "387c6d6fcac3883762d0b0f02d7e4e37815a9b355cc47dd284f1ec4c04331294",
+    "ipa/debian.lock.json": "45f3985e5ca35e95849f56a658811601b923168abc714bbdadaa329d81e1e9bd"
   },
   "copies": {
     "ios/LinuxGuestProfile.swift": "src/app/Husk/LinuxGuestProfile.swift",
@@ -42,7 +46,11 @@
     "ipa/terminal.lock.json": "scripts/ideck-terminal.lock.json",
     "ios/LinuxTerminalDiagnostics.swift": "src/app/Husk/LinuxTerminalDiagnostics.swift",
     "ios/LinuxDesktopDisk.swift": "src/app/Husk/LinuxDesktopDisk.swift",
-    "ios/LinuxDesktopProfile.swift": "src/app/Husk/LinuxDesktopProfile.swift"
+    "ios/LinuxDesktopProfile.swift": "src/app/Husk/LinuxDesktopProfile.swift",
+    "ios/LinuxDebianProfile.swift": "src/app/Husk/LinuxDebianProfile.swift",
+    "ios/LinuxConsoleLifecycle.swift": "src/app/Husk/LinuxConsoleLifecycle.swift",
+    "tools/debian_bundle.py": "scripts/ideck-stage-debian.py",
+    "ipa/debian.lock.json": "scripts/ideck-debian.lock.json"
   },
   "patched_files": {
     "src/app/Husk/HuskApp.swift": "18ff389fa29628fd1d4eb168a18a3b12f6b8c75caf6804651699e926b1ab9e31",

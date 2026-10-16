@@ -3,6 +3,7 @@ import SwiftUI
 /// A local line console, without a claim of full VT terminal emulation.
 struct LinuxTerminalView: View {
     @ObservedObject private var session = LinuxTerminalSession.shared
+    init(session: LinuxTerminalSession = .shared) { self.session = session }
     @ObservedObject private var jit = JITCoordinator.shared
     @Environment(\.scenePhase) private var scenePhase
     @State private var command = ""
@@ -12,7 +13,7 @@ struct LinuxTerminalView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 12) {
-                Text("iDeck · Linux terminal").font(.headline)
+                Text(session.isDebian ? "iDeck · Debian ARM64" : "iDeck · Linux terminal").font(.headline)
                 Text(session.message).font(.callout).multilineTextAlignment(.center)
                 Text(session.jitExecutionMessage).font(.footnote)
                     .foregroundStyle(session.jitExecutionReady ? Color.green : Color.secondary)
@@ -22,7 +23,7 @@ struct LinuxTerminalView: View {
                 Button("JIT setup and method") { jit.refreshPairingStatus(); jit.showSetup = true }.disabled(jit.busy)
                 HStack {
                     Button("Enable JIT") { enableJIT() }.disabled(session.attempted || jit.busy)
-                    Button("Start terminal") { session.start() }.disabled(session.attempted || jit.busy)
+                    Button(session.isDebian ? "Start Debian" : "Start terminal") { session.start() }.disabled(session.attempted || jit.busy)
                     Button("Stop Linux") { session.stop() }.disabled(!session.canStop || session.stopping)
                 }.buttonStyle(.bordered)
                 ScrollView([.vertical, .horizontal]) {
@@ -71,7 +72,8 @@ struct LinuxTerminalView: View {
                         .disabled(session.shareFiles.isEmpty)
                 }.disabled(session.markdownFile == nil && session.shareFiles.isEmpty)
                 if let error = session.exportError { Text(error).font(.footnote).foregroundStyle(.orange) }
-                Text("Local line console. Keep files in /data and use Stop Linux before closing the app. FAT16 does not preserve Unix permissions or symlinks. Full-screen terminal apps and Steam are not included.")
+                Text(session.isDebian ? "Debian line console with persistent ext4. Keep files in /root. Use Stop Linux, then close and reopen iDeck for another session. The disk remains locked until app exit."
+                    : "Local line console. Keep files in /data and use Stop Linux before closing the app. FAT16 does not preserve Unix permissions or symlinks. Full-screen terminal apps and Steam are not included.")
                     .font(.footnote).foregroundStyle(.secondary)
             }.padding()
         }

@@ -7,6 +7,8 @@ enum LinuxProbeReport {
     static let filename = "iDeck-Linux-Probe-Report.md"
 
     static func render(report: [String: Any], serial: String? = nil) -> String {
+        let debian = report["mode"] as? String == "debian"
+        let console = debian || report["mode"] as? String == "terminal"
         let statuses: Set<String> = ["prepared", "booting", "guest_stopped", "prepare_failed", "report_write_failed",
                                      "probe_timeout", "serial_limit", "guest_failed", "evidence_failed",
                                      "guest_frames_and_input_verified", "first_frame_not_observed",
@@ -31,7 +33,7 @@ enum LinuxProbeReport {
         case .none:
             summary = "Reported outcome: UNKNOWN; individual evidence fields follow."
         }
-        var lines = ["# iDeck Linux Probe Report", "", summary, "", "## Snapshot", "", "| Field | Value |", "| --- | --- |"]
+        var lines = [debian ? "# iDeck Debian Console Report" : "# iDeck Linux Probe Report", "", summary, "", "## Snapshot", "", "| Field | Value |", "| --- | --- |"]
         func row(_ label: String, _ value: String) { lines.append("| \(label) | \(value) |") }
         row("Version", text(report["app_version"]))
         row("Build", text(report["app_bundle_version"]))
@@ -40,7 +42,7 @@ enum LinuxProbeReport {
         row("Device class", text(report["device_class"]))
         row("OS", text(report["os"]))
         row("Schema", integer(report["schema"]))
-        row("Mode", report["mode"] as? String == "terminal" ? "TERMINAL" : "DIAGNOSTIC PROBE")
+        row("Mode", debian ? "DEBIAN ARM64 / EXT4" : (console ? "TERMINAL" : "DIAGNOSTIC PROBE"))
         row("Status", status.map(escape) ?? "UNKNOWN")
         row("Started UTC", text(report["started_utc"]))
         row("Installed executable SHA-256", hex(report["app_executable_sha256"], count: 64))
@@ -57,13 +59,13 @@ enum LinuxProbeReport {
         row("Accelerated guest GPU", flag(report["accelerated_guest_gpu_verified"], yes: "VERIFIED (reported)"))
         row("Steam", flag(report["steam_executed"], yes: "REPORTED EXECUTED", no: "NOT RUN"))
         row("Elapsed seconds", decimal(report["elapsed_seconds"]))
-        row("Elapsed scope", report["mode"] as? String == "terminal"
+        row("Elapsed scope", console
             ? "Session time including asset and disk preparation, terminal use and shutdown; not kernel boot time"
             : (bool(report["qemu_init_returned"]) == true
                 ? "Polling after QEMU init, including input interaction; not pure boot time or whole launch time"
                 : "UNKNOWN: preparation or early runtime; not an established boot duration"))
 
-        if report["mode"] as? String == "terminal" {
+        if console {
             lines += ["", "## Persistent terminal", "", "| Check | Result |", "| --- | --- |"]
             row("Terminal ready", flag(report["terminal_ready"]))
             row("Guest disk unmounted", flag(report["terminal_clean_unmount"]))
@@ -73,7 +75,16 @@ enum LinuxProbeReport {
             row("Disk lock retained until app exits", flag(report["userdata_lock_retained_until_process_exit"], yes: "RETAINED", no: "NOT RETAINED"))
             row("QEMU block layer drained", flag(report["qemu_block_layer_drained_verified"], yes: "VERIFIED (reported)", no: "NOT VERIFIED"))
             row("Serial log truncated", flag(report["log_truncated"], yes: "YES (bounded capture)", no: "NO"))
-            lines += ["", "Files in /data use the persistent VFAT volume. The initramfs root is temporary.",
+            if debian {
+                let imports: Set<String> = ["not_started", "existing_disk_preserved", "copying_seed", "seed_hash_verified_and_published"]
+                let failures: Set<String> = ["needsRecovery", "insufficientSpace", "locked", "assetDigest", "assetSize", "checksum", "filesystem", "ownership", "metadata", "size", "directory", "open", "io", "inspection", "configuration", "uuid", "geometry", "features", "journal", "profile", "assetRead", "assetMetadata"]
+                row("Import", (report["import_status"] as? String).flatMap { imports.contains($0) ? $0 : nil } ?? "UNKNOWN")
+                row("Storage failure", (report["storage_failure"] as? String).flatMap { failures.contains($0) ? $0 : nil } ?? "NONE RECORDED")
+                row("Seed SHA-256", hex(report["debian_seed_sha256"], count: 64))
+                row("Production initramfs SHA-256", hex(report["terminal_initramfs_sha256"], count: 64))
+            }
+            lines += ["", debian ? "Debian runs through chroot from Alpine initramfs. Its ext4 root is persistent; /run is temporary. This is a line console."
+                      : "Files in /data use the persistent VFAT volume. The initramfs root is temporary.",
                       "Orderly stop records guest unmount, QEMU loop return and host sync. It does not establish QEMU block-layer teardown; the disk lock stays held until this app exits.",
                       "The framebuffer/input diagnostic checks below are not run in terminal mode.",
                       "This report does not itself verify a file after a second guest boot."]

@@ -10,3 +10,4 @@
 # Preserve exact serial-log bytes for the two-boot evidence SHA-256 records.
 /experiments/linux-guest/evidence/local-debian-ext4-boot-*.log -text whitespace=cr-at-eol,-blank-at-eol
 /experiments/linux-guest/evidence/local-debian-ext4-tests.txt whitespace=-blank-at-eof
+/experiments/linux-guest/evidence/debian-console-*.log -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof

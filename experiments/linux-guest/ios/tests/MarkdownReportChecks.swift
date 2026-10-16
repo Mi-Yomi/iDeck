@@ -147,5 +147,15 @@ func runMarkdownReportChecks() throws {
     expect(cell(LinuxProbeReport.render(report: ["profile_vcpus": 1.5]), "Guest vCPUs") == "UNKNOWN", "fractional integer rejected")
     expect(cell(LinuxProbeReport.render(report: ["elapsed_seconds": 0]), "Elapsed seconds") == "0.000", "valid zero duration retained")
     expect(LinuxProbeReport.filename == "iDeck-Linux-Probe-Report.md", "fixed .md filename")
+    let debian = LinuxProbeReport.render(report: ["mode": "debian", "status": "terminal_prepare_failed",
+        "storage_failure": "needsRecovery", "import_status": "existing_disk_preserved",
+        "terminal_clean_stop": false, "qemu_block_layer_drained_verified": false])
+    expect(debian.hasPrefix("# iDeck Debian Console Report"), "Debian report has its own title")
+    expect(cell(debian, "Mode") == "DEBIAN ARM64 / EXT4", "Debian is not reported as framebuffer probe")
+    expect(cell(debian, "Storage failure") == "needsRecovery", "recovery refusal remains visible")
+    expect(cell(debian, "Orderly stop") == "NOT VERIFIED", "failed startup cannot claim clean stop")
+    expect(cell(debian, "QEMU block layer drained") == "NOT VERIFIED", "loop return cannot imply backend cleanup")
+    let rejected = LinuxProbeReport.render(report: ["mode": "debian", "storage_failure": secret, "import_status": secret])
+    expect(!rejected.contains(secret), "Debian failure/import fields remain allowlisted")
     print("LINUX_MARKDOWN_REPORT_CHECKS_PASS (\(assertions) assertions; actual Foundation renderer, no device/runtime execution)")
 }

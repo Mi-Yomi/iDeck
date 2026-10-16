@@ -6,6 +6,7 @@ mounts, user disk access, networking or production bundle changes are performed.
 """
 import argparse
 import gzip
+import io
 import json
 from pathlib import Path
 import shutil
@@ -45,7 +46,7 @@ def cpio_suffix(files):
     return b"".join(prepare_guest.entry(n, d, m, i + 1) for i, (n, d, m) in enumerate(records))
 
 
-def prepare_boot(out, module_dir):
+def prepare_boot(out, module_dir, production=False):
     lock = json.loads((EXPERIMENT / "ipa/guest.lock.json").read_text())
     archive = EXPERIMENT / lock["archive"]
     # The normal restore helper verifies this archive and all three members.
@@ -73,6 +74,10 @@ def prepare_boot(out, module_dir):
     rows = ["\t".join([p["name"], p["version"], p["architecture"], "install ok installed"])
             for p in rootfs_lock["packages"]]
     files["ideck/expected-packages.tsv"] = (("\n".join(sorted(rows)) + "\n").encode(), 0o644)
+    if production:
+        files = {"ideck/ext4-load-order": files["ideck/ext4-load-order"]}
+        for name in ("ideck-debian-init", "ideck-debian-login"):
+            files[name] = ((EXPERIMENT / "guest" / name).read_bytes().replace(b"\r\n", b"\n"), 0o755)
     for item in manifest["modules"]:
         path = modules.module_path(item["path"])
         content = checked(module_dir / modules.MODULE_PREFIX / path,
@@ -81,12 +86,20 @@ def prepare_boot(out, module_dir):
         files["usr/lib/modules/" + modules.KERNEL + "/" + path] = (content, 0o644)
     suffix = cpio_suffix(files)
     (out / "vmlinuz-virt").write_bytes(guest["vmlinuz-virt"])
-    (out / "initramfs-ext4-test.gz").write_bytes(guest["initramfs-ideck.gz"] + gzip.compress(suffix, mtime=0))
+    initramfs = out / ("initramfs-debian.gz" if production else "initramfs-ext4-test.gz")
+    if production:
+        stream = io.BytesIO()
+        with gzip.GzipFile(filename="", mode="wb", fileobj=stream, compresslevel=0, mtime=0) as compressor:
+            compressor.write(suffix)
+        compressed = stream.getvalue()
+    else:
+        compressed = gzip.compress(suffix, mtime=0)
+    initramfs.write_bytes(guest["initramfs-ideck.gz"] + compressed)
     return {"module_manifest": metadata(module_dir / "manifest.json"),
             "guest_archive": metadata(archive), "load_order": order,
             "rootfs_lock": metadata(EXPERIMENT / "ipa/desktop-rootfs.lock.json"),
             "kernel": metadata(out / "vmlinuz-virt"),
-            "initramfs": metadata(out / "initramfs-ext4-test.gz")}
+            "initramfs": metadata(initramfs)}
 
 
 def boot_pass(log, phase, code):

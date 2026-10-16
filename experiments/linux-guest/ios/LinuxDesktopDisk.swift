@@ -82,6 +82,24 @@ final class LinuxDesktopDisk {
         var accepted = false
         defer { if !accepted { _ = closeFD(descriptor) } }
         guard flock(descriptor, LOCK_EX | LOCK_NB) == 0 else { throw Invalid.locked }
+        // Crash between linkat(publication) and unlinkat(staging): remove only
+        // the reserved alias of this SAME validated, locked inode. Other hard
+        // links still fail closed; no recovery ever reformats/reseeds a disk.
+        let directoryFD = openFD(directory.path, O_RDONLY | O_DIRECTORY | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC)
+        guard directoryFD >= 0 else { throw Invalid.directory }
+        defer { _ = closeFD(directoryFD) }
+        var opened = stat(), target = stat(), partial = stat()
+        let temporary = ".rootfs-import-v1.partial"
+        if fstat(descriptor, &opened) == 0, opened.st_nlink == 2,
+           opened.st_mode & S_IFMT == S_IFREG, opened.st_uid == geteuid(),
+           opened.st_size == off_t(specification.sizeBytes),
+           fstatat(directoryFD, "rootfs-v1.raw", &target, AT_SYMLINK_NOFOLLOW) == 0,
+           fstatat(directoryFD, temporary, &partial, AT_SYMLINK_NOFOLLOW) == 0,
+           target.st_dev == opened.st_dev, target.st_ino == opened.st_ino,
+           partial.st_dev == opened.st_dev, partial.st_ino == opened.st_ino {
+            try validateSuperblock(fd: descriptor, specification: specification)
+            guard unlinkat(directoryFD, temporary, 0) == 0, fsync(directoryFD) == 0 else { throw Invalid.io }
+        }
         try validateIdentity(fd: descriptor, url: url, specification: specification)
         try validateSuperblock(fd: descriptor, specification: specification)
         accepted = true
@@ -92,6 +110,7 @@ final class LinuxDesktopDisk {
     /// temporary is never published unless both that copy and ext4 guards pass.
     /// An existing path always wins; provisioning never reseeds or replaces it.
     static func provision(directory: URL, specification: Specification,
+                          availableBytes: ((URL) throws -> UInt64)? = nil,
                           validatedCopy: (Int32) throws -> Void) throws -> LinuxDesktopDisk {
         try specification.validate()
         try validateDirectory(directory, allowingMissing: true)
@@ -101,9 +120,6 @@ final class LinuxDesktopDisk {
         var state = stat()
         guard lstat(target.path, &state) != 0 else { throw Invalid.alreadyExists }
         guard errno == ENOENT else { throw Invalid.inspection }
-        let capacity = try FileManager.default.attributesOfFileSystem(forPath: directory.path)
-        guard let available = capacity[.systemFreeSize] as? NSNumber else { throw Invalid.io }
-        guard available.uint64Value >= UInt64(specification.sizeBytes) + 32 * 1024 * 1024 else { throw Invalid.insufficientSpace }
         let directoryFD = openFD(directory.path, O_RDONLY | O_DIRECTORY | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC)
         guard directoryFD >= 0 else { throw Invalid.directory }
         defer { _ = closeFD(directoryFD) }
@@ -114,14 +130,17 @@ final class LinuxDesktopDisk {
                   opened.st_dev == named.st_dev, opened.st_ino == named.st_ino else { throw Invalid.directory }
         }
         try sameDirectory()
-        let temporary = ".rootfs-import-" + UUID().uuidString
-        let descriptor = openAt(directoryFD, temporary, O_RDWR | O_CREAT | O_EXCL | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC, mode_t(0o600))
+        // Reserved staging name, never a guest/user disk. A killed importer
+        // leaves it behind; a retry must acquire its lock before restarting.
+        let temporary = ".rootfs-import-v1.partial"
+        let descriptor = openAt(directoryFD, temporary, O_RDWR | O_CREAT | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC, mode_t(0o600))
         guard descriptor >= 0 else { throw Invalid.open }
         var accepted = false
+        var ownsTemporary = false
         defer {
             // Never unlink a different inode supplied under our old temp name.
             var opened = stat(), named = stat()
-            if fstat(descriptor, &opened) == 0,
+            if ownsTemporary, fstat(descriptor, &opened) == 0,
                fstatat(directoryFD, temporary, &named, AT_SYMLINK_NOFOLLOW) == 0,
                opened.st_dev == named.st_dev, opened.st_ino == named.st_ino {
                 _ = unlinkat(directoryFD, temporary, 0)
@@ -129,6 +148,19 @@ final class LinuxDesktopDisk {
             if !accepted { _ = closeFD(descriptor) }
         }
         guard flock(descriptor, LOCK_EX | LOCK_NB) == 0 else { throw Invalid.locked }
+        guard fstat(descriptor, &state) == 0, state.st_mode & S_IFMT == S_IFREG,
+              state.st_nlink == 1, state.st_uid == geteuid(), state.st_mode & 0o777 == 0o600,
+              state.st_size >= 0, state.st_size <= off_t(specification.sizeBytes) else { throw Invalid.metadata }
+        ownsTemporary = true
+        guard ftruncate(descriptor, 0) == 0 else { throw Invalid.io }
+        let available: UInt64
+        if let availableBytes { available = try availableBytes(directory) }
+        else {
+            let capacity = try FileManager.default.attributesOfFileSystem(forPath: directory.path)
+            guard let size = capacity[.systemFreeSize] as? NSNumber else { throw Invalid.io }
+            available = size.uint64Value
+        }
+        guard available >= UInt64(specification.sizeBytes) + 32 * 1024 * 1024 else { throw Invalid.insufficientSpace }
         try validatedCopy(descriptor)
         guard fstat(descriptor, &state) == 0, state.st_mode & S_IFMT == S_IFREG,
               state.st_nlink == 1, state.st_size == off_t(specification.sizeBytes) else { throw Invalid.size }
@@ -148,6 +180,7 @@ final class LinuxDesktopDisk {
         guard fstatat(directoryFD, "rootfs-v1.raw", &named, AT_SYMLINK_NOFOLLOW) == 0,
               named.st_dev == state.st_dev, named.st_ino == state.st_ino else { throw Invalid.ownership }
         guard unlinkat(directoryFD, temporary, 0) == 0 else { throw Invalid.io }
+        guard fsync(directoryFD) == 0 else { throw Invalid.io }
         try sameDirectory()
         try validateIdentity(fd: descriptor, url: target, specification: specification)
         accepted = true

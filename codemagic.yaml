@@ -702,6 +702,8 @@ workflows:
         default: "false"
     environment:
       xcode: "27.0"
+      groups:
+        - ideck-debian-payload
       vars:
         EXPECTED_COMMIT: ${{ inputs.expected_commit }}
         FREE_QUOTA_VERIFIED: ${{ inputs.free_quota_verified }}

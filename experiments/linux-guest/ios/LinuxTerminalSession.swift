@@ -7,6 +7,12 @@ import CryptoKit
 /// A real local serial console. One QEMU invocation is allowed per process.
 final class LinuxTerminalSession: ObservableObject {
     static let shared = LinuxTerminalSession()
+    static let debian = LinuxTerminalSession(isDebian: true)
+    let isDebian: Bool
+    init(isDebian: Bool = false) {
+        self.isDebian = isDebian
+        if isDebian { message = "Enable JIT, then start Debian with its separate persistent ext4 disk." }
+    }
     @Published fileprivate(set) var message = "Enable JIT, then start the local Linux terminal."
     @Published fileprivate(set) var attempted = false
     @Published fileprivate(set) var running = false
@@ -155,7 +161,8 @@ final class LinuxTerminalSession: ObservableObject {
             }
             recordJIT(true)
             try diagnostic.record(.runtimeOwnershipBegin)
-            let runtimeFree = !LinuxProbeSession.shared.attempted && !QemuRunner.shared.isRunning && husk_console_loaded_game() == nil
+            let runtimeFree = !LinuxProbeSession.shared.attempted && !LinuxTerminalSession.shared.attempted
+                && !LinuxTerminalSession.debian.attempted && !QemuRunner.shared.isRunning && husk_console_loaded_game() == nil
             try diagnostic.record(.runtimeOwnershipReturned)
             guard runtimeFree else {
                 try diagnostic.record(.startRejected)
@@ -179,7 +186,7 @@ final class LinuxTerminalSession: ObservableObject {
             message = "The app's Documents directory could not be validated. Close and reopen the app."
             return
         }
-        let root = documents.appendingPathComponent("iDeckLinux", isDirectory: true)
+        let root = documents.appendingPathComponent(isDebian ? "iDeckDebian" : "iDeckLinux", isDirectory: true)
         let session = documents.appendingPathComponent("iDeckLinuxSessions", isDirectory: true)
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
         let metadata: [String: Any] = [
@@ -194,7 +201,8 @@ final class LinuxTerminalSession: ObservableObject {
         let next = LinuxTerminalWorker(owner: self, bundle: Bundle.main.bundleURL, session: session,
                                        dataDirectory: root, metadata: metadata, diagnostic: diagnostic)
         worker = next
-        message = "Checking terminal assets and the persistent user-data disk…"
+        message = isDebian ? "Checking Debian assets and importing or opening the separate ext4 disk…"
+            : "Checking terminal assets and the persistent user-data disk…"
         next.start()
     }
 
@@ -335,7 +343,8 @@ private final class LinuxTerminalWorker {
     let metadata: [String: Any]
     let queue = DispatchQueue(label: "ideck.linux.terminal", qos: .userInitiated)
     let diagnostic: LinuxTerminalDiagnostics.Journal
-    var disk: LinuxTerminalDisk?
+    var disk: LinuxConsoleDisk?
+    var lifecycle = LinuxConsoleLifecycle()
     var serial: LinuxTerminalSocket?
     var control: LinuxTerminalSocket?
     var argv: UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>?
@@ -405,6 +414,7 @@ private final class LinuxTerminalWorker {
         }
         queue.sync {
             self.enteredQEMU = true
+            self.lifecycle.record(.entered)
             self.report["userdata_lock_retained_until_process_exit"] = true
             self.persist()
             serial.handToQEMU(); control.handToQEMU()
@@ -415,13 +425,50 @@ private final class LinuxTerminalWorker {
     func start() {
         queue.async {
             do {
-                let assets = self.bundle.appendingPathComponent("iDeckLinuxTerminal")
+                try LinuxDesktopDisk.validateDirectory(self.session, allowingMissing: true)
+                try FileManager.default.createDirectory(at: self.session, withIntermediateDirectories: true)
+                self.report = self.metadata
+                self.report["mode"] = self.owner.isDebian ? "debian" : "terminal"
+                self.report["status"] = "terminal_prepared"
+                self.report["terminal_clean_stop"] = false
+                self.report["qemu_block_layer_drained_verified"] = false
+                self.report["import_status"] = "not_started"
+                self.persist()
+                let assets = self.bundle.appendingPathComponent(self.owner.isDebian ? "iDeckDebian" : "iDeckLinuxTerminal")
                 let probe = self.bundle.appendingPathComponent("iDeckLinuxProbe")
                 try self.diagnostic.record(.assetsBegin)
-                let profile = try LinuxTerminalProfile.load(from: assets)
+                let terminal = self.owner.isDebian ? nil : (try LinuxTerminalProfile.load(from: assets))
+                let debian = self.owner.isDebian ? (try LinuxDebianProfile.load(from: assets)) : nil
+                let desktop = self.owner.isDebian ? (try LinuxDesktopProfile.load(from: assets)) : nil
                 try self.diagnostic.record(.assetsReturned)
                 try self.diagnostic.record(.diskBegin)
-                self.disk = try profile.openDisk(in: self.dataDirectory, assets: assets)
+                var preparedMetadata: [String: Any]
+                if let desktop, let debian {
+                    self.report["debian_seed_sha256"] = desktop.rootfs.sha256
+                    self.report["terminal_initramfs_sha256"] = debian.initramfs.sha256
+                    let path = self.dataDirectory.appendingPathComponent("rootfs-v1.raw")
+                    var state = stat()
+                    // lstat distinguishes absent from a dangling link or IO error.
+                    if lstat(path.path, &state) == 0 {
+                        self.report["import_status"] = "existing_disk_preserved"; self.persist()
+                        self.disk = try desktop.openExisting(in: self.dataDirectory)
+                    } else {
+                        guard errno == ENOENT else { throw LinuxDesktopDisk.Invalid.inspection }
+                        self.report["import_status"] = "copying_seed"; self.persist()
+                        self.disk = try desktop.provision(in: self.dataDirectory, assets: assets)
+                        self.report["import_status"] = "seed_hash_verified_and_published"; self.persist()
+                    }
+                    preparedMetadata = ["profile_cpu": "cortex-a72", "profile_memory_mib": 1024, "profile_vcpus": 4,
+                        "profile_width": 800, "profile_height": 600, "requested_tcg_mib": 256,
+                        "userdata_size_bytes": desktop.image.sizeBytes, "userdata_filesystem": "ext4",
+                        "debian_seed_sha256": desktop.rootfs.sha256, "terminal_initramfs_sha256": debian.initramfs.sha256]
+                } else if let profile = terminal {
+                    self.disk = try profile.openDisk(in: self.dataDirectory, assets: assets)
+                    preparedMetadata = ["profile_cpu": profile.cpu, "profile_memory_mib": profile.memoryMib, "profile_vcpus": profile.vcpus,
+                        "profile_width": profile.width, "profile_height": profile.height, "requested_tcg_mib": profile.tcgCacheMib,
+                        "userdata_size_bytes": profile.diskSizeBytes, "userdata_filesystem": profile.filesystem,
+                        "terminal_initramfs_sha256": profile.initramfs.sha256]
+                } else { throw LinuxTerminalProfile.Invalid.configuration }
                 try self.diagnostic.record(.diskReturned)
                 try self.diagnostic.record(.socketsBegin)
                 self.serial = try LinuxTerminalSocket(queue: self.queue)
@@ -429,24 +476,28 @@ private final class LinuxTerminalWorker {
                 guard let disk = self.disk, let serial = self.serial, let control = self.control else { throw LinuxTerminalProfile.Invalid.io }
                 try self.diagnostic.record(.socketsReturned)
                 try self.diagnostic.record(.argumentsBegin)
-                let args = try profile.arguments(probeAssets: probe, terminalAssets: assets, session: self.session,
-                                                 disk: disk, serialFD: serial.qemu, controlFD: control.qemu)
+                let args: [String]
+                let bootSession = self.session.appendingPathComponent("qemu")
+                if let profile = terminal, let terminalDisk = disk as? LinuxTerminalDisk {
+                    args = try profile.arguments(probeAssets: probe, terminalAssets: assets, session: bootSession,
+                        disk: terminalDisk, serialFD: serial.qemu, controlFD: control.qemu)
+                } else if let profile = debian, let desktopDisk = disk as? LinuxDesktopDisk {
+                    args = try profile.arguments(probeAssets: probe, assets: assets, session: bootSession,
+                        disk: desktopDisk, serialFD: serial.qemu, controlFD: control.qemu)
+                } else { throw LinuxTerminalProfile.Invalid.configuration }
                 try self.diagnostic.record(.argumentsReturned)
                 try self.diagnostic.record(.reportBegin)
                 guard FileManager.default.createFile(atPath: self.serialURL.path, contents: Data()) else { throw LinuxTerminalProfile.Invalid.io }
                 self.logHandle = try FileHandle(forWritingTo: self.serialURL)
-                self.report = self.metadata
-                self.report.merge(["schema": 1, "mode": "terminal", "status": "terminal_prepared", "argv": args,
+                self.report.merge(preparedMetadata) { _, next in next }
+                self.report.merge(["schema": 1, "status": "terminal_prepared", "argv": args,
                     "husk_commit": "0695248f491cda877f7969d1f0cc89aeede1482e",
                     "started_utc": ISO8601DateFormatter().string(from: Date()),
-                    "profile_cpu": profile.cpu, "profile_memory_mib": profile.memoryMib, "profile_vcpus": profile.vcpus,
-                    "profile_width": profile.width, "profile_height": profile.height, "requested_tcg_mib": profile.tcgCacheMib,
-                    "userdata_size_bytes": profile.diskSizeBytes, "userdata_filesystem": profile.filesystem, "log_truncated": false,
+                    "log_truncated": false,
                     "elapsed_scope": "terminal_session_including_preparation",
                     "qemu_block_layer_drained_verified": false,
-                    "terminal_initramfs_sha256": profile.initramfs.sha256,
                     "steam_executed": false, "physical_screen_verified": false, "accelerated_guest_gpu_verified": false]) { _, next in next }
-                self.report["terminal_profile_sha256"] = try self.digest(assets.appendingPathComponent("terminal-profile.json"))
+                self.report["terminal_profile_sha256"] = try self.digest(assets.appendingPathComponent(self.owner.isDebian ? "debian-profile.json" : "terminal-profile.json"))
                 if let executable = Bundle.main.executableURL { self.report["app_executable_sha256"] = try self.digest(executable) }
                 try self.saveReport()
                 try self.diagnostic.record(.reportReturned)
@@ -509,10 +560,21 @@ private final class LinuxTerminalWorker {
                 self.serial?.closeUnused(); self.control?.closeUnused()
                 try? self.logHandle?.close(); self.logHandle = nil
                 if !self.enteredQEMU { self.disk?.closeUnused() }
-                self.report["mode"] = "terminal"
                 self.report["status"] = "terminal_prepare_failed"
+                if let failure = error as? LinuxDesktopDisk.Invalid { self.report["storage_failure"] = String(describing: failure) }
+                if let failure = error as? LinuxDesktopProfile.Invalid { self.report["storage_failure"] = String(describing: failure) }
                 self.persist()
-                self.owner.publish { $0.message = "Terminal preparation failed. The existing user-data disk was not replaced. Close and reopen the app." }
+                let needsRecovery = (error as? LinuxDesktopDisk.Invalid) == .needsRecovery
+                let noSpace = (error as? LinuxDesktopDisk.Invalid) == .insufficientSpace
+                let busy = (error as? LinuxDesktopDisk.Invalid) == .locked
+                let badSeed = (error as? LinuxDesktopProfile.Invalid) == .assetDigest
+                self.owner.publish {
+                    $0.message = needsRecovery ? "The Debian disk needs offline ext4 recovery after an unclean shutdown. It was not recreated or mounted. Export the report and preserve the disk before repair."
+                        : noSpace ? "Not enough free space to import Debian (512 MiB plus 32 MiB reserve). Existing disks were preserved. Free space and reopen the app to retry."
+                        : busy ? "The Debian disk or import is busy. It was not replaced. Close the owning session before retrying."
+                        : badSeed ? "The Debian seed failed its SHA-256 check. No disk was published. Restore the correct app payload before retrying; existing disks were preserved."
+                        : "Console preparation failed. The existing disk was not replaced. Export the report; close and reopen the app to retry."
+                }
             }
         }
     }
@@ -530,6 +592,7 @@ private final class LinuxTerminalWorker {
                   let control = self.control, control.peer >= 0 else { return }
             self.checkpoint(.stopRequested)
             self.stopRequested = true
+            self.lifecycle.record(.stop)
             self.report["status"] = "terminal_stopping"
             self.persist()
             do { try control.enqueue(Data("IDECK_STOP_V1\n".utf8)) }
@@ -592,8 +655,10 @@ private final class LinuxTerminalWorker {
             if line.last == 13 { line.removeLast() }
             // Only this independent guest supervisor port can acknowledge
             // readiness/unmount. A shell echo in the serial transcript cannot.
-            if line == Data("IDECK_TERMINAL_READY".utf8), !ready, !loopReturned, !stopRequested {
+            let prefix = owner.isDebian ? "IDECK_DEBIAN_" : "IDECK_TERMINAL_"
+            if line == Data((prefix + "READY").utf8), !ready, !loopReturned, !stopRequested {
                 checkpoint(.terminalReady)
+                lifecycle.record(.ready)
                 guestWasReady = true
                 ready = (serial?.peer ?? -1) >= 0
                 let consoleReady = ready
@@ -602,10 +667,12 @@ private final class LinuxTerminalWorker {
                 persist()
                 owner.publish {
                     $0.ready = consoleReady; $0.canStop = true
-                    $0.message = consoleReady ? "Local Linux console ready. User files are stored in /data; use Stop Linux before closing the app."
+                    $0.message = consoleReady ? ($0.isDebian ? "Debian console ready. Files in /root persist on ext4; use Stop Linux before closing the app."
+                        : "Local Linux console ready. User files are stored in /data; use Stop Linux before closing the app.")
                         : "The console channel is unavailable. Use Stop Linux to stop the guest through its separate control channel."
                 }
-            } else if line == Data("IDECK_TERMINAL_CLEAN_UNMOUNT".utf8) {
+            } else if line == Data((prefix + "CLEAN_UNMOUNT").utf8) {
+                lifecycle.record(.unmounted)
                 ready = false
                 stopRequested = true
                 cleanUnmount = true
@@ -616,7 +683,8 @@ private final class LinuxTerminalWorker {
                 // Parse the rest of this control batch before considering a
                 // pass: poweroff may have returned and emitted STOP_FAILED.
                 queue.async { self.finalizeIfClean() }
-            } else if line == Data("IDECK_TERMINAL_STOP_FAILED".utf8) {
+            } else if line == Data((prefix + "STOP_FAILED").utf8) {
+                lifecycle.record(.failed)
                 checkpoint(.stopFailed)
                 stopFailed = true
                 stopRequested = true
@@ -651,6 +719,7 @@ private final class LinuxTerminalWorker {
     private func didReturnFromQEMU() {
         guard !loopReturned else { return }
         loopReturned = true
+        lifecycle.record(.loopReturned)
         ready = false
         report["qemu_main_loop_returned"] = true
         report["status"] = stopFailed ? "terminal_stop_failed" : "terminal_unclean_stopped"
@@ -668,11 +737,13 @@ private final class LinuxTerminalWorker {
         guard cleanUnmount, loopReturned, !finalized, !stopFailed, let disk else { return }
         control?.drainAvailable()
         guard !stopFailed, controlLines.isEmpty else { return }
+        guard lifecycle.maySyncForCleanStop else { return }
         do {
             // Main-loop return is not QEMU block-layer cleanup. Sync the host
             // file, but keep its descriptor and exclusive lock until app exit.
             checkpoint(.hostSyncBegin)
             try disk.synchronize()
+            lifecycle.record(.hostSynced)
             checkpoint(.hostDiskSynced)
             finalized = true
             report["host_disk_fsync_passed"] = true
@@ -711,6 +782,7 @@ private final class LinuxTerminalWorker {
         queue.asyncAfter(deadline: .now() + 30) {
             guard !self.finalized, !self.stopFailed, !self.loopReturned else { return }
             self.checkpoint(.stopTimeout)
+            self.lifecycle.record(.timedOut)
             self.report["terminal_stop_timed_out"] = true
             self.report["status"] = "terminal_stop_timeout"
             self.persist()
@@ -731,7 +803,7 @@ private final class LinuxTerminalWorker {
 
     private var resultURL: URL { session.appendingPathComponent("result.json") }
     private var serialURL: URL { session.appendingPathComponent("linux-serial.log") }
-    private var markdownURL: URL { session.appendingPathComponent(LinuxProbeReport.filename) }
+    private var markdownURL: URL { session.appendingPathComponent(owner.isDebian ? "result.md" : LinuxProbeReport.filename) }
 
     private func refreshExports() {
         let files = [resultURL, serialURL].filter { FileManager.default.fileExists(atPath: $0.path) }

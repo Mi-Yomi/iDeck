@@ -131,6 +131,10 @@
         {
           "name": "Stage verified iDeck Linux terminal",
           "script": "set -e\npython3 \"$SRCROOT/../../scripts/ideck-stage-linux-terminal.py\" stage \\\n  \"$SRCROOT/../../guests/ideck-linux-terminal\" \\\n  \"$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/iDeckLinuxTerminal\" \\\n  \"$SRCROOT/../../scripts/ideck-terminal.lock.json\"\n"
+        },
+        {
+          "name": "Stage verified iDeck Debian console",
+          "script": "set -e\npython3 \"$SRCROOT/../../scripts/ideck-stage-debian.py\" stage \\\n  \"$SRCROOT/../../guests/ideck-debian\" \\\n  \"$SRCROOT/../../scripts/ideck-debian.lock.json\" \\\n  --destination \"$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/iDeckDebian\"\n"
         }
       ],
       "postBuildScripts": [

@@ -1,0 +1,8 @@
+Pass 1: Checking inodes, blocks, and sizes
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+ideck-root-v1: 6757/65536 files (0.1% non-contiguous), 42902/131072 blocks
+wsl: Failed to mount F:\, see dmesg for more details.
+e2fsck 1.47.4 (6-Mar-2025)

@@ -1,0 +1,244 @@
+{
+  "schema": 1,
+  "base_commit": "3bcb4811726c690a988b95c828c11661090869ca",
+  "status": "implementation_and_host_checks_complete_apple_pending",
+  "payload": {
+    "path": "E:\\Freddy Fazbear\\iDeck.work\\debian-console-20261016\\payload-final\\ideck-debian-console-v1.tar",
+    "size": 75601920,
+    "sha256": "84851a3597901f1e3ef293c1490dc9c8a4a78b286bea8d2a10c330cb1413c558"
+  },
+  "payload_reproduced_exactly": true,
+  "bundle_files": {
+    "LICENSES-debian.txt": {
+      "size": 950,
+      "sha256": "0706a7dc36c6b89f1443f5346c6ef73b45487f68f181630aefdbb823b056b907"
+    },
+    "debian-profile.json": {
+      "size": 387,
+      "sha256": "27930f3b1b6070e1ad97cfebe644de50387c9b2300734eae26b350b5e6e8eae0"
+    },
+    "desktop-rootfs-profile.json": {
+      "size": 436,
+      "sha256": "ef5b993fb170acdb631516bce33d5b732f7d2f7ed95e2836f1c8ddaf41af1c20"
+    },
+    "initramfs-debian.gz": {
+      "size": 11317380,
+      "sha256": "e647f9ff80a3c93333f607a6961505103164bcc17c935eb4d0a06d253f36aa7d"
+    },
+    "rootfs-v1.raw": {
+      "size": 536870912,
+      "sha256": "a081d86594a0c59e585541ae26fa586468f267767dc081796f51186ea9c01217"
+    },
+    "vmlinuz-virt": {
+      "size": 10351104,
+      "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+    }
+  },
+  "host_result": {
+    "schema": 1,
+    "status": "pass",
+    "scope": "host production Debian console; NOT iPhone",
+    "seed": {
+      "size": 536870912,
+      "sha256": "a081d86594a0c59e585541ae26fa586468f267767dc081796f51186ea9c01217"
+    },
+    "production_initramfs": {
+      "size": 11317380,
+      "sha256": "e647f9ff80a3c93333f607a6961505103164bcc17c935eb4d0a06d253f36aa7d"
+    },
+    "boots": [
+      {
+        "phase": 1,
+        "argv": [
+          "E:\\Freddy Fazbear\\iDeck\\.work\\linux-boot\\qemu\\qemu-system-aarch64.exe",
+          "-machine",
+          "virt",
+          "-cpu",
+          "cortex-a72",
+          "-smp",
+          "4",
+          "-m",
+          "1024",
+          "-accel",
+          "tcg,thread=multi,tb-size=256",
+          "-display",
+          "none",
+          "-monitor",
+          "none",
+          "-nodefaults",
+          "-nic",
+          "none",
+          "-no-reboot",
+          "-kernel",
+          "E:\\Freddy Fazbear\\iDeck.work\\debian-console-20261016\\payload-final-restored\\vmlinuz-virt",
+          "-initrd",
+          "E:\\Freddy Fazbear\\iDeck.work\\debian-console-20261016\\payload-final-restored\\initramfs-debian.gz",
+          "-append",
+          "console=ttyAMA0 earlycon=pl011,0x09000000 rdinit=/ideck-debian-init panic=0 loglevel=6",
+          "-drive",
+          "if=none,id=debian,format=raw,cache=writethrough,file=E:\\Freddy Fazbear\\iDeck.work\\debian-console-20261016\\host-006\\disposable.raw",
+          "-device",
+          "virtio-blk-device,drive=debian",
+          "-chardev",
+          "socket,id=serial0,host=127.0.0.1,port=63369",
+          "-chardev",
+          "socket,id=control0,host=127.0.0.1,port=63370",
+          "-serial",
+          "chardev:serial0",
+          "-device",
+          "virtio-serial-pci",
+          "-device",
+          "virtserialport,chardev=control0,name=org.ideck.control"
+        ],
+        "status": "pass",
+        "stop_method": "control_channel",
+        "interactive_idle_alive": true,
+        "serial_commands_passed": 15,
+        "ctrl_c_interrupt_passed": true,
+        "qemu_exit": 0,
+        "guest_clean_unmount": true,
+        "seconds": 10.594
+      },
+      {
+        "phase": 2,
+        "argv": [
+          "E:\\Freddy Fazbear\\iDeck\\.work\\linux-boot\\qemu\\qemu-system-aarch64.exe",
+          "-machine",
+          "virt",
+          "-cpu",
+          "cortex-a72",
+          "-smp",
+          "4",
+          "-m",
+          "1024",
+          "-accel",
+          "tcg,thread=multi,tb-size=256",
+          "-display",
+          "none",
+          "-monitor",
+          "none",
+          "-nodefaults",
+          "-nic",
+          "none",
+          "-no-reboot",
+          "-kernel",
+          "E:\\Freddy Fazbear\\iDeck.work\\debian-console-20261016\\payload-final-restored\\vmlinuz-virt",
+          "-initrd",
+          "E:\\Freddy Fazbear\\iDeck.work\\debian-console-20261016\\payload-final-restored\\initramfs-debian.gz",
+          "-append",
+          "console=ttyAMA0 earlycon=pl011,0x09000000 rdinit=/ideck-debian-init panic=0 loglevel=6",
+          "-drive",
+          "if=none,id=debian,format=raw,cache=writethrough,file=E:\\Freddy Fazbear\\iDeck.work\\debian-console-20261016\\host-006\\disposable.raw",
+          "-device",
+          "virtio-blk-device,drive=debian",
+          "-chardev",
+          "socket,id=serial0,host=127.0.0.1,port=63375",
+          "-chardev",
+          "socket,id=control0,host=127.0.0.1,port=63376",
+          "-serial",
+          "chardev:serial0",
+          "-device",
+          "virtio-serial-pci",
+          "-device",
+          "virtserialport,chardev=control0,name=org.ideck.control"
+        ],
+        "status": "pass",
+        "stop_method": "shell_exit",
+        "interactive_idle_alive": true,
+        "serial_commands_passed": 11,
+        "ctrl_c_interrupt_passed": true,
+        "qemu_exit": 0,
+        "guest_clean_unmount": true,
+        "seconds": 10.062
+      }
+    ],
+    "apple_swift": "NOT RUN",
+    "ios_device": "NOT RUN",
+    "fsck": {
+      "argv": [
+        "wsl",
+        "-d",
+        "archlinux",
+        "--",
+        "e2fsck",
+        "-fn",
+        "/mnt/e/Freddy Fazbear/iDeck.work/debian-console-20261016/host-006/disposable.raw"
+      ],
+      "exit_code": 0,
+      "disk_unchanged": true
+    },
+    "seed_unchanged": true,
+    "disposable": {
+      "size": 536870912,
+      "sha256": "90f35be2b6942e26cb4779aefb9cd3c57df66c669879d7d15fd01d9d7ffa65c1"
+    }
+  },
+  "regression_tests": {
+    "run": 203,
+    "failures": 0,
+    "errors": 0,
+    "skipped": [
+      [
+        "test_actual_swift_owner_and_validation_regressions (test_desktop_disk.DesktopDiskChecks.test_actual_swift_owner_and_validation_regressions)",
+        "explicit existing Swift toolchain required"
+      ]
+    ],
+    "successful": true,
+    "apple_swift": "NOT RUN",
+    "temporary_storage": "/mnt/e/Freddy Fazbear/iDeck.work/debian-console-20261016/test-posix/tmp"
+  },
+  "evidence_files": {
+    "debian-console-serial-1.log": {
+      "size": 3432,
+      "sha256": "539bba15db075ad36a4fff6b4147d870fdef8c1557b7637aaf06aaa0f29dc715"
+    },
+    "debian-console-serial-2.log": {
+      "size": 3269,
+      "sha256": "1bb53102c041ca3392f1799695ffed46afd7a5fa4cefa93c05172e8799ab0f16"
+    },
+    "debian-console-control-1.log": {
+      "size": 46,
+      "sha256": "b6457a5707a375738d9c4aef98ff61ea199d1c6d4a750473788866f99ade01bb"
+    },
+    "debian-console-control-2.log": {
+      "size": 46,
+      "sha256": "b6457a5707a375738d9c4aef98ff61ea199d1c6d4a750473788866f99ade01bb"
+    },
+    "debian-console-fsck.log": {
+      "size": 353,
+      "sha256": "f7f3dad3eb1c588fc6a1ee5d88c2f6ad1f60054a02e4d884d9591294c1609a93"
+    },
+    "debian-console-host.json": {
+      "size": 4165,
+      "sha256": "0b9c47d33f7e379c2b81d9af13f39683f5b10d5da7dd21033d90a5f70c3ff40d"
+    },
+    "debian-console-tests.log": {
+      "size": 32585,
+      "sha256": "35938cd9d30354406ab304522c2696909ff455aae1f1e51e42b57f2211658431"
+    },
+    "debian-console-build.json": {
+      "size": 771,
+      "sha256": "1123d86d7c309aaf433cd618b061405d77adb83c1ddff285ec6cd2397818fb5b"
+    }
+  },
+  "swift_runtime_regression": "NOT RUN; mandatory Apple gate implemented",
+  "apple_typecheck": "NOT RUN",
+  "native_ipa": "NOT RUN",
+  "debian_on_iphone": "NOT RUN",
+  "codemagic_dispatched": false,
+  "existing_userdata_accessed": false,
+  "embedded_block_backend_cleanup_proven": false,
+  "disk_lock_policy": "retain through app process exit, including orderly Stop",
+  "ci_payload_delivery": "BLOCKED: upload exact private release asset and configure secret group ideck-debian-payload",
+  "historical_attempts": [
+    "host-001: harness TCP reset after poweroff",
+    "host-002: pre-signal-fix console without Ctrl-C acceptance",
+    "host-003 through host-005: inherited ignored SIGINT found and diagnosed; not accepted"
+  ],
+  "remaining": [
+    "Private CI payload delivery",
+    "Mandatory Apple Swift runtime/storage tests and real SDK typecheck",
+    "Native Husk 10.0.12-utm link/IPA packaging",
+    "Owner Debian iPhone run, Stop, app exit/reopen and persistence"
+  ]
+}

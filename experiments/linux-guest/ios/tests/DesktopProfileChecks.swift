@@ -37,7 +37,41 @@ func runDesktopProfileChecks(fixture: URL) throws {
     let profile = try load()
     let directory = root.appendingPathComponent("persistent")
     let disk = try profile.provision(in: directory, assets: assets)
-    try disk.validateOwnership(); disk.closeUnused()
+    try disk.validateOwnership()
+    // Exercise the production Debian argv builder with real owned storage and
+    // explicitly synthetic kernel bytes (not an Apple or Linux boot claim).
+    let bytes = Data("Debian argv fixture".utf8)
+    let sum = SHA256.hash(data: bytes).map { String(format: "%02x", $0) }.joined()
+    func descriptor(_ name: String) -> [String: Any] { ["file": name, "size": bytes.count, "sha256": sum] }
+    for name in ["vmlinuz-virt", "initramfs-ideck.gz", "initramfs-debian.gz"] {
+        try bytes.write(to: assets.appendingPathComponent(name))
+    }
+    let probe: [String: Any] = ["schema": 1, "width": 800, "height": 600, "cpu": "cortex-a72",
+        "memory_mib": 1024, "vcpus": 4, "tcg_cache_mib": 256,
+        "kernel": descriptor("vmlinuz-virt"), "initramfs": descriptor("initramfs-ideck.gz")]
+    let boot: [String: Any] = ["schema": 1, "mode": "debian", "control_port": "org.ideck.control",
+        "kernel": descriptor("vmlinuz-virt"), "initramfs": descriptor("initramfs-debian.gz")]
+    try JSONSerialization.data(withJSONObject: probe).write(to: assets.appendingPathComponent("profile.json"))
+    try JSONSerialization.data(withJSONObject: boot).write(to: assets.appendingPathComponent("debian-profile.json"))
+    let debian = try LinuxDebianProfile.load(from: assets)
+    let arguments = try debian.arguments(probeAssets: assets, assets: assets, session: root.appendingPathComponent("argv-session"),
+        disk: disk, serialFD: 40, controlFD: 41)
+    precondition(arguments.contains("socket,id=linuxserial,fd=40") && arguments.contains("chardev:linuxserial"))
+    precondition(arguments.contains("virtio-blk-device,drive=debian"))
+    precondition(arguments.contains(where: { $0.contains("file.locking=off,file=" + disk.url.path) }))
+    precondition(!arguments.contains(where: { $0.contains("file=" + seed.path) }))
+    precondition(arguments.contains(where: { $0.contains("rdinit=/ideck-debian-init") }))
+    do {
+        _ = try debian.arguments(probeAssets: assets, assets: assets, session: root.appendingPathComponent("bad-fd"),
+            disk: disk, serialFD: 40, controlFD: 40)
+        preconditionFailure("shared serial/control descriptor accepted")
+    } catch LinuxTerminalProfile.Invalid.io { }
+    disk.closeUnused()
+    do {
+        _ = try debian.arguments(probeAssets: assets, assets: assets, session: root.appendingPathComponent("closed-owner"),
+            disk: disk, serialFD: 40, controlFD: 41)
+        preconditionFailure("closed ext4 owner handed to QEMU")
+    } catch LinuxDesktopDisk.Invalid.ownership { }
     let changed = try FileHandle(forWritingTo: directory.appendingPathComponent("rootfs-v1.raw"))
     try changed.seek(toOffset: 2 * 1024 * 1024); try changed.write(contentsOf: Data([0x6b])); try changed.close()
     let reopened = try profile.openExisting(in: directory)

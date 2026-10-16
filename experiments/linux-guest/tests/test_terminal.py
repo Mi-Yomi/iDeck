@@ -370,7 +370,7 @@ class TerminalSourceContracts(unittest.TestCase):
         self.assertIn("S_IFDIR", validate)
         session = (EXPERIMENT / "ios/LinuxTerminalSession.swift").read_text()
         self.assertLess(session.index("LinuxTerminalDisk.trustedDirectory("),
-                        session.index('appendingPathComponent("iDeckLinux"'))
+                        session.index('appendingPathComponent(isDebian ? "iDeckDebian" : "iDeckLinux"'))
         checks = (EXPERIMENT / "ios/tests/TerminalChecks.swift").read_text()
         self.assertLess(checks.index("LinuxTerminalDisk.trustedDirectory(manager.temporaryDirectory)"),
                         checks.index('appendingPathComponent("ideck-terminal-checks-'))
@@ -418,7 +418,8 @@ class TerminalSourceContracts(unittest.TestCase):
         finalize = swift_block(session, "private func finalizeIfClean()")
         disconnected = swift_block(session, "private func channelDisconnected(")
         self.assertNotIn("cleanUnmount = true", serial)
-        self.assertIn('line == Data("IDECK_TERMINAL_CLEAN_UNMOUNT".utf8)', control)
+        self.assertIn('let prefix = owner.isDebian ? "IDECK_DEBIAN_" : "IDECK_TERMINAL_"', control)
+        self.assertIn('line == Data((prefix + "CLEAN_UNMOUNT").utf8)', control)
         self.assertIn("cleanUnmount = true", control)
         self.assertIn("guard cleanUnmount, loopReturned, !finalized, !stopFailed, let disk", finalize)
         self.assertLess(finalize.index("control?.drainAvailable()"),
@@ -439,7 +440,7 @@ class TerminalSourceContracts(unittest.TestCase):
     def test_control_failure_and_timeouts_do_not_confirm_clean_or_release_the_disk(self):
         session = (EXPERIMENT / "ios/LinuxTerminalSession.swift").read_text()
         control = swift_block(session, "private func receiveControl(")
-        failure = control[control.index('line == Data("IDECK_TERMINAL_STOP_FAILED".utf8)'):]
+        failure = control[control.index('line == Data((prefix + "STOP_FAILED").utf8)'):]
         self.assertIn("stopFailed = true", failure)
         self.assertIn('report["terminal_clean_stop"] = false', failure)
         self.assertNotIn('report["terminal_clean_stop"] = true', failure)

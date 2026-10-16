@@ -1,6 +1,11 @@
 import Foundation
 import CryptoKit
 
+if CommandLine.arguments.count == 4, CommandLine.arguments[1] == "--desktop-interrupted-import" {
+    try runDesktopInterruptedImport(directory: URL(fileURLWithPath: CommandLine.arguments[2]),
+                                    fixture: URL(fileURLWithPath: CommandLine.arguments[3]))
+}
+
 if CommandLine.arguments.count == 3, ["--diagnostic-fifo", "--diagnostic-native-fifo"].contains(CommandLine.arguments[1]) {
     try runDiagnosticFIFOChild(URL(fileURLWithPath: CommandLine.arguments[2], isDirectory: true),
                                nativeLog: CommandLine.arguments[1] == "--diagnostic-native-fifo")
@@ -109,3 +114,4 @@ try runTerminalDiagnosticsChecks()
 let desktopGolden = URL(fileURLWithPath: "experiments/linux-guest/ios/tests/fixtures/desktop-ext4-superblock.json")
 try runDesktopDiskChecks(fixture: desktopGolden)
 try runDesktopProfileChecks(fixture: desktopGolden)
+runConsoleLifecycleChecks()

@@ -6,8 +6,8 @@ import Darwin
 import Glibc
 #endif
 
-/// Storage-only G1 profile. This does not enable a desktop route or construct
-/// QEMU argv before the bootstrap/module/GUI gates have passed.
+/// Storage contract shared with the separate Debian console boot profile.
+/// This helper never enters QEMU, mounts a disk or repairs an existing image.
 struct LinuxDesktopProfile: Decodable {
     enum Invalid: Error, Equatable {
         case configuration, profile, asset, assetMetadata, assetRead, assetSize, assetDigest

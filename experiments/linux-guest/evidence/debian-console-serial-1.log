@@ -1,0 +1,65 @@
+[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x410fd083]
+[    0.000000] Linux version 6.18.35-0-virt (buildozer@build-3-24-aarch64) (cc (Alpine 15.2.0) 15.2.0, GNU ld (GNU Binutils) 2.45.1) #1-Alpine SMP PREEMPT_DYNAMIC 2026-06-09 12:34:47
+[    0.000000] random: crng init done
+[    0.000000] Machine model: linux,dummy-virt
+[    0.000000] earlycon: pl11 at MMIO 0x0000000009000000 (options '')
+[    0.000000] printk: legacy bootconsole [pl11] enabled
+[    0.000000] Kernel command line: console=ttyAMA0 earlycon=pl011,0x09000000 rdinit=/ideck-debian-init panic=0 loglevel=6
+[    0.723414] audit: type=2000 audit(0.282:1): state=initialized audit_enabled=0 res=1
+[    0.961563] VFS: Disk quotas dquot_6.6.0
+[    1.231345] Initialise system trusted keyrings
+[    1.336420] Key type asymmetric registered
+[    1.338285] Asymmetric key parser 'x509' registered
+[    1.363206] pci-host-generic 4010000000.pcie: Memory resource size exceeds max for 32 bits
+[    1.624955] Loading compiled-in X.509 certificates
+[    2.359190] Loaded X.509 cert 'alpinelinux.org: Alpine Linux kernel key: 87fa969a47f3e2a6aa35859eb932a17c95abcd82'
+[    2.409386] Key type .fscrypt registered
+[    2.409619] Key type fscrypt-provisioning registered
+IDECK_DEBIAN_BOOT
+Linux (none) 6.18.35-0-virt #1-Alpine SMP PREEMPT_DYNAMIC 2026-06-09 12:34:47 aarch64 Linux
+[    2.840187] virtio_blk virtio1: [vda] 1048576 512-byte logical blocks (537 MB/512 MiB)
+IDECK_DEBIAN_READY
+
+
+Debian ARM64. Files in /root persist on the separate ext4 disk.
+Use exit or Stop Linux before closing iDeck.
+
+debian# IDECK_CONSOLE_COMMAND_1_0_PASS
+debian# glibc 2.41
+IDECK_CONSOLE_COMMAND_1_1_PASS
+debian# IDECK_CONSOLE_COMMAND_1_2_PASS
+debian# IDECK_CONSOLE_COMMAND_1_3_PASS
+debian# IDECK_CONSOLE_COMMAND_1_4_PASS
+debian# IDECK_CONSOLE_COMMAND_1_5_PASS
+debian# IDECK_CONSOLE_COMMAND_1_6_PASS
+debian# IDECK_CONSOLE_COMMAND_1_7_PASS
+debian# IDECK_CONSOLE_COMMAND_1_8_PASS
+debian# IDECK_CONSOLE_COMMAND_1_9_PASS
+debian# IDECK_CONSOLE_COMMAND_1_10_PASS
+debian# IDECK_CONSOLE_COMMAND_1_11_PASS
+debian# IDECK_CONSOLE_COMMAND_1_12_PASS
+debian# IDECK_CONSOLE_COMMAND_1_13_PASS
+debian# IDECK_CONSOLE_COMMAND_1_14_PASS
+debian# speed 115200 baud; rows 0; columns 0; line = 0;
+intr = ^C; quit = ^\; erase = ^?; kill = ^U; eof = ^D; eol = ^J; eol2 = <undef>;
+swtch = <undef>; start = ^Q; stop = ^S; susp = ^Z; rprnt = ^R; werase = ^W;
+lnext = ^V; discard = ^O; min = 1; time = 0;
+-parenb -parodd -cmspar cs8 hupcl -cstopb cread clocal -crtscts
+-ignbrk -brkint -ignpar -parmrk -inpck -istrip -inlcr -igncr icrnl ixon ixoff
+-iuclc -ixany -imaxbel -iutf8
+opost -olcuc -ocrnl onlcr -onocr -onlret -ofill -ofdel nl0 cr0 tab0 bs0 vt0 ff0
+isig icanon -iexten -echo echoe echok -echonl -noflsh -xcase -tostop -echoprt
+echoctl echoke -flusho -extproc
+Name:	sh
+Pid:	414
+PPid:	1
+SigIgn:	0000000000284004
+SigCgt:	0000000000010002
+414 (sh) S 1 414 414 52288 433 4194560 305 1704 5 18 7 24 25 31 20 0 1 0 268 2473984 361 18446744073709551615 187650559967232 187650560094444 281474587248720 0 0 0 0 2637828 65538 1 0 0 17 1 0 0 0 0 0 187650560158560 187650560164368 187650907099136 281474587250541 281474587250552 281474587250552 281474587250672 0
+IDECK_TTY_DIAGNOSTICS
+debian# IDECK_SLEEP_BEGIN
+
+debian# IDECK_DEBIAN_CTRL_C_PASS
+debian# IDECK_DEBIAN_CLEAN_UNMOUNT
+debian# IDECK_DEBIAN_CLEAN_UNMOUNT
+[    9.120899] reboot: Power down

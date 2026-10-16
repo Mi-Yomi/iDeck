@@ -95,6 +95,10 @@ def package(worker, built, source, commit):
         if file.stat().st_size != expected["size"] or hashlib.sha256(file.read_bytes()).hexdigest() != expected["sha256"]:
             raise ValueError("Guest bytes changed or were not bundled: " + name)
     check_terminal_assets(app)
+    # Fail packaging even when Xcode succeeded if Debian payload is omitted,
+    # changed, or incomplete. Stream the large seed; never load it into RAM.
+    from debian_bundle import verify as verify_debian, load_lock as load_debian_lock
+    verify_debian(app / "iDeckDebian", load_debian_lock(Path(__file__).parent / "debian.lock.json"))
     for extension in (app / "PlugIns").glob("*.appex"):
         metadata = plistlib.loads((extension / "Info.plist").read_bytes())
         if not metadata.get("CFBundleIdentifier", "").startswith("dev.ideck.linuxprobe."):

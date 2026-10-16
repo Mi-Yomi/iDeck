@@ -1,5 +1,10 @@
 import Foundation
 
+if CommandLine.arguments.count == 4, CommandLine.arguments[1] == "--desktop-interrupted-import" {
+    try runDesktopInterruptedImport(directory: URL(fileURLWithPath: CommandLine.arguments[2]),
+                                    fixture: URL(fileURLWithPath: CommandLine.arguments[3]))
+}
+
 if CommandLine.arguments.count == 5, CommandLine.arguments[1] == "--desktop-disk-contender" {
     try runDesktopDiskContender(directory: URL(fileURLWithPath: CommandLine.arguments[2]),
                                 fixture: URL(fileURLWithPath: CommandLine.arguments[3]),

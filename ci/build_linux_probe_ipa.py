@@ -458,6 +458,14 @@ def main():
         report["commit"] = worker.run("checkout", ["git", "rev-parse", "HEAD"])
         report["xcode"] = worker.run("xcode", ["xcodebuild", "-version"])
         worker.run("swift-source-check", [sys.executable, "-I", "ci/check_linux_guest_profile.py"])
+        # Fail before native dependency/tool setup if exact Debian payload bytes
+        # are unavailable. The E: development path is never a CI input.
+        from debian_bundle import fetch as fetch_debian, restore as restore_debian
+        debian_lock = EXPERIMENT / "ipa/debian.lock.json"
+        debian_archive = out / "ideck-debian-console-v1.tar"
+        report["debian_payload"] = fetch_debian(debian_archive, debian_lock)
+        debian_assets = out / "debian-assets"
+        report["debian_assets"] = restore_debian(debian_archive, debian_assets, debian_lock)
         lock = json.loads((EXPERIMENT / "ipa/native-sources.lock.json").read_text())
         if lock["husk_commit"] != PIN:
             raise ValueError("Native recipe and app source use different Husk commits")
@@ -482,6 +490,8 @@ def main():
         report["guest_assets"] = restore_guest(guest)
         source = out / "husk"
         report["source_stage"] = prepare(upstream, guest, source)
+        from debian_bundle import stage as stage_debian
+        stage_debian(debian_assets, source / "guests/ideck-debian", debian_lock)
         worker.run("native-recipe-patch", ["git", "apply", "--check", EXPERIMENT / "ipa/0001-fail-closed-native-build.patch"], source)
         worker.run("native-recipe-apply", ["git", "apply", EXPERIMENT / "ipa/0001-fail-closed-native-build.patch"], source)
         downloads = source / "third_party/sources"

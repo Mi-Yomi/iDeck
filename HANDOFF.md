@@ -1,5 +1,62 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Отдельная Debian-консоль и production payload — 2026-10-16
+
+Продолжение от **`3bcb4811726c690a988b95c828c11661090869ca`**, в той же
+ветке `codex/linux-guest-feasibility-20261015`. Все новые файлы, тестовые диски,
+кэши и отчёты — на E:. Применимого `AGENTS.md` в репозитории и его родительских
+каталогах не найдено; прочитан актуальный HANDOFF. `main`, чужой индекс
+`.work/source` и существующий userdata не изменялись. Codemagic **не запускался**.
+
+Добавлен отдельный Debian route через существующий настоящий Husk/QEMU и
+консольный worker, с диском `Documents/iDeckDebian/rootfs-v1.raw`. Terminal и
+Probe сохранены. Первый импорт проверяет SHA-256, свободное место, ext4 и
+владение, не перезаписывает существующий диск; прерванный импорт повторяется
+через эксклюзивно захваченный staging-файл. Dirty/needsRecovery вызывает
+понятную ошибку восстановления без форматирования/пересоздания.
+
+**Инвариант Stop сохранён:** clean unmount + возврат QEMU loop + host fsync
+не доказывают закрытие backend. Эксклюзивный владелец диска удерживается до
+выхода приложения, включая успешный Stop. Повторная VM — только после выхода
+и нового запуска приложения. Таймаут и failure не становятся clean после
+позднего подтверждения. Никакого неподтверждённого `qemu_cleanup`/unlock.
+
+Production bootstrap сохраняет Alpine initramfs → Debian chroot, merged-/usr,
+virtio_mmio/virtio_blk и точное ext4 closure. Это живая консоль, с отдельным
+control-каналом Stop; тестового автоматического poweroff нет. Найдено и
+исправлено наследование ignored SIGINT/SIGQUIT Debian dash от фонового getty:
+login использует `env --default-signal=INT,QUIT`. Реальный Ctrl-C теперь проходит.
+
+**Проверки:** 203 Python tests: **202 PASS, 1 SKIP** (Swift toolchain отсутствует).
+Две настоящие загрузки окончательного payload в host QEMU 11.1.0: интерактивные
+команды, Ctrl-C, Stop через control / shell exit, перезапуск, сохранение файла,
+прав, UID/GID, inode/hardlink/symlink; оба exit 0. `e2fsck -fn` exit 0 и не менял
+копию. Эталонный seed не изменился. Swift/Apple/IPA/Debian на iPhone — **NOT RUN**.
+Новый Swift lifecycle/storage regression обязателен в Apple workflow; parse-only
+или SKIP не удовлетворяет gate. Исторические неудачные host-попытки сохранены.
+
+Полная инструкция: [DEBIAN-CONSOLE.md](experiments/linux-guest/DEBIAN-CONSOLE.md).
+Receipt: [debian-console-receipt.json](experiments/linux-guest/evidence/debian-console-receipt.json).
+Рабочая папка: `E:\Freddy Fazbear\iDeck.work\debian-console-20261016`;
+окончательная host-проверка — `host-006`, передаваемый payload —
+`payload-final\ideck-debian-console-v1.tar`, **75601920 B**, SHA-256
+**`84851a3597901f1e3ef293c1490dc9c8a4a78b286bea8d2a10c330cb1413c558`**.
+Raw seed SHA остался `a081d86594a0c59e585541ae26fa586468f267767dc081796f51186ea9c01217`.
+Final payload повторно воспроизведён production helper побайтово.
+
+**Блокер Apple IPA:** tar ещё не загружен в доступное CI приватное хранилище.
+Конкретный путь: Release asset приватного Mi-Yomi/iDeck → GitHub asset API,
+secret group `ideck-debian-payload` с URL и ограниченным read Contents token.
+Подробные команды и проверки приведены в DEBIAN-CONSOLE.md. URL/asset ID/token
+не выдуманы и не созданы. Downloader проверяет размер/SHA до распаковки,
+не передаёт API token на redirect, проверяет все bundle-файлы и seed после
+декомпрессии; Xcode/packager повторяют проверки. Большие payload в Git не добавлены.
+
+Следующий шаг после ревью: настроить доставку payload, обязательный Apple
+Swift regression/typecheck, затем отдельно разрешённая native IPA-сборка и
+проверка владельцем на iPhone. Host PASS не является проверкой iPhone, безопасной
+очистки встроенного QEMU backend, GUI или Steam.
+
 ## Локальный Debian/ext4: две настоящие VM-загрузки PASS — 2026-10-16
 
 Продолжение от remote `5adc493570f3cc41cc1a70925d95e74f2ebab37d` в

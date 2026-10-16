@@ -1,0 +1,28 @@
+{
+  "module_manifest": {
+    "size": 3665,
+    "sha256": "0281b08b8d9eacd2c07a8475ebd5ebf61d5eeeed0e2ad1561f13048409f2b403"
+  },
+  "guest_archive": {
+    "size": 19623827,
+    "sha256": "f973fe00e1cf54772589c3e54c8bc22a7396604ec927004267f9a4aea9d39efb"
+  },
+  "load_order": [
+    "kernel/lib/crc/crc16.ko",
+    "kernel/fs/mbcache.ko",
+    "kernel/fs/jbd2/jbd2.ko",
+    "kernel/fs/ext4/ext4.ko"
+  ],
+  "rootfs_lock": {
+    "size": 34408,
+    "sha256": "0e596b6cd43f8872649f0b813dfbe57cf3d6e3f8f94922d1af75594d7fd1b015"
+  },
+  "kernel": {
+    "size": 10351104,
+    "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+  },
+  "initramfs": {
+    "size": 11317380,
+    "sha256": "e647f9ff80a3c93333f607a6961505103164bcc17c935eb4d0a06d253f36aa7d"
+  }
+}

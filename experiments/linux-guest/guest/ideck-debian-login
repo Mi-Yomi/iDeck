@@ -1,0 +1,11 @@
+#!/bin/sh
+export PATH=/run/ideck-bin:/usr/sbin:/usr/bin:/sbin:/bin
+/usr/bin/busybox stty icanon isig icrnl -igncr -inlcr -echo -echonl || exit 1
+cd /sysroot || exit 1
+printf '\nDebian ARM64. Files in /root persist on the separate ext4 disk.\n'
+printf 'Use exit or Stop Linux before closing iDeck.\n\n'
+# PID 1 launches getty asynchronously. Dash preserves inherited ignored INT/
+# QUIT, unlike the Alpine ash console; reset them before entering Debian sh.
+exec /usr/bin/busybox chroot /sysroot /usr/bin/env -i --default-signal=INT,QUIT \
+    PATH=/usr/sbin:/usr/bin:/sbin:/bin HOME=/root USER=root LOGNAME=root \
+    TERM=dumb LC_ALL=C PS1='debian# ' /bin/sh -c 'cd /root && exec /bin/sh -i'

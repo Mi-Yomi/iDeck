@@ -92,7 +92,7 @@ class DebianTransportChecks(unittest.TestCase):
 
     def test_missing_private_transport_is_an_explicit_blocker(self):
         with patch.dict(bundle.os.environ, {}, clear=True):
-            with self.assertRaisesRegex(ValueError, "IDECK_DEBIAN_PAYLOAD_URL"):
+            with self.assertRaisesRegex(bundle.FetchError, "DEBIAN_FETCH_CONFIG_URL"):
                 bundle.fetch(self.root / "download", self.lockpath)
         self.assertFalse((self.root / "download").exists())
 
@@ -112,7 +112,7 @@ class DebianTransportChecks(unittest.TestCase):
     def test_token_cannot_be_sent_to_other_hosts_or_repositories(self):
         for url in ["https://example.com/asset", "https://api.github.com/repos/other/project/releases/assets/123"]:
             with patch.dict(bundle.os.environ, {"IDECK_DEBIAN_PAYLOAD_URL": url, "IDECK_DEBIAN_PAYLOAD_TOKEN": "secret"}):
-                with self.assertRaisesRegex(ValueError, "restricted"):
+                with self.assertRaisesRegex(bundle.FetchError, "DEBIAN_FETCH_CONFIG_TOKEN_SCOPE"):
                     bundle.fetch(self.root / "download", self.lockpath)
         self.assertFalse((self.root / "download").exists())
 

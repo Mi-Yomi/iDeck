@@ -33,6 +33,7 @@ EXPERIMENT = ROOT / "experiments/linux-guest"
 sys.path.insert(0, str(EXPERIMENT / "tools"))
 from stage_husk import PIN, prepare
 from stage_bundle import verify
+from debian_bundle import FetchError
 
 DOWNLOAD_MAX_ATTEMPTS = 3
 DOWNLOAD_TIMEOUT_SECONDS = 300
@@ -463,7 +464,8 @@ def main():
         from debian_bundle import fetch as fetch_debian, restore as restore_debian
         debian_lock = EXPERIMENT / "ipa/debian.lock.json"
         debian_archive = out / "ideck-debian-console-v1.tar"
-        report["debian_payload"] = fetch_debian(debian_archive, debian_lock)
+        report["debian_payload_fetch"] = {}
+        report["debian_payload"] = fetch_debian(debian_archive, debian_lock, diagnostic=report["debian_payload_fetch"])
         debian_assets = out / "debian-assets"
         report["debian_assets"] = restore_debian(debian_archive, debian_assets, debian_lock)
         lock = json.loads((EXPERIMENT / "ipa/native-sources.lock.json").read_text())
@@ -560,6 +562,11 @@ def main():
         from package_probe import package
         report.update(package(worker, derived / "Build/Products/Release-iphoneos/Husk.app", source, report["commit"]))
         report["status"] = "linux_probe_ipa_built"
+    except FetchError as error:
+        report["failure"] = error.diagnostic["code"]
+        report["debian_payload_fetch"] = error.diagnostic
+        # No transport exception text/chain reaches the generic build handler.
+        raise SystemExit(1) from None
     except Exception as error:
         report["failure"] = str(error)
         raise

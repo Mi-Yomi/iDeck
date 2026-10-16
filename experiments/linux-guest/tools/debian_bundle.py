@@ -5,18 +5,23 @@ The committed lock is the trust root. A private HTTPS URL is only a transport;
 its value (possibly a signed credential) is never included in receipts/logs.
 """
 import argparse
+import errno
 import gzip
 import hashlib
+import http.client
 import json
 import os
 from pathlib import Path
 import re
 import shutil
+import socket
+import ssl
 import tarfile
 import tempfile
 import time
 import urllib.request
 import urllib.parse
+import urllib.error
 
 NAMES = {"vmlinuz-virt", "initramfs-debian.gz", "rootfs-v1.raw",
          "desktop-rootfs-profile.json", "debian-profile.json", "LICENSES-debian.txt"}
@@ -163,44 +168,166 @@ def restore(archive, destination, lock_path):
     return verify(destination, lock)
 
 
-def fetch(destination, lock_path):
-    lock = load_lock(lock_path)
-    url = os.environ.get("IDECK_DEBIAN_PAYLOAD_URL", "")
-    parsed = urllib.parse.urlsplit(url)
-    if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
-        raise ValueError("set IDECK_DEBIAN_PAYLOAD_URL to the private exact payload HTTPS URL")
-    if destination.exists() or destination.is_symlink():
-        raise ValueError("payload download destination must be new")
-    safe_destination(destination)
-    destination.parent.mkdir(parents=True, exist_ok=True)
-    real_directory(destination.parent)
-    request = urllib.request.Request(url, headers={"Accept": "application/octet-stream"})
-    token = os.environ.get("IDECK_DEBIAN_PAYLOAD_TOKEN", "")
-    if token:
-        if (parsed.hostname != "api.github.com" or parsed.port not in (None, 443)
-                or parsed.query or parsed.fragment
-                or not re.fullmatch(r"/repos/Mi-Yomi/iDeck/releases/assets/[0-9]+", parsed.path)):
-            raise ValueError("payload token is restricted to Mi-Yomi/iDeck GitHub release asset API")
-        request.add_unredirected_header("Authorization", "Bearer " + token)
-    fd, temporary = tempfile.mkstemp(prefix=".debian-download-", dir=destination.parent)
+class FetchError(RuntimeError):
+    """Only a fixed code and an allowlisted diagnostic may cross the CI boundary."""
+    def __init__(self, diagnostic):
+        self.diagnostic = diagnostic
+        super().__init__(diagnostic["code"])
+
+
+def _numeric(value):
+    return value if type(value) is int else None
+
+
+def _fetch_error(error):
+    # URLError wraps TLS/socket failures. Never stringify its reason (which
+    # may instead be a URL), headers, body, args, notes or exception chain.
+    status = _numeric(error.code) if isinstance(error, urllib.error.HTTPError) else None
+    for _ in range(8):
+        if type(error) is not urllib.error.URLError or not isinstance(error.reason, Exception):
+            break
+        error = error.reason
+    classes = (Exception, RuntimeError, ValueError, TypeError, KeyError, OSError,
+               FileNotFoundError, FileExistsError, PermissionError, IsADirectoryError,
+               NotADirectoryError, TimeoutError, ConnectionError, ConnectionResetError,
+               ConnectionAbortedError, ConnectionRefusedError, BrokenPipeError,
+               socket.gaierror, socket.herror, UnicodeEncodeError, json.JSONDecodeError,
+               urllib.error.HTTPError, urllib.error.URLError, ssl.SSLError,
+               ssl.SSLCertVerificationError, ssl.SSLEOFError, ssl.SSLZeroReturnError,
+               http.client.IncompleteRead, http.client.RemoteDisconnected,
+               http.client.BadStatusLine, http.client.LineTooLong, http.client.InvalidURL)
+    # Even a custom exception class name could be attacker-controlled text.
+    name = type(error).__name__ if type(error) in classes else "Exception"
+    return {"exception_class": name, "http_status": status,
+            "errno": _numeric(getattr(error, "errno", None))}
+
+
+def fetch(destination, lock_path, *, diagnostic=None):
+    """Download once, fail closed and emit only bounded, secret-free evidence.
+
+    sha256 covers bytes received (including IncompleteRead.partial), not an
+    HTTP error body. 'complete' means EOF at the locked size, not a hash match.
+    """
+    started = time.monotonic()
+    digest = hashlib.sha256()
+    count = 0
+    complete = False
+    expected_size = None
+    http_status = None
+    fd = temporary = target = response = None
+    failure = None
+    published = False
+    code = "DEBIAN_FETCH_CONFIG_LOCK"
     try:
-        count = 0
+        lock = load_lock(lock_path)
+        expected_size = _numeric(lock["payload"]["size"])
+        expected_hash = lock["payload"]["sha256"]
+        if (type(expected_size) is not int or expected_size <= 0
+                or not isinstance(expected_hash, str) or not re.fullmatch(r"[0-9a-f]{64}", expected_hash)):
+            expected_size = None
+            raise ValueError()
+        code = "DEBIAN_FETCH_CONFIG_URL"
+        url = os.environ.get("IDECK_DEBIAN_PAYLOAD_URL", "")
+        parsed = urllib.parse.urlsplit(url)
+        if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
+            raise ValueError()
+        token = os.environ.get("IDECK_DEBIAN_PAYLOAD_TOKEN", "")
+        code = "DEBIAN_FETCH_CONFIG_TOKEN_SCOPE"
+        if token and (parsed.hostname != "api.github.com" or parsed.port not in (None, 443)
+                      or parsed.query or parsed.fragment
+                      or not re.fullmatch(r"/repos/Mi-Yomi/iDeck/releases/assets/[0-9]+", parsed.path)):
+            raise ValueError()
+        code = "DEBIAN_FETCH_CONFIG_DESTINATION"
+        if destination.exists() or destination.is_symlink():
+            raise ValueError()
+        safe_destination(destination)
+        code = "DEBIAN_FETCH_WRITE_FAILED"
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        real_directory(destination.parent)
+        fd, temporary = tempfile.mkstemp(prefix=".debian-download-", dir=destination.parent)
+        target = os.fdopen(fd, "wb")
+        fd = None  # target now owns the descriptor, including on failures.
+        code = "DEBIAN_FETCH_OPEN_FAILED"
+        request = urllib.request.Request(url, headers={"Accept": "application/octet-stream"})
+        if token:
+            request.add_unredirected_header("Authorization", "Bearer " + token)
         deadline = time.monotonic() + 300
-        with os.fdopen(fd, "wb") as target, urllib.request.build_opener(HTTPSOnlyRedirect).open(request, timeout=60) as response:
-            while chunk := response.read(1024 * 1024):
-                if time.monotonic() > deadline:
-                    raise TimeoutError("payload download deadline exceeded")
-                count += len(chunk)
-                if count > lock["payload"]["size"]:
-                    raise ValueError("payload exceeds locked size")
-                target.write(chunk)
+        response = urllib.request.build_opener(HTTPSOnlyRedirect).open(request, timeout=60)
+        http_status = _numeric(getattr(response, "status", None))
+        while True:
+            code = "DEBIAN_FETCH_READ_FAILED"
+            if time.monotonic() > deadline:
+                raise TimeoutError()
+            try:
+                chunk = response.read(1024 * 1024)
+            except http.client.IncompleteRead as error:
+                count += len(error.partial)
+                digest.update(error.partial)
+                raise
+            count += len(chunk)
+            digest.update(chunk)
+            if not chunk:
+                complete = count == expected_size
+            if time.monotonic() > deadline:
+                raise TimeoutError()
+            code = "DEBIAN_FETCH_VERIFY_SIZE"
+            if count > expected_size:
+                raise ValueError()
+            if not chunk:
+                break
+            code = "DEBIAN_FETCH_WRITE_FAILED"
+            if target.write(chunk) != len(chunk):
+                raise OSError(errno.EIO, "")
+        code = "DEBIAN_FETCH_READ_FAILED"
+        response.close()
+        response = None
+        code = "DEBIAN_FETCH_WRITE_FAILED"
+        target.close()  # Includes buffered writes/flush; do not publish on error.
+        target = None
+        code = "DEBIAN_FETCH_VERIFY_SIZE"
+        if count != expected_size:
+            raise ValueError()
+        code = "DEBIAN_FETCH_VERIFY_HASH"
+        if digest.hexdigest() != expected_hash:
+            raise ValueError()
+        code = "DEBIAN_FETCH_VERIFY_FILE"
+        # Keep the independent check of the stored file, not just the stream.
         checked(Path(temporary), {k: lock["payload"][k] for k in ("size", "sha256")})
+        code = "DEBIAN_FETCH_PUBLISH_FAILED"
         os.link(temporary, destination)
-    except Exception:
-        # URL/error representations can contain signed secrets.
-        raise RuntimeError("Debian payload download/integrity check failed; URL omitted") from None
+        published = True
+    except Exception as error:
+        failure = {"code": code, **_fetch_error(error)}
+        if response is None and isinstance(error, urllib.error.HTTPError):
+            response = error  # Close the rejected response without reading its body.
     finally:
-        Path(temporary).unlink(missing_ok=True)
+        # Cleanup failures must not mask the original stage or leak paths/text.
+        cleanup = []
+        if response is not None: cleanup.append(response.close)
+        if target is not None: cleanup.append(target.close)
+        if fd is not None: cleanup.append(lambda: os.close(fd))
+        if temporary is not None: cleanup.append(lambda: Path(temporary).unlink(missing_ok=True))
+        for close in cleanup:
+            try:
+                close()
+            except Exception as error:
+                detail = {"code": "DEBIAN_FETCH_CLEANUP_FAILED", **_fetch_error(error)}
+                if failure is None: failure = detail
+                elif "cleanup_failure" not in failure: failure["cleanup_failure"] = detail
+        details = {"code": "DEBIAN_FETCH_OK" if published else "DEBIAN_FETCH_INTERRUPTED", "exception_class": None,
+                   "http_status": http_status, "errno": None}
+        if failure:
+            details.update(failure)
+            if details["http_status"] is None: details["http_status"] = http_status
+        details.update(received_bytes=count, expected_size=expected_size,
+                       sha256=digest.hexdigest(), sha256_scope="complete" if complete else "partial",
+                       elapsed_seconds=round(time.monotonic() - started, 3))
+        if diagnostic is not None:
+            diagnostic.clear()
+            diagnostic.update(details)
+        print("IDECK_DEBIAN_FETCH_RESULT=" + json.dumps(details), flush=True)
+    if failure:
+        raise FetchError(details) from None
     return {k: lock["payload"][k] for k in ("size", "sha256")}
 
 
@@ -217,7 +344,9 @@ if __name__ == "__main__":
     if args.command == "prepare":
         if args.destination is None or args.modules is None: parser.error("--destination and --modules required")
         result = prepare(args.source, args.modules, args.destination, args.lock)
-    elif args.command == "fetch": result = fetch(args.source, args.lock)
+    elif args.command == "fetch":
+        try: result = fetch(args.source, args.lock)
+        except FetchError: raise SystemExit(1) from None
     elif args.command == "verify": result = verify(args.source, load_lock(args.lock))
     else: result = globals()[args.command](args.source, args.destination, args.lock)
     print(json.dumps(result, indent=2))

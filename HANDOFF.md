@@ -1,5 +1,59 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Безопасная диагностика Debian fetch — 2026-10-16
+
+Продолжение от `a63c8a7238bc6eafc8be1b015d9857798b28d5c2`, та же ветка
+`codex/linux-guest-feasibility-20261015`. По переданному владельцем логу CI
+`6ad25abf7550aed8108f597a` прошла Swift gate, затем остановилась на fetch до
+native-компиляции. Причина **пока неизвестна**: прежнее сообщение её скрывало.
+Эта правка добавляет наблюдаемость; успешная загрузка в CI не заявляется.
+
+Release `ideck-debian-console-v1` уже опубликован на этом коммите, asset
+`647969136` существует: `https://api.github.com/repos/Mi-Yomi/iDeck/releases/assets/647969136`.
+Предыдущий исторический блокер «архив ещё не загружен» больше не актуален.
+Размер 75601920 и серверный SHA-256 совпали с lock при публикации; в этой
+задаче живые запросы к payload с токеном **не выполнялись**. Secrets не читались
+и не менялись; транспорт, права и токены наугад не исправлялись.
+
+`debian_bundle.fetch()` теперь печатает `IDECK_DEBIAN_FETCH_RESULT` и передаёт
+тот же безопасный объект в `result.json` → `debian_payload_fetch`:
+
+- Фиксированные коды `DEBIAN_FETCH_OPEN_FAILED`, `READ_FAILED`, `WRITE_FAILED`,
+  `VERIFY_SIZE`, `VERIFY_HASH`, `VERIFY_FILE`, `PUBLISH_FAILED` с тем же префиксом;
+  отдельные фиксированные CONFIG/CLEANUP-коды, успешный `DEBIAN_FETCH_OK`.
+- Только класс исключения из списка стандартных классов (для URLError —
+  вложенный TLS/socket-класс, произвольный класс заменяется на `Exception`),
+  числовые `http_status`/`errno` либо null, `received_bytes`, `expected_size`,
+  вычисленный `sha256`, `sha256_scope` и `elapsed_seconds`.
+- SHA относится к полученным байтам, включая `IncompleteRead.partial`,
+  даже если запись не удалась. `complete` означает EOF при точном размере
+  из lock, **не** совпадение хеша; обрыв/короткий ответ/лишние байты — `partial`.
+  HTTP error body не читается. При нуле полученных байтов — SHA пустого потока.
+- URL, headers, body, token, environment, текст/notes/цепочка исключений
+  не экспортируются. CI ловит безопасный `FetchError`, записывает фиксированный
+  failure-код и выходит с кодом 1 без transport traceback. CLI делает то же.
+- HTTPS, ограничение адресата токена, удаление Authorization при redirect,
+  проверка размера/хеша потока **и отдельная проверка сохранённого файла**,
+  публикация через `link` без перезаписи и очистка partial сохранены. Ошибка
+  очистки отражается безопасно, не скрывая первичную причину сбоя.
+
+Добавлены **22 offline-теста**: HTTP401/403/404/429/5xx, timeout/TLS/DNS,
+deadline, обрыв с partial, короткий/длинный ответ, неверный хеш, порча записанного
+файла, ошибки открытия/записи/flush/publish/cleanup, конфликт публикации,
+HTTPS redirect и запрет утечки секретов, включая реальный путь формирования
+CI result.json и CLI. Никаких live payload requests или новых компонентов.
+Полный набор: **226 tests, 225 PASS, 1 SKIP**. Swift/Apple toolchain локально
+отсутствует: **NOT RUN**; здесь прежняя обязательная Swift gate не обходилась.
+Логи: `E:\Freddy Fazbear\iDeck.work\debian-fetch-diagnostics-20261016\full-tests.log`
+и `tests-result.json`.
+
+Payload/guest inputs и `ipa/debian.lock.json` не менялись, пересборки payload
+не было. В `husk/overlay.lock.json` обновлён исключительно вычисленный SHA-256
+изменённого `tools/debian_bundle.py`, необходимый для проверки исходников.
+Следующий шаг — ревью и отдельно разрешённый CI-запуск, затем разбор нового
+кода/числовых полей, без предположений о токене или транспорте. В этой задаче
+CI/Codemagic **не запускались**, main и существующий userdata не изменялись.
+
 ## Stop: необратимая ошибка host fsync — 2026-10-16
 
 Продолжение от `1cb1cb1a0f22fea9a5af6f16fbe6a0c167a02ef8`, та же ветка

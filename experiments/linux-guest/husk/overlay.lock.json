@@ -29,7 +29,7 @@
     "ios/LinuxDesktopProfile.swift": "aeee17701ba6aab2e2b847ccc85fb77f00cf7f3154271adafa5215bcf769c1f8",
     "ios/LinuxDebianProfile.swift": "6b1486e22819220aea29830a31fcec25bb6b31fd1fcacf52ca7c4fd2c3185912",
     "ios/LinuxConsoleLifecycle.swift": "2bf85f1e63231388b7d9636513cf2aef9f5f6e56b967acf903c6082fb3ef3bcf",
-    "tools/debian_bundle.py": "387c6d6fcac3883762d0b0f02d7e4e37815a9b355cc47dd284f1ec4c04331294",
+    "tools/debian_bundle.py": "af2fd0f48994a56513846c42c9ca42b0d396fb4174b7aa58a4621d12fb5ac045",
     "ipa/debian.lock.json": "45f3985e5ca35e95849f56a658811601b923168abc714bbdadaa329d81e1e9bd"
   },
   "copies": {

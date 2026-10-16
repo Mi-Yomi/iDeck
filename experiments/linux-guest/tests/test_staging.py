@@ -107,7 +107,7 @@ class BundleGuards(unittest.TestCase):
         before = typecheck_source.swift_sources(out)
         typecheck_source.overlay(out)
         after = typecheck_source.swift_sources(out)
-        self.assertEqual(len(after), len(before) + 9)
+        self.assertEqual(len(after), len(before) + 11)
         self.assertIn("LinuxProbeRoot()", (out / "src/app/Husk/HuskApp.swift").read_text())
         self.assertTrue((out / "src/translation-layer/husk-tl.h").is_file())
         with self.assertRaises(ValueError):

@@ -24,7 +24,9 @@
     "guest/ideck-terminal-init": "9f4a0232b1c8029ba738e1b13aea8a9877753c9d5c23e6c094b542beb0f7eed4",
     "guest/ideck-terminal-login": "ffe79a95b2e53f15a917b1c4c99d16a95062342dc90dac5d2e02b237747f3de1",
     "guest/TERMINAL-LICENSES.txt": "50cf68a71ffa53f5bbd8b9cdaab3ad93b37157399ff7b787eabaa1c635b7ac3a",
-    "ios/LinuxTerminalDiagnostics.swift": "39bb8ab91ce99fe3aaa34c2b2ce64da0caba5a7907a96aa08c3f1ca484f3be80"
+    "ios/LinuxTerminalDiagnostics.swift": "39bb8ab91ce99fe3aaa34c2b2ce64da0caba5a7907a96aa08c3f1ca484f3be80",
+    "ios/LinuxDesktopDisk.swift": "fea2fa069bb9bd7b926645352cd1975bcf76874445c693fa2d9edc4c04f5e5c3",
+    "ios/LinuxDesktopProfile.swift": "2c3cc879fcc01ae2bf21a88027ed5c327acbcd890b977faabd492664b776f60b"
   },
   "copies": {
     "ios/LinuxGuestProfile.swift": "src/app/Husk/LinuxGuestProfile.swift",
@@ -38,7 +40,9 @@
     "ios/LinuxTerminalView.swift": "src/app/Husk/LinuxTerminalView.swift",
     "tools/terminal_bundle.py": "scripts/ideck-stage-linux-terminal.py",
     "ipa/terminal.lock.json": "scripts/ideck-terminal.lock.json",
-    "ios/LinuxTerminalDiagnostics.swift": "src/app/Husk/LinuxTerminalDiagnostics.swift"
+    "ios/LinuxTerminalDiagnostics.swift": "src/app/Husk/LinuxTerminalDiagnostics.swift",
+    "ios/LinuxDesktopDisk.swift": "src/app/Husk/LinuxDesktopDisk.swift",
+    "ios/LinuxDesktopProfile.swift": "src/app/Husk/LinuxDesktopProfile.swift"
   },
   "patched_files": {
     "src/app/Husk/HuskApp.swift": "18ff389fa29628fd1d4eb168a18a3b12f6b8c75caf6804651699e926b1ab9e31",

@@ -1,0 +1,175 @@
+{
+  "schema": 1,
+  "date_utc": "2026-10-16",
+  "base_commit": "d4d447779a4fc1d6e2b45b9de6893fb16722cb8f",
+  "branch": "codex/linux-guest-feasibility-20261015",
+  "result": "Host Debian/ext4 preparation and separate storage contract PASS; G0 module and G1 guest persistence gates incomplete",
+  "provenance": "Actual local ARM64 package execution, ext4 tools and Swift storage checks; independent read-only review. No Apple SDK/VM/device execution for this change.",
+  "build": {
+    "schema": 1,
+    "lock_sha256": "0e596b6cd43f8872649f0b813dfbe57cf3d6e3f8f94922d1af75594d7fd1b015",
+    "builder_source_sha256": "be7cd06669765efb65fb40744ed76ec6c33a018e90cfe3b9cc311dd7969fadb5",
+    "finalize_script_sha256": "6dfafcd21ea6fdc78fe202bd624bb016d25595f9adf291b3c5fbf2f760972177",
+    "configured_stage": "posix-v4 actual ARM64 dpkg configure/audit/exact manifest and glibc exec; no postinst rerun",
+    "finalization": "staged: canonical_guest_modes helper applied to configured tree after restrictive-umask finding; fresh image using corrected mke2fs.conf (no empty base_features assignment)",
+    "end_to_end_replay_of_final_source": false,
+    "package_count": 90,
+    "configured_package_audit": "pass",
+    "glibc_execution": "pass",
+    "elf_closure": {
+      "arm64_elf_files": 700,
+      "dt_needed_edges": 1888,
+      "result": "pass"
+    },
+    "manifest_entries_uid_gid_mode_checked": 6744,
+    "filesystem_tool_check": "e2fsck -fn pass",
+    "image": {
+      "schema": 1,
+      "mode": "desktop-rootfs",
+      "filesystem": "ext4",
+      "rootfs": {
+        "file": "rootfs-v1.raw",
+        "size": 536870912,
+        "sha256": "db0a5b715ff4caf5e326d30d79cce8146baa33246e5fa89c522b62c4f5254f84"
+      },
+      "image": {
+        "size_bytes": 536870912,
+        "uuid": "29c758bc-0416-4d87-b1ba-a922238a07f5",
+        "block_size": 4096,
+        "features": {
+          "compat": 44,
+          "incompat": 194,
+          "ro_compat": 1091
+        }
+      }
+    },
+    "compressed": {
+      "size": 53918756,
+      "sha256": "7971640d7a295c78a853b1a49fb4abdb6cb222efff67eaf6165d564393004f54"
+    },
+    "filesystem_bytes": {
+      "allocated_blocks_bytes": 175718400,
+      "free_blocks_bytes": 361152512,
+      "minimum_estimate_bytes": 168042496,
+      "minimum_is_estimate_only": true
+    },
+    "qemu_user_sha256": "4f55e2e88dc05dc0f619562d5795b8eb25ed2ad2547504fb4835207a6911c350",
+    "reproducibility": "signed exact package inputs; retained authenticated cache replay subject to release expiry and 90-day maxage; byte-identical raw rebuild not verified",
+    "ownership_policy": "signed package tar headers, audited exact90-package postinst generated paths, statoverride modes, explicit home1000/mail/utmp/shadow/_apt directories; all source-manifest entries checked, not internal journal or lost+found",
+    "notices": "upstream /usr/share/doc including copyright retained; no license stripping",
+    "guest_boot": "not tested",
+    "vm_posix_persistence": "not tested",
+    "legacy_userdata_accessed": false,
+    "payload_published": false,
+    "discarded_candidates": [
+      {
+        "candidate": "posix-v4/rootfs-v1.raw",
+        "result": "mke2fs rejected invalid empty base_features assignment before a usable filesystem was created"
+      },
+      {
+        "candidate": "posix-v4/final/rootfs-v1.raw",
+        "result": "same invalid config reproduced for diagnosis; not an accepted image"
+      }
+    ],
+    "configured_stage_loaded_prior_canonical_mode_fix": true,
+    "host_memory": {
+      "scope": "host build process tree sampled at1s, lower bound on aggregate peak RSS, not VM/iOS memory",
+      "interval_seconds": 1,
+      "max_sampled_rss_kib": 241464,
+      "max_builder_hwm_kib": 790860,
+      "samples": 365,
+      "scope_note": "VmHWM is parent builder individual peak; aggregate sampling began after metadata authentication and misses earlier aggregate peak; neither metric measures guest/iOS RAM"
+    },
+    "package_manifest_sha256": "a9f5e60fe889ab81389cc1660ea507114dc9a8076e9da958cf75a271585739aa",
+    "ownership_manifest_sha256": "4686ff37a1d31f59d23d5df05fa462735d59963ff5fa6ed014138ecd9e634ae4"
+  },
+  "swift_actual_image_contract": "PASS against exact raw image; open/CRC32C/UUID/features/geometry/ownership; not fsck or mount",
+  "disposable_ext4_roundtrip": {
+    "schema": 1,
+    "seed_sha256": "db0a5b715ff4caf5e326d30d79cce8146baa33246e5fa89c522b62c4f5254f84",
+    "result": "pass",
+    "seed_unchanged": true,
+    "checks": [
+      "file content across tool reopen",
+      "hardlink same inode/content/link count",
+      "symlink target",
+      "UID/GID1000 mode0700",
+      "e2fsck -fn"
+    ],
+    "scope": "unmounted disposable ext4 image tool roundtrip",
+    "guest_mount_boot_posix_syscalls_and_power_loss": "not tested"
+  },
+  "regressions": {
+    "command": "IDECK_QEMU_AARCH64=<existing reviewed helper> IDECK_SWIFTC=<existing Swift6.2.1> PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s experiments/linux-guest/tests -q",
+    "tests": 174,
+    "result": "PASS",
+    "seconds": 14.561,
+    "overlay_input_hashes": 24,
+    "overlay_copies": 14,
+    "diff_check": "PASS"
+  },
+  "independent_review": {
+    "result": "PASS; no remaining code blockers",
+    "checked": [
+      "Actual GPG/index hashes/all90guest+7host blob hashes",
+      "Raw/gzip size/hash and decompressed stream equals raw",
+      "O_RDONLY Swift superblock check and independent e2fsck -fn",
+      "Exact installed package manifest and ELF closure",
+      "On-image canonical directory/config modes, home UID/GID1000 mode0700, locked passwords",
+      "Swift owner regressions and builder11 regressions",
+      "Staged finalizer provenance and honest unverified gate boundaries"
+    ]
+  },
+  "future_import_budget": {
+    "raw_bytes": 536870912,
+    "compressed_bytes": 53918756,
+    "extra_reserve_bytes": 536870912,
+    "first_import_free_bytes": 1127660580,
+    "plus_ios_installation_and_optional_legacy_backup": true,
+    "user_facing_importer_implemented": false
+  },
+  "kernel_modules": {
+    "source_lock": "ipa/desktop-kernel-source.lock.json",
+    "ext4_module_manifest": null,
+    "exact_module_bytes": null,
+    "blocker": "Pinned original Alpine netboot archive not cached; checked official transfer endpoints HTTP403. Need original exact archive before closure/mount tests."
+  },
+  "preserved": [
+    "legacy128MiB FAT userdata and manual device sentinel",
+    "probe/kernel/initramfs",
+    "terminal Darwin ownership lockfix and canonical BusyBox shell",
+    "JIT/SideStore and MD export"
+  ],
+  "not_performed": [
+    "Fresh end-to-end replay of final builder source",
+    "Byte-identical raw rebuild",
+    "Resolved/loaded ext4 module closure",
+    "Guest ext4 mount and two-boot POSIX syscall persistence",
+    "Xorg/Openbox/xterm/software framebuffer input",
+    "Apple SDK/CryptoKit checks for new sources",
+    "iOS memory/Jetsam/device import",
+    "CI dispatch or new IPA",
+    "Large payload upload/publication"
+  ],
+  "scope": {
+    "main_modified": false,
+    "legacy_userdata_accessed": false,
+    "guest_network_enabled": false,
+    "host_global_network_security_settings_changed": false,
+    "large_payload_committed_or_published": false,
+    "new_external_accounts_keys_connections_payment": false
+  },
+  "input_sha256": {
+    "ios/LinuxDesktopDisk.swift": "fea2fa069bb9bd7b926645352cd1975bcf76874445c693fa2d9edc4c04f5e5c3",
+    "ios/LinuxDesktopProfile.swift": "2c3cc879fcc01ae2bf21a88027ed5c327acbcd890b977faabd492664b776f60b",
+    "ios/tests/DesktopDiskChecks.swift": "965ea15bc857a9b369db020bbf437013b8f780ce919521c8e2a91c4b121d7638",
+    "ios/tests/DesktopProfileChecks.swift": "3a1d8b1f7b578168c88caee411fa20816eb53a4267c74106613b7e659b62d66c",
+    "ios/tests/fixtures/desktop-ext4-superblock.json": "e82ed3ec93f5a9af43be90b43292d8a993cd738dae55f6f03286f325d1df090e",
+    "ipa/desktop-kernel-source.lock.json": "4ab659eba2e5e5808648211f769fb64212347116a4c8aae45d05224d361c9c0f",
+    "ipa/desktop-rootfs.lock.json": "0e596b6cd43f8872649f0b813dfbe57cf3d6e3f8f94922d1af75594d7fd1b015",
+    "tools/check_ext4_roundtrip.py": "3cd076c19d37d9d164eb7840d53a970349ccbe2433aa946ded62bd96112d24a7",
+    "tools/debian_proot_compat.c": "665d8c89a74e353ee6516bb5a0c56d8687d589169322abe6614e126ab8ddd3fc",
+    "tools/debian_rootfs.py": "be7cd06669765efb65fb40744ed76ec6c33a018e90cfe3b9cc311dd7969fadb5",
+    "tools/desktop_modules.py": "7a472e952ec44a179e09738f141d03b3184ffaa86cf6530ea545eacb7225311c"
+  }
+}

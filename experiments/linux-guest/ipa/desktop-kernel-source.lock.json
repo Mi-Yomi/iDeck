@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "purpose": "G0 ext4 input source lock; not a resolved module payload lock or boot PASS",
+  "archive": {
+    "url": "https://dl-cdn.alpinelinux.org/alpine/v3.24/releases/aarch64/alpine-netboot-3.24.1-aarch64.tar.gz",
+    "size": 431008592,
+    "sha256": "54fe38fa41cce740ba379458ed63cfcd89ab06ae5e6a47a06dafe0a34e8427e8"
+  },
+  "kernel": {
+    "release": "6.18.35-0-virt",
+    "archive_member": "boot/vmlinuz-virt",
+    "size": 10351104,
+    "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+    "expected_vermagic": "6.18.35-0-virt SMP preempt mod_unload modversions aarch64"
+  },
+  "modloop": {
+    "archive_member": "boot/modloop-virt",
+    "sha256": "f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b",
+    "size": null
+  },
+  "official_aports_config_observation": {
+    "url": "https://github.com/alpinelinux/aports/blob/v3.24.1/main/linux-lts/virt.aarch64.config",
+    "apkbuild_url": "https://github.com/alpinelinux/aports/blob/v3.24.1/main/linux-lts/APKBUILD",
+    "config_size": 26615,
+    "config_sha256": "4d14c9e46353bdb8a9be0de89039832aebb209493c745faf8691d22b7934037a",
+    "pkgver": "6.18.35",
+    "pkgrel": 0,
+    "ext4": "CONFIG_EXT4_FS=m",
+    "posix_acl": "CONFIG_EXT4_FS_POSIX_ACL=y",
+    "security": "CONFIG_EXT4_FS_SECURITY=y",
+    "scope": "Official source configuration, not extraction from compiled kernel; IKCONFIG not found in pinned EFI-zboot or its decompressed Image"
+  },
+  "ext4_module_manifest": null,
+  "ext4_module_bytes": null,
+  "kernel_load_and_ext4_mount": "not_tested",
+  "blocker": "2026-10-16: official Alpine CDN, dl-2 and listed mirrors.edge.kernel.org archive transfer returned HTTP403 in executor; original archive not cached. Do not infer module closure or hashes."
+}

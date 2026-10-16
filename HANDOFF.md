@@ -5,6 +5,87 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## G0/G1 Debian/ext4 host preparation — 2026-10-16
+
+Реализация от pushed **d4d447779a4fc1d6e2b45b9de6893fb16722cb8f** на той же
+`codex/linux-guest-feasibility-20261015`. Это следующий desktop этап после
+подтверждённого terminal device PASS ниже, а не возврат к старому read-only
+аудиту. Подробности: [DESKTOP-ROOTFS.md](experiments/linux-guest/DESKTOP-ROOTFS.md),
+полный [host receipt](experiments/linux-guest/evidence/desktop-rootfs-host-preparation.json).
+
+**Получен настоящий локальный Debian13/trixie arm64 glibc minbase+POSIX ext4
+seed**, 90 exact packages: download **35,157,424 B**, declared Installed-Size
+**155,331,584 B**. Signed InRelease, оба by-hash indexes и каждый guest/host
+.deb проверены; independent reviewer повторил проверку offline. Официальные
+Debian источники, существующий keyring; ни новых ключей, ни внешних аккаунтов/оплаты.
+Lock: `experiments/linux-guest/ipa/desktop-rootfs.lock.json`.
+
+Артефакты остаются **локально**, не в Git/Library/CI:
+`/workspace/ideck-desktop-build/posix-v4/final-v2/`.
+
+- `rootfs-v1.raw`: **536,870,912 B**, SHA-256
+  **db0a5b715ff4caf5e326d30d79cce8146baa33246e5fa89c522b62c4f5254f84**.
+- `rootfs-v1.raw.gz`: **53,918,756 B**, SHA-256
+  **7971640d7a295c78a853b1a49fb4abdb6cb222efff67eaf6165d564393004f54**.
+- `desktop-rootfs-profile.json`, `build-receipt.json`, retained local finalizer
+  script; allocated blocks **175,718,400 B**, free **361,152,512 B**.
+  resize2fs -P estimate **168,042,496 B** — не validated minimum resize.
+
+Actual ARM64 maintainer scripts/configure, empty dpkg audit, exact installed
+manifest и glibc execution PASS; 700 ELF/1888 DT_NEEDED edges, все 6744 source
+manifest UID/GID/mode entries, e2fsck -fn PASS. Independent reviewer повторил
+raw/gzip hash, decompressed stream, read-only Swift CRC/UUID/features/geometry,
+fsck, ownership/modes/password-lock metadata checks. Root actual Swift owner
+проверил этот же raw; disposable ext4 tool copy сохранила content/hardlink/
+symlink/UID/GID/mode через reopen+fsck, seed hash не изменился. Это host/image
+evidence, **не guest POSIX syscall/two-boot PASS**.
+
+**Честная граница build evidence:** configure уже завершился, когда review нашёл
+host umask0077 effects. Текущий shared helper явно задаёт public guest modes;
+новый image phase прошёл из того же audited configured tree после исправления.
+Два invalid mke2fs.conf candidates отвергнуты, причина empty base_features
+исправлена. `end_to_end_replay_of_final_source:false` сохранён в receipt:
+полный fresh CLI replay и byte-identical rebuild не заявляются. PRoot child-only
+compatibility filter добавляет ограничения для старых stat/access/chown paths,
+не меняет глобальные host security/network settings; PRoot не является VM.
+Notices `/usr/share/doc` сохранены. Retained cache replay ограничен expiry и
+90-day release max-age; mutable mirror не гарантирует вечную доступность pool.
+
+Добавлены отдельные `LinuxDesktopDisk`/`LinuxDesktopProfile`, exact ext4 contract
+и SHA-validated raw provisioning. Locked descriptor сохраняется при no-clobber
+publication; directory/temp replacement и malformed/dirty filesystem отклоняются.
+Mutable reopen не сравнивает seed whole-file hash. Existing FAT guards не
+расширялись. Это **storage-only**: runtime route/QEMU argv/user-facing gzip import
+ещё отсутствуют. Примитив raw copy reserve D+32MiB; будущий importer должен
+проверять D+C+512MiB = **1,127,660,580 B** плюс iOS install/optional FAT backup.
+Ни auto-reset/delete/migrate, ни crash/power-loss durability claim нет.
+
+Финальный suite **174 tests PASS, 14.561 s**, с реальным Swift6.2.1 storage helper
+и ARM64 BusyBox/PTy regressions; umask077 regression включена. Overlay24 hashes /
+14 copies и diff check PASS. Четыре роли: root integration/storage, Debian builder,
+same-kernel modules, independent reviewer; после найденных исправлений blockers
+к коду не осталось. Apple SDK/CryptoKit новые tests подключены к прежнему check,
+но **CI не запускался**, новой IPA нет; parent контролирует quota/payment.
+
+**G0 module / G1 guest blockers:** official aports source config показывает
+`CONFIG_EXT4_FS=m`, это не compiled IKCONFIG proof. Exact original Alpine archive
+**431,008,592 B**, SHA
+**54fe38fa41cce740ba379458ed63cfcd89ab06ae5e6a47a06dafe0a34e8427e8**
+не cached; official CDN/dl-2/listed mirror дали HTTP403. Source lock и offline
+`tools/desktop_modules.py` готовы, но фактические closure/load order/bytes/hashes
+не выдуманы. Нужен доступный exact archive, затем extraction/vermagic/signature
+container checks и настоящий kernel ext4 mount. `udev`/sysusers/related shared
+package отдельно pinned, отложены после actual postinst assertion в PRoot;
+их scripts не обходились. Проверить configure внутри VM до G2.
+
+Следом — guest ext4 uid/gid/chmod/symlink/hardlink/execute/rename/fsync и package
+DB через **два boot**, потом Xorg/Openbox/xterm/software framebuffer/input. Старый
+FAT сначала RO at /data, POSIX home на новом ext4; conversion in place/удаления и
+автоматического reverse-sync нет. Main, legacy userdata, probe/kernel/terminal,
+JIT/SideStore/MD export не менялись. Host VmHWM ~772MiB и late sampled RSS —
+не guest/iOS memory: baseline1024MiB/4vCPU/256MiB TCG сохранён, Jetsam/desktop
+fit не измерен. GUI/Steam/GL и Apple/device desktop gates остаются открытыми.
+
 ## Commandfix device PASS и следующий desktop milestone (docs-only)
 
 Apple CI **6ad1efad7550aed8108f37fe — SUCCESS, 12m21s**, actual source

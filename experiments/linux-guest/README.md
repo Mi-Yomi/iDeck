@@ -11,12 +11,14 @@ BusyBox commands and a /data sentinel retained across two boots and app update.
 This is a manual one-file persistence check, not crash durability or GUI/Steam.
 See [device evidence](evidence/terminal-commandfix-device-pass.json).
 
-**Next stage is a design, not an implemented desktop:**
-[Persistent POSIX rootfs and software desktop plan](DESKTOP-MILESTONE.md).
-Recommended sequence: new ext4/glibc ARM64 storage, Xorg/Openbox/xterm through
-the existing software framebuffer, complete desktop input, then software GL.
-Original /data stays intact. No new rootfs payload or network settings were
-introduced by this planning update; CI remains parent-controlled.
+**G0/G1 preparation is implemented; guest POSIX/desktop gates remain open:**
+[Debian/ext4 builder and storage contract](DESKTOP-ROOTFS.md) records the exact
+90-package lock, separate ext4 provisioner, host checks and missing same-kernel
+module input. Large image output stays local; there is no new desktop route or
+user-facing importer. Original /data stays intact. Next: actual ext4 mount and
+two-boot POSIX persistence, then Xorg/Openbox/xterm through the existing software
+framebuffer, complete desktop input, then software GL. See the
+[milestone gates](DESKTOP-MILESTONE.md). CI remains parent-controlled.
 
 The sections below retain the historical probe/research results and their
 original validation limits; older pending statements are superseded only by

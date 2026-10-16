@@ -15,6 +15,12 @@ if CommandLine.arguments.count == 5, CommandLine.arguments[1] == "--terminal-dis
                                  expectLocked: CommandLine.arguments[4] == "locked")
 }
 
+if CommandLine.arguments.count == 5, CommandLine.arguments[1] == "--desktop-disk-contender" {
+    try runDesktopDiskContender(directory: URL(fileURLWithPath: CommandLine.arguments[2]),
+                                fixture: URL(fileURLWithPath: CommandLine.arguments[3]),
+                                locked: CommandLine.arguments[4] == "locked")
+}
+
 // Host-only validation; synthetic bytes are not a Linux boot test.
 let root = URL(fileURLWithPath: CommandLine.arguments[1], isDirectory: true)
 try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
@@ -99,3 +105,7 @@ try runTerminalChecks()
 
 // Durable journal recovery/export with a real native-exit child process.
 try runTerminalDiagnosticsChecks()
+
+let desktopGolden = URL(fileURLWithPath: "experiments/linux-guest/ios/tests/fixtures/desktop-ext4-superblock.json")
+try runDesktopDiskChecks(fixture: desktopGolden)
+try runDesktopProfileChecks(fixture: desktopGolden)

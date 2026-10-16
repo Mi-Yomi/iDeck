@@ -1,5 +1,11 @@
 # Следующий milestone: persistent POSIX Linux и минимальный desktop
 
+Обновление реализации G0/G1: [DESKTOP-ROOTFS.md](DESKTOP-ROOTFS.md) и новый
+host receipt описывают locked Debian builder и отдельный ext4 storage contract.
+Ниже сохранён исходный design; его прежние tool/package «не готовы» отражают
+состояние до этой реализации. Guest mount/two-boot, GUI и Apple/device gates
+по-прежнему не пройдены; module closure заблокирован недоступным pinned archive.
+
 План от **2026-10-16**, база **190f87caa0aac16e81d20cd699bd54b5e9f4d8f9**.
 Это feasibility/design; runtime, payload, CI, guest/host network settings здесь
 не менялись. Сначала один настоящий desktop с сохранением файлов и рабочим

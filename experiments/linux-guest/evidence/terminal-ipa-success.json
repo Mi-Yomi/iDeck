@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "date_utc": "2026-10-16",
+  "build_commit": "46582b44b577651679155efe60c56256496415b8",
+  "branch": "codex/linux-guest-feasibility-20261015",
+  "provenance": {
+    "source": "Parent delegation reporting successful CI and independent audit of the actual IPA.",
+    "verified_by_this_docs_update": "Local/remote build-source SHA matched before edits; only documentation/evidence updated.",
+    "not_independently_repeated_here": [
+      "CI log/result fetch",
+      "IPA download and hash calculation",
+      "Mach-O/resource/seed/export audit",
+      "device installation or execution"
+    ]
+  },
+  "apple_build": {
+    "id": "6ad1bdf03ffd2c7f0ad3d38c",
+    "url": "https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad1bdf03ffd2c7f0ad3d38c",
+    "status": "SUCCESS",
+    "duration": "10m54s",
+    "duration_seconds": 654,
+    "runtime_linked": true,
+    "host_test_marker": "LINUX_TERMINAL_HOST_CHECKS_PASS"
+  },
+  "ipa": {
+    "size_bytes": 58819622,
+    "sha256": "9ca755651657a5a5f0ce0b1c913b53460764820dd71b723455875de942267855",
+    "independent_actual_ipa_audit": {
+      "source": "Parent-reported independent audit of actual IPA, not repeated by the docs author.",
+      "arm64_ios_macho_files": 7,
+      "terminal_files_matching_lock": 4,
+      "fat16_seed_size_bytes": 134217728,
+      "fat16_seed_valid": true,
+      "original_probe_preserved_byte_for_byte": true,
+      "markdown_export_present_modes": [
+        "probe",
+        "terminal"
+      ]
+    }
+  },
+  "delivery": {
+    "private_drive_uploaded": true,
+    "download_issue": "User is resolving HTTP 404 when downloading.",
+    "user_download_confirmed": false,
+    "installed_on_device_confirmed": false,
+    "private_urls_or_ids_recorded": false
+  },
+  "device": {
+    "terminal_verified": false,
+    "persistence_verified": false,
+    "pending": [
+      "Owner download and normal sideload of the existing IPA",
+      "Terminal commands",
+      "Foreground orderly Stop",
+      "Fresh app process and exact-file /data persistence acceptance"
+    ],
+    "acceptance_plan": "experiments/linux-guest/docs/terminal-device-check.md",
+    "prior_device_probe_does_not_establish_terminal_or_persistence": true
+  },
+  "scope": {
+    "documentation_only": true,
+    "ci_dispatched_here": false,
+    "functional_changes": false,
+    "historical_evidence_modified": false,
+    "main_modified": false,
+    "prior_docs_requests": "UNKNOWN; not started, per parent delegation."
+  },
+  "supersedes_pending_status_in": [
+    "HANDOFF.md: previous asset-fix section",
+    "experiments/linux-guest/evidence/terminal-asset-path-fix.json (historical snapshot retained)"
+  ],
+  "next_step": "Resolve access to the existing private Drive IPA, then owner installation and device terminal/two-process persistence acceptance; no new CI requested."
+}

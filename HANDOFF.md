@@ -5,6 +5,39 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## Terminal IPA: Apple build SUCCESS на 46582b44, device gate ещё не пройден
+
+Parent передал результат Apple build
+[`6ad1bdf03ffd2c7f0ad3d38c`](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad1bdf03ffd2c7f0ad3d38c)
+для **`46582b44b577651679155efe60c56256496415b8`**: **SUCCESS**, длительность
+**10m54s**, `runtime_linked=true`, `LINUX_TERMINAL_HOST_CHECKS_PASS`.
+Исправление asset paths прошло Apple host gate; terminal IPA действительно
+собрана. Следующие исторические разделы описывают состояние до этого запуска;
+их прежние «IPA отсутствует / Apple gate pending» больше не являются текущим
+статусом. Этот docs-only update не меняет SHA собранной IPA.
+
+Actual IPA: **58 819 622 bytes**, SHA-256
+**`9ca755651657a5a5f0ce0b1c913b53460764820dd71b723455875de942267855`**.
+По переданному независимому аудиту actual IPA: **7 ARM64 iOS Mach-O**, все
+**4 terminal files** совпадают с lock, **128 MiB FAT16 seed** корректен,
+original probe побайтно сохранён, Markdown export присутствует для обоих режимов.
+Автор этой записи не скачивал и не пересчитывал IPA самостоятельно: build,
+размер/hash и выводы independent actual-IPA audit получены от parent. Новый
+snapshot: `experiments/linux-guest/evidence/terminal-ipa-success.json`.
+
+IPA загружена в private Drive. Пользователь устраняет **404 при скачивании**;
+успешное скачивание и установка ещё не подтверждены. Private URLs/IDs в Git не
+добавляются. **Device terminal/persistence пока не проверены**: нет приёмки
+команд в terminal, foreground orderly Stop и exact-file `/data` persistence
+после fresh app process. Ранее пройденный device probe не подменяет этот gate.
+Следующий шаг — восстановить доступ к уже собранной IPA, затем обычный owner
+sideload и `experiments/linux-guest/docs/terminal-device-check.md`.
+
+В этой сессии изменяются только HANDOFF и новый evidence snapshot; runtime,
+fixtures, locks и прежние evidence остаются неизменными. Новый CI не запускается.
+Предыдущие docs-запросы получили UNKNOWN и не были запущены; этот update
+фиксируется и отправляется отдельно в ту же рабочую ветку. Main не изменяется.
+
 ## mac-tests Invalid.asset после profile-disk-open: исправление asset paths
 
 Задание реализации от 2026-10-16, база **`04cde5f8a296e57305d3ebfe91b1ec790ea90fc0`**.

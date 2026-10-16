@@ -11,15 +11,42 @@ final class LinuxProbeSession: ObservableObject {
     @Published private(set) var displayReady = false
     @Published private(set) var inputReady = false
     @Published private(set) var shareFiles: [URL] = []
+    @Published private(set) var jitExecutionReady = false
+    @Published private(set) var jitExecutionMessage = "JIT execution has not been verified."
     private var worker: LinuxProbeWorker?
+
+    func claimJIT() {
+        precondition(Thread.isMainThread)
+        guard !attempted else { return }
+        guard JITBootstrap.ready else {
+            jitExecutionReady = false
+            jitExecutionMessage = "JIT execution has not been verified. Set up and enable JIT."
+            return
+        }
+        // Claim while the debugger is attached. Views read this result without
+        // triggering the MAP_JIT execution probe during rendering.
+        recordJITExecution(JITBootstrap.prewarm() || JITBootstrap.isLive || JITBootstrap.mapJITResult == true)
+    }
+
+    private func recordJITExecution(_ passed: Bool) {
+        jitExecutionReady = passed
+        jitExecutionMessage = passed ? "JIT execution check passed."
+            : (JITBootstrap.lastFailure ?? "JIT execution check did not pass. Open JIT setup.")
+    }
 
     func start() {
         precondition(Thread.isMainThread)
         guard !attempted else { return }
-        guard JITBootstrap.ready else { message = "Enable JIT first."; return }
+        guard JITBootstrap.ready else {
+            jitExecutionReady = false
+            jitExecutionMessage = "JIT execution has not been verified. Set up and enable JIT."
+            message = "Enable JIT first."; return
+        }
         guard JITBootstrap.prewarm() || JITBootstrap.isLive || JITBootstrap.mapJITWorks else {
+            recordJITExecution(false)
             message = "JIT did not pass its execution check. Open JIT setup."; return
         }
+        recordJITExecution(true)
         // The root chooser never creates ContentView/native-runtime screens in
         // this route. These additional guards defend against future routing edits.
         guard !QemuRunner.shared.isRunning, husk_console_loaded_game() == nil else {

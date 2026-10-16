@@ -1,0 +1,106 @@
+From: iDeck local development <ideck-local@users.noreply.github.com>
+Subject: [PATCH] Route JIT setup without treating stock Magnifier as TrollStore
+
+Class: build-fix
+
+Evidence: experiments/linux-guest/evidence/jit-setup-routing.json; Apple execution pending
+
+Require the existing per-app TrollStore marker for automatic detection and
+explicit attach, so the stock Magnifier URL handler is not offered as JIT.
+Build LocalDevVPN's callback from this app's registered URL schemes; keep the
+original Husk scheme only as the fallback when no scheme is registered.
+
+Offered-upstream: no, local experiment
+---
+diff --git a/src/app/Husk/JITBootstrap.swift b/src/app/Husk/JITBootstrap.swift
+index 86d6695..e831833 100644
+--- a/src/app/Husk/JITBootstrap.swift
++++ b/src/app/Husk/JITBootstrap.swift
+@@ -242,9 +242,11 @@ enum JITBootstrap {
+         URL(string: "stikjit://").map(UIApplication.shared.canOpenURL) ?? false
+     }
+ 
+-    /// TrollStore answers enable-jit on the `apple-magnifier` scheme.
++    /// Stock iOS also handles apple-magnifier. Require this app's TrollStore
++    /// installation marker before treating the shared scheme as a JIT route.
+     static var isTrollStoreInstalled: Bool {
+-        URL(string: "apple-magnifier://").map(UIApplication.shared.canOpenURL) ?? false
++        guard isInstalledWithTrollStore else { return false }
++        return URL(string: "apple-magnifier://").map(UIApplication.shared.canOpenURL) ?? false
+     }
+ 
+     /// Whether this copy of Husk was installed by TrollStore (or TrollStore Lite): it leaves a marker file next to the app in
+@@ -286,6 +288,10 @@ enum JITBootstrap {
+     /// this point happens in a *new* foreground pass of the app.
+     @MainActor
+     static func requestTrollStoreAttach() -> Bool {
++        guard isInstalledWithTrollStore else {
++            HuskLog.log("jit", "TrollStore attach refused: this app has no TrollStore installation marker")
++            return false
++        }
+         HuskLog.log("jit", "requestTrollStoreAttach() -- handing off to TrollStore")
+         guard let bundleID = Bundle.main.bundleIdentifier else { return false }
+         
+diff --git a/src/app/Husk/JITSetup.swift b/src/app/Husk/JITSetup.swift
+index 058281d..7255b74 100644
+--- a/src/app/Husk/JITSetup.swift
++++ b/src/app/Husk/JITSetup.swift
+@@ -223,7 +223,7 @@ final class JITCoordinator: ObservableObject {
+             guard let self else { return }
+             busy = false
+             if attached {
+-                status = "JIT is on."
++                status = "Debugger attached. The runtime must verify executable memory before starting."
+                 error = nil
+                 attachGeneration += 1
+                 log("TrollStore enabled JIT")
+@@ -312,7 +312,7 @@ final class JITCoordinator: ObservableObject {
+                 log("built-in JIT failed: \(failure)")
+                 showSetup = true
+             } else {
+-                status = "JIT is on."
++                status = "Debugger attached. The runtime must verify executable memory before starting."
+                 error = nil
+                 attachGeneration += 1
+                 log("built-in helper attached")
+@@ -403,8 +403,16 @@ final class JITCoordinator: ObservableObject {
+ /// open it to connect when it is installed, otherwise its App Store page.
+ enum LocalDevVPN {
+     static let appStore = URL(string: "https://apps.apple.com/us/app/localdevvpn/id6755608044")!
+-    /// `enable` connects the VPN; `scheme` has LocalDevVPN return to Husk afterwards.
+-    static let connect = URL(string: "localdevvpn://enable?scheme=husk")!
++    /// Return to this installation's registered URL scheme, including the
++    /// separate Linux Probe bundle, rather than opening another Husk app.
++    static var connect: URL {
++        let types = Bundle.main.object(forInfoDictionaryKey: "CFBundleURLTypes") as? [[String: Any]] ?? []
++        let schemes = types.flatMap { $0["CFBundleURLSchemes"] as? [String] ?? [] }
++        let callback = schemes.first(where: { !$0.isEmpty }) ?? "husk"
++        var components = URLComponents(string: "localdevvpn://enable")!
++        components.queryItems = [URLQueryItem(name: "scheme", value: callback)]
++        return components.url!
++    }
+ 
+     static var isInstalled: Bool { UIApplication.shared.canOpenURL(URL(string: "localdevvpn://")!) }
+     static var actionTitle: String { isInstalled ? "Connect LocalDevVPN" : "Get LocalDevVPN" }
+diff --git a/src/app/Husk/JITSetupView.swift b/src/app/Husk/JITSetupView.swift
+index 053c8af..5f61ae3 100644
+--- a/src/app/Husk/JITSetupView.swift
++++ b/src/app/Husk/JITSetupView.swift
+@@ -283,7 +283,7 @@ struct JITSetupFlow: View {
+             VStack(alignment: .leading, spacing: 14) {
+                 point(1, "Tap **Check setup**. Husk checks LocalDevVPN and prepares the Developer Disk Image.",
+                       done: jit.prepared || attached)
+-                point(2, "Tap **Enable JIT**. Husk's helper attaches and Android can start.", done: attached)
++                point(2, "Tap **Enable JIT**. The helper attaches; the runtime then verifies executable memory before starting.", done: attached)
+             }
+             .padding(16).huskCard()
+ 
+@@ -295,7 +295,7 @@ struct JITSetupFlow: View {
+                 }
+                 .padding(16).huskCard(high: true)
+             } else if attached {
+-                outcome("JIT is on. Android can start.", ok: true)
++                outcome("Debugger attached. The runtime must verify executable memory before starting.", ok: true)
+             } else if let error = jit.error {
+                 VStack(alignment: .leading, spacing: 10) {
+                     outcome(error, ok: false)

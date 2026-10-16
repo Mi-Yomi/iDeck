@@ -5,6 +5,72 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## Первый owner device attempt: JIT открыл Magnifier, Linux boot не подтверждён
+
+После установки первого IPA пользователь сообщил: **Enable JIT открывает
+Magnifier**, ожидаемый original Husk pairing/settings UI недоступен, Linux не
+запустился. Это owner feedback, переданный координатором, не собственное device
+наблюдение автора HANDOFF. Пользователь подтвердил SideStore, без LiveContainer.
+**Первый device attempt не считается успешным**.
+При этом baseline native compilation/linking/static audit остаются доказанными:
+защитить build `5cd442c7670932c551459f015c71e295c4b6610a` и original IPA
+49205131 bytes, SHA-256
+`2c38939b7c0d03586879b69451a4e42afa3d62399ab165fe76e8810f472a6513`.
+Текущий doc base — `29807382cfe5fb151e2257b77981f1ea71ab37ec`.
+
+Source-проверка baseline 5cd объясняет симптом: LinuxProbeView.swift:83 вызывал
+`jit.enable()` напрямую; pinned JITSetup.swift:138-143 в Automatic выбирал
+TrollStore раньше встроенного JIT, а JITBootstrap.swift:245-247 принимает
+`canOpenURL(apple-magnifier://)` за installed TrollStore. Request на lines
+288-300 открывает тот же scheme. В original JITCard:147-150 при доступном
+built-in helper сначала выставлялся `.builtIn` — этого поведения в baseline
+Linux UI не было. Он также не показывал `jit.busy/status/error`, а TrollStore
+branch мог ждать 60 секунд до setup-sheet. JITSetupFlow с pairing/import/VPN
+был сохранён и подключён как sheet, но явного доступного setup action не было.
+
+Это объясняет JIT onboarding/routing blocker; пока нет оснований называть это
+ошибкой QEMU Linux boot после успешного JIT. LinuxProbeSession.start() остаётся
+за `JITBootstrap.ready` и execution check. Whole ContentView/SettingsTab не нужно
+возвращать: original JITSettings содержит Start Android on launch, и это может
+размыть Linux isolation. Прямо проверен callback mismatch: pinned
+JITSetup.swift:407 задаёт `localdevvpn://enable?scheme=husk`, а
+`ipa/package_probe.py:43-44` регистрирует только `ideck-linux-probe`.
+Helper ID читается из actual embedded Info.plist (JITBuiltIn.swift:60-64);
+поломка extension/BG-task IDs из-за rename или SideStore этим не доказана.
+
+Подготовлен focused source fix `husk/patches/0002-jit-setup-routing.patch`:
+per-app TrollStore marker требуется и для detection, и для attach; VPN callback
+берётся из actual registered scheme через URLComponents. Linux UI даёт явную
+**JIT setup and method** с original JITSetupFlow, busy/status/error и выбирает
+built-in на Automatic при доступном helper, сохраняя explicit user method.
+Debugger attach и executable-memory execution test теперь различаются; session
+публикует результат actual claim/start checks, без probe в SwiftUI view body.
+Сохранены прежние JIT/start gates и one-session Linux isolation.
+
+Original flow остаётся owner-driven: Pair on this device либо import pairing
+file → Settings/Privacy & Security/Developer Mode/PIN для on-device pairing →
+LocalDevVPN → Check setup/DDI → Enable → execution check → Start Linux.
+Pairing store — Documents этого приложения; из original Husk он автоматически
+не переносится. Подготовка здесь не выполняет pairing и не читает credentials.
+Source fix **локально проверен и готов к Apple build**. Coordinator run:
+`PYTHONDONTWRITEBYTECODE=1 TMPDIR=/workspace/iDeck/.work python3 -m unittest
+discover -s experiments/linux-guest/tests -v` — **118 tests PASS**, exit 0,
+**0.902 секунды**, Python 3.12.14/Linux; 8 новых source/staging checks отдельно
+прошли независимым reviewer за 0.109 секунды, плюс 110 прежних. Реальный pinned
+restore, full patch application и hashes прошли. Native/UI и independent review
+не нашли blocker. Это source/staging checks, не Swift execution/typecheck,
+UIKit, JIT или device proof; Apple Swift compiler здесь отсутствует.
+
+Workflow/CI worker/native/guest locks/project/package/source-check lock+archive/
+guest archive и first-IPA evidence побайтно неизменны относительно doc base;
+baseline IPA сохранён. Final patch/series/overlay/UI/session/test hashes:
+`experiments/linux-guest/evidence/jit-setup-routing.json`. Следующий шаг —
+координатор commit/push, exact новый SHA и одна Apple сборка после свежих quota,
+disabled billing, private/no-active-CI проверок; затем owner re-signing копии
+нового IPA и повторный device setup/JIT/boot/display/input/report test.
+Новая Apple сборка/IPA и device success **ещё не заявлены**. Linux/JIT execution,
+boot/display/input на iPhone и Steam не подтверждены.
+
 ## Первый настоящий IPA собран; независимый static package audit прошёл
 
 Успешный [build `6ad174a63ffd2c7f0ad3c64c`](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad174a63ffd2c7f0ad3c64c),

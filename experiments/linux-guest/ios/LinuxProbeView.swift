@@ -68,10 +68,47 @@ struct LinuxProbeView: View {
     @State private var showShare = false
 
     var body: some View {
+        ScrollView { content }
+            .sheet(isPresented: $jit.showSetup) { JITSetupFlow() }
+            .sheet(isPresented: $showShare) { ShareSheet(items: session.shareFiles) }
+            .onChange(of: jit.attachGeneration) { _ in claimJIT() }
+            .onChange(of: scenePhase) { if $0 == .active { claimJIT() } }
+            .onAppear { claimJIT() }
+    }
+
+    private var coordinatorStatus: String? {
+        // The coordinator observes debugger attachment; the session separately
+        // verifies executable memory before displaying an execution pass.
+        jit.status == "JIT is on." ? "Debugger attached." : jit.status
+    }
+
+    private var content: some View {
         VStack(spacing: 12) {
             Text("iDeck · Linux probe").font(.headline)
             Text(session.message).font(.callout).multilineTextAlignment(.center)
                 .accessibilityIdentifier("ideck-linux-status")
+            Text(session.jitExecutionMessage).font(.footnote)
+                .foregroundStyle(session.jitExecutionReady ? Color.green : Color.secondary)
+                .multilineTextAlignment(.center)
+                .accessibilityIdentifier("ideck-jit-execution-status")
+            if jit.busy {
+                ProgressView(coordinatorStatus ?? "Enabling JIT…")
+            } else if let status = coordinatorStatus {
+                Text(status).font(.footnote).foregroundStyle(.secondary)
+            }
+            if let error = jit.error {
+                Text(error).font(.footnote).foregroundStyle(.orange)
+                    .multilineTextAlignment(.center)
+            }
+            if !jit.hasPairing, jit.method == .automatic || jit.method == .builtIn {
+                Text("First time: open JIT setup to pair this iPhone or import its pairing file, then connect LocalDevVPN.")
+                    .font(.footnote).foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+            }
+            Button("JIT setup and method") {
+                jit.refreshPairingStatus()
+                jit.showSetup = true
+            }.disabled(jit.busy)
             if session.displayReady {
                 HuskDisplay().aspectRatio(4.0 / 3.0, contentMode: .fit)
                     .allowsHitTesting(session.inputReady)
@@ -80,8 +117,8 @@ struct LinuxProbeView: View {
                 Rectangle().fill(.black).aspectRatio(4.0 / 3.0, contentMode: .fit)
             }
             HStack {
-                Button("Enable JIT") { jit.enable() }.disabled(session.attempted)
-                Button("Start Linux") { session.start() }.disabled(session.attempted)
+                Button("Enable JIT") { enableJIT() }.disabled(session.attempted || jit.busy)
+                Button("Start Linux") { session.start() }.disabled(session.attempted || jit.busy)
                 Button("Send A") { session.sendA() }.disabled(!session.inputReady)
             }.buttonStyle(.bordered)
             Button("Save report") { showShare = true }.disabled(session.shareFiles.isEmpty)
@@ -89,15 +126,22 @@ struct LinuxProbeView: View {
                 .font(.footnote).foregroundStyle(.secondary)
         }
         .padding()
-        .sheet(isPresented: $jit.showSetup) { JITSetupFlow() }
-        .sheet(isPresented: $showShare) { ShareSheet(items: session.shareFiles) }
-        .onChange(of: jit.attachGeneration) { _ in claimJIT() }
-        .onChange(of: scenePhase) { if $0 == .active { claimJIT() } }
-        .onAppear { claimJIT() }
     }
 
     private func claimJIT() {
         // Claim while the debugger is attached; do not auto-start a guest.
-        if !session.attempted, JITBootstrap.ready { JITBootstrap.prewarm() }
+        jit.refreshPairingStatus()
+        session.claimJIT()
+    }
+
+    private func enableJIT() {
+        guard !session.attempted, !jit.busy else { return }
+        jit.refreshPairingStatus()
+        // Automatic must not infer TrollStore from the system Magnifier URL.
+        // Keep methods the user explicitly chose in the original walkthrough.
+        if jit.method == .automatic, HuskBuiltInJIT.isAvailable {
+            jit.method = .builtIn
+        }
+        jit.enable()
     }
 }

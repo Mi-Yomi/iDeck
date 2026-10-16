@@ -1,0 +1,111 @@
+{
+  "status": "jit_setup_source_fix_locally_validated_ready_for_apple_build",
+  "working_branch": "codex/linux-guest-feasibility-20261015",
+  "preparation_base_commit": "29807382cfe5fb151e2257b77981f1ea71ab37ec",
+  "protected_successful_build_commit": "5cd442c7670932c551459f015c71e295c4b6610a",
+  "protected_original_ipa": {
+    "size": 49205131,
+    "sha256": "2c38939b7c0d03586879b69451a4e42afa3d62399ab165fe76e8810f472a6513",
+    "unchanged": true
+  },
+  "device_feedback": {
+    "source": "Owner feedback relayed by coordinator; not an independent device observation by this agent.",
+    "owner_reports_app_installed": true,
+    "enable_jit_opens_magnifier": true,
+    "expected_original_husk_pairing_settings_not_accessible": true,
+    "linux_boot_succeeded": false,
+    "device_attempt_is_success": false,
+    "scope": "A real owner device attempt exposed the JIT onboarding/routing failure. It does not invalidate prior native compilation/static IPA audit, and does not prove a QEMU kernel boot failure after JIT.",
+    "installation_method": "SideStore",
+    "livecontainer_used": false,
+    "installation_context_source": "Direct user confirmation relayed by coordinator."
+  },
+  "source_findings": {
+    "source": "Read directly from protected 5cd442c probe source state (unchanged at doc base 2980738) and pinned 78-file Husk119 source-check archive; no device execution.",
+    "pinned_husk_commit": "0695248f491cda877f7969d1f0cc89aeede1482e",
+    "probe_direct_enable": "experiments/linux-guest/ios/LinuxProbeView.swift:83 directly invokes jit.enable() with no explicit setup button or JIT status/error/busy rendering.",
+    "probe_only_route": "LinuxProbeView.swift:32-34 IDECK_LINUX_PROBE_ONLY bypasses ContentView/SettingsTab and opens only LinuxProbeView.",
+    "automatic_method": "Pinned src/app/Husk/JITSetup.swift:138-143 automatic chooses StikDebug, then TrollStore, then jailbreak, then built-in.",
+    "false_positive_detection": "Pinned src/app/Husk/JITBootstrap.swift:245-247 treats canOpenURL(apple-magnifier://) as TrollStore installed; a system URL handler does not prove TrollStore installation.",
+    "launch": "Pinned JITBootstrap.swift:288-300 launches apple-magnifier://enable-jit?bundle-id=... and returns success when the URL can be opened.",
+    "upstream_card_behavior": "Pinned JITCard.swift:18-21,147-150 offers available built-in JIT and sets method=builtIn before enable; the Linux direct button omitted this behavior.",
+    "setup_exists": "Pinned JITSetupView.swift:66-101 supports on-device pairing, file import, VPN/enable and other methods; LinuxProbeView.swift:92 already owns a JITSetupFlow sheet, but its plain enable route may not present it until a failed TrollStore timeout.",
+    "hidden_diagnostics": "JITSetup.swift:218-235 sets busy/status and waits up to 60 seconds before showing setup on failed TrollStore; LinuxProbeView does not render those coordinator states.",
+    "start_gate": "LinuxProbeSession.swift:19-21 refuses to start without JITBootstrap.ready and successful prewarm/live/MAP_JIT path; runtime gates must remain.",
+    "reuse_boundary": "Pinned SettingsTab.swift:569-575 JITSettings includes Start Android on launch; do not restore whole ContentView/SettingsTab or unrelated Android state just to expose pairing.",
+    "callback_mismatch": "Read directly: pinned JITSetup.swift:407 hard-codes localdevvpn://enable?scheme=husk. Current package_probe.py:43-44 overwrites CFBundleURLTypes with only ideck-linux-probe, so the callback names another scheme.",
+    "extension_identity_boundary": "Pinned JITBuiltIn.swift:60-64 resolves helper ID from embedded Info.plist; no proven broken rename/BG-task identity. SideStore rewriting behavior is not treated as an established error.",
+    "pairing_store_boundary": "Pinned JITSetup.swift:39-43 stores pairing in this app Documents/StikJIT/pairingFile.plist. A dedicated probe does not automatically inherit the original Husk app Documents pairing."
+  },
+  "fix": {
+    "status": "implemented_locally_validated_ready_for_apple_build",
+    "patch": "experiments/linux-guest/husk/patches/0002-jit-setup-routing.patch",
+    "trollstore": "Require the existing per-app TrollStore installation marker both for installed detection and explicit attach before considering apple-magnifier://, so SideStore cannot identify stock Magnifier as TrollStore.",
+    "callback": "Build LocalDevVPN scheme query with URLComponents from actual Bundle.main CFBundleURLTypes/CFBundleURLSchemes; keep husk fallback only when no scheme is registered.",
+    "linux_ui": "Expose explicit JIT setup and method action using the original JITSetupFlow; display coordinator busy/status/error; prefer available built-in only when method is Automatic, retaining explicit user selections.",
+    "execution_truth": "Publish actual execution-check state from session claim/start actions, separate from debugger attach. No JIT probe is performed in a SwiftUI view body. Existing ready/prewarm/live/MAP_JIT start gate remains.",
+    "pairing_flow": "Original walkthrough remains owner-driven: on-device pairing or file import, Settings/Developer Mode/PIN when using on-device flow, LocalDevVPN, Check setup/DDI, Enable, then actual execution check before Linux.",
+    "preserve": "Linux one-session isolation, native pins, original source-check archive and successful 5cd IPA; no restored Android library startup.",
+    "apple_and_device_validation": "Not performed for this source fix."
+  },
+  "host_validation": {
+    "status": "passed",
+    "source": "Coordinator full-suite result and independent reviewer focused run; evidence author read final source and checked file hashes.",
+    "full_suite_command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/workspace/iDeck/.work python3 -m unittest discover -s experiments/linux-guest/tests -v",
+    "full_suite_tests_passed": 118,
+    "full_suite_elapsed_seconds": 0.902,
+    "exit_code": 0,
+    "new_focused_source_staging_tests_passed": 8,
+    "focused_elapsed_seconds": 0.109,
+    "previous_tests_included": 110,
+    "environment": "Existing Linux cloud environment /workspace/iDeck; Python 3.12.14",
+    "scope": "Source/staging regression checks on real restored pinned Swift/header slice and applied patches; no Swift execution/typecheck, UIKit interaction, pairing, JIT execution or device proof.",
+    "coverage": [
+      "stock Magnifier URL without TrollStore marker is not a JIT route in reviewed source",
+      "Automatic-only built-in preference and explicit setup/status/error UI",
+      "missing pairing retains original setup-before-enable path",
+      "actual registered probe callback and Husk fallback",
+      "debugger attachment wording separate from executable-memory success",
+      "execution guards before one-shot runtime attempt and no auto-start on lifecycle callbacks",
+      "real pinned slice/patch series/overlay hashes"
+    ],
+    "actual_pinned_restore_full_patch_application_and_hash_checks_passed": true,
+    "native_ui_and_independent_reviews_no_blockers": true,
+    "whitespace_check_passed": true,
+    "swift_compiler_or_apple_build_available_locally": false,
+    "protected_baseline_inputs_byte_unchanged": [
+      "codemagic.yaml",
+      "ci/build_linux_probe_ipa.py",
+      "experiments/linux-guest/ipa/native-sources.lock.json",
+      "experiments/linux-guest/ipa/guest.lock.json",
+      "experiments/linux-guest/ipa/project.json",
+      "experiments/linux-guest/ipa/package_probe.py",
+      "experiments/linux-guest/husk/source-check.lock.json",
+      "experiments/linux-guest/husk/husk119-source-check.tar.gz",
+      "experiments/linux-guest/husk/linux-probe-guest.tar.gz",
+      "experiments/linux-guest/evidence/first-ipa-success.json"
+    ]
+  },
+  "new_apple_build_performed": false,
+  "new_ipa_created": false,
+  "new_fix_verified_on_device": false,
+  "linux_boot_verified_on_iphone": false,
+  "steam_executed": false,
+  "patch_application_control": {
+    "source": "Coordinator verified actual pinned patch application; evidence author directly verified final patch and overlay lock hashes.",
+    "actual_pinned_source_patch_application_passed": true,
+    "native_and_ipa_reviews_approved": true,
+    "apple_swift_compiler_available_locally": false,
+    "apple_build_performed_for_fix": false,
+    "wording": "Both coordinator statuses and original walkthrough instruction/outcome now distinguish debugger attach from executable-memory verification."
+  },
+  "hashes": {
+    "experiments/linux-guest/husk/patches/0002-jit-setup-routing.patch": "a93a4af2b82418280c14c1b7e7ec64c8e6f2395602987dc59b95a1c841ed3ec4",
+    "experiments/linux-guest/husk/patches/series": "6147087af1e2c4869cfb07a83ccb1d467196f48590ee70a8dd2dee0444282b56",
+    "experiments/linux-guest/husk/overlay.lock.json": "149c4348e01e7a7b57e3c043b93cc5ee558d7f1ae1ce3b59f5909cd3543d14d3",
+    "experiments/linux-guest/ios/LinuxProbeView.swift": "635b18fb517741dd5b2e964d7e701ab0fb5df8506732f1d103c333969f645e1f",
+    "experiments/linux-guest/ios/LinuxProbeSession.swift": "5cbadc1a08d8265ada9ed2fa25e35000dfa25fca2720237035a6e3c2a6d6bc83",
+    "experiments/linux-guest/tests/test_jit_setup.py": "d6b4658f3b5347b11f1e09d58454a1d97abf5142adc21fe441e4bfd91171e7d8"
+  },
+  "next_acceptance": "After reviewed source commit/push and fresh quota/private/disabled-billing/exact-SHA checks, coordinator builds a new IPA. Owner uses a re-signed copy, reaches original setup/pairing/VPN without unintended Magnifier, verifies actual JIT execution, then Linux boot/frame A/touch+Send A/frame B/report. Neither new IPA nor device success is claimed yet."
+}

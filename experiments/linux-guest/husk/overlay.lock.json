@@ -5,15 +5,16 @@
   "inputs": {
     "ios/LinuxGuestProfile.swift": "e97fd87121fe14d71a286bab61ea29889586604d232b82af3e794983123084e1",
     "ios/LinuxProbeEvidence.swift": "e17ee28c23a8879a6e74dd783f901297d2bcd8d089ad4e515c972b0016f034d4",
-    "ios/LinuxProbeSession.swift": "41012830eda0d37ab75e078f76a57300d554afcfdd9f37b6b490d8286e3231e9",
-    "ios/LinuxProbeView.swift": "f955df2def8592a0882180da7c05a3c4f18fc4bb3c1b7085e6b1070248215930",
+    "ios/LinuxProbeSession.swift": "5cbadc1a08d8265ada9ed2fa25e35000dfa25fca2720237035a6e3c2a6d6bc83",
+    "ios/LinuxProbeView.swift": "635b18fb517741dd5b2e964d7e701ab0fb5df8506732f1d103c333969f645e1f",
     "tools/stage_bundle.py": "267a95eb31f50dba82a8f75547925a60533faebb53e3198cdeea83703cd77c83",
     "tools/stage_husk.py": "8ee9d7b363b900429923a74d3f4f4918800ac348b65baaa9d36af942b9e4d305",
-    "husk/patches/series": "f8aaddc8d6862e03d676780d18d2a7ff46aa6e1c3721ebaf0a336c92e03e4233",
+    "husk/patches/series": "6147087af1e2c4869cfb07a83ccb1d467196f48590ee70a8dd2dee0444282b56",
     "husk/patches/0001-isolated-linux-probe-route.patch": "d037311ec48784fa03c3191cbb19c60b9c811c8f01c7e119dbebaca054d2c8cf",
     "tools/typecheck_source.py": "5a5418cb654db1ae704142b8e75a99870fb01cb1bfa72e9469f98ddda1e3d360",
     "husk/source-check.lock.json": "44db4e8620229cd07dbf302312eda0ff86d358284d0ebe9b96b89ca85fe2457d",
-    "husk/husk119-source-check.tar.gz": "4f534374ef02d9de14203705afc58228b859ce978c66707c42e35b3e3b38c0d6"
+    "husk/husk119-source-check.tar.gz": "4f534374ef02d9de14203705afc58228b859ce978c66707c42e35b3e3b38c0d6",
+    "husk/patches/0002-jit-setup-routing.patch": "a93a4af2b82418280c14c1b7e7ec64c8e6f2395602987dc59b95a1c841ed3ec4"
   },
   "copies": {
     "ios/LinuxGuestProfile.swift": "src/app/Husk/LinuxGuestProfile.swift",
@@ -24,6 +25,9 @@
   },
   "patched_files": {
     "src/app/Husk/HuskApp.swift": "18ff389fa29628fd1d4eb168a18a3b12f6b8c75caf6804651699e926b1ab9e31",
-    "src/app/project.yml": "9d7609c60bc137099456daa2ae92b9bd6a709c4218495666dc393312ba27997c"
+    "src/app/project.yml": "9d7609c60bc137099456daa2ae92b9bd6a709c4218495666dc393312ba27997c",
+    "src/app/Husk/JITBootstrap.swift": "e62daeeca0c95d9ae955a62c7d7885f7f4b36b34538c22d50bee4b67605cbb34",
+    "src/app/Husk/JITSetup.swift": "e4963dea166bf5c5481c220330443c08fcc7a96a3a57fbc240e42884b8b5765d",
+    "src/app/Husk/JITSetupView.swift": "9b451834edaa1840dd6c2bfe2f56b10443111cd30b914d97cb4d8b934dac602d"
   }
 }

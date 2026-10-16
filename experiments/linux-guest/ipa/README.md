@@ -10,9 +10,17 @@ the downloaded bytes, ARM64 iOS-device binaries, bundled dependencies, guest
 assets and matching provenance. Of 92 steps, 91 exited zero; the initial missing
 Metal probe was the one expected nonzero and recovered through Apple's download.
 See `../evidence/first-ipa-success.json`. Preserve the successful build revision,
-native pins and original artifacts. Owner sideload re-signing must use a copy;
-installation, device Linux/JIT/input and Steam remain untested. Earlier evidence
-remains historical.
+native pins and original artifacts. Owner sideload re-signing must use a copy.
+The owner now reports a SideStore installation, but Enable JIT opens Magnifier,
+the expected pairing/settings flow was not accessible, and Linux did not boot.
+The first device attempt is not a pass. Source analysis found the stock
+apple-magnifier URL being misidentified as TrollStore plus a hard-coded Husk VPN
+callback that does not match the probe scheme. A marker/callback and explicit
+JIT setup/status UI fix is locally validated (118 host tests, including 8
+new source/staging checks, plus independent review). Its new Apple build and
+device validation remain pending; host source checks do not execute Swift/JIT. See `../evidence/jit-setup-routing.json`. Keep debugger attach
+separate from actual JIT execution. Device Linux/JIT/input and Steam remain
+unverified; earlier evidence remains historical.
 
 Select branch `codex/linux-guest-feasibility-20261015` **before** selecting the
 workflow. Set `expected_commit` to the full current pushed SHA. `main` deliberately

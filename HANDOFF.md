@@ -5,6 +5,58 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## Commandfix device PASS и следующий desktop milestone (docs-only)
+
+Apple CI **6ad1efad7550aed8108f37fe — SUCCESS, 12m21s**, actual source
+**190f87caa0aac16e81d20cd699bd54b5e9f4d8f9**. IPA **58868284**, SHA-256
+**3e57c5c895afb41de51708458b12644725ccb040f8b0b9fb073bf9b57cd6edae**.
+Это CI/artifact evidence от parent, не повторный download/hash этим executor.
+Owner в **09:56 UTC**: «Все прекрасно сработало». Parent осмотрел screenshots:
+**IDECK_TERMINAL_READY**, `ideck#`, реальный uname **Linux (none)
+6.18.35-0-virt … Alpine … aarch64**, затем **ideck-test**, прежнего **[6n** нет.
+Ручной one-file persistence между двумя boot, подтверждённый ранее, теперь
+также пережил app update. Итого command links и canonical lineconsole fix
+подтверждены на device. Raw screenshots/Library IDs в Git не внесены; автор
+получил parent inspection summary, прямой visual inspection не заявляется.
+Это не crash/power-loss durability, whole-disk audit, GUI/Steam/GPU PASS.
+Smart quotes/safe-area/long-output UI backlog остаётся отдельно.
+
+Новый evidence: `experiments/linux-guest/evidence/terminal-commandfix-device-pass.json`.
+Предыдущие evidence с «device not yet tested» ниже — исторические receipts
+до этого нового результата, их содержимое сохранено.
+
+Следующий конкретный план: **[DESKTOP-MILESTONE.md](experiments/linux-guest/DESKTOP-MILESTONE.md)**.
+Рекомендация: Debian13 arm64 glibc minbase, отдельный **ext4 rootfs**, сначала
+**Xorg modesetting без glamor + Openbox/xterm** через прежний software framebuffer.
+Не менять исходный kernel/machine/JIT/1024MiB/4vCPU/256MiBTCG без measured gate.
+4GiB rootfs — экспериментальный budget, package footprint/memory fit не измерены.
+Mesa/softwareGL — после первого 2D desktop; Steam/CEF/игры ещё дальше, без FPS
+обещаний. Большой payload предлагается отдельным verified offline import, не
+4GiB raw в каждой IPA. Конкретные direct packages, mount/VT/input/stop lifecycle,
+размеры/free-space formula, network requirements и G0–G5 gates — в плане.
+
+**Сохранение /data:** старый 128MiB FAT не конвертировать. В первом desktop
+подключать RO по прежнему /data с uid1000 mapping, POSIX files — в /home/ideck
+нового ext4. При последующей необходимости POSIX /data — verified copy import,
+без удаления старого FAT и без заявления о reverse-sync при rollback.
+Новые ext4 validators отдельно; не ослаблять existing FAT guards и lockfix.
+
+Read-only inspection нашёл конкретные blockers: committed initramfs не содержит
+ext4/jbd2/mbcache modules или ext4 builtin entry; нужно подтвердить config/mount,
+затем exact same-kernel modloop closure. Terminal init ещё не грузит GPU/input/
+evdev как probe. Для Xorg нужно доказать DRM KMS/VT, не только /dev/fb0.
+Display bridge даёт left touch, probe UI только Send A: нужен настоящий desktop
+keyboard/focus-release и проверенный pointer scope. Current executor uid1000/
+capabilities0, без debootstrap/e2fsprogs/full-system QEMU — image builder не готов.
+Transitive package lock, compressed size и реальный memory/Jetsam fit pending.
+
+В этой задаче изменены только docs/evidence: payload не загружался, runtime,
+userdata, network/security settings, ключи/подключения/оплата и main не менялись;
+CI/новая IPA не запускались. Независимый design/documentation review завершён:
+**без blockers**, JSON/source/SHA/diff checks PASS; подтверждены ровно четыре
+docs/evidence изменения, desktop/Apple gates остаются будущей работой. Следующая implementation задача — G0/G1 POSIX storage,
+потом G2 desktop, потом G3 Apple/device. Parent по-прежнему управляет CI/quota.
+
 ## Device two-boot persistence PASS; guest commands/plain-shell fix; UI transfer blocked
 
 Новая задача реализации от pushed **e0bfdb9f674fbf2cb814f4b45fd57e1e88e44ad7**.

@@ -1,13 +1,26 @@
 # Direct Linux guest: bounded feasibility experiment
 
-This branch advances the requested **real Linux kernel + Linux Steam + Big Picture on iPhone** route. It preserves the previous Playport/Madeira source snapshot and all existing CI workflows. It does not replace the application, provide an IPA, or claim an iPhone Steam session.
+This branch advances the requested real Linux + Steam Big Picture route on
+an iPhone, preserving the separate probe and existing application data.
 
-2026-10-16: [A separate native IPA build recipe](ipa/README.md) is now available
-as `ideck-linux-probe-ipa`, alongside the ten-minute Swift source check. The
-verified guest bytes are included in Git. The Apple run at 3a10400 passed the
-Swift/profile/evidence gate, then stopped on an unused absolute link in the
-QEMU archive; binary guest data also broke JSON reporting. These preparation
-issues are fixed here. Native compilation/linking and an actual IPA are pending.
+**Current status, 2026-10-16:** source **190f87caa0aac16e81d20cd699bd54b5e9f4d8f9**
+passed Apple CI **6ad1efad7550aed8108f37fe** (12m21s), producing IPA **58868284**,
+SHA-256 **3e57c5c895afb41de51708458b12644725ccb040f8b0b9fb073bf9b57cd6edae**.
+Owner/parent device evidence confirms interactive Linux terminal, working
+BusyBox commands and a /data sentinel retained across two boots and app update.
+This is a manual one-file persistence check, not crash durability or GUI/Steam.
+See [device evidence](evidence/terminal-commandfix-device-pass.json).
+
+**Next stage is a design, not an implemented desktop:**
+[Persistent POSIX rootfs and software desktop plan](DESKTOP-MILESTONE.md).
+Recommended sequence: new ext4/glibc ARM64 storage, Xorg/Openbox/xterm through
+the existing software framebuffer, complete desktop input, then software GL.
+Original /data stays intact. No new rootfs payload or network settings were
+introduced by this planning update; CI remains parent-controlled.
+
+The sections below retain the historical probe/research results and their
+original validation limits; older pending statements are superseded only by
+explicit newer evidence in HANDOFF/device receipts.
 
 ## Measured in this session
 

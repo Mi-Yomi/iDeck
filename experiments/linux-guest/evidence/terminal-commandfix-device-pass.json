@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "date_utc": "2026-10-16",
+  "source_commit": "190f87caa0aac16e81d20cd699bd54b5e9f4d8f9",
+  "branch": "codex/linux-guest-feasibility-20261015",
+  "provenance": "Parent supplied CI/artifact facts and inspected owner screenshots. This executor did not independently download IPA, read CI logs or visually inspect screenshots; no raw image/Library identifiers committed.",
+  "apple_ci": {
+    "build_id": "6ad1efad7550aed8108f37fe",
+    "status": "SUCCESS",
+    "elapsed": "12m21s",
+    "actual_source_commit": "190f87caa0aac16e81d20cd699bd54b5e9f4d8f9",
+    "reported_by_parent": true
+  },
+  "ipa": {
+    "artifact_id": "58868284",
+    "sha256": "3e57c5c895afb41de51708458b12644725ccb040f8b0b9fb073bf9b57cd6edae",
+    "hash_scope": "Parent-provided IPA artifact SHA-256; not an independently recovered signed Mach-O hash"
+  },
+  "device_commandfix": {
+    "status": "PASS (manual owner/parent evidence)",
+    "owner_confirmation_utc": "09:56",
+    "owner_confirmation": "\u0412\u0441\u0435 \u043f\u0440\u0435\u043a\u0440\u0430\u0441\u043d\u043e \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b\u043e",
+    "observations": [
+      "IDECK_TERMINAL_READY",
+      "ideck prompt and uname Linux (none) 6.18.35-0-virt Alpine",
+      "uname continuation SMP_PREEMPT_DYNAMIC and aarch64",
+      "ideck-test read again",
+      "No previous literal [6n in inspected output"
+    ],
+    "persistence": "Previously confirmed one sentinel across two guest boots following guest clean unmount; now also retained through app update.",
+    "claim_limit": "Manual one-file test. No filesystem-wide integrity, crash/power-loss durability or performance claim."
+  },
+  "still_unverified": [
+    "Graphical desktop and Xorg/KMS",
+    "Persistent POSIX rootfs/home/package database",
+    "Full desktop keyboard/pointer controls",
+    "Terminal smartquotes/safe-area/clipped-output UI fixes",
+    "Software GL context",
+    "Steam/CEF/Big Picture",
+    "Accelerated guest GPU and games"
+  ],
+  "next_stage": {
+    "document": "experiments/linux-guest/DESKTOP-MILESTONE.md",
+    "kind": "read-only feasibility/design with documentation changes only",
+    "recommendation": "Debian13/trixie arm64 minbase in separate ext4 image; Xorg modesetting AccelMethod=none, Openbox/xterm through existing virtio-gpu software framebuffer; no guest network for first gates",
+    "experimental_budget": {
+      "guest_ram_mib": 1024,
+      "vcpus": 4,
+      "tcg_cache_mib": 256,
+      "new_rootfs_logical_gib": 4,
+      "sufficiency_measured": false
+    },
+    "legacy_data": "Existing128MiB FAT userdata stays byte-identical; first desktop mount read-only at /data with uid/gid mapping. POSIX home on new ext4. Optional later verified copy migration leaves source intact.",
+    "blockers_before_payload": [
+      "Pinned transitive package manifest/versions/hashes/sizes unresolved",
+      "Exact same-kernel ext4 dependency closure and KMS runtime mount probe",
+      "Controlled Linux image builder/full-system QEMU tooling unavailable here",
+      "Package image size and real memory/Jetsam fit not measured"
+    ],
+    "runtime_implemented": false
+  },
+  "this_docs_task": {
+    "runtime_changed": false,
+    "new_payload_downloaded": false,
+    "ci_dispatched": false,
+    "new_ipa_built": false,
+    "network_or_security_settings_changed": false,
+    "new_keys_connections_payment": false,
+    "main_modified": false,
+    "independent_review": {
+      "result": "Approved; no blocking factual/design contradictions",
+      "checks": [
+        "JSON parse",
+        "source/artifact SHA identifiers",
+        "git diff --check",
+        "exactly four docs/evidence files; no runtime/payload/lock/settings changes"
+      ],
+      "desktop_implementation_or_apple_tests": "not performed in this docs-only task"
+    }
+  }
+}

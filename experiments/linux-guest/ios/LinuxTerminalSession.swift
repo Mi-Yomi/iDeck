@@ -26,6 +26,7 @@ final class LinuxTerminalSession: ObservableObject {
     private var diagnostics: LinuxTerminalDiagnostics?
     private var diagnosticJournal: LinuxTerminalDiagnostics.Journal?
     private var recoveredDiagnostics = false
+    private var diagnosticAttemptIDs: [URL: String] = [:]
     private var worker: LinuxTerminalWorker?
 
     /// Recovery/export has no JIT, QEMU or userdata dependencies. Run before
@@ -33,6 +34,7 @@ final class LinuxTerminalSession: ObservableObject {
     func recoverDiagnostics() {
         precondition(Thread.isMainThread)
         diagnosticReports = []
+        diagnosticAttemptIDs = [:]
         do {
             let store = try diagnosticStore()
             var previous = try store.recover(excluding: diagnosticJournal?.id)
@@ -42,13 +44,41 @@ final class LinuxTerminalSession: ObservableObject {
                 previous = try store.recover(excluding: diagnosticJournal?.id)
             }
             var files = [URL]()
-            if let current = diagnosticJournal { files.append(try store.export(current.snapshot(), previousProcess: false)) }
-            for snapshot in previous { files.append(try store.export(snapshot, previousProcess: true)) }
+            var ids = [URL: String]()
+            if let current = diagnosticJournal {
+                let file = try store.export(current.snapshot(), previousProcess: false)
+                files.append(file); ids[file] = current.id
+            }
+            for snapshot in previous {
+                let file = try store.export(snapshot, previousProcess: true)
+                files.append(file); ids[file] = snapshot.id
+            }
+            diagnosticAttemptIDs = ids
             diagnosticReports = files
             diagnosticsError = nil
             diagnosticsMessage = files.isEmpty ? "No saved startup attempt yet. Linux has not been started by this action."
                 : "Saved startup reports are available. An interrupted previous process is not a diagnosed crash cause."
         } catch { diagnosticFailure() }
+    }
+
+    /// Owner selects one saved attempt explicitly. Never open rotating logs,
+    /// run recovery capture, start JIT/VM, or replace the preserved snapshots.
+    func exportNativeDiagnostics(for report: URL) -> URL? {
+        precondition(Thread.isMainThread)
+        do {
+            guard let id = diagnosticAttemptIDs[report] else { throw LinuxTerminalDiagnostics.Problem.invalid }
+            let store = try diagnosticStore()
+            let current = diagnosticJournal?.id == id
+            let snapshot: LinuxTerminalDiagnostics.Snapshot
+            if current, let journal = diagnosticJournal { snapshot = try journal.snapshot() }
+            else { snapshot = try store.snapshot(id: id) }
+            let file = try store.exportNativeSummary(snapshot, previousProcess: !current)
+            diagnosticsError = nil
+            return file
+        } catch {
+            diagnosticFailure()
+            return nil
+        }
     }
 
     private func diagnosticStore() throws -> LinuxTerminalDiagnostics {

@@ -17,14 +17,14 @@
     "husk/patches/0002-jit-setup-routing.patch": "a93a4af2b82418280c14c1b7e7ec64c8e6f2395602987dc59b95a1c841ed3ec4",
     "ios/LinuxProbeReport.swift": "eeec10418ad17967614463e0e89e8b0e2c9e5d18a3a02977fabf993bdc02ee25",
     "ios/LinuxTerminalProfile.swift": "bc391bbd05e9f1247c958f2a283bd90188026c54f2b0fa9f31ec8c706c6fd110",
-    "ios/LinuxTerminalSession.swift": "26c1f0a08d11604d6420b4dd4f0dd4cf2ac8e9d70cfacbd967d420f7e6463740",
-    "ios/LinuxTerminalView.swift": "f032f37052b41b53b7a176c3dbc716f7860cf858b747f9d96b6890e1f66f4b09",
+    "ios/LinuxTerminalSession.swift": "2ddb69eb91c87b42c5b7398e6a7ad20ab8360a89ddabe2705c78f0eb0d7548c0",
+    "ios/LinuxTerminalView.swift": "c3d31cac6de3edf479d8a5b817614cef0d48856a42d20f54d9060fb214c17548",
     "tools/terminal_bundle.py": "c1c696498690085c6ddd4dc1eaf06dc4afa51b4dea738d883f498194cbbdef61",
     "ipa/terminal.lock.json": "0f366dea776a5e1aecd55a7a4d001eee1b720e23cea51d609659bcfa7821b530",
     "guest/ideck-terminal-init": "021086a65c2129f65b5cd2aaedd886fd56a2374b28d239df6d70907d1393e76c",
     "guest/ideck-terminal-login": "3ff671268b2c296d76ec390590a91078db471174a9e38c4d1d840d982f8d01fe",
     "guest/TERMINAL-LICENSES.txt": "50cf68a71ffa53f5bbd8b9cdaab3ad93b37157399ff7b787eabaa1c635b7ac3a",
-    "ios/LinuxTerminalDiagnostics.swift": "0057fa6c9e17e2a7e6cdbadc4c6a9a3f8d1d3c73ae30263404dc6a82be8960d8"
+    "ios/LinuxTerminalDiagnostics.swift": "535302c31e33ca9c29da1ef1e5cfc4b252a6f999f2c12794be393028e6110db1"
   },
   "copies": {
     "ios/LinuxGuestProfile.swift": "src/app/Husk/LinuxGuestProfile.swift",

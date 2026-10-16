@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "date_utc": "2026-10-16",
+  "base_commit": "eed2a5eda400056c1550d6588662e4186e5cf00c",
+  "branch": "codex/linux-guest-feasibility-20261015",
+  "device_report": {
+    "provenance": "Parent-provided summary of owner diagnostic Markdown; raw native/app snapshots not yet received or read by this author.",
+    "markdown_size_bytes": 3514,
+    "installed_source_commit": "eed2a5eda400056c1550d6588662e4186e5cf00c",
+    "app_build": "119",
+    "journal_intact": true,
+    "last_checkpoint": "qemuInitBegin",
+    "checkpoint_utc": "2026-10-16T08:14:10.244Z",
+    "elapsed_milliseconds": 11025,
+    "prior_stages_returned": [
+      "JIT claim/readiness/execution",
+      "runtime ownership",
+      "Documents/assets/disk/sockets/arguments/report/argv"
+    ],
+    "qemu_init_returned_recorded": false,
+    "clean_stop_recorded": false,
+    "native_stderr_snapshot_bytes": 1644,
+    "app_log_snapshot_bytes": 5840,
+    "native_association": "UNKNOWN: rotating previous-launch candidate, not independently matched",
+    "cause_confirmed": false,
+    "boundary_caveat": "qemuInitBegin precedes host handoff/report persistence and the actual C call; absent qemuInitReturned does not alone prove a fault inside qemu_init."
+  },
+  "installed_ipa_export_route": {
+    "source_provenance": "Exact pinned Husk Info.plist fetched read-only; packaging source inspected. Installed SideStore Files UI not independently controlled.",
+    "info_plist_url": "https://raw.githubusercontent.com/Leviidev/Husk/0695248f491cda877f7969d1f0cc89aeede1482e/src/app/Husk/Info.plist",
+    "info_plist_sha256": "2c8be1daaf1f9f9794f25386ecf3b1587127164fc31e6e9deb8e624ab30d5801",
+    "UIFileSharingEnabled": true,
+    "LSSupportsOpeningDocumentsInPlace": true,
+    "packager_display_name": "iDeck Linux Probe",
+    "packager_preserves_flags": true,
+    "in_app_native_export_in_installed_build": false,
+    "steps": [
+      "Files -> Browse -> On My iPhone -> iDeck Linux Probe (or signed-copy/Husk folder) -> iDeckDiagnostics.",
+      "Read Attempt from existing Markdown; select matching attempt-<Attempt>.native.txt (1644 bytes) and attempt-<Attempt>.app.txt (5840 bytes).",
+      "Long-press Share or COPY, do not move/delete. Review raw text privately before manually sharing only these snapshots. No Start/JIT, reinstall, whole Documents or pairing records needed."
+    ],
+    "alternative": "Existing Finder/Apple Devices app File Sharing can save iDeckDiagnostics to a separate computer folder.",
+    "new_vm_or_new_ipa_required": false
+  },
+  "new_implementation": {
+    "manual_ui": "Startup diagnostics (.md) -> Native log summary N (.md), followed by owner-operated share sheet.",
+    "selection": "Only exact selected attempt ID from the generated checkpoint report URL-to-ID map.",
+    "input": "Existing bounded native/app snapshots only; no rotating-log fallback, recapture, JIT/VM call or journal append.",
+    "output": "Separate synchronized atomic attempt-<id>.native.md with checkpoint report plus known diagnostic signature labels.",
+    "sanitization": "No arbitrary raw line, matched substring or capture copied. Fixed labels for recognized JIT/socket/chardev/open/lock/memory/assertion/display/fatal text; unknown/overlong lines omitted and counted. Unknown signatures do not imply no error.",
+    "provenance": "Association UNKNOWN; signature presence is text evidence, not attributed termination cause.",
+    "preserves": [
+      "Raw snapshot bytes",
+      "Startup journal bytes",
+      "Original checkpoint Markdown",
+      "Runtime argv/JIT/disk guards and userdata"
+    ],
+    "auto_upload": false
+  },
+  "local_verification": {
+    "python": {
+      "tests": 148,
+      "elapsed_seconds": 9.36,
+      "exit_code": 0,
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s experiments/linux-guest/tests -q"
+    },
+    "actual_swift_helper": {
+      "toolchain": "Swift 6.2.1 Linux, unchanged helper source using conditional Glibc/Foundation branch",
+      "exit_code": 0,
+      "elapsed_seconds": 0.142,
+      "stdout": "LINUX_TERMINAL_DIAGNOSTICS_CHECKS_PASS (actual journal/process interruption/export; no guest/device execution)",
+      "new_cases": [
+        "Recognized signature and token/path/fence/script injection on same line",
+        "Unknown/invalid UTF8/overlong lines omitted",
+        "Repeated export preserves raw bytes/journal/checkpoint Markdown",
+        "Absent snapshots do not substitute rotating logs",
+        "Symlink and oversized inputs reject without partial publication"
+      ]
+    },
+    "session_view_swift_parse": "pass; no Apple SDK typecheck claim",
+    "independent_review": "No blocking findings; latest helper and new native-summary regressions independently built/executed PASS; diff check and 22 input hashes PASS.",
+    "overlay_inputs_valid": 22,
+    "historical_evidence_files_unchanged": 44,
+    "protected_files_unchanged": 14,
+    "git_diff_check": "pass"
+  },
+  "parallel_native_review": {
+    "result": "No proven argv/native-exit cause. FD socket syntax, automatic virtserialport numbering, absent blk/serial ROM defaults and same probe RAM/JIT/thread settings rechecked. Need existing native snapshot bytes or IPS.",
+    "runtime_change_justified": false
+  },
+  "input_sha256": {
+    "ios/LinuxTerminalDiagnostics.swift": "535302c31e33ca9c29da1ef1e5cfc4b252a6f999f2c12794be393028e6110db1",
+    "ios/LinuxTerminalSession.swift": "2ddb69eb91c87b42c5b7398e6a7ad20ab8360a89ddabe2705c78f0eb0d7548c0",
+    "ios/LinuxTerminalView.swift": "c3d31cac6de3edf479d8a5b817614cef0d48856a42d20f54d9060fb214c17548",
+    "ios/tests/DiagnosticsChecks.swift": "c92fd3d18287bd6510c4867f8fa1abb733885aa025279e64a1885c9122121660",
+    "tests/test_diagnostics.py": "8496911907c32ac039c770cbdbe4c1040f73bf4fd38b8bfea6a77134ab996d99",
+    "husk/overlay.lock.json": "c4e1ac305fa52957749ab201006fdadcdf3750b0666652db36ed30bda24de280"
+  },
+  "ci_started": false,
+  "new_ipa_created": false,
+  "not_run": [
+    "Apple SDK/full app typecheck/link/package for manual-summary UI",
+    "New manual-summary button on iPhone",
+    "Actual Files UI on owner SideStore copy",
+    "Raw native/app snapshot interpretation",
+    "Terminal readiness/orderly Stop/two-process persistence"
+  ],
+  "next_step": "Owner exports existing 1644/5840-byte snapshots via Files now, without a new VM attempt or rebuild. Read native evidence before runtime fixes; parent controls any later Apple CI."
+}

@@ -123,7 +123,7 @@ final class LinuxTerminalDiagnostics {
         return UUID(uuidString: uuid)?.uuidString == uuid
     }
     private static func basename(_ id: String, _ suffix: String) throws -> String {
-        guard validID(id), ["jsonl", "md", "native.txt", "app.txt", "capture.txt"].contains(suffix) else { throw Problem.invalid }
+        guard validID(id), ["jsonl", "md", "native.md", "native.txt", "app.txt", "capture.txt"].contains(suffix) else { throw Problem.invalid }
         return "attempt-" + id + "." + suffix
     }
     private static func stamp() -> String {
@@ -221,11 +221,80 @@ final class LinuxTerminalDiagnostics {
         return journal
     }
     func export(_ snapshot: Snapshot, previousProcess: Bool) throws -> URL {
-        let name = try Self.basename(snapshot.id, "md")
+        try publishMarkdown(snapshot.markdown(previousProcess: previousProcess), id: snapshot.id, suffix: "md")
+    }
+
+    /// Explicit manual export only. Arbitrary native/app log lines cannot be
+    /// made secret-free with general regex redaction, so map recognized text to
+    /// fixed diagnostic labels and omit everything else. Preserve raw files.
+    func exportNativeSummary(_ snapshot: Snapshot, previousProcess: Bool) throws -> URL {
+        _ = try Self.basename(snapshot.id, "native.md")
+        var lines = [snapshot.markdown(previousProcess: previousProcess), "## Native log signatures (manual export)", "",
+            "Association UNKNOWN: these are rotating previous-launch candidates, not independently matched to this attempt.",
+            "Signature presence describes log text only; it does not identify the cause of termination.",
+            "Only fixed recognized labels are exported. Unknown lines, paths, addresses, commands and possible credentials remain local.", ""]
+        for (label, suffix) in [("Native stderr", "native.txt"), ("App log", "app.txt")] {
+            let name = try Self.basename(snapshot.id, suffix)
+            var state = stat()
+            lines += ["### " + label, ""]
+            if fstatat(rootFD, name, &state, AT_SYMLINK_NOFOLLOW) != 0 {
+                guard errno == ENOENT else { throw Problem.metadata }
+                lines += ["Snapshot NOT AVAILABLE. No current/rotated log was substituted.", ""]
+                continue
+            }
+            let data = try read(name, maximum: 1024 * 1024)
+            let summary = Self.nativeSignatures(data)
+            lines += ["Snapshot bytes: \(data.count).", "", "| Recognized text signature |", "| --- |"]
+            lines += summary.labels.isEmpty ? ["| NONE RECOGNIZED |"] : summary.labels.map { "| \($0) |" }
+            lines += ["", "Omitted/unrecognized lines: \(summary.omitted).", ""]
+        }
+        return try publishMarkdown(lines.joined(separator: "\n"), id: snapshot.id, suffix: "native.md")
+    }
+
+    private static func nativeSignatures(_ data: Data) -> (labels: [String], omitted: Int) {
+        // No matched source substring, regex capture or arbitrary value is ever
+        // copied to the export. Even a forged line can only select a fixed label.
+        let catalog: [(String, String)] = [
+            ("husk: could not obtain", "QEMU JIT allocation error text"),
+            ("prewarm OK:", "JIT prewarm OK text"),
+            ("prewarm FAILED:", "JIT prewarm FAILED text"),
+            ("using the prewarmed region", "QEMU using prewarmed JIT region text"),
+            ("'wait' option is incompatible", "Socket wait option incompatibility text"),
+            ("'reconnect' option is incompatible", "Socket reconnect option incompatibility text"),
+            ("is not a socket", "File descriptor is not a socket text"),
+            ("Unable to parse FD number", "Socket descriptor parse error text"),
+            ("Unable to query remote socket address", "Remote socket address query error text"),
+            ("Unable to query local socket address", "Local socket address query error text"),
+            ("Failed to create chardev", "QEMU chardev creation failure text"),
+            ("Failed to get", "Resource acquisition failure text (generic)"),
+            ("Could not open", "File/resource open failure text (generic)"),
+            ("Failed to lock byte", "QEMU block byte-lock failure text"),
+            ("Cannot allocate memory", "Memory allocation failure text"),
+            ("Assertion failed:", "Native assertion text"),
+            ("assertion failed:", "Native assertion text"),
+            ("ERROR:", "Native error marker text (generic)"),
+            ("init: registering DisplayChangeListener", "Display listener registration begin text"),
+            ("init: listener registered", "Display listener registration completed text"),
+            ("qemu_console_lookup_by_index(0) returned NULL", "No QEMU graphics console text"),
+            ("*** FATAL SIGNAL", "Fatal signal marker text (signal/cause not inferred)")
+        ]
+        var found = Set<String>()
+        var omitted = 0
+        for (index, line) in String(decoding: data, as: UTF8.self).split(separator: "\n").enumerated() {
+            guard index < 4096, line.utf8.count <= 2048 else { omitted += 1; continue }
+            var recognized = false
+            for (pattern, label) in catalog where line.contains(pattern) { found.insert(label); recognized = true }
+            if !recognized { omitted += 1 }
+        }
+        return (found.sorted(), omitted)
+    }
+
+    private func publishMarkdown(_ text: String, id: String, suffix: String) throws -> URL {
+        let name = try Self.basename(id, suffix)
         let temporary = ".export-" + UUID().uuidString
         let fd = try checkedOpen(temporary, flags: O_WRONLY | O_CREAT | O_EXCL)
         defer { close(fd); unlinkat(rootFD, temporary, 0) }
-        try writeAll(Data(snapshot.markdown(previousProcess: previousProcess).utf8), fd: fd)
+        try writeAll(Data(text.utf8), fd: fd)
         guard renameat(rootFD, temporary, rootFD, name) == 0 else { throw Problem.write }
         return directory.appendingPathComponent(name)
     }

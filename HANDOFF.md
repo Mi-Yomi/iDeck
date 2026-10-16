@@ -5,6 +5,85 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## Device journal получен: native snapshots доступны через Files; добавлен manual safe export
+
+Parent передал содержание device diagnostic MD (**3514 bytes**) от установленной
+**`eed2a5eda400056c1550d6588662e4186e5cf00c`**, build **119**. Это подтверждает
+установку/исполнение диагностической версии, а не только source stage из
+следующего исторического раздела. Journal intact; final checkpoint
+**`qemuInitBegin`**, **2026-10-16T08:14:10.244Z**, elapsed **11025 ms**.
+JIT claim/readiness/execution, runtime ownership и все host preparation phases
+вернулись. `qemuInitReturned` и clean stop не записаны. Native stderr snapshot
+**1644 bytes**, app log snapshot **5840 bytes** доступны отдельно; association
+остаётся **UNKNOWN**. Автор этой записи получил parent summary, не raw native
+bytes. **Причина выхода/вылета ещё не установлена.** Между qemuInitBegin и C
+call есть host handoff/report write; один checkpoint не доказывает упавшую
+инструкцию или exception type.
+
+### Забрать snapshots из УЖЕ установленной IPA, без Start/JIT/новой сборки
+
+В pinned Husk `src/app/Husk/Info.plist` включены **UIFileSharingEnabled=true**
+и **LSSupportsOpeningDocumentsInPlace=true**. Packager меняет display name на
+**iDeck Linux Probe**, сохраняя эти flags. Это проверка source/build recipe;
+actual Files UI SideStore-копии автором не управлялся. Встроенный EED menu
+пока экспортирует только checkpoint MD; raw native export button там нет.
+
+1. **Файлы → Обзор → На моём iPhone → iDeck Linux Probe** (папка может
+   отображаться под именем подписанной копии/Husk) → **iDeckDiagnostics**.
+2. Взять значение **Attempt** из уже полученного MD. Нужны только два файла
+   **attempt-<Attempt>.native.txt** (**1644 bytes**) и
+   **attempt-<Attempt>.app.txt** (**5840 bytes**), с тем же stem.
+3. Долгое нажатие → **Поделиться**, либо **скопировать**, не перемещать/удалять.
+   Просмотреть raw text на private content перед ручной передачей. Pairing
+   records и весь Documents не нужны. Не нажимать Start, не включать JIT,
+   не reinstall/uninstall и не трогать userdata/journal ради экспорта.
+
+Если папка не показывается в Files, те же Documents доступны через существующий
+File Sharing приложения в Finder/Apple Devices на компьютере: сохранить
+**iDeckDiagnostics** отдельно. Это альтернатива чтения существующих файлов,
+не новая VM attempt. Snapshot capture receipt сохраняет уже скопированные
+файлы; повторный запуск не должен заменять их свежими rotating logs.
+
+### Новый source: explicit manual native summary для следующей сборки
+
+В **Startup diagnostics (.md)** рядом с каждой попыткой добавлена кнопка
+**Native log summary N (.md)**. Она читает только сохранённые `.native.txt` /
+`.app.txt` выбранной попытки, без JIT/VM, journal append, recapture или подстановки
+текущих/rotating logs. Export — отдельный atomic/synced `attempt-<id>.native.md`;
+исходные raw bytes, journal и старый checkpoint Markdown остаются неизменными.
+
+General regex redaction произвольного native text не гарантирует отсутствие
+секретов, поэтому экспортируются только **фиксированные подписи распознанных
+диагностических строк** (JIT allocation/prewarm, socket fd/chardev, file/lock,
+assertion/fatal-signal/display text). Matched substrings/captures/values, адреса,
+пути, команды, unknown lines и credentials в MD не копируются. Есть счётчик
+omitted lines; `NONE RECOGNIZED` не означает отсутствие ошибки. Association и
+cause остаются UNKNOWN; signature presence не является crash attribution.
+Автоотправки нет. Для полного текста ТЕКУЩИХ snapshots использовать Files выше,
+не ждать новой IPA и не запускать VM повторно.
+
+Проверка: **148 Python tests PASS, 9.360 s**, exit 0. Actual Swift 6.2.1 helper
+с новыми native-summary regressions: **PASS**, run **0.142 s**. Проверены
+same-line token/path/Markdown injection при recognized signature, unknown/
+invalid UTF8/long lines, repeated export с побайтным сохранением raw/journal/
+checkpoint MD, absent snapshot без rotating fallback, symlink и oversized read
+failures без partial publication. Независимый reviewer пересобрал/исполнил
+latest helper: PASS; блокирующих замечаний нет. Session/View Swift parse PASS;
+Apple SDK/UI/device нового export ещё не проверены. Все **22 overlay hashes**
+проверены, прежние runtime/argv/JIT/disk guards и evidence сохранены.
+
+Дополнительная pinned source review: default ROM не задан ни у virtio-blk-pci,
+ни у virtio-serial-pci; прежняя Husk PXE ROM ошибка относилась к отключённому
+`-nic none` network device. QEMU сам резервирует port 0 и выбирает следующий
+для virtserialport. Эти гипотезы не дают основания менять argv. Native logs
+1644/5840 bytes либо IPS остаются следующим решающим evidence.
+
+Новый evidence: `experiments/linux-guest/evidence/terminal-native-log-export.json`.
+Source base — **eed2a5eda400056c1550d6588662e4186e5cf00c**; новый commit/push
+содержит manual export и тесты. CI не запускался; новый IPA для этого UI не
+собран. Parent координирует CI, main не меняется. Текущий приоритет — получить
+существующие snapshots через Files, затем исправлять подтверждённую причину.
+
 ## Диагностическая версия startup: журнал/relaunch/Markdown готовы к Apple build
 
 Новая задача реализации от **`68c80dcdc8fee85a00fc2f16ca4bfc7ee77b7b19`**:

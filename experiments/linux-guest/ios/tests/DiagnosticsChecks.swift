@@ -178,6 +178,57 @@ func runTerminalDiagnosticsChecks() throws {
     check(try absent.snapshot(id: absentAttempt.id).nativeBytes == nil, "missing original logs never filled by a later unrelated launch")
     check(snapshot.markdown(previousProcess: true).contains("Native log association | UNKNOWN"), "rotating-log association is never claimed proven")
 
+    // The explicit manual summary exports only fixed labels, never source
+    // substrings/captures. Include paths, credentials and Markdown injection on
+    // the SAME recognized line to guard against unsafe partial-line redaction.
+    let summaryDocs = try documents("native-summary")
+    let summaryStore = try LinuxTerminalDiagnostics(documents: summaryDocs)
+    let summaryAttempt = try summaryStore.begin(source: String(repeating: "c", count: 40), build: "119")
+    try summaryAttempt.record(.qemuInitBegin)
+    let summaryID = summaryAttempt.id
+    let nativeURL = summaryStore.directory.appendingPathComponent("attempt-" + summaryID + ".native.txt")
+    let appURL = summaryStore.directory.appendingPathComponent("attempt-" + summaryID + ".app.txt")
+    let leak = "PAIRING_TOKEN=do-not-share /private/var/mobile/secret /Users/Owner ``` <script>"
+    var nativeRaw = Data(("[husk-jit] prewarm OK: 536870912 bytes " + leak + "\n" +
+                          "Failed to create chardev: " + leak + "\n" +
+                          "unknown raw line " + leak + "\n" + String(repeating: "x", count: 2049) + "\n").utf8)
+    nativeRaw.append(contentsOf: [255, 254, 10])
+    let appRaw = Data(("Assertion failed: " + leak + "\n").utf8)
+    try nativeRaw.write(to: nativeURL); try appRaw.write(to: appURL)
+    let summarySnapshot = try summaryStore.snapshot(id: summaryID)
+    let unchangedJournal = try Data(contentsOf: rawURL(summaryStore, summaryID))
+    let primary = try summaryStore.export(summarySnapshot, previousProcess: true)
+    let primaryBytes = try Data(contentsOf: primary)
+    var safeSummaryURL: URL?
+    for _ in 0..<3 {
+        let url = try summaryStore.exportNativeSummary(summarySnapshot, previousProcess: true)
+        safeSummaryURL = url
+        let text = try String(contentsOf: url, encoding: .utf8)
+        check(text.contains("JIT prewarm OK text") && text.contains("QEMU chardev creation failure text") && text.contains("Native assertion text"),
+              "recognized native text yields useful fixed labels")
+        for forbidden in ["PAIRING_TOKEN", "do-not-share", "/private/var", "/Users/Owner", "<script>", "```", "536870912", "unknown raw line"] {
+            check(!text.contains(forbidden), "arbitrary sensitive text never reaches native Markdown")
+        }
+        check(text.contains("Association UNKNOWN") && text.contains("does not identify the cause"), "native signature is not an attributed crash cause")
+        check(text.contains("Omitted/unrecognized lines:"), "unknown/invalid UTF8/oversized lines are explicitly omitted")
+        check(try Data(contentsOf: nativeURL) == nativeRaw && Data(contentsOf: appURL) == appRaw, "summary never changes raw snapshot bytes")
+        check(try Data(contentsOf: rawURL(summaryStore, summaryID)) == unchangedJournal, "manual export never appends or replaces startup journal")
+        check(try Data(contentsOf: primary) == primaryBytes, "native export never replaces original checkpoint Markdown")
+    }
+    let safeSummary = safeSummaryURL!
+    let safeBytes = try Data(contentsOf: safeSummary)
+    try manager.removeItem(at: nativeURL)
+    try manager.createSymbolicLink(at: nativeURL, withDestinationURL: privateFile)
+    expect(.open) { _ = try summaryStore.exportNativeSummary(summarySnapshot, previousProcess: true) }
+    check(try Data(contentsOf: safeSummary) == safeBytes, "failed manual export never publishes partial or unsafe Markdown")
+    try manager.removeItem(at: nativeURL)
+    try Data(repeating: 120, count: 1024 * 1024 + 1).write(to: nativeURL)
+    expect(.limit) { _ = try summaryStore.exportNativeSummary(summarySnapshot, previousProcess: true) }
+    let absentSummary = try absent.exportNativeSummary(absent.snapshot(id: absentAttempt.id), previousProcess: true)
+    let absentText = try String(contentsOf: absentSummary, encoding: .utf8)
+    check(absentText.contains("Snapshot NOT AVAILABLE") && !absentText.contains("unrelated later launch"),
+          "manual summary never substitutes rotating logs for absent snapshots")
+
     // Run FIFO regressions in bounded child processes: the old blocking open
     // would hang, and must fail this check instead of hanging the entire gate.
     for nativeLog in [false, true] {

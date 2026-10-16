@@ -72,6 +72,28 @@ class StartupDiagnosticsWiring(unittest.TestCase):
         self.assertIn("Cause UNKNOWN", markdown)
         self.assertIn("Jetsam/SIGKILL", markdown)
 
+    def test_native_summary_is_explicit_manual_and_cannot_read_rotating_logs(self):
+        session = (EXPERIMENT / "ios/LinuxTerminalSession.swift").read_text()
+        export = swift_block(session, "func exportNativeDiagnostics(")
+        self.assertIn("diagnosticAttemptIDs[report]", export)
+        self.assertIn("exportNativeSummary(snapshot", export)
+        for forbidden in ("JITBootstrap", "qemu_init", "openDisk", "preservePreviousLogs", ".begin(", ".record("):
+            self.assertNotIn(forbidden, export)
+        recovery = swift_block(session, "func recoverDiagnostics()")
+        self.assertNotIn("exportNativeSummary", recovery)
+        view = (EXPERIMENT / "ios/LinuxTerminalView.swift").read_text()
+        button = swift_block(view, 'Button("Native log summary ')
+        self.assertIn("session.exportNativeDiagnostics(for: file)", button)
+        self.assertIn("shareItems = [summary]", button)
+        helper = (EXPERIMENT / "ios/LinuxTerminalDiagnostics.swift").read_text()
+        summary = swift_block(helper, "func exportNativeSummary(")
+        self.assertIn('"native.txt"', summary)
+        self.assertIn('"app.txt"', summary)
+        self.assertNotIn("husk-native-prev.log", summary)
+        signatures = swift_block(helper, "private static func nativeSignatures(")
+        self.assertIn("found.insert(label)", signatures)
+        self.assertNotIn("found.insert(line)", signatures)
+
     def test_new_runtime_helper_is_exactly_staged_and_actual_swift_tests_are_wired(self):
         lock = stage_husk.load_overlay()
         name = "ios/LinuxTerminalDiagnostics.swift"

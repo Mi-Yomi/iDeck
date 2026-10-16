@@ -53,9 +53,14 @@ struct LinuxTerminalView: View {
                         Button("Saved startup report \(index + 1) (.md)") {
                             shareItems = [file]; showShare = true
                         }
+                        Button("Native log summary \(index + 1) (.md)") {
+                            guard let summary = session.exportNativeDiagnostics(for: file) else { return }
+                            shareItems = [summary]; showShare = true
+                        }
                     }
                 }
                 Text(session.diagnosticsMessage).font(.footnote)
+                Text("Native summaries include recognized diagnostic signatures only. Other log text stays local.").font(.footnote)
                 if let error = session.diagnosticsError { Text(error).font(.footnote).foregroundStyle(.orange) }
                 Menu("Save report") {
                     Button("Markdown report (.md)") {

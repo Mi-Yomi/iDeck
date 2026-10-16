@@ -5,6 +5,32 @@
 Для следующего Codemagic запуска нужен полный текущий pushed HEAD, включая
 коммит этой инструкции; SHA последнего исправления кода указан отдельно.
 
+## Attached modloop: Library transfer tunnel BLOCKED — 2026-10-16
+
+Продолжение от pushed **c973f4ca648856ad2fba18a27130bb2fad8dc38e**. Среда
+доступна, checkout/чтение/запись работают. Owner приложил отдельный `modloop-virt`;
+`library.prepare_materialize` успешно вернул transfer и metadata размер
+**17,670,144 B**, но `workspace_path:null`: для получения bytes требуется GET
+по выданному signed transfer URL.
+
+Единственный штатный GET завершился **`URLError: <urlopen error Tunnel
+connection failed: 403 Forbidden>`**. Это отказ network tunnel, не доказанный
+запрет Library ownership и не ошибка digest. Получено **0 bytes**, partial
+temporary не осталось, локального `modloop-virt` нет. Размер выше — declared metadata,
+не измерение content в этом executor. Expected SHA-256 остаётся
+**f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b**,
+actual SHA **не проверен**. Library/Drive ID, completion token и signed URL в
+Git не сохраняются. [Точный receipt](experiments/linux-guest/evidence/desktop-modloop-library-transfer-blocked.json).
+
+Повторов, других URL/proxy/executor, network/security setting changes и
+escalation обхода не выполнялось. Требуется поддерживаемо материализованный
+exact member в выбранной среде. До доступных bytes нельзя разрешить ext4 module
+closure, собрать проверенный initramfs или выполнить guest mount/POSIX/two-boot.
+Новая IPA не подготовлена; CI не запускался. Прежние проверенные rootfs images,
+userdata, terminal/probe, JIT/SideStore/MD export, main сохранены. Ниже сохранён
+предыдущий независимый Drive size-limit blocker; новый файл меньше этого
+лимита, текущий отказ относится именно к Library transfer network tunnel.
+
 ## Owner-provided netboot: Drive transfer BLOCKED — 2026-10-16
 
 Продолжение от pushed **b59e209b7a9ec55aef7bfb2bf6f968805a4a9727**.

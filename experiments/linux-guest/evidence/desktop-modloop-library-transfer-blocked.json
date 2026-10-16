@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "observed_utc": "2026-10-16 13:24:22 UTC",
+  "base_commit": "c973f4ca648856ad2fba18a27130bb2fad8dc38e",
+  "branch": "codex/linux-guest-feasibility-20261015",
+  "result": "BLOCKED: network tunnel refused supported Library signed-transfer GET",
+  "source": "User-attached modloop-virt in ChatGPT Library; private identifiers and signed transfer URL omitted",
+  "library_prepare_materialize": {
+    "result": "success",
+    "file_name": "modloop-virt",
+    "declared_size_bytes": 17670144,
+    "workspace_path_provided": false,
+    "signed_transfer_provided": true
+  },
+  "download": {
+    "attempts": 1,
+    "result": "failed",
+    "error_class": "URLError",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+    "failure_layer": "network proxy tunnel; not proof of Library ownership denial or source-file corruption",
+    "bytes_received": 0,
+    "alternate_url_proxy_executor_or_escalation_used": false,
+    "partial_file_cleanup_complete": true
+  },
+  "expected_modloop": {
+    "size_bytes": 17670144,
+    "size_scope": "user/Library metadata only; local content not measured",
+    "sha256": "f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b"
+  },
+  "verification": {
+    "local_file_available": false,
+    "local_sha256": "not verified",
+    "ext4_module_closure": "not resolved",
+    "initramfs": "not built",
+    "guest_mount_two_boot": "not performed",
+    "new_ipa": "not prepared"
+  },
+  "environment": {
+    "workspace_commands_available": true,
+    "checkout_head_confirmed": "c973f4ca648856ad2fba18a27130bb2fad8dc38e"
+  },
+  "scope": {
+    "runtime_changed": false,
+    "legacy_userdata_accessed": false,
+    "probe_terminal_jit_sideload_markdown_export_preserved": true,
+    "ci_dispatched": false,
+    "payload_published": false,
+    "main_modified": false,
+    "new_keys_connections_payment": false
+  }
+}

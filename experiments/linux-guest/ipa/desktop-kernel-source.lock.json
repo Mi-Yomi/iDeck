@@ -67,12 +67,24 @@
   "blocker": "2026-10-16: official Alpine CDN, dl-2 and listed mirrors.edge.kernel.org archive transfer returned HTTP403 in executor; original archive not cached. Do not infer module closure or hashes.",
   "latest_input_transfer": {
     "date": "2026-10-16",
-    "source": "user-provided Google Drive archive; private identifiers omitted",
-    "metadata_name": "alpine-netboot-3.24.1-aarch64.tar.gz",
-    "metadata_size": 431008592,
+    "source": "user-attached Library modloop-virt; private identifiers omitted",
+    "declared_size_bytes": 17670144,
+    "local_verified_size": null,
     "bytes_received": 0,
-    "archive_and_modloop_hashes_newly_verified": false,
-    "blocker": "Supported raw fetch rejected before action invocation: HTTP413, declared431008592B exceeds268435456B limit; separate streaming download action unavailable",
-    "receipt": "evidence/desktop-netboot-drive-transfer-blocked.json"
-  }
+    "modloop_hash_newly_verified": false,
+    "blocker": "prepare_materialize succeeded; supported signed-transfer GET failed: URLError Tunnel connection failed:403Forbidden",
+    "receipt": "evidence/desktop-modloop-library-transfer-blocked.json"
+  },
+  "input_transfer_history": [
+    {
+      "date": "2026-10-16",
+      "source": "user-provided Google Drive archive; private identifiers omitted",
+      "metadata_name": "alpine-netboot-3.24.1-aarch64.tar.gz",
+      "metadata_size": 431008592,
+      "bytes_received": 0,
+      "archive_and_modloop_hashes_newly_verified": false,
+      "blocker": "Supported raw fetch rejected before action invocation: HTTP413, declared431008592B exceeds268435456B limit; separate streaming download action unavailable",
+      "receipt": "evidence/desktop-netboot-drive-transfer-blocked.json"
+    }
+  ]
 }

@@ -1,4 +1,54 @@
 import Foundation
+#if canImport(Darwin)
+import Darwin
+#else
+import Glibc
+#endif
+
+/// A real Foundation worker with native pthread TLS. The destructor ends this
+/// isolated test process if the worker exits. No QEMU registration is faked.
+func runQEMUOwnerLifetimeChild(retain: Bool) -> Never {
+    var key = pthread_key_t()
+    precondition(pthread_key_create(&key, { _ in _exit(42) }) == 0)
+    let tlsKey = key
+    let entered = DispatchSemaphore(value: 0)
+    let worker = Thread {
+        precondition(pthread_setspecific(tlsKey, UnsafeMutableRawPointer(bitPattern: 1)) == 0)
+        if retain {
+            LinuxQEMUThreadLifetime.retainCurrentThread { entered.signal() }
+        }
+        entered.signal()
+    }
+    worker.start()
+    precondition(entered.wait(timeout: .now() + 5) == .success)
+    if !retain { dispatchMain() } // Negative control must reach the TLS destructor.
+    worker.cancel() // A UI cancellation must not reclaim the native owner.
+    let queue = DispatchQueue(label: "ideck.lifetime.regression")
+    for _ in 0..<10000 {
+        queue.sync { precondition(!worker.isFinished) }
+    }
+    // Process exit, not a release hook on the production lifetime helper.
+    _exit(0)
+}
+
+func runQEMUOwnerLifetimeChecks() throws {
+    let cases: [(String, Int32)] = [("exit-control", 42), ("retain", 0)]
+    for (mode, expected) in cases {
+        let child = Process()
+        let ended = DispatchSemaphore(value: 0)
+        child.executableURL = URL(fileURLWithPath: CommandLine.arguments[0])
+        child.arguments = ["--qemu-owner-lifetime", mode]
+        child.terminationHandler = { _ in ended.signal() }
+        try child.run()
+        guard ended.wait(timeout: .now() + 10) == .success else {
+            child.terminate()
+            preconditionFailure("QEMU owner lifetime regression timed out")
+        }
+        child.waitUntilExit()
+        precondition(child.terminationReason == .exit && child.terminationStatus == expected)
+    }
+    print("LINUX_QEMU_OWNER_LIFETIME_PASS (production wait; real Foundation/pthread TLS; no QEMU/device run)")
+}
 
 /// Run against both real disk owners, before their independent-process lock
 /// contenders. Only the first sync error is injected; the next sync is real.
@@ -39,6 +89,7 @@ func runConsoleHostSyncFailureCheck(disk: LinuxConsoleDisk) throws {
 /// Executes the production Stop decision, including reordered callbacks. The
 /// QEMU engine itself is not simulated here; full app sources use the real SDK.
 func runConsoleLifecycleChecks() throws {
+    try runQEMUOwnerLifetimeChecks()
     func prepared() -> LinuxConsoleLifecycle {
         var state = LinuxConsoleLifecycle()
         precondition(state.canStart && !state.mustRetainDisk)

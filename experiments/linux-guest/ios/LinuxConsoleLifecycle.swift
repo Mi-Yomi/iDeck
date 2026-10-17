@@ -1,5 +1,21 @@
 import Foundation
 
+/// qemu_init registers the calling thread's TLS reader in pinned QEMU's RCU
+/// registry. Main-loop return does not tear down that registration, BQL, vCPUs
+/// or display callbacks. Keep the SAME native thread alive for this single-use
+/// runtime, just as we retain its disk owner. See docs/qemu-owner-lifetime.md.
+enum LinuxQEMUThreadLifetime {
+    static func retainCurrentThread(_ retained: () -> Void) -> Never {
+        let condition = NSCondition()
+        condition.lock()
+        retained()
+        // No release/cancel API: only process exit may reclaim this runtime.
+        // A condition wait blocks without polling and tolerates spurious wakes.
+        // It releases only this private mutex; QEMU's BQL ownership is intact.
+        while true { condition.wait() }
+    }
+}
+
 /// Shared Stop decision used by the real console worker and mandatory Apple
 /// executable regression. A loop return never grants permission to close disk.
 struct LinuxConsoleLifecycle {

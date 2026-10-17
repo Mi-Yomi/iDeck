@@ -26,6 +26,8 @@ final class LinuxTerminalDiagnostics {
         case displayInitBegin, displayInitReturned, mainLoopBegin, mainLoopReturned
         case terminalReady, stopRequested, guestCleanUnmount, hostSyncBegin, hostDiskSynced
         case cleanStopped, stopFailed, uncleanStopped, preparationFailed, startupTimeout, stopTimeout
+        case qemuOwnerThreadRetained, consoleLogCloseBegin, consoleLogCloseReturned
+        case consolePeersCloseBegin, consolePeersCloseReturned
     }
     enum Problem: Error { case directory, open, metadata, read, write, synchronize, limit, invalid }
     struct Record: Codable {
@@ -48,11 +50,22 @@ final class LinuxTerminalDiagnostics {
 
         var clean: Bool {
             let stages = records.map(\.stage)
-            guard stages.last == .cleanStopped,
+            guard let clean = stages.firstIndex(of: .cleanStopped),
                   let unmount = stages.firstIndex(of: .guestCleanUnmount),
                   let loop = stages.firstIndex(of: .mainLoopReturned),
                   let sync = stages.firstIndex(of: .hostDiskSynced) else { return false }
-            return unmount < sync && loop < sync && !stages.contains(.stopFailed) && !invalid && !tornTail
+            // Older receipts end at cleanStopped. New ones append bounded tail
+            // checkpoints; neither receipt proves backend teardown or survival.
+            let tail = Array(stages.dropFirst(clean + 1))
+            return unmount < sync && loop < sync && sync < clean
+                && tail == Array(Self.shutdownTail.prefix(tail.count)) && tail.count <= Self.shutdownTail.count
+                && !stages.contains(.stopFailed) && !invalid && !tornTail
+        }
+        private static let shutdownTail: [Stage] = [.consoleLogCloseBegin, .consoleLogCloseReturned,
+                                                   .consolePeersCloseBegin, .consolePeersCloseReturned]
+        var shutdownTailReturned: Bool {
+            guard clean, let cleanIndex = records.firstIndex(where: { $0.stage == .cleanStopped }) else { return false }
+            return Array(records.dropFirst(cleanIndex + 1).map(\.stage)) == Self.shutdownTail
         }
         func markdown(previousProcess: Bool) -> String {
             let last = records.last
@@ -70,6 +83,7 @@ final class LinuxTerminalDiagnostics {
                 "| Field | Value |", "| --- | --- |", "| Attempt | \(id) |",
                 "| Source commit | \(last?.source ?? "UNKNOWN") |", "| App build | \(last?.build ?? "UNKNOWN") |",
                 "| Last saved checkpoint | \(last?.stage.rawValue ?? "UNKNOWN") |",
+                "| Host log/socket close path returned | \(shutdownTailReturned ? "RECORDED" : "NOT ESTABLISHED") |",
                 "| Incomplete final record | \(tornTail ? "YES" : "NO") |",
                 "| Invalid or oversized journal | \(invalid ? "YES" : "NO") |",
                 "| Native stderr snapshot bytes | \(nativeBytes.map(String.init) ?? "NOT AVAILABLE") |",
@@ -85,6 +99,8 @@ final class LinuxTerminalDiagnostics {
                 "Native stderr/app log snapshots are preserved locally when available, separately from this Markdown. Their arbitrary text, paths, commands and possible private data are excluded from this export.",
                 "No pairing records, tokens, argv, console transcript or personal filesystem paths are included. Nothing is uploaded automatically.",
                 "An orderly-stop receipt does not verify QEMU block-layer teardown or file persistence after a second guest boot.", ""]
+            lines += ["Owner-thread retention records entry to a process-lifetime wait on the same QEMU thread. It does not record RCU unregister or backend drain.",
+                "Log/socket tail checkpoints record code reached and return from close attempts, not IO success or continued process health.", ""]
             return lines.joined(separator: "\n")
         }
     }

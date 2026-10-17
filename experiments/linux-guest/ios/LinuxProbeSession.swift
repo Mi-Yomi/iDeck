@@ -182,14 +182,17 @@ private final class LinuxProbeWorker {
                     }
                     self.owner.publish("Linux is booting…", display: true)
                     qemu_main_loop()
-                    self.queue.async {
-                        self.finish("guest_stopped", "Linux stopped. Close and reopen the app for another session.")
-                        self.owner.publish("Linux stopped. Close and reopen the app.", display: false, input: false)
-                    }
                     // No in-process restart or qemu_cleanup: the shared display
                     // listener has no detach API. Tearing it down while MTKView
                     // holds a surface would introduce a use-after-free. The OS
                     // reclaims this single-use runtime on application exit.
+                    LinuxQEMUThreadLifetime.retainCurrentThread {
+                        self.queue.async {
+                            self.report["qemu_owner_thread_retained_until_process_exit"] = true
+                            self.finish("guest_stopped", "Linux stopped. Close and reopen the app for another session.")
+                            self.owner.publish("Linux stopped. Close and reopen the app.", display: false, input: false)
+                        }
+                    }
                 }
                 thread.name = "ideck.linux.qemu"
                 thread.qualityOfService = .userInteractive

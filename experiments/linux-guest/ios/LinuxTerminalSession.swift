@@ -547,7 +547,13 @@ private final class LinuxTerminalWorker {
                     self.checkpoint(.mainLoopBegin)
                     qemu_main_loop()
                     self.checkpoint(.mainLoopReturned)
-                    self.queue.async { self.didReturnFromQEMU() }
+                    LinuxQEMUThreadLifetime.retainCurrentThread {
+                        self.checkpoint(.qemuOwnerThreadRetained)
+                        self.queue.async {
+                            self.report["qemu_owner_thread_retained_until_process_exit"] = true
+                            self.didReturnFromQEMU()
+                        }
+                    }
                 }
                 thread.name = "ideck.linux.terminal.qemu"
                 thread.qualityOfService = .userInteractive
@@ -750,9 +756,15 @@ private final class LinuxTerminalWorker {
             report["status"] = "terminal_clean_stopped"
             checkpoint(.cleanStopped)
             persist()
+            checkpoint(.consoleLogCloseBegin)
             try? logHandle?.synchronize()
             try? logHandle?.close(); logHandle = nil
+            checkpoint(.consoleLogCloseReturned)
+            checkpoint(.consolePeersCloseBegin)
             serial?.closePeer(); control?.closePeer()
+            checkpoint(.consolePeersCloseReturned)
+            report["console_shutdown_tail_returned"] = true
+            persist()
             owner.publish {
                 $0.cleanStopped = true; $0.running = false; $0.ready = false; $0.stopping = false; $0.canStop = false
                 $0.message = "Guest unmount and data sync were confirmed. Close and reopen the app for the next session; the disk stays locked until this app exits."

@@ -1,0 +1,62 @@
+{
+  "status": "PASS",
+  "qemu_archive_sha256": "7c9605290b34152debb842e965a55d2e4fbba4793e536ab677b4027e5dc0ba1a",
+  "source_sha256": {
+    "include/qemu/coroutine-tls.h": "6d3848ac301606c330757dad369eb03ff89b70103ab39470cf8917c453c3a50c",
+    "include/qemu/notify.h": "06bceb102e352e08a17c4142d1ff59bf89c716bef1385094eb2b80ac04b8341b",
+    "include/qemu/queue.h": "7e9b631e83757ac14f0bc251860eeba82540ac1ac72d2d959681a00a50248f67",
+    "include/qemu/rcu.h": "98186c7191ab75165f09e3cf942340201ae890ae9d0cf16eab029f8d1967fd67",
+    "util/rcu.c": "a58ee49238d14dc11f8cb1945b432cfa92cc5b747246c2677f52dd4374e0a815"
+  },
+  "compiled_slice_sha256": "055a9e06828e1a406d2a24e0a3a84ac98d2dcc610938701854374ade1e571601",
+  "adapter_sha256": "b08ad427d23d7a52f6bbcbac17ac388cd9789b692e08d8464226e387936938cc",
+  "harness_sha256": "0f803a98e3cbb643395b70cb2c5b274fa17899fe8a59101a552fa6a41bc39b46",
+  "results": [
+    {
+      "mode": "exit-without-unregister",
+      "exit_code": 0,
+      "output": "STALE_REGISTRY_AFTER_REAL_THREAD_EXIT (expired TLS not dereferenced)"
+    },
+    {
+      "mode": "unregister-control",
+      "exit_code": 0,
+      "output": "UNREGISTER_CONTROL_PASS (test only; no backend teardown contract)"
+    },
+    {
+      "mode": "retained",
+      "exit_code": 0,
+      "output": "RETAINED_TLS_REGISTRY_PASS (10000 grace periods, 4 native readers, lock retained)"
+    }
+  ],
+  "scope": "native pinned RCU registry/TLS slice with pthread adapters; not full QEMU/Swift/iOS/device",
+  "compiler": "cc (Debian 14.2.0-19) 14.2.0",
+  "baseline_ideck_commit": "341541d09251556eff6fd9c99f5abd83ea20fb82",
+  "swift_foundation_regression": "NOT RUN: Swift toolchain absent; mandatory Apple gate updated",
+  "device_stop_crash_fix": "NOT VERIFIED: new iPhone execution required",
+  "qemu_block_layer_drain": "NOT VERIFIED",
+  "host_suite": {
+    "status": "PASS",
+    "tests": 240,
+    "passed": 238,
+    "failures": 0,
+    "errors": 0,
+    "skipped": [
+      {
+        "test": "test_actual_swift_owner_and_validation_regressions (test_desktop_disk.DesktopDiskChecks.test_actual_swift_owner_and_validation_regressions)",
+        "reason": "explicit existing Swift toolchain required"
+      },
+      {
+        "test": "test_actual_locked_arm64_busybox_commands_and_pty (test_terminal.TerminalBundleChecks.test_actual_locked_arm64_busybox_commands_and_pty)",
+        "reason": "explicit existing user-mode QEMU required"
+      }
+    ],
+    "elapsed_seconds": 11.285
+  },
+  "overlay": {
+    "status": "PASS",
+    "inputs": 28,
+    "upstream_files": 78,
+    "patched_files": 5,
+    "copies": 18
+  }
+}

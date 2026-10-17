@@ -1,5 +1,98 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Native RCU crash после Debian Stop: owner-thread lifetime — 2026-10-17
+
+Работа в облачном Codex `/workspace/iDeck`, только
+`codex/linux-guest-feasibility-20261015`, от проверенного remote HEAD
+**`341541d09251556eff6fd9c99f5abd83ea20fb82`**. Окружение открылось на `work`
+(`a77ab50`), дерево было чистым; выполнены fetch и явный switch нужной ветки.
+`origin` — `https://github.com/Mi-Yomi/iDeck.git`. Применимых `AGENTS.md` в
+репозитории/родителях нет. `main`, чужие изменения и credentials не менялись.
+
+Новый owner device evidence: Debian console загрузилась; первая сессия дала
+`terminal_clean_stopped` (source341541d, started2026-10-17T03:53:40Z,
+elapsed379.325). Во второй Stop привёл к native crash. Screenshot с READY и
+`ideck-debian-ok` не показывает команду: persistence остаётся **условной**,
+окончательный Debian device PASS не заявлен. Первая квитанция завершается до
+log/socket close и выхода worker, поэтому не доказывает здоровый shutdown tail.
+
+Parent независимо сопоставил IPA UUID с системным IPS: EXC_BAD_ACCESS/SIGSEGV,
+`synchronize_rcu +324 → call_rcu_thread +184 → qemu_thread_start`; **не Jetsam**.
+На dylib offset8831588 `STR X11,[X10]`, X10=0; preceding load читает offset24
+reader, то есть `node.le_prev`. Fault совпадает с записью в `QLIST_REMOVE`.
+QEMU owner/Swift thread отсутствовал, четыре MTTCG vCPU оставались. Raw IPS,
+личные metadata и IPA этим executor не загружались; учитывалось переданное
+reviewer evidence. UUID и точные offsets записаны в документе ниже.
+
+**Проверено по точному source:** публичный pinned release archive QEMU
+`10.0.12-utm`, 142836072 B, SHA-256
+`7c9605290b34152debb842e965a55d2e4fbba4793e536ab677b4027e5dc0ba1a`.
+`system/vl.c:2851–2853` регистрирует caller в RCU для shared library;
+reader — `__thread`, registry хранит его intrusive node; контракт `rcu.h`
+требует unregister до выхода. `qemu_main_loop()` возвращается без teardown;
+оба Linux Swift worker прежде возвращались из closure сразу после него.
+Это **доказанный lifecycle defect**, хорошо объясняющий stale RCU linkage;
+исправление device crash новым запуском ещё не подтверждено.
+
+**Fix:** общий `LinuxQEMUThreadLifetime.retainCurrentThread() -> Never` после
+loop-return на **том же** owner thread в Terminal/Debian и Probe. Private
+NSCondition wait без polling/sleep/release API, с защитой от spurious wake;
+сохраняются native TLS, стек и существующее владение BQL. Callback записывает
+`qemuOwnerThreadRetained` до async loop-return handling. Это RETENTION ENTERED,
+а не измерение дальнейшего здоровья процесса. Блокирующиеся на BQL callbacks
+могут оставаться незавершёнными; **block-layer drain NOT VERIFIED**.
+Сохраняются one VM/process, disk owner/lock до app exit, dirty-disk refusal,
+failure latch, no reseed, Terminal/Probe routes. Нет null-check, unregister,
+отключения RCU, `qemu_cleanup`, BQL unlock или освобождения backend/disk.
+
+После прежнего узкого `cleanStopped` добавлены durable/fsync checkpoints
+`consoleLogCloseBegin/Returned`, `consolePeersCloseBegin/Returned` и отдельное
+поле report о возврате host tail. Они отражают достигнутый код/возврат попыток
+close, не успех best-effort log IO и не завершение backend. Старые journals
+читаются; tail completion для старых квитанций — NOT ESTABLISHED. Новый
+renderer отличает retention/tail от clean unmount/sync и block drain.
+В overlay.lock изменены только пять SHA соответствующих Swift runtime files;
+copies, patches, guest/payload/disk lock inputs неизменны.
+
+**Регрессии:** native C harness компилирует из SHA-verified source archive
+точные RCU registry/grace-period/read-lock functions, struct/TLS/list macros с
+pthread/atomic adapters. Реальный exit без unregister оставляет expired TLS
+адрес в registry (без небезопасного dereference); unregister-control удаляет
+его; retained owner проходит **10000 grace periods с 4 concurrent readers**,
+repeated condition signals и сохранённым mutex/TLS linkage. Все три процесса
+**PASS** на существующем GCC14.2.0. Это native RCU source slice, **не полный
+QEMU backend и не выполнение production Swift**. Нового software не ставили.
+
+Mandatory Apple gate отдельно дополнен реальным production Swift wait на
+Foundation thread + pthread TLS destructor negative control, cancellation и
+queue-progress; обязателен `LINUX_QEMU_OWNER_LIFETIME_PASS`. Добавлены actual
+Swift journal reopen/tail-order/late-failure и Markdown compatibility checks.
+В этом окружении Swift/Apple SDK отсутствуют: эти проверки **NOT RUN**.
+Исторические host tests не заменяют новый Apple gate или device test.
+
+**Окончательный offline suite:** Python3.12.14, **240 tests: 238 PASS,
+2 SKIP, 0 failures/errors**, 11.285 s, с включённой native RCU regression.
+SKIP: actual Swift owner/validation и user-mode ARM64 BusyBox/PTY — toolchains
+отсутствуют. Python syntax, `git diff --check` и protected-input identity PASS.
+
+Исследование/source evidence и инструкция следующей проверки:
+[qemu-owner-lifetime.md](experiments/linux-guest/docs/qemu-owner-lifetime.md).
+Native receipt: [qemu-owner-lifetime-native.json](experiments/linux-guest/evidence/qemu-owner-lifetime-native.json).
+Рабочие logs/source/output: `.work/rcu-stop-20261017/`; полный окончательный
+suite и числа — `tests-result.json`, `full-tests-verified.log`; offline overlay —
+`overlay-result.json` (28 inputs / 78 originals / 5 patched / 18 exact copies).
+Первые два прогона нашли только ошибки новых source assertions (substring
+`Thread` в имени helper и ожидание signature в body-only extractor); они
+исправлены, runtime по этим failures не менялся. Предыдущие logs сохранены.
+
+**NOT RUN:** Codemagic/любая CI, Apple typecheck/build/link/IPA/signing/install,
+полный QEMU backend на host, iPhone Stop→wait/export→relaunch/read. Payload,
+guest, пользовательские диски/locks не открывались и не менялись; live payload
+requests с token отсутствуют. Commit/push в эту же ветку без force разрешены
+пользователем; итоговый полный SHA получить через `git rev-parse HEAD` и
+сверить с remote. Следующий шаг — parent review и отдельный запуск CI только
+владельцем после проверки бесплатной квоты, затем описанный device gate.
+
 ## Debian staging: SHA-256 без Python file_digest — 2026-10-16
 
 Исправление выполнено в сохранённом облачном Codex `/workspace/iDeck`,

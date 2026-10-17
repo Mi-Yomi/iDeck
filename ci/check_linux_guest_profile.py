@@ -83,7 +83,8 @@ def main():
                             str(source.parent / "tests/main.swift"), "-o", str(executable)])
         report["host_test_output"] = run("mac-tests", [str(executable), str(out / "fixtures"),
             str(ROOT / "experiments/linux-guest/evidence/guest-serial.log")])
-        required = ("LINUX_CONSOLE_RUNTIME_REGRESSION_PASS", "LINUX_DESKTOP_DISK_CHECKS_PASS", "LINUX_DESKTOP_PROFILE_CHECKS_PASS")
+        required = ("LINUX_CONSOLE_RUNTIME_REGRESSION_PASS", "LINUX_DESKTOP_DISK_CHECKS_PASS", "LINUX_DESKTOP_PROFILE_CHECKS_PASS",
+                    "LINUX_QEMU_OWNER_LIFETIME_PASS")
         if not all(marker in report["host_test_output"] for marker in required):
             raise RuntimeError("Mandatory Swift runtime/storage regression did not complete")
         report["swift_runtime_regression"] = "PASS"

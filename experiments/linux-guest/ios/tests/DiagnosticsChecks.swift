@@ -109,6 +109,24 @@ func runTerminalDiagnosticsChecks() throws {
     }
     check(try clean.snapshot().clean, "clean result requires all three runtime conditions recorded")
     check(try clean.snapshot().markdown(previousProcess: true).contains("Confirmed orderly stop"), "clean receipt stays distinct on relaunch")
+    check(try !clean.snapshot().shutdownTailReturned, "historical clean receipt does not establish tail completion")
+    check(try clean.snapshot().markdown(previousProcess: true).contains("NOT ESTABLISHED"), "missing tail is explicit")
+    for stage: LinuxTerminalDiagnostics.Stage in [.consoleLogCloseBegin, .consoleLogCloseReturned,
+                                                  .consolePeersCloseBegin, .consolePeersCloseReturned] {
+        try clean.record(stage)
+        check(try clean.snapshot().clean, "tail progress preserves the narrower clean receipt")
+        check(try clean.snapshot().shutdownTailReturned == (stage == .consolePeersCloseReturned), "tail requires all ordered checkpoints")
+    }
+    let afterTail = try LinuxTerminalDiagnostics(documents: cleanStore.directory.deletingLastPathComponent())
+    check(try afterTail.snapshot(id: clean.id).shutdownTailReturned, "tail survives reopen/export")
+    try clean.record(.stopFailed)
+    check(try !clean.snapshot().clean && !clean.snapshot().shutdownTailReturned, "late failure cannot claim a clean tail")
+    let disordered = try cleanStore.begin(source: "UNKNOWN", build: "1")
+    for stage: LinuxTerminalDiagnostics.Stage in [.guestCleanUnmount, .mainLoopReturned, .hostDiskSynced,
+                                                  .cleanStopped, .consolePeersCloseReturned] {
+        try disordered.record(stage)
+    }
+    check(try !disordered.snapshot().clean && !disordered.snapshot().shutdownTailReturned, "a lone tail-return checkpoint is insufficient")
     let forged = try cleanStore.begin(source: "UNKNOWN", build: "1")
     try forged.record(.cleanStopped)
     check(try !forged.snapshot().clean, "a lone clean marker must never claim orderly stop")

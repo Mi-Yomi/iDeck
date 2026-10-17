@@ -1,6 +1,11 @@
 import Foundation
 import CryptoKit
 
+if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--qemu-owner-lifetime" {
+    precondition(["retain", "exit-control"].contains(CommandLine.arguments[2]))
+    runQEMUOwnerLifetimeChild(retain: CommandLine.arguments[2] == "retain")
+}
+
 if CommandLine.arguments.count == 4, CommandLine.arguments[1] == "--desktop-interrupted-import" {
     try runDesktopInterruptedImport(directory: URL(fileURLWithPath: CommandLine.arguments[2]),
                                     fixture: URL(fileURLWithPath: CommandLine.arguments[3]))

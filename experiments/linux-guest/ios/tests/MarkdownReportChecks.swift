@@ -39,6 +39,15 @@ func runMarkdownReportChecks() throws {
         "app_executable_sha256": String(repeating: "4", count: 64)
     ]
     let full = LinuxProbeReport.render(report: complete)
+    expect(cell(full, "QEMU owner thread retained until app exits") == "UNKNOWN", "older reports do not infer thread retention")
+    var retained = complete
+    retained["qemu_owner_thread_retained_until_process_exit"] = true
+    expect(cell(LinuxProbeReport.render(report: retained), "QEMU owner thread retained until app exits") == "RETENTION ENTERED",
+           "thread retention has a separate narrow receipt")
+    retained["mode"] = "debian"
+    expect(cell(LinuxProbeReport.render(report: retained), "Host log/socket close path returned") == "UNKNOWN", "missing tail is not inferred from clean status")
+    retained["console_shutdown_tail_returned"] = true
+    expect(cell(LinuxProbeReport.render(report: retained), "Host log/socket close path returned") == "RETURNED", "host close tail has a separate receipt")
     expect(full.hasPrefix("# iDeck Linux Probe Report"), "stable human-readable title")
     for (label, expected) in [("JIT execution before start", "PASS"), ("JIT available after QEMU init", "PASS"),
                               ("QEMU init returned", "RETURNED"), ("Linux init marker", "OBSERVED (Linux init started)"),

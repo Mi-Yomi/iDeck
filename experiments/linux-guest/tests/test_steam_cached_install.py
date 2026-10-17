@@ -138,6 +138,19 @@ class CachedSteamInstall(unittest.TestCase):
         self.assertEqual((self.root / 'first.zip').read_bytes(), b'first')
         self.assertEqual((self.root / 'second.zip').read_bytes(), b'CORRUPT')
 
+    def test_retention_preserves_verified_pins_and_foreign_files(self):
+        pins = self.cleanup_pins()
+        foreign = self.root / 'userdata'
+        foreign.write_bytes(b'preserve')
+        before = {p.name: p.read_bytes() for p in self.root.iterdir()}
+        self.assertEqual(guest.cleanup_client_cache(self.root, pins,
+                         owner=self.root.stat().st_uid, retain=True), 2)
+        self.assertEqual({p.name: p.read_bytes() for p in self.root.iterdir()}, before)
+        (self.root / 'second.zip').write_bytes(b'CORRUPT')
+        with self.assertRaisesRegex(guest.Failure, 'integrity'):
+            guest.cleanup_client_cache(self.root, pins, owner=self.root.stat().st_uid, retain=True)
+        self.assertEqual((self.root / 'first.zip').read_bytes(), b'first')
+
     def test_cleanup_refuses_wrong_owner_and_missing_last_pin_before_deletion(self):
         pins = self.cleanup_pins()
         with self.assertRaisesRegex(guest.Failure, 'unsafe'):

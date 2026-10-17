@@ -65,6 +65,10 @@ After successful publication and alias creation, only the17 verified installer
 ZIP cache files are removed from the guest to leave space for Valve's own updater.
 Every pinned cache file is checked before deletion; foreign files are preserved.
 The host download cache remains available for a new private test disk.
+Pass `--retain-client-cache` to the guest installer when the experiment requires
+preserving those installer ZIPs too. The full size/hash/owner checks still run;
+the receipt records the retained count. Runtime cache and sentinel files are
+never removed by this installer.
 
 ## Running the experiment
 

@@ -1,0 +1,21 @@
+{
+  "purpose": "private diagnostic extraction only; not configured as guest package",
+  "authenticated_index": {
+    "architecture": "arm64",
+    "size": 9614192,
+    "sha256": "be16b37b2f740f066ea93d35d56f04f94d63693e5a3eb421b052bf86fae75bcd",
+    "url": "https://deb.debian.org/debian/dists/trixie/main/binary-arm64/by-hash/SHA256/be16b37b2f740f066ea93d35d56f04f94d63693e5a3eb421b052bf86fae75bcd"
+  },
+  "extra_packages": [
+    {
+      "name": "strace",
+      "version": "6.13+ds-1",
+      "architecture": "arm64",
+      "filename": "pool/main/s/strace/strace_6.13+ds-1_arm64.deb",
+      "sha256": "d793af70a104eb0bd5be466c3043b512f549e7cb27971320a7c9b8f4c6165e55",
+      "size": 1295248,
+      "installed_size_kib": 2728
+    }
+  ],
+  "other_dependencies_match_installed_pins": true
+}

@@ -1,0 +1,149 @@
+[
+  {
+    "iops_rd": 0,
+    "detect_zeroes": "off",
+    "active": true,
+    "image": {
+      "virtual-size": 1342177280,
+      "filename": "/workspace/steam-fresh-20261017/gui/gui-rootfs-v1.raw",
+      "format": "raw",
+      "actual-size": 1342177280,
+      "dirty-flag": false
+    },
+    "iops_wr": 0,
+    "ro": true,
+    "node-name": "#block320",
+    "backing_file_depth": 0,
+    "drv": "raw",
+    "iops": 0,
+    "bps_wr": 0,
+    "write_threshold": 0,
+    "encrypted": false,
+    "bps": 0,
+    "bps_rd": 0,
+    "cache": {
+      "no-flush": false,
+      "direct": false,
+      "writeback": true
+    },
+    "file": "/workspace/steam-fresh-20261017/gui/gui-rootfs-v1.raw"
+  },
+  {
+    "iops_rd": 0,
+    "detect_zeroes": "off",
+    "active": true,
+    "image": {
+      "virtual-size": 1342177280,
+      "filename": "/workspace/steam-fresh-20261017/gui/gui-rootfs-v1.raw",
+      "format": "file",
+      "actual-size": 1342177280,
+      "format-specific": {
+        "type": "file",
+        "data": {}
+      },
+      "dirty-flag": false
+    },
+    "iops_wr": 0,
+    "ro": true,
+    "node-name": "#block234",
+    "backing_file_depth": 0,
+    "drv": "file",
+    "iops": 0,
+    "bps_wr": 0,
+    "write_threshold": 0,
+    "encrypted": false,
+    "bps": 0,
+    "bps_rd": 0,
+    "cache": {
+      "no-flush": false,
+      "direct": false,
+      "writeback": true
+    },
+    "file": "/workspace/steam-fresh-20261017/gui/gui-rootfs-v1.raw"
+  },
+  {
+    "iops_rd": 0,
+    "detect_zeroes": "off",
+    "active": true,
+    "image": {
+      "backing-image": {
+        "virtual-size": 1342177280,
+        "filename": "/workspace/steam-fresh-20261017/gui/gui-rootfs-v1.raw",
+        "format": "raw",
+        "actual-size": 1342177280,
+        "dirty-flag": false
+      },
+      "backing-filename-format": "raw",
+      "virtual-size": 12884901888,
+      "filename": "/workspace/steam-fresh-20261017/run1/steam-experiment.qcow2",
+      "cluster-size": 65536,
+      "format": "qcow2",
+      "actual-size": 200704,
+      "format-specific": {
+        "type": "qcow2",
+        "data": {
+          "compat": "1.1",
+          "compression-type": "zlib",
+          "lazy-refcounts": false,
+          "refcount-bits": 16,
+          "corrupt": false,
+          "extended-l2": false
+        }
+      },
+      "full-backing-filename": "/workspace/steam-fresh-20261017/gui/gui-rootfs-v1.raw",
+      "backing-filename": "/workspace/steam-fresh-20261017/gui/gui-rootfs-v1.raw",
+      "dirty-flag": false
+    },
+    "iops_wr": 0,
+    "ro": false,
+    "node-name": "#block126",
+    "backing_file_depth": 1,
+    "drv": "qcow2",
+    "iops": 0,
+    "bps_wr": 0,
+    "write_threshold": 0,
+    "backing_file": "/workspace/steam-fresh-20261017/gui/gui-rootfs-v1.raw",
+    "encrypted": false,
+    "bps": 0,
+    "bps_rd": 0,
+    "cache": {
+      "no-flush": false,
+      "direct": false,
+      "writeback": true
+    },
+    "file": "/workspace/steam-fresh-20261017/run1/steam-experiment.qcow2"
+  },
+  {
+    "iops_rd": 0,
+    "detect_zeroes": "off",
+    "active": true,
+    "image": {
+      "virtual-size": 197120,
+      "filename": "/workspace/steam-fresh-20261017/run1/steam-experiment.qcow2",
+      "format": "file",
+      "actual-size": 200704,
+      "format-specific": {
+        "type": "file",
+        "data": {}
+      },
+      "dirty-flag": false
+    },
+    "iops_wr": 0,
+    "ro": false,
+    "node-name": "#block037",
+    "backing_file_depth": 0,
+    "drv": "file",
+    "iops": 0,
+    "bps_wr": 0,
+    "write_threshold": 0,
+    "encrypted": false,
+    "bps": 0,
+    "bps_rd": 0,
+    "cache": {
+      "no-flush": false,
+      "direct": false,
+      "writeback": true
+    },
+    "file": "/workspace/steam-fresh-20261017/run1/steam-experiment.qcow2"
+  }
+]

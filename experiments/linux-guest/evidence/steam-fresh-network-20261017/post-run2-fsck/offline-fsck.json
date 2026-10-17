@@ -1,0 +1,42 @@
+{
+  "exit_code": 0,
+  "read_only": true,
+  "writer_running": false,
+  "fsck_command": [
+    "/workspace/steam-fresh-20261017/host/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+    "--library-path",
+    "/workspace/steam-fresh-20261017/host/usr/lib/x86_64-linux-gnu",
+    "/workspace/steam-fresh-20261017/host/usr/sbin/e2fsck",
+    "-f",
+    "-n",
+    "/workspace/steam-fresh-20261017/post-run2-fsck/offline-fsck.raw"
+  ],
+  "status": "pass",
+  "evaluation": {
+    "policy": "strict-e2fsck-fn-v1",
+    "accepted": true,
+    "reason_codes": [],
+    "unexpected_lines": [],
+    "passes_and_summary": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      "summary"
+    ],
+    "version_count": 1
+  },
+  "free_bytes_before_copy": 26533408768,
+  "virtual_size": 12884901888,
+  "raw_sha256": "2bde57962657f7d45010b5f49230eabcbc71be84abdfd05ee2bc5a25e9fed7a6",
+  "raw_size": 12884901888,
+  "stdout_sha256": "9a6e6d577bcf5b35e4c44008add2bc199930de1272063486a60e2859ed99b031",
+  "stderr_sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948",
+  "log_sha256": "e73689676d5f2798a593a58babf466c5521badb962b8b72781209ad8d10af1d6",
+  "scope": "ext4 filesystem, flattened offline copy",
+  "source_disk_sha256_before": "462a5804f296ec1333196fce0ad1a893204e841611c76f5f31e608a7b99a11e3",
+  "source_disk_sha256_after": "462a5804f296ec1333196fce0ad1a893204e841611c76f5f31e608a7b99a11e3",
+  "owner_exclusively_locked": true,
+  "qemu_pids": []
+}

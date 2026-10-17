@@ -1,0 +1,22 @@
+{
+  "LICENSES-desktop.txt": {
+    "size": 1403,
+    "sha256": "7b4062d88f64efbfc636be91018df833d7d45997140cda60030a1caa8bce40b9"
+  },
+  "desktop-profile.json": {
+    "size": 761,
+    "sha256": "c8c487fdf7f847db8df51f9c6d6d2aefbed0d3967059a022c18922a034e88c71"
+  },
+  "gui-rootfs-v1.raw": {
+    "size": 1342177280,
+    "sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791"
+  },
+  "initramfs-desktop.gz": {
+    "size": 11319304,
+    "sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4"
+  },
+  "vmlinuz-virt": {
+    "size": 10351104,
+    "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+  }
+}

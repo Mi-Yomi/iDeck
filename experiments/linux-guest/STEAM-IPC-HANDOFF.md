@@ -1,5 +1,14 @@
 # Steam IPC diagnosis and online handoff — 2026-10-17
 
+Latest independent cloud attempt: all17 locked ZIPs and the production GUI Release
+were actually obtained, production9c4d booted, and all45 dependencies installed
+with empty successful dpkg audit. The updater then failed before CEF: host
+CONNECT403 for its newly observed `client-update.steamstatic.com` endpoint,
+plus guest DNS EAI_AGAIN for both Steam CDN hosts. No browser/SHM growth existed
+to trace or sample, and the historical first webhelper timeout below remains
+unexplained. Both VMs are cleanly stopped; full offline checks and installation
+persistence passed. See [current receipts and precise continuation boundary](evidence/steam-fresh-network-20261017/README.md).
+
 Cloud input follow-up: a **separate experimental GUI seed** now passed full
 offline acceptance, SHA-256
 `a7758d821f67ec48646d4586ec54aeab8b8db31238f0be6dfaabc5966c46a5a2`.

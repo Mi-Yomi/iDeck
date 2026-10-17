@@ -1,0 +1,16 @@
+{
+  "filesystem_path": "/workspace/steam-fresh-20261017",
+  "free_bytes": 29534867456,
+  "virtual_disk_bytes": 12884901888,
+  "reserve_bytes": 4294967296,
+  "required_before_image_write_bytes": 17179869184,
+  "shortfall_bytes": 0,
+  "allowed": true,
+  "policy": "full-offline-copy-plus-4GiB-before-image-write",
+  "sparse_allocation_discount": false,
+  "qemu_pids_before": [],
+  "task_image_mounts": [],
+  "seed_route": "production GUI lock; experimental contract not selected",
+  "full_overlay_plus_full_copy_plus_reserve_bytes": 30064771072,
+  "full_worst_case_shortfall_bytes": 529903616
+}

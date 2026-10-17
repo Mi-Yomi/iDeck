@@ -1,0 +1,21 @@
+{
+  "binary_sha256": "77a92b0ca43516403064a4d0939f91c38b9ab2447b32e8f66709dcf29432d626",
+  "package": {
+    "name": "qemu-utils",
+    "version": "1:10.0.13+ds-0+deb13u1",
+    "architecture": "amd64",
+    "filename": "pool/main/q/qemu/qemu-utils_10.0.13+ds-0+deb13u1_amd64.deb",
+    "sha256": "6d31339b1630153fe7c5f8a51426b8fa6ce35731aeb015a84f2d333c4e4dca30",
+    "size": 2024216,
+    "installed_size_kib": 12510
+  },
+  "authenticated_index": {
+    "architecture": "amd64",
+    "size": 9678380,
+    "sha256": "7778d3e3f303b7ddb8ce0fe7c8d57473a076c6bf2e8f241f75421d2396352498",
+    "url": "https://deb.debian.org/debian/dists/trixie/main/binary-amd64/by-hash/SHA256/7778d3e3f303b7ddb8ce0fe7c8d57473a076c6bf2e8f241f75421d2396352498"
+  },
+  "loader_sha256": "c8438e4fde1934e61c88311633f00949ff645d5c04cdb8671fa3d78164d2f307",
+  "closure_receipt_sha256": "e30517466f49a55f3e5be330e73a15ba44c19d8911a6da6dd98ef029d836c7a7",
+  "system_install": false
+}

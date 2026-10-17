@@ -1,0 +1,10 @@
+{
+  "utc": "2026-10-17T13:46:58.425214+00:00",
+  "url": "https://client-update.steamstatic.com/steam_client_steamdeck_publicbeta_linuxarm64",
+  "method": "GET",
+  "origin_http_status": null,
+  "proxy_connect_http_status": 403,
+  "proxy_configuration_changed": false,
+  "error_type": "URLError",
+  "reason": "Tunnel connection failed: 403 Forbidden"
+}

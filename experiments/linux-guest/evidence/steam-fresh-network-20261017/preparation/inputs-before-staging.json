@@ -1,0 +1,73 @@
+{
+  "free_bytes": 29792989184,
+  "staging_download_and_declared_install_bytes": 314176688,
+  "host_package_count": 100,
+  "additional_host_packages": [
+    {
+      "name": "qemu-utils",
+      "version": "1:10.0.13+ds-0+deb13u1",
+      "architecture": "amd64",
+      "filename": "pool/main/q/qemu/qemu-utils_10.0.13+ds-0+deb13u1_amd64.deb",
+      "sha256": "6d31339b1630153fe7c5f8a51426b8fa6ce35731aeb015a84f2d333c4e4dca30",
+      "size": 2024216,
+      "installed_size_kib": 12510
+    },
+    {
+      "name": "liblz4-1",
+      "version": "1.10.0-4",
+      "architecture": "amd64",
+      "filename": "pool/main/l/lz4/liblz4-1_1.10.0-4_amd64.deb",
+      "sha256": "c31ec4c7c82755a38b2f3fe066fc0c5518cc91a601a268fbcd19bdacb1f22e1e",
+      "size": 63900,
+      "installed_size_kib": 173
+    },
+    {
+      "name": "liblzma5",
+      "version": "5.8.1-1+deb13u1",
+      "architecture": "amd64",
+      "filename": "pool/main/x/xz-utils/liblzma5_5.8.1-1+deb13u1_amd64.deb",
+      "sha256": "1cfcc6e0dc36f438a79b6e2189facdb9d150b08f57d190a60e01c98075c7f896",
+      "size": 309492,
+      "installed_size_kib": 435
+    },
+    {
+      "name": "liblzo2-2",
+      "version": "2.10-3+b1",
+      "architecture": "amd64",
+      "filename": "pool/main/l/lzo2/liblzo2-2_2.10-3+b1_amd64.deb",
+      "sha256": "f3032201fe2928a87e13f05ce256ff3ac2a7860c7e594dc51ae6d7348a4466ce",
+      "size": 55100,
+      "installed_size_kib": 173
+    },
+    {
+      "name": "libxxhash0",
+      "version": "0.8.3-2",
+      "architecture": "amd64",
+      "filename": "pool/main/x/xxhash/libxxhash0_0.8.3-2_amd64.deb",
+      "sha256": "81da7064d56fc044f5db4bb3c1e80ff50a4986dcbbf80d958eeca565b44c157f",
+      "size": 27096,
+      "installed_size_kib": 92
+    },
+    {
+      "name": "squashfs-tools",
+      "version": "1:4.6.1-1",
+      "architecture": "amd64",
+      "filename": "pool/main/s/squashfs-tools/squashfs-tools_4.6.1-1_amd64.deb",
+      "sha256": "0e185122f5858132bbc709e26228ba28cf7f0c41f6ed26e3f55f518f2a53b59d",
+      "size": 193888,
+      "installed_size_kib": 494
+    }
+  ],
+  "guest_extra_packages": 45,
+  "storage_preflight": {
+    "filesystem_path": "/workspace/steam-fresh-20261017",
+    "free_bytes": 29792989184,
+    "virtual_disk_bytes": 12884901888,
+    "reserve_bytes": 4294967296,
+    "required_before_image_write_bytes": 17179869184,
+    "shortfall_bytes": 0,
+    "allowed": true,
+    "policy": "full-offline-copy-plus-4GiB-before-image-write",
+    "sparse_allocation_discount": false
+  }
+}

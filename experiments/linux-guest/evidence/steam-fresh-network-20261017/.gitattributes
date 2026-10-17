@@ -1,0 +1,5 @@
+* -text
+*.png binary
+*.log whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+**/*.log whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+first-attempt/bootstrap_log.txt whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof

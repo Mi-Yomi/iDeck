@@ -39,7 +39,7 @@ def checked(path, size, checksum):
         raise Failure('cache_integrity_failed')
 
 
-def cleanup_client_cache(cache, pins, owner=1000):
+def cleanup_client_cache(cache, pins, owner=1000, retain=False):
     """Delete only verified installed-client ZIP inputs; preserve unrelated files."""
     if (cache.is_symlink() or not cache.is_dir()
             or any(p.is_symlink() for p in cache.parents) or cache.stat().st_uid != owner):
@@ -64,7 +64,8 @@ def cleanup_client_cache(cache, pins, owner=1000):
         if (path.is_symlink() or (after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns, after.st_uid)
                 != (before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns, owner)):
             raise Failure('client_cache_changed_before_cleanup')
-        path.unlink()
+        if not retain:
+            path.unlink()
     return len(verified)
 
 
@@ -183,7 +184,7 @@ def links():
     }.items()}
 
 
-def install(port, report):
+def install(port, report, retain_client_cache=False):
     if os.geteuid() != 0:
         raise Failure('requires_guest_root')
     if os.path.lexists(DEST):
@@ -247,7 +248,9 @@ def install(port, report):
             raise Failure('steam_link_conflict_no_replacement')
         link.symlink_to(target)
         os.lchown(link, 1000, 1000)
-    report['removed_verified_client_cache_parts'] = cleanup_client_cache(parts_cache, client_lock['parts'])
+    cache_count = cleanup_client_cache(parts_cache, client_lock['parts'], retain=retain_client_cache)
+    report['retained_verified_client_cache_parts' if retain_client_cache else
+           'removed_verified_client_cache_parts'] = cache_count
     report['status'] = 'installed_private_client_not_launched'
 
 
@@ -255,13 +258,15 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--port', type=int, required=True)
     parser.add_argument('--private-qemu-cache', action='store_true', required=True)
+    parser.add_argument('--retain-client-cache', action='store_true',
+                        help='Verify and preserve all pinned installer ZIPs after installation')
     args = parser.parse_args()
     cache_url(args.port, 'client', 'check')
     started = time.monotonic()
     report = {'status': 'failed', 'client_executed': False, 'agreement_accepted': False, 'login_performed': False}
     code = 1
     try:
-        install(args.port, report)
+        install(args.port, report, retain_client_cache=args.retain_client_cache)
         code = 0
     except Exception as error:
         report['failure_code'] = str(error) if isinstance(error, Failure) else 'guest_install_failed'

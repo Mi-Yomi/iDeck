@@ -1,0 +1,15 @@
+{
+  "document_sha256": "657b411c384b4aed78d6db7f502a4b824594b2d640041fddbac69a4911b1d13d",
+  "dpkg_audit": {
+    "exit_code": 0,
+    "stderr_bytes": 0,
+    "stdout_bytes": 0
+  },
+  "machine_id_sha256": "4e8725b26e9ec461ec3f46de2044d7a10abb7fa948f072b9b868df0325028de6",
+  "network_denial_retried": false,
+  "retained_installer_zip_files": 17,
+  "scope": "independent cloud disk and installation persistence; Steam UI not reached",
+  "status": "pass",
+  "steam_launched": false,
+  "verified_client_elf_files": 4
+}

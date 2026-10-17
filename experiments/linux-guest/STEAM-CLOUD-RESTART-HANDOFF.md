@@ -1,5 +1,16 @@
 # Safe checkpoint for the replacement cloud task
 
+**Fresh-task follow-up:** the next executor actually downloaded all17 locked
+Steam ZIPs and the exact production Release, restored production9c4d and installed
+the client/45 dependencies on an independent cloud disk. It is now stopped after
+two clean VM boots/Stops, persistence and two strict full offline fsck checks.
+Its updater is blocked by host CONNECT403 for `client-update.steamstatic.com` and,
+separately, guest DNS EAI_AGAIN for both Steam hosts. Main UI/Big Picture remain
+NOT REACHED; no CEF browser existed for IPC/stack capture. Read the current
+[fresh cloud evidence and private input/continuation boundary](evidence/steam-fresh-network-20261017/README.md)
+before using the older transition inventory below. No old a7758d82 bytes were
+transferred or substituted. No network/security policy was changed.
+
 The owner published a new network configuration and requested a **fresh task**.
 Owner/parent-reported version:
 `71a66f3c-3170-475c-82f6-cf3dc0ded790~cecfgver_6ad378804dc88199be22c7b77b1cebb4`.

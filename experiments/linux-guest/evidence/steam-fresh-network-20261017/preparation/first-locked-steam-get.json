@@ -1,0 +1,13 @@
+{
+  "utc": "2026-10-17T13:40:21.959607+00:00",
+  "url": "https://client-update.fastly.steamstatic.com/bins_hardware_all.zip.58d828f4b4d9969be201b7731579a74bae0c3ea8",
+  "method": "GET",
+  "origin_http_status": 200,
+  "proxy_connect_http_status": null,
+  "expected_size": 386432,
+  "expected_sha256": "90b8202eb03a0a95bf444d0daa6849c7e63a0e32fa9367ddb369d6218d2978b1",
+  "network_policy_changed": false,
+  "bytes": 386432,
+  "sha256": "90b8202eb03a0a95bf444d0daa6849c7e63a0e32fa9367ddb369d6218d2978b1",
+  "verified": true
+}

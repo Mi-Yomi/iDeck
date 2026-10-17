@@ -1,0 +1,16 @@
+{
+  "status": "installed_private_client_not_launched",
+  "client_executed": false,
+  "agreement_accepted": false,
+  "login_performed": false,
+  "dependency_lock_sha256": "0d153bbb2a9a39c32fb650d189cc972355fc1d94da39297cf0b9830fdbd922f6",
+  "client_lock_sha256": "9b8bc9fe5e8074ae4d798f645d259066e968b8bc5512183c0aca34e1f54a8bdd",
+  "verified_debs": 45,
+  "dpkg_exit_code": 0,
+  "unchanged_existing_packages": 341,
+  "dpkg_audit_empty": true,
+  "verified_client_parts": 17,
+  "client_installer_exit_code": 0,
+  "retained_verified_client_cache_parts": 17,
+  "elapsed_seconds": 97.27
+}

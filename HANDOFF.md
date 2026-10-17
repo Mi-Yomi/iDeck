@@ -1,5 +1,54 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Fresh cloud: production client installed; new updater network blocker — 2026-10-17
+
+Started at verified remote Steam SHA `bfcb3a8bb2a719240daf04ed9023d8a425444e7a`,
+one executor, this cloud only. The new network permits the first locked Fastly
+ZIP: actual HTTP200, exact size/hash; all17 ZIPs are verified. Existing `gh`
+successfully downloaded production GUI asset650023557 with the exact292065280
+bytes / `112bdba6…dedd`. The restored **production9c4d978f** seed was used without
+an experimental contract. No old private seed/cache was transferred or relabeled.
+See [fresh cloud receipts and continuation](experiments/linux-guest/evidence/steam-fresh-network-20261017/README.md).
+
+Pinned QEMU10.0.13/loader/e2fsck and qemu-utils were authenticated/extracted
+privately, including the actual qemu-img binary receipt. Existing storage gates
+passed before writes/copies. The fresh guest installed all45 locked dependencies,
+including lsof, preserving341 GUI package versions. `dpkg --audit` exit0 had
+byte-empty stdout/stderr after install and after a second boot. A new explicit
+`--retain-client-cache` option preserves the17 verified installer ZIPs;149 Steam
+tests PASS. No sentinel/runtime cache or SHM object was removed. The current
+separate Steam bootstrap is11665853 bytes / `af9aa6fb…276f4e`; both VMs booted it.
+The production GUI lock/payload, namespace helper, launcher and Stop are unchanged.
+
+**Main Steam UI and Big Picture remain NOT REACHED.** This independent cloud
+client fails earlier than the historical CEF problem: its updater requests
+`client-update.steamstatic.com/steam_client_steamdeck_publicbeta_linuxarm64`, then
+reports `http error0` / needs online and exits. One normal host GET confirms
+**proxy CONNECT403, no origin HTTP status**, not authentication failure.
+Separately, guest DNS for that host AND allowed Fastly returns EAI_AGAIN(-3) with
+the prescribed10.0.2.3 nameserver/NAT route. No proxy/resolver/hostname override,
+timeout/CPU/RAM/security change or denied-endpoint retry was attempted. The owner
+must supply an approved functioning updater and guest network route; merely
+adding one host has not been proven sufficient.
+
+The first bounded untraced observation saw no browser, zero SHM objects and all
+769449984 SHM bytes free. No IPC/ARM64 stack capture was possible without a browser;
+both tools are NOT RUN and the historical first timeout remains unexplained.
+Namespace UID1000 preflights passed and native argv retained `-cef-force-sandbox`;
+this run cannot validate a CEF sandbox child that never started.
+
+Both new cloud VMs achieved clean unmount, QEMU exit0 and host fsync. A new
+copy/boot verified document + machine-id + four client ELF hashes +17 cached ZIPs;
+Steam itself was not relaunched. Post-run1/pre-run2 and post-run2 full12GiB
+offline fsck each passed all5 phases and strict complete-output checks, without
+a writer. All originals/failed outputs remain private under
+`/workspace/steam-fresh-20261017`; both command queues contain STOP. No QEMU/mount
+remains. Use a new output/commands directory and verified explicit continuation
+only after network prerequisites and fresh storage/ownership gates pass.
+Clean Steam application Stop, real UI/input/Big Picture/relaunch, Apple runtime,
+Steam on iPhone and GPU acceleration remain NOT RUN. No account/terms/games,
+client/disk publication, CI, Release, main/GUI branch or policy changes occurred.
+
 ## Safe stop for new network environment / fresh task — 2026-10-17
 
 The owner published a new network configuration and requested this old task end

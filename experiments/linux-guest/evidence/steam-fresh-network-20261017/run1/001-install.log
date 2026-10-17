@@ -1,0 +1,44 @@
+IDECK_STEAM_INSTALL={"agreement_accepted": false, "client_executed": false, "client_installer_exit_code": 0, "client_lock_sha256": "9b8bc9fe5e8074ae4d798f645d259066e968b8bc5512183c0aca34e1f54a8bdd", "dependency_lock_sha256": "0d153bbb2a9a39c32fb650d189cc972355fc1d94da39297cf0b9830fdbd922f6", "dpkg_audit_empty": true, "dpkg_exit_code": 0, "elapsed_seconds": 97.27, "login_performed": false, "retained_verified_client_cache_parts": 17, "status": "installed_private_client_not_launched", "unchanged_existing_packages": 341, "verified_client_parts": 17, "verified_debs": 45}
+FRESH_DPKG_AUDIT={"exit_code": 0, "stdout_bytes": 0, "stderr_bytes": 0}
+FRESH_CLIENT_INSTALL={
+  "status": "installed_private_client_not_launched",
+  "client_executed": false,
+  "agreement_accepted": false,
+  "login_performed": false,
+  "dependency_lock_sha256": "0d153bbb2a9a39c32fb650d189cc972355fc1d94da39297cf0b9830fdbd922f6",
+  "client_lock_sha256": "9b8bc9fe5e8074ae4d798f645d259066e968b8bc5512183c0aca34e1f54a8bdd",
+  "verified_debs": 45,
+  "dpkg_exit_code": 0,
+  "unchanged_existing_packages": 341,
+  "dpkg_audit_empty": true,
+  "verified_client_parts": 17,
+  "client_installer_exit_code": 0,
+  "retained_verified_client_cache_parts": 17,
+  "elapsed_seconds": 97.27
+}
+
+FRESH_LSOF_VERSION=lsof version information:
+    revision: 4.99.4
+    copyright notice: Copyright 1998 Purdue Research Foundation. All rights reserved.
+    latest revision: https://github.com/lsof-org/lsof
+    latest FAQ: https://github.com/lsof-org/lsof/blob/master/00FAQ
+    latest (non-formatted) man page: https://github.com/lsof-org/lsof/blob/master/Lsof.8
+    constructed on: aarch64-unknown-linux-gnu
+    compiler: gcc
+    compiler flags: -g -O2 -Werror=implicit-function-declaration -ffile-prefix-map=/build/reproducible-path/lsof-4.99.4+dfsg=. -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -mbranch-protection=standard -D_FILE_OFFSET_BITS=64 -I/usr/include/tirpc 
+    loader flags: -Wl,-z,relro -Wl,-z,now -ltirpc  -lselinux
+    features enabled: ipv6 ptyept rpc selinux soopt sostate tasks uxsockept
+    Anyone can list all files.
+    /dev warnings are disabled.
+    Kernel ID check is disabled.
+
+FRESH_GUEST_STORAGE=Filesystem       1B-blocks       Used   Available Use% Mounted on
+/dev/vda       12447821824 2236866560 10194178048  18% /
+tmpfs            769449984          0   769449984   0% /dev/shm
+
+FRESH_ELF={"path": "steamrtarm64/steam", "size": 10174384, "sha256": "73da03ead208a74e14bee566869a4235063dc4a9e1063f29c4608de6d78bd4ea"}
+FRESH_ELF={"path": "steamrtarm64/steamwebhelper", "size": 10326560, "sha256": "0a849676a3ba0cc51ca23cba79be3df0546744fd92c2e2d628a1f71707a70a56"}
+FRESH_ELF={"path": "steamrtarm64/steamclient.so", "size": 47744848, "sha256": "276f021548f9016de834274f4042b796604530d910d114b77ee170b46e409072"}
+FRESH_ELF={"path": "steamrtarm64/chromehtml.so", "size": 2923856, "sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7"}
+
+STEAM_COMMAND_001_0

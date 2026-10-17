@@ -1,0 +1,351 @@
+{
+  "schema": 1,
+  "scope": "fresh cloud downloads, actual install, network blocker, persistence and strict fsck; no Steam UI acceptance",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "size": 215,
+      "sha256": "648cf59f1d1b96df5c7c4a677ea4a6e279624b3f1a03dbe797efe1b66e61c1fe"
+    },
+    {
+      "path": "README.md",
+      "size": 9266,
+      "sha256": "bc882a953f21f7f75dd55ef32e1d748abe63c37f53b64ca303dce0557aa98b86"
+    },
+    {
+      "path": "bootstrap.json",
+      "size": 4476,
+      "sha256": "13da657729e6e6e08b41db4321df21011de366aad5a717a742c81470f6671b96"
+    },
+    {
+      "path": "client-cache.json",
+      "size": 3550,
+      "sha256": "4c973021ef6c9ba6c9ad4e07c2607a68a1f75a2d694a707b36289bafe8e72bdf"
+    },
+    {
+      "path": "commands/001-install.sh",
+      "size": 1063,
+      "sha256": "7d167dc62c0dfe4d641a6c6fde31e56e45e7b43f6f94d3a697a966f8cff82406"
+    },
+    {
+      "path": "commands/002-first-launch.sh",
+      "size": 6403,
+      "sha256": "debc6ac9e9a9abe24933b079df4b52d132af8f4786e0e9f6d1148a109c80bb9e"
+    },
+    {
+      "path": "commands/003-first-failure.sh",
+      "size": 1991,
+      "sha256": "b2bf105eb1d9f1732bdf10265a369d4bb59df46988bf55292f6ebc8ebe2f22f9"
+    },
+    {
+      "path": "commands/004-retain-evidence.sh",
+      "size": 3340,
+      "sha256": "96570bf948f1aaf6c85ceed06fadca661c491f493183cb252239c4b96e3405b1"
+    },
+    {
+      "path": "commands/STOP",
+      "size": 77,
+      "sha256": "dd19de8d1bdbd7714ceeeea1e36d32502b6d18791109375793c4e53459fca19d"
+    },
+    {
+      "path": "commands2/001-persistence.sh",
+      "size": 1740,
+      "sha256": "7a60faa21d52489e27b9d7c1c5cebc7d51fc1522c72da198238a88f95d6afe6a"
+    },
+    {
+      "path": "commands2/STOP",
+      "size": 66,
+      "sha256": "1345f8e403373972760e28f826f369f836564d499fea862491355549d5a4ee86"
+    },
+    {
+      "path": "first-attempt/bootstrap_log.txt",
+      "size": 2197,
+      "sha256": "68b81638006cb1322664dc66b646eb4188adf04fcc83ef8f1e11f772e663513a"
+    },
+    {
+      "path": "first-attempt/first-attempt-result.json",
+      "size": 214,
+      "sha256": "ad1d3a551e3a53bc76ea43fcb31f9f0d418ee61db3b27bbd79f7ff6367d8e782"
+    },
+    {
+      "path": "first-attempt/install-result.json",
+      "size": 583,
+      "sha256": "1a3e2f2987bb0607c3063feca74337771d1688edfcf056074237224978fad1dc"
+    },
+    {
+      "path": "first-attempt/launcher.log",
+      "size": 11994,
+      "sha256": "8929e5a663cd3c0513e879e0e5a7a28cc6e2f6fd198dea8bfc92f76dce5f1a3f"
+    },
+    {
+      "path": "first-attempt/persistence-before.json",
+      "size": 4123,
+      "sha256": "b8d7322e590206ad8089101c66033e7ff75a06e444daebb617a16012bfff7340"
+    },
+    {
+      "path": "first-attempt/timeline.jsonl",
+      "size": 3133,
+      "sha256": "5821fd1ae468253934a1269e65bf5efcf93bb8b56b0a06553a15684dfa6f248f"
+    },
+    {
+      "path": "post-run2-fsck/offline-fsck.json",
+      "size": 1445,
+      "sha256": "7adaa3afea11b78921d5979e5ab5f3020883b387533ac5178383abb4cdf9b5ba"
+    },
+    {
+      "path": "post-run2-fsck/offline-fsck.log",
+      "size": 354,
+      "sha256": "e73689676d5f2798a593a58babf466c5521badb962b8b72781209ad8d10af1d6"
+    },
+    {
+      "path": "post-run2-fsck/offline-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "path": "post-run2-fsck/offline-fsck.stdout.log",
+      "size": 327,
+      "sha256": "9a6e6d577bcf5b35e4c44008add2bc199930de1272063486a60e2859ed99b031"
+    },
+    {
+      "path": "preparation/bootstrap-build-final.json",
+      "size": 4476,
+      "sha256": "13da657729e6e6e08b41db4321df21011de366aad5a717a742c81470f6671b96"
+    },
+    {
+      "path": "preparation/bootstrap-build.json.empty",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preparation/dependency-cache.json",
+      "size": 109,
+      "sha256": "1ee8d14972f034fef1e7cb16432d36c74f16bb621ddaeb91d16c5de7e7eb3595"
+    },
+    {
+      "path": "preparation/first-locked-steam-get.json",
+      "size": 523,
+      "sha256": "19635279aa6aa3d924c6dcc778601e9494b8ea3d3ce5481f3280bce0595ca77b"
+    },
+    {
+      "path": "preparation/gui-release-binary.json",
+      "size": 304,
+      "sha256": "07a80bf9c56931c42908ede579b1ba24769cd907a9d7cbad5af3050900e8c622"
+    },
+    {
+      "path": "preparation/gui-release-metadata.json",
+      "size": 222,
+      "sha256": "75e5715baec5e6ab9c0bc4a29a5dbd3eaf409a3cdb43eb4ff49cb5a9e6c345c0"
+    },
+    {
+      "path": "preparation/gui-restore.json",
+      "size": 665,
+      "sha256": "9df4183e7cab6c154ead7ef60511749911cc3cbdc9d69223e2285a9959cd9d47"
+    },
+    {
+      "path": "preparation/host-tools.json",
+      "size": 34633,
+      "sha256": "e30517466f49a55f3e5be330e73a15ba44c19d8911a6da6dd98ef029d836c7a7"
+    },
+    {
+      "path": "preparation/inputs-before-staging.json",
+      "size": 2477,
+      "sha256": "4c7e196ff743ae4c481f532e197406a7f6e3d8d65ca541a612b098b9c507f4c3"
+    },
+    {
+      "path": "preparation/manifests.json",
+      "size": 767,
+      "sha256": "6b9b4f29d448e99bf747af8e7fa858ebb5fc9530d7841e4194ac7d97bf464637"
+    },
+    {
+      "path": "preparation/native-updater-host-get.json",
+      "size": 351,
+      "sha256": "75a4c4fd716761b33ba29b3c0914c2fbb800b25df120cfb43a1e99e337be3736"
+    },
+    {
+      "path": "preparation/persistence-after.json",
+      "size": 513,
+      "sha256": "a809871db72126cdb2e808e47ac6950e0bb4e10aeede409a049c0ced697ccc29"
+    },
+    {
+      "path": "preparation/pre-vm-storage.json",
+      "size": 593,
+      "sha256": "906fb96eb86c68a6bda02c6f71e8816c39ecd4029d52332a3d864eb8833d26bb"
+    },
+    {
+      "path": "preparation/qemu-img-receipt.json",
+      "size": 947,
+      "sha256": "4bfa6e833a371c854be98d7abbb416b6052ffd124e660ed2588eb6680d5a3bfe"
+    },
+    {
+      "path": "preparation/steam-tests.log",
+      "size": 22669,
+      "sha256": "43d75881f962b5a3a89e9dd1816f608af395656a3aad61f7927335c3ce43e335"
+    },
+    {
+      "path": "preparation/strace-package.json",
+      "size": 787,
+      "sha256": "09d99a536a54dcdd8184d940d2bf75f807a034d9c5f99bceafbb42042a57360c"
+    },
+    {
+      "path": "run1/001-install.log",
+      "size": 3040,
+      "sha256": "ce476b9f2555a8d9b6ca8bd9c7f6c8a4dad6dd99524caebaa719898a0d2b411e"
+    },
+    {
+      "path": "run1/001-install.png",
+      "size": 34762,
+      "sha256": "eb1c3b963b37ce3ed9335f16b2f179552256fc49c23bbc7f1221a3108c98584f"
+    },
+    {
+      "path": "run1/002-first-launch.log",
+      "size": 26636,
+      "sha256": "f6f8cbc65ffbed2f665bd25547c3fc7124a551c945b6b5202473a0783d3a5102"
+    },
+    {
+      "path": "run1/002-first-launch.png",
+      "size": 34818,
+      "sha256": "cdc77ee7123ca92a67a85c5205d35777f0435c34ecbeb3e6225779da4ef4a40c"
+    },
+    {
+      "path": "run1/003-first-failure.log",
+      "size": 3812,
+      "sha256": "621757106c284a8326d8ed0cce36f586751d5874540862369f9e405dda68c68a"
+    },
+    {
+      "path": "run1/003-first-failure.png",
+      "size": 34729,
+      "sha256": "1c423761e9099b295aa06832592d109dd1223b3b415a68afbeaab0b3a7f6703d"
+    },
+    {
+      "path": "run1/004-retain-evidence.log",
+      "size": 36444,
+      "sha256": "a39e70e62c299d86056be494f96219c262e88f74afb4f49090c329465f549480"
+    },
+    {
+      "path": "run1/004-retain-evidence.png",
+      "size": 34729,
+      "sha256": "1c423761e9099b295aa06832592d109dd1223b3b415a68afbeaab0b3a7f6703d"
+    },
+    {
+      "path": "run1/block-nodes.json",
+      "size": 3711,
+      "sha256": "fa8ddf7ed9046b6835d346095c608f1694192c9e6d69a1c792a1c5ba89fa1118"
+    },
+    {
+      "path": "run1/control.log",
+      "size": 103,
+      "sha256": "454a40c873bc46e48adfa8c51fe87c6d8d0b0410be2a278d6878532d82fbe07f"
+    },
+    {
+      "path": "run1/qemu.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run1/result.json",
+      "size": 7704,
+      "sha256": "e8b7e06260f5449da298d9533cc9939f72b96c061c5be77ed725f0548dee1cbf"
+    },
+    {
+      "path": "run1/runner-source.py",
+      "size": 26488,
+      "sha256": "b431d6698590566802e649d5ae727a27bd3167142bfb7233a9754770f357e5ec"
+    },
+    {
+      "path": "run1/serial.log",
+      "size": 74257,
+      "sha256": "7f5a4ff9685aec3f2cb88dbe21d4818fa72e00ca92d4dcca35d6e8d783e96ae5"
+    },
+    {
+      "path": "run2/001-persistence.log",
+      "size": 21775,
+      "sha256": "f3e10de2d4ff65b160f786e1870f2c0c1ec38a09a1f673bc8a5931098e42d80c"
+    },
+    {
+      "path": "run2/001-persistence.png",
+      "size": 34710,
+      "sha256": "05e29a4e6d4cfd52b609c96b36df02b47212be76a24052a0e05eaa0e2cd2fe48"
+    },
+    {
+      "path": "run2/block-nodes.json",
+      "size": 3723,
+      "sha256": "cefffa25f0b2d6e98280b5efd3e4681d7e23f3d64110ed82720acf3ddeee7689"
+    },
+    {
+      "path": "run2/control.log",
+      "size": 103,
+      "sha256": "454a40c873bc46e48adfa8c51fe87c6d8d0b0410be2a278d6878532d82fbe07f"
+    },
+    {
+      "path": "run2/offline-fsck.json",
+      "size": 1183,
+      "sha256": "5246e6a272d2d34d4817b67e0e8f2c19e4075a07aaa338096ec8bf631e76c382"
+    },
+    {
+      "path": "run2/offline-fsck.log",
+      "size": 344,
+      "sha256": "21246ec8e41863eeac45a1c3afe023831c423fe75939695371780f92e9623a14"
+    },
+    {
+      "path": "run2/offline-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "path": "run2/offline-fsck.stdout.log",
+      "size": 317,
+      "sha256": "f78ba182d2341a3bce11d22b29e58f5d07fe41a1f1718b24e96231240da87a32"
+    },
+    {
+      "path": "run2/qemu.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run2/result.json",
+      "size": 8831,
+      "sha256": "34bf2dc3ffac66419b5ef0cdea66245bd90c195bb418e3fa545951147d344833"
+    },
+    {
+      "path": "run2/runner-source.py",
+      "size": 26488,
+      "sha256": "b431d6698590566802e649d5ae727a27bd3167142bfb7233a9754770f357e5ec"
+    },
+    {
+      "path": "run2/serial.log",
+      "size": 25990,
+      "sha256": "615d93bb62c971b228b8ba453bcc2984cfa8725cc6bdd4a988dfdcaf4347d5fd"
+    },
+    {
+      "path": "sources/finalize_evidence.py",
+      "size": 7651,
+      "sha256": "1a1a1ce4928e46a40f9fe97ed352b32a15d8f29dddc0a3ca17eb182043504267"
+    },
+    {
+      "path": "sources/finalize_tools.py",
+      "size": 2781,
+      "sha256": "3f4420de4c8fe4a0ed189b39433eba97e5399298198f465285a05d2282088f6e"
+    },
+    {
+      "path": "sources/observe_first_attempt.py",
+      "size": 3853,
+      "sha256": "581b11db0a8ec8d583d2131c4505c4c287511918a87fdced953d5b4d6979bd93"
+    },
+    {
+      "path": "sources/preparation.log",
+      "size": 984,
+      "sha256": "b0a863e16fd53a7e6702a66aa6c764f67a0049730b612dc74babe39e4085c5cd"
+    },
+    {
+      "path": "sources/prepare_inputs.py",
+      "size": 4396,
+      "sha256": "a45f62c7eb7c44749e8da7ddf9f003b7ef5d4a1bd905e200dc2bee14a0980eed"
+    },
+    {
+      "path": "summary.json",
+      "size": 4275,
+      "sha256": "74a6811d5cf62ab5ceb1ec367962cd85420eae88bf5c9e122061c05e30e06101"
+    }
+  ]
+}

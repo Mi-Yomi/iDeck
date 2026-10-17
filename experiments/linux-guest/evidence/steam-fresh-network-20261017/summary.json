@@ -1,0 +1,112 @@
+{
+  "observed_at_utc": "2026-10-17T13:51:05.203559+00:00",
+  "source_commit": "bfcb3a8bb2a719240daf04ed9023d8a425444e7a",
+  "remote_source_verified": "bfcb3a8bb2a719240daf04ed9023d8a425444e7a",
+  "branch": "codex/steam-arm64-experiment-20261017",
+  "owner_reported_network_config_version": "71a66f3c-3170-475c-82f6-cf3dc0ded790~cecfgver_6ad378804dc88199be22c7b77b1cebb4",
+  "network_config_version_independently_introspected": false,
+  "repo_or_ancestor_AGENTS_found": false,
+  "repo_agents_skills_found": false,
+  "old_private_seed_or_caches_transferred": false,
+  "production_release_verified": true,
+  "production_seed_sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791",
+  "experimental_seed_contract_selected": false,
+  "client_zip_count": 17,
+  "guest_install": {
+    "status": "installed_private_client_not_launched",
+    "client_executed": false,
+    "agreement_accepted": false,
+    "login_performed": false,
+    "dependency_lock_sha256": "0d153bbb2a9a39c32fb650d189cc972355fc1d94da39297cf0b9830fdbd922f6",
+    "client_lock_sha256": "9b8bc9fe5e8074ae4d798f645d259066e968b8bc5512183c0aca34e1f54a8bdd",
+    "verified_debs": 45,
+    "dpkg_exit_code": 0,
+    "unchanged_existing_packages": 341,
+    "dpkg_audit_empty": true,
+    "verified_client_parts": 17,
+    "client_installer_exit_code": 0,
+    "retained_verified_client_cache_parts": 17,
+    "elapsed_seconds": 97.27
+  },
+  "runs": {
+    "run1": {
+      "status": "experiment_finished",
+      "clean_shutdown": true,
+      "qemu_exit_code": 0,
+      "disk_sha256": "1f6816b06b927423b7545a90a6c81cdb08e1a319ebdef7c011f758e8e6253415",
+      "owner_lock_free": true,
+      "dirty_marker_present": false,
+      "seed_read_only_qmp": true
+    },
+    "run2": {
+      "status": "experiment_finished",
+      "clean_shutdown": true,
+      "qemu_exit_code": 0,
+      "disk_sha256": "462a5804f296ec1333196fce0ad1a893204e841611c76f5f31e608a7b99a11e3",
+      "owner_lock_free": true,
+      "dirty_marker_present": false,
+      "seed_read_only_qmp": true
+    }
+  },
+  "full_offline_fsck_raw_hashes": {
+    "run2": "d04ccf8a75946c78f3cb8e40ade5f285dbcbfb7fd34279ab34d9935a74e28c2d",
+    "post-run2-fsck": "2bde57962657f7d45010b5f49230eabcbc71be84abdfd05ee2bc5a25e9fed7a6"
+  },
+  "first_attempt": {
+    "reason": "all_client_processes_exited",
+    "elapsed": 11.316,
+    "first_browser": null,
+    "baseline_ptrace_used": false,
+    "shm_deleted": false,
+    "frozen_pids": [],
+    "processes": [],
+    "shm_free": 769449984
+  },
+  "timeline_samples": 11,
+  "min_shm_free_bytes": 769449984,
+  "max_shm_objects": 0,
+  "updater_origin_http_status": null,
+  "updater_host_proxy_connect_http_status": 403,
+  "guest_dns": {
+    "nameserver": "10.0.2.3",
+    "hosts": [
+      "client-update.steamstatic.com",
+      "client-update.fastly.steamstatic.com"
+    ],
+    "result": "EAI_AGAIN",
+    "errno": -3
+  },
+  "network_diagnosis_scope": "host CONNECT refusal and guest DNS failure; no successful guest updater HTTPS request",
+  "first_historical_webhelper_timeout_cause": "UNRESOLVED; not reached in this independent cloud attempt",
+  "steam_main_ui": "NOT REACHED",
+  "big_picture": "NOT REACHED",
+  "steam_ui_input_and_relaunch": "NOT RUN",
+  "clean_application_stop": "NOT RUN; updater failed and exited before CEF",
+  "trace_steam_ipc": "NOT RUN; no browser target",
+  "aarch64_ipc_stack": "NOT RUN; no browser target",
+  "apple_runtime": "NOT RUN",
+  "steam_on_iphone": "NOT RUN",
+  "gpu_acceleration": "NOT RUN",
+  "qemu_pids": [],
+  "task_mounts": [],
+  "free_bytes": 26532601856,
+  "filesystem_total_bytes": 33770192896,
+  "originals_and_failed_outputs_retained": true,
+  "sentinel_or_runtime_cache_deleted": false,
+  "installer_cache_retained": true,
+  "shm_cleanup_performed": false,
+  "network_or_security_policy_changed": false,
+  "proxy_or_dns_configuration_changed": false,
+  "runtime_flags_cpu_ram_timeouts_changed": false,
+  "system_packages_installed": false,
+  "tokens_created": false,
+  "login_or_agreements_or_games": false,
+  "subagents_created": false,
+  "ci_dispatched": false,
+  "release_or_gui_payload_changed": false,
+  "client_or_disk_published": false,
+  "offline_tests": {
+    "passed": 149,
+    "log_sha256": "43d75881f962b5a3a89e9dd1816f608af395656a3aad61f7927335c3ce43e335"
+  }
+}

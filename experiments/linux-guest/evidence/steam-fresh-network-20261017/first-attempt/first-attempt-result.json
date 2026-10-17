@@ -1,0 +1,10 @@
+{
+  "reason": "all_client_processes_exited",
+  "elapsed": 11.316,
+  "first_browser": null,
+  "baseline_ptrace_used": false,
+  "shm_deleted": false,
+  "frozen_pids": [],
+  "processes": [],
+  "shm_free": 769449984
+}

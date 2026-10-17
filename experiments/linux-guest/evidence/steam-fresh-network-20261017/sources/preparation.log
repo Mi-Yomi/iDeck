@@ -1,0 +1,20 @@
+Authenticating signed pinned Debian indexes and APT closures
+Authenticated/extracted host packages 10/100
+Authenticated/extracted host packages 20/100
+Authenticated/extracted host packages 30/100
+Authenticated/extracted host packages 40/100
+Authenticated/extracted host packages 50/100
+Authenticated/extracted host packages 60/100
+Authenticated/extracted host packages 70/100
+Authenticated/extracted host packages 80/100
+Authenticated/extracted host packages 90/100
+Authenticated/extracted host packages 100/100
+Authenticated guest dependency cache 10/45
+Authenticated guest dependency cache 20/45
+Authenticated guest dependency cache 30/45
+Authenticated guest dependency cache 40/45
+Traceback (most recent call last):
+  File "/workspace/steam-fresh-20261017/prepare_inputs.py", line 69, in <module>
+    if r.returncode:raise RuntimeError(name+' version probe failed')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: unsquashfs version probe failed

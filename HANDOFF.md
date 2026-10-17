@@ -1,5 +1,57 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Focused cancellation self-review follow-up — 2026-10-17
+
+Reviewed `e0b493c542e4002bb39eae1e5b82309918cd4069` against primary base
+`dd00e9455d5d01b41690bc204b97120a86826f64`, with remote equality and a clean
+starting tree. Found and fixed two concrete late-event defects before Apple CI:
+
+- A startup/recovery watchdog is armed before `recovery.markRunning`. If that
+  receipt's fsync fails, the preparation catch had not latched startupAborted;
+  the queued timer could replace the IO failure with timeout/manual-review
+  reporting. All preparation failures now latch abort before cleanup/persist;
+  startup/recovery watchdogs and channel callbacks reject the aborted attempt.
+- A main-thread cancellation-request record may append after the worker's
+  preparationFailed record. Startup MD now retains the earlier typed failure
+  instead of calling it an interrupted VM; contradictory native-return/ready
+  evidence still prevents a before-entry claim. Swift regressions cover both
+  current/previous-process exports, retained IO failure, late request and native
+  contradiction. Cancellation request alone never becomes completed cancel.
+
+Static review: rapid Start/Cancel/Start retains attempted=true, one worker and
+the original process-level runtime exclusion. Main cancellation only requests
+the locked preparation gate; copying/hashing/fsync finish before any unused
+resource close. No dirty flags, verified digest or recovery receipt is cleared
+by cancel. The gate's native commit excludes late cancellation; live Stop,
+failed host-sync latch, native owner/thread retention and restart guards remain
+unchanged. Phase publications read the current snapshot on the main queue;
+terminal failure state rejects stale preparation publications. New UI writes
+follow the existing main-thread preconditions/main-queue publish contract; the
+session is not declared entirely @MainActor. Swift actor/isolation diagnostics
+require the real Apple compiler and are NOT RUN here.
+
+Final local suite:324 checks /319PASS /5 explicit SKIP /0failures/errors;
+offline locked staging passed. Actual skips are Swift disk-owner validation,
+Swift desktop input, Swift paired pointer release, pinned native QEMU RCU test
+(explicit archive unset; C compiler exists), and ARM64 BusyBox/PTY test (explicit
+user-mode QEMU unset). These five skips do NOT cover all pending Apple work:
+the new mandatory Swift races/journals/MD tests and full app SDK typecheck also
+remain NOT RUN until the Apple gate. No CI, VM, userdata/seed, payload, security,
+network or Steam work occurred.
+
+Exact next CI: manual `ideck-linux-guest-profile-check`, primary branch, full final
+SHA from completion response. UI inputs are `expected_commit`,
+`free_quota_verified='true'`, `private_source_verified='true'`; YAML maps them to
+`EXPECTED_COMMIT`, `FREE_QUOTA_VERIFIED`, `PRIVATE_SOURCE_VERIFIED` and sets
+`IDECK_WORKFLOW_ID=ideck-linux-guest-profile-check`. Provider `CM_BRANCH`,
+`CM_COMMIT`, `CM_REPO_SLUG` must identify that branch/SHA and Mi-Yomi/iDeck.
+Xcode27.0/mac_mini_m2,10-minute cap/480-second script budget. GUI/console payload
+secrets are NOT needed: no payload groups/downloads/build/signing are used by
+this source/Swift gate. Do not inherit IPA workflow's unrelated EXPECTED_* defaults
+because the generic preflight validates every provided EXPECTED_* value.
+
+Evidence: [focused review receipt and full final test output](experiments/linux-guest/evidence/startup-preparation-review-20261017/verification.json).
+
 ## Cancellable preparation, visible phases and complete failure MD — 2026-10-17
 
 Source base and verified primary remote: `dd00e9455d5d01b41690bc204b97120a86826f64`,

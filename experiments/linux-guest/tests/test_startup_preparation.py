@@ -86,6 +86,29 @@ class StartupPreparationWiring(unittest.TestCase):
         self.assertIn('try cancelled.record(.preparationCancelRequested)', diagnostics)
         self.assertIn('contradictory native-entry evidence', diagnostics)
 
+    def test_preparation_failure_latches_before_cleanup_and_all_late_callbacks(self):
+        source = (ROOT / 'ios/LinuxTerminalSession.swift').read_text()
+        worker = source[source.index('private final class LinuxTerminalWorker'):]
+        start = swift_block(worker, 'func start()')
+        # The failure may occur after a watchdog has already been armed.
+        self.assertLess(start.index('self.scheduleStartupTimeout()'), start.index('try recovery.markRunning('))
+        catch = start[start.index('} catch {\n                // A timer'):]
+        self.assertLess(catch.index('self.startupAborted = true'), catch.index('self.preparation.finish()'))
+        self.assertLess(catch.index('self.startupAborted = true'), catch.index('self.serial?.closeUnused()'))
+        self.assertLess(catch.index('self.startupAborted = true'), catch.index('self.persist()'))
+        for name in ('private func scheduleStartupTimeout()', 'private func armRecoveryTimeout()',
+                     'private func recoveryTimeout(', 'private func receiveSerial(',
+                     'private func receiveControl(', 'private func channelDisconnected('):
+            self.assertIn('!startupAborted' if 'Timeout' not in name else 'startupAborted', swift_block(worker, name))
+        # A queued cancel note only adds the request fact; it cannot overwrite
+        # failure status, restart preparation, clear dirty state or close a VM.
+        request = swift_block(source, 'func requestPreparationCancellation()')
+        for forbidden in ('["status"]', 'stopFailed =', 'startupAborted =', 'cleanStopped =', 'attempted ='):
+            self.assertNotIn(forbidden, request)
+        diagnostics = (ROOT / 'ios/tests/DiagnosticsChecks.swift').read_text()
+        self.assertIn('late cancellation does not mask fsync/preparation failure', diagnostics)
+        self.assertIn('original typed IO failure remains', diagnostics)
+
     def test_markdown_keeps_known_failures_without_arbitrary_error_text(self):
         renderer = (ROOT / 'ios/LinuxProbeReport.swift').read_text()
         checks = (ROOT / 'ios/tests/MarkdownReportChecks.swift').read_text()

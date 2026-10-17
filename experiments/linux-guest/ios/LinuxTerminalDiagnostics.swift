@@ -93,14 +93,15 @@ final class LinuxTerminalDiagnostics {
         func markdown(previousProcess: Bool) -> String {
             let last = records.last
             let attempted = records.contains { $0.stage == .startRequested }
+            let nativeObserved = records.contains { [Stage.qemuInitReturned, .mainLoopBegin, .terminalReady].contains($0.stage) }
             let outcome: String
             if clean { outcome = "Confirmed orderly stop: guest unmount, QEMU loop return and host sync were recorded." }
             else if !invalid && !tornTail && last?.stage == .startRejected {
                 outcome = "Start was rejected before VM entry; no successful terminal run was recorded."
-            } else if !invalid && !tornTail && last?.stage == .preparationFailed {
+            } else if !invalid && !tornTail && !nativeObserved && records.contains(where: { $0.stage == .preparationFailed }) {
                 outcome = "Preparation failed before QEMU entry; no successful terminal run was recorded."
             } else if !invalid && !tornTail && records.contains(where: { $0.stage == .preparationCancelled })
-                        && !records.contains(where: { [Stage.qemuInitReturned, .mainLoopBegin, .terminalReady].contains($0.stage) }) {
+                        && !nativeObserved {
                 outcome = "Startup was cancelled before native entry. Completed copies were preserved; reopen the app before another attempt."
             } else if previousProcess && attempted { outcome = "Previous process ended without a confirmed clean stop. Cause UNKNOWN." }
             else if previousProcess { outcome = "Previous diagnostic session ended; no VM start request was recorded. Cause UNKNOWN." }

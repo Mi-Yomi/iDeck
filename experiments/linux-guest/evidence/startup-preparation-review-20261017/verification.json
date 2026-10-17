@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "source_base": "e0b493c542e4002bb39eae1e5b82309918cd4069",
+  "review_against": "dd00e9455d5d01b41690bc204b97120a86826f64",
+  "scope": "focused static cancellation/background/entry/storage/callback review plus Python regressions",
+  "findings_fixed": [
+    "preparation error did not latch abort before a queued startup/recovery watchdog",
+    "late cancel-request journal append could mask a typed preparation IO failure"
+  ],
+  "tests": {
+    "total": 324,
+    "passed": 319,
+    "skipped": 5,
+    "failures": 0,
+    "errors": 0,
+    "skip_lines": [
+      "test_actual_swift_owner_and_validation_regressions (test_desktop_disk.DesktopDiskChecks.test_actual_swift_owner_and_validation_regressions) ... skipped 'explicit existing Swift toolchain required'",
+      "test_actual_swift_input_model (test_desktop_native_route.DesktopRoute.test_actual_swift_input_model) ... skipped 'Swift compiler unavailable; mandatory Apple checks remain pending'",
+      "test_actual_swift_paired_release_state (test_display_pointer.DisplayPointerChecks.test_actual_swift_paired_release_state) ... skipped 'Swift compiler unavailable; mandatory Apple execution remains pending'",
+      "test_native_pinned_registry_thread_exit_and_retention (test_qemu_owner_lifetime.QEMUOwnerLifetime.test_native_pinned_registry_thread_exit_and_retention) ... skipped 'explicit existing pinned QEMU SOURCE archive and C compiler required'",
+      "test_actual_locked_arm64_busybox_commands_and_pty (test_terminal.TerminalBundleChecks.test_actual_locked_arm64_busybox_commands_and_pty) ... skipped 'explicit existing user-mode QEMU required'"
+    ]
+  },
+  "post_entry_blocks_equal_original_sha256": {
+    "func stop()": "b86579e2f3d15a4593ef433ae20ff6e8fdc752674a7827f979de312b4ba82d83",
+    "private func finalizeIfClean()": "8953eb682336512ce3dde02f313e05859631f08d1d02c89c2333b58c39352057",
+    "private func didReturnFromQEMU()": "1308133bc898731c7f6254e1dd7ffeb893556c388a6dd7c640e6f1e8a504f645"
+  },
+  "critical_sources_equal_original_sha256": {
+    "experiments/linux-guest/ios/LinuxDesktopDisk.swift": "6688b4d8dd9b61a93a4a91b7fb839b5bc1dfd849f89348f3f593c4b221db493e",
+    "experiments/linux-guest/ios/LinuxGUIRecovery.swift": "259ffb5b152db34d9e99c01cf2e1db9850d11e4d36c84dcd31c327814b9d6bd9",
+    "experiments/linux-guest/ios/LinuxRecoveryGuest.swift": "f3052e0294239da5f3f851ed99b029739c4cb65b4f13342455570ca1000b7e79",
+    "experiments/linux-guest/ipa/gui.lock.json": "fef0bf4c5b72cad5ee921616639f6e28bec73bce7b1e689c95c3734aed82c7eb",
+    "experiments/linux-guest/ipa/gui-inputs.lock.json": "8b3ee6d1f255c7486e7226c65ab304036363edccea4e145b472fe7df1cf6ed98"
+  },
+  "modified_sources_sha256": {
+    "experiments/linux-guest/husk/overlay.lock.json": "22cbb32322f0377ec2c9dfd69c7de81108f0c3e2dc8361f86c877f02d487e3bd",
+    "experiments/linux-guest/ios/LinuxTerminalDiagnostics.swift": "3f9faa894c07d68b5e80a8e11cc015fe6022beb1e1add1846d375ee615be1995",
+    "experiments/linux-guest/ios/LinuxTerminalSession.swift": "55278c6f041599ce7122bf5fd75c3e8152e2ff7f247e486f2c40a3a1def582e9",
+    "experiments/linux-guest/ios/tests/DiagnosticsChecks.swift": "2cfe60ea6cab1a4807306465d11d8e0af6d6e2ae1128f665e91f4cfd2d8a7131",
+    "experiments/linux-guest/tests/test_startup_preparation.py": "c89e49bffc01c40b741911852115a6b91d80e1e7b5106c5f381b534e73b1193f"
+  },
+  "swift_apple_device": "NOT RUN",
+  "swiftc": null,
+  "xcrun": null,
+  "cc": "/usr/bin/cc",
+  "CI_dispatched": false,
+  "VM_started": false,
+  "Steam_or_userdata_or_seed_accessed": false,
+  "policy_or_payload_changed": false,
+  "profile_check_payload_secrets_required": false
+}

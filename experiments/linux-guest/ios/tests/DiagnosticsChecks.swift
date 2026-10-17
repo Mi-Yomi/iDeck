@@ -151,6 +151,22 @@ func runTerminalDiagnosticsChecks() throws {
     try cancelled.record(.qemuInitReturned)
     check(try !cancelled.snapshot().markdown(previousProcess: true).contains("cancelled before native entry"),
           "contradictory native-entry evidence prevents a cancellation claim")
+    let failedWhileCancelling = try cleanStore.begin(source: "UNKNOWN", build: "1")
+    try failedWhileCancelling.record(.startRequested)
+    try failedWhileCancelling.record(.preparationFailed, failure: .io)
+    // A file operation can fail after the cancellation lock was accepted but
+    // before the main thread durably records its request. IO failure wins.
+    try failedWhileCancelling.record(.preparationCancelRequested)
+    for previous in [true, false] {
+        let md = try failedWhileCancelling.snapshot().markdown(previousProcess: previous)
+        check(md.contains("Preparation failed before QEMU entry"), "late cancellation does not mask fsync/preparation failure")
+        check(!md.contains("cancelled before native entry"), "a request does not claim cancellation completion")
+        check(md.contains("| io |"), "original typed IO failure remains in the journal")
+        check(try !failedWhileCancelling.snapshot().clean, "failed/cancelled preparation never becomes clean Stop")
+    }
+    try failedWhileCancelling.record(.qemuInitReturned)
+    check(try !failedWhileCancelling.snapshot().markdown(previousProcess: true).contains("Preparation failed before QEMU entry"),
+          "contradictory native evidence prevents an early-failure claim")
     let preflight = try cleanStore.begin(source: "UNKNOWN", build: "1")
     try preflight.record(.jitClaimBegin)
     check(try preflight.snapshot().markdown(previousProcess: true).contains("no VM start request was recorded"),

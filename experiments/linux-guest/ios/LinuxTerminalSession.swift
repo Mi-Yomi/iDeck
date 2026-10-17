@@ -684,6 +684,10 @@ private final class LinuxTerminalWorker {
                 if let recovery = self.recovery, let gui { try recovery.markRunning(toolSeedSHA256: gui.rootfs.sha256) }
                 thread.start()
             } catch {
+                // A timer may already be queued while receipt/file fsync was
+                // blocking this queue. Preserve the original preparation error
+                // before releasing unused resources or running that callback.
+                self.startupAborted = true
                 let cancelled = error is LinuxStartupPreparation.Cancelled
                 self.checkpoint(cancelled ? .preparationCancelled : .preparationFailed,
                                 failure: cancelled ? nil : LinuxTerminalSession.failure(error))
@@ -742,6 +746,7 @@ private final class LinuxTerminalWorker {
     }
 
     private func receiveSerial(_ bytes: Data) {
+        guard !startupAborted else { return }
         if let logHandle {
             let remaining = max(0, 2 * 1024 * 1024 - loggedBytes)
             do {
@@ -785,7 +790,7 @@ private final class LinuxTerminalWorker {
     }
 
     private func receiveControl(_ bytes: Data) {
-        guard !finalized else { return }
+        guard !finalized, !startupAborted else { return }
         guard controlLines.count + bytes.count <= 4096 else { control?.closePeer(); channelDisconnected(control: true); return }
         controlLines.append(bytes)
         while let newline = controlLines.firstIndex(of: 10) {
@@ -905,7 +910,7 @@ private final class LinuxTerminalWorker {
     }
 
     private func channelDisconnected(control controlClosed: Bool) {
-        guard !finalized, !stopFailed else { return }
+        guard !finalized, !stopFailed, !startupAborted else { return }
         ready = false
         let canStop = !controlClosed && guestWasReady && !stopRequested && !loopReturned && (control?.peer ?? -1) >= 0
         report[controlClosed ? "terminal_control_channel_failed" : "terminal_serial_channel_failed"] = true

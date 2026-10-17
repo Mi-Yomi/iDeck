@@ -25,6 +25,7 @@ import time
 import urllib.parse
 
 import gui_host_tools
+import steam_seed
 
 ROOT = Path(__file__).resolve().parents[1]
 # Capture once on import: preparation can outlive edits to this source file.
@@ -59,7 +60,7 @@ def finalize_disk(report, disk, dirty):
     return True
 
 
-def validate_continuation(source, seed_hash):
+def validate_continuation(source, seed_hash, contract_sha256=None):
     """Only an explicitly selected, clean private run can seed a NEW copy."""
     if source.is_symlink() or not source.is_dir():
         raise ValueError('continuation must be a real private run directory')
@@ -74,6 +75,10 @@ def validate_continuation(source, seed_hash):
             or type(prior.get('qemu_exit_code')) is not int or prior['qemu_exit_code'] != 0
             or prior.get('forced') or prior.get('seed_sha256') != seed_hash):
         raise ValueError('continuation lacks matching clean private-run evidence')
+    prior_contract = prior.get('seed_contract')
+    if (contract_sha256 is not None and (not isinstance(prior_contract, dict)
+            or prior_contract.get('contract_sha256') != contract_sha256)):
+        raise ValueError('continuation experimental seed contract differs')
     return source/'steam-experiment.qcow2'
 
 
@@ -88,12 +93,12 @@ def exclusive_image_output(image_command, arguments, destination, env):
         os.close(descriptor)
 
 
-def continuation_copy(source, disk, seed, seed_hash, image_command, env):
-    original = validate_continuation(source, seed_hash)
+def continuation_copy(source, disk, seed, seed_hash, image_command, env, contract_sha256=None):
+    original = validate_continuation(source, seed_hash, contract_sha256)
     if os.path.lexists(disk): raise FileExistsError(disk)
     with (source/'owner.lock').open('rb') as owner:
         fcntl.flock(owner, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        validate_continuation(source, seed_hash)
+        validate_continuation(source, seed_hash, contract_sha256)
         def image(*argv):
             return subprocess.run([*image_command, *map(str, argv)], env=env,
                                   check=True, capture_output=True, text=True)
@@ -162,7 +167,7 @@ def evaluate_offline_fsck(exit_code, stdout, stderr, target):
             'passes_and_summary': phases, 'version_count': versions}
 
 
-def offline_fsck(disk, out, image_command, env):
+def offline_fsck(disk, out, image_command, env, fsck_command=None):
     """Check a flattened point-in-time copy, only before this runner starts QEMU."""
     raw = out/'offline-fsck.raw'
     if os.path.lexists(raw): raise FileExistsError(raw)
@@ -177,7 +182,8 @@ def offline_fsck(disk, out, image_command, env):
     if free_before < virtual_size + 4*1024**3:
         raise ValueError('insufficient space for offline filesystem copy and reserve')
     exclusive_image_output(image_command, ['convert', '-f', 'qcow2', '-O', 'raw', disk], raw, env)
-    result = subprocess.run(['/usr/sbin/e2fsck', '-f', '-n', str(raw)],
+    checker = list(map(str, fsck_command)) if fsck_command is not None else ['/usr/sbin/e2fsck']
+    result = subprocess.run([*checker, '-f', '-n', str(raw)],
                             env={**env, 'LC_ALL': 'C', 'LANG': 'C'}, capture_output=True, text=True)
     log = result.stdout+result.stderr
     (out/'offline-fsck.log').write_text(log, encoding='utf-8')
@@ -185,6 +191,7 @@ def offline_fsck(disk, out, image_command, env):
     (out/'offline-fsck.stderr.log').write_text(result.stderr, encoding='utf-8')
     evaluation = evaluate_offline_fsck(result.returncode, result.stdout, result.stderr, raw)
     receipt = {'exit_code': result.returncode, 'read_only': True, 'writer_running': False,
+               'fsck_command': [*checker, '-f', '-n', str(raw)],
                'status': 'pass' if evaluation['accepted'] else 'failed', 'evaluation': evaluation,
                'free_bytes_before_copy': free_before, 'virtual_size': virtual_size,
                'raw_sha256': sha(raw), 'raw_size': raw.stat().st_size,
@@ -219,6 +226,8 @@ def boot(args):
         fcntl.flock(lockfile, fcntl.LOCK_EX | fcntl.LOCK_NB)
         try:
             (out/'runner-source.py').write_bytes(RUNNER_SOURCE)
+            if getattr(args, 'experimental_seed_contract', None) is not None:
+                (out/'seed-validator-source.py').write_bytes(steam_seed.VALIDATOR_SOURCE)
             with ExitStack() as cleanup:
                 return _boot(args, profile_path, profile, out, report, cleanup)
         except BaseException as error:
@@ -231,13 +240,44 @@ def boot(args):
             (out/'result.json').write_text(json.dumps(report, indent=2)+'\n')
 
 
+def storage_preflight(path, profile):
+    """Apply the existing full-size offline-copy +4GiB reserve before image writes.
+
+    A sparse qcow2 is not an exemption. The offline check still re-evaluates the
+    remaining capacity after any continuation copy/guest writes.
+    """
+    size = profile['disk']['virtual_size']
+    if not isinstance(size, str) or not re.fullmatch(r'[1-9][0-9]{0,2}G', size):
+        raise ValueError('invalid Steam virtual disk size')
+    virtual = int(size[:-1])*1024**3
+    reserve = 4*1024**3
+    path = Path(path)
+    ancestor = next((p for p in (path, *path.parents) if p.is_dir()), None)
+    if ancestor is None: raise ValueError('missing Steam storage filesystem')
+    free = shutil.disk_usage(ancestor).free
+    return {'filesystem_path': str(ancestor.resolve()), 'free_bytes': free,
+            'virtual_disk_bytes': virtual, 'reserve_bytes': reserve,
+            'required_before_image_write_bytes': virtual+reserve,
+            'shortfall_bytes': max(0, virtual+reserve-free), 'allowed': free >= virtual+reserve,
+            'policy': 'full-offline-copy-plus-4GiB-before-image-write',
+            'sparse_allocation_discount': False}
+
+
 def _boot(args, profile_path, profile, out, report, cleanup):
     report['profile_sha256'] = sha(profile_path)
     seed = args.seed.resolve()
     expected = json.loads((ROOT/'ipa/gui.lock.json').read_text())['files']
-    for path, name in ((seed, 'gui-rootfs-v1.raw'), (args.kernel, 'vmlinuz-virt')):
-        if path.stat().st_size != expected[name]['size'] or sha(path) != expected[name]['sha256']:
-            raise ValueError('accepted GUI input differs: '+name)
+    contract = getattr(args, 'experimental_seed_contract', None)
+    if contract is not None:
+        report['seed_contract'] = steam_seed.validate(contract, args.seed, args.kernel,
+                                                     args.bootstrap, evaluate_offline_fsck,
+                                                     runner_source=RUNNER_SOURCE)
+        expected = {**expected, 'gui-rootfs-v1.raw': report['seed_contract']['seed'],
+                    'vmlinuz-virt': report['seed_contract']['kernel']}
+    else:
+        for path, name in ((seed, 'gui-rootfs-v1.raw'), (args.kernel, 'vmlinuz-virt')):
+            if path.stat().st_size != expected[name]['size'] or sha(path) != expected[name]['sha256']:
+                raise ValueError('accepted GUI input differs: '+name)
     prep = json.loads((args.bootstrap/'bootstrap.json').read_text())
     initrd = args.bootstrap/'initramfs-steam.gz'
     if initrd.stat().st_size != prep['initramfs']['size'] or sha(initrd) != prep['initramfs']['sha256']:
@@ -246,6 +286,9 @@ def _boot(args, profile_path, profile, out, report, cleanup):
     report['initramfs_sha256'] = sha(initrd)
     report['kernel_sha256'] = sha(args.kernel)
     report['seed_sha256'] = expected['gui-rootfs-v1.raw']['sha256']
+    report['storage_preflight'] = storage_preflight(out, profile)
+    if not report['storage_preflight']['allowed']:
+        raise ValueError('insufficient space for Steam image write and offline copy reserve')
     disk = out/'steam-experiment.qcow2'
     env = {'PATH': os.defpath, 'LC_ALL': 'C', 'QEMU_MODULE_DIR': str(args.host/'usr/lib/x86_64-linux-gnu/qemu')}
     def host(argv):
@@ -259,8 +302,12 @@ def _boot(args, profile_path, profile, out, report, cleanup):
     continuation = getattr(args, 'continue_from', None)
     if continuation is not None:
         report['continuation'] = continuation_copy(continuation.absolute(), disk, seed,
-                                                  report['seed_sha256'], image_command, env)
-        report['offline_fsck'] = offline_fsck(disk, out, image_command, env)
+                                                  report['seed_sha256'], image_command, env,
+                                                  report.get('seed_contract', {}).get('contract_sha256'))
+        # Match the authenticated host tool with its own ELF loader/libc;
+        # cloud hosts need not provide a system-wide /usr/sbin/e2fsck.
+        checker = host([args.host/'usr/sbin/e2fsck'])
+        report['offline_fsck'] = offline_fsck(disk, out, image_command, env, fsck_command=checker)
         subprocess.run([*image_command, 'resize', str(disk), profile['disk']['virtual_size']], env=env, check=True)
     else:
         subprocess.run([*image_command, 'create', '-f', 'qcow2', '-F', 'raw',
@@ -411,6 +458,8 @@ if __name__ == '__main__':
         p.add_argument('--'+name, type=Path, required=True)
     p.add_argument('--seconds', type=int, default=1500)
     p.add_argument('--continue-from', type=Path, help='Explicit clean private run to COPY, never modify or repair')
+    p.add_argument('--experimental-seed-contract', type=Path,
+                   help='Explicit reviewed private seed contract; default still requires production GUI seed')
     p.add_argument('--enable-experimental-network', action='store_true', required=True)
     a = p.parse_args()
     print(json.dumps(boot(a), indent=2))

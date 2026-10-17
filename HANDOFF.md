@@ -1,5 +1,64 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Explicit Steam experimental-seed contract; install blocked before image write — 2026-10-17
+
+Started clean at verified remote Steam commit
+`bf63183b55e2e3ee8e01155c8dc026cbe6e1a939`. This was cloud-only preparation,
+one agent, with no network/security changes, denied-download retries, cleanup,
+VM/image write, client execution, CI or changes to main/GUI branches or payloads.
+See [contract preparation and storage inventory](experiments/linux-guest/evidence/steam-seed-contract-20261017/README.md).
+
+The accepted experimental `a7758d82…` seed now has a separate reviewed
+`profiles/steam-experimental-seed-20261017.lock.json` contract consumed only via
+explicit `steam_vm.py --experimental-seed-contract PATH`. Production
+`ipa/gui.lock.json` / `9c4d978f…` remain the default. The verifier rejects
+arbitrary external contracts and binds seed/kernel/Steam bootstrap bytes,
+unchanged GUI/client/dependency/profile locks, the pinned 105-file acceptance
+manifest, real boot/source/persistence evidence, original GUI bootstrap and
+strict full-output fsck. Continuation additionally requires the same contract
+hash; existing ownership, dirty recovery and Stop behavior remain intact.
+
+Two independent real-file verifier processes produced identical validation and
+configuration SHA-256
+`d07392982666405ea54b33aabbb5db806e085bdc26ee4ac08e4f6c294adaad2b`.
+The fingerprint includes both Python startup snapshots. An actual different
+retained 1.25GiB seed was refused read-only. 148 Steam tests PASS, covering wrong
+seed, tampered/falsely rehashed acceptance/fsck, symlinks/paths, profile/lock
+changes, default production behavior, continuation binding and storage refusal
+before image tools or QEMU. No new VM acceptance is claimed by these tests.
+
+The fresh-image path now checks the existing full-size offline-copy +4GiB reserve
+floor before writing an image; continuation/offline copies retain their later
+capacity rechecks. The actual runner preflight against current files reached
+that rejection with zero image-tool/VM calls and no new output/image directory.
+All45 cached dependency packages rehashed correctly (18238048 download bytes,
+69937152 declared installed bytes), but guest installation and its dpkg audit
+remain NOT RUN. Standard Steam disk size was not reduced to fit.
+
+The cloud has no global `/usr/sbin/e2fsck`; the runner now selects its existing
+authenticated extracted e2fsck with the matching loader/libc. `-f -n` and the
+strict parser are unchanged. The actual pinned checker's version probe passed.
+Offline signed-index APT simulation found only `qemu-utils`
+`1:10.0.13+ds-0+deb13u1` missing from the host closure (2024216 bytes, SHA-256
+`6d31339b1630153fe7c5f8a51426b8fa6ce35731aeb015a84f2d333c4e4dca30`).
+It was not downloaded/extracted; qemu-img binary/extraction receipt is pending.
+
+Inventory free space:15690088448 bytes, below the17179869184-byte entry floor by
+1489780736 bytes. Nothing was deleted. `space-inventory.json` accounts for large
+files and shared inodes; `space-plan.json` retains all originals/failed outputs,
+caches and receipts. Its conservative free-space target before future staging is
+30612663459 bytes (full12GiB new overlay +12GiB offline copy +4GiB reserve plus
+known uncached client ZIPs, missing host download and a separate complete host
+extraction). Supply larger private cloud capacity/new filesystem under
+`/workspace`, then remeasure after actual staging and before every image/copy.
+Do not rely on sparse savings or purge retained data to force acceptance.
+
+Steam ZIPs remain0/17 after the prior tunnel403. The exact bootstrap remains
+built/not booted here. Steam UI/Big Picture/input/restart/RAM/SHM/IPC/ARM64 stack,
+Apple/iPhone and GPU acceleration remain NOT RUN. No task QEMU remains. The
+experimental contract is ready; storage, image-tool materialization and official
+client delivery are the remaining preparation blockers.
+
 ## Separate cloud experimental seed accepted; exact network request — 2026-10-17
 
 Follow-up started clean at remote Steam commit

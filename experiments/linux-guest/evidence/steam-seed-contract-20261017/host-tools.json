@@ -1,0 +1,32 @@
+{
+  "qemu_utils_closure_source": "same cached signed Debian release/by-hash amd64 index",
+  "index_sha256": "7778d3e3f303b7ddb8ce0fe7c8d57473a076c6bf2e8f241f75421d2396352498",
+  "solver": "APT --simulate only; no download/install",
+  "missing_packages": [
+    {
+      "name": "qemu-utils",
+      "version": "1:10.0.13+ds-0+deb13u1",
+      "architecture": "amd64",
+      "filename": "pool/main/q/qemu/qemu-utils_10.0.13+ds-0+deb13u1_amd64.deb",
+      "sha256": "6d31339b1630153fe7c5f8a51426b8fa6ce35731aeb015a84f2d333c4e4dca30",
+      "size": 2024216,
+      "installed_size_kib": 12510
+    }
+  ],
+  "missing_download_bytes": 2024216,
+  "missing_declared_installed_bytes": 12810240,
+  "task_qemu_img_paths": [],
+  "system_e2fsck_present": false,
+  "pinned_e2fsck_sha256": "be1f2c99e0dc73640cffb549da5f3f4b15da0f89e7334c6730feb69eff784571",
+  "pinned_checker_version_argv": [
+    "/workspace/steam-cloud-20261017/gui-lab/host/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+    "--library-path",
+    "/workspace/steam-cloud-20261017/gui-lab/host/usr/lib/x86_64-linux-gnu",
+    "/workspace/steam-cloud-20261017/gui-lab/host/usr/sbin/e2fsck",
+    "-V"
+  ],
+  "pinned_checker_version_exit": 0,
+  "pinned_checker_version_stdout": "",
+  "pinned_checker_version_stderr": "e2fsck 1.47.2 (1-Jan-2025)\n\tUsing EXT2FS Library version 1.47.2, 1-Jan-2025\n",
+  "system_install": false
+}

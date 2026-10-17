@@ -1,0 +1,89 @@
+{
+  "seed_contract_valid": true,
+  "validation": {
+    "mode": "explicit-experimental-seed",
+    "id": "steam-cloud-gui-20261017-a7758d82",
+    "contract_path": "profiles/steam-experimental-seed-20261017.lock.json",
+    "contract_sha256": "44c00d8e354033f684b0194837419ef6d82bafd299f9a53c7fc831f86b2df2bc",
+    "seed": {
+      "size": 1342177280,
+      "sha256": "a7758d821f67ec48646d4586ec54aeab8b8db31238f0be6dfaabc5966c46a5a2"
+    },
+    "kernel": {
+      "size": 10351104,
+      "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+    },
+    "validator_sha256": "e28497f06d5b351bc7e80ece614d97c8e8b42ab011b34df33e6daff925b5d4bc",
+    "runner_sha256": "b431d6698590566802e649d5ae727a27bd3167142bfb7233a9754770f357e5ec",
+    "acceptance_sha256": "ba6d38c0d6686514a903eca2f01454d1069685abe3c25a5792df1fbf83d8716f",
+    "evidence_files_verified": 105,
+    "configuration": {
+      "seed": {
+        "size": 1342177280,
+        "sha256": "a7758d821f67ec48646d4586ec54aeab8b8db31238f0be6dfaabc5966c46a5a2"
+      },
+      "kernel": {
+        "size": 10351104,
+        "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+      },
+      "steam_bootstrap": {
+        "size": 11665437,
+        "sha256": "6a0081d76fedbb38b72e705334513313093b46e701907ed8b6d516640978df7f"
+      },
+      "contract_sha256": "44c00d8e354033f684b0194837419ef6d82bafd299f9a53c7fc831f86b2df2bc",
+      "repository_bindings": {
+        "ipa/gui.lock.json": "fef0bf4c5b72cad5ee921616639f6e28bec73bce7b1e689c95c3734aed82c7eb",
+        "ipa/gui-inputs.lock.json": "8b3ee6d1f255c7486e7226c65ab304036363edccea4e145b472fe7df1cf6ed98",
+        "ipa/steam-client.lock.json": "9b8bc9fe5e8074ae4d798f645d259066e968b8bc5512183c0aca34e1f54a8bdd",
+        "ipa/steam-dependencies.lock.json": "0d153bbb2a9a39c32fb650d189cc972355fc1d94da39297cf0b9830fdbd922f6",
+        "profiles/steam-host-experiment.json": "9b8e387773e61e82c183869db73877e3ca2fc4c0c673c2b858e61c933bf6e13f"
+      },
+      "validator_sha256": "e28497f06d5b351bc7e80ece614d97c8e8b42ab011b34df33e6daff925b5d4bc",
+      "runner_sha256": "b431d6698590566802e649d5ae727a27bd3167142bfb7233a9754770f357e5ec",
+      "vcpus": 4,
+      "profile": {
+        "schema": 1,
+        "id": "steam-arm64-private-host-experiment-v1",
+        "app_route_enabled": false,
+        "client_bundled": false,
+        "agreement_accepted": false,
+        "disk": {
+          "kind": "new-qcow2-overlay",
+          "backing": "verified-gui-seed-read-only",
+          "virtual_size": "12G",
+          "reuse_dirty": false
+        },
+        "memory_mib": 1536,
+        "cpu": "max",
+        "network": {
+          "kind": "qemu-user-nat",
+          "explicit_opt_in": true,
+          "ipv6": false,
+          "host_forwarding": false,
+          "guest_address": "10.0.2.15/24",
+          "gateway": "10.0.2.2",
+          "dns": "10.0.2.3"
+        },
+        "stop": "existing-production-control-sync-unmount-then-qemu-process-exit",
+        "rendering": "CEF software UI experiment; no accelerated gaming claim"
+      }
+    },
+    "configuration_sha256": "d07392982666405ea54b33aabbb5db806e085bdc26ee4ac08e4f6c294adaad2b",
+    "production_gui_override": false,
+    "host_only": true
+  },
+  "storage": {
+    "filesystem_path": "/workspace/steam-cloud-20261017",
+    "free_bytes": 15690129408,
+    "virtual_disk_bytes": 12884901888,
+    "reserve_bytes": 4294967296,
+    "required_before_image_write_bytes": 17179869184,
+    "shortfall_bytes": 1489739776,
+    "allowed": false,
+    "policy": "full-offline-copy-plus-4GiB-before-image-write",
+    "sparse_allocation_discount": false
+  },
+  "qemu_started": false,
+  "disk_created": false,
+  "dependencies_installed": false
+}

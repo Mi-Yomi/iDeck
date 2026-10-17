@@ -1,0 +1,11 @@
+{
+  "independent_processes": 2,
+  "identical_validation": true,
+  "configuration_sha256": "d07392982666405ea54b33aabbb5db806e085bdc26ee4ac08e4f6c294adaad2b",
+  "contract_sha256": "44c00d8e354033f684b0194837419ef6d82bafd299f9a53c7fc831f86b2df2bc",
+  "runner_sha256": "b431d6698590566802e649d5ae727a27bd3167142bfb7233a9754770f357e5ec",
+  "validator_sha256": "e28497f06d5b351bc7e80ece614d97c8e8b42ab011b34df33e6daff925b5d4bc",
+  "wrong_seed_refused": true,
+  "qemu_started": false,
+  "disk_created": false
+}

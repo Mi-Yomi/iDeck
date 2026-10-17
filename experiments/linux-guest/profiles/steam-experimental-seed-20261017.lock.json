@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "kind": "private-steam-experimental-seed",
+  "id": "steam-cloud-gui-20261017-a7758d82",
+  "host_only": true,
+  "app_route_enabled": false,
+  "production_gui_override": false,
+  "seed": {
+    "size": 1342177280,
+    "sha256": "a7758d821f67ec48646d4586ec54aeab8b8db31238f0be6dfaabc5966c46a5a2"
+  },
+  "kernel": {
+    "size": 10351104,
+    "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+  },
+  "gui_initramfs": {
+    "size": 11319304,
+    "sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4"
+  },
+  "steam_bootstrap": {
+    "size": 11665437,
+    "sha256": "6a0081d76fedbb38b72e705334513313093b46e701907ed8b6d516640978df7f"
+  },
+  "steam_bootstrap_receipt": {
+    "size": 4476,
+    "sha256": "d6533c920dd548c61ac560d77e0d4d561eb3594e7e9519ae7998dd67da01f913"
+  },
+  "repository_bindings": {
+    "ipa/gui.lock.json": "fef0bf4c5b72cad5ee921616639f6e28bec73bce7b1e689c95c3734aed82c7eb",
+    "ipa/gui-inputs.lock.json": "8b3ee6d1f255c7486e7226c65ab304036363edccea4e145b472fe7df1cf6ed98",
+    "ipa/steam-client.lock.json": "9b8bc9fe5e8074ae4d798f645d259066e968b8bc5512183c0aca34e1f54a8bdd",
+    "ipa/steam-dependencies.lock.json": "0d153bbb2a9a39c32fb650d189cc972355fc1d94da39297cf0b9830fdbd922f6",
+    "profiles/steam-host-experiment.json": "9b8e387773e61e82c183869db73877e3ca2fc4c0c673c2b858e61c933bf6e13f"
+  },
+  "provenance": {
+    "manifest": {
+      "path": "evidence/steam-cloud-seed-20261017/manifest.json",
+      "size": 17120,
+      "sha256": "bba52888c2dba34663e7f7bd7ff62b31b4e10c9f7e0335f1cfc2d00bf8c2261c"
+    },
+    "seed_receipt": "experimental-gui-seed.json",
+    "acceptance": "alpine-acceptance.json",
+    "completion": "experimental-acceptance.json",
+    "gui_bootstrap_receipt": {
+      "path": "evidence/steam-cloud-20261017/gui-bootstrap.json",
+      "size": 696,
+      "sha256": "fdb76b504e392d866d58b4cc4711ecfddf705e9637be7305bbd660172ff1db85"
+    },
+    "boot_reports": {
+      "boot1": {
+        "report": "alpine-boot1/result.json",
+        "runner": "alpine-boot1/runner-source.py"
+      },
+      "boot2": {
+        "report": "alpine-boot2/result.json",
+        "runner": "alpine-boot2/runner-source.py"
+      }
+    },
+    "strict_checks": {
+      "boot1": {
+        "report": "alpine-boot1/strict-fsck.json",
+        "stdout": "alpine-boot1/strict-fsck.stdout.log",
+        "stderr": "alpine-boot1/strict-fsck.stderr.log"
+      },
+      "boot2": {
+        "report": "alpine-boot2/strict-fsck.json",
+        "stdout": "alpine-boot2/strict-fsck.stdout.log",
+        "stderr": "alpine-boot2/strict-fsck.stderr.log"
+      },
+      "seed": {
+        "report": "seed-offline/strict-fsck.json",
+        "stdout": "seed-offline/strict-fsck.stdout.log",
+        "stderr": "seed-offline/strict-fsck.stderr.log"
+      }
+    }
+  }
+}

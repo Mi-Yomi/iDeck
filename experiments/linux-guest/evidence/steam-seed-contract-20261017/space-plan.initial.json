@@ -1,0 +1,27 @@
+{
+  "current_free_bytes": 15690088448,
+  "current_entry_floor_bytes": 17179869184,
+  "current_entry_shortfall_bytes": 1489780736,
+  "worst_case_new_overlay_bytes": 12884901888,
+  "offline_flattened_copy_bytes": 12884901888,
+  "required_remaining_reserve_bytes": 4294967296,
+  "uncached_steam_zip_bytes": 360938891,
+  "missing_host_download_bytes": 2024216,
+  "separate_complete_host_extraction_declared_bytes": 184929280,
+  "conservative_target_free_bytes_before_future_staging": 30612663459,
+  "additional_free_bytes_to_that_target": 14922575011,
+  "minimum_total_capacity_with_current_data_retained_bytes": 46958005411,
+  "conditions": [
+    "Keep all originals, failed outputs, evidence and caches.",
+    "Owner supplies larger cloud capacity or an additional private filesystem under /workspace; no deletion/replacement.",
+    "Verify/replay the explicit seed contract and current sources after capacity is available.",
+    "Materialize the missing authenticated host-tool closure into a new separate host tree; retain old tools.",
+    "Recompute actual free space after download/extraction metadata; at least12GiB+4GiB before any image write.",
+    "Create only a new disposable Steam overlay; keep source read-only and exclusive ownership.",
+    "Install locked dependencies and require dpkg --audit exit0 with byte-empty output; preserve341 existing versions.",
+    "Clean Stop/QEMU exit/fsync, then recheck capacity for the full12GiB offline copy+4GiB reserve and strict full-output fsck.",
+    "Stop if any check fails; do not shrink the profile, count sparse savings or purge retained files."
+  ],
+  "budget_scope": "28GiB full overlay+offline copy+reserve, plus known future external caches/declared separate host extraction. Re-measure filesystem metadata overhead at every gate.",
+  "actions_performed": "planning only; no guest/image write, cleanup, policy change or denied-download retry"
+}

@@ -1,0 +1,14 @@
+{
+  "seed_contract_valid": true,
+  "configuration_reproduced": true,
+  "configuration_sha256": "d07392982666405ea54b33aabbb5db806e085bdc26ee4ac08e4f6c294adaad2b",
+  "existing_production_gui_default_preserved": true,
+  "wrong_seed_refused": true,
+  "dependency_packages_cached_and_verified": 45,
+  "dependencies_installed": false,
+  "install_blocker": "standard12GiB Steam target fails full offline-copy+4GiB reserve before image write",
+  "qemu_pids": [],
+  "image_created": false,
+  "network_requests_for_downloads": 0,
+  "data_removed": false
+}

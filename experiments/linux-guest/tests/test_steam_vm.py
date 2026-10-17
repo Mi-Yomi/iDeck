@@ -267,6 +267,22 @@ class SteamHostGuards(unittest.TestCase):
             self.assertFalse((root/'offline-fsck.raw').exists())
             self.assertEqual(disk.read_bytes(), b'continuation copy already consumes storage')
 
+    def test_offline_fsck_uses_supplied_pinned_loader_and_keeps_read_only_flags(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root=Path(temporary);stdout,stderr=self.clean_fsck_output(root/'offline-fsck.raw')
+            checker=['/fixture/ld-linux','--library-path','/fixture/lib','/fixture/e2fsck']
+            def run(argv,**kwargs):
+                if argv[1]=='info':return SimpleNamespace(stdout=json.dumps({'virtual-size':1024}))
+                if argv[1]=='convert':
+                    os.write(kwargs['pass_fds'][0],b'checked fixture');return SimpleNamespace(returncode=0)
+                self.assertEqual(argv,[*checker,'-f','-n',str(root/'offline-fsck.raw')])
+                return SimpleNamespace(returncode=0,stdout=stdout,stderr=stderr)
+            with patch.object(steam_vm.subprocess,'run',side_effect=run), \
+                    patch.object(steam_vm.shutil,'disk_usage',return_value=SimpleNamespace(free=8*1024**3)):
+                receipt=steam_vm.offline_fsck(root/'disk',root,['qemu-img'],{},fsck_command=checker)
+            self.assertTrue(receipt['evaluation']['accepted'])
+            self.assertEqual(receipt['fsck_command'],[*checker,'-f','-n',str(root/'offline-fsck.raw')])
+
     def test_preparation_failure_saves_receipt_and_closes_resources_and_owner(self):
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary)/'new-run'

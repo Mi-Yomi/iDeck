@@ -1,0 +1,306 @@
+{
+  "observed_at_utc": "2026-10-17T13:27:26.007587+00:00",
+  "filesystem_total_bytes": 33770192896,
+  "filesystem_used_bytes": 16345341952,
+  "filesystem_free_bytes": 15690088448,
+  "task_regular_path_count": 46698,
+  "task_unique_inodes": 46355,
+  "symlink_file_count": 1921,
+  "task_logical_bytes_all_paths": 17316917544,
+  "task_logical_bytes_unique_inodes": 16869457828,
+  "task_allocated_bytes_unique_inodes": 16216498176,
+  "allocated_by_top_level_first_inode_attribution": {
+    ".": 4026667008,
+    "alpine-modules": 2011136,
+    "deps-cache": 18325504,
+    "experimental-alpine-gate-v4": 1536315392,
+    "experimental-seed": 1908285440,
+    "experimental-seed-acceptance": 24576,
+    "experimental-seed-acceptance-v2": 8192,
+    "experimental-seed-acceptance-v3": 28672,
+    "experimental-seed-v3": 1704636416,
+    "experimental-seed-v4": 2778263552,
+    "gui-bootstrap": 41443328,
+    "gui-cache": 437891072,
+    "gui-lab": 2355752960,
+    "gui-lab-acceptance": 983040,
+    "gui-lab-acceptance-v2": 299008,
+    "gui-lab-acceptance-v3": 974848,
+    "gui-lab-inputfix": 1372413952,
+    "logs": 188416,
+    "module-tools": 16277504,
+    "module-tools-cache": 4030464,
+    "steam-bootstrap": 11677696
+  },
+  "largest_files": [
+    {
+      "path": "gui-provisioned-preserved-v2.raw",
+      "logical_bytes": 1342177280,
+      "allocated_bytes": 1342181376,
+      "hardlink_count": 1,
+      "inode_key": "27:552078"
+    },
+    {
+      "path": "gui-provisioned-preserved-v3.raw",
+      "logical_bytes": 1342177280,
+      "allocated_bytes": 1342181376,
+      "hardlink_count": 1,
+      "inode_key": "27:552100"
+    },
+    {
+      "path": "gui-provisioned-preserved.raw",
+      "logical_bytes": 1342177280,
+      "allocated_bytes": 1342181376,
+      "hardlink_count": 1,
+      "inode_key": "27:552050"
+    },
+    {
+      "path": "experimental-alpine-gate-v4/vm/scratch-gui.raw",
+      "logical_bytes": 1342177280,
+      "allocated_bytes": 1342181376,
+      "hardlink_count": 1,
+      "inode_key": "27:560949"
+    },
+    {
+      "path": "experimental-seed/vm/scratch-gui.raw",
+      "logical_bytes": 1342177280,
+      "allocated_bytes": 1342181376,
+      "hardlink_count": 1,
+      "inode_key": "27:664848"
+    },
+    {
+      "path": "experimental-seed-v3/vm/scratch-gui.raw",
+      "logical_bytes": 1342177280,
+      "allocated_bytes": 1342181376,
+      "hardlink_count": 1,
+      "inode_key": "27:559942"
+    },
+    {
+      "path": "experimental-seed-v4/vm/scratch-gui.raw",
+      "logical_bytes": 1342177280,
+      "allocated_bytes": 1342181376,
+      "hardlink_count": 1,
+      "inode_key": "27:927481"
+    },
+    {
+      "path": "gui-lab-inputfix/scratch-gui.raw",
+      "logical_bytes": 1342177280,
+      "allocated_bytes": 1342181376,
+      "hardlink_count": 1,
+      "inode_key": "27:552059"
+    },
+    {
+      "path": "gui-lab/scratch-gui.raw",
+      "logical_bytes": 1342177280,
+      "allocated_bytes": 1212223488,
+      "hardlink_count": 1,
+      "inode_key": "27:552011"
+    },
+    {
+      "path": "experimental-seed-v4/seed/gui-rootfs-v1.raw",
+      "logical_bytes": 1342177280,
+      "allocated_bytes": 792367104,
+      "hardlink_count": 1,
+      "inode_key": "27:1048578"
+    },
+    {
+      "path": "experimental-seed-v4/seed/gui-rootfs-v1.raw.gz",
+      "logical_bytes": 270444186,
+      "allocated_bytes": 270446592,
+      "hardlink_count": 1,
+      "inode_key": "27:1048579"
+    },
+    {
+      "path": "experimental-seed/vm/packages.raw",
+      "logical_bytes": 268435456,
+      "allocated_bytes": 192950272,
+      "hardlink_count": 2,
+      "inode_key": "27:552023"
+    },
+    {
+      "path": "gui-lab/packages.raw",
+      "logical_bytes": 268435456,
+      "allocated_bytes": 192950272,
+      "hardlink_count": 2,
+      "inode_key": "27:552023"
+    },
+    {
+      "path": "gui-lab/tree/usr/lib/aarch64-linux-gnu/libLLVM.so.19.1",
+      "logical_bytes": 123242120,
+      "allocated_bytes": 123244544,
+      "hardlink_count": 1,
+      "inode_key": "27:543500"
+    },
+    {
+      "path": "gui-cache/debs/linux-image-6.12.107+deb13-arm64_6.12.107-1_arm64.deb",
+      "logical_bytes": 92902468,
+      "allocated_bytes": 92905472,
+      "hardlink_count": 1,
+      "inode_key": "27:525672"
+    },
+    {
+      "path": "gui-cache/metadata/Packages-amd64",
+      "logical_bytes": 56620099,
+      "allocated_bytes": 56623104,
+      "hardlink_count": 1,
+      "inode_key": "27:525227"
+    },
+    {
+      "path": "gui-cache/metadata/Packages-arm64",
+      "logical_bytes": 56162922,
+      "allocated_bytes": 56164352,
+      "hardlink_count": 1,
+      "inode_key": "27:525217"
+    },
+    {
+      "path": "experimental-seed/vm/kernel/boot/vmlinuz-6.12.107+deb13-arm64",
+      "logical_bytes": 37660608,
+      "allocated_bytes": 37662720,
+      "hardlink_count": 1,
+      "inode_key": "27:658442"
+    },
+    {
+      "path": "experimental-seed-v3/vm/kernel/boot/vmlinuz-6.12.107+deb13-arm64",
+      "logical_bytes": 37660608,
+      "allocated_bytes": 37662720,
+      "hardlink_count": 1,
+      "inode_key": "27:554580"
+    },
+    {
+      "path": "experimental-seed-v4/vm/kernel/boot/vmlinuz-6.12.107+deb13-arm64",
+      "logical_bytes": 37660608,
+      "allocated_bytes": 37662720,
+      "hardlink_count": 1,
+      "inode_key": "27:921082"
+    },
+    {
+      "path": "gui-lab/kernel/boot/vmlinuz-6.12.107+deb13-arm64",
+      "logical_bytes": 37660608,
+      "allocated_bytes": 37662720,
+      "hardlink_count": 1,
+      "inode_key": "27:528122"
+    },
+    {
+      "path": "gui-lab/tree/usr/lib/aarch64-linux-gnu/libgallium-25.0.7-2+deb13u1.so",
+      "logical_bytes": 35012296,
+      "allocated_bytes": 35012608,
+      "hardlink_count": 1,
+      "inode_key": "27:546627"
+    },
+    {
+      "path": "experimental-seed/vm/host/usr/bin/qemu-system-aarch64",
+      "logical_bytes": 34073536,
+      "allocated_bytes": 34078720,
+      "hardlink_count": 1,
+      "inode_key": "27:658083"
+    },
+    {
+      "path": "experimental-alpine-gate-v4/vm/host/usr/bin/qemu-system-aarch64",
+      "logical_bytes": 34073536,
+      "allocated_bytes": 34074624,
+      "hardlink_count": 1,
+      "inode_key": "27:560924"
+    },
+    {
+      "path": "experimental-seed-v3/vm/host/usr/bin/qemu-system-aarch64",
+      "logical_bytes": 34073536,
+      "allocated_bytes": 34074624,
+      "hardlink_count": 1,
+      "inode_key": "27:554221"
+    },
+    {
+      "path": "experimental-seed-v4/vm/host/usr/bin/qemu-system-aarch64",
+      "logical_bytes": 34073536,
+      "allocated_bytes": 34074624,
+      "hardlink_count": 1,
+      "inode_key": "27:920723"
+    },
+    {
+      "path": "gui-lab/host/usr/bin/qemu-system-aarch64",
+      "logical_bytes": 34073536,
+      "allocated_bytes": 34074624,
+      "hardlink_count": 1,
+      "inode_key": "27:527763"
+    },
+    {
+      "path": "gui-lab/tree/usr/lib/aarch64-linux-gnu/libicudata.so.76.1",
+      "logical_bytes": 31917696,
+      "allocated_bytes": 31920128,
+      "hardlink_count": 1,
+      "inode_key": "27:543230"
+    },
+    {
+      "path": "experimental-alpine-gate-v4/vm/host/usr/bin/qemu-system-arm",
+      "logical_bytes": 31300320,
+      "allocated_bytes": 31301632,
+      "hardlink_count": 1,
+      "inode_key": "27:560925"
+    },
+    {
+      "path": "experimental-seed/vm/host/usr/bin/qemu-system-arm",
+      "logical_bytes": 31300320,
+      "allocated_bytes": 31301632,
+      "hardlink_count": 1,
+      "inode_key": "27:658084"
+    },
+    {
+      "path": "experimental-seed-v3/vm/host/usr/bin/qemu-system-arm",
+      "logical_bytes": 31300320,
+      "allocated_bytes": 31301632,
+      "hardlink_count": 1,
+      "inode_key": "27:554222"
+    },
+    {
+      "path": "experimental-seed-v4/vm/host/usr/bin/qemu-system-arm",
+      "logical_bytes": 31300320,
+      "allocated_bytes": 31301632,
+      "hardlink_count": 1,
+      "inode_key": "27:920724"
+    },
+    {
+      "path": "gui-lab/host/usr/bin/qemu-system-arm",
+      "logical_bytes": 31300320,
+      "allocated_bytes": 31301632,
+      "hardlink_count": 1,
+      "inode_key": "27:527764"
+    },
+    {
+      "path": "gui-lab/tree/usr/libexec/gcc/aarch64-linux-gnu/14/cc1",
+      "logical_bytes": 30564912,
+      "allocated_bytes": 30568448,
+      "hardlink_count": 1,
+      "inode_key": "27:538624"
+    },
+    {
+      "path": "gui-lab/tree/usr/lib/aarch64-linux-gnu/libz3.so.4",
+      "logical_bytes": 26875248,
+      "allocated_bytes": 26877952,
+      "hardlink_count": 1,
+      "inode_key": "27:546495"
+    },
+    {
+      "path": "gui-cache/debs/libllvm19_19.1.7-3+b1_arm64.deb",
+      "logical_bytes": 23285344,
+      "allocated_bytes": 23285760,
+      "hardlink_count": 2,
+      "inode_key": "27:525403"
+    },
+    {
+      "path": "gui-lab/packages/libllvm19_19.1.7-3+b1_arm64.deb",
+      "logical_bytes": 23285344,
+      "allocated_bytes": 23285760,
+      "hardlink_count": 2,
+      "inode_key": "27:525403"
+    },
+    {
+      "path": "gui-lab/tree/usr/lib/aarch64-linux-gnu/libgs.so.10.05",
+      "logical_bytes": 22412336,
+      "allocated_bytes": 22413312,
+      "hardlink_count": 1,
+      "inode_key": "27:542192"
+    }
+  ],
+  "symlink_directories_followed": false,
+  "source_data_deleted": false,
+  "note": "Filesystem free space is authoritative; per-file allocation excludes directory/overlay metadata and attributes hardlinks once."
+}

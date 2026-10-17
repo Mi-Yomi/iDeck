@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/workspace/iDeck/experiments/linux-guest/tools/steam_seed.py",
+    "--contract",
+    "/workspace/iDeck/experiments/linux-guest/profiles/steam-experimental-seed-20261017.lock.json",
+    "--kernel",
+    "/workspace/steam-cloud-20261017/gui-bootstrap/vmlinuz-virt",
+    "--bootstrap",
+    "/workspace/steam-cloud-20261017/steam-bootstrap",
+    "--storage-root",
+    "/workspace/steam-cloud-20261017",
+    "--seed",
+    "/workspace/steam-cloud-20261017/experimental-seed-v4/seed/gui-rootfs-v1.raw"
+  ],
+  "exit_code": 2
+}

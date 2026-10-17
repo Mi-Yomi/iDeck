@@ -1,0 +1,10 @@
+{
+  "seed_contract_valid": false,
+  "failure": {
+    "class": "ValueError",
+    "message": "seed contract integrity mismatch: gui-provisioned-preserved.raw"
+  },
+  "qemu_started": false,
+  "disk_created": false,
+  "dependencies_installed": false
+}

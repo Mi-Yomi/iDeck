@@ -1,0 +1,9 @@
+{
+  "lock_sha256": "0d153bbb2a9a39c32fb650d189cc972355fc1d94da39297cf0b9830fdbd922f6",
+  "packages_verified": 45,
+  "download_bytes": 18238048,
+  "declared_installed_bytes": 69937152,
+  "guest_install": "NOT RUN; standard Steam profile storage gate blocked before image write",
+  "dpkg_audit_in_dependency_vm": "NOT RUN",
+  "new_vm_disk_created": false
+}

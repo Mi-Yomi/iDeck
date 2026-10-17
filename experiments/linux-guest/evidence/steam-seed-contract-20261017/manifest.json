@@ -1,0 +1,116 @@
+{
+  "schema": 1,
+  "scope": "explicit experimental seed contract/preflight and no-deletion storage plan; no VM/client acceptance",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "size": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "README.md",
+      "size": 7702,
+      "sha256": "89b245217a3d00cc89cc71e4aacced09c318f4541c6e103a77c696a7951d74c7"
+    },
+    {
+      "path": "capture_contract_preparation.py",
+      "size": 12718,
+      "sha256": "c778ec47650189a9f8e1bb66f951d99691f8068e7055d03a41e2cdcd5a382965"
+    },
+    {
+      "path": "dependency-cache.json",
+      "size": 355,
+      "sha256": "9ade63df7de570662ef820be9f695104af64e08dda040a35a7e1e4f37c7ac00f"
+    },
+    {
+      "path": "host-tools.json",
+      "size": 1373,
+      "sha256": "d0f3685b30bab0623c47d2f96d1b6ec826680cd41d59a3c91e93861e33491132"
+    },
+    {
+      "path": "reconcile_space_budget.py",
+      "size": 1668,
+      "sha256": "60051f3f40ed76c13d5a01cb0d03b512f058d615d51324cc791b97791982e46e"
+    },
+    {
+      "path": "reproducibility.json",
+      "size": 505,
+      "sha256": "fff9b8ad1e495291f6bc595b2e8ffe4f7093722b42c3be88ba0ff397024da9b2"
+    },
+    {
+      "path": "runner-storage-gate.json",
+      "size": 9045,
+      "sha256": "a6f0abc34b77944589472966e2b4981df6615ee3d2026581e7461b85e5ed24bb"
+    },
+    {
+      "path": "space-inventory.json",
+      "size": 9232,
+      "sha256": "f934fca8259f11c69817ac64e195db9d9cc7f2e20effa2d66c1632d45b37c501"
+    },
+    {
+      "path": "space-plan.initial.json",
+      "size": 1906,
+      "sha256": "736b2af6ad15ee4aa9a5b637fbb2134492157deb57547223435084098bea274a"
+    },
+    {
+      "path": "space-plan.json",
+      "size": 2345,
+      "sha256": "f547397685d101c17d90c5a70aac1b0f08e68fa37e0b1d15cb9eeeb407e7ef33"
+    },
+    {
+      "path": "summary.json",
+      "size": 547,
+      "sha256": "ac5e791a22608ad27b07a182a6f0b2d1064c6389a82254bc50f8c323b1041a3e"
+    },
+    {
+      "path": "tests.log",
+      "size": 22501,
+      "sha256": "3dbbc4f7f512ebd56233c4ab43ec96bbb408955490c43eb04dc0c1b1c91b1919"
+    },
+    {
+      "path": "verify1-command.json",
+      "size": 618,
+      "sha256": "f2df171eff86909f5c367b9974eb70e57b35b37dbf094e6ee8b35e9bccf09e86"
+    },
+    {
+      "path": "verify1.json",
+      "size": 3715,
+      "sha256": "eef18cde6bf6e694257f99dccbd804849308013605298e29c8758ac4ce3344ab"
+    },
+    {
+      "path": "verify1.stderr.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "verify2-command.json",
+      "size": 618,
+      "sha256": "f2df171eff86909f5c367b9974eb70e57b35b37dbf094e6ee8b35e9bccf09e86"
+    },
+    {
+      "path": "verify2.json",
+      "size": 3715,
+      "sha256": "65e64d24ea04707b2f436add295bc48205deef984a796929b2100c23937dd1e3"
+    },
+    {
+      "path": "verify2.stderr.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "wrong-seed-command.json",
+      "size": 604,
+      "sha256": "07db7d73f767b305acc138d17ec456deb4774faf1c318a3b8799a6f171a578a6"
+    },
+    {
+      "path": "wrong-seed.json",
+      "size": 248,
+      "sha256": "8f7295e5a0a6a03f6db705bf1961683c9e5557761f463f7b13a9fc37f4943994"
+    },
+    {
+      "path": "wrong-seed.stderr.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

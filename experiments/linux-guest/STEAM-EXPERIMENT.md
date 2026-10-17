@@ -49,8 +49,8 @@ DrvFS/9p rejects this operation here, so install inside guest ext4, not `/mnt/e`
 
 `tools/steam_dependencies.py` resolves the ELF-derived package requirements
 against the authenticated, pinned Debian index. It preserves every accepted GUI
-package/version. `ipa/steam-dependencies.lock.json` pins 41 additional packages /
-17,714,248 bytes; this is a static dependency inventory, not a runtime pass.
+package/version. `ipa/steam-dependencies.lock.json` pins 45 additional packages /
+18,238,048 bytes; this is a static dependency inventory, not a runtime pass.
 
 `guest/steam/install-cached.py` is an explicit private-QEMU-cache mode. The host
 binds its HTTP server only to loopback; the guest uses QEMU's `10.0.2.2` alias.
@@ -99,7 +99,8 @@ python3 tools/steam_vm.py --host "$HOST_TOOLS" \
   --output "$TASK/new-run" --seconds 1100 --enable-experimental-network
 ```
 
-All paths must remain on the task's E: storage. `--output` must not exist. The
+Use the selected private cloud task storage; do not access the owner's laptop.
+`--output` must not exist. The
 runner never resumes a dirty disk or automatically recreates an existing one.
 Its command queue accepts explicit `NNN-name.sh` guest scripts, executes each
 once, records exit status and a real QMP screenshot. A `STOP` file requests the
@@ -117,6 +118,29 @@ are refused; image output is bound to a newly created exclusive file descriptor.
 The experiment's new virtual disk capacity is 12 GiB. Allow space for the source,
 new overlay and a temporary full-size raw check; retain several GiB of free space
 inside the guest for Valve's update staging.
+
+### Explicit cloud experimental seed
+
+The default runner path still requires the production GUI seed in
+`ipa/gui.lock.json`. To select the separate accepted cloud seed `a7758d82…`,
+explicitly supply `--experimental-seed-contract
+profiles/steam-experimental-seed-20261017.lock.json` along with its actual raw
+seed/kernel/bootstrap paths. The reviewed contract pins the complete acceptance
+manifest and checks real boot/persistence/source identities and full fsck output.
+It preserves the production GUI lock and is never an automatic hash fallback.
+Continuation also requires the same contract hash. A future real run retains
+startup snapshots of both the runner and validator.
+
+`tools/steam_seed.py --contract PATH --seed RAW --kernel KERNEL --bootstrap DIR
+--storage-root DIR` performs only read-only input/configuration and storage
+checks, printing a canonical configuration hash. Exit0 is preparation only;
+exit2 means a valid seed contract but insufficient storage; exit1 rejects inputs.
+The runner checks the existing full-size offline-copy +4GiB reserve policy before
+initial image writes, and rechecks it after continuation copies as before.
+Offline fsck uses the authenticated extracted host e2fsck/ELF-loader pair rather
+than requiring a system-wide checker. No checksum, space, Stop or ownership gate
+is relaxed. Current receipts, exact command and the no-deletion storage plan are
+in [contract preparation evidence](evidence/steam-seed-contract-20261017/README.md).
 
 After GUI readiness, run inside the new guest:
 

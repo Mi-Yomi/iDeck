@@ -8,10 +8,17 @@ import Glibc
 /// Separate ext4 storage contract. Existing terminal FAT16 handling is untouched.
 /// No QEMU entry, mounting, recovery, formatting or legacy-data mutation here.
 final class LinuxDesktopDisk {
-    enum Invalid: Error, Equatable {
+    enum Invalid: Error, Equatable, CaseIterable {
         case specification, directory, inspection, open, locked, metadata, size
         case headerRead, checksum, filesystem, uuid, geometry, features, journal
         case needsRecovery, ownership, alreadyExists, insufficientSpace, io
+    }
+    /// Only four numeric/boolean superblock fields; never file or inode contents.
+    struct RecoveryObservation: Equatable {
+        let recoverBit: Bool
+        let state: UInt32
+        let lastOrphan: UInt32
+        let errorCount: UInt32
     }
     struct Features: Codable, Equatable {
         let compat: UInt32
@@ -73,7 +80,8 @@ final class LinuxDesktopDisk {
         }
     }
 
-    static func openExisting(directory: URL, specification: Specification) throws -> LinuxDesktopDisk {
+    static func openExisting(directory: URL, specification: Specification,
+                             observe: ((RecoveryObservation) -> Void)? = nil) throws -> LinuxDesktopDisk {
         try specification.validate()
         try validateDirectory(directory)
         let url = directory.appendingPathComponent("rootfs-v1.raw")
@@ -97,11 +105,11 @@ final class LinuxDesktopDisk {
            fstatat(directoryFD, temporary, &partial, AT_SYMLINK_NOFOLLOW) == 0,
            target.st_dev == opened.st_dev, target.st_ino == opened.st_ino,
            partial.st_dev == opened.st_dev, partial.st_ino == opened.st_ino {
-            try validateSuperblock(fd: descriptor, specification: specification)
+            try validateSuperblock(fd: descriptor, specification: specification, observe: observe)
             guard unlinkat(directoryFD, temporary, 0) == 0, fsync(directoryFD) == 0 else { throw Invalid.io }
         }
         try validateIdentity(fd: descriptor, url: url, specification: specification)
-        try validateSuperblock(fd: descriptor, specification: specification)
+        try validateSuperblock(fd: descriptor, specification: specification, observe: observe)
         accepted = true
         return LinuxDesktopDisk(url: url, specification: specification, fd: descriptor)
     }
@@ -206,7 +214,8 @@ final class LinuxDesktopDisk {
         guard opened.st_size == off_t(specification.sizeBytes), named.st_size == opened.st_size else { throw Invalid.size }
     }
 
-    static func validateSuperblock(fd: Int32, specification: Specification) throws {
+    static func validateSuperblock(fd: Int32, specification: Specification,
+                                   observe: ((RecoveryObservation) -> Void)? = nil) throws {
         try specification.validate()
         var header = [UInt8](repeating: 0, count: 1024)
         var count = 0
@@ -219,11 +228,12 @@ final class LinuxDesktopDisk {
             guard result > 0 else { throw Invalid.headerRead }
             count += result
         }
-        try validateHeader(header, specification: specification)
+        try validateHeader(header, specification: specification, observe: observe)
     }
 
     /// Only superblock contract validation, not an fsck/inode-tree integrity claim.
-    static func validateHeader(_ h: [UInt8], specification s: Specification) throws {
+    static func validateHeader(_ h: [UInt8], specification s: Specification,
+                               observe: ((RecoveryObservation) -> Void)? = nil) throws {
         try s.validate()
         guard h.count == 1024 else { throw Invalid.headerRead }
         func u16(_ n: Int) -> UInt32 { UInt32(h[n]) | UInt32(h[n + 1]) << 8 }
@@ -235,6 +245,10 @@ final class LinuxDesktopDisk {
         let incompat = u32(0x60)
         guard u32(0x5c) == s.features.compat, incompat & ~UInt32(4) == s.features.incompat,
               u32(0x64) == s.features.roCompat else { throw Invalid.features }
+        // Observe the SAME bounded read only after magic/checksum/UUID/features
+        // checks, while the startup caller owns the lock. The refusal is intact.
+        observe?(RecoveryObservation(recoverBit: incompat & 4 != 0, state: u16(0x3a),
+                                     lastOrphan: u32(0xe8), errorCount: u32(0x194)))
         guard incompat & 4 == 0, u16(0x3a) == 1, u32(0xe8) == 0,
               u32(0x194) == 0 else { throw Invalid.needsRecovery }
         let blocks = UInt64(u32(4)) | UInt64(u32(0x150)) << 32

@@ -1,5 +1,51 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Desktop blocked-start diagnostics — 2026-10-17
+
+Owner reports that the IPA built from `27e9736f35ffb7c572e2fa81c75458ee1d1b8ff9`
+showed the real Debian GUI/xterm/Mousepad and accepted input on iPhone16ProMax/iOS27.
+After swiping the app away without Stop, the next launch was refused with
+`LinuxDesktopDisk.Invalid.needsRecovery`. This is owner-reported device evidence,
+not a device test performed by this cloud executor, and does not establish two
+clean device Stops or the cause of the recorded filesystem state.
+
+The old Share report control was conditional on a session MD and below the F keys
+inside the short scrolling input sidebar. Startup diagnostics had no Desktop entry.
+Report/Diagnostics now occupy a fixed top safe-area bar outside the geometry,
+scrolling and disabled input grids. They remain available before readiness and
+after a failed start; full status/export errors and saved MD attempts have a stack
+navigation sheet. Opening export releases input and dismisses the guest keyboard.
+Share report uses the current session MD, or its current startup-journal MD;
+prior attempts are selected explicitly in Diagnostics. No raw disk export exists.
+
+The existing bounded, locked superblock validation now observes only RECOVER bit,
+raw state, last_orphan and error_count after magic/checksum/UUID/feature validation,
+before the unchanged dirty-state refusal. Exact typed values reach session and
+durable startup MD; old reports remain readable and have unknown/missing fields.
+The failure mapper now recognizes every DesktopDisk.Invalid case, including
+needsRecovery. Wording records observations without diagnosing a shutdown cause.
+No user-file contents or arbitrary Error/log text enter these MD exports.
+
+Local checks: 300 tests /295 PASS /5 explicit SKIP /0 failures/errors; offline
+pinned Husk restore/overlay PASS (81 original members,38 inputs,26 copies,10 patched,
+19 added Swift sources). Skips here:3 Swift runtime helpers, pinned-QEMU RCU runtime,
+ARM64 user-QEMU/BusyBox; their tools are unavailable/unconfigured. New real Swift
+disk/journal/renderer/mapper regressions are wired into the mandatory Apple gate,
+but **NOT RUN** here. UIKit typecheck/layout/share sheet, native link, new IPA and
+device verification are **NOT RUN**. CI was not dispatched.
+
+`ipa/gui.lock.json`, `ipa/gui-inputs.lock.json` and all guest files are byte-identical
+to27e9736; the verified private GUI payload is reused, no rebuild/new seed needed.
+One VM per process, retained QEMU owner thread and disk lock, no teardown/unlock,
+and refusal/preservation of existing disks are unchanged. No owner disk was opened.
+Backup/export and offline recovery remain separate work: a safe implementation
+must prove no native writer and acquire/hold the exclusive validated source lock;
+UI readiness/Stop flags alone cannot authorize a copy. No repair/recreate/reset,
+Steam-branch work, token reads or CI calls were performed.
+
+See [GUI diagnostics and device check](experiments/linux-guest/GUI-DIAGNOSTICS.md)
+and [local receipt](experiments/linux-guest/evidence/desktop-diagnostics-ui-20261017.json).
+
 ## Local Windows/WSL GUI rebuild — 2026-10-17
 
 Rebuilt from the authenticated package closure on E:, starting at `d88aaefea758479f1da4fb81f15a02bc904898b5`.

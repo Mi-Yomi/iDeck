@@ -85,11 +85,16 @@ enum LinuxProbeReport {
             row("Serial log truncated", flag(report["log_truncated"], yes: "YES (bounded capture)", no: "NO"))
             if debian {
                 let imports: Set<String> = ["not_started", "existing_disk_preserved", "copying_seed", "seed_hash_verified_and_published"]
-                let failures: Set<String> = ["needsRecovery", "insufficientSpace", "locked", "assetDigest", "assetSize", "checksum", "filesystem", "ownership", "metadata", "size", "directory", "open", "io", "inspection", "configuration", "uuid", "geometry", "features", "journal", "profile", "assetRead", "assetMetadata"]
+                let failures: Set<String> = ["needsRecovery", "insufficientSpace", "locked", "assetDigest", "assetSize", "checksum", "filesystem", "ownership", "metadata", "size", "directory", "open", "io", "inspection", "configuration", "uuid", "geometry", "features", "journal", "profile", "assetRead", "assetMetadata", "specification", "headerRead", "alreadyExists", "asset"]
                 row("Import", (report["import_status"] as? String).flatMap { imports.contains($0) ? $0 : nil } ?? "UNKNOWN")
                 row("Storage failure", (report["storage_failure"] as? String).flatMap { failures.contains($0) ? $0 : nil } ?? "NONE RECORDED")
                 row("Seed SHA-256", hex(report["debian_seed_sha256"], count: 64))
                 row("Production initramfs SHA-256", hex(report["terminal_initramfs_sha256"], count: 64))
+                row("Ext4 RECOVER bit", flag(report["ext4_recover_bit"], yes: "SET", no: "CLEAR"))
+                row("Ext4 state (raw)", unsigned(report["ext4_state"], maximum: UInt32(UInt16.max)))
+                row("Ext4 last_orphan", unsigned(report["ext4_last_orphan"]))
+                row("Ext4 error_count", unsigned(report["ext4_error_count"]))
+                lines += ["", "Ext4 fields are numeric startup observations from the locked superblock check. They do not diagnose why a state arose or replace offline filesystem review. No user-file contents are included."]
             }
             lines += ["", desktop ? "Local Debian graphical desktop. /home/ideck persists on the separate GUI ext4 disk. Metal presents software scanout; guest GPU acceleration is not established." : (debian ? "Debian runs through chroot from Alpine initramfs. Its ext4 root is persistent; /run is temporary. This is a line console."
                       : "Files in /data use the persistent VFAT volume. The initramfs root is temporary."),
@@ -135,6 +140,14 @@ enum LinuxProbeReport {
     private static func flag(_ value: Any?, yes: String = "PASS", no: String = "NOT VERIFIED") -> String {
         guard let result = bool(value) else { return "UNKNOWN" }
         return result ? yes : no
+    }
+
+    private static func unsigned(_ value: Any?, maximum: UInt32 = .max) -> String {
+        guard let value, type(of: value) != Bool.self, let number = value as? NSNumber,
+              CFGetTypeID(number) != CFBooleanGetTypeID() else { return "UNKNOWN" }
+        let result = number.doubleValue
+        guard result.isFinite, result >= 0, result <= Double(maximum), result.rounded() == result else { return "UNKNOWN" }
+        return String(UInt32(result))
     }
 
     private static func number(_ value: Any?) -> Double? {

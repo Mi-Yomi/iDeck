@@ -1,5 +1,13 @@
 # Следующий milestone: persistent POSIX Linux и минимальный desktop
 
+Обновление **2026-10-17, device follow-up**: owner сообщил реальный GUI/xterm/
+Mousepad/input в IPA от27e9736 на iPhone16ProMax/iOS27. После закрытия приложения
+свайпом следующий Start отказан с needsRecovery; причина ext4 ещё не установлена.
+Новый native fix делает MD/сохранённые startup diagnostics доступными сверху даже
+при отказе, записывает четыре точных поля суперблока и сохраняет disk guard.
+Payload/guest не менялись. Проверки новой UIKit-сборки/устройства ещё NOT RUN;
+CI не запускался. [Инструкция и границы](GUI-DIAGNOSTICS.md).
+
 Обновление **2026-10-17**: [GUI-DESKTOP.md](GUI-DESKTOP.md) описывает два
 успешных GUI boot с ORIGINAL production Alpine6.18.35 kernel, real input/apps/
 menu/save/reopen, два clean Stop/fsck и стабильный machine-id. Native Desktop

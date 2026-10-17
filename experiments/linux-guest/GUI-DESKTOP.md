@@ -1,8 +1,12 @@
 # Debian GUI local rebuild — 2026-10-17
 
 The new locally built Debian ARM64 seed passed **two real production-Alpine GUI
-boots** on Windows/Arch WSL. Apple compilation, native link, IPA and GUI on iPhone
-are **NOT RUN**. Host QEMU10.0.13 differs from iOS QEMU10.0.12-utm. Rendering is
+boots** on Windows/Arch WSL. Owner subsequently reported real GUI/xterm/Mousepad
+and input on iPhone16ProMax/iOS27 with the IPA built from27e9736. A later launch
+after app dismissal was refused with needsRecovery. This cloud executor has not
+tested that device; two clean device Stops are not established. The current native
+diagnostics fix still requires Apple compilation/new IPA/device verification:
+see [GUI-DIAGNOSTICS.md](GUI-DIAGNOSTICS.md). Host QEMU10.0.13 differs from iOS QEMU10.0.12-utm. Rendering is
 software Xorg modesetting; no Steam or guest GPU-acceleration readiness is claimed.
 
 ## Current evidence and bytes

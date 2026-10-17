@@ -30,5 +30,19 @@ func runGUIProfileChecks(root: URL) throws {
     try Data(repeating:32,count:65537).write(to:file)
     do { _ = try LinuxGUIProfile.load(from:assets); preconditionFailure("oversized GUI profile accepted") }
     catch { }
+    // Exercise the same allowlisted mapper used by native startup failures.
+    // Arbitrary Error descriptions, paths and user data must never be exported.
+    for error in LinuxDesktopDisk.Invalid.allCases {
+        let failure = LinuxStartupFailure.classify(error)
+        precondition(failure != .unknown && failure.rawValue == String(describing: error))
+    }
+    precondition(LinuxStartupFailure.classify(LinuxDesktopDisk.Invalid.needsRecovery) == .needsRecovery)
+    precondition(LinuxStartupFailure.classify(LinuxDesktopProfile.Invalid.assetMetadata) == .assetMetadata)
+    precondition(LinuxStartupFailure.classify(LinuxTerminalProfile.Invalid.diskOwnership) == .diskOwnership)
+    precondition(LinuxStartupFailure.classify(LinuxGuestProfile.Invalid.configuration) == .configuration)
+    let arbitrary = NSError(domain: "PRIVATE_FILE_CONTENT_CANARY", code: 1,
+                            userInfo: [NSLocalizedDescriptionKey: "/home/ideck/PRIVATE_FILE_CONTENT_CANARY"])
+    precondition(LinuxStartupFailure.classify(arbitrary) == .unknown)
+    print("LINUX_STARTUP_FAILURE_PASS")
     print("LINUX_GUI_PROFILE_PASS")
 }

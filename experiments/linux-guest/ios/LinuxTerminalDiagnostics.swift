@@ -15,12 +15,15 @@ final class LinuxTerminalDiagnostics {
         case diskTrustedDirectory, diskDirectoryURL, diskDirectoryComponent, diskDirectoryType
         case diskDirectoryInspection, diskInspection, diskOpen, diskLinks, diskMetadata
         case diskSize, diskHeaderRead, diskFormat, diskSeedSize, diskOwnership
+        case specification, directory, inspection, open, locked, metadata, size, headerRead
+        case checksum, filesystem, uuid, geometry, features, journal, needsRecovery, ownership
+        case alreadyExists, insufficientSpace, profile, assetMetadata
     }
     enum Stage: String, Codable, CaseIterable {
         case opened, jitEnableBegin, jitEnableDispatched, jitClaimBegin, jitClaimReturned, jitUnavailable
         case startRequested, jitReadyBegin, jitReadyReturned, jitExecutionBegin, jitExecutionReturned
         case runtimeOwnershipBegin, runtimeOwnershipReturned, startRejected, documentsBegin, documentsReturned, assetsBegin, assetsReturned
-        case diskBegin, diskReturned, socketsBegin, socketsReturned, argumentsBegin, argumentsReturned
+        case diskBegin, diskInspected, diskReturned, socketsBegin, socketsReturned, argumentsBegin, argumentsReturned
         case reportBegin, reportReturned, argvBegin, argvReturned, threadStarting
         case qemuInitBegin, qemuInitReturned, nativeJITCheckBegin, nativeJITCheckReturned
         case displayInitBegin, displayInitReturned, mainLoopBegin, mainLoopReturned
@@ -30,6 +33,18 @@ final class LinuxTerminalDiagnostics {
         case consolePeersCloseBegin, consolePeersCloseReturned
     }
     enum Problem: Error { case directory, open, metadata, read, write, synchronize, limit, invalid }
+    struct Ext4State: Codable, Equatable {
+        let recoverBit: Bool
+        let state: UInt32
+        let lastOrphan: UInt32
+        let errorCount: UInt32
+        var markdown: [String] {
+            ["", "## Ext4 startup metadata", "", "| Field | Observed value |", "| --- | --- |",
+             "| RECOVER bit | \(recoverBit ? "SET" : "CLEAR") |", "| state (raw) | \(state) |",
+             "| last_orphan | \(lastOrphan) |", "| error_count | \(errorCount) |", "",
+             "Observed during locked preboot superblock validation. These fields are not an fsck or a diagnosis of why the state arose. No user-file contents are included."]
+        }
+    }
     struct Record: Codable {
         let schema: Int
         let sequence: Int
@@ -39,6 +54,13 @@ final class LinuxTerminalDiagnostics {
         let source: String
         let build: String
         let failure: Failure?
+        let ext4: Ext4State?
+        init(schema: Int, sequence: Int, stage: Stage, utc: String, elapsedMilliseconds: Int,
+             source: String, build: String, failure: Failure?, ext4: Ext4State? = nil) {
+            self.schema = schema; self.sequence = sequence; self.stage = stage; self.utc = utc
+            self.elapsedMilliseconds = elapsedMilliseconds; self.source = source; self.build = build
+            self.failure = failure; self.ext4 = ext4
+        }
     }
     struct Snapshot {
         let id: String
@@ -94,6 +116,7 @@ final class LinuxTerminalDiagnostics {
             for record in records {
                 lines.append("| \(record.sequence) | \(record.utc) | \(record.elapsedMilliseconds) | \(record.stage.rawValue) | \(record.failure?.rawValue ?? "none recorded") |")
             }
+            if let ext4 = records.compactMap(\.ext4).last { lines += ext4.markdown }
             lines += ["", "A checkpoint identifies code reached, not the cause of termination. Missing checkpoints do not prove which instruction failed.",
                 "Native exit, crash, manual close and Jetsam/SIGKILL cannot be distinguished by this journal alone. System IPS/Jetsam reports are not accessible through this app sandbox.",
                 "Native stderr/app log snapshots are preserved locally when available, separately from this Markdown. Their arbitrary text, paths, commands and possible private data are excluded from this export.",
@@ -209,7 +232,8 @@ final class LinuxTerminalDiagnostics {
                   record.utc.utf8.allSatisfy({ (48...57).contains($0) || "-T:.Z".utf8.contains($0) }),
                   (record.source == "UNKNOWN" || (record.source.utf8.count == 40 && record.source.utf8.allSatisfy({ "0123456789abcdef".utf8.contains($0) }))),
                   record.build == "UNKNOWN" || (record.build.utf8.count <= 16 && !record.build.isEmpty && record.build.utf8.allSatisfy({ (48...57).contains($0) })),
-                  !records.isEmpty || record.stage == .opened else { invalid = true; break }
+                  !records.isEmpty || record.stage == .opened,
+                  record.ext4 == nil || (record.stage == .diskInspected && record.ext4!.state <= UInt32(UInt16.max)) else { invalid = true; break }
             records.append(record)
         }
         return Snapshot(id: id, records: records, tornTail: data.last != 10, invalid: invalid,
@@ -378,12 +402,13 @@ final class LinuxTerminalDiagnostics {
             self.store = store; self.id = id; self.fd = fd; self.source = source; self.build = build
         }
         deinit { close(fd) }
-        func record(_ stage: Stage, failure: Failure? = nil) throws {
+        func record(_ stage: Stage, failure: Failure? = nil, ext4: Ext4State? = nil) throws {
             lock.lock(); defer { lock.unlock() }
             guard !failed else { throw Problem.write }
+            guard ext4 == nil || (stage == .diskInspected && ext4!.state <= UInt32(UInt16.max)) else { throw Problem.invalid }
             guard sequence < LinuxTerminalDiagnostics.maximumRecords else { throw Problem.limit }
             let record = Record(schema: 1, sequence: sequence, stage: stage, utc: LinuxTerminalDiagnostics.stamp(),
-                elapsedMilliseconds: max(0, Int((ProcessInfo.processInfo.systemUptime - began) * 1000)), source: source, build: build, failure: failure)
+                elapsedMilliseconds: max(0, Int((ProcessInfo.processInfo.systemUptime - began) * 1000)), source: source, build: build, failure: failure, ext4: ext4)
             var bytes = try JSONEncoder().encode(record); bytes.append(10)
             guard bytes.count <= 1024, count + bytes.count <= LinuxTerminalDiagnostics.maximumBytes else { throw Problem.limit }
             do { try store.writeAll(bytes, fd: fd) }

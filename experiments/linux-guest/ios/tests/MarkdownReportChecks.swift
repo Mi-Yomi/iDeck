@@ -166,5 +166,33 @@ func runMarkdownReportChecks() throws {
     expect(cell(debian, "QEMU block layer drained") == "NOT VERIFIED", "loop return cannot imply backend cleanup")
     let rejected = LinuxProbeReport.render(report: ["mode": "debian", "storage_failure": secret, "import_status": secret])
     expect(!rejected.contains(secret), "Debian failure/import fields remain allowlisted")
+    for failure in ["specification", "headerRead", "alreadyExists", "assetMetadata"] {
+        expect(cell(LinuxProbeReport.render(report: ["mode": "desktop", "storage_failure": failure]), "Storage failure") == failure,
+               "recognized storage failure is not reported as absent")
+    }
+    var ext4: [String: Any] = ["mode": "desktop", "status": "terminal_prepare_failed",
+        "storage_failure": "needsRecovery", "ext4_recover_bit": true, "ext4_state": 2,
+        "ext4_last_orphan": UInt32.max, "ext4_error_count": UInt32.max,
+        "user_file_contents": secret]
+    let ext4Rows = [("ext4_state", "Ext4 state (raw)", "2"),
+                    ("ext4_last_orphan", "Ext4 last_orphan", "4294967295"),
+                    ("ext4_error_count", "Ext4 error_count", "4294967295")]
+    let ext4MD = LinuxProbeReport.render(report: ext4)
+    expect(cell(ext4MD, "Ext4 RECOVER bit") == "SET", "recover bit is not inferred from a failed start")
+    for (_, label, expected) in ext4Rows { expect(cell(ext4MD, label) == expected, "full unsigned ext4 value preserved") }
+    expect(!ext4MD.contains(secret), "file contents excluded from desktop MD")
+    expect(ext4MD.contains("do not diagnose why"), "ext4 cause is not guessed")
+    ext4["ext4_recover_bit"] = false
+    expect(cell(LinuxProbeReport.render(report: ext4), "Ext4 RECOVER bit") == "CLEAR", "explicit clear differs from missing")
+    let invalidUnsigned: [Any] = [true, "1", -1, 1.5, Double.nan, UInt64(UInt32.max) + 1, NSNull()]
+    for (key, label, _) in ext4Rows {
+        for bad in invalidUnsigned {
+            var invalid = ext4; invalid[key] = bad
+            expect(cell(LinuxProbeReport.render(report: invalid), label) == "UNKNOWN", "invalid unsigned ext4 metadata rejected")
+        }
+    }
+    ext4["ext4_state"] = 65536
+    expect(cell(LinuxProbeReport.render(report: ext4), "Ext4 state (raw)") == "UNKNOWN", "16bit state bound preserved")
+    expect(cell(debian, "Ext4 RECOVER bit") == "UNKNOWN", "old report does not synthesize ext4 observations")
     print("LINUX_MARKDOWN_REPORT_CHECKS_PASS (\(assertions) assertions; actual Foundation renderer, no device/runtime execution)")
 }

@@ -271,6 +271,60 @@ func runTerminalDiagnosticsChecks() throws {
         check(!timedOut && child.terminationStatus == 24, "FIFO rejected without blocking recovery/export")
     }
 
+    let ext4Docs = try documents("ext4-state")
+    let ext4Store = try LinuxTerminalDiagnostics(documents: ext4Docs)
+    let ext4Journal = try ext4Store.begin(source: "UNKNOWN", build: "1")
+    let ext4 = LinuxTerminalDiagnostics.Ext4State(recoverBit: true, state: 2,
+                                                 lastOrphan: UInt32.max, errorCount: UInt32.max)
+    try ext4Journal.record(.diskBegin)
+    try ext4Journal.record(.diskInspected, ext4: ext4)
+    try ext4Journal.record(.preparationFailed, failure: .needsRecovery)
+    let reopenedExt4 = try LinuxTerminalDiagnostics(documents: ext4Docs).snapshot(id: ext4Journal.id)
+    check(reopenedExt4.records.compactMap(\.ext4) == [ext4], "all four exact fields survive reopen")
+    check(reopenedExt4.records.last?.failure == .needsRecovery, "storage refusal retains its exact failure")
+    check(!reopenedExt4.clean, "inspection/refusal never claims a clean Stop")
+    let ext4MD = try ext4Store.export(reopenedExt4, previousProcess: true)
+    let ext4Text = try String(contentsOf: ext4MD, encoding: .utf8)
+    for row in ["| RECOVER bit | SET |", "| state (raw) | 2 |",
+                "| last_orphan | 4294967295 |", "| error_count | 4294967295 |"] {
+        check(ext4Text.contains(row), "exact typed superblock value in MD")
+    }
+    check(ext4Text.contains("not an fsck or a diagnosis"), "metadata has neutral scope")
+    expect(.invalid) { try ext4Journal.record(.assetsBegin, ext4: ext4) }
+    expect(.invalid) { try ext4Journal.record(.diskInspected, ext4: .init(recoverBit: false, state: 65536, lastOrphan: 0, errorCount: 0)) }
+    check(try ext4Journal.snapshot().records.count == 4, "invalid metadata does not append a record")
+
+    let oldRecord: [String: Any] = ["schema": 1, "sequence": 0, "stage": "opened",
+        "utc": "2026-10-17T00:00:00.000Z", "elapsedMilliseconds": 0, "source": "UNKNOWN", "build": "1"]
+    let legacy = try JSONDecoder().decode(LinuxTerminalDiagnostics.Record.self,
+                                         from: JSONSerialization.data(withJSONObject: oldRecord))
+    check(legacy.ext4 == nil && legacy.failure == nil, "schema1 records predating ext4 remain readable")
+    let validFields: [String: Any] = ["recoverBit": true, "state": 2, "lastOrphan": UInt32.max, "errorCount": UInt32.max]
+    var malformedFields: [[String: Any]] = []
+    let invalidFields: [(String, Any)] = [("recoverBit", "true"), ("state", 65536),
+                                        ("lastOrphan", -1), ("errorCount", UInt64(UInt32.max) + 1)]
+    for (key, invalid) in invalidFields {
+        var fields = validFields; fields[key] = invalid; malformedFields.append(fields)
+    }
+    var missing = validFields; missing.removeValue(forKey: "errorCount"); malformedFields.append(missing)
+    for (index, fields) in malformedFields.enumerated() {
+        let journal = try ext4Store.begin(source: "UNKNOWN", build: "1")
+        var record = oldRecord; record["sequence"] = 1; record["stage"] = "diskInspected"; record["ext4"] = fields
+        var bytes = try JSONSerialization.data(withJSONObject: record); bytes.append(10)
+        try append(bytes, to: rawURL(ext4Store, journal.id))
+        let snapshot = try journal.snapshot()
+        check(snapshot.invalid && snapshot.records.count == 1, "reject forged ext4 fields \(index) without discarding valid prefix")
+    }
+    let privateJournal = try ext4Store.begin(source: "UNKNOWN", build: "1")
+    var privateRecord = oldRecord; privateRecord["sequence"] = 1; privateRecord["stage"] = "diskInspected"
+    privateRecord["ext4"] = validFields; privateRecord["user_file_contents"] = "PRIVATE_FILE_CONTENT_CANARY"
+    var privateBytes = try JSONSerialization.data(withJSONObject: privateRecord); privateBytes.append(10)
+    try append(privateBytes, to: rawURL(ext4Store, privateJournal.id))
+    let privateSnapshot = try privateJournal.snapshot()
+    check(!privateSnapshot.invalid && privateSnapshot.records.count == 2, "privacy fixture contains valid known metadata")
+    check(!privateSnapshot.markdown(previousProcess: true).contains("PRIVATE_FILE_CONTENT_CANARY"), "unknown file contents cannot reach the MD renderer")
+    print("LINUX_EXT4_DIAGNOSTICS_PASS")
+
     let limited = try LinuxTerminalDiagnostics(documents: documents("limit"))
     let limitedJournal = try limited.begin(source: "UNKNOWN", build: "1")
     for _ in 1..<LinuxTerminalDiagnostics.maximumRecords { try limitedJournal.record(.jitClaimReturned) }

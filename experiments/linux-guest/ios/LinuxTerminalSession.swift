@@ -74,6 +74,16 @@ final class LinuxTerminalSession: ObservableObject {
         } catch { diagnosticFailure() }
     }
 
+    /// Session MD when available; otherwise the CURRENT startup journal MD.
+    /// Never silently substitute a previous attempt for the current report.
+    func reportForSharing() -> URL? {
+        precondition(Thread.isMainThread)
+        recoverDiagnostics()
+        if let markdownFile { return markdownFile }
+        guard let id = diagnosticJournal?.id else { return nil }
+        return diagnosticReports.first { diagnosticAttemptIDs[$0] == id }
+    }
+
     /// Owner selects one saved attempt explicitly. Never open rotating logs,
     /// run recovery capture, start JIT/VM, or replace the preserved snapshots.
     func exportNativeDiagnostics(for report: URL) -> URL? {
@@ -214,13 +224,7 @@ final class LinuxTerminalSession: ObservableObject {
     }
 
     fileprivate static func failure(_ error: Error) -> LinuxTerminalDiagnostics.Failure {
-        if let value = error as? LinuxTerminalProfile.Invalid {
-            return LinuxTerminalDiagnostics.Failure(rawValue: String(describing: value)) ?? .unknown
-        }
-        if let value = error as? LinuxGuestProfile.Invalid {
-            return LinuxTerminalDiagnostics.Failure(rawValue: String(describing: value)) ?? .unknown
-        }
-        return .unknown
+        LinuxStartupFailure.classify(error)
     }
 
     func send(_ text: String) {
@@ -461,7 +465,7 @@ private final class LinuxTerminalWorker {
                     var state = stat()
                     if lstat(path.path, &state) == 0 {
                         self.report["import_status"] = "existing_disk_preserved"; self.persist()
-                        self.disk = try gui.openExisting(in: self.dataDirectory)
+                        self.disk = try gui.openExisting(in: self.dataDirectory, observe: self.observeSuperblock)
                     } else {
                         guard errno == ENOENT else { throw LinuxDesktopDisk.Invalid.inspection }
                         self.report["import_status"] = "copying_seed"; self.persist()
@@ -481,7 +485,7 @@ private final class LinuxTerminalWorker {
                     // lstat distinguishes absent from a dangling link or IO error.
                     if lstat(path.path, &state) == 0 {
                         self.report["import_status"] = "existing_disk_preserved"; self.persist()
-                        self.disk = try desktop.openExisting(in: self.dataDirectory)
+                        self.disk = try desktop.openExisting(in: self.dataDirectory, observe: self.observeSuperblock)
                     } else {
                         guard errno == ENOENT else { throw LinuxDesktopDisk.Invalid.inspection }
                         self.report["import_status"] = "copying_seed"; self.persist()
@@ -609,7 +613,7 @@ private final class LinuxTerminalWorker {
                 let busy = (error as? LinuxDesktopDisk.Invalid) == .locked
                 let badSeed = (error as? LinuxDesktopProfile.Invalid) == .assetDigest
                 self.owner.publish {
-                    $0.message = needsRecovery ? "The Debian disk needs offline ext4 recovery after an unclean shutdown. It was not recreated or mounted. Export the report and preserve the disk before repair."
+                    $0.message = needsRecovery ? "Ext4 safety checks blocked startup. The disk was not mounted or replaced. Share the report for the recorded metadata and preserve the disk before offline review."
                         : noSpace ? (self.owner.isDesktop ? "Not enough space for the GUI disk and 512 MiB reserve. Existing disks were preserved." : "Not enough free space to import Debian (512 MiB plus 32 MiB reserve). Existing disks were preserved. Free space and reopen the app to retry.")
                         : busy ? "The Debian disk or import is busy. It was not replaced. Close the owning session before retrying."
                         : badSeed ? "The Debian seed failed its SHA-256 check. No disk was published. Restore the correct app payload before retrying; existing disks were preserved."
@@ -879,6 +883,20 @@ private final class LinuxTerminalWorker {
     private var resultURL: URL { session.appendingPathComponent("result.json") }
     private var serialURL: URL { session.appendingPathComponent("linux-serial.log") }
     private var markdownURL: URL { session.appendingPathComponent(owner.isDebian ? "result.md" : LinuxProbeReport.filename) }
+
+    /// Called synchronously by the existing locked preboot header validator.
+    /// No second disk open, file-content read, mount or repair is performed.
+    private func observeSuperblock(_ value: LinuxDesktopDisk.RecoveryObservation) {
+        report["ext4_recover_bit"] = value.recoverBit
+        report["ext4_state"] = value.state
+        report["ext4_last_orphan"] = value.lastOrphan
+        report["ext4_error_count"] = value.errorCount
+        let state = LinuxTerminalDiagnostics.Ext4State(recoverBit: value.recoverBit, state: value.state,
+                                                      lastOrphan: value.lastOrphan, errorCount: value.errorCount)
+        do { try diagnostic.record(.diskInspected, ext4: state) }
+        catch { owner.publish { $0.diagnosticFailure() } }
+        persist()
+    }
 
     private func refreshExports() {
         let files = [resultURL, serialURL].filter { FileManager.default.fileExists(atPath: $0.path) }

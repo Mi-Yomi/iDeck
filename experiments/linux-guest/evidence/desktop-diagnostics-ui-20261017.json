@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "date_utc": "2026-10-17",
+  "baseline_commit": "27e9736f35ffb7c572e2fa81c75458ee1d1b8ff9",
+  "scope": "Desktop blocked-start diagnostics; no disk repair/export",
+  "python_regressions": {
+    "command": "python3 -m unittest discover -s tests -v",
+    "total": 300,
+    "passed": 295,
+    "skipped": 5,
+    "failures": 0,
+    "errors": 0,
+    "log_sha256": "c7041b5299df75859185d0beb29bc33af96a296d707cafeece391dff48b2d2ac"
+  },
+  "offline_source_overlay": {
+    "status": "PASS",
+    "original_members": 81,
+    "inputs": 38,
+    "copied_files": 26,
+    "patched_files": 10,
+    "added_swift_sources": 19,
+    "all_copy_bytes_equal": true
+  },
+  "not_run": [
+    "Swift runtime checks",
+    "Apple/UIKit typecheck and layout",
+    "native link/new IPA",
+    "device verification of this fix",
+    "CI dispatch"
+  ],
+  "unchanged": {
+    "guest_files": true,
+    "gui_lock_sha256": "fef0bf4c5b72cad5ee921616639f6e28bec73bce7b1e689c95c3734aed82c7eb",
+    "gui_inputs_lock_sha256": "8b3ee6d1f255c7486e7226c65ab304036363edccea4e145b472fe7df1cf6ed98",
+    "dirty_guard": true,
+    "one_vm_per_process": true,
+    "retained_qemu_owner_and_disk_lock": true
+  },
+  "owner_disk_accessed": false,
+  "raw_backup_or_repair_implemented": false,
+  "device_report_provenance": "Owner reports GUI/xterm/Mousepad/input on IPA source27e9736; subsequent needsRecovery refusal. Cloud executor did not inspect or recover the owner image."
+}

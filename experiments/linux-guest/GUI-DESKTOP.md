@@ -72,7 +72,7 @@ content/ELF extraction: its host ownership errors are not claimed as an inode
 ownership audit. Actual client and saved-file UIDs were checked inside Linux.
 The raw image itself, clean unmount and fsck are the filesystem evidence.
 
-Current offline suite: **269 tests,264 PASS,5 SKIP,0 failures/errors**. Skips
+Current offline suite: **272 tests,267 PASS,5 SKIP,0 failures/errors**. Skips
 are explicit Swift executable checks (existing profile, pointer and desktop
 input), user-QEMU BusyBox/PTY, and the original QEMU RCU source archive.
 All37 overlay inputs,81 original source members,10 patched hashes and25 exact
@@ -184,6 +184,22 @@ state, a typed/saved file, window movement/resizing and separate control Stop.
 A second boot checks the existing file before any write. These checks are
 separate from ordinary mocked input-trust unit tests; no mocked X server or
 framebuffer probe substitutes for the GUI gate.
+
+## Audit guard correction
+
+Readonly review found that `test -z "$(dpkg --audit)"` discarded a failing audit
+exit status when stdout was empty. The runner now captures stdout in a file,
+records exit status immediately, and requires both status0 and byte-empty
+output. Configure failure also blocks audit/acceptance. Three executable shell
+regressions cover nonzero+empty stdout, successful but nonempty/newline/space
+output, and configure failure. No fake dpkg success substitutes for VM evidence.
+
+[Fresh acceptance after the fix](evidence/gui-audit-fix-20261017/receipt.json):
+two private-copy real GUI boots43.556/37.786s, audit status0/empty file,
+input/wheel/menu/save/reopen, two clean Stops/fsck; immutable seed unchanged.
+Runner snapshots/digests match the corrected frozen source. Old receipts remain
+historical. The seal gate binds the current runner hash, rejecting old results.
+This remains host Debian6.12.107/QEMU10.0.13; Alpine/iOS acceptance is NOT RUN.
 
 ## Clean GUI seed and native Desktop route
 

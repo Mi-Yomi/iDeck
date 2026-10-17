@@ -1,0 +1,55 @@
+Filesystem volume name:   <none>
+Last mounted on:          /
+Filesystem UUID:          b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7
+Filesystem magic number:  0xEF53
+Filesystem revision #:    1 (dynamic)
+Filesystem features:      has_journal ext_attr dir_index filetype extent 64bit sparse_super large_file extra_isize metadata_csum
+Filesystem flags:         signed_directory_hash 
+Default mount options:    user_xattr acl
+Filesystem state:         clean
+Errors behavior:          Continue
+Filesystem OS type:       Linux
+Inode count:              163840
+Block count:              327680
+Reserved block count:     0
+Overhead clusters:        18464
+Free blocks:              111835
+Free inodes:              142600
+First block:              0
+Block size:               4096
+Fragment size:            4096
+Group descriptor size:    64
+Blocks per group:         32768
+Fragments per group:      32768
+Inodes per group:         16384
+Inode blocks per group:   1024
+Filesystem created:       Sat Oct 17 05:20:22 2026
+Last mount time:          Sat Oct 17 06:32:29 2026
+Last write time:          Sat Oct 17 06:33:05 2026
+Mount count:              5
+Maximum mount count:      -1
+Last checked:             Sat Oct 17 05:20:22 2026
+Check interval:           0 (<none>)
+Lifetime writes:          2026 MB
+Reserved blocks uid:      0 (user root)
+Reserved blocks gid:      0 (group root)
+First inode:              11
+Inode size:               256
+Required extra isize:     32
+Desired extra isize:      32
+Journal inode:            8
+Default directory hash:   half_md4
+Directory Hash Seed:      aea4f949-4ccd-419c-90d3-a0f0dd9f18b5
+Journal backup:           inode blocks
+Checksum type:            crc32c
+Checksum:                 0x081cc96a
+Journal features:         journal_incompat_revoke journal_64bit journal_checksum_v3
+Total journal size:       32M
+Total journal blocks:     8192
+Max transaction length:   8192
+Fast commit length:       0
+Journal sequence:         0x00002168
+Journal start:            0
+Journal checksum type:    crc32c
+Journal checksum:         0x0d2e6d61
+

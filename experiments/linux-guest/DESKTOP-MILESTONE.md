@@ -3,7 +3,8 @@
 Обновление **2026-10-17**: [GUI-DESKTOP.md](GUI-DESKTOP.md) описывает настоящий
 Xorg/Openbox/tint2/PCManFM/Mousepad/xterm, clean1.25GiB GUI seed и два real host
 boot со вводом/scroll/menu/save/reopen/Stop/fsck. Native Desktop route и отдельные
-profile/disk/payload staging уже реализованы в исходниках;269 tests/5SKIP.
+profile/disk/payload staging уже реализованы в исходниках;272 tests/5SKIP.
+Audit exit-status guard исправлен; два real host GUI boot повторены успешно.
 Host Debian6.12.107/QEMU10.0.13 отличается от production Alpine6.18.35/iOS10.0.12.
 Доставка exact modules блокирует matching-kernel GUI gate и sealing asset lock.
 Apple/full native link/IPA/device GUI NOT RUN; CI не запускался. Старые статусы

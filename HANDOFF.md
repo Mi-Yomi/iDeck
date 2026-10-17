@@ -1,5 +1,44 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Audit status regression fixed; Library consumer transfer rechecked — 2026-10-17
+
+После **e6fa8d17eb015d838a847e4c74a83f6f9cc55aba** readonly review нашёл
+ошибку host acceptance: `test -z "$(dpkg --audit)"` игнорировал ненулевой
+exit status dpkg при пустом stdout. Исправлено: audit stdout в отдельный файл,
+status сохранён сразу, PASS требует status0 И byte-empty file. Нормальный
+`dpkg --configure -a` остаётся обязательным; его ошибка пропускает audit и gate.
+Provision/seed cleanup не обходились: их самостоятельный assignment под set-e /
+explicit `|| fail` уже сохраняли неуспех. Новый guard общий для host и будущего
+production Alpine acceptance; seal отвергает старый runner hash.
+
+Добавлены3 shell regressions, исполняющие тот же guard: nonzero+empty stdout,
+zero+непустой/newline/space stdout, configure failure. Это fault fixtures,
+не mock GUI acceptance. Полный suite: **272 tests /267PASS /5SKIP /0fail/error**.
+На свежей writable копии того же immutable GUI seed повторены ДВА настоящих
+host GUI boot с замороженным runner source: **43.556/37.786s**, audit status0,
+byte-empty audit file gate, input/wheel/menu/save/reopen, два clean Stop/fsck PASS.
+Seed SHA46fea... не менялся. Новое evidence:
+`experiments/linux-guest/evidence/gui-audit-fix-20261017/receipt.json`.
+Host всё ещё Debian6.12.107/QEMU10.0.13, не Alpine6.18.35/iOS10.0.12-utm.
+Старые results ниже исторические; новый acceptance supersedes слабый audit guard.
+Obsolete private VM roots удалены для места; актуальный seed v4, новый audit VM,
+все evidence и исходный immutable source snapshot сохранены.
+
+Transfer диагностирован отдельно до этого исправления. В текущем ALL_TOOLS и
+shell команды **download_file нет**; с новым parent Sediment ID
+`file_00000000712881fd888e5ac42e4803ae` он НЕ вызывался, ошибки такого вызова нет.
+Предусмотренный consumer-local Library путь — свежий официальный
+`library_download.py` с полным результатом Library search через stdin.
+Он выполнен ОДИН раз в `.work/modloop-transfer.y9rznW/`, exit1, точный текст:
+`library download request failed: hosted apps tools/list request failed: network`.
+Ни одного локального modloop-virt файла/bytes не появилось. Новый Drive Sediment
+ID не смешивался с другим backing ID существующей Library записи. Дальнейшие
+transport retries, token requests и изменения вне audit fix не выполнялись.
+
+Matching-kernel GUI /sealing всё ещё BLOCKED, `ipa/gui.lock.json`=blocked.
+Apple/native link/IPA/device GUI NOT RUN; CI не запускался.
+
+
 ## Native Desktop route + clean GUI seed; matching Alpine gate blocked — 2026-10-17
 
 Продолжение после **9a6d18ea0c05d026b7feb142e511bdb2d1c2b950**, та же ветка

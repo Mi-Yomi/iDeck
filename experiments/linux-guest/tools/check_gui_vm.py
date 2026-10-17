@@ -15,6 +15,18 @@ import time
 import debian_rootfs as base
 
 
+def package_audit_script(audit_path='/run/ideck/dpkg-audit'):
+    """Require both successful audit execution and genuinely empty stdout.
+
+    A command substitution inside `test -z` discards dpkg's exit status. Capture
+    to a file instead, preserve status immediately and check both explicitly.
+    """
+    path=shlex.quote(str(audit_path))
+    return ('dpkg --configure -a && { dpkg --audit > '+path+'; '
+            'ideck_audit_status=$?; printf "GUI_DPKG_AUDIT_STATUS:%s\\n" "$ideck_audit_status"; '
+            'test "$ideck_audit_status" -eq 0 && test ! -s '+path+'; }')
+
+
 def validate_loader_paths(paths):
     if (not isinstance(paths,list) or not paths or len(paths)>1024
             or any(not isinstance(p,str) or not p.startswith('/') or len(p)>1024
@@ -127,7 +139,7 @@ def boot(vm, output, provision=False, persistence=False, loader_inventory=None):
                     begin=len(logs[0]); peers[0].sendall((script+" && printf '\\nGUI_CHECK_%s\\n' "+tag+'\n').encode())
                     until(lambda:('GUI_CHECK_'+tag+'\r\n').encode() in logs[0][begin:],seconds=30)
                     return bytes(logs[0][begin:])
-                serial('dpkg --configure -a && test -z "$(dpkg --audit)" && cat /run/ideck/windows && xrandr --current && ps -eo uid,pid,comm', 'audit')
+                serial(package_audit_script()+' && cat /run/ideck/windows && xrandr --current && ps -eo uid,pid,comm', 'audit')
                 serial("test $(xdpyinfo | awk '/dimensions:/ {print $2}') = 800x600 && cat /var/log/Xorg.0.log && cat /proc/bus/input/devices && udevadm info -q property -n /dev/input/event0 && free -b", 'display_input_evidence')
                 if loader_inventory:
                     inventory=json.loads(loader_inventory.read_text())

@@ -1,0 +1,179 @@
+{
+  "schema": 1,
+  "base_commit": "e6fa8d17eb015d838a847e4c74a83f6f9cc55aba",
+  "status": "audit_regression_fixed_and_host_acceptance_repeated",
+  "fix": "Capture dpkg --audit stdout in a file; preserve exit status immediately; require status 0 AND file byte size 0 before audit acceptance marker.",
+  "regression": "Real /bin/sh runs the exact production guard with dpkg command-failure fixtures: nonzero+empty stdout, zero+nonempty/newline/space stdout, configure failure; no mocked GUI gate.",
+  "tests": {
+    "total": 272,
+    "passed": 267,
+    "skipped": 5,
+    "failures": 0,
+    "errors": 0
+  },
+  "boots": {
+    "boot1": {
+      "status": "pass",
+      "elapsed_seconds": 43.556,
+      "qemu_peak_rss_bytes": 822665216,
+      "gui_mapped": true,
+      "emulated_pointer_move_resize": true,
+      "wheel_evdev_verified": true,
+      "real_root_menu_launch": true,
+      "keyboard_input_verified": true,
+      "editor_typed_saved": true,
+      "editor_reopened_after_boot": false,
+      "persistence_read_before_write": false,
+      "clean_unmount": true,
+      "read_only_fsck": true,
+      "dpkg_audit_status": 0,
+      "dpkg_audit_stdout_byte_empty": true
+    },
+    "boot2": {
+      "status": "pass",
+      "elapsed_seconds": 37.786,
+      "qemu_peak_rss_bytes": 812785664,
+      "gui_mapped": true,
+      "emulated_pointer_move_resize": true,
+      "wheel_evdev_verified": true,
+      "real_root_menu_launch": true,
+      "keyboard_input_verified": true,
+      "editor_typed_saved": false,
+      "editor_reopened_after_boot": true,
+      "persistence_read_before_write": true,
+      "clean_unmount": true,
+      "read_only_fsck": true,
+      "dpkg_audit_status": 0,
+      "dpkg_audit_stdout_byte_empty": true
+    }
+  },
+  "seed": {
+    "file": ".work/gui-20261017/gui-seed-final-v4/seed/gui-rootfs-v1.raw",
+    "size": 1342177280,
+    "sha256": "46fea0230963ca494a5adeef19f46668f559f77522e3b82215d5f543646b0791",
+    "unchanged_across_private_copy_boots": true
+  },
+  "host_kernel": "Debian 6.12.107+deb13-arm64",
+  "host_qemu": "10.0.13 (Debian 1:10.0.13+ds-0+deb13u1)",
+  "production_kernel": "Alpine 6.18.35-0-virt",
+  "ios_qemu": "10.0.12-utm",
+  "matching_kernel_gui": "NOT RUN",
+  "gui_lock_status": "blocked",
+  "apple_ipa_device": "NOT RUN",
+  "ci_dispatched": false,
+  "transfer_recheck": {
+    "download_file_tool_available": false,
+    "download_file_shell_command_available": false,
+    "download_file_called_with_parent_sediment_id": false,
+    "parent_sediment_id": "file_00000000712881fd888e5ac42e4803ae",
+    "supported_consumer_route": "Fresh Library library_download.py, full Library search result on stdin, selection 000",
+    "attempts": 1,
+    "exit_code": 1,
+    "exact_error": "library download request failed: hosted apps tools/list request failed: network",
+    "local_modloop_files": 0
+  },
+  "sources": {
+    "experiments/linux-guest/tools/check_gui_vm.py": {
+      "size": 20442,
+      "sha256": "322f1fd2c7079c8256b63166c52263c8efa2d025988ed54362b3895fad869d76"
+    },
+    "experiments/linux-guest/tests/test_gui_package_audit.py": {
+      "size": 3130,
+      "sha256": "e691fde546adac50378853eded602cb38dbbce2a4b17d484dc9883c61e2ddd3b"
+    },
+    "experiments/linux-guest/tools/seal_gui_payload.py": {
+      "size": 7148,
+      "sha256": "8aa8b821e8a86643a22863e2c1d939af2760757b5eb468a5784da1d2ede5f38e"
+    }
+  },
+  "evidence_files": {
+    ".gitattributes": {
+      "size": 26,
+      "sha256": "c87771adfc9ad867ebcc5b10ee61d782725494f35c1e29f4ca8f6d433748a558"
+    },
+    "boot1/after-input.png": {
+      "size": 35134,
+      "sha256": "1fa9870b97c241f5936a167363259f168fe2613fd0ad7130e63b412ad0058dc8"
+    },
+    "boot1/control.log": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "boot1/desktop-menu.png": {
+      "size": 37957,
+      "sha256": "d33d4c722849df19492bad1df5f2f41731e906a43e46641cf6844c0381831aef"
+    },
+    "boot1/filesystem.log": {
+      "size": 2056,
+      "sha256": "e5e650c473ee235e38411fcb90c8933d75d0d27e76d66a24ff9347d6fa36c2b9"
+    },
+    "boot1/fsck.log": {
+      "size": 367,
+      "sha256": "73ca22bfefd3d7fbd7dc9a5b97688bbb1639196455d00b51696b3544ac210311"
+    },
+    "boot1/package-manifest.tsv": {
+      "size": 17465,
+      "sha256": "7cac249c6410e6b3ef6fa9d28adc1652d5ec627e7aeb37508597d2110a7e4b3b"
+    },
+    "boot1/qemu.log": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "boot1/result.json": {
+      "size": 5359,
+      "sha256": "2428f8f5dc39af7d73e3c54fdb8dda36f52d22282352edf057a034c608da4e83"
+    },
+    "boot1/runner-source.py": {
+      "size": 20442,
+      "sha256": "322f1fd2c7079c8256b63166c52263c8efa2d025988ed54362b3895fad869d76"
+    },
+    "boot1/serial.log": {
+      "size": 49299,
+      "sha256": "1ecde58fad92a84144ad7f1f1618fcad5938c1494ee7f0adfcde9bc0aea1a5ee"
+    },
+    "boot2/after-input.png": {
+      "size": 34298,
+      "sha256": "a668a623690c4ec69ea8379bb299a95328e059aff6039773ba8964402d283358"
+    },
+    "boot2/control.log": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "boot2/desktop-menu.png": {
+      "size": 37131,
+      "sha256": "799eb41bb13dc7bef3540c34bf8c6207f6b2272ed8393efbe96df91f0519eb20"
+    },
+    "boot2/filesystem.log": {
+      "size": 2056,
+      "sha256": "60ef1f575cb22ab136f757af49feabc2816e4c83bd9eb322a03491084d5bd9a0"
+    },
+    "boot2/fsck.log": {
+      "size": 367,
+      "sha256": "325a93fa7147c15aa1979f7553c77626a77f1752c49ef8095ac145f008d79bd1"
+    },
+    "boot2/package-manifest.tsv": {
+      "size": 17465,
+      "sha256": "7cac249c6410e6b3ef6fa9d28adc1652d5ec627e7aeb37508597d2110a7e4b3b"
+    },
+    "boot2/qemu.log": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "boot2/result.json": {
+      "size": 5358,
+      "sha256": "44309851e2dd17c16d939918cdb5353b3e1c2fc4b3ac09ebb8a165a0c8d893d9"
+    },
+    "boot2/runner-source.py": {
+      "size": 20442,
+      "sha256": "322f1fd2c7079c8256b63166c52263c8efa2d025988ed54362b3895fad869d76"
+    },
+    "boot2/serial.log": {
+      "size": 49425,
+      "sha256": "79c202865b5ec4fc4dac2b29ac96948b8ad4cf8598f6a196734436f31ceb328b"
+    },
+    "offline-tests.log": {
+      "size": 45317,
+      "sha256": "f6cc8febebdc3b64a9baa5d6e15c774043c72939511d1ac996ff6a2e627f1247"
+    }
+  }
+}

@@ -1,5 +1,37 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Run20 — measured memory pressure, desktop still incomplete (2026-10-18)
+
+The ordinary desktop control completed 20 minutes with saved login and one
+actual updater restart. The main navigation bar appeared, but Store content
+remained blank and a visible Library click did not establish navigation. No
+usable desktop, Big Picture or Steam game launch is claimed by this run.
+
+Memory pressure is now measured independently of OOM: available memory reached
+32,216 KiB; a 20.04-second window recorded 141,011 pages scanned by background
+reclaim and 1,774 by direct reclaim, five normal-zone allocation stalls and 332 major
+faults. No swap was enabled. All 248 samples and kernel logs had no OOM kill.
+This establishes reclaim pressure, not the sole cause of the UI stall. The
+kernel has no PSI interface; the corrected read-only probe reports that absence.
+Captured dump exception headers indicate requested dumps (0xffffffff), not
+fatal signals; raw dump memory and account pixels remain private.
+
+The app's ordinary shutdown timed out and owned-process termination was needed.
+The separate VM Stop completed guest unmount, QEMU0 and host fsync; namespaces
+were gone, package audit was clean and four client ELFs were unchanged. Full
+post20 integrity passed run21's read-only preboot check on a separate copy:
+all five phases plus summary, no errors; the original run20 disk was preserved.
+
+Run21 compares 2,560 MiB with 1,536 MiB while retaining desktop mode, CPU,
+sandbox and V3 diagnostic. The explicit host-only memory option records both
+configured and effective budgets, preserving the pinned default profile.
+25 runner and 18 seed-protection checks pass. The comparison result is pending;
+it is not an iPhone RAM recommendation. iOS storage integration, Apple build,
+device gameplay and Steam/Proton support remain unverified/unimplemented as
+described in STEAM-IOS-INTEGRATION.md. Sanitized evidence is in
+`experiments/linux-guest/evidence/steam-local-arm64-20261017/run20`.
+
+
 ## Run19 — updater retry confirmed; no kernel OOM (2026-10-18)
 
 The bounded updater restart now has an actual runtime check: run19 recorded one

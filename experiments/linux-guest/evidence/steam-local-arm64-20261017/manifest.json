@@ -1958,6 +1958,171 @@
       "sha256": "b1b05f4ea2d32577b6aeee050b6171746b7efc3fc5f460c742af8c5924f39898"
     },
     {
+      "file": "run20/application-stop.json",
+      "size": 5788,
+      "sha256": "dd055e4e432aa545a2168da1199de177036014fa5d970c59fa2585483996b721"
+    },
+    {
+      "file": "run20/fast-guard.json",
+      "size": 118,
+      "sha256": "2793dd285b46155ac216d63f9934241e9e07535224b5622c9a640b7639ff86e1"
+    },
+    {
+      "file": "run20/game-runtime-inventory.json",
+      "size": 717,
+      "sha256": "61d743ef2304289856a9212fa084ba957486893cd5152e85617f3c9ef1eb2f22"
+    },
+    {
+      "file": "run20/launch-profile.json",
+      "size": 843,
+      "sha256": "a9a0307195d749dd541517c4b74fe4c97d0d1500317e13f99c10c8980a83c989"
+    },
+    {
+      "file": "run20/memory-control-tests.json",
+      "size": 425,
+      "sha256": "755b5f03e2e0f1f814944c9a17fcd08b45d339dde5e34cabb6923b2f7f049092"
+    },
+    {
+      "file": "run20/memory-pressure-window.json",
+      "size": 1443,
+      "sha256": "6dfcd50d64888aed61182745162debe29812bc36233cb32c448a1acb419f077f"
+    },
+    {
+      "file": "run20/memory20-summary.json",
+      "size": 1647,
+      "sha256": "f1a26048a5ed2f44e387d556b950aabb9c636279d1f7c058fefdfebb742956a3"
+    },
+    {
+      "file": "run20/offline-fsck.json",
+      "size": 1416,
+      "sha256": "c0fd2ee5e6e02d72ae0d0a34578e2746d02c094dffd8b9a2f145ec620813a865"
+    },
+    {
+      "file": "run20/offline-fsck.log",
+      "size": 401,
+      "sha256": "6ce3092e1d23312257e09fa8b3c3ae674104589714f66e88efc197ae755256d8"
+    },
+    {
+      "file": "run20/offline-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "file": "run20/offline-fsck.stdout.log",
+      "size": 374,
+      "sha256": "6ffc94c3bc38f21acf2ae67c38d90c4ce90735de73b617cc863cbc2e2d6cd9e2"
+    },
+    {
+      "file": "run20/outcome.json",
+      "size": 1262,
+      "sha256": "fc4a337a8933541cb79c0322a875f81f7b47e9a0fb90c13d102de791d71b2f1d"
+    },
+    {
+      "file": "run20/post-application-check.json",
+      "size": 799,
+      "sha256": "b220035b95ec0a30b5f4ca8bf50f42d134797a60f9ac268e17898ac6bee9d1f6"
+    },
+    {
+      "file": "run20/post-run-fsck/copy-provenance.json",
+      "size": 365,
+      "sha256": "808f3f3a8f5a9d13cff2ccdf58629dce256793034ff4cb021703c261b0d8961e"
+    },
+    {
+      "file": "run20/post-run-fsck/offline-fsck.json",
+      "size": 1416,
+      "sha256": "da27c6d5241a354703d198a0b78d02421761be1b1f5c8be1c910e68d068724fc"
+    },
+    {
+      "file": "run20/post-run-fsck/offline-fsck.log",
+      "size": 401,
+      "sha256": "a589895a66ed0b255d27902c9ab2bf8c87ce75d4cdf45c09dc27f8704898a18d"
+    },
+    {
+      "file": "run20/post-run-fsck/offline-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "file": "run20/post-run-fsck/offline-fsck.stdout.log",
+      "size": 374,
+      "sha256": "058bfce8a66ae8baa98b3abfe250590d9d4eca15d2075de154bcd26ef6b225e6"
+    },
+    {
+      "file": "run20/profile20.json",
+      "size": 539,
+      "sha256": "f1f4661891965768f31ed31dfcc32d4eb6448d9db3d2f9624837c555121efb10"
+    },
+    {
+      "file": "run20/result.json",
+      "size": 14897,
+      "sha256": "aee81ac5f08e5aa0826ffdc85b63c72eca26293f24b35290fa4170c811fceb71"
+    },
+    {
+      "file": "run20/screen-stage-receipt.json",
+      "size": 1489,
+      "sha256": "c4a3dede470e36162a54c65cebfd62011fa29f04fa78ad9f276cacbb4a95d81c"
+    },
+    {
+      "file": "run20/scripts/002-start-desktop-observer.sh",
+      "size": 31736,
+      "sha256": "f35a25651414fbc6bada8d84f98d717a25645bea5b1420a49eda7fca7df88bcc"
+    },
+    {
+      "file": "run20/scripts/004-runtime-inventory.sh",
+      "size": 3880,
+      "sha256": "fa9715258461cdd21680303deeea344034004e1b6c86953ca2d68fcd33278796"
+    },
+    {
+      "file": "run20/scripts/014-fit-main-window.sh",
+      "size": 779,
+      "sha256": "af22fd0faa852c1058b5d690ff1acf374ad0b08c0f90af93571abb562a047659"
+    },
+    {
+      "file": "run20/scripts/021-memory-pressure-optional-psi.sh",
+      "size": 1601,
+      "sha256": "5f29a493ee491bbc0ed1ea13b37205e2b86083b3023cb530d2c7930ce71a4583"
+    },
+    {
+      "file": "run20/scripts/024-library-click.sh",
+      "size": 661,
+      "sha256": "4ca86fe86dbd37214089cc83f27934915d5c515f3235e6e779155d72f4888030"
+    },
+    {
+      "file": "run20/scripts/900-finish-monitor.sh",
+      "size": 437,
+      "sha256": "e28ddeb77f9016b8a7670e687d4505810eab97d877b42a2215607715eaf8a755"
+    },
+    {
+      "file": "run20/scripts/901-stop-owned-app.sh",
+      "size": 6195,
+      "sha256": "ac74fc8329e1fc920ae73d7037ef0833da169e7c2e223bcc6f6a474803b00caf"
+    },
+    {
+      "file": "run20/scripts/902-post-app-check.sh",
+      "size": 1848,
+      "sha256": "edacbfa13cef689230db338e70a2ca7cc69f8a54d2886b1e88d59d947c45b414"
+    },
+    {
+      "file": "run20/scripts/903-private-export.sh",
+      "size": 1392,
+      "sha256": "320aa8db1dad947b98dd3015c3b50edf433586417fe7612f11fd8d18ec8195a6"
+    },
+    {
+      "file": "run20/seed-after-memory-tests.log",
+      "size": 3070,
+      "sha256": "b228eaeed1a5e981ddf68c183bbde1f1d139cb3970a975d4cf6ac6218da0b537"
+    },
+    {
+      "file": "run20/summary.json",
+      "size": 312,
+      "sha256": "564986acc685a3158595f99cfde4b102a38e18eab0b152a5503a43b90b9135b4"
+    },
+    {
+      "file": "run20/updater-and-login.json",
+      "size": 283,
+      "sha256": "631cce347a2bc471d3b105a121c631943bc804167f08e2ab121a0154e74ed90c"
+    },
+    {
       "file": "run9/control.log",
       "size": 108,
       "sha256": "0b8b6031582819a23d35f6f6bcbaff7bf9dffec4ac7e4a9967d4a28ba1d7fd51"

@@ -1,0 +1,15 @@
+{
+  "scope": "POSIX host runner and seed guards; no VM acceptance",
+  "runner_tests": 25,
+  "seed_tests": 18,
+  "total_passed": 43,
+  "exit_codes": [
+    0,
+    0
+  ],
+  "seed_log": "seed-after-memory-tests.log",
+  "runner_log": "tool output of unittest discover test_steam_vm.py",
+  "source_commit": "8b0b8540875813a18ed64e7863f701c0a6bb3458",
+  "profile_unchanged": true,
+  "apple_or_iphone_tested": false
+}

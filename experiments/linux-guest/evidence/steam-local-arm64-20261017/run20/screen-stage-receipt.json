@@ -1,0 +1,38 @@
+[
+  {
+    "private_file": "run20/009-progress.png",
+    "sha256": "a086f0a08356ea13a76f472ba41305b011e2c44eed17768b86494808b511957b",
+    "observed_stage": "Linux desktop; no main Steam window visible",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run20/013-window-state.png",
+    "sha256": "1255f207f428a584aa33a5a9f318b051210d4cac314d20ba03a26afcd14544f6",
+    "observed_stage": "Steam loading spinner, Friends window obscuring part of main window",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run20/015-progress.png",
+    "sha256": "d83a618feb793e28bdcaeae1113b341df4bc765720dbe35a8784184fca938d38",
+    "observed_stage": "Steam loading spinner after requesting 800x600 main window",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run20/022-progress.png",
+    "sha256": "d8d6e22fd0e31830e0563a675fd8c8d862dbc151f4cc8323ff140727d4874065",
+    "observed_stage": "Main Steam navigation bar, blank Store body",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run20/024-library-click.png",
+    "sha256": "40bd1e9c87c2896cecfacaed0f22ddba74342c5ac34ddda0e3b05520d28d534d",
+    "observed_stage": "Library click injected; no visible navigation change",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run20/900-finish-monitor.png",
+    "sha256": "ba9ab8b73875358350e26c2e3daef38869281fc9ea15917b18200a3e760763e4",
+    "observed_stage": "Main Steam navigation bar with blank Store body at observation limit",
+    "pixels_in_git": false
+  }
+]

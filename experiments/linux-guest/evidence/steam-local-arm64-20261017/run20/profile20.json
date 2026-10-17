@@ -1,0 +1,13 @@
+{
+  "reference": "run19",
+  "functional_change": "ordinary desktop -nobigpicture replaces -gamepadui; no resource/runtime changes",
+  "resources": {
+    "memory_mib": 1536,
+    "vcpus": 4,
+    "cpu": "max",
+    "disk_gib": 12
+  },
+  "diagnostics": "same V3 5s connect gate and sandbox; read-only minidump exception metadata, kernel snapshots on any Seccomp2 helper disappearance",
+  "claims": "local host only; no phone or GPU acceptance",
+  "selfchecks": "minidump synthetic exception, bounds, invalid magic; generated Python compiled"
+}

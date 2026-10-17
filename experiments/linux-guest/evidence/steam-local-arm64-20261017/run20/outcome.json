@@ -1,0 +1,29 @@
+{
+  "run": 20,
+  "monitor_seconds": 1210.904030029,
+  "stop_reason": "deadline",
+  "desktop_navigation_verified": false,
+  "big_picture_navigation_verified": false,
+  "kernel_oom_count": 0,
+  "minimum_available_kib": 32216,
+  "memory_pressure_measured": true,
+  "ui_stall_cause_proven": false,
+  "memory_pressure_evidence": "memory-pressure-window.json: reclaim, allocation stalls and major faults increased; no swap",
+  "dump_exception_codes": [
+    "0xffffffff",
+    "0xffffffff"
+  ],
+  "dump_interpretation": "0xffffffff is a requested dump, not a fatal signal; memory/strings not exported",
+  "application_stop": "unclean owned-process termination",
+  "owned_signal_counts": {
+    "SIGCONT": 10,
+    "SIGTERM": 13,
+    "SIGKILL": 1
+  },
+  "vm_stop": "original unmount, QEMU0, host fsync, no recovery marker",
+  "post_run20_fsck": "PASS: full read-only run21 preboot check of copied clean20; all five phases plus summary, no errors",
+  "observer_corrections": "006 later historical-dump lookup found no file; 018 PSI unavailable; corrected read-only probes008/021 passed",
+  "comparison_pending": "run21 tests 2560MiB instead of1536 with same desktop mode, CPU, sandbox and V3 diagnostic",
+  "steam_proton_games_verified": false,
+  "iphone_verified": false
+}

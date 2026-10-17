@@ -1,0 +1,8 @@
+CProcessEnvironmentManager is ready, 5 preallocated environment variables.
+WARNING: setlocale('en_US.UTF-8') failed, using locale: 'C'. International characters may not work.
+Steam is already running, exiting (command line was forwarded).
+IDECK_STEAM_STATUS=shutdown_requested_desktop_retained
+IDECK_STEAM_STOPPED_WITHOUT_FORCE
+
+STEAM_COMMAND_019_0
+debian# 

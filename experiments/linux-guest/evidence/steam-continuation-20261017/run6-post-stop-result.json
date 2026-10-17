@@ -1,0 +1,15 @@
+{
+  "exit_code": 0,
+  "read_only": true,
+  "writer_running": false,
+  "free_bytes_before_copy": 150232297472,
+  "virtual_size": 12884901888,
+  "raw_sha256": "6b8a1beeb22de348ba040fbaa13c8616e91895c1e379dff2789521b4b1e83409",
+  "raw_size": 12884901888,
+  "log_sha256": "06cc3e07485d9bc6c55d7cf583ab69b49208198c0fa4e4548365cee96bd43e4c",
+  "scope": "ext4 filesystem, flattened offline copy",
+  "source": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/run6",
+  "exclusive_owner": true,
+  "qemu_process_exited": true,
+  "repair_performed": false
+}

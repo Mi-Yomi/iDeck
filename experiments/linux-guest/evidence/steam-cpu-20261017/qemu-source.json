@@ -1,0 +1,95 @@
+{
+  "archive_sha256": "7c9605290b34152debb842e965a55d2e4fbba4793e536ab677b4027e5dc0ba1a",
+  "archive_size": 142836072,
+  "files": {
+    "include/tcg/tcg-op.h": {
+      "size": 16585,
+      "sha256": "001521452f1e3a006d39163a9234bdce9852b3493e55dd57a0239b5df64d9f2e"
+    },
+    "target/arm/cpu64.c": {
+      "size": 30855,
+      "sha256": "ef883e14b77cbe79614912706956dd594abaf3ccba41a7301f5c23a4a60b3d34"
+    },
+    "target/arm/cpu-features.h": {
+      "size": 32835,
+      "sha256": "c226d22eee5cb4c0ebe359d452a5d16b0062d330a2448814f7c4bfd349636bcc"
+    },
+    "target/arm/cpu.h": {
+      "size": 112890,
+      "sha256": "586aebf4fe18b66b6481f710f857dac90e6dfa4028fdf119c98d96051d6bf5d7"
+    },
+    "target/arm/tcg/translate-a64.c": {
+      "size": 315293,
+      "sha256": "0a8086b98ad92e2dac91c1424d5103ce7ca6f01a5475941bc586234ea88cd81a"
+    },
+    "target/arm/tcg/cpu64.c": {
+      "size": 54263,
+      "sha256": "e4388925834e14681dcd6651fabbcbb11f3519ae0a349cfc0adeed4604b1ec8f"
+    },
+    "target/arm/tcg/a64.decode": {
+      "size": 94213,
+      "sha256": "dfcec44f19565c2f5de6389b9dc3a615fc9c4a8aba8dbc3fca61cd0f819a3af3"
+    },
+    "target/arm/tcg/meson.build": {
+      "size": 2082,
+      "sha256": "56ffdbd2eab12553b857aab6e72104fe7b62ee477cbe805135611fac9f5283fc"
+    },
+    "tcg/tcg-op-ldst.c": {
+      "size": 43753,
+      "sha256": "de25078deea7e8ec5c1de8a7e28b2d2a7c79624dd3bdd281fb09c0ab59f1c32e"
+    },
+    "tcg/aarch64/tcg-target.c.inc": {
+      "size": 105530,
+      "sha256": "ec9cb8bbb9a0d4804eaf2576f6ea4990d58c44f1d35c9ef017f6c76e84b9e3c3"
+    }
+  },
+  "source_only": true,
+  "iphone_tested": false,
+  "findings": [
+    {
+      "path": "target/arm/cpu.h",
+      "line": 2179,
+      "fact": "ID_AA64ISAR0 ATOMIC field is bits20..23"
+    },
+    {
+      "path": "target/arm/tcg/cpu64.c",
+      "line": 314,
+      "fact": "CortexA72 ID_AA64ISAR0=0x00011120, ATOMIC=0"
+    },
+    {
+      "path": "target/arm/tcg/cpu64.c",
+      "line": 355,
+      "fact": "CortexA76 ID_AA64ISAR0=0x0000100010211120, ATOMIC=2"
+    },
+    {
+      "path": "target/arm/tcg/cpu64.c",
+      "line": 1141,
+      "fact": "maxTCG explicitly sets ATOMIC=2 for FEAT_LSE"
+    },
+    {
+      "path": "target/arm/cpu64.c",
+      "line": 758,
+      "fact": "max dispatches to maxTCG under TCG, host under KVM/HVF"
+    },
+    {
+      "path": "target/arm/cpu-features.h",
+      "line": 407,
+      "fact": "aa64_atomics tests ATOMIC!=0"
+    },
+    {
+      "path": "target/arm/tcg/a64.decode",
+      "line": 527,
+      "fact": "LDADD encoding present"
+    },
+    {
+      "path": "target/arm/tcg/translate-a64.c",
+      "line": 3757,
+      "fact": "LDADD is gated on aa64_atomics and uses tcg_gen_atomic_fetch_add_i64"
+    },
+    {
+      "path": "tcg/tcg-op-ldst.c",
+      "line": 1288,
+      "fact": "TCG atomic fetch_add implementation present"
+    }
+  ]
+}

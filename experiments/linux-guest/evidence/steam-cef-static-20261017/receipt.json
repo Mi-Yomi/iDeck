@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "files": {
+    "analysis.json": {
+      "size": 3705,
+      "sha256": "e6673e1aef16ca95880418646f359cc0c2d8574e275fc580857e4dc8b92d2339"
+    },
+    "steamclient.so.disassembly.txt": {
+      "size": 4718,
+      "sha256": "87ff1d71f8a567224ee6e60fbeee0f74a840acea5424522e3c0a3830e60452db"
+    },
+    "steamui.so.disassembly.txt": {
+      "size": 1534,
+      "sha256": "7bd47ef0e03c7a5985af86882015509aaf0f9366df14c530a3ad88fe0063b6dd"
+    }
+  }
+}

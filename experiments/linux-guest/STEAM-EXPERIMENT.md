@@ -6,6 +6,12 @@ Steam on iPhone. The separate [profile](profiles/steam-host-experiment.json)
 requires explicit QEMU user networking and a new qcow2 overlay. The accepted seed
 is verified against `ipa/gui.lock.json` and remains a read-only backing file.
 
+The follow-up has reproduced the exact [LSE CPU fault](STEAM-CPU.md) and verified
+the [private Debian root namespace correction](STEAM-NAMESPACES.md), including
+real UID1000 user/mount/PID namespace and private-proc creation. No sandbox flag
+or system security policy is disabled. Actual client/UI outcomes remain recorded
+separately in HANDOFF and runtime evidence.
+
 ## Source and distribution boundary
 
 Reviewed DroidDeck upstream commit `64d78aa812305d707700e2ad460f3b94d03ed50c`:
@@ -100,19 +106,39 @@ once, records exit status and a real QMP screenshot. A `STOP` file requests the
 production independent control-channel stop. A fresh output means a fresh disk;
 existing overlays and user disks remain untouched.
 
+To continue a previously stopped **private experiment**, explicitly add
+`--continue-from "$TASK/previous-run"` with another new `--output` directory.
+The runner checks that run's clean evidence, seed identity, absence of a recovery
+marker and exclusive ownership. It creates a new copy through QEMU's read-locked
+image backend, verifies the original did not change, and performs read-only
+`e2fsck -f -n` on a flattened offline copy before starting any VM. Failed checks
+are never repaired automatically. Existing files and dangling output symlinks
+are refused; image output is bound to a newly created exclusive file descriptor.
+The experiment's new virtual disk capacity is 12 GiB. Allow space for the source,
+new overlay and a temporary full-size raw check; retain several GiB of free space
+inside the guest for Valve's update staging.
+
 After GUI readiness, run inside the new guest:
 
 ```sh
 python3 /opt/ideck-steam/install-cached.py --port PORT --private-qemu-cache
 ```
 
-From the existing desktop user's terminal, use `ideck-steam desktop`, then
-`ideck-steam stop` to return to Debian Desktop. `ideck-steam big-picture` requests
-the upstream gamepad UI flags. Each command requires the existing X11 authority,
+The ordinary-user launcher provides `desktop`, `stop` and `big-picture` modes;
+the last requests the upstream gamepad UI flags. Start it through the namespace
+entry point below. Each command requires the existing X11 authority,
 UID1000 HOME/runtime directory and a valid or newly started session D-Bus. A real
 launch lock and process check refuse a second client. CEF software rendering is
 explicit; Chromium sandbox remains enabled. Android/proot preloads and service
 impersonation are not transferred. No launcher return code proves a visible UI.
+
+The original chroot cannot create the namespaces Chromium needs. For the separate
+Steam profile, use the recovery console's fixed root setup entry point:
+`python3 /opt/ideck-steam/namespace-check.py launch desktop` (or `big-picture`).
+The helper creates a private real Debian root, passes both unprivileged preflights,
+then executes the ordinary UID1000 launcher. It does not run Steam as root, make
+the helper setuid, or change the accepted Desktop route. `ideck-steam stop` still
+requests client shutdown and returns to the existing Debian desktop.
 
 The guest Stop still terminates writers, syncs and unmounts before poweroff. The
 host runner additionally waits for its QEMU subprocess to exit and host fsync to
@@ -120,13 +146,14 @@ succeed; only then may it clear `needs-recovery`. A timeout, forced exit or fsyn
 failure remains failed. This does not weaken the embedded iOS lifetime contract:
 its owner thread and disk lock still remain retained until application exit.
 
-The observed Cortex-A72 attempt exited132 before its first window. The experiment
-profile now uses QEMU `max`; a fresh run displayed the real Steam updater. Its
-self-update requested additional669522KB and was interrupted by clean VM Stop
-when E: approached exhaustion. This establishes the native updater window only,
-not the main client or Big Picture. The current chroot also returns EPERM for an
-ordinary user's user/mount namespace probe. A proper Steam root namespace needs
-work before CEF sandbox readiness can be claimed; do not disable the sandbox.
+The original Cortex-A72 attempt exited132 before its first window; the exact
+LSE fault is now documented in `STEAM-CPU.md`. The host profile still uses `max`.
+An explicit copy of the retained installation completed Valve's self-update.
+The corrected private root allows real UID1000 CEF children with seccomp and
+user/PID namespaces enabled. This does not establish the main UI or Big Picture:
+the later webhelper-init timeout and a secondary shared-memory exhaustion are
+recorded separately in `STEAM-WEBHELPER.md` and the continuation evidence.
+Do not retain unsuccessful diagnostic flags or disable the sandbox.
 
 Actual outcome and evidence are recorded in HANDOFF and the experiment receipt.
 Software UI rendering does not establish playable performance or GPU acceleration.

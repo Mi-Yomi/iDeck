@@ -6,6 +6,7 @@ new overlay, serial/control channels and a loopback-only verified-input server.
 Commands in a private queue are explicit operator-controlled guest scripts.
 """
 import argparse
+from contextlib import ExitStack
 import fcntl
 import hashlib
 import http.server
@@ -15,7 +16,9 @@ from pathlib import Path
 import re
 import select
 import shlex
+import shutil
 import socket
+import stat
 import subprocess
 import threading
 import time
@@ -27,13 +30,117 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def sha(path):
+    digest = hashlib.sha256()
     with path.open('rb') as stream:
-        return hashlib.file_digest(stream, 'sha256').hexdigest()
+        # Large sequential reads keep task-local Windows/WSL storage practical.
+        while chunk := stream.read(8*1024*1024): digest.update(chunk)
+    return digest.hexdigest()
 
 
 def clean_stop_evidence(exit_code, control_bytes):
     return (type(exit_code) is int and exit_code == 0
             and b'IDECK_DESKTOP_CLEAN_UNMOUNT' in control_bytes.splitlines())
+
+
+def finalize_disk(report, disk, dirty):
+    if report.get('stop_failure'):
+        return False
+    try:
+        with disk.open('rb') as stream: os.fsync(stream.fileno())
+        dirty.unlink()
+    except OSError as error:
+        report['clean_shutdown'] = False
+        report['stop_failure'] = type(error).__name__
+        raise
+    report['clean_shutdown'] = True
+    return True
+
+
+def validate_continuation(source, seed_hash):
+    """Only an explicitly selected, clean private run can seed a NEW copy."""
+    if source.is_symlink() or not source.is_dir():
+        raise ValueError('continuation must be a real private run directory')
+    for name in ('result.json', 'owner.lock', 'steam-experiment.qcow2'):
+        entry = source/name
+        if entry.is_symlink() or not stat.S_ISREG(entry.stat().st_mode):
+            raise ValueError('unsafe continuation input')
+    if os.path.lexists(source/'needs-recovery'):
+        raise ValueError('dirty continuation refused; recovery is never automatic')
+    prior = json.loads((source/'result.json').read_text())
+    if (prior.get('host_only') is not True or prior.get('clean_shutdown') is not True
+            or type(prior.get('qemu_exit_code')) is not int or prior['qemu_exit_code'] != 0
+            or prior.get('forced') or prior.get('seed_sha256') != seed_hash):
+        raise ValueError('continuation lacks matching clean private-run evidence')
+    return source/'steam-experiment.qcow2'
+
+
+def exclusive_image_output(image_command, arguments, destination, env):
+    """Pin a newly created output inode; image tools cannot follow a substituted path."""
+    descriptor = os.open(destination, os.O_RDWR | os.O_CREAT | os.O_EXCL, 0o600)
+    try:
+        subprocess.run([*image_command, *map(str, arguments), f'/proc/self/fd/{descriptor}'],
+                       env=env, pass_fds=(descriptor,), check=True, capture_output=True, text=True)
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+
+
+def continuation_copy(source, disk, seed, seed_hash, image_command, env):
+    original = validate_continuation(source, seed_hash)
+    if os.path.lexists(disk): raise FileExistsError(disk)
+    with (source/'owner.lock').open('rb') as owner:
+        fcntl.flock(owner, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        validate_continuation(source, seed_hash)
+        def image(*argv):
+            return subprocess.run([*image_command, *map(str, argv)], env=env,
+                                  check=True, capture_output=True, text=True)
+        chain = json.loads(image('info', '--backing-chain', '--output=json', original).stdout)
+        if (len(chain) != 2 or chain[0]['format'] != 'qcow2' or chain[1]['format'] != 'raw'
+                or Path(chain[1]['filename']).resolve() != seed or chain[0].get('encrypted')):
+            raise ValueError('continuation backing chain differs from accepted seed')
+        if shutil.disk_usage(disk.parent).free < chain[0]['virtual-size'] + 4*1024**3:
+            raise ValueError('insufficient space for continuation copy')
+        before = sha(original)
+        # qemu-img holds its source backend read lock; no force-share or repair.
+        exclusive_image_output(image_command,
+            ['convert', '-f', 'qcow2', '-O', 'qcow2', '-B', seed, '-F', 'raw', original], disk, env)
+        if sha(original) != before:
+            raise ValueError('continuation source changed during copy')
+        with disk.open('rb') as stream: os.fsync(stream.fileno())
+        return {'source': str(source), 'source_sha256': before,
+                'original_preserved': True, 'method': 'qemu-img convert; source read lock',
+                'copied_sha256': sha(disk)}
+
+
+def offline_fsck(disk, out, image_command, env):
+    """Check a flattened point-in-time copy, only before this runner starts QEMU."""
+    raw = out/'offline-fsck.raw'
+    if os.path.lexists(raw): raise FileExistsError(raw)
+    image_info = subprocess.run([*image_command, 'info', '--output=json', str(disk)],
+                                env=env, check=True, capture_output=True, text=True)
+    virtual_size = json.loads(image_info.stdout)['virtual-size']
+    if type(virtual_size) is not int or virtual_size <= 0:
+        raise ValueError('invalid offline filesystem copy size')
+    # The continuation qcow2 already occupies space here. Budget a full raw
+    # image independently; sparse extents are an optimization, not a guarantee.
+    free_before = shutil.disk_usage(out).free
+    if free_before < virtual_size + 4*1024**3:
+        raise ValueError('insufficient space for offline filesystem copy and reserve')
+    exclusive_image_output(image_command, ['convert', '-f', 'qcow2', '-O', 'raw', disk], raw, env)
+    result = subprocess.run(['/usr/sbin/e2fsck', '-f', '-n', str(raw)],
+                            env=env, capture_output=True, text=True)
+    log = result.stdout+result.stderr
+    (out/'offline-fsck.log').write_text(log)
+    receipt = {'exit_code': result.returncode, 'read_only': True, 'writer_running': False,
+               'free_bytes_before_copy': free_before, 'virtual_size': virtual_size,
+               'raw_sha256': sha(raw), 'raw_size': raw.stat().st_size,
+               'log_sha256': sha(out/'offline-fsck.log'), 'scope': 'ext4 filesystem, flattened offline copy'}
+    (out/'offline-fsck.json').write_text(json.dumps(receipt, indent=2)+'\n')
+    if result.returncode != 0:
+        raise RuntimeError('offline ext4 check failed; no repair or boot')
+    # The exact successful check is recorded; remove only our own disposable raw copy.
+    raw.unlink()
+    return receipt
 
 
 def boot(args):
@@ -45,12 +152,28 @@ def boot(args):
         raise ValueError('unsafe experiment profile')
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
-    lockfile = (out/'owner.lock').open('xb')
-    fcntl.flock(lockfile, fcntl.LOCK_EX | fcntl.LOCK_NB)
     report = {'schema': 1, 'status': 'failed', 'host_only': True,
               'iphone_tested': False, 'steam_window_verified': False,
               'big_picture_verified': False, 'clean_shutdown': False,
+              'qemu_started': False,
               'network': 'explicit QEMU user NAT, no host forwarding', 'commands': []}
+    total_started = time.monotonic()
+    with (out/'owner.lock').open('xb') as lockfile:
+        fcntl.flock(lockfile, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        try:
+            with ExitStack() as cleanup:
+                return _boot(args, profile_path, profile, out, report, cleanup)
+        except BaseException as error:
+            report['failure'] = {'class': type(error).__name__, 'message': str(error)}
+            report['preparation_failed'] = not report['qemu_started']
+            raise
+        finally:
+            report['total_elapsed_seconds'] = round(time.monotonic()-total_started, 3)
+            report.setdefault('elapsed_seconds', report['total_elapsed_seconds'])
+            (out/'result.json').write_text(json.dumps(report, indent=2)+'\n')
+
+
+def _boot(args, profile_path, profile, out, report, cleanup):
     report['profile_sha256'] = sha(profile_path)
     seed = args.seed.resolve()
     expected = json.loads((ROOT/'ipa/gui.lock.json').read_text())['files']
@@ -75,8 +198,16 @@ def boot(args):
         raise ValueError('image tool differs from authenticated extraction receipt')
     report['image_tool'] = tool_receipt
     loader = host([args.host/'usr/bin/qemu-system-aarch64'])[:-1]
-    subprocess.run([*loader, str(args.qemu_img), 'create', '-f', 'qcow2', '-F', 'raw',
-                    '-b', str(seed), str(disk), profile['disk']['virtual_size']], env=env, check=True)
+    image_command = [*loader, str(args.qemu_img)]
+    continuation = getattr(args, 'continue_from', None)
+    if continuation is not None:
+        report['continuation'] = continuation_copy(continuation.absolute(), disk, seed,
+                                                  report['seed_sha256'], image_command, env)
+        report['offline_fsck'] = offline_fsck(disk, out, image_command, env)
+        subprocess.run([*image_command, 'resize', str(disk), profile['disk']['virtual_size']], env=env, check=True)
+    else:
+        subprocess.run([*image_command, 'create', '-f', 'qcow2', '-F', 'raw',
+                        '-b', str(seed), str(disk), profile['disk']['virtual_size']], env=env, check=True)
     dirty = out/'needs-recovery'
     dirty.write_text('VM started; never reuse automatically\n')
     args.commands.mkdir(parents=True, exist_ok=True)
@@ -100,13 +231,17 @@ def boot(args):
                     while chunk := stream.read(1024*1024): self.wfile.write(chunk)
             except (BrokenPipeError, ConnectionResetError): pass
     server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), Handler)
+    cleanup.callback(server.server_close)
     thread = threading.Thread(target=server.serve_forever, daemon=True); thread.start()
+    cleanup.callback(server.shutdown)
     report['cache_port'] = server.server_port
     (out/'cache-port').write_text(str(server.server_port))
     listeners = []
     for _ in range(2):
-        s = socket.socket(); s.bind(('127.0.0.1', 0)); s.listen(1); s.settimeout(30); listeners.append(s)
-    port = socket.socket(); port.bind(('127.0.0.1', 0)); qport = port.getsockname()[1]; port.close()
+        s = socket.socket(); cleanup.callback(s.close)
+        s.bind(('127.0.0.1', 0)); s.listen(1); s.settimeout(30); listeners.append(s)
+    with socket.socket() as port:
+        port.bind(('127.0.0.1', 0)); qport = port.getsockname()[1]
     argv = [args.host/'usr/bin/qemu-system-aarch64', '-L', args.host/'usr/share/qemu',
             '-machine', 'virt', '-cpu', profile['cpu'], '-m', str(profile['memory_mib']), '-smp', '4',
             '-accel', 'tcg,thread=multi,tb-size=256', '-display', 'none', '-nodefaults', '-no-reboot',
@@ -153,9 +288,12 @@ def boot(args):
     try:
         with (out/'qemu.log').open('wb') as output:
             process = subprocess.Popen(host(argv), env=env, stdin=subprocess.DEVNULL, stdout=output, stderr=subprocess.STDOUT)
-        peers = [s.accept()[0] for s in listeners]
+        report['qemu_started'] = True
+        for listener in listeners:
+            peer = listener.accept()[0]; cleanup.callback(peer.close); peers.append(peer)
         for peer in peers: peer.setblocking(False)
-        qmp = socket.create_connection(('127.0.0.1', qport), timeout=10); qfile = qmp.makefile('rwb', buffering=0)
+        qmp = socket.create_connection(('127.0.0.1', qport), timeout=10); cleanup.callback(qmp.close)
+        qfile = qmp.makefile('rwb', buffering=0); cleanup.callback(qfile.close)
         json.loads(qfile.readline()); qcommand('qmp_capabilities')
         nodes = qcommand('query-named-block-nodes')
         seed_nodes = [node for node in nodes if node.get('drv') == 'raw' and node.get('file') == str(seed)]
@@ -199,9 +337,7 @@ def boot(args):
                 until(lambda: process.poll() is not None, 90)
                 pump()
                 if clean_stop_evidence(process.returncode, logs[1]):
-                    with disk.open('rb') as stream: os.fsync(stream.fileno())
-                    report['clean_shutdown'] = True
-                    dirty.unlink()
+                    finalize_disk(report, disk, dirty)
             except BaseException as error:
                 report['stop_failure'] = type(error).__name__
         if process is not None and process.poll() is None:
@@ -210,10 +346,6 @@ def boot(args):
         # Subprocess exit is mandatory; embedded iOS backend lifetime differs and
         # its existing retained owner/disk lock contract is intentionally untouched.
         save()
-        for peer in peers+listeners: peer.close()
-        if qfile: qfile.close()
-        if qmp: qmp.close()
-        server.shutdown(); server.server_close(); lockfile.close()
     return report
 
 
@@ -222,6 +354,7 @@ if __name__ == '__main__':
     for name in ('host', 'seed', 'kernel', 'bootstrap', 'cache', 'debs', 'commands', 'output', 'qemu-img', 'image-tool-receipt'):
         p.add_argument('--'+name, type=Path, required=True)
     p.add_argument('--seconds', type=int, default=1500)
+    p.add_argument('--continue-from', type=Path, help='Explicit clean private run to COPY, never modify or repair')
     p.add_argument('--enable-experimental-network', action='store_true', required=True)
     a = p.parse_args()
     print(json.dumps(boot(a), indent=2))

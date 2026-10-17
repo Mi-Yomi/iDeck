@@ -1,0 +1,135 @@
+{
+  "schema": 1,
+  "status": "blocked_before_main_interface",
+  "base_commit": "661fbf19b5074b00ca64b48dac11e8e3654e348c",
+  "branch": "codex/steam-arm64-experiment-20261017",
+  "host_only": true,
+  "steam_updater_completed": true,
+  "steam_version": "1792192922",
+  "steam_main_ui_verified": false,
+  "big_picture_verified": false,
+  "login_or_agreement_reached": false,
+  "steam_keyboard_mouse_test": "NOT REACHED",
+  "iphone_steam": "NOT RUN",
+  "apple_swift_runtime": "NOT RUN",
+  "gpu_acceleration": "NOT RUN",
+  "kernel": "6.18.35-0-virt",
+  "host_qemu": "10.0.13",
+  "ios_qemu": "10.0.12-utm source inspection only",
+  "cpu": "max",
+  "vcpus": 4,
+  "memory_mib": 1536,
+  "disk_virtual_size_bytes": 12884901888,
+  "network": "explicit IPv4 QEMU user NAT; no host forwarding",
+  "guest_free_bytes_at_reboot": 8202125312,
+  "recommended_additional_host_headroom_gib": 25,
+  "namespace_fix": {
+    "initial_chroot_unshare_errno": 1,
+    "corrected_uid1000_user_mount_probe": 0,
+    "corrected_uid1000_user_mount_pid_proc_probe": 0,
+    "actual_child_seccomp": 2,
+    "sandbox_bypass": false
+  },
+  "persistence": {
+    "machine_id": "01565bdc88738f43157a024d6ad341d2",
+    "canary_sha256": "da4a878f74aad07470b03d8811ed1e86bec4ac181c3fa01bc0d4a91bc67a5aa6",
+    "client_sha256": "73da03ead208a74e14bee566869a4235063dc4a9e1063f29c4608de6d78bd4ea",
+    "reboot_matches": true,
+    "full_reinstallation": false,
+    "reboot_download_skipped": true
+  },
+  "application_shutdown": {
+    "run5_first_ordinary_request": "PASS without force",
+    "run5_watchdog_probe": "SIGBUS after shared memory exhausted",
+    "run6_final_ordinary_request": "FAILED timeout; active Steam and zombie helper recorded"
+  },
+  "vm_filesystem_backend_stop": {
+    "run5": {
+      "guest_clean_unmount": true,
+      "qemu_exit_code": 0,
+      "host_fsync_passed": true,
+      "forced_qemu": false,
+      "steam_application_clean_is_separate": true
+    },
+    "run6": {
+      "guest_clean_unmount": true,
+      "qemu_exit_code": 0,
+      "host_fsync_passed": true,
+      "forced_qemu": false,
+      "steam_application_clean_is_separate": true
+    }
+  },
+  "offline_ext4_checks": {
+    "before_run5": 0,
+    "before_run6": 0,
+    "after_run6": {
+      "exit_code": 0,
+      "read_only": true,
+      "writer_running": false,
+      "free_bytes_before_copy": 150232297472,
+      "virtual_size": 12884901888,
+      "raw_sha256": "6b8a1beeb22de348ba040fbaa13c8616e91895c1e379dff2789521b4b1e83409",
+      "raw_size": 12884901888,
+      "log_sha256": "06cc3e07485d9bc6c55d7cf583ab69b49208198c0fa4e4548365cee96bd43e4c",
+      "scope": "ext4 filesystem, flattened offline copy",
+      "source": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/run6",
+      "exclusive_owner": true,
+      "qemu_process_exited": true,
+      "repair_performed": false
+    }
+  },
+  "regressions": {
+    "platform": "WSL POSIX",
+    "passed": 29,
+    "failed": 0,
+    "skipped": 0,
+    "namespace": 11,
+    "bootstrap": 5,
+    "runner": 13
+  },
+  "bootstrap": {
+    "schema": 1,
+    "status": "PASS",
+    "bootstrap_size": 11650349,
+    "bootstrap_sha256": "573ed99583fa2b40a51f7ad0e3c825d28a0b226a06ada517243d0468b686b170",
+    "namespace_helper_sha256": "96c929eafefb2f76aa7751fb1869baa6def54e5e31be2a0e6620a486bca64b0d",
+    "actual_cpio_helper_matches_source": true,
+    "actual_cpio_original_gui_init_matches_source": true,
+    "actual_cpio_stop_function_preserved": true,
+    "original_initramfs_prefix_preserved": true,
+    "tests": {
+      "test_steam_namespace.py": {
+        "passed": 11,
+        "failed": 0
+      },
+      "test_steam_bootstrap.py": {
+        "passed": 5,
+        "failed": 0
+      }
+    },
+    "guest_boot_status": "NOT RUN",
+    "iphone_status": "NOT RUN",
+    "subsequent_exact_archive_host_boot": "run6 PASS; original build receipt retained"
+  },
+  "diagnostics_reverted": [
+    "cef-disable-hang-timeouts",
+    "system-composer",
+    "temporary guest thread affinity"
+  ],
+  "remaining_blocker": {
+    "observed_error": "Timed out waiting for webhelper init; repeated native Steam/CEF restarts",
+    "unique_initial_cause_established": false,
+    "secondary_confirmed_failure": "SIGBUS into /dev/shm shared object after tmpfs exhaustion",
+    "missing_gpu_requirement_proven": false
+  },
+  "protected": {
+    "run4_preserved": true,
+    "run5_preserved": true,
+    "gui_branch_changed": false,
+    "payload_release_changed": false,
+    "codemagic_started": false,
+    "production_cpu_changed": false,
+    "valve_client_redistributed": false,
+    "games_installed": false
+  }
+}

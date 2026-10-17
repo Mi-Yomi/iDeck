@@ -1,0 +1,8 @@
+CProcessEnvironmentManager is ready, 5 preallocated environment variables.
+fopen /mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/review/cpu-probe/original-a76/home/.steam/steam.token failed: No such file or directory
+src/steamexe/steamglobalinstance.cpp (384) : m_NamedPipe >= 0
+src/steamexe/steamglobalinstance.cpp (384) : m_NamedPipe >= 0
+[2026-10-17 15:35:01] Startup - updater built Oct 16 2026 21:54:30
+[2026-10-17 15:35:01] Startup - Steam Client launched with: '/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/review/cpu-probe/steam' '-version'
+src/steamexe/main.cpp (1400) : Assertion Failed: Steam data link does not exist, client is misconfigured, cannot continue: /mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/review/cpu-probe/original-a76/home/.steam/steam
+src/steamexe/main.cpp (1400) : Assertion Failed: Steam data link does not exist, client is misconfigured, cannot continue: /mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/review/cpu-probe/original-a76/home/.steam/steam

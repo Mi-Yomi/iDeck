@@ -7,7 +7,7 @@
   "disk": {
     "kind": "new-qcow2-overlay",
     "backing": "verified-gui-seed-read-only",
-    "virtual_size": "4G",
+    "virtual_size": "12G",
     "reuse_dirty": false
   },
   "memory_mib": 1536,

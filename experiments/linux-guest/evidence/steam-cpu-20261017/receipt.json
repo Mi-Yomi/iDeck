@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "status": "exact_initial_client_LSE_fault_reproduced",
+  "host_only": true,
+  "iphone_verified": false,
+  "apple_build_tested": false,
+  "production_profiles_modified": false,
+  "valve_binary_in_git": false,
+  "files": {
+    "client-fault.json": {
+      "size": 2497,
+      "sha256": "9a7ea53bedcdb7d81d155a01c6b7ec061d09852cf18953bb6fa37d59ec6b61aa"
+    },
+    "cortex-a72.stderr": {
+      "size": 67,
+      "sha256": "ef38f61d8a02d6a05807a9b779b7bf352a6f385ed1744354a7d9f01c9db49e92"
+    },
+    "cortex-a76.stderr": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fault-stderr.log": {
+      "size": 67,
+      "sha256": "ef38f61d8a02d6a05807a9b779b7bf352a6f385ed1744354a7d9f01c9db49e92"
+    },
+    "fault-trace-tail.log": {
+      "size": 518,
+      "sha256": "bb88c72c5a792c338253aa86056dfe1ab89c4ad9e409b47c852bd47816454b57"
+    },
+    "gdb-disassembly.log": {
+      "size": 615,
+      "sha256": "268d76b3fbab1a994420e696e8f6d7f12ebb7723cfc0b3242ce684159fa094ef"
+    },
+    "max.stderr": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "minimal-lse.json": {
+      "size": 833,
+      "sha256": "3abd802b410a0b9902a5d4efbd5afd57a436140280962a61cd49dbb59ffeefbc"
+    },
+    "original-a76.json": {
+      "size": 1006,
+      "sha256": "90d92d238c8ad2de2f67df34aea1b4ed59152c18771b0a52de237450fa84a579"
+    },
+    "original-a76.stderr.log": {
+      "size": 1058,
+      "sha256": "65bf5ab718a140064aa3db88c27903588b3cfacf0de07327414974deae8e6139"
+    },
+    "original-a76.stdout.log": {
+      "size": 100,
+      "sha256": "e7a3de096b981f2fadf271a67881392867aa0bcceffb3e9f701aecbcf8c376fa"
+    },
+    "qemu-source.json": {
+      "size": 2841,
+      "sha256": "fd6f70bb52fd62ede7614f9bd32a4c52360de53ede21cae2bf0bcc03fad10cd9"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "status": "PASS",
+  "bootstrap_size": 11650349,
+  "bootstrap_sha256": "573ed99583fa2b40a51f7ad0e3c825d28a0b226a06ada517243d0468b686b170",
+  "namespace_helper_sha256": "96c929eafefb2f76aa7751fb1869baa6def54e5e31be2a0e6620a486bca64b0d",
+  "actual_cpio_helper_matches_source": true,
+  "actual_cpio_original_gui_init_matches_source": true,
+  "actual_cpio_stop_function_preserved": true,
+  "original_initramfs_prefix_preserved": true,
+  "tests": {
+    "test_steam_namespace.py": {
+      "passed": 11,
+      "failed": 0
+    },
+    "test_steam_bootstrap.py": {
+      "passed": 5,
+      "failed": 0
+    }
+  },
+  "guest_boot_status": "NOT RUN",
+  "iphone_status": "NOT RUN"
+}

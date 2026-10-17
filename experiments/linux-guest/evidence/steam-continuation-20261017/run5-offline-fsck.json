@@ -1,0 +1,9 @@
+{
+  "exit_code": 0,
+  "read_only": true,
+  "writer_running": false,
+  "raw_sha256": "37018c6d7d39617479730c0d68a109d0ad8917c40cfd3c41748d1997f31324f5",
+  "raw_size": 4294967296,
+  "log_sha256": "51ddb1359b6a5454412115bdd0ea2714ccb729c6011cf2b1e049ad8505d34596",
+  "scope": "ext4 filesystem, flattened offline copy"
+}

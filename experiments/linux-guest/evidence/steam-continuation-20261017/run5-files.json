@@ -1,0 +1,62 @@
+{
+  "run5-result.json": {
+    "size": 11983,
+    "sha256": "dff45db3ee799e922899b464bde4ac1f2b290a12e828cd3184f2fd6b6dbaf416"
+  },
+  "run5-control.log": {
+    "size": 103,
+    "sha256": "454a40c873bc46e48adfa8c51fe87c6d8d0b0410be2a278d6878532d82fbe07f"
+  },
+  "run5-offline-fsck.json": {
+    "size": 317,
+    "sha256": "ab20f85e36f1005c4bd96c652fc35835172d21b0edee1469e8aaf1cc7bfdb3cf"
+  },
+  "run5-offline-fsck.log": {
+    "size": 376,
+    "sha256": "51ddb1359b6a5454412115bdd0ea2714ccb729c6011cf2b1e049ad8505d34596"
+  },
+  "run5-010-namespace-pid.log": {
+    "size": 61670,
+    "sha256": "e5b4100a3d2a5a65b3a158c64bf40dd6754fb6c3d142d114100e917d074dc8c4"
+  },
+  "run5-013-finish-update.log": {
+    "size": 4703,
+    "sha256": "e2512790b82a0c831887dbc0e3117b4909488c6c93122b358073524fe2e51a51"
+  },
+  "run5-014-rooted-launch.log": {
+    "size": 7937,
+    "sha256": "782d74e5462e8ff05c89fe6bd7437509ca72ab8288ff0807b77832bde522aec1"
+  },
+  "run5-015-window-state.log": {
+    "size": 8055,
+    "sha256": "07a15e7e18c22459c9aa901e2333e40df2946eced01ba8b2744057c1dd182a26"
+  },
+  "run5-017-cef-failure.log": {
+    "size": 11127,
+    "sha256": "f86300a42feb8c8fe140a2a7ca8a4229adfba4cff4d94f409453b642f852340d"
+  },
+  "run5-019-stop-client.log": {
+    "size": 364,
+    "sha256": "e7763081a61ceacdbe87bf3d95ff490fec2e5cb437ee6fb2c891f4223f29730d"
+  },
+  "run5-021-timeout-result.log": {
+    "size": 6389,
+    "sha256": "844ce80d5119833354a47147a67fc3bd4ed64fe226601a81865d1cc929382b19"
+  },
+  "run5-022-timeout-diagnostics.log": {
+    "size": 4308,
+    "sha256": "c72fe8750ec09442f763e7fa9ae0e0b5dbf2e46134c307a7ff849d2aa9270d4e"
+  },
+  "run5-023-crash-metadata.log": {
+    "size": 401,
+    "sha256": "bdcdbd0661e42971a95ac21c2f5522552533cec7f782038414b5669ed81b3a5c"
+  },
+  "run5-024-shm-capacity.log": {
+    "size": 2246,
+    "sha256": "96f68ee88f5dadab290e05dc78483ca01c7512b58f1b827729ae3301cc4b764f"
+  },
+  "run5-015-window-state.png": {
+    "size": 36335,
+    "sha256": "66cd03274a1357dc407a424c379caeaa84a56812170e06314fb031ebd6a46d24"
+  }
+}

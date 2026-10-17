@@ -1,0 +1,40 @@
+IDECK_SHM_CAPACITY
+TARGET   SOURCE FSTYPE OPTIONS
+/dev/shm tmpfs  tmpfs  rw,relatime,inode64
+Filesystem     1B-blocks      Used Available Use% Mounted on
+tmpfs          769449984 769449984         0 100% /dev/shm
+total 751416
+-rwx------ 1 ideck ideck   512016 Oct 17 11:00 u1000-Shm_160a4049
+-rwx------ 1 ideck ideck 26214416 Oct 17 10:59 u1000-Shm_1a4fd440
+-rwx------ 1 ideck ideck 26214416 Oct 17 10:58 u1000-Shm_1ab73d4a
+-rwx------ 1 ideck ideck 26214416 Oct 17 10:58 u1000-Shm_2521791c
+-rwx------ 1 ideck ideck 26214416 Oct 17 11:00 u1000-Shm_2bb2f8e1
+-rwx------ 1 ideck ideck     8208 Oct 17 11:00 u1000-Shm_2d9ab0fd
+-rwx------ 1 ideck ideck 26214416 Oct 17 10:59 u1000-Shm_3224dbe
+-rwx------ 1 ideck ideck 26214416 Oct 17 11:00 u1000-Shm_32df611f
+-rwx------ 1 ideck ideck  1048592 Oct 17 11:00 u1000-Shm_3c3a3c3d
+-rwx------ 1 ideck ideck 26214416 Oct 17 10:58 u1000-Shm_3c4ce0e2
+-rwx------ 1 ideck ideck 26214416 Oct 17 10:58 u1000-Shm_3daa4b4
+-rwx------ 1 ideck ideck 26214416 Oct 17 11:00 u1000-Shm_40d642f4
+-rwx------ 1 ideck ideck 26214416 Oct 17 10:59 u1000-Shm_429647b1
+-rwx------ 1 ideck ideck 26214416 Oct 17 11:00 u1000-Shm_59bbdb0a
+-rwx------ 1 ideck ideck 26214416 Oct 17 10:59 u1000-Shm_5bfbde4f
+-rwx------ 1 ideck ideck   669632 Oct 17 11:00 u1000-Shm_671c2a99
+-rwx------ 1 ideck ideck 26214416 Oct 17 10:58 u1000-Shm_6917a0b5
+-rwx------ 1 ideck ideck 26214416 Oct 17 10:58 u1000-Shm_707a394b
+-rwx------ 1 ideck ideck   512016 Oct 17 11:00 u1000-Shm_75f76ab8
+-rwx------ 1 ideck ideck     8208 Oct 17 10:58 u1000-Shm_7c5553ae
+-rwx------ 1 ideck ideck 26214416 Oct 17 11:00 u1000-Shm_83e3fcb4
+-rwx------ 1 ideck ideck 26214416 Oct 17 10:58 u1000-Shm_8c238e95
+-rwx------ 1 ideck ideck     8208 Oct 17 11:00 u1000-Shm_909a4a38
+-rwx------ 1 ideck ideck 26214416 Oct 17 10:58 u1000-Shm_954e176b
+-rwx------ 1 ideck ideck 26214416 Oct 17 11:00 u1000-Shm_9a8e654a
+-rwx------ 1 ideck ideck     8208 Oct 17 11:00 u1000-Shm_9adf2d5b
+-rwx------ 1 ideck ideck     1040 Oct 17 11:00 u1000-Shm_9b59e709
+-rwx------ 1 ideck ideck 26214416 Oct 17 11:00 u1000-Shm_a6827bdc
+-rwx------ 1 ideck ideck   512016 Oct 17 11:00 u1000-Shm_aff5a745
+IDECK_SHM_ALLOCATION
+769449984	/dev/shm
+
+STEAM_COMMAND_024_0
+debian# 

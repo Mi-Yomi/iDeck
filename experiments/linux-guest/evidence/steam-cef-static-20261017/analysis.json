@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "kind": "static inspection of pinned Valve ARM64 binaries plus existing host logs",
+  "client_lock_version": "1792192922",
+  "binaries": {
+    "steamclient.so": {
+      "archive_sha256": "26c731703e4a641c8d9ec1ac80e2bc40e3837fc312d180ab32316e33ed980834",
+      "entry": "steamrtarm64/steamclient.so",
+      "binary_size": 47744848,
+      "binary_sha256": "276f021548f9016de834274f4042b796604530d910d114b77ee170b46e409072"
+    },
+    "steamui.so": {
+      "archive_sha256": "26c731703e4a641c8d9ec1ac80e2bc40e3837fc312d180ab32316e33ed980834",
+      "entry": "steamrtarm64/steamui.so",
+      "binary_size": 39120760,
+      "binary_sha256": "9a59e3bbbee2c6de7a2559986ae5407c01e7416ac5ac2d9e40f11c8aceffc1ee"
+    }
+  },
+  "source_logs": {
+    "015-window-state.log": {
+      "size": 8055,
+      "sha256": "07a15e7e18c22459c9aa901e2333e40df2946eced01ba8b2744057c1dd182a26"
+    },
+    "016-cef-state.log": {
+      "size": 22406,
+      "sha256": "98f75f9cc72944f9656671eb87b28386f85075bcdf30174a37c4b506acdd553d"
+    },
+    "017-cef-failure.log": {
+      "size": 11127,
+      "sha256": "f86300a42feb8c8fe140a2a7ca8a4229adfba4cff4d94f409453b642f852340d"
+    },
+    "018-final-current-state.log": {
+      "size": 5374,
+      "sha256": "69a5ac32e6c5946cf0b04e69a9b34b25fc0f628fa27fa9e7369f0f97ec3bbc25"
+    },
+    "024-shm-capacity.log": {
+      "size": 2246,
+      "sha256": "96f68ee88f5dadab290e05dc78483ca01c7512b58f1b827729ae3301cc4b764f"
+    }
+  },
+  "findings": [
+    {
+      "id": "hang-timeouts",
+      "registration": "steamclient.so:0x4128c8",
+      "description": "disables GPU and renderer hang timeouts",
+      "parameter_object": "0x2d90a78",
+      "consumer": "steamclient.so:0xeb6030",
+      "effect": [
+        "--disable-hang-monitor",
+        "--disable-gpu-watchdog"
+      ],
+      "limits": "No demonstrated effect on Steam webhelper initialization or its separate IPC timeout; no sandbox disable flag."
+    },
+    {
+      "id": "ipc-restart",
+      "counter": "steamclient.so:0xebbb08",
+      "restart": "steamclient.so:0xebbce4",
+      "finding": "Failed IPC sends increment a counter; a live-process path can restart after the counter exceeds four. No hang-timeouts parameter check in this inspected path."
+    },
+    {
+      "id": "system-composer",
+      "registration": "steamui.so:0x490edc",
+      "description": "Force the use of the system browser composer",
+      "parameter_object": "0x2547990",
+      "consumer": "steamui.so:0xec8160",
+      "finding": "Presence selects composer mode 1 before consulting OverrideBrowserComposerMode.",
+      "limits": "No runtime test by this inspection; no proof this resolves Vulkan errors or webhelper timeout."
+    },
+    {
+      "id": "missing-launcher-service",
+      "exit127-check": "steamclient.so:0xcbce0c",
+      "fallback": "steamclient.so:0xcbcef0",
+      "finding": "Exec failure status 127 logs possible problem, disabling; stores -1 and returns without terminating client in this path.",
+      "limits": "Not evidence that this service is mandatory for login/UI. Other runtime/game functionality not tested."
+    },
+    {
+      "id": "secondary-shm-exhaustion",
+      "input": "024-shm-capacity.log",
+      "observed_bytes": 769449984,
+      "observed_available_bytes": 0,
+      "used_percent": 100,
+      "finding": "Existing log shows full /dev/shm and accumulated 26214416-byte u1000-Shm objects.",
+      "limits": "Secondary failure following repeated CEF restarts; not proof of the initial webhelper timeout cause."
+    }
+  ],
+  "vm_or_disk_interactions": false,
+  "valve_binaries_added_to_git": false,
+  "default_flags_changed": false,
+  "iphone_verified": false,
+  "ui_verified_by_this_inspection": false
+}

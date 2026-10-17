@@ -1,0 +1,90 @@
+IDECK_PERSISTENCE_RECORD={"machine_id": "01565bdc88738f43157a024d6ad341d2", "canary_sha256": "da4a878f74aad07470b03d8811ed1e86bec4ac181c3fa01bc0d4a91bc67a5aa6", "client_sha256": "73da03ead208a74e14bee566869a4235063dc4a9e1063f29c4608de6d78bd4ea", "client_size": 10174384, "client_uid": 1000}
+IDECK_TIMEOUT_UI_LOG
+
+
+[2026-10-17 10:53:14] Client version: 1792192922
+[2026-10-17 10:53:14] Started webhelper process 2235
+[2026-10-17 10:53:14] Restart webhelper process, counter 2
+[2026-10-17 10:53:14] Shutting down webhelper process 2235
+[2026-10-17 10:53:14] Started webhelper process 2422
+[2026-10-17 10:53:14] Restart webhelper process, counter 2
+[2026-10-17 10:53:14] Shutting down webhelper process 2422
+[2026-10-17 10:53:14] Started webhelper process 2578
+[2026-10-17 10:53:14] Timed out waiting for webhelper init
+[2026-10-17 10:53:14] STARTUP SteamUI browser requested at +144017ms
+[2026-10-17 10:57:56] Restart webhelper process, counter 2
+[2026-10-17 10:57:56] Shutting down webhelper process 2578
+[2026-10-17 10:57:56] Started webhelper process 2825
+[2026-10-17 10:58:41] Restart webhelper process, counter 2
+[2026-10-17 10:58:41] Shutting down webhelper process 2825
+[2026-10-17 10:58:41] Started webhelper process 2940
+[2026-10-17 10:59:02] Shutting down webhelper process 2940
+
+
+[2026-10-17 10:59:50] Client version: 1792192922
+[2026-10-17 10:59:50] Started webhelper process 3164
+[2026-10-17 10:59:50] Restart webhelper process, counter 2
+[2026-10-17 10:59:50] Shutting down webhelper process 3164
+[2026-10-17 10:59:50] Started webhelper process 3336
+[2026-10-17 10:59:50] Restart webhelper process, counter 2
+[2026-10-17 10:59:50] Shutting down webhelper process 3336
+[2026-10-17 10:59:50] Started webhelper process 3360
+[2825:2825:1017/105836.053858:WARNING:crash_reporting.cc(271)] Failed to set crash key: SteamUniverse with value: Public
+[2940:2940:1017/105844.494118:WARNING:chrome_main_delegate.cc(748)] This is Chrome version 126.0.6478.183 (not a warning)
+[2940:2940:1017/105844.631098:WARNING:task_impl.cc(31)] No task runner for threadId 0
+[2940:2940:1017/105844.662885:WARNING:task_impl.cc(31)] No task runner for threadId 0
+[2940:2964:1017/105847.064754:ERROR:bus.cc(407)] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[2940:2971:1017/105850.564777:ERROR:bus.cc(407)] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[2940:2971:1017/105850.570377:ERROR:bus.cc(407)] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[2940:2940:1017/105852.372527:WARNING:account_consistency_mode_manager.cc(77)] Desktop Identity Consistency cannot be enabled as no OAuth client ID and client secret have been configured.
+[2940:2940:1017/105859.073628:WARNING:crash_reporting.cc(271)] Failed to set crash key: SteamUniverse with value: Public
+[2940:2940:1017/105903.839056:WARNING:bluez_dbus_manager.cc(248)] Floss manager not present, cannot set Floss enable/disable.
+[3164:3164:1017/105957.226672:WARNING:chrome_main_delegate.cc(748)] This is Chrome version 126.0.6478.183 (not a warning)
+[3164:3164:1017/105957.355909:WARNING:task_impl.cc(31)] No task runner for threadId 0
+[3164:3164:1017/105957.405210:WARNING:task_impl.cc(31)] No task runner for threadId 0
+[3164:3197:1017/110000.092079:ERROR:bus.cc(407)] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[3164:3242:1017/110006.930229:ERROR:bus.cc(407)] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[3164:3242:1017/110006.959058:ERROR:bus.cc(407)] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[3164:3164:1017/110017.927135:WARNING:account_consistency_mode_manager.cc(77)] Desktop Identity Consistency cannot be enabled as no OAuth client ID and client secret have been configured.
+[3164:3164:1017/110037.219289:WARNING:crash_reporting.cc(271)] Failed to set crash key: SteamUniverse with value: Public
+[3336:3336:1017/110040.835184:WARNING:chrome_main_delegate.cc(748)] This is Chrome version 126.0.6478.183 (not a warning)
+[3336:3336:1017/110040.993204:WARNING:task_impl.cc(31)] No task runner for threadId 0
+[3336:3336:1017/110041.036130:WARNING:task_impl.cc(31)] No task runner for threadId 0
+[3360:3360:1017/110050.813473:WARNING:chrome_main_delegate.cc(748)] This is Chrome version 126.0.6478.183 (not a warning)
+[3360:3360:1017/110050.860904:WARNING:task_impl.cc(31)] No task runner for threadId 0
+[3360:3360:1017/110050.883947:WARNING:task_impl.cc(31)] No task runner for threadId 0
+[3360:3376:1017/110052.939674:ERROR:bus.cc(407)] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+IDECK_WINDOWS
+
+xwininfo: Window id: 0x21d (the root window) (has no name)
+
+  Root window id: 0x21d (the root window) (has no name)
+  Parent window id: 0x0 (none)
+     23 children:
+     0xa00009 (has no name): ()  1x1+-1+-1  +-1+-1
+     0x800110 "pcmanfm": ("pcmanfm" "Pcmanfm")  2x2+0+0  +0+0
+        1 child:
+        0x800111 (has no name): ()  1x1+-1+-1  +-1+-1
+     0x800003 (has no name): ()  1x1+-1+-1  +-1+-1
+     0xa00001 "Mousepad": ("mousepad" "Mousepad")  10x10+10+10  +10+10
+     0x800001 "pcmanfm": ("pcmanfm" "Pcmanfm")  10x10+10+10  +10+10
+     0x40000c (has no name): ()  1x1+-1+-1  +-1+-1
+     0x400005 (has no name): ()  1x1+-1+-1  +-1+-1
+     0x400002 (has no name): ()  100x20+0+0  +0+0
+     0x20011f "Openbox": ("" (none))  1x1+-100+-100  +-100+-100
+     0x200173 (has no name): ()  1x1+0+0  +0+0
+        1 child:
+        0x200174 (has no name): ()  1x1+0+0  +1+1
+     0x200171 (has no name): ()  1x1+0+0  +0+0
+        1 child:
+        0x200172 (has no name): ()  1x1+0+0  +1+1
+     0x20016e (has no name): ()  1x1+0+0  +0+0
+        1 child:
+        0x20016f (has no name): ()  1x1+0+0  +1+1
+     0x20016a (has no name): ("OPENBOX_FOCUS_CYCLE_POPUP" "OPENBOX_FOCUS_CYCLE_POPUP")  1x1+0+0  +0+0
+        3 children:
+        0x20016d (has no name): ()  1x1+0+0  +1+1
+        0x20016c (has no name): ()  1x1+0+0  +1+1
+
+STEAM_COMMAND_021_0
+debian# 

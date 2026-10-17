@@ -11,3 +11,7 @@
 /experiments/linux-guest/evidence/local-debian-ext4-boot-*.log -text whitespace=cr-at-eol,-blank-at-eol
 /experiments/linux-guest/evidence/local-debian-ext4-tests.txt whitespace=-blank-at-eof
 /experiments/linux-guest/evidence/debian-console-*.log -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+# Byte-preserving receipts bind these private host-experiment records.
+/experiments/linux-guest/evidence/steam-continuation-20261017/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+/experiments/linux-guest/evidence/steam-cpu-20261017/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+/experiments/linux-guest/evidence/steam-cef-static-20261017/** -text

@@ -1,0 +1,116 @@
+IDECK_AFFINITY_PROBE=guest_user_threads_0-3_only
+pid 1032's current affinity list: 2,3
+pid 1032's new affinity list: 0-3
+pid 1047's current affinity list: 2,3
+pid 1047's new affinity list: 0-3
+pid 1052's current affinity list: 2,3
+pid 1052's new affinity list: 0-3
+pid 1053's current affinity list: 2,3
+pid 1053's new affinity list: 0-3
+pid 1142's current affinity list: 2,3
+pid 1142's new affinity list: 0-3
+pid 1149's current affinity list: 0,1
+pid 1149's new affinity list: 0-3
+pid 1145's current affinity list: 2,3
+pid 1145's new affinity list: 0-3
+pid 1172's current affinity list: 2,3
+pid 1172's new affinity list: 0-3
+pid 1156's current affinity list: 2,3
+pid 1156's new affinity list: 0-3
+pid 1157's current affinity list: 2,3
+pid 1157's new affinity list: 0-3
+pid 1235's current affinity list: 2,3
+pid 1235's new affinity list: 0-3
+pid 1244's current affinity list: 2,3
+pid 1244's new affinity list: 0-3
+pid 1247's current affinity list: 2,3
+pid 1247's new affinity list: 0-3
+pid 1248's current affinity list: 2,3
+pid 1248's new affinity list: 0-3
+IDECK_SHM_HEADROOM_LIMIT
+IDECK_AFFINITY_END
+
+[2026-10-17 10:53:14] Client version: 1792192922
+[2026-10-17 10:53:14] Started webhelper process 2235
+[2026-10-17 10:53:14] Restart webhelper process, counter 2
+[2026-10-17 10:53:14] Shutting down webhelper process 2235
+[2026-10-17 10:53:14] Started webhelper process 2422
+[2026-10-17 10:53:14] Restart webhelper process, counter 2
+[2026-10-17 10:53:14] Shutting down webhelper process 2422
+[2026-10-17 10:53:14] Started webhelper process 2578
+[2026-10-17 10:53:14] Timed out waiting for webhelper init
+[2026-10-17 10:53:14] STARTUP SteamUI browser requested at +144017ms
+[2026-10-17 10:57:56] Restart webhelper process, counter 2
+[2026-10-17 10:57:56] Shutting down webhelper process 2578
+[2026-10-17 10:57:56] Started webhelper process 2825
+[2026-10-17 10:58:41] Restart webhelper process, counter 2
+[2026-10-17 10:58:41] Shutting down webhelper process 2825
+[2026-10-17 10:58:41] Started webhelper process 2940
+[2026-10-17 10:59:02] Shutting down webhelper process 2940
+
+
+[2026-10-17 10:59:50] Client version: 1792192922
+[2026-10-17 10:59:50] Started webhelper process 3164
+[2026-10-17 10:59:50] Restart webhelper process, counter 2
+[2026-10-17 10:59:50] Shutting down webhelper process 3164
+[2026-10-17 10:59:50] Started webhelper process 3336
+[2026-10-17 10:59:50] Restart webhelper process, counter 2
+[2026-10-17 10:59:50] Shutting down webhelper process 3336
+[2026-10-17 10:59:50] Started webhelper process 3360
+
+
+[2026-10-17 11:14:38] Client version: 1792192922
+[2026-10-17 11:14:38] Started webhelper process 1032
+[2026-10-17 11:14:38] Restart webhelper process, counter 2
+[2026-10-17 11:14:38] Shutting down webhelper process 1032
+[2026-10-17 11:14:38] Started webhelper process 1235
+Filesystem     1B-blocks      Used Available Use% Mounted on
+tmpfs          769449984 556732416 212717568  73% /dev/shm
+
+xwininfo: Window id: 0x21d (the root window) (has no name)
+
+  Root window id: 0x21d (the root window) (has no name)
+  Parent window id: 0x0 (none)
+     30 children:
+     0x1e00003 "steamwebhelper": ("steamwebhelper" "Steamwebhelper")  200x200+0+0  +0+0
+        1 child:
+        0x1e00004 (has no name): ()  1x1+-1+-1  +-1+-1
+     0x1e00001 "steamwebhelper": ("steamwebhelper" "Steamwebhelper")  10x10+10+10  +10+10
+     0x1c00001 "Chromium clipboard": ()  10x10+-100+-100  +-100+-100
+     0x1c00000 (has no name): ()  20x20+-200+-200  +-200+-200
+     0x1200005 (has no name): ("Steam" "Steam")  64x24+0+0  +0+0
+     0x1400001 "steam": ("steam" "Steam")  10x10+10+10  +10+10
+        1 child:
+        0x1400002 (has no name): ()  1x1+-1+-1  +9+9
+     0xe0002d (has no name): ()  1x1+-10+-10  +-10+-10
+     0xa00009 (has no name): ()  1x1+-1+-1  +-1+-1
+     0x600110 "pcmanfm": ("pcmanfm" "Pcmanfm")  2x2+0+0  +0+0
+        1 child:
+        0x600111 (has no name): ()  1x1+-1+-1  +-1+-1
+     0x600003 (has no name): ()  1x1+-1+-1  +-1+-1
+     0xa00001 "Mousepad": ("mousepad" "Mousepad")  10x10+10+10  +10+10
+     0x600001 "pcmanfm": ("pcmanfm" "Pcmanfm")  10x10+10+10  +10+10
+     0x80000c (has no name): ()  1x1+-1+-1  +-1+-1
+     0x800005 (has no name): ()  1x1+-1+-1  +-1+-1
+     0x800002 (has no name): ()  100x20+0+0  +0+0
+     0x20011f "Openbox": ("" (none))  1x1+-100+-100  +-100+-100
+     0x200173 (has no name): ()  1x1+0+0  +0+0
+        1 child:
+        0x200174 (has no name): ()  1x1+0+0  +1+1
+     0x200171 (has no name): ()  1x1+0+0  +0+0
+        1 child:
+        0x200172 (has no name): ()  1x1+0+0  +1+1
+     0x20016e (has no name): ()  1x1+0+0  +0+0
+        1 child:
+        0x20016f (has no name): ()  1x1+0+0  +1+1
+     0x20016a (has no name): ("OPENBOX_FOCUS_CYCLE_POPUP" "OPENBOX_FOCUS_CYCLE_POPUP")  1x1+0+0  +0+0
+        3 children:
+        0x20016d (has no name): ()  1x1+0+0  +1+1
+        0x20016c (has no name): ()  1x1+0+0  +1+1
+        0x20016b (has no name): ()  1x1+0+0  +1+1
+     0x200167 (has no name): ()  1x1+0+0  +0+0
+        2 children:
+        0x200169 (has no name): ()  1x1+0+0  +1+1
+
+STEAM_COMMAND_004_0
+debian# 

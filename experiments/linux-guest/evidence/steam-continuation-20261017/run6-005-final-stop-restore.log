@@ -1,0 +1,106 @@
+IDECK_FINAL_CLIENT_DIAGNOSTICS
+[2026-10-17 11:13:05] Set percent complete: -1
+[2026-10-17 11:13:05] Set status message: Verifying installation...
+[2026-10-17 11:13:05] Show window
+[2026-10-17 11:14:36] Verification complete
+[2026-10-17 11:14:36] Destroy window
+[2026-10-17 11:14:38] Shutdown
+
+Steam logging initialized: directory: /home/ideck/.local/share/Steam/logs
+
+Unable to determine CPU Frequency. Try defining CPU_MHZ.
+
+Unable to determine CPU Frequency. Try defining CPU_MHZ.
+XOpenIM() failed, LANG = C.UTF-8
+XOpenIM() failed, LANG = C.UTF-8sh: 1: lspci: not found
+XRRGetOutputInfo Workaround: initialized with override: 0 real: (nil)
+Error: XRRGetOutputInfo() is not available
+10/17 11:14:42 /tmp/dumps: insufficient permissions - delete and recreate
+10/17 11:14:42 minidumps folder is set to /tmp/dumps
+10/17 11:14:42 Init: Installing breakpad exception handler for appid(steamsysinfo)/version(1792192922)/tid(1015)
+Running query: 1 - GpuTopology
+CVulkanTopology: failed create vulkan instance: -9
+CVulkanTopology: failed to create vulkan instanceFailed to query vulkan gpu topology
+
+Failed to query vulkan gpu topology
+Response: 
+Exit code: -2
+sh: 1: lspci: not found
+Error: XRRGetOutputInfo() is not available
+setting LIBGL_KOPPER_DISABLE=true for steamwebhelper to get store working properly
+Steam Runtime Launch Service: starting steam-runtime-launcher-service
+Steam Runtime Launch Service: steam-runtime-launcher-service is running pid 1084
+sh: 1: exec: steam-runtime-launcher-service: not found
+Vulkan missing requested extension 'VK_KHR_surface'.
+Vulkan missing requested extension 'VK_KHR_xlib_surface'.
+BInit - Unable to initialize Vulkan!
+Steam Runtime Launch Service: steam-runtime-launcher-service pid 1084 exited
+Steam Runtime Launch Service: steam-runtime-launcher-service possible problem, disabling
+Vulkan missing requested extension 'VK_KHR_surface'.
+Vulkan missing requested extension 'VK_KHR_xlib_surface'.
+BInit - Unable to initialize Vulkan!
+setting LIBGL_KOPPER_DISABLE=true for steamwebhelper to get store working properly
+setting LIBGL_KOPPER_DISABLE=true for steamwebhelper to get store working properly
+crash_20261017111624_32.dmp[1468]: Uploading dump (out-of-process)
+/tmp/dumps/crash_20261017111624_32.dmp
+crash_20261017111624_32.dmp[1468]: Finished uploading minidump (out-of-process): success = no
+crash_20261017111624_32.dmp[1468]: error: libcurl.so: cannot open shared object file: No such file or directory
+crash_20261017111624_32.dmp[1468]: file ''/tmp/dumps/crash_20261017111624_32.dmp'', upload no: ''libcurl.so: cannot open shared object file: No such file or directory''
+setting LIBGL_KOPPER_DISABLE=true for steamwebhelper to get store working properly
+[2026-10-17 11:16:52] Background update loop checking for update. . .
+[2026-10-17 11:16:52] Checking for available updates...
+[2026-10-17 11:16:52] Downloading manifest: https://client-update.steamstatic.com/steam_client_steamdeck_publicbeta_linuxarm64
+setting LIBGL_KOPPER_DISABLE=true for steamwebhelper to get store working properly
+src/steamUI/steamuisharedjscontroller.cpp (583) : Failed creating offscreen shared JS context
+src/steamUI/steamuisharedjscontroller.cpp (583) : Failed creating offscreen shared JS context
+10/17 11:17:01 Init: Installing breakpad exception handler for appid(steam)/version(1792192922)/tid(867)
+[2026-10-17 10:53:14] Restart webhelper process, counter 2
+[2026-10-17 10:53:14] Shutting down webhelper process 2422
+[2026-10-17 10:53:14] Started webhelper process 2578
+[2026-10-17 10:53:14] Timed out waiting for webhelper init
+[2026-10-17 10:53:14] STARTUP SteamUI browser requested at +144017ms
+[2026-10-17 10:57:56] Restart webhelper process, counter 2
+[2026-10-17 10:57:56] Shutting down webhelper process 2578
+[2026-10-17 10:57:56] Started webhelper process 2825
+[2026-10-17 10:58:41] Restart webhelper process, counter 2
+[2026-10-17 10:58:41] Shutting down webhelper process 2825
+[2026-10-17 10:58:41] Started webhelper process 2940
+[2026-10-17 10:59:02] Shutting down webhelper process 2940
+
+
+[2026-10-17 10:59:50] Client version: 1792192922
+[2026-10-17 10:59:50] Started webhelper process 3164
+[2026-10-17 10:59:50] Restart webhelper process, counter 2
+[2026-10-17 10:59:50] Shutting down webhelper process 3164
+[2026-10-17 10:59:50] Started webhelper process 3336
+[2026-10-17 10:59:50] Restart webhelper process, counter 2
+[2026-10-17 10:59:50] Shutting down webhelper process 3336
+[2026-10-17 10:59:50] Started webhelper process 3360
+
+
+[2026-10-17 11:14:38] Client version: 1792192922
+[2026-10-17 11:14:38] Started webhelper process 1032
+[2026-10-17 11:14:38] Restart webhelper process, counter 2
+[2026-10-17 11:14:38] Shutting down webhelper process 1032
+[2026-10-17 11:14:38] Started webhelper process 1235
+[2026-10-17 11:14:38] Restart webhelper process, counter 2
+[2026-10-17 11:14:38] Shutting down webhelper process 1235
+[2026-10-17 11:14:38] Started webhelper process 1370
+[2026-10-17 11:14:38] Restart webhelper process, counter 2
+[2026-10-17 11:14:38] Shutting down webhelper process 1370
+[2026-10-17 11:14:38] Started webhelper process 1469
+[2026-10-17 11:14:38] Restart webhelper process, counter 2
+[2026-10-17 11:14:38] Shutting down webhelper process 1469
+[2026-10-17 11:14:38] Started webhelper process 1554
+[2026-10-17 11:14:38] Timed out waiting for webhelper init
+[2026-10-17 11:14:38] STARTUP SteamUI browser requested at +140712ms
+Filesystem     1B-blocks      Used Available Use% Mounted on
+tmpfs          769449984 110915584 658534400  15% /dev/shm
+CProcessEnvironmentManager is ready, 5 preallocated environment variables.
+WARNING: setlocale('en_US.UTF-8') failed, using locale: 'C'. International characters may not work.
+Steam is already running, exiting (command line was forwarded).
+IDECK_STEAM_STATUS=shutdown_requested_desktop_retained
+IDECK_CLIENT_STOP_TIMEOUT
+
+STEAM_COMMAND_005_1
+debian# 

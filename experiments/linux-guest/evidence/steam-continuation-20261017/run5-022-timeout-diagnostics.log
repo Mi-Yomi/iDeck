@@ -1,0 +1,73 @@
+IDECK_CURRENT
+XOpenIM() failed, LANG = C.UTF-8sh: 1: lspci: not found
+XRRGetOutputInfo Workaround: initialized with override: 0 real: (nil)
+Error: XRRGetOutputInfo() is not available
+10/17 10:59:54 /tmp/dumps: insufficient permissions - delete and recreate
+10/17 10:59:54 minidumps folder is set to /tmp/dumps
+10/17 10:59:54 Init: Installing breakpad exception handler for appid(steamsysinfo)/version(1792192922)/tid(3150)
+Running query: 1 - GpuTopology
+CVulkanTopology: failed create vulkan instance: -9
+CVulkanTopology: failed to create vulkan instanceFailed to query vulkan gpu topology
+
+Failed to query vulkan gpu topology
+Response: 
+Exit code: -2
+sh: 1: lspci: not found
+Error: XRRGetOutputInfo() is not available
+setting LIBGL_KOPPER_DISABLE=true for steamwebhelper to get store working properly
+Steam Runtime Launch Service: starting steam-runtime-launcher-service
+Steam Runtime Launch Service: steam-runtime-launcher-service is running pid 3222
+sh: 1: exec: steam-runtime-launcher-service: not found
+Steam Runtime Launch Service: steam-runtime-launcher-service pid 3222 exited
+Steam Runtime Launch Service: steam-runtime-launcher-service possible problem, disabling
+Vulkan missing requested extension 'VK_KHR_surface'.
+Vulkan missing requested extension 'VK_KHR_xlib_surface'.
+BInit - Unable to initialize Vulkan!
+Vulkan missing requested extension 'VK_KHR_surface'.
+Vulkan missing requested extension 'VK_KHR_xlib_surface'.
+BInit - Unable to initialize Vulkan!
+setting LIBGL_KOPPER_DISABLE=true for steamwebhelper to get store working properly
+setting LIBGL_KOPPER_DISABLE=true for steamwebhelper to get store working properly
+crash_20261017110054_29.dmp[3385]: Uploading dump (out-of-process)
+/tmp/dumps/crash_20261017110054_29.dmp
+crash_20261017110054_29.dmp[3385]: Finished uploading minidump (out-of-process): success = no
+crash_20261017110054_29.dmp[3385]: error: libcurl.so: cannot open shared object file: No such file or directory
+crash_20261017110054_29.dmp[3385]: file ''/tmp/dumps/crash_20261017110054_29.dmp'', upload no: ''libcurl.so: cannot open shared object file: No such file or directory''
+IDECK_STEAM_ERROR=client_exit_nonzero
+[2026-10-17 10:53:14] Restart webhelper process, counter 2
+[2026-10-17 10:53:14] Shutting down webhelper process 2235
+[2026-10-17 10:53:14] Started webhelper process 2422
+[2026-10-17 10:53:14] Restart webhelper process, counter 2
+[2026-10-17 10:53:14] Shutting down webhelper process 2422
+[2026-10-17 10:53:14] Started webhelper process 2578
+[2026-10-17 10:53:14] Timed out waiting for webhelper init
+[2026-10-17 10:53:14] STARTUP SteamUI browser requested at +144017ms
+[2026-10-17 10:57:56] Restart webhelper process, counter 2
+[2026-10-17 10:57:56] Shutting down webhelper process 2578
+[2026-10-17 10:57:56] Started webhelper process 2825
+[2026-10-17 10:58:41] Restart webhelper process, counter 2
+[2026-10-17 10:58:41] Shutting down webhelper process 2825
+[2026-10-17 10:58:41] Started webhelper process 2940
+[2026-10-17 10:59:02] Shutting down webhelper process 2940
+
+
+[2026-10-17 10:59:50] Client version: 1792192922
+[2026-10-17 10:59:50] Started webhelper process 3164
+[2026-10-17 10:59:50] Restart webhelper process, counter 2
+[2026-10-17 10:59:50] Shutting down webhelper process 3164
+[2026-10-17 10:59:50] Started webhelper process 3336
+[2026-10-17 10:59:50] Restart webhelper process, counter 2
+[2026-10-17 10:59:50] Shutting down webhelper process 3336
+[2026-10-17 10:59:50] Started webhelper process 3360
+IDECK_RUNTIME_BINARIES
+/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper.sh
+/home/ideck/.local/share/Steam/steamrt64/steamwebhelper.sh
+/home/ideck/.local/share/Steam/steamrt64/pv-runtime/steam-runtime-steamrt/bin/steam-runtime-launcher-service
+/home/ideck/.local/share/Steam/steamrt64/pv-runtime/steam-runtime-steamrt/pressure-vessel/libexec/steam-runtime-tools-0/x86_64-linux-gnu-srt-launcher-service
+/home/ideck/.local/share/Steam/steamrt64/pv-runtime/steam-runtime-steamrt/pressure-vessel/bin/steam-runtime-launcher-service
+/home/ideck/.local/share/Steam/ubuntu12_64/steamwebhelper.sh
+IDECK_PROCESSES
+    0     1 S       1670  2.1  1196 ideck-steam-ini
+    0   471 S       1664  0.0   904 ideck-steam-ini
+
+STEAM_COMMAND_022_0

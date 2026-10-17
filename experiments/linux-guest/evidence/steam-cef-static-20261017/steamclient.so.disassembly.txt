@@ -1,0 +1,96 @@
+0x21e6a10:	"disables GPU and renderer hang timeouts"
+Dump of assembler code from 0x4128c8 to 0x4128e4:
+   0x00000000004128c8:	91032277	add	x23, x19, #0xc8
+   0x00000000004128cc:	aa1603e0	mov	x0, x22
+   0x00000000004128d0:	9000eea2	adrp	x2, 0x21e6000
+   0x00000000004128d4:	9000eea1	adrp	x1, 0x21e6000
+   0x00000000004128d8:	91284042	add	x2, x2, #0xa10
+   0x00000000004128dc:	9128e021	add	x1, x1, #0xa38
+   0x00000000004128e0:	97ff9898	bl	0x3f8b40 <_ZN11SteamStdLib17CCommandLineParamC1EPKcS2_@plt>
+End of assembler dump.
+Dump of assembler code from 0xeb6030 to 0xeb60c8:
+   0x0000000000eb6030:	97d50a84	bl	0x3f8a40 <_ZN11SteamStdLib11CommandLineEv@plt>
+   0x0000000000eb6034:	f9400002	ldr	x2, [x0]
+   0x0000000000eb6038:	912422d6	add	x22, x22, #0x908
+   0x0000000000eb603c:	f9402042	ldr	x2, [x2, #64]
+   0x0000000000eb6040:	f940bac1	ldr	x1, [x22, #368]
+   0x0000000000eb6044:	d63f0040	blr	x2
+   0x0000000000eb6048:	7100001f	cmp	w0, #0x0
+   0x0000000000eb604c:	540003ed	b.le	0xeb60c8
+   0x0000000000eb6050:	90009981	adrp	x1, 0x21e6000
+   0x0000000000eb6054:	aa1303e0	mov	x0, x19
+   0x0000000000eb6058:	91054021	add	x1, x1, #0x150
+   0x0000000000eb605c:	f90103ff	str	xzr, [sp, #512]
+   0x0000000000eb6060:	94246ee0	bl	0x17d1be0
+   0x0000000000eb6064:	aa1303e1	mov	x1, x19
+   0x0000000000eb6068:	aa1703e0	mov	x0, x23
+   0x0000000000eb606c:	97e50c4b	bl	0x7f9198
+   0x0000000000eb6070:	f945be80	ldr	x0, [x20, #2936]
+   0x0000000000eb6074:	52800002	mov	w2, #0x0                   	// #0
+   0x0000000000eb6078:	f94103e1	ldr	x1, [sp, #512]
+   0x0000000000eb607c:	f9400000	ldr	x0, [x0]
+   0x0000000000eb6080:	f9400003	ldr	x3, [x0]
+   0x0000000000eb6084:	f9401063	ldr	x3, [x3, #32]
+   0x0000000000eb6088:	d63f0060	blr	x3
+   0x0000000000eb608c:	f90103ff	str	xzr, [sp, #512]
+   0x0000000000eb6090:	90009981	adrp	x1, 0x21e6000
+   0x0000000000eb6094:	aa1303e0	mov	x0, x19
+   0x0000000000eb6098:	91108021	add	x1, x1, #0x420
+   0x0000000000eb609c:	94246ed1	bl	0x17d1be0
+   0x0000000000eb60a0:	aa1303e1	mov	x1, x19
+   0x0000000000eb60a4:	aa1703e0	mov	x0, x23
+   0x0000000000eb60a8:	97e50c3c	bl	0x7f9198
+   0x0000000000eb60ac:	f945be80	ldr	x0, [x20, #2936]
+   0x0000000000eb60b0:	52800002	mov	w2, #0x0                   	// #0
+   0x0000000000eb60b4:	f94103e1	ldr	x1, [sp, #512]
+   0x0000000000eb60b8:	f9400000	ldr	x0, [x0]
+   0x0000000000eb60bc:	f9400003	ldr	x3, [x0]
+   0x0000000000eb60c0:	f9401063	ldr	x3, [x3, #32]
+   0x0000000000eb60c4:	d63f0060	blr	x3
+End of assembler dump.
+Dump of assembler code from 0xebbb08 to 0xebbb30:
+   0x0000000000ebbb08:	b940aa61	ldr	w1, [x19, #168]
+   0x0000000000ebbb0c:	b9409a60	ldr	w0, [x19, #152]
+   0x0000000000ebbb10:	11000421	add	w1, w1, #0x1
+   0x0000000000ebbb14:	b900aa61	str	w1, [x19, #168]
+   0x0000000000ebbb18:	340000c0	cbz	w0, 0xebbb30
+   0x0000000000ebbb1c:	7100103f	cmp	w1, #0x4
+   0x0000000000ebbb20:	54000e28	b.hi	0xebbce4  // b.pmore
+   0x0000000000ebbb24:	97d4f8ef	bl	0x3f9ee0 <ThreadIsProcessActive@plt>
+   0x0000000000ebbb28:	72001c1f	tst	w0, #0xff
+   0x0000000000ebbb2c:	540004e1	b.ne	0xebbbc8  // b.any
+End of assembler dump.
+Dump of assembler code from 0xebbce4 to 0xebbd20:
+   0x0000000000ebbce4:	f940de61	ldr	x1, [x19, #440]
+   0x0000000000ebbce8:	90009960	adrp	x0, 0x21e7000
+   0x0000000000ebbcec:	91124000	add	x0, x0, #0x490
+   0x0000000000ebbcf0:	f9005fe0	str	x0, [sp, #184]
+   0x0000000000ebbcf4:	b40000a1	cbz	x1, 0xebbd08
+   0x0000000000ebbcf8:	f940e262	ldr	x2, [x19, #448]
+   0x0000000000ebbcfc:	9106a260	add	x0, x19, #0x1a8
+   0x0000000000ebbd00:	9102e3e1	add	x1, sp, #0xb8
+   0x0000000000ebbd04:	d63f0040	blr	x2
+   0x0000000000ebbd08:	52800020	mov	w0, #0x1                   	// #1
+   0x0000000000ebbd0c:	39027660	strb	w0, [x19, #157]
+   0x0000000000ebbd10:	aa1303e0	mov	x0, x19
+   0x0000000000ebbd14:	97fffbad	bl	0xebabc8
+   0x0000000000ebbd18:	aa1303e0	mov	x0, x19
+   0x0000000000ebbd1c:	97fffb55	bl	0xebaa70
+End of assembler dump.
+Dump of assembler code from 0xcbce0c to 0xcbce24:
+   0x0000000000cbce0c:	b9403fe0	ldr	w0, [sp, #60]
+   0x0000000000cbce10:	f240181f	tst	x0, #0x7f
+   0x0000000000cbce14:	54000081	b.ne	0xcbce24  // b.any
+   0x0000000000cbce18:	d3483c00	ubfx	x0, x0, #8, #8
+   0x0000000000cbce1c:	7101fc1f	cmp	w0, #0x7f
+   0x0000000000cbce20:	54000680	b.eq	0xcbcef0  // b.none
+End of assembler dump.
+0x21d36b0:	"steam-runtime-launcher-service possible problem, disabling\n"
+Dump of assembler code from 0xcbcef0 to 0xcbcf08:
+   0x0000000000cbcef0:	f000a8a0	adrp	x0, 0x21d3000
+   0x0000000000cbcef4:	911ac000	add	x0, x0, #0x6b0
+   0x0000000000cbcef8:	97ffff1c	bl	0xcbcb68
+   0x0000000000cbcefc:	12800000	mov	w0, #0xffffffff            	// #-1
+   0x0000000000cbcf00:	b9000260	str	w0, [x19]
+   0x0000000000cbcf04:	17ffffd9	b	0xcbce68
+End of assembler dump.

@@ -1,0 +1,14 @@
+Dump of assembler code from 0xe2538 to 0xe2568:
+   0x00000000000e2538:	92800002	mov	x2, #0xffffffffffffffff    	// #-1
+   0x00000000000e253c:	f8e20000	ldaddal	x2, x0, [x0]
+   0x00000000000e2540:	d65f03c0	ret
+   0x00000000000e2544:	d503201f	nop
+   0x00000000000e2548:	f8e10000	ldaddal	x1, x0, [x0]
+   0x00000000000e254c:	d65f03c0	ret
+   0x00000000000e2550:	f8a18000	swpa	x1, x0, [x0]
+   0x00000000000e2554:	d65f03c0	ret
+   0x00000000000e2558:	aa0003e3	mov	x3, x0
+   0x00000000000e255c:	aa0203e0	mov	x0, x2
+   0x00000000000e2560:	c8e0fc61	casal	x0, x1, [x3]
+   0x00000000000e2564:	d65f03c0	ret
+End of assembler dump.

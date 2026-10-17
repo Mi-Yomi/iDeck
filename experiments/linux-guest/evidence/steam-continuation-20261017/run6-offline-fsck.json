@@ -1,0 +1,11 @@
+{
+  "exit_code": 0,
+  "read_only": true,
+  "writer_running": false,
+  "free_bytes_before_copy": 150232924160,
+  "virtual_size": 12884901888,
+  "raw_sha256": "35a2b864e36060a6a75e2c5a95922f4ee52119f7c0bd57039d1d7682b5e8dbed",
+  "raw_size": 12884901888,
+  "log_sha256": "65922b9a3f888cf79ad4058851ec75183c8682d3f8b142d9c9040e8ee22bdcfe",
+  "scope": "ext4 filesystem, flattened offline copy"
+}

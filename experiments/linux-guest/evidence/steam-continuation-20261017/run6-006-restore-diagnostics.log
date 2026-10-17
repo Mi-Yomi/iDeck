@@ -1,0 +1,16 @@
+IDECK_AFTER_STOP_TIMEOUT_PROCESSES
+    0     1     0 S    ideck-steam-ini /bin/sh /ideck-steam-init
+    0   473     1 S    ideck-steam-ini /bin/sh /ideck-steam-init
+ 1000   850     1 S    ideck-steam     /bin/sh /usr/local/bin/ideck-steam desktop
+ 1000   865   850 S    dbus-run-sessio dbus-run-session -- /home/ideck/.local/share/Steam/steamrtarm64/steam -clientbeta steamdeck_publicbeta -cef-ozone-platform=x11 -cef-disable-gpu -system-composer -nobigpicture
+ 1000   867   865 Sl   steam           /home/ideck/.local/share/Steam/steamrtarm64/steam -clientbeta steamdeck_publicbeta -cef-ozone-platform=x11 -cef-disable-gpu -system-composer -nobigpicture
+ 1000  1554   867 Zs   steamwebhelper  [steamwebhelper] <defunct>
+    0  1891   474 S+   sh              /bin/sh /run/ideck/steam-command.sh
+    0  1893  1891 S+   grep            grep -E steam|webhelper
+IDECK_LAUNCHER_ATOMICALLY_RESTORED=470bdf1559fb5272776dd076cf04a58a3a81b4c451bf97b9a870d8e1f9957603
+IDECK_SYSTEM_XRR_SYMBOL_PRESENT=True
+IDECK_FINAL_DPKG_AUDIT={"exit_code": 0, "stdout_empty": true, "stderr_empty": true}
+IDECK_PERSISTENCE_FINAL=PASS
+
+STEAM_COMMAND_006_0
+debian# 

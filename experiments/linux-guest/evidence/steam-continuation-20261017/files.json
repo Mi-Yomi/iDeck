@@ -1,0 +1,217 @@
+{
+  "schema": 1,
+  "files": {
+    "final-steam-tests.log": {
+      "size": 4864,
+      "sha256": "c253f5cb11ccab54193e401cb66431ec5e0e828cb4ff718cb0cf33b9f7b0940f"
+    },
+    "namespace-bootstrap-bootstrap.json": {
+      "size": 4328,
+      "sha256": "4e4cb1f8c8d740291e0f5e6b46e2199b8a0b82daf14b4912ffd038459b59496a"
+    },
+    "namespace-bootstrap-verification.json": {
+      "size": 686,
+      "sha256": "c433667cf9281992c045a7b2882813a9973379f3adcff6eb2ac77010a043cd48"
+    },
+    "README.md": {
+      "size": 6689,
+      "sha256": "cc1624870d8487ff95d54f2de0a55d45f86b0f82f9e64742be8d133bbf399ec0"
+    },
+    "run5-010-namespace-pid.log": {
+      "size": 61670,
+      "sha256": "e5b4100a3d2a5a65b3a158c64bf40dd6754fb6c3d142d114100e917d074dc8c4"
+    },
+    "run5-013-finish-update.log": {
+      "size": 4703,
+      "sha256": "e2512790b82a0c831887dbc0e3117b4909488c6c93122b358073524fe2e51a51"
+    },
+    "run5-014-rooted-launch.log": {
+      "size": 7937,
+      "sha256": "782d74e5462e8ff05c89fe6bd7437509ca72ab8288ff0807b77832bde522aec1"
+    },
+    "run5-015-window-state.log": {
+      "size": 8055,
+      "sha256": "07a15e7e18c22459c9aa901e2333e40df2946eced01ba8b2744057c1dd182a26"
+    },
+    "run5-015-window-state.png": {
+      "size": 36335,
+      "sha256": "66cd03274a1357dc407a424c379caeaa84a56812170e06314fb031ebd6a46d24"
+    },
+    "run5-017-cef-failure.log": {
+      "size": 11127,
+      "sha256": "f86300a42feb8c8fe140a2a7ca8a4229adfba4cff4d94f409453b642f852340d"
+    },
+    "run5-019-stop-client.log": {
+      "size": 364,
+      "sha256": "e7763081a61ceacdbe87bf3d95ff490fec2e5cb437ee6fb2c891f4223f29730d"
+    },
+    "run5-021-timeout-result.log": {
+      "size": 6389,
+      "sha256": "844ce80d5119833354a47147a67fc3bd4ed64fe226601a81865d1cc929382b19"
+    },
+    "run5-022-timeout-diagnostics.log": {
+      "size": 4308,
+      "sha256": "c72fe8750ec09442f763e7fa9ae0e0b5dbf2e46134c307a7ff849d2aa9270d4e"
+    },
+    "run5-023-crash-metadata.log": {
+      "size": 401,
+      "sha256": "bdcdbd0661e42971a95ac21c2f5522552533cec7f782038414b5669ed81b3a5c"
+    },
+    "run5-024-shm-capacity.log": {
+      "size": 2246,
+      "sha256": "96f68ee88f5dadab290e05dc78483ca01c7512b58f1b827729ae3301cc4b764f"
+    },
+    "run5-command-010-namespace-pid.sh": {
+      "size": 15897,
+      "sha256": "faacedc5896dc5e7729ed466ea11a5e06222123275a7e20b679c183acde184ba"
+    },
+    "run5-command-013-finish-update.sh": {
+      "size": 509,
+      "sha256": "2e02c6e9346e6802fb29ad85f8fa1a05e29f9daaf74d56f72382f27931a2a7fb"
+    },
+    "run5-command-014-rooted-launch.sh": {
+      "size": 731,
+      "sha256": "56041668032273c42306334f6118c524b2ec02428ce85f02ff89c124c06d8f51"
+    },
+    "run5-command-015-window-state.sh": {
+      "size": 728,
+      "sha256": "e6e1b516fc50aeaa4a0c4c00b9a16861b338fdb584edb97e74f9384018e03771"
+    },
+    "run5-command-017-cef-failure.sh": {
+      "size": 353,
+      "sha256": "a53bf107b478ee1121d9cd94f15a870c6c8044c1542718f4637dba4d4492b8d3"
+    },
+    "run5-command-019-stop-client.sh": {
+      "size": 410,
+      "sha256": "8facc6961ad61f66c5ce9b85011a6e0d885763ec60bf9a956d9989b1f1dd8bac"
+    },
+    "run5-command-020-timeout-probe.sh": {
+      "size": 937,
+      "sha256": "40be5119b3f5480da2f2d57d568ae5b741e210592c58b4a57782dfb546235619"
+    },
+    "run5-command-021-timeout-result.sh": {
+      "size": 1027,
+      "sha256": "281a6c2913ecbc796c30c90bf341bd4681921f7f4ebb2c404b331ae23bedf739"
+    },
+    "run5-command-022-timeout-diagnostics.sh": {
+      "size": 467,
+      "sha256": "029fa8b19401e0b63046ffe5ae4ecfc4c2ffa6623cd888fb8fae513100fe7e20"
+    },
+    "run5-command-023-crash-metadata.sh": {
+      "size": 1610,
+      "sha256": "47d3ba112076edd7f6655a3362f01bb079510c394a114aab8a453bfc7616fb91"
+    },
+    "run5-command-024-shm-capacity.sh": {
+      "size": 147,
+      "sha256": "7f62e49451d553d58326e034ca83152a4c9b9b618561b3fe97a5c7bf8c9b8da1"
+    },
+    "run5-control.log": {
+      "size": 103,
+      "sha256": "454a40c873bc46e48adfa8c51fe87c6d8d0b0410be2a278d6878532d82fbe07f"
+    },
+    "run5-files.json": {
+      "size": 2106,
+      "sha256": "397bcb63562c441c170d1630632cc172ade0a3aadc3ddfe4e61770356d5e4b21"
+    },
+    "run5-offline-fsck.json": {
+      "size": 317,
+      "sha256": "ab20f85e36f1005c4bd96c652fc35835172d21b0edee1469e8aaf1cc7bfdb3cf"
+    },
+    "run5-offline-fsck.log": {
+      "size": 376,
+      "sha256": "51ddb1359b6a5454412115bdd0ea2714ccb729c6011cf2b1e049ad8505d34596"
+    },
+    "run5-result.json": {
+      "size": 11983,
+      "sha256": "dff45db3ee799e922899b464bde4ac1f2b290a12e828cd3184f2fd6b6dbaf416"
+    },
+    "run6-001-persistence-launch.log": {
+      "size": 3922,
+      "sha256": "d9c1b121a02f2cdaa32d0ce5ffa1549ebec19ea8340327828693c6fc13a09c95"
+    },
+    "run6-002-composer-affinity.log": {
+      "size": 3153,
+      "sha256": "8fa85de41b2a60b3df9bdfaf7b70b0d24cb8b707d81122ce556e7b8b17b7045b"
+    },
+    "run6-003-wait-client.log": {
+      "size": 3387,
+      "sha256": "74d84d4eefdd84f25be93b48ee187b1ae93a50a7ab352ba01868938f014aee8b"
+    },
+    "run6-004-affinity-probe.log": {
+      "size": 5216,
+      "sha256": "e30c031c162ede1af824791f5cabff634e01fc8fa721464309e4e5b17931b82a"
+    },
+    "run6-004-affinity-probe.png": {
+      "size": 35901,
+      "sha256": "aabba3316573a9e079d2a34231c7f693dd2f21d2c2856dbd6e2801c0adc95d38"
+    },
+    "run6-005-final-stop-restore.log": {
+      "size": 6012,
+      "sha256": "820163152054a5828537458c368ac71c8b59896673e0d32e6c69a4576e709656"
+    },
+    "run6-006-restore-diagnostics.log": {
+      "size": 1153,
+      "sha256": "c1f8d697668660d1a08545a06578727b0062396aa2a3af9aa6c44a2965d7f0c7"
+    },
+    "run6-command-001-persistence-launch.sh": {
+      "size": 1612,
+      "sha256": "48d89c1789af9942e2d43f5be5804af06f3226c378668882fe813700517a2d1d"
+    },
+    "run6-command-002-composer-affinity.sh": {
+      "size": 431,
+      "sha256": "19cd51d385f26110b8c1f9c836fe5fe5c00be652b3ece7fc244c6899b477b091"
+    },
+    "run6-command-003-wait-client.sh": {
+      "size": 529,
+      "sha256": "b9ce00feef76c17eee611409accb51d6d0295786020e55707536cd0d5d99b226"
+    },
+    "run6-command-004-affinity-probe.sh": {
+      "size": 972,
+      "sha256": "162aaa6483ffbb81188f3c1125ecf7663977cbc9f82c02d24d28c7237fe91aba"
+    },
+    "run6-command-005-final-stop-restore.sh": {
+      "size": 1748,
+      "sha256": "2f9525ef8d5f6ceaca203826bb6df625ea8ae03296afbd2392411f04a9434020"
+    },
+    "run6-command-006-restore-diagnostics.sh": {
+      "size": 1566,
+      "sha256": "6c56e16a6531e41cce653c443ec7dc7cbbf646119df9afbae15f84cfe399e6c9"
+    },
+    "run6-control.log": {
+      "size": 103,
+      "sha256": "454a40c873bc46e48adfa8c51fe87c6d8d0b0410be2a278d6878532d82fbe07f"
+    },
+    "run6-files.json": {
+      "size": 4402,
+      "sha256": "d3c07c64c3bf7f29b716ba785b07388619aac782cecef89c2fdd0bc84abaa06e"
+    },
+    "run6-offline-fsck.json": {
+      "size": 391,
+      "sha256": "a18f2e99effaa8949d08db0a5733d3f6527378a7e3d0c20415a082e299ab2b99"
+    },
+    "run6-offline-fsck.log": {
+      "size": 378,
+      "sha256": "65922b9a3f888cf79ad4058851ec75183c8682d3f8b142d9c9040e8ee22bdcfe"
+    },
+    "run6-post-stop-offline-fsck.json": {
+      "size": 391,
+      "sha256": "406fd67e4a1353cc2991b8485027ca676587c1f22de06bbb2b01e48e6815b8b9"
+    },
+    "run6-post-stop-offline-fsck.log": {
+      "size": 389,
+      "sha256": "06cc3e07485d9bc6c55d7cf583ab69b49208198c0fa4e4548365cee96bd43e4c"
+    },
+    "run6-post-stop-result.json": {
+      "size": 563,
+      "sha256": "cdc747912285ffb6d15a7990b8bdaa086ac66e01cbdf9e3bf65554578d38e8cd"
+    },
+    "run6-result.json": {
+      "size": 9278,
+      "sha256": "9d1c9cd434504be26f8762b4ce882c73f62a81e7db5e191097b142d548d89210"
+    },
+    "result.json": {
+      "size": 4706,
+      "sha256": "1071c52aa5c08d74a173819a3e0790f09f412accb63f9c91603aef6d486a2591"
+    }
+  }
+}

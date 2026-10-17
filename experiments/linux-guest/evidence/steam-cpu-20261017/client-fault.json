@@ -1,0 +1,58 @@
+{
+  "qemu_version": "qemu-aarch64 version 10.0.13 (Debian 1:10.0.13+ds-0+deb13u1)",
+  "qemu_sha256": "73cc2584f119f9e74c85c0a8549dbb6fd104ae3897a06a7500797f9e5b4d0943",
+  "client_version": "1792192922",
+  "archive_sha256": "26c731703e4a641c8d9ec1ac80e2bc40e3837fc312d180ab32316e33ed980834",
+  "native_sha256": "73da03ead208a74e14bee566869a4235063dc4a9e1063f29c4608de6d78bd4ea",
+  "native_size": 10174384,
+  "libc_pin": {
+    "name": "libc6",
+    "version": "2.41-12+deb13u4",
+    "architecture": "arm64",
+    "filename": "pool/main/g/glibc/libc6_2.41-12+deb13u4_arm64.deb",
+    "sha256": "8784eda966b189c777a384dac5ce009e8fc9b52d006926c5a013e7fa8aa688cc",
+    "size": 2483572,
+    "installed_size_kib": 23769
+  },
+  "argv": [
+    "unshare",
+    "--net",
+    "--",
+    "/mnt/e/Freddy Fazbear/iDeck.work/local-debian-ext4/host-tools/usr/bin/qemu-aarch64",
+    "-cpu",
+    "cortex-a72",
+    "-d",
+    "in_asm",
+    "-D",
+    "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/review/cpu-probe/cortex-a72.trace",
+    "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/review/cpu-probe/lib/ld-linux-aarch64.so.1",
+    "--library-path",
+    "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/review/cpu-probe/lib",
+    "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/review/cpu-probe/steam",
+    "-version"
+  ],
+  "returncode": -4,
+  "network": "private empty network namespace",
+  "full_vm": false,
+  "iphone_tested": false,
+  "fault": {
+    "instruction": "ldaddal x1,x0,[x0]",
+    "opcode": "f8e10000",
+    "required_feature": "FEAT_LSE",
+    "trace_pc": "0x780643712548",
+    "native_file_offset": "0xe2548",
+    "native_elf_virtual_address": "0xe2548",
+    "instruction_word_occurrences": 1,
+    "inference": "Last translated block is one LDADDAL and process died with SIGILL; unique opcode/file offset and independent GDB decode agree."
+  },
+  "trace": {
+    "local_path": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/review/cpu-probe/cortex-a72.trace",
+    "sha256": "8bb4c0491a34ba8fcac2f893fba4ec9e70f1900ac82d2f89fff2143f0980a837",
+    "size": 1309304
+  },
+  "limitations": [
+    "User-mode QEMU10.0.13 reproduction corroborates full-VM CortexA72 exit132; the original system-VM fault PC was not recorded.",
+    "Source compatibility is not runtime verification of the built iOS QEMU10.0.12-utm dylib.",
+    "Initial pinned client only; updater may deliver later binaries with additional requirements."
+  ]
+}

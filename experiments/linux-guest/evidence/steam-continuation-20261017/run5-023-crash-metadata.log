@@ -1,0 +1,5 @@
+IDECK_TIMEOUT_PROBE_REVERTED
+IDECK_MINIDUMP_EXCEPTION={"name": "crash_20261017110054_29.dmp", "sha256": "a4a5f1dfc1641acf7ba2a64b97c98d5ec02c88f2bdf257d57ab07847d0045a86", "size": 745496, "thread": 3108, "exception_code": "0x7", "flags": 0, "address": "0xffff8beb2000", "module": "/dev/shm/u1000-Shm_9adf2d5b", "module_base": "0xffff8beb2000", "module_offset": "0x0"}
+
+STEAM_COMMAND_023_0
+debian# 

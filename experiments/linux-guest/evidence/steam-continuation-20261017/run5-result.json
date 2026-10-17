@@ -1,0 +1,329 @@
+{
+  "schema": 1,
+  "status": "experiment_finished",
+  "host_only": true,
+  "iphone_tested": false,
+  "steam_window_verified": false,
+  "big_picture_verified": false,
+  "clean_shutdown": true,
+  "network": "explicit QEMU user NAT, no host forwarding",
+  "commands": [
+    {
+      "name": "001-resume.sh",
+      "script_sha256": "f27b251d47a58ef3312070565730800fb8e56987d429d9dafb9482e2ee4c1139",
+      "exit_code": 0
+    },
+    {
+      "name": "002-namespace-matrix.sh",
+      "script_sha256": "6d4dbbb75cd4fedda621590caa5c2a9056dae5e99849e5e52a03e08f57be1f03",
+      "exit_code": 0
+    },
+    {
+      "name": "003-update-state.sh",
+      "script_sha256": "5c85dd1644cbde74c0832d4b4df69f2a16bcabdbcd968444aab22d9363b0ee1a",
+      "exit_code": 0
+    },
+    {
+      "name": "004-updater-progress.sh",
+      "script_sha256": "5bee92ac4ad5cd4622c71c17bc3fb855f9d3b6a8af65c635b9cbfa43114fdfd6",
+      "exit_code": 0
+    },
+    {
+      "name": "005-namespace-exec.sh",
+      "script_sha256": "7900a27e193ccf20fd093ae70d80b42416addfee3582f16b2a369687fa3dfdf1",
+      "exit_code": 0
+    },
+    {
+      "name": "006-client-stage.sh",
+      "script_sha256": "1822a78efcb8ba503bb20645b923ca686380ddb04139753f30dda39a95ddeb24",
+      "exit_code": 0
+    },
+    {
+      "name": "007-namespace-native.sh",
+      "script_sha256": "5458c6fca4bb636bacdef184588cf14ad5dbe7b51aa886e2b6ee5e30accab736",
+      "exit_code": 0
+    },
+    {
+      "name": "008-extraction-io.sh",
+      "script_sha256": "3a2be8b7c5ff0b0c56543f10afc01c80b914f3701f5556001559ead1229b47ea",
+      "exit_code": 0
+    },
+    {
+      "name": "009-extraction-progress.sh",
+      "script_sha256": "4f48b7dd17279b847efa77d0df0474164b63b1fd9e66191cf1f1671dbfc9a548",
+      "exit_code": 0
+    },
+    {
+      "name": "010-namespace-pid.sh",
+      "script_sha256": "faacedc5896dc5e7729ed466ea11a5e06222123275a7e20b679c183acde184ba",
+      "exit_code": 0
+    },
+    {
+      "name": "011-update-transition.sh",
+      "script_sha256": "6cd7075231832a7d8dbda5dfc3102261ccda0205ef1f27269ba63bdfe798d21f",
+      "exit_code": 0
+    },
+    {
+      "name": "012-update-completion.sh",
+      "script_sha256": "eccb50b584acee1283c12553c727c14520b03534115dcc097567e7232eb79515",
+      "exit_code": 0
+    },
+    {
+      "name": "013-finish-update.sh",
+      "script_sha256": "2e02c6e9346e6802fb29ad85f8fa1a05e29f9daaf74d56f72382f27931a2a7fb",
+      "exit_code": 0
+    },
+    {
+      "name": "014-rooted-launch.sh",
+      "script_sha256": "56041668032273c42306334f6118c524b2ec02428ce85f02ff89c124c06d8f51",
+      "exit_code": 0
+    },
+    {
+      "name": "015-window-state.sh",
+      "script_sha256": "e6e1b516fc50aeaa4a0c4c00b9a16861b338fdb584edb97e74f9384018e03771",
+      "exit_code": 0
+    },
+    {
+      "name": "016-cef-state.sh",
+      "script_sha256": "17985c8650a20461054888faf57c5269235bd50f988661cec5ee1066ec812749",
+      "exit_code": 0
+    },
+    {
+      "name": "017-cef-failure.sh",
+      "script_sha256": "a53bf107b478ee1121d9cd94f15a870c6c8044c1542718f4637dba4d4492b8d3",
+      "exit_code": 0
+    },
+    {
+      "name": "018-final-current-state.sh",
+      "script_sha256": "adfe8f8e4b193eb72302c7fa0310a716f51d842140c9359e47fc278c17e9d187",
+      "exit_code": 0
+    },
+    {
+      "name": "019-stop-client.sh",
+      "script_sha256": "8facc6961ad61f66c5ce9b85011a6e0d885763ec60bf9a956d9989b1f1dd8bac",
+      "exit_code": 0
+    },
+    {
+      "name": "020-timeout-probe.sh",
+      "script_sha256": "40be5119b3f5480da2f2d57d568ae5b741e210592c58b4a57782dfb546235619",
+      "exit_code": 0
+    },
+    {
+      "name": "021-timeout-result.sh",
+      "script_sha256": "281a6c2913ecbc796c30c90bf341bd4681921f7f4ebb2c404b331ae23bedf739",
+      "exit_code": 0
+    },
+    {
+      "name": "022-timeout-diagnostics.sh",
+      "script_sha256": "029fa8b19401e0b63046ffe5ae4ecfc4c2ffa6623cd888fb8fae513100fe7e20",
+      "exit_code": 0
+    },
+    {
+      "name": "023-crash-metadata.sh",
+      "script_sha256": "47d3ba112076edd7f6655a3362f01bb079510c394a114aab8a453bfc7616fb91",
+      "exit_code": 0
+    },
+    {
+      "name": "024-shm-capacity.sh",
+      "script_sha256": "7f62e49451d553d58326e034ca83152a4c9b9b618561b3fe97a5c7bf8c9b8da1",
+      "exit_code": 0
+    }
+  ],
+  "profile_sha256": "9b8e387773e61e82c183869db73877e3ca2fc4c0c673c2b858e61c933bf6e13f",
+  "bootstrap": {
+    "schema": 1,
+    "purpose": "private disposable Steam experiment; runtime unverified",
+    "base_initramfs": {
+      "size": 11319304,
+      "sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4"
+    },
+    "initramfs": {
+      "size": 11634476,
+      "sha256": "ecedffdf912c86445650572e501b621251c1ed9d9d759dd9b2cc35dd4f00c1c7"
+    },
+    "required_kernel_sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+    "modloop_sha256": "f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b",
+    "module_metadata": {
+      "modules.dep": {
+        "size": 79770,
+        "sha256": "8cd0e53b89ef000dd6270a91da70334f6696c7d089523da75746c08594e815c9"
+      },
+      "modules.softdep": {
+        "size": 818,
+        "sha256": "7d211e6d22125a59819964da6c98395da2f892cb2f88c738264466d1c6c500b5"
+      },
+      "modules.builtin": {
+        "size": 4315,
+        "sha256": "01969d14f424e6c02778adb9e4bb8b561f1cce085d1b23e62206f79bdda590c4"
+      }
+    },
+    "network_load_order": [
+      "kernel/net/core/failover.ko",
+      "kernel/drivers/net/net_failover.ko",
+      "kernel/drivers/net/virtio_net.ko"
+    ],
+    "network_modules": [
+      {
+        "path": "kernel/net/core/failover.ko",
+        "name": "failover",
+        "size": 29183,
+        "sha256": "f812cfef580eb24facf105b3bfef6af7a93cb9a9352244d5b5c2d048ad58d7aa",
+        "vermagic": "6.18.35-0-virt SMP preempt mod_unload modversions aarch64",
+        "depends": [],
+        "signature": {
+          "kind": "PKCS#7",
+          "size": 695,
+          "sha256": "25c9e144c80425d6a8e2ede17052b76457b3bb71e965873cd1a50047ef48c61b",
+          "algorithm_id": 0,
+          "hash_id": 0,
+          "public_key_verification": "not_performed; pinned modloop digest authenticates bytes"
+        }
+      },
+      {
+        "path": "kernel/drivers/net/net_failover.ko",
+        "name": "net_failover",
+        "size": 42223,
+        "sha256": "76644582666b394e3351dc7936f1c6684843d72fc7c323d607cb90ddd93e2d6e",
+        "vermagic": "6.18.35-0-virt SMP preempt mod_unload modversions aarch64",
+        "depends": [
+          "failover"
+        ],
+        "signature": {
+          "kind": "PKCS#7",
+          "size": 695,
+          "sha256": "5f05f9748be2c078d36482f2414455a162fb4dbc08d875f1f068f3b73bcc9263",
+          "algorithm_id": 0,
+          "hash_id": 0,
+          "public_key_verification": "not_performed; pinned modloop digest authenticates bytes"
+        }
+      },
+      {
+        "path": "kernel/drivers/net/virtio_net.ko",
+        "name": "virtio_net",
+        "size": 184671,
+        "sha256": "0b015f1d29694b99fe7aec058c0b0b3dc050c17b1c58cc47487a7677fc392d79",
+        "vermagic": "6.18.35-0-virt SMP preempt mod_unload modversions aarch64",
+        "depends": [
+          "net_failover"
+        ],
+        "signature": {
+          "kind": "PKCS#7",
+          "size": 695,
+          "sha256": "862bae7477cc9cc6f33ebda23c6441ca8e7946870b4fe66dd2028aecc8b29e57",
+          "algorithm_id": 0,
+          "hash_id": 0,
+          "public_key_verification": "not_performed; pinned modloop digest authenticates bytes"
+        }
+      }
+    ],
+    "inputs": {
+      "guest/steam/ideck-steam": {
+        "size": 4072,
+        "sha256": "470bdf1559fb5272776dd076cf04a58a3a81b4c451bf97b9a870d8e1f9957603"
+      },
+      "guest/steam/install-cached.py": {
+        "size": 11915,
+        "sha256": "72fb55d97ef402438e5dd23747e0cbd0ccd9ec8c881a964be696011cb6f96b59"
+      },
+      "tools/steam_client.py": {
+        "size": 12638,
+        "sha256": "f642b54ee73c777330be843ba4d38153fed0ab22259b8030ef9d205d70a554b1"
+      },
+      "ipa/steam-client.lock.json": {
+        "size": 4757,
+        "sha256": "9b8bc9fe5e8074ae4d798f645d259066e968b8bc5512183c0aca34e1f54a8bdd"
+      },
+      "ipa/steam-dependencies.lock.json": {
+        "size": 15954,
+        "sha256": "54e7e74bb481e44d550dcdd96f11440c8fee325d87032654eb748ad8e6a38287"
+      }
+    },
+    "original_shutdown_function_preserved": true,
+    "required_cmdline": [
+      "rdinit=/ideck-steam-init",
+      "ideck.steam_experiment=1",
+      "ideck.steam_disk_grow=1"
+    ],
+    "guest_network": {
+      "device": "virtio-net-device",
+      "address": "10.0.2.15/24",
+      "gateway": "10.0.2.2",
+      "dns": "10.0.2.3"
+    },
+    "gui_payload_changed": false,
+    "valve_client_bundled": false,
+    "guest_boot_verified": false,
+    "iphone_verified": false,
+    "runtime_status": "NOT BOOTED; cleanup-v2 helper input only"
+  },
+  "initramfs_sha256": "ecedffdf912c86445650572e501b621251c1ed9d9d759dd9b2cc35dd4f00c1c7",
+  "kernel_sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+  "seed_sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791",
+  "runner_sha256": "655aa040b7ddef3a1337e0ca34e4e70ac54984db6199d41ae788f91fd4c848e3",
+  "image_tool": {
+    "schema": 1,
+    "package": {
+      "name": "qemu-utils",
+      "version": "1:10.0.13+ds-0+deb13u1",
+      "architecture": "amd64",
+      "filename": "pool/main/q/qemu/qemu-utils_10.0.13+ds-0+deb13u1_amd64.deb",
+      "sha256": "6d31339b1630153fe7c5f8a51426b8fa6ce35731aeb015a84f2d333c4e4dca30",
+      "size": 2024216,
+      "installed_size_kib": 12510
+    },
+    "release": {
+      "url": "https://deb.debian.org/debian/dists/trixie/InRelease",
+      "size": 140421,
+      "sha256": "0584fba32e13e0ab8285fb16c27adea1ec03a73669c18702821094fd6ca86675",
+      "indexes": [
+        {
+          "architecture": "arm64",
+          "size": 9614192,
+          "sha256": "be16b37b2f740f066ea93d35d56f04f94d63693e5a3eb421b052bf86fae75bcd",
+          "url": "https://deb.debian.org/debian/dists/trixie/main/binary-arm64/by-hash/SHA256/be16b37b2f740f066ea93d35d56f04f94d63693e5a3eb421b052bf86fae75bcd"
+        },
+        {
+          "architecture": "amd64",
+          "size": 9678380,
+          "sha256": "7778d3e3f303b7ddb8ce0fe7c8d57473a076c6bf2e8f241f75421d2396352498",
+          "url": "https://deb.debian.org/debian/dists/trixie/main/binary-amd64/by-hash/SHA256/7778d3e3f303b7ddb8ce0fe7c8d57473a076c6bf2e8f241f75421d2396352498"
+        }
+      ],
+      "signer_fingerprints": [
+        "04B54C3CDCA79751B16BC6B5225629DF75B188BD",
+        "41587F7DB8C774BCCF131416762F67A0B2C39DE4",
+        "B8B80B5B623EAB6AD8775C45B7C5D7D6350947F8"
+      ],
+      "date": "Sat, 12 Sep 2026 07:55:41 UTC",
+      "max_age_days": 90
+    },
+    "binary_sha256": "77a92b0ca43516403064a4d0939f91c38b9ab2447b32e8f66709dcf29432d626",
+    "binary_size": 2534080,
+    "version_check": "qemu-img version 10.0.13 (Debian 1:10.0.13+ds-0+deb13u1)",
+    "loader": "prior-build/production/vm/host/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+    "library_path": "prior-build/production/vm/host/usr/lib/x86_64-linux-gnu",
+    "additional_libraries_needed": false,
+    "system_install": false
+  },
+  "continuation": {
+    "source": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/run4",
+    "source_sha256": "c16ec63c8d1761fc41d8f16f288612c8e058d0f0caec3bcc2c7a79de48ea99a9",
+    "original_preserved": true,
+    "method": "qemu-img convert; source read lock",
+    "copied_sha256": "3d36b31e74f10edb1a5153bd0eaa89d85f89d1fcb9d9118c3f685084b4a2fcee"
+  },
+  "offline_fsck": {
+    "exit_code": 0,
+    "read_only": true,
+    "writer_running": false,
+    "raw_sha256": "37018c6d7d39617479730c0d68a109d0ad8917c40cfd3c41748d1997f31324f5",
+    "raw_size": 4294967296,
+    "log_sha256": "51ddb1359b6a5454412115bdd0ea2714ccb729c6011cf2b1e049ad8505d34596",
+    "scope": "ext4 filesystem, flattened offline copy"
+  },
+  "cache_port": 39137,
+  "seed_read_only_qmp": true,
+  "gui_ready": true,
+  "elapsed_seconds": 1769.351,
+  "qemu_exit_code": 0
+}

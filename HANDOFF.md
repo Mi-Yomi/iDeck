@@ -1,5 +1,109 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Steam continuation: namespace fix and completed update — 2026-10-17
+
+Work started clean at `661fbf19b5074b00ca64b48dac11e8e3654e348c` on
+`codex/steam-arm64-experiment-20261017`, matching the remote. This is still an
+isolated experiment: **do not merge** into the parallel GUI-recovery branch.
+No GUI payload/Release, main, Codemagic, Windows/WSL security setting or existing
+user disk was modified. All new work remains under the same E: task directory.
+
+Implemented:
+
+- A guarded private-root Steam launcher in `guest/steam/namespace-check.py`.
+  Actual minimal tests reproduce EPERM inside the original chroot and successful
+  user/mount namespace creation outside it and after the private root transition.
+  An ordinary UID1000 exec additionally passes user/mount/PID/private-proc tests.
+  No sysctl, LSM or sandbox bypass is used. Original PID1/Stop mounts remain intact.
+- Safe explicit `steam_vm.py --continue-from PREVIOUS_RUN`: copy only an owned,
+  clean private experiment into a **new** output, refuse dirty/busy/symlink inputs,
+  verify seed/source identities, retain the original, and run read-only offline
+  ext4 `e2fsck -f -n` before boot. New experiment capacity is 12GiB. Output creation
+  is exclusive and fd-bound; remaining free space is checked again before raw
+  fsck conversion. Preparation failures get a result receipt and cleanup.
+- Permanent failed classification after host fsync/dirty-marker failure; later
+  finalization cannot promote it to clean. Embedded iOS owner-thread/block-backend
+  lifetime code remains unchanged and still requires Apple runtime regression.
+- Exact Cortex-A72 SIGILL diagnosis: the original native Valve client executes
+  `LDADDAL x1,x0,[x0]` (`f8e10000`, ELF offset `0xe2548`), requiring FEAT_LSE.
+  A72 fails the actual instruction; A76/max pass the original small atomic probe.
+  Pinned iOS QEMU10.0.12-utm source contains the model/TCG path, but the built Apple
+  runtime remains **NOT RUN**. Production CPU profiles remain Cortex-A72.
+
+Runtime progress and current limitation:
+
+- Run5 copied and preserved run4, passed offline ext4 fsck, and genuinely booted
+  the previous final bootstrap. Valve completed the retained update at 10:51:10
+  UTC; the updater is now **complete**. No full installer was rerun.
+- Corrected-root native Steam and CEF ran as UID1000. A renderer was observed with
+  `NoNewPrivs=1`, `Seccomp=2` and nested user/PID namespaces. **The main UI and Big
+  Picture have not been verified.** The log says `Timed out waiting for webhelper
+  init` and records repeated restarts; this is a later failure than chroot EPERM.
+- A bounded supported `-cef-disable-hang-timeouts` probe did not fix it and was
+  reverted byte-for-byte. Repeated attempts filled `/dev/shm` (769449984 bytes,
+  zero free); the later SIGBUS dump points into `u1000-Shm_*`. This is a confirmed
+  secondary failure, not the proven initial timeout cause. No sandbox was disabled.
+- UID1000 `ideck-steam stop` shut down the first client and all helpers without
+  force, leaving Desktop running. Subsequent VM Stop recorded clean unmount,
+  QEMU exit0 and successful host fsync. Run5 is retained clean; run4 is untouched.
+- Run6 copied run5 and passed another offline ext4 check. It **booted the exact
+  final namespace bootstrap**, verified helper bytes, and preserved machine-id,
+  the fsynced user document and client binary. Steam found version1792192922 with
+  no pending update, skipped download and completed checksum verification.
+  This proves retained installation, not a successful main-interface restart.
+- The supported `-system-composer` diagnostic and measured guest webhelper
+  affinity correction (Valve's `taskset 0x7c` left only CPUs2–3; probe allowed0–3)
+  did not produce a visible UI. No unsuccessful diagnostic became a default.
+  Main interface, login, Big Picture and their input tests are **NOT REACHED**.
+  The primary remaining blocker is Steam/CEF initialization/IPC; its unique
+  root cause is **not established**. Do not infer a GPU requirement from warnings.
+- Run6's individual Steam shutdown timed out: active Steam and a zombie helper
+  remained. **Do not call that application shutdown clean.** The original launcher
+  was atomically restored, and dpkg audit passed with empty output. The independent
+  VM Stop subsequently achieved guest unmount, QEMU exit0 and host fsync without
+  forced QEMU termination. The runner's clean flag describes that filesystem/
+  backend stop only. Final post-stop read-only ext4 fsck returned **0** with the
+  exclusive owner held and no writer; no repair. Checked12GiB raw SHA-256:
+  `6b8a1beeb22de348ba040fbaa13c8616e91895c1e379dff2789521b4b1e83409`.
+  Together with both pre-boot checks, this is **three actual offline fsck passes**.
+
+Local continuation inputs (private; do not distribute the installed Valve client):
+
+- Latest disk: `E:\Freddy Fazbear\iDeck.work\steam-arm64-experiment-20261017\run6\steam-experiment.qcow2`.
+  Preserve run4 and run5 as earlier snapshots. All depend on the accepted seed
+  through the read-only `prior-build` mount; use the existing local
+  `mount-inputs.sh` to re-establish that same path, then **copy** using a new output
+  and `--continue-from run6`. Do not write the seed or reuse a running/dirty disk.
+- Bootstrap: `...\bootstrap-namespace\initramfs-steam.gz`, **11650349 bytes**,
+  SHA-256 `573ed99583fa2b40a51f7ad0e3c825d28a0b226a06ada517243d0468b686b170`.
+  `bootstrap.json` / `verification.json` are build receipts; run6 is its boot proof.
+  The local `continue-steam-namespace.sh` was the run6 invocation; it uses a finished
+  output directory and must not be blindly rerun.
+- Host settings remain CPU **max**, 4vCPU,1536MiB, TCG, QEMU10.0.13,
+  virtio-gpu software display, explicit IPv4 user NAT/no forwarding. New virtual
+  disk capacity12GiB; guest free space at reboot was8202125312 bytes. For another
+  copied run allow at least about25GiB additional host headroom: the continuation
+  plus a full12GiB raw fsck copy and4GiB reserve. These are not iPhone budgets.
+- Do not repeat helper-restart loops into tmpfs exhaustion. Preserve diagnostics,
+  request Stop and verify offline; never remove arbitrary live shared-memory
+  objects, disable sandbox, or infer that watchdog flags cure the IPC timeout.
+
+Focused regression result: **29 PASS in WSL** (namespace11, bootstrap5, runner13),
+`review/final-steam-tests.log`. CPU evidence includes real original-client A72
+SIGILL and A76 reaching updater startup in a deliberately empty offline HOME;
+that A76 probe is not a full UI acceptance. A tiny real qemu-img fd-output smoke
+also passed. Swift/Apple toolchain, Steam on iPhone and GPU acceleration: **NOT RUN**.
+
+Current runtime records: `experiments/linux-guest/evidence/steam-continuation-20261017`.
+See [namespace diagnosis](experiments/linux-guest/STEAM-NAMESPACES.md),
+[CPU diagnosis](experiments/linux-guest/STEAM-CPU.md),
+[CEF diagnostic limits](experiments/linux-guest/STEAM-WEBHELPER.md), and the exact
+[future iOS file/dependency checklist](experiments/linux-guest/STEAM-IOS-INTEGRATION.md).
+Do not distribute private Valve client bytes in an IPA/payload/Release.
+
+The older section below describes the previous turn and is retained as history;
+its updater-incomplete, disk-space and chroot blockers are superseded above.
+
 ## Isolated Steam ARM64 experiment — 2026-10-17
 
 Branch `codex/steam-arm64-experiment-20261017`, based exactly on

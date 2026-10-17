@@ -1,0 +1,122 @@
+{
+  "run6-result.json": {
+    "size": 9278,
+    "sha256": "9d1c9cd434504be26f8762b4ce882c73f62a81e7db5e191097b142d548d89210"
+  },
+  "run6-control.log": {
+    "size": 103,
+    "sha256": "454a40c873bc46e48adfa8c51fe87c6d8d0b0410be2a278d6878532d82fbe07f"
+  },
+  "run6-offline-fsck.json": {
+    "size": 391,
+    "sha256": "a18f2e99effaa8949d08db0a5733d3f6527378a7e3d0c20415a082e299ab2b99"
+  },
+  "run6-offline-fsck.log": {
+    "size": 378,
+    "sha256": "65922b9a3f888cf79ad4058851ec75183c8682d3f8b142d9c9040e8ee22bdcfe"
+  },
+  "run6-001-persistence-launch.log": {
+    "size": 3922,
+    "sha256": "d9c1b121a02f2cdaa32d0ce5ffa1549ebec19ea8340327828693c6fc13a09c95"
+  },
+  "run6-002-composer-affinity.log": {
+    "size": 3153,
+    "sha256": "8fa85de41b2a60b3df9bdfaf7b70b0d24cb8b707d81122ce556e7b8b17b7045b"
+  },
+  "run6-003-wait-client.log": {
+    "size": 3387,
+    "sha256": "74d84d4eefdd84f25be93b48ee187b1ae93a50a7ab352ba01868938f014aee8b"
+  },
+  "run6-004-affinity-probe.log": {
+    "size": 5216,
+    "sha256": "e30c031c162ede1af824791f5cabff634e01fc8fa721464309e4e5b17931b82a"
+  },
+  "run6-005-final-stop-restore.log": {
+    "size": 6012,
+    "sha256": "820163152054a5828537458c368ac71c8b59896673e0d32e6c69a4576e709656"
+  },
+  "run6-006-restore-diagnostics.log": {
+    "size": 1153,
+    "sha256": "c1f8d697668660d1a08545a06578727b0062396aa2a3af9aa6c44a2965d7f0c7"
+  },
+  "run6-004-affinity-probe.png": {
+    "size": 35901,
+    "sha256": "aabba3316573a9e079d2a34231c7f693dd2f21d2c2856dbd6e2801c0adc95d38"
+  },
+  "run5-command-010-namespace-pid.sh": {
+    "size": 15897,
+    "sha256": "faacedc5896dc5e7729ed466ea11a5e06222123275a7e20b679c183acde184ba"
+  },
+  "run5-command-013-finish-update.sh": {
+    "size": 509,
+    "sha256": "2e02c6e9346e6802fb29ad85f8fa1a05e29f9daaf74d56f72382f27931a2a7fb"
+  },
+  "run5-command-014-rooted-launch.sh": {
+    "size": 731,
+    "sha256": "56041668032273c42306334f6118c524b2ec02428ce85f02ff89c124c06d8f51"
+  },
+  "run5-command-015-window-state.sh": {
+    "size": 728,
+    "sha256": "e6e1b516fc50aeaa4a0c4c00b9a16861b338fdb584edb97e74f9384018e03771"
+  },
+  "run5-command-017-cef-failure.sh": {
+    "size": 353,
+    "sha256": "a53bf107b478ee1121d9cd94f15a870c6c8044c1542718f4637dba4d4492b8d3"
+  },
+  "run5-command-019-stop-client.sh": {
+    "size": 410,
+    "sha256": "8facc6961ad61f66c5ce9b85011a6e0d885763ec60bf9a956d9989b1f1dd8bac"
+  },
+  "run5-command-020-timeout-probe.sh": {
+    "size": 937,
+    "sha256": "40be5119b3f5480da2f2d57d568ae5b741e210592c58b4a57782dfb546235619"
+  },
+  "run5-command-021-timeout-result.sh": {
+    "size": 1027,
+    "sha256": "281a6c2913ecbc796c30c90bf341bd4681921f7f4ebb2c404b331ae23bedf739"
+  },
+  "run5-command-022-timeout-diagnostics.sh": {
+    "size": 467,
+    "sha256": "029fa8b19401e0b63046ffe5ae4ecfc4c2ffa6623cd888fb8fae513100fe7e20"
+  },
+  "run5-command-023-crash-metadata.sh": {
+    "size": 1610,
+    "sha256": "47d3ba112076edd7f6655a3362f01bb079510c394a114aab8a453bfc7616fb91"
+  },
+  "run5-command-024-shm-capacity.sh": {
+    "size": 147,
+    "sha256": "7f62e49451d553d58326e034ca83152a4c9b9b618561b3fe97a5c7bf8c9b8da1"
+  },
+  "run6-command-001-persistence-launch.sh": {
+    "size": 1612,
+    "sha256": "48d89c1789af9942e2d43f5be5804af06f3226c378668882fe813700517a2d1d"
+  },
+  "run6-command-002-composer-affinity.sh": {
+    "size": 431,
+    "sha256": "19cd51d385f26110b8c1f9c836fe5fe5c00be652b3ece7fc244c6899b477b091"
+  },
+  "run6-command-003-wait-client.sh": {
+    "size": 529,
+    "sha256": "b9ce00feef76c17eee611409accb51d6d0295786020e55707536cd0d5d99b226"
+  },
+  "run6-command-004-affinity-probe.sh": {
+    "size": 972,
+    "sha256": "162aaa6483ffbb81188f3c1125ecf7663977cbc9f82c02d24d28c7237fe91aba"
+  },
+  "run6-command-005-final-stop-restore.sh": {
+    "size": 1748,
+    "sha256": "2f9525ef8d5f6ceaca203826bb6df625ea8ae03296afbd2392411f04a9434020"
+  },
+  "run6-command-006-restore-diagnostics.sh": {
+    "size": 1566,
+    "sha256": "6c56e16a6531e41cce653c443ec7dc7cbbf646119df9afbae15f84cfe399e6c9"
+  },
+  "namespace-bootstrap-bootstrap.json": {
+    "size": 4328,
+    "sha256": "4e4cb1f8c8d740291e0f5e6b46e2199b8a0b82daf14b4912ffd038459b59496a"
+  },
+  "namespace-bootstrap-verification.json": {
+    "size": 686,
+    "sha256": "c433667cf9281992c045a7b2882813a9973379f3adcff6eb2ac77010a043cd48"
+  }
+}

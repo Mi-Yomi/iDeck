@@ -1,13 +1,44 @@
 # Steam IPC diagnosis and online handoff — 2026-10-17
 
+## Run19 — updater retry confirmed; no kernel OOM (2026-10-18)
+
+The bounded updater restart now has an actual runtime check: run19 recorded one
+`update_restart_requested`, restarted the native client and completed login.
+The four pinned client ELFs remained unchanged. Big Picture showed loading,
+then a black window through the 20-minute observation limit; navigation is not
+verified. The guest could resolve Steam and fetch the Store over HTTPS (200).
+
+All 319 kernel samples had `oom_kill=0`, and before/after dmesg contained no OOM
+kill. Minimum available memory was 156,884 KiB. A sandboxed helper disappeared
+after Steam's own assertion dumper traced its browser parent. This rules out an
+observed kernel OOM kill in this run, not user-space allocation failure or other
+memory pressure. Forked Chromium children retained `--type=zygote`; an empty
+renderer-argument match cannot establish that no renderer exists.
+
+The read-only game inventory found the ARM64 client beside an x86-64 runtime
+launcher service, no Proton/FEX candidates and no Vulkan ICD. A render node is
+not GPU acceptance. Three inventory tests pass, including architecture reporting
+through a runtime symlink and refusing to inspect a symlink outside its root.
+
+Owned application cleanup needed one SIGKILL after the ordinary request and
+SIGTERM. This is not a clean client exit. All namespace holders were then absent,
+package audit was clean, and the original VM unmount/QEMU0/fsync path completed.
+Post19 integrity passed run20's full read-only preboot check on a separate copy:
+all five phases plus summary, no errors; original run19 preserved.
+Sanitized evidence is in `experiments/linux-guest/evidence/steam-local-arm64-20261017/run19`;
+raw account logs, pixels and memory remain private. Run20 compares ordinary
+desktop mode with identical resources, sandbox and diagnostic V3. No new iPhone
+storage feature, Steam/Proton game acceptance or device result is claimed.
+
+
 ## Night continuation — updater restart and native game checks (2026-10-18)
 
 Run18 observed a real Steam self-update finishing with exit code 42. The old
 launcher treated that restart request as failure. The source launcher now retries
 at most twice while holding its lock, revalidates the client and refuses a retry
 if an old client remains. Three focused tests cover these cases; 32 targeted
-launcher/namespace/bootstrap/game-inventory tests pass. The automatic retry path
-has not yet been triggered by another real updater run. Big Picture now requests
+launcher/namespace/bootstrap/game-inventory tests pass. At the end of run18 the automatic retry path was only unit-tested; run19 above
+subsequently exercised it with the real updater. Big Picture now requests
 `-gamepadui` without the SteamOS first-boot flags.
 
 The private V3 diagnostic run reached Big Picture's “Logging in” screen. Login

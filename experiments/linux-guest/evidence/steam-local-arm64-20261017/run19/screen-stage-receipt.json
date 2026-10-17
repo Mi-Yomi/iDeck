@@ -1,0 +1,32 @@
+[
+  {
+    "private_file": "run19/021-window-state.png",
+    "sha256": "c9176357369eacb337bd5572d6dc0efbe06c5e978d8d6adaa8509ec7ea083b46",
+    "observed_stage": "black Big Picture",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run19/024-window-state.png",
+    "sha256": "10acd799b9ef4d1bfee380829b03206ca2dc3e4240f99ac4f7f5090ed086d2a1",
+    "observed_stage": "Steam logo and Waiting for network",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run19/027-window-state.png",
+    "sha256": "453e8cf519befa0b51f64890cb70d229bfee52ff79363bb94c266f512428e27b",
+    "observed_stage": "Steam loading spinner",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run19/030-window-state.png",
+    "sha256": "c9176357369eacb337bd5572d6dc0efbe06c5e978d8d6adaa8509ec7ea083b46",
+    "observed_stage": "black Big Picture again",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run19/900-finish-monitor.png",
+    "sha256": "1ad68e1293f33568722c90512abbef9e5fe3e0c2c50fbca182c943066e1f31d1",
+    "observed_stage": "black Big Picture at observation deadline",
+    "pixels_in_git": false
+  }
+]

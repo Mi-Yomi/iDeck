@@ -1,0 +1,7 @@
+{
+  "source": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/resume-local-20261017/run19",
+  "source_sha256": "78e0fa5e4a6fde21678023a18d87d0ad11a0bd6b18078aadefb38bf0c05f7972",
+  "original_preserved": true,
+  "method": "qemu-img convert; source read lock",
+  "copied_sha256": "c6629691d17d22f27d9341be97b7cc77c6e06dce12a306595585fbeb840355a2"
+}

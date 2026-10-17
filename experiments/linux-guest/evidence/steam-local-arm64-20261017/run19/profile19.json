@@ -1,0 +1,13 @@
+{
+  "reference": "run18 v13",
+  "resources_unchanged": {
+    "cpu": "max",
+    "vcpus": 4,
+    "memory_mib": 1536,
+    "disk_gib": 12
+  },
+  "changes": "read-only kernel dmesg, oom_kill counter and memory PSI observations; freeze on first confirmed kernel OOM; 20min observation budget",
+  "diagnostic": "same V3 5s connect gate, sandbox and gamepadui-only launcher",
+  "source": "clean run18; preserve authenticated XGalaga installation without starting game",
+  "claims": "not iPhone or GPU acceptance"
+}

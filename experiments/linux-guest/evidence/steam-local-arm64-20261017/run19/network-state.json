@@ -1,0 +1,27 @@
+{
+  "dns_address_count": 1,
+  "store_https_status": 200,
+  "login_transitions": [
+    [
+      " None ",
+      "WaitingForNetwork - OK"
+    ],
+    [
+      " WaitingForNetwork ",
+      "WaitingForServerResponse - OK"
+    ],
+    [
+      " WaitingForServerResponse ",
+      "WaitingForLibraryReady - OK"
+    ],
+    [
+      " WaitingForLibraryReady ",
+      "Success - OK"
+    ]
+  ],
+  "system_dbus_socket_present": false,
+  "network_interfaces": [
+    "eth0",
+    "lo"
+  ]
+}

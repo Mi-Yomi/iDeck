@@ -1,0 +1,19 @@
+{
+  "reason": "deadline",
+  "observer_failure_class": null,
+  "seconds": 1206.740592195,
+  "frozen": [
+    1206,
+    1265,
+    1288,
+    1289,
+    1303,
+    1379,
+    1381,
+    1396,
+    1940,
+    2249
+  ],
+  "launcher_pid": 853,
+  "path": "/home/ideck/steam-experiment-logs/resume-local-20261017-gamepadui-v14"
+}

@@ -1,0 +1,99 @@
+{
+  "samples": 319,
+  "first_oom": 0,
+  "last_oom": 0,
+  "maximum_oom": 0,
+  "min_available_kib": 156884,
+  "minimum_at_seconds": 1201.978,
+  "last_available_kib": 156884,
+  "last_sample_seconds": 1201.978,
+  "kernel": {
+    "before": {
+      "sha256": "4b39dd8cc5825c6a4412ab35ef34d67b0ec26c72365478ec153446fd09786383",
+      "size": 17961,
+      "oom_lines": 0
+    },
+    "after": {
+      "sha256": "c6aa6c41935756450bb26bbf2b7c2030aac068dce234a0284332491cf45c2045",
+      "size": 18011,
+      "oom_lines": 0
+    }
+  },
+  "process_disappeared": [
+    {
+      "seconds": 253.724,
+      "pid": "877",
+      "exe": "steam",
+      "seccomp": "0",
+      "state": "R (running)",
+      "rss": "62140 kB",
+      "last_argv_role": []
+    },
+    {
+      "seconds": 253.728,
+      "pid": "879",
+      "exe": "",
+      "seccomp": "0",
+      "state": "Z (zombie)",
+      "rss": null,
+      "last_argv_role": []
+    },
+    {
+      "seconds": 262.853,
+      "pid": "1207",
+      "exe": "steam",
+      "seccomp": "0",
+      "state": "R (running)",
+      "rss": "95644 kB",
+      "last_argv_role": []
+    },
+    {
+      "seconds": 292.722,
+      "pid": "1422",
+      "exe": "steamwebhelper",
+      "seccomp": "0",
+      "state": "R (running)",
+      "rss": "23256 kB",
+      "last_argv_role": []
+    },
+    {
+      "seconds": 903.926,
+      "pid": "2225",
+      "exe": "steamwebhelper",
+      "seccomp": "0",
+      "state": "D (disk sleep)",
+      "rss": "115468 kB",
+      "last_argv_role": []
+    },
+    {
+      "seconds": 906.892,
+      "pid": "1439",
+      "exe": "steamwebhelper",
+      "seccomp": "2",
+      "state": "I (idle)",
+      "rss": "644364 kB",
+      "last_argv_role": [
+        "zygote"
+      ]
+    }
+  ],
+  "monitor": {
+    "reason": "deadline",
+    "observer_failure_class": null,
+    "seconds": 1206.740592195,
+    "frozen": [
+      1206,
+      1265,
+      1288,
+      1289,
+      1303,
+      1379,
+      1381,
+      1396,
+      1940,
+      2249
+    ],
+    "launcher_pid": 853,
+    "path": "/home/ideck/steam-experiment-logs/resume-local-20261017-gamepadui-v14"
+  }
+}

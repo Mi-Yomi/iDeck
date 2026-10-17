@@ -1,0 +1,19 @@
+{
+  "run": 19,
+  "monitor_seconds": 1206.740592195,
+  "stop_reason": "deadline",
+  "big_picture_navigation_verified": false,
+  "oom_kill_counter": "0 in every one of 319 samples",
+  "kernel_oom_lines": 0,
+  "minimum_available_kib": 156884,
+  "helper_disappearance": "sandboxed helper1439 disappeared at906.892seconds; preceding owned assertion tracer2225 traced browser1265",
+  "root_cause_proven": false,
+  "userspace_allocation_failure_ruled_out": false,
+  "process_argv_limitation": "forked Chromium children retained --type=zygote; empty renderer matches do not prove absence",
+  "application_stop": "ordinary request then owned SIGTERM; one owned SIGKILL needed",
+  "vm_stop": "original unmount, QEMU exit0, host fsync, no recovery marker",
+  "post_run19_fsck": "PASS: run20 full strict preboot e2fsck -f -n on copied clean run19; five phases plus summary, no errors",
+  "native_game": "previous XGalaga binary/version persisted; no new gameplay run",
+  "steam_proton_games_verified": false,
+  "iphone_verified": false
+}

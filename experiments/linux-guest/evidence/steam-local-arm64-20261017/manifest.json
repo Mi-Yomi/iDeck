@@ -1788,6 +1788,176 @@
       "sha256": "a69d746f479a75e9f9c96c5922364cb9b9cbc16b1252e376d453289dea608334"
     },
     {
+      "file": "run19/application-stop.json",
+      "size": 5730,
+      "sha256": "4637601e5e62ee1bc1a23ace6ffdf169b0fb4b8a9b2118fecb783f052c8939e1"
+    },
+    {
+      "file": "run19/fast-guard.json",
+      "size": 118,
+      "sha256": "75ab699e8ac45affde94f499c55c5e0029909e3e56c6614793299ceff6673b87"
+    },
+    {
+      "file": "run19/game-preflight-runtime-tests.log",
+      "size": 605,
+      "sha256": "eaccfbab601e5cea4e4707f33554fd7f6fba0dbb668f66e25f69cd05577019df"
+    },
+    {
+      "file": "run19/game-runtime-inventory.json",
+      "size": 717,
+      "sha256": "67aa1502d1fa3e6cb8a58906741ca14474d08075419700e4a023eee462941dd0"
+    },
+    {
+      "file": "run19/kernel19-observer-selfcheck.json",
+      "size": 140,
+      "sha256": "41c59db5684062cfd3927caeba01b809db217638cda9d5426140ce92a8bac958"
+    },
+    {
+      "file": "run19/launch-profile.json",
+      "size": 837,
+      "sha256": "9a4b9e81a4f8a07f237a4a1c0cd035cfb64d2beee8519b75f5e731a0ed260ae8"
+    },
+    {
+      "file": "run19/memory19-summary.json",
+      "size": 2073,
+      "sha256": "7e6272d4dda14e55e9dbfc4369ce66a0d2f41f0c8fe7df49d3d8b96032b93315"
+    },
+    {
+      "file": "run19/network-state.json",
+      "size": 471,
+      "sha256": "1fbb4504b012d4aef4522d458859410b977662bfe8452de0a5d385e637ac0614"
+    },
+    {
+      "file": "run19/offline-fsck.json",
+      "size": 1416,
+      "sha256": "a37b15ab41e4d9de7c4f0e79a50daf5773dcdb7ba36aa4ce5d23ea4930ee3f77"
+    },
+    {
+      "file": "run19/offline-fsck.log",
+      "size": 401,
+      "sha256": "639bee19040652749beb79eb63f43ae92ceb558aab10b0d96e26f2ae599d97ea"
+    },
+    {
+      "file": "run19/offline-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "file": "run19/offline-fsck.stdout.log",
+      "size": 374,
+      "sha256": "9fc462d51e13b283ee9368da0fe5ec7153cb58378ecc7c0f4910589520905b06"
+    },
+    {
+      "file": "run19/outcome.json",
+      "size": 1026,
+      "sha256": "f4f2d96a7904eb47f4902d5e66b3407a524996714319e4655f85059e5dab060b"
+    },
+    {
+      "file": "run19/post-application-check.json",
+      "size": 799,
+      "sha256": "0e3962e1e0cead35fd0312f00bf71ce312c55f6ab07e4059c03125581e04b48a"
+    },
+    {
+      "file": "run19/post-run-fsck/copy-provenance.json",
+      "size": 365,
+      "sha256": "5b6f1f2bf9bd991ce778197eff422c4f500eeb62b390841e0708d9635d2c2568"
+    },
+    {
+      "file": "run19/post-run-fsck/offline-fsck.json",
+      "size": 1416,
+      "sha256": "c0fd2ee5e6e02d72ae0d0a34578e2746d02c094dffd8b9a2f145ec620813a865"
+    },
+    {
+      "file": "run19/post-run-fsck/offline-fsck.log",
+      "size": 401,
+      "sha256": "6ce3092e1d23312257e09fa8b3c3ae674104589714f66e88efc197ae755256d8"
+    },
+    {
+      "file": "run19/post-run-fsck/offline-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "file": "run19/post-run-fsck/offline-fsck.stdout.log",
+      "size": 374,
+      "sha256": "6ffc94c3bc38f21acf2ae67c38d90c4ce90735de73b617cc863cbc2e2d6cd9e2"
+    },
+    {
+      "file": "run19/profile19.json",
+      "size": 507,
+      "sha256": "044a8ef83d9a6515c588cb9106be12b8fa513de2ebd82c4d59466e79b285f6b7"
+    },
+    {
+      "file": "run19/result.json",
+      "size": 15705,
+      "sha256": "d7d7d6f4847303c8b3239d6e301b6e747bc0c7ad7fe093864648137171a7dfe1"
+    },
+    {
+      "file": "run19/screen-stage-receipt.json",
+      "size": 1111,
+      "sha256": "2abf1962647165358cbb2cc656e126a7c2c28c04e58fac196af53069a651f83e"
+    },
+    {
+      "file": "run19/scripts/002-start-gamepad-kernel-observer.sh",
+      "size": 27097,
+      "sha256": "72a89a3fccacc74515c07064efdd5fcbb0e38867593dae267cbd862b657562de"
+    },
+    {
+      "file": "run19/scripts/012-process-inventory.sh",
+      "size": 801,
+      "sha256": "210348d03a2580fe9f6f5bd298f9b49c9a0ebee12b3e9ce74147e75712857cc9"
+    },
+    {
+      "file": "run19/scripts/013-renderer-identity.sh",
+      "size": 926,
+      "sha256": "5307e1141f2cd3b6658192858c998e5e2f62a25ce4a6a01cff05210cb1eee5e0"
+    },
+    {
+      "file": "run19/scripts/016-runtime-service-files.sh",
+      "size": 1410,
+      "sha256": "196c5f485d16249e17669f004e623f1aef8f0c3c8ba36ad8c21168e9d93ebf4e"
+    },
+    {
+      "file": "run19/scripts/020-game-runtime-inventory.sh",
+      "size": 3884,
+      "sha256": "ac0a05b86ff5a6f9987d2f4e1fb3a192a6a964d2c292c720f3b684e5f8716e79"
+    },
+    {
+      "file": "run19/scripts/025-network-state.sh",
+      "size": 949,
+      "sha256": "e14d23e81afff48faf4801d285f3bf97ec6646415808c1c75c46ef2d08893019"
+    },
+    {
+      "file": "run19/scripts/900-finish-monitor.sh",
+      "size": 439,
+      "sha256": "208e9ab3b327da0e2c22818cbac0268c198cde7ffdf1eab61a73a32f2688234c"
+    },
+    {
+      "file": "run19/scripts/901-stop-owned-app.sh",
+      "size": 6197,
+      "sha256": "28cae7a52487caa0f06b1a0464532c66c7747281b3eb486dd5291e3f8b3760de"
+    },
+    {
+      "file": "run19/scripts/902-post-app-check.sh",
+      "size": 1850,
+      "sha256": "5700a934397695a5603084b53fe1d5401f8b20744d14a71b0c8198d124bc037d"
+    },
+    {
+      "file": "run19/scripts/903-private-export.sh",
+      "size": 1394,
+      "sha256": "deb8364dd92feb51b20fe00a16dc1a07cf1317a7ea3513af9fcd3ba8161a949f"
+    },
+    {
+      "file": "run19/summary.json",
+      "size": 314,
+      "sha256": "20d01556b6e7136d1004120e86a8700eabc8342673dd76804f67b9cd78c8faad"
+    },
+    {
+      "file": "run19/updater-and-login.json",
+      "size": 380,
+      "sha256": "b1b05f4ea2d32577b6aeee050b6171746b7efc3fc5f460c742af8c5924f39898"
+    },
+    {
       "file": "run9/control.log",
       "size": 108,
       "sha256": "0b8b6031582819a23d35f6f6bcbaff7bf9dffec4ac7e4a9967d4a28ba1d7fd51"

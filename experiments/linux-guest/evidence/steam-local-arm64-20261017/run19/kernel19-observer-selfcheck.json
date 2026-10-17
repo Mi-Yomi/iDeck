@@ -1,0 +1,5 @@
+{
+  "permission_timeout_nonzero_cannot_skip_cleanup": true,
+  "successful_snapshot_preserved": true,
+  "generated_monitor_compiles": true
+}

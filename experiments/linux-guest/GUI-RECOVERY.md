@@ -1,24 +1,25 @@
 # GUI recovery after process termination
 
-Two real force-kill/recovery/GUI-relaunch cycles PASS on the explicitly OLD cloud
-seed46fea with corrected nonce framing, preserved files, clean Stop and independent
-full output-gated fsck. The latest run ALSO binds each full guest image SHA256
-to the exact host work before activation:
-[digest receipt](evidence/gui-recovery-20261017/digest-receipt.json).
-Recovery65.08/63.53s, sampled host VmHWM1254961152/1253941248bytes with unchanged
-1024MiB guest/4CPU/256MiB TCG. These are host samples, not iOS memory proof.
-**Current production9c4d, full app-build/new IPA and iPhone recovery remain pending.**
-Parent reports actual Swift recovery IO/process/rename tests, startup-failure checks
-and201 Markdown assertions PASS in CI37869aad. That build FAILED at app-build:
-preparedMetadata was uninitialized on explicit recovery. The complete GUI metadata
-assignment now follows both preparation paths; a fresh Apple build is still needed.
-[Recorded CI result](evidence/gui-recovery-20261017/apple-ci-37869aa-parent-report.json).
-The confirmed Release request failed at the proxy: `Tunnel connection failed: 403
-Forbidden`. The supported Library route also resolved the423782833-byte IPA but
-the unchanged official materialize helper failed twice (one refreshed transfer):
-`library file transfer failed: download failed`, exit1. No local IPA exists. See
-[library attempt](evidence/gui-recovery-20261017/library-ipa-attempt.json).
-No credential/token was read and no CI was dispatched.
+**Current production9c4d host gate PASS**, tested runtime/source
+`158be7910d1c372cdddbf7cb87706ad2ce69042f`. The unchanged two-cycle repository
+harness performed actual force-kills, copy recovery, full guest digest binding
+before promotion, new GUI-process persistence, clean Stop and three strict full
+offline fsck checks. Recovery63.260/67.410s;17 focused regressions PASS. All source
+assets, original backups and Steam data were preserved. No runtime fix was needed.
+See [production receipts/full logs/manifest](evidence/gui-recovery-production9c4d-20261017/README.md).
+
+Owner reports the IPA for exact158be791 and Swift recovery/startup regressions
+passed in Codemagic build `6ad367417550aed8108f8f4f`. This documentation checkpoint
+does not change that runtime or require a rebuild for source changes. No CI was
+dispatched here. **Phone recovery is still NOT RUN.** Use the source-verified
+[owner UI sequence and MD export instructions](GUI-RECOVERY-OWNER-158be791.md).
+
+The prior [old46fea digest receipt](evidence/gui-recovery-20261017/digest-receipt.json),
+[failed earlier Apple compiler report](evidence/gui-recovery-20261017/apple-ci-37869aa-parent-report.json)
+and [former Library transport failure](evidence/gui-recovery-20261017/library-ipa-attempt.json)
+are retained historical evidence. Production seed9c4d was subsequently obtained
+from the exact authorized private Release and rehashed; its previous transport
+blocker is closed. These host measurements do not establish iOS memory behavior.
 
 ## App workflow
 
@@ -43,10 +44,9 @@ DONE starts the existing30second shutdown watchdog. A timeout latches failure,
 records supervisor/progress/deadline in diagnostics and prevents promotion from
 that attempt; original/backup and native locks remain preserved. It performs no
 forced native teardown. Normal desktop/console startup remains60seconds.
-Parent reports the unchanged Swift recovery helper PASS at37869aad; its mandatory
-fake-clock assertions are included. The full app-build failed there as recorded
-above, so the new compiler fix and device controller still need Apple validation. The existing old46fea VM receipt covers unchanged guest inputs,
-not execution of this native timer/controller change.
+Owner reports the unchanged Swift helper/watchdog assertions and full IPA build
+PASS at158be791. Neither the old46fea run nor the new production9c4d host harness
+executes the native Apple timer/controller; phone validation remains separate.
 
 Recovery attaches ONLY the work copy and the immutable bundled seed. The latter
 is RO/noload and supplies pinned glibc e2fsck, Bash and coreutils through chroot;
@@ -145,11 +145,10 @@ python3 experiments/linux-guest/tools/check_gui_recovery.py \
   --output /path/to/new-disposable-lab --cycles 2
 ```
 
-Then parent reviews/runs the coordinated Apple gate: real Swift IO/lock/low-space/
-partial-copy/receipt and fresh-child before/after-rename tests, mutation outside
-the superblock between verified receipt and promotion, missing-digest rejection,
-full Husk typecheck,
-new IPA and owner device checks. Swift helpers passed in the parent-reported
-37869aad CI; full app-build failed. The compiler fix/new IPA/device remain pending. The owner's original
-image was not available/accessed/restored. Exact current9c4d acceptance remains
-blocked on [the recorded asset request](evidence/gui-recovery-20261017/current-asset-attempt.json).
+That exact host command has now passed on production9c4d with source158be791.
+Owner reports the coordinated Apple Swift IO/lock/space/partial-copy/receipt,
+fresh-child rename/mutation/missing-digest regressions and existing IPA build
+passed for that SHA. No CI should be dispatched merely to publish this evidence.
+The remaining acceptance is owner device recovery with the existing dirty GUI
+disk and the required full-app restart. The owner's phone image was not available,
+accessed or recovered by this host run. Phone recovery remains NOT RUN.

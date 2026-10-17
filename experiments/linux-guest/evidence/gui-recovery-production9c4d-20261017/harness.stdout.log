@@ -1,0 +1,141 @@
+{
+  "schema": 1,
+  "status": "pass",
+  "owner_image_accessed": false,
+  "host_only": true,
+  "base_profile": {
+    "control_port": "org.ideck.control",
+    "image": {
+      "block_size": 4096,
+      "features": {
+        "compat": 44,
+        "incompat": 194,
+        "ro_compat": 1091
+      },
+      "size_bytes": 1342177280,
+      "uuid": "b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7"
+    },
+    "initramfs": {
+      "file": "initramfs-desktop.gz",
+      "sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4",
+      "size": 11319304
+    },
+    "kernel": {
+      "file": "vmlinuz-virt",
+      "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+      "size": 10351104
+    },
+    "mode": "desktop",
+    "rootfs": {
+      "file": "gui-rootfs-v1.raw",
+      "sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791",
+      "size": 1342177280
+    },
+    "schema": 1
+  },
+  "cycles": [
+    {
+      "cycle": 1,
+      "forcekill_exit": -9,
+      "dirty_header": {
+        "uuid": "b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7",
+        "block_size": 4096,
+        "features": {
+          "compat": 44,
+          "incompat": 198,
+          "ro_compat": 1091
+        },
+        "inode_size": 256,
+        "descriptor_size": 64
+      },
+      "original_sha256": "a604cce375b0bcc62ea5614524dc3424813d6d5e7fe2f828cd9cd7acea451a1b",
+      "original_preserved": true,
+      "recovery_exit": 0,
+      "post_fsck_exit": 0,
+      "prior_control_files_read_before_write": 0,
+      "strict_clean_header": {
+        "recover_bit": false,
+        "state": 1,
+        "last_orphan": 0,
+        "error_count": 0,
+        "checksum": "valid"
+      },
+      "guest_checked_image_sha256": "5b717ed7b63090fe9b8da85f956582b20aaa9f65823c759f59bd100f302d7244",
+      "checked_image_hash_matched_before_promotion": true,
+      "serial_receipts": [
+        {
+          "nonce": "73a0989f94c4461eb60ee8d784d4b36b",
+          "exit_status": 0,
+          "complete_output_line": true,
+          "marker_absent_from_input": true,
+          "command_sha256": "12427f1ec639b936388d3770a65eda81581b86cb235251a1f3d5469dd74a77e3"
+        }
+      ],
+      "recovery_seconds": 63.259697137999865,
+      "recovery_sampled_peak_rss_bytes": 1254400000,
+      "control_markers": "IDECK_DESKTOP_RECOVERY_READY\nIDECK_RECOVERY_ASSESS:0\nIDECK_RECOVERY_REPLAY:0\nIDECK_RECOVERY_SUMMARY_ELIGIBLE\nIDECK_RECOVERY_SUMMARY_RECONCILED\nIDECK_RECOVERY_VERIFY:0\nIDECK_RECOVERY_SCAN_CLEAN\nIDECK_RECOVERY_IMAGE_SHA256:5b717ed7b63090fe9b8da85f956582b20aaa9f65823c759f59bd100f302d7244\nIDECK_RECOVERY_DONE\nIDECK_DESKTOP_CLEAN_UNMOUNT\n"
+    },
+    {
+      "cycle": 2,
+      "forcekill_exit": -9,
+      "dirty_header": {
+        "uuid": "b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7",
+        "block_size": 4096,
+        "features": {
+          "compat": 44,
+          "incompat": 198,
+          "ro_compat": 1091
+        },
+        "inode_size": 256,
+        "descriptor_size": 64
+      },
+      "original_sha256": "39832916ef6e7d13760982376df09f26e0c037d43ae1c2f2a440a3fb0fb95a4f",
+      "original_preserved": true,
+      "recovery_exit": 0,
+      "post_fsck_exit": 0,
+      "prior_control_files_read_before_write": 1,
+      "strict_clean_header": {
+        "recover_bit": false,
+        "state": 1,
+        "last_orphan": 0,
+        "error_count": 0,
+        "checksum": "valid"
+      },
+      "guest_checked_image_sha256": "e5e2591b68be89e468375db326f3af41d0f23ae86d612849cec2e4c0cd21f5cd",
+      "checked_image_hash_matched_before_promotion": true,
+      "serial_receipts": [
+        {
+          "nonce": "a2fb7d0720734c77a90582b5312abfce",
+          "exit_status": 0,
+          "complete_output_line": true,
+          "marker_absent_from_input": true,
+          "command_sha256": "bb6ac1d9b43d41a871ecc7147de16dc13c49dabd9dd0fbab57adf0f8153016cf"
+        }
+      ],
+      "recovery_seconds": 67.41016068600015,
+      "recovery_sampled_peak_rss_bytes": 1255251968,
+      "control_markers": "IDECK_DESKTOP_RECOVERY_READY\nIDECK_RECOVERY_ASSESS:0\nIDECK_RECOVERY_REPLAY:0\nIDECK_RECOVERY_SUMMARY_ELIGIBLE\nIDECK_RECOVERY_SUMMARY_RECONCILED\nIDECK_RECOVERY_VERIFY:0\nIDECK_RECOVERY_SCAN_CLEAN\nIDECK_RECOVERY_IMAGE_SHA256:e5e2591b68be89e468375db326f3af41d0f23ae86d612849cec2e4c0cd21f5cd\nIDECK_RECOVERY_DONE\nIDECK_DESKTOP_CLEAN_UNMOUNT\n"
+    }
+  ],
+  "suffix_sha256": "af2591aaf362e150f80d66ccff1ca11acc6379f240e387e1667b51f70ec30ff5",
+  "final_serial_receipts": [
+    {
+      "nonce": "d5d89e0577da4eb6a3afef2f78d195e1",
+      "exit_status": 0,
+      "complete_output_line": true,
+      "marker_absent_from_input": true,
+      "command_sha256": "0b359a8879ca5e75d053574a2d5f3a5b3957273ca359cda16c18dfc0c22bf95b"
+    }
+  ],
+  "all_control_files_reopened": true,
+  "final_clean_stop": true,
+  "final_fsck_exit": 0,
+  "final_output_gate_exit": 0,
+  "final_strict_header": {
+    "recover_bit": false,
+    "state": 1,
+    "last_orphan": 0,
+    "error_count": 0,
+    "checksum": "valid"
+  }
+}

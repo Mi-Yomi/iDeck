@@ -1,0 +1,26 @@
+{
+  "source_sha": "158be7910d1c372cdddbf7cb87706ad2ce69042f",
+  "command": [
+    "python3",
+    "experiments/linux-guest/tools/check_gui_recovery.py",
+    "--assets",
+    "/workspace/steam-fresh-20261017/gui",
+    "--host",
+    "/workspace/steam-fresh-20261017/host",
+    "--output",
+    "/workspace/gui-recovery-production9c4d-158be791-20261017/lab",
+    "--cycles",
+    "2"
+  ],
+  "cwd": "/workspace/iDeck-recovery-158be791",
+  "environment_override": {
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "harness_exit_code": 0,
+  "harness_stderr_bytes": 0,
+  "postflight_exit_code": 0,
+  "postflight_stderr_bytes": 0,
+  "source_changes": false,
+  "HEAD_advanced": false,
+  "CI_dispatched": false
+}

@@ -1,5 +1,56 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Production9c4d recovery HOST gate PASS; existing IPA158be791 — 2026-10-17
+
+**Tested source SHA:** `158be7910d1c372cdddbf7cb87706ad2ce69042f`.
+Owner accepted the result BEFORE authorizing this documentation/evidence commit.
+The separate primary worktree and remote matched that exact SHA during testing;
+no source/runtime fix was needed. This following checkpoint changes only docs
+and compact evidence, so it does not invalidate the already built IPA158be791.
+Owner reports Codemagic build `6ad367417550aed8108f8f4f` produced that IPA and
+passed Swift recovery/startup regressions. No CI was dispatched here.
+**Phone recovery remains NOT RUN.**
+
+The unchanged repository two-cycle harness passed on the actual production seed
+`9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791`,1342177280 bytes,
+obtained through existing authorized private Release asset650023557 and standard
+locked restore. The292065280-byte tar SHA-256 is
+`112bdba6e12ae182fb347e52e7368e26f748bb3dc2bcd77dbd3122fb14dcdedd`.
+This supersedes the old current-seed transport blocker below; old46fea receipts
+remain historical, not substituted production evidence.
+
+Two actual completed-nonce sync → SIGKILL(-9) → dirty RECOVER → copy recovery
+cycles passed. Recovery63.260/67.410s; whole guest image digests matched host work
+BEFORE promotion. Both original backups remain hash-identical. New QEMU GUI
+processes read prior files before writes, then final GUI reopened both control
+files and cleanly stopped with QEMU exit0. All three complete offline fsck streams
+passed exit0 AND the unchanged strict output grammar; no Fix?no/timeout was
+accepted as clean.17 focused recovery regressions PASS. Source full-app-restart,
+retained native owner/locks and guest-digest promotion guards remain intact.
+Apple embedded native ownership was not reexecuted by this host harness.
+
+Final disposable active SHA-256:
+`f25d28f94581d2b48733387edce53a4d0152f45782974f2be51c8a25cfb5f236`.
+No VM/mount remains. Production seed, both Steam disks and17/45 caches rehashed
+unchanged; Steam networking remains blocked without retries/workarounds. No
+Steam-branch merge, runtime/GUI payload/Release/main/network/security change.
+
+Evidence: [compact immutable receipts/full logs/manifest](experiments/linux-guest/evidence/gui-recovery-production9c4d-20261017/README.md).
+Private originals and complete lab remain in
+`/workspace/gui-recovery-production9c4d-158be791-20261017`; no disks/client/payload
+were published. Frozen report statements about unchanged HEAD refer to the
+pre-publication tested checkpoint; runtime Git identities remain exact158be791.
+
+Owner instructions with source-verified labels:
+[existing IPA recovery and MD export](experiments/linux-guest/GUI-RECOVERY-OWNER-158be791.md).
+Route: “Debian desktop · windows and apps” → “Enable JIT” → “Recover disk”.
+Keep open through hashing and confirmed clean shutdown/host sync; “Share report”.
+Then fully close/reopen iDeck, enable JIT again and choose “Start desktop” to
+validate/promote in the new process. “Share report” / “Diagnostics” work without
+VM/JIT. SideStore source bundle ID/dev.ideck.linuxprobe and GUI Documents path
+are unchanged from the prior GUI version; actual re-signed installed identity
+is not inspectable here. No uninstall or disk deletion is part of the workflow.
+
 ## Apple compiler follow-up: GUI metadata initialization — 2026-10-17
 
 Parent reports CI37869aad FAILED in app-build/xcodebuild:

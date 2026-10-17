@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "source_sha": "158be7910d1c372cdddbf7cb87706ad2ce69042f",
+  "final_active_sha256": "f25d28f94581d2b48733387edce53a4d0152f45782974f2be51c8a25cfb5f236",
+  "backup_hashes": [
+    "a604cce375b0bcc62ea5614524dc3424813d6d5e7fe2f828cd9cd7acea451a1b",
+    "39832916ef6e7d13760982376df09f26e0c037d43ae1c2f2a440a3fb0fb95a4f"
+  ],
+  "fsck_count": 3,
+  "source_changed": false,
+  "remaining_QEMU": []
+}

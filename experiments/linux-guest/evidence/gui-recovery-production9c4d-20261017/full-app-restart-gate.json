@@ -1,0 +1,20 @@
+{
+  "scope": "unchanged native source guards and 17 offline regressions; Apple execution not repeated here",
+  "guards": {
+    "different_process_uuid_required": true,
+    "exclusive_locks_required": true,
+    "backup_original_digest_verified": true,
+    "guest_digest_retained_in_receipt": true,
+    "whole_work_digest_matches_guest_before_rename": true,
+    "receipt_only_after_loop_stop": true,
+    "stop_does_not_promote": true,
+    "one_native_qemu_init_per_process": true,
+    "native_owner_thread_retained": true,
+    "UI_requires_full_close_and_reopen": true
+  },
+  "source_sha": "158be7910d1c372cdddbf7cb87706ad2ce69042f",
+  "owner_reported_Swift_tests_passed_build": "6ad367417550aed8108f8f4f",
+  "actual_Swift_runtime_in_this_cloud": "NOT RUN",
+  "phone_recovery": "NOT RUN",
+  "host_harness_scope": "fresh QEMU subprocesses; not an execution of embedded Apple native ownership/promotion"
+}

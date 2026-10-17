@@ -1,0 +1,77 @@
+{
+  "utc": "2026-10-17T14:06:19.705159+00:00",
+  "source_sha": "158be7910d1c372cdddbf7cb87706ad2ce69042f",
+  "worktree": "/workspace/iDeck-recovery-158be791",
+  "branch": "codex/linux-guest-feasibility-20261015",
+  "remote_source_verified": true,
+  "source_changes": false,
+  "AGENTS_found": false,
+  "agents_skills_found": false,
+  "assets": {
+    "LICENSES-desktop.txt": {
+      "size": 1403,
+      "sha256": "7b4062d88f64efbfc636be91018df833d7d45997140cda60030a1caa8bce40b9"
+    },
+    "desktop-profile.json": {
+      "size": 761,
+      "sha256": "c8c487fdf7f847db8df51f9c6d6d2aefbed0d3967059a022c18922a034e88c71"
+    },
+    "gui-rootfs-v1.raw": {
+      "size": 1342177280,
+      "sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791"
+    },
+    "initramfs-desktop.gz": {
+      "size": 11319304,
+      "sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4"
+    },
+    "vmlinuz-virt": {
+      "size": 10351104,
+      "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+    }
+  },
+  "seed_provenance": "authorized production Release asset650023557; verified tar112bdba6e12ae182fb347e52e7368e26f748bb3dc2bcd77dbd3122fb14dcdedd; gui_bundle restore",
+  "source_inputs": {
+    "tools/check_gui_recovery.py": "49317df78449d234eefcf91997eb54deacc5771946ae41d9d16ab4786a0f28e0",
+    "tools/recovery_guest.py": "d7508ae3181229dd3485260abd7ea938de21ede87f5e39fa7815401de8560bec",
+    "guest/recovery/ideck-recovery-init": "d014ddd17798897f82a3528425e9318d1c74a812d2a0a53ff065af8672f3619f",
+    "guest/recovery/fsck-clean.awk": "2669aafe762c0c6c05cf692d85d7337f94967db06604cc00b809eaef2b5eee1a",
+    "guest/recovery/scope-head.awk": "473cd7589b83113ec8db80a03f2414ebf767ce1ff088c0d02e165bccfe7de856",
+    "guest/gui/ideck-desktop-init": "63c6b5c1cf55a7777fb6b05d9b24cae24e588668f659c7c5293b0715f01f990b",
+    "ios/LinuxGUIRecovery.swift": "259ffb5b152db34d9e99c01cf2e1db9850d11e4d36c84dcd31c327814b9d6bd9",
+    "ios/LinuxRecoveryGuest.swift": "f3052e0294239da5f3f851ed99b029739c4cb65b4f13342455570ca1000b7e79",
+    "ios/LinuxTerminalSession.swift": "7b629d051ab886d13e08a3ff51f046b2a71499d459fa5ddc8cd0705f68003a92",
+    "ios/tests/GUIRecoveryChecks.swift": "1c8ddde1273d3e14b123aaa16effc6a744423082ba2b2d9c6333f96ff129cc73"
+  },
+  "prior_host_six_guest_inputs_unchanged": true,
+  "suffix_sha256": "af2591aaf362e150f80d66ccff1ca11acc6379f240e387e1667b51f70ec30ff5",
+  "suffix_size": 15856,
+  "host_tools": {
+    "qemu-system-aarch64": {
+      "sha256": "2e7fe3008a900980493a85e606036793fd162153edac0228477579988c53e1f5",
+      "exit_code": 0,
+      "version": "QEMU emulator version 10.0.13 (Debian 1:10.0.13+ds-0+deb13u1)\nCopyright (c) 2003-2025 Fabrice Bellard and the QEMU Project developers"
+    },
+    "e2fsck": {
+      "sha256": "be1f2c99e0dc73640cffb549da5f3f4b15da0f89e7334c6730feb69eff784571",
+      "exit_code": 0,
+      "version": "e2fsck 1.47.2 (1-Jan-2025)\n\tUsing EXT2FS Library version 1.47.2, 1-Jan-2025"
+    }
+  },
+  "storage_gate": {
+    "cycles": 2,
+    "free_bytes": 26417721344,
+    "required_bytes": 5637144576,
+    "policy": "unaltered check_gui_recovery.run (cycles+2)*1342177280+256MiB",
+    "sparse_discount": false,
+    "passed": true
+  },
+  "qemu_pids_before": [],
+  "steam_network_retried": false,
+  "network_enabled_for_harness": false,
+  "apple_build_owner_report": {
+    "source_sha": "158be7910d1c372cdddbf7cb87706ad2ce69042f",
+    "build_id": "6ad367417550aed8108f8f4f",
+    "status": "IPA built; Swift recovery/startup regressions passed; owner reported, not fetched here"
+  },
+  "phone_recovery": "NOT RUN"
+}

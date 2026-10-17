@@ -1,0 +1,35 @@
+e2fsck 1.47.2 (1-Jan-2025)
+Warning: skipping journal recovery because doing a read-only filesystem check.
+Pass 1: Checking inodes, blocks, and sizes
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+Free blocks count wrong (111835, counted=111829).
+Fix? no
+
+Free inodes count wrong (142603, counted=142601).
+Fix? no
+
+/dev/vda: 21237/163840 files (0.3% non-contiguous), 215845/327680 blocks
+/dev/vda: recovering journal
+e2fsck 1.47.2 (1-Jan-2025)
+Pass 1: Checking inodes, blocks, and sizes
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+Free blocks count wrong (111835, counted=111829).
+Fix? no
+
+Free inodes count wrong (142603, counted=142601).
+Fix? no
+
+/dev/vda: 21237/163840 files (0.3% non-contiguous), 215845/327680 blocks
+e2fsck 1.47.2 (1-Jan-2025)
+Pass 1: Checking inodes, blocks, and sizes
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+/dev/vda: 21239/163840 files (0.3% non-contiguous), 215851/327680 blocks

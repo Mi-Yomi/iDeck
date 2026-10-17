@@ -1,0 +1,30 @@
+{
+  "tested_source_sha": "158be7910d1c372cdddbf7cb87706ad2ce69042f",
+  "host_result": "PASS",
+  "test_scope": "existing two-cycle production9c4d host QEMU recovery acceptance",
+  "accepted_report_before_docs_publication": true,
+  "original_report_sha256": "4c90844f2b8459098f825af310266ce6bd657b7848624df0f3382992621d783c",
+  "original_receipt_sha256": "d430db197e2ab225ad3b76fd0df9f2f87bf874286b5e8b40efe7673845dd42f9",
+  "original_private_manifest_sha256": "f13e066892f87689284df4da40479bfb3b0d576f453e9996a13bcb32adfcbae9",
+  "original_private_lab": "/workspace/gui-recovery-production9c4d-158be791-20261017",
+  "duplicated_frozen_source_files_omitted_from_compact_package": true,
+  "frozen_source_hashes_recorded_in": "preflight.json",
+  "protected_runtime_git_objects": {
+    "experiments/linux-guest/ios": "24285537823adeff62178248d61f5d5f99ecd50a",
+    "experiments/linux-guest/guest": "fd59afa783856c58fb97875c9e2412cb8aaa0de7",
+    "experiments/linux-guest/tools": "de388c957e0e4cc4b4ca3f43809bddc4f361281b",
+    "experiments/linux-guest/ipa": "72027ed4f8956b2cd39b335cd8d15a6163a789f8",
+    "experiments/linux-guest/husk": "5e85be2caa79aa158a2db549297d4ce93f4e2e65",
+    "ci": "e092f7f3431dbc6b4bef430d0e508ab68bc974e5",
+    "codemagic.yaml": "a079e81bde3b04335c57b3d0209273ed4472d099"
+  },
+  "Phone_recovery": "NOT RUN",
+  "Apple_build": {
+    "source_sha": "158be7910d1c372cdddbf7cb87706ad2ce69042f",
+    "build_id": "6ad367417550aed8108f8f4f",
+    "status": "IPA built and Swift recovery/startup tests passed; owner report, not a new CI run"
+  },
+  "CI_dispatched": false,
+  "runtime_or_payload_changes": false,
+  "disks_or_client_bytes_in_package": false
+}

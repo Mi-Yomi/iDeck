@@ -1,0 +1,60 @@
+IDECK_DESKTOP_BOOT
+IDECK_DESKTOP_KERNEL:6.18.35-0-virt
+
+
+Debian GUI recovery console. Files in /home/ideck are persistent.
+Use exit or Stop Linux before closing iDeck.
+
+debian# Starting systemd-udevd version 257.13-1~deb13u1
+xauth:  file /run/ideck/Xauthority does not exist
+
+X.Org X Server 1.21.1.16
+X Protocol Version 11, Revision 0
+Current Operating System: Linux ideck 6.18.35-0-virt #1-Alpine SMP PREEMPT_DYNAMIC 2026-06-09 12:34:47 aarch64
+Kernel command line: console=ttyAMA0 panic=0 loglevel=4 rdinit=/ideck-desktop-init
+xorg-server 2:21.1.16-1.3+deb13u3 (https://www.debian.org/support) 
+Current version of pixman: 0.44.0
+	Before reporting problems, check http://wiki.x.org
+	to make sure that you have the latest version.
+Markers: (--) probed, (**) from config file, (==) default setting,
+	(++) from command line, (!!) notice, (II) informational,
+	(WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+(++) Log file: "/var/log/Xorg.0.log", Time: Sat Oct 17 14:07:58 2026
+(++) Using config file: "/etc/X11/ideck.conf"
+(==) Using system config directory "/usr/share/X11/xorg.conf.d"
+tint2: Using glib slice allocator (default). Run tint2 with environment variable G_SLICE=always-malloc in case of strange behavior or crashes
+tint2: xRandr: Found crtc's: 1
+[1;34mtint2: xRandr: Linking output Virtual-1 with crtc 0, resolution 800x600, DPI 100[0m
+tint2: No XSETTINGS manager, tint2 uses config option 'launcher_icon_theme'.
+tint2: Loading config file: /usr/local/share/ideck/tint2rc
+tint2: real transparency off.... depth: 24
+tint2: panel items: LTSC
+tint2: Systray composited rendering on
+tint2: nb monitors 1, nb monitors used 1, nb desktops 4
+[1;34mtint2: panel 1 uses scale 1 [0m
+[1;32mtint2: Loading icon theme cache...[0m
+tint2: pixmap background detection failed
+tint2: Kernel uevent interface initialized...
+tint2: systray window 6291468
+[1;32mtint2: systray started[0m
+tint2: pixmap background detection failed
+
+(mousepad:730): dbind-[1;33mWARNING[0m **: [34m14:08:02.606[0m: AT-SPI: Error retrieving accessibility bus address: org.fre
+(pcmanfm:729): dbind-[1;33mWARNING[0m **: [34m14:08:02.606[0m: AT-SPI: Error retrieving accessibility bus address: org.freeedesktop.DBus.Error.ServiceUnknown: The name org.a11y.Bus was not provided by any .service files
+desktop.DBus.Error.ServiceUnknown: The name org.a11y.Bus was not provided by any .service files
+** [1;32mMessage[0m: [34m14:08:02.647[0m: x-terminal-emulator has very limited support, consider choosing another terminal
+
+** (pcmanfm:729): [1;33mWARNING[0m **: [34m14:08:02.650[0m: The directory '~/Templates' doesn't exist, ignoring it
+
+** (pcmanfm:729): [1;33mWARNING[0m **: [34m14:08:03.548[0m: modules directory is not accessible
+
+(pcmanfm:729): Gtk-[1;33mWARNING[0m **: [34m14:08:04.270[0m: Theme parsing error: <data>:2:27: The style property GtkWidget:focus-padding is deprecated and shouldn't be used anymore. It will be removed in a future version
+
+(pcmanfm:729): Gtk-[1;33mWARNING[0m **: [34m14:08:04.274[0m: Theme parsing error: <data>:3:30: The style property GtkWidget:focus-line-width is deprecated and shouldn't be used anymore. It will be removed in a future version
+dbus-daemon[711]: [session uid=1000 pid=711 pidfd=5] Activating service name='ca.desrt.dconf' requested by ':1.0' (uid=1000 pid=730 comm="mousepad")
+dbus-daemon[711]: [session uid=1000 pid=711 pidfd=5] Successfully activated service 'ca.desrt.dconf'
+IDECK_GUI_WINDOWS_MAPPED
+IDECK_DESKTOP_READY
+debian# 
+IDECK_LAB_a2fb7d0720734c77a90582b5312abfce:EXIT:0
+debian# 

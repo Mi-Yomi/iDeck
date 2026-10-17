@@ -1,0 +1,229 @@
+{
+  "status": "PASS",
+  "acceptance_scope": "existing two-cycle production9c4d host QEMU recovery harness",
+  "source_sha": "158be7910d1c372cdddbf7cb87706ad2ce69042f",
+  "source_changed": false,
+  "primary_HEAD_advanced": false,
+  "production_seed_sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791",
+  "suffix_sha256": "af2591aaf362e150f80d66ccff1ca11acc6379f240e387e1667b51f70ec30ff5",
+  "cycles": [
+    {
+      "cycle": 1,
+      "forcekill_exit": -9,
+      "dirty_header": {
+        "uuid": "b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7",
+        "block_size": 4096,
+        "features": {
+          "compat": 44,
+          "incompat": 198,
+          "ro_compat": 1091
+        },
+        "inode_size": 256,
+        "descriptor_size": 64
+      },
+      "original_sha256": "a604cce375b0bcc62ea5614524dc3424813d6d5e7fe2f828cd9cd7acea451a1b",
+      "original_preserved": true,
+      "recovery_exit": 0,
+      "post_fsck_exit": 0,
+      "prior_control_files_read_before_write": 0,
+      "strict_clean_header": {
+        "recover_bit": false,
+        "state": 1,
+        "last_orphan": 0,
+        "error_count": 0,
+        "checksum": "valid"
+      },
+      "guest_checked_image_sha256": "5b717ed7b63090fe9b8da85f956582b20aaa9f65823c759f59bd100f302d7244",
+      "checked_image_hash_matched_before_promotion": true,
+      "serial_receipts": [
+        {
+          "nonce": "73a0989f94c4461eb60ee8d784d4b36b",
+          "exit_status": 0,
+          "complete_output_line": true,
+          "marker_absent_from_input": true,
+          "command_sha256": "12427f1ec639b936388d3770a65eda81581b86cb235251a1f3d5469dd74a77e3"
+        }
+      ],
+      "recovery_seconds": 63.259697137999865,
+      "recovery_sampled_peak_rss_bytes": 1254400000,
+      "control_markers": "IDECK_DESKTOP_RECOVERY_READY\nIDECK_RECOVERY_ASSESS:0\nIDECK_RECOVERY_REPLAY:0\nIDECK_RECOVERY_SUMMARY_ELIGIBLE\nIDECK_RECOVERY_SUMMARY_RECONCILED\nIDECK_RECOVERY_VERIFY:0\nIDECK_RECOVERY_SCAN_CLEAN\nIDECK_RECOVERY_IMAGE_SHA256:5b717ed7b63090fe9b8da85f956582b20aaa9f65823c759f59bd100f302d7244\nIDECK_RECOVERY_DONE\nIDECK_DESKTOP_CLEAN_UNMOUNT\n"
+    },
+    {
+      "cycle": 2,
+      "forcekill_exit": -9,
+      "dirty_header": {
+        "uuid": "b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7",
+        "block_size": 4096,
+        "features": {
+          "compat": 44,
+          "incompat": 198,
+          "ro_compat": 1091
+        },
+        "inode_size": 256,
+        "descriptor_size": 64
+      },
+      "original_sha256": "39832916ef6e7d13760982376df09f26e0c037d43ae1c2f2a440a3fb0fb95a4f",
+      "original_preserved": true,
+      "recovery_exit": 0,
+      "post_fsck_exit": 0,
+      "prior_control_files_read_before_write": 1,
+      "strict_clean_header": {
+        "recover_bit": false,
+        "state": 1,
+        "last_orphan": 0,
+        "error_count": 0,
+        "checksum": "valid"
+      },
+      "guest_checked_image_sha256": "e5e2591b68be89e468375db326f3af41d0f23ae86d612849cec2e4c0cd21f5cd",
+      "checked_image_hash_matched_before_promotion": true,
+      "serial_receipts": [
+        {
+          "nonce": "a2fb7d0720734c77a90582b5312abfce",
+          "exit_status": 0,
+          "complete_output_line": true,
+          "marker_absent_from_input": true,
+          "command_sha256": "bb6ac1d9b43d41a871ecc7147de16dc13c49dabd9dd0fbab57adf0f8153016cf"
+        }
+      ],
+      "recovery_seconds": 67.41016068600015,
+      "recovery_sampled_peak_rss_bytes": 1255251968,
+      "control_markers": "IDECK_DESKTOP_RECOVERY_READY\nIDECK_RECOVERY_ASSESS:0\nIDECK_RECOVERY_REPLAY:0\nIDECK_RECOVERY_SUMMARY_ELIGIBLE\nIDECK_RECOVERY_SUMMARY_RECONCILED\nIDECK_RECOVERY_VERIFY:0\nIDECK_RECOVERY_SCAN_CLEAN\nIDECK_RECOVERY_IMAGE_SHA256:e5e2591b68be89e468375db326f3af41d0f23ae86d612849cec2e4c0cd21f5cd\nIDECK_RECOVERY_DONE\nIDECK_DESKTOP_CLEAN_UNMOUNT\n"
+    }
+  ],
+  "backups": [
+    {
+      "cycle": 1,
+      "path": "/workspace/gui-recovery-production9c4d-158be791-20261017/lab/original-1.raw",
+      "size": 1342177280,
+      "sha256": "a604cce375b0bcc62ea5614524dc3424813d6d5e7fe2f828cd9cd7acea451a1b",
+      "matches_original_receipt": true,
+      "strict_clean_validator_refuses_dirty_backup": true
+    },
+    {
+      "cycle": 2,
+      "path": "/workspace/gui-recovery-production9c4d-158be791-20261017/lab/original-2.raw",
+      "size": 1342177280,
+      "sha256": "39832916ef6e7d13760982376df09f26e0c037d43ae1c2f2a440a3fb0fb95a4f",
+      "matches_original_receipt": true,
+      "strict_clean_validator_refuses_dirty_backup": true
+    }
+  ],
+  "serial_nonce_completion_checks": [
+    {
+      "stage": "pre-forcekill-sync-1",
+      "nonce": "73a0989f94c4461eb60ee8d784d4b36b",
+      "actual_complete_output_line_verified": true,
+      "marker_absent_from_tty_input": true,
+      "exit_code": 0
+    },
+    {
+      "stage": "pre-forcekill-sync-2",
+      "nonce": "a2fb7d0720734c77a90582b5312abfce",
+      "actual_complete_output_line_verified": true,
+      "marker_absent_from_tty_input": true,
+      "exit_code": 0
+    },
+    {
+      "stage": "final-GUI-read-both-control-files",
+      "nonce": "d5d89e0577da4eb6a3afef2f78d195e1",
+      "actual_complete_output_line_verified": true,
+      "marker_absent_from_tty_input": true,
+      "exit_code": 0
+    }
+  ],
+  "strict_full_offline_fscks": [
+    {
+      "stage": "post-recovery-1",
+      "exit_code": 0,
+      "strict_output_gate_exit": 0,
+      "full_output_log": "lab/fsck-1.log",
+      "log_sha256": "41950a3783c6bfb98e3f5bee1c19d032033f194f0092cb2077c2b9aab7f98588",
+      "writer_running": false
+    },
+    {
+      "stage": "post-recovery-2",
+      "exit_code": 0,
+      "strict_output_gate_exit": 0,
+      "full_output_log": "lab/fsck-2.log",
+      "log_sha256": "88c61da0d744f5d3b0b0d024540e893d3c31c18f1c19d9a4162343e268dc0d09",
+      "writer_running": false
+    },
+    {
+      "stage": "post-final-GUI-Stop",
+      "exit_code": 0,
+      "strict_output_gate_exit": 0,
+      "full_output_log": "lab/final-fsck.log",
+      "log_sha256": "83e864b35333e62eaea063cd72a5fa55d54ef7b6875a125a71e5aa573635542c",
+      "writer_running": false
+    }
+  ],
+  "final_active_sha256": "f25d28f94581d2b48733387edce53a4d0152f45782974f2be51c8a25cfb5f236",
+  "host_fsync_after_final_stop": "PASS",
+  "host_fsync_changed_content": false,
+  "runtime_initramfs": {
+    "gui-1": {
+      "size": 11335160,
+      "sha256": "f98ed61441f9c8219035ad45436cf766fac3d39fb8ad7ab5060e9a4a9f54c05e"
+    },
+    "recovery-1": {
+      "size": 11335160,
+      "sha256": "f98ed61441f9c8219035ad45436cf766fac3d39fb8ad7ab5060e9a4a9f54c05e"
+    },
+    "gui-2": {
+      "size": 11335160,
+      "sha256": "f98ed61441f9c8219035ad45436cf766fac3d39fb8ad7ab5060e9a4a9f54c05e"
+    },
+    "recovery-2": {
+      "size": 11335160,
+      "sha256": "f98ed61441f9c8219035ad45436cf766fac3d39fb8ad7ab5060e9a4a9f54c05e"
+    },
+    "final-relaunch": {
+      "size": 11335160,
+      "sha256": "f98ed61441f9c8219035ad45436cf766fac3d39fb8ad7ab5060e9a4a9f54c05e"
+    }
+  },
+  "observed_distinct_QEMU_pids": [
+    3159,
+    3199,
+    3219,
+    3261
+  ],
+  "observer_coverage": "started during recovery1; first GUI process already ended; four later process lifetimes observed",
+  "native_full_app_restart_source_guards": {
+    "different_process_uuid_required": true,
+    "exclusive_locks_required": true,
+    "backup_original_digest_verified": true,
+    "guest_digest_retained_in_receipt": true,
+    "whole_work_digest_matches_guest_before_rename": true,
+    "receipt_only_after_loop_stop": true,
+    "stop_does_not_promote": true,
+    "one_native_qemu_init_per_process": true,
+    "native_owner_thread_retained": true,
+    "UI_requires_full_close_and_reopen": true
+  },
+  "offline_recovery_tests_passed": 17,
+  "steam_disks_unchanged": {
+    "run1": "1f6816b06b927423b7545a90a6c81cdb08e1a319ebdef7c011f758e8e6253415",
+    "run2": "462a5804f296ec1333196fce0ad1a893204e841611c76f5f31e608a7b99a11e3"
+  },
+  "steam_caches_verified_unchanged": {
+    "client_zips": 17,
+    "dependency_debs": 45
+  },
+  "network_or_security_changes": false,
+  "network_enabled_for_harness": false,
+  "CI_dispatched": false,
+  "GUI_payload_or_release_published": false,
+  "Apple_IPA_invalidation_due_to_source_changes": false,
+  "owner_reported_Apple_build": {
+    "source_sha": "158be7910d1c372cdddbf7cb87706ad2ce69042f",
+    "build_id": "6ad367417550aed8108f8f4f",
+    "status": "IPA built; Swift recovery/startup regressions passed; owner reported, not fetched here"
+  },
+  "phone_recovery": "NOT RUN",
+  "Apple_runtime_reexecuted_in_cloud": "NOT RUN",
+  "qemu_pids_remaining": [],
+  "task_mounts_remaining": [],
+  "storage_free_after_bytes": 22334132224,
+  "utc": "2026-10-17T14:11:29.602493+00:00"
+}

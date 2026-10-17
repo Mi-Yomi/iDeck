@@ -1,0 +1,187 @@
+{
+  "schema": 1,
+  "scope": "compact original production9c4d recovery text evidence and owner UI source review; no disks/client/payload/source changes",
+  "tested_source_sha": "158be7910d1c372cdddbf7cb87706ad2ce69042f",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "size": 121,
+      "sha256": "3e6365a27cb4fe6dd4b92dc2f48afaa3ceb9204271b04d36b396ddb774423e7c"
+    },
+    {
+      "path": "README.md",
+      "size": 4654,
+      "sha256": "0a37a776ec78d4a8ce12b35eab7200a666e4c687f8ba5e2d2fdf50f8e3561a37"
+    },
+    {
+      "path": "REPORT.md",
+      "size": 7309,
+      "sha256": "4c90844f2b8459098f825af310266ce6bd657b7848624df0f3382992621d783c"
+    },
+    {
+      "path": "execution.json",
+      "size": 692,
+      "sha256": "bed513875af56f40910976cf9693db357a6c723ddf18dff32c4d06b7345c032f"
+    },
+    {
+      "path": "focused-tests.log",
+      "size": 3104,
+      "sha256": "7ed27b79e068359dd23fc9f6ae336297bed9f58f3dfaa8bb15685c992d2f740d"
+    },
+    {
+      "path": "full-app-restart-gate.json",
+      "size": 902,
+      "sha256": "7bcf825154f4be62f71bf45da2c3f5df04f3f7613ea03d6bf52e3a7538a5f0f1"
+    },
+    {
+      "path": "harness.stderr.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "harness.stdout.log",
+      "size": 4979,
+      "sha256": "d430db197e2ab225ad3b76fd0df9f2f87bf874286b5e8b40efe7673845dd42f9"
+    },
+    {
+      "path": "lab/final-fsck.log",
+      "size": 360,
+      "sha256": "83e864b35333e62eaea063cd72a5fa55d54ef7b6875a125a71e5aa573635542c"
+    },
+    {
+      "path": "lab/final-relaunch/control.log",
+      "size": 77,
+      "sha256": "b38ca9e8f47dbb1066551a18d5e3b1f0a58f290ef0e0ca26c584291c737b9b01"
+    },
+    {
+      "path": "lab/final-relaunch/qemu.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lab/final-relaunch/serial.log",
+      "size": 4004,
+      "sha256": "88864ee68ebb18129255ba440b6273e594385528efee3cdaa00ad9bb3a01b353"
+    },
+    {
+      "path": "lab/fsck-1.log",
+      "size": 358,
+      "sha256": "41950a3783c6bfb98e3f5bee1c19d032033f194f0092cb2077c2b9aab7f98588"
+    },
+    {
+      "path": "lab/fsck-2.log",
+      "size": 358,
+      "sha256": "88c61da0d744f5d3b0b0d024540e893d3c31c18f1c19d9a4162343e268dc0d09"
+    },
+    {
+      "path": "lab/gui-1/control.log",
+      "size": 49,
+      "sha256": "ac19b9cd9af1fce993898ceab6716bb81891723331b009ced5a3a2f6efbe74d9"
+    },
+    {
+      "path": "lab/gui-1/qemu.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lab/gui-1/serial.log",
+      "size": 3618,
+      "sha256": "39dc83bca664104544b801f28470fae6746d3d9c0b8b0ce2df57b201d30a38d2"
+    },
+    {
+      "path": "lab/gui-2/control.log",
+      "size": 49,
+      "sha256": "ac19b9cd9af1fce993898ceab6716bb81891723331b009ced5a3a2f6efbe74d9"
+    },
+    {
+      "path": "lab/gui-2/qemu.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lab/gui-2/serial.log",
+      "size": 3618,
+      "sha256": "d3c2f57722bef4899809db9b2636ac9144da6abf67254b6a6dad13be180da41b"
+    },
+    {
+      "path": "lab/receipt.json",
+      "size": 4979,
+      "sha256": "d430db197e2ab225ad3b76fd0df9f2f87bf874286b5e8b40efe7673845dd42f9"
+    },
+    {
+      "path": "lab/recovery-1/control.log",
+      "size": 334,
+      "sha256": "2e5808411fa7610ee0b0721d23d666147e1b27d7697bc1a02c7d51ea0b4c8843"
+    },
+    {
+      "path": "lab/recovery-1/qemu.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lab/recovery-1/serial.log",
+      "size": 1270,
+      "sha256": "385b20d44eddc94c7f59c678edd9787503e6b130758fe6390ec4d77169e0583b"
+    },
+    {
+      "path": "lab/recovery-2/control.log",
+      "size": 334,
+      "sha256": "8b06ed8678b4034bf8abad86e6285cf366f500697e6610ad81b5df838668deee"
+    },
+    {
+      "path": "lab/recovery-2/qemu.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lab/recovery-2/serial.log",
+      "size": 1270,
+      "sha256": "cc5437d805edbe74e5c24ee6644c477f2cd860ac6fc5d289ed17e55f59a8cb48"
+    },
+    {
+      "path": "original-private-evidence-manifest.json",
+      "size": 6693,
+      "sha256": "f13e066892f87689284df4da40479bfb3b0d576f453e9996a13bcb32adfcbae9"
+    },
+    {
+      "path": "owner-ui-source-review.json",
+      "size": 1855,
+      "sha256": "fda5945efec62ad9f1e27897855473a9fb66809bf2ff8a0a02c4242fd7e0d1c7"
+    },
+    {
+      "path": "postflight.json",
+      "size": 8637,
+      "sha256": "12e356987b9045e128abb47cee126d365c3fb38f4975307ee8eba47071ca2fce"
+    },
+    {
+      "path": "postflight.stderr.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "postflight.stdout.log",
+      "size": 415,
+      "sha256": "5a017884be6286f591312d6eb538cdaa8a7e67bec33a74ac7a12e07a8f69a264"
+    },
+    {
+      "path": "preflight.json",
+      "size": 3607,
+      "sha256": "a41a09bc3cd0aa0267b774d50fc46651c90712c8571cfc6fe8387beedd1c78a9"
+    },
+    {
+      "path": "publication-provenance.json",
+      "size": 1671,
+      "sha256": "fcc0f23df54ccafae116fc6081daa56f0db649f1036bd58c8b701aa10a23499f"
+    },
+    {
+      "path": "qemu-process-events.jsonl",
+      "size": 6283,
+      "sha256": "15559fd6085765b9516e14d0d914dc77a89091948634fc3812a8797b0dac9cd3"
+    },
+    {
+      "path": "qemu-process-summary.json",
+      "size": 7683,
+      "sha256": "ed569f27e71960da99722a96cf610fde7b5fb5031c5666f07611820992f5d678"
+    }
+  ]
+}

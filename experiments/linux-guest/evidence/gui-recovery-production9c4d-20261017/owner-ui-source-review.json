@@ -1,0 +1,35 @@
+{
+  "tested_source_sha": "158be7910d1c372cdddbf7cb87706ad2ce69042f",
+  "desktop_UI_labels_verified": [
+    "JIT setup",
+    "Enable JIT",
+    "Start desktop",
+    "Recover disk",
+    "Stop Linux",
+    "Share report",
+    "Diagnostics",
+    "Refresh saved reports",
+    "Share session report (.md)",
+    "Done",
+    "Serial recovery"
+  ],
+  "chooser_label": "Debian desktop \u00b7 windows and apps",
+  "UI_source_sha256": {
+    "ios/LinuxDesktopView.swift": "4a7bb4b5783dc39a2d42e630ba9f90827189a45655a051b7525bfff06ea3cfd1",
+    "ios/LinuxProbeView.swift": "574bec1dd47b7689ceb58aa0eada52eb75d36750ad3a6bf4af5502059f48af1f",
+    "ios/LinuxTerminalSession.swift": "7b629d051ab886d13e08a3ff51f046b2a71499d459fa5ddc8cd0705f68003a92",
+    "ipa/project.json": "ec15587492673f117a7268a608c7e78ccca33737b834e85160a82a61bac004b2",
+    "ipa/package_probe.py": "137cbbd35e186858b7f31ca55f6bb62f7c3e5ed049abe684f60ac87705cb716f"
+  },
+  "JIT_walkthrough_provenance": "pinned husk119-source-check archive plus unchanged0002-jit-setup-routing patch; button labels unchanged by patch",
+  "source_bundle_identifier": "dev.ideck.linuxprobe",
+  "same_bundle_id_and_GUI_userdata_directory_in_prior_owner_reported_27e9736f": true,
+  "GUI_userdata": "Documents/iDeckDebianGUI-v1/rootfs-v1.raw",
+  "actual_SideStore_resigned_installed_identifier_and_team": "NOT VERIFIED from cloud",
+  "SideStore_official_reference": "https://docs.sidestore.io/docs/faq#can-i-transfer-my-altstoresideloadly-apps",
+  "Phone_recovery": "NOT RUN",
+  "JIT_labels_verified_against_locked_archive": true,
+  "JIT_source_archive_sha256": "58f6b18320d4d541a70c2a0112d2e9caebe8d15ffb3d3d9cb817edddb56bc7b1",
+  "JIT_source_lock_sha256": "aa90962030511770fb7656162f265933ebc9fb3d96264131e2b23f528c5a86ec",
+  "JIT_routing_patch_sha256": "a93a4af2b82418280c14c1b7e7ec64c8e6f2395602987dc59b95a1c841ed3ec4"
+}

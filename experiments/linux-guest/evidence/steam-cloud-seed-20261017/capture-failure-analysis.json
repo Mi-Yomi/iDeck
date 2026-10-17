@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "failure": "invalid actual tablet evdev capture",
+  "run": "experimental-seed/cleanup-boot",
+  "original_runner_sha256": "c0a06b5639a2f997cb7ab0686bd71ce7370046ef7740e6a75287940ff72844c5",
+  "capture_marker_observed": true,
+  "events_marker_observed": true,
+  "wheel_hex_rows": 0,
+  "wheel_decoded_bytes": 0,
+  "prior_lab_wheel_bytes": [
+    96,
+    96
+  ],
+  "established": "No WHEEL_BYTES rows were emitted. This is not the prior prompt/CRLF parsing issue.",
+  "inference": "The original background reader could acknowledge readiness before opening evdev; this race is present in the code but was not instrumented at the failed event. Causation remains unproven.",
+  "change": "Synchronously open evdev fd4 before capture-ready marker; bounded cat inherits that open file description; close fd4 and preserve reader status before decoding.",
+  "capture_timeout_seconds_before": 2,
+  "capture_timeout_seconds_after": 2,
+  "cpu_ram_or_security_changes": false,
+  "new_runner_sha256": "5e0ad053f60341e138e0675452f17a15906a9bca183da188131bbde2ad40d2eb",
+  "tests": "49 GUI regressions PASS, including3 real-shell descriptor/failure regressions; no evdev device acceptance claimed by unit tests",
+  "kernel_reference": "https://raw.githubusercontent.com/torvalds/linux/v6.12/drivers/input/evdev.c",
+  "failed_run_preserved": true,
+  "offline_failed_copy_fsck": "strict PASS; no further use of failed copy"
+}

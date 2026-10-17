@@ -1,0 +1,32 @@
+{
+  "command": [
+    "/workspace/steam-cloud-20261017/gui-lab/host/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+    "--library-path",
+    "/workspace/steam-cloud-20261017/gui-lab/host/usr/lib/x86_64-linux-gnu",
+    "/workspace/steam-cloud-20261017/gui-lab/host/usr/sbin/e2fsck",
+    "-f",
+    "-n",
+    "/workspace/steam-cloud-20261017/gui-lab/scratch-gui.raw"
+  ],
+  "exit_code": 0,
+  "evaluation": {
+    "policy": "strict-e2fsck-fn-v1",
+    "accepted": true,
+    "reason_codes": [],
+    "unexpected_lines": [],
+    "passes_and_summary": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      "summary"
+    ],
+    "version_count": 1
+  },
+  "read_only": true,
+  "writer_running": false,
+  "host_fsync": true,
+  "raw_sha256_before": "63ccb3d4d21ba96f3f789310ff70567c99870b80917f3eddea97fb301c286ed1",
+  "raw_sha256_after": "63ccb3d4d21ba96f3f789310ff70567c99870b80917f3eddea97fb301c286ed1"
+}

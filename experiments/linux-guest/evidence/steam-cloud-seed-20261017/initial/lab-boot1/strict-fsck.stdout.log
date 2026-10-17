@@ -1,0 +1,6 @@
+Pass 1: Checking inodes, blocks, and sizes
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+/workspace/steam-cloud-20261017/gui-lab/scratch-gui.raw: 21241/163840 files (0.3% non-contiguous), 215850/327680 blocks

@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/workspace/steam-cloud-20261017/run_seed_acceptance.py", line 106, in <module>
+    seed_report=gui_seed.prepare(source,vm,TASK/'gui-cache',TASK/'experimental-seed',
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/iDeck/experiments/linux-guest/tools/gui_seed.py", line 166, in prepare
+    result=boot(vm,output/'cleanup-boot',persistence=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/steam-cloud-20261017/run_seed_acceptance.py", line 59, in guarded_boot
+    result=check_gui_vm.boot(vm,output,**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/iDeck/experiments/linux-guest/tools/check_gui_vm.py", line 225, in boot
+    if not raw or len(raw)%24:raise RuntimeError('invalid actual tablet evdev capture')
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: invalid actual tablet evdev capture

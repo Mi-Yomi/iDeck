@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/workspace/steam-cloud-20261017/run_seed_acceptance_v3.py", line 106, in <module>
+    seed_report=gui_seed.prepare(source,vm,TASK/'gui-cache',TASK/'experimental-seed-v3',
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/iDeck/experiments/linux-guest/tools/gui_seed.py", line 159, in prepare
+    probe=verify(source_vm/'probe')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/iDeck/experiments/linux-guest/tools/stage_bundle.py", line 26, in verify
+    raise ValueError("guest must be a real directory")
+ValueError: guest must be a real directory

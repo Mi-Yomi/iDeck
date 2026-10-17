@@ -216,11 +216,14 @@ def boot(vm, output, provision=False, persistence=False, loader_inventory=None):
                 if abs(resized['WIDTH']-moved['WIDTH'])<15 or abs(resized['HEIGHT']-moved['HEIGHT'])<10:
                     raise RuntimeError('emulated pointer did not resize the real window')
                 report.update(emulated_pointer_move_resize=True,window_geometries=geometries)
-                serial('tablet=$(for p in /sys/class/input/event*; do case "$(cat "$p/device/name")" in *"Virtio Tablet"*) echo /dev/input/${p##*/};; esac; done); test -c "$tablet"; timeout 2 cat "$tablet" > /run/ideck/wheel.events & echo $! > /run/ideck/wheel.pid','wheel_capture')
+                # Open evdev synchronously before acknowledging readiness.
+                # Its per-open queue then retains input even if the background
+                # reader has not yet been scheduled under TCG.
+                serial('tablet=$(for p in /sys/class/input/event*; do case "$(cat "$p/device/name")" in *"Virtio Tablet"*) echo /dev/input/${p##*/};; esac; done); test -c "$tablet" || exit 1; exec 4<"$tablet" || exit 1; timeout 2 cat <&4 > /run/ideck/wheel.events & echo $! > /run/ideck/wheel.pid','wheel_capture')
                 time.sleep(0.1)
                 for direction in ('wheel-up','wheel-down'):
                     button(direction,True);button(direction,False)
-                data=serial('wait $(cat /run/ideck/wheel.pid) || test "$?" = 124; od -An -v -tx1 /run/ideck/wheel.events | sed "s/^/WHEEL_BYTES:/"','wheel_events')
+                data=serial('capture_status=0; wait $(cat /run/ideck/wheel.pid) || capture_status=$?; exec 4<&-; test "$capture_status" -eq 0 || test "$capture_status" -eq 124 || exit 1; od -An -v -tx1 /run/ideck/wheel.events | sed "s/^/WHEEL_BYTES:/"','wheel_events')
                 raw=bytes.fromhex(' '.join(row.decode() for row in re.findall(rb'(?m)^WHEEL_BYTES:([ 0-9a-f]+)\r?$',data)))
                 if not raw or len(raw)%24:raise RuntimeError('invalid actual tablet evdev capture')
                 events=[struct.unpack_from('<qqHHi',raw,i)[2:] for i in range(0,len(raw),24)]

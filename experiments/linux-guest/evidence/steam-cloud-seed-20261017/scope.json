@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "experimental_only": true,
+  "production_gui_lock_sha256": "fef0bf4c5b72cad5ee921616639f6e28bec73bce7b1e689c95c3734aed82c7eb",
+  "production_gui_seed_sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791",
+  "orchestrator_sha256": "7db1d5ab9e1ed7ff65e17e55f9e7cdbd3df835d0145b20766b3a06c27fa8c574",
+  "network": "none",
+  "security_changes": false,
+  "steam_runtime": "NOT RUN"
+}

@@ -1,0 +1,6 @@
+{
+  "path": "/workspace/steam-cloud-20261017/gui-lab-inputfix/scratch-gui.raw",
+  "sha256": "dfa49dd9e1e6328e002f0b066d98fb13f55cdcf00bb977ce576ec95e2f564a26",
+  "size": 1342177280,
+  "after": "lab boot2 clean Stop and strict fsck"
+}

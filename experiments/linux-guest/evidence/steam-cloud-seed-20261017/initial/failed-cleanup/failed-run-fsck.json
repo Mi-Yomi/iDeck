@@ -1,0 +1,35 @@
+{
+  "command": [
+    "/workspace/steam-cloud-20261017/experimental-seed/vm/host/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+    "--library-path",
+    "/workspace/steam-cloud-20261017/experimental-seed/vm/host/usr/lib/x86_64-linux-gnu",
+    "/workspace/steam-cloud-20261017/experimental-seed/vm/host/usr/sbin/e2fsck",
+    "-f",
+    "-n",
+    "/workspace/steam-cloud-20261017/experimental-seed/vm/scratch-gui.raw"
+  ],
+  "exit_code": 0,
+  "evaluation": {
+    "policy": "strict-e2fsck-fn-v1",
+    "accepted": true,
+    "reason_codes": [],
+    "unexpected_lines": [],
+    "passes_and_summary": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      "summary"
+    ],
+    "version_count": 1
+  },
+  "writer_running": false,
+  "read_only": true,
+  "host_fsync": true,
+  "raw_sha256_before": "84c950cfb36d83546deb47bfbc2fc932b77c68422938f3d2642708694170b263",
+  "raw_sha256_after": "84c950cfb36d83546deb47bfbc2fc932b77c68422938f3d2642708694170b263",
+  "gui_acceptance": "failed",
+  "cleanup_clean_unmount_observed": true,
+  "qemu_exit_code": "not retained in failed GUI receipt"
+}

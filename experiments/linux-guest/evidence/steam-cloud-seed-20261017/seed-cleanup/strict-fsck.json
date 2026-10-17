@@ -1,0 +1,32 @@
+{
+  "command": [
+    "/workspace/steam-cloud-20261017/experimental-seed-v4/vm/host/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+    "--library-path",
+    "/workspace/steam-cloud-20261017/experimental-seed-v4/vm/host/usr/lib/x86_64-linux-gnu",
+    "/workspace/steam-cloud-20261017/experimental-seed-v4/vm/host/usr/sbin/e2fsck",
+    "-f",
+    "-n",
+    "/workspace/steam-cloud-20261017/experimental-seed-v4/vm/scratch-gui.raw"
+  ],
+  "exit_code": 0,
+  "evaluation": {
+    "policy": "strict-e2fsck-fn-v1",
+    "accepted": true,
+    "reason_codes": [],
+    "unexpected_lines": [],
+    "passes_and_summary": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      "summary"
+    ],
+    "version_count": 1
+  },
+  "read_only": true,
+  "writer_running": false,
+  "host_fsync": true,
+  "raw_sha256_before": "dfc8155af88eb05e0a460f63c8c9e3c669e84862df576a59ff98ebe8a9f379bf",
+  "raw_sha256_after": "dfc8155af88eb05e0a460f63c8c9e3c669e84862df576a59ff98ebe8a9f379bf"
+}

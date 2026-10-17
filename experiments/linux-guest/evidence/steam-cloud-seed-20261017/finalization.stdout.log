@@ -1,0 +1,47 @@
+Starting cleanup from verified frozen lab; exact probe now a real directory
+Created experimental seed; starting matching Alpine two-boot gate
+{
+  "schema": 1,
+  "status": "pass",
+  "scope": "separate experimental seed only",
+  "seed": {
+    "file": "gui-rootfs-v1.raw",
+    "size": 1342177280,
+    "sha256": "a7758d821f67ec48646d4586ec54aeab8b8db31238f0be6dfaabc5966c46a5a2"
+  },
+  "gzip": {
+    "file": "gui-rootfs-v1.raw.gz",
+    "size": 270444186,
+    "sha256": "a5f23c8978bdef7846a800fd3c6207fe032ed4f1bc48450fe17a1704c0f6d05d"
+  },
+  "alpine_acceptance": {
+    "schema": 1,
+    "kind": "production-alpine-two-boots",
+    "status": "pass",
+    "kernel_sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+    "initramfs_sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4",
+    "rootfs_sha256": "a7758d821f67ec48646d4586ec54aeab8b8db31238f0be6dfaabc5966c46a5a2",
+    "gui_package_lock_sha256": "8b3ee6d1f255c7486e7226c65ab304036363edccea4e145b472fe7df1cf6ed98",
+    "bootstrap_receipt_sha256": "fdb76b504e392d866d58b4cc4711ecfddf705e9637be7305bbd660172ff1db85",
+    "boot_reports": {
+      "boot1": "623de274b4e78866a80daedeb113a84fb1480d0497df56cf2fffe0c6069cb8e3",
+      "boot2": "d261c59b51a3c73a5802992b3fe8730cab00e34dabe081eec1620180ac04ed9d"
+    },
+    "matching_kernel_gui": true,
+    "two_boots_clean": true,
+    "host_qemu_version": "QEMU emulator version 10.0.13 (Debian 1:10.0.13+ds-0+deb13u1)\nCopyright (c) 2003-2025 Fabrice Bellard and the QEMU Project developers",
+    "machine_id_persisted": true,
+    "ios_qemu_version": "10.0.12-utm",
+    "ios_compiled": false,
+    "device_verified": false,
+    "runner_sha256": "cb9d53d4f7f254828396a1e449f84e53eebf0edc8c984087c7f0bc388ecc70ba"
+  },
+  "production_gui_lock_unchanged": true,
+  "production_seed_replaced": false,
+  "seed_published": false,
+  "steam_runtime": "NOT RUN",
+  "task_qemu_remaining": false,
+  "security_or_network_settings_changed": false,
+  "lab_orchestrator_sha256": "7db1d5ab9e1ed7ff65e17e55f9e7cdbd3df835d0145b20766b3a06c27fa8c574",
+  "finalization_orchestrator_sha256": "464d74509ad4e5c79365a458ab36e5bb8f3bafc67b42ca36edf30b23602e8d11"
+}

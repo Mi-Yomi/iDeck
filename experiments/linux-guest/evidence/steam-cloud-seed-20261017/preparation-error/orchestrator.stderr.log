@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/workspace/steam-cloud-20261017/run_seed_acceptance_v2.py", line 95, in <module>
+    save(inventory,gui_elf.inventory(vm/'tree'))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/iDeck/experiments/linux-guest/tools/gui_elf.py", line 42, in inventory
+    if not executables:raise ValueError('no actual dynamic executables')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: no actual dynamic executables

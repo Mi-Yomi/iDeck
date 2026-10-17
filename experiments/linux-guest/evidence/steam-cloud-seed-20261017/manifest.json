@@ -1,0 +1,531 @@
+{
+  "schema": 1,
+  "scope": "experimental seed acceptance and precise network requirements; no disk/client bytes",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "size": 134,
+      "sha256": "136bd82c891bd4c5208573718b1cd5c601ef5cfaa8998dc1be119f89c227a27a"
+    },
+    {
+      "path": "NETWORK.md",
+      "size": 5749,
+      "sha256": "80ee1a6c567880139ceed72d11b2060215249968606f873a9f0dedec933bddb0"
+    },
+    {
+      "path": "README.md",
+      "size": 5677,
+      "sha256": "096cca2354bf07345fac6c69d9d48f81a64b752fdb6476dc65ad2d71ed56bf69"
+    },
+    {
+      "path": "alpine-acceptance.json",
+      "size": 1152,
+      "sha256": "ba6d38c0d6686514a903eca2f01454d1069685abe3c25a5792df1fbf83d8716f"
+    },
+    {
+      "path": "alpine-boot1/after-input.png",
+      "size": 33950,
+      "sha256": "737d14e20e66ff299794aad945d16732673b5471a0d8673e9798526bd9a57949"
+    },
+    {
+      "path": "alpine-boot1/control.log",
+      "size": 77,
+      "sha256": "b38ca9e8f47dbb1066551a18d5e3b1f0a58f290ef0e0ca26c584291c737b9b01"
+    },
+    {
+      "path": "alpine-boot1/desktop-menu.png",
+      "size": 36760,
+      "sha256": "0d45152711bb630567554f990e0d42fbad8c1240deeda00ee8532f831469787a"
+    },
+    {
+      "path": "alpine-boot1/desktop.png",
+      "size": 35043,
+      "sha256": "21fee48b4d71f960556711444dfb988e46a1ae7a842326401fd88b675f7beac4"
+    },
+    {
+      "path": "alpine-boot1/package-manifest.tsv",
+      "size": 17465,
+      "sha256": "7cac249c6410e6b3ef6fa9d28adc1652d5ec627e7aeb37508597d2110a7e4b3b"
+    },
+    {
+      "path": "alpine-boot1/result.json",
+      "size": 3647,
+      "sha256": "623de274b4e78866a80daedeb113a84fb1480d0497df56cf2fffe0c6069cb8e3"
+    },
+    {
+      "path": "alpine-boot1/runner-source.py",
+      "size": 21871,
+      "sha256": "5e0ad053f60341e138e0675452f17a15906a9bca183da188131bbde2ad40d2eb"
+    },
+    {
+      "path": "alpine-boot1/serial.log",
+      "size": 63910,
+      "sha256": "73d84a102874368d0f4ca7957bb4b44dcd6a72238240d6aa9175522331928050"
+    },
+    {
+      "path": "alpine-boot1/strict-fsck.json",
+      "size": 984,
+      "sha256": "8906104d3a2392ff5f9c8fb3a2271d7ca4cb79dc9e52b6f6e0bdb30f4f0a9959"
+    },
+    {
+      "path": "alpine-boot1/strict-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "path": "alpine-boot1/strict-fsck.stdout.log",
+      "size": 340,
+      "sha256": "54f11e38d980949a66cdeeabd735d399147619a0820a585a22814743e2e6a1dd"
+    },
+    {
+      "path": "alpine-boot2/after-input.png",
+      "size": 32931,
+      "sha256": "5fd6b089c2a79d894d81936645baddf710dd2bfa0dfdb65477647df0a0b94017"
+    },
+    {
+      "path": "alpine-boot2/control.log",
+      "size": 77,
+      "sha256": "b38ca9e8f47dbb1066551a18d5e3b1f0a58f290ef0e0ca26c584291c737b9b01"
+    },
+    {
+      "path": "alpine-boot2/desktop-menu.png",
+      "size": 35741,
+      "sha256": "de2ace90b348fcd7029b0f850dbecb2e91bab1b0880b48d64381226d50ccf8e9"
+    },
+    {
+      "path": "alpine-boot2/desktop.png",
+      "size": 35064,
+      "sha256": "e7f4a53e55cd7dec982fec1f868125c6fa8011a1fb0cbacc98fd14320db0d231"
+    },
+    {
+      "path": "alpine-boot2/package-manifest.tsv",
+      "size": 17465,
+      "sha256": "7cac249c6410e6b3ef6fa9d28adc1652d5ec627e7aeb37508597d2110a7e4b3b"
+    },
+    {
+      "path": "alpine-boot2/result.json",
+      "size": 3646,
+      "sha256": "d261c59b51a3c73a5802992b3fe8730cab00e34dabe081eec1620180ac04ed9d"
+    },
+    {
+      "path": "alpine-boot2/runner-source.py",
+      "size": 21871,
+      "sha256": "5e0ad053f60341e138e0675452f17a15906a9bca183da188131bbde2ad40d2eb"
+    },
+    {
+      "path": "alpine-boot2/serial.log",
+      "size": 63972,
+      "sha256": "8471a2edffc9f48def0add6b3143e11370cb4e1a09ff8aab44e690ccf15bde34"
+    },
+    {
+      "path": "alpine-boot2/strict-fsck.json",
+      "size": 984,
+      "sha256": "024e975356198e3af6f68b5de3ea37b18d2680cc473bf663aff9a500025b9d09"
+    },
+    {
+      "path": "alpine-boot2/strict-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "path": "alpine-boot2/strict-fsck.stdout.log",
+      "size": 340,
+      "sha256": "5e93c9b9f47195a914c2b5bce742a321cedc4f42f5c731b6206e6fc70a840297"
+    },
+    {
+      "path": "capture-failure-analysis.json",
+      "size": 1423,
+      "sha256": "fa228719d2039df1b2ce6b764f81e719d187293bf093958e57d8fe40ea21e19c"
+    },
+    {
+      "path": "collect_seed_evidence_v4.py",
+      "size": 6061,
+      "sha256": "b813e4eb1152a7391b7fe841d10b28371939d674739a74eb1b286c8897a320c2"
+    },
+    {
+      "path": "elf-inventory.json",
+      "size": 11233,
+      "sha256": "c8a2928d14bc97f99d593ce328bacbb0b9c819dd894c35dec440ef806e63247d"
+    },
+    {
+      "path": "experimental-acceptance.json",
+      "size": 2033,
+      "sha256": "ebd173c447947519116bb027db505f24fcd2b8b2a5e7eae65bc5bed26d0800bc"
+    },
+    {
+      "path": "experimental-gui-seed.json",
+      "size": 6928,
+      "sha256": "97e31383b2aa9f68300d37566574e083881874fd314bead1e99fbcfd6a2daa56"
+    },
+    {
+      "path": "finalization.stderr.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "finalization.stdout.log",
+      "size": 2175,
+      "sha256": "20e5f088658a65ab797354b7a0755eef056806a0aa4915867e426036055934e0"
+    },
+    {
+      "path": "finalize_seed_v4.py",
+      "size": 4617,
+      "sha256": "464d74509ad4e5c79365a458ab36e5bb8f3bafc67b42ca36edf30b23602e8d11"
+    },
+    {
+      "path": "frozen-lab.json",
+      "size": 234,
+      "sha256": "4ee6cb279cb9a797e78ef7ca14903dfb55c9152e62c955ed8cf7988bd489b6e7"
+    },
+    {
+      "path": "gui-inputfix-tests.log",
+      "size": 7361,
+      "sha256": "3a98c13e03dcd9995dde6079d8e315aedd3de78d986a6e7bdd9e16d28142d7ac"
+    },
+    {
+      "path": "initial/failed-cleanup/failed-run-fsck.json",
+      "size": 1074,
+      "sha256": "64f3a4ed169f59ba80663963a50e12813240233dd937d9d1ea62a2509e7aeb97"
+    },
+    {
+      "path": "initial/failed-cleanup/failed-run-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "path": "initial/failed-cleanup/failed-run-fsck.stdout.log",
+      "size": 330,
+      "sha256": "c42fd61f5e969645f9e15f5766181b921246f45ad529a87c6419c1dc020b4566"
+    },
+    {
+      "path": "initial/failed-cleanup/failure.png",
+      "size": 23803,
+      "sha256": "6e60c3337e87ba9638d7be3f96ed3810d91fd60ed1977c083a369f8680f5fced"
+    },
+    {
+      "path": "initial/failed-cleanup/result.json",
+      "size": 3847,
+      "sha256": "dcb9adb53531ad146d5519b05b414f44cc8ebbcdafe42e1a7dab49e55e915e38"
+    },
+    {
+      "path": "initial/failed-cleanup/runner-source.py",
+      "size": 21517,
+      "sha256": "c0a06b5639a2f997cb7ab0686bd71ce7370046ef7740e6a75287940ff72844c5"
+    },
+    {
+      "path": "initial/failed-cleanup/serial.log",
+      "size": 49116,
+      "sha256": "995cc67c45980b2898a5350f345768d9d51db25556beadd12d1f3bd6732e7247"
+    },
+    {
+      "path": "initial/lab-boot1/result.json",
+      "size": 6067,
+      "sha256": "6c3df15144984b460d92914d879645b358e7331606086e338e836289a51c3438"
+    },
+    {
+      "path": "initial/lab-boot1/runner-source.py",
+      "size": 21517,
+      "sha256": "c0a06b5639a2f997cb7ab0686bd71ce7370046ef7740e6a75287940ff72844c5"
+    },
+    {
+      "path": "initial/lab-boot1/serial.log",
+      "size": 65078,
+      "sha256": "4ddfe1fc4bca2ab293eba0a40c230c7080d0b64cb178b570108049664e7fcc22"
+    },
+    {
+      "path": "initial/lab-boot1/strict-fsck.json",
+      "size": 892,
+      "sha256": "bfa258604d208c26bafb1e7a83795bdf1041cd0a0586654a96ac16be7f09f4b6"
+    },
+    {
+      "path": "initial/lab-boot1/strict-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "path": "initial/lab-boot1/strict-fsck.stdout.log",
+      "size": 317,
+      "sha256": "79ca98482119c5db2a9f7af5dd559be42901b13ff78617a1d929b67a9eca0239"
+    },
+    {
+      "path": "initial/lab-boot2/result.json",
+      "size": 6068,
+      "sha256": "d9c707b76a053522469c78375ad721b84bfe52877e7165838c36ab4ab298e6f1"
+    },
+    {
+      "path": "initial/lab-boot2/runner-source.py",
+      "size": 21517,
+      "sha256": "c0a06b5639a2f997cb7ab0686bd71ce7370046ef7740e6a75287940ff72844c5"
+    },
+    {
+      "path": "initial/lab-boot2/serial.log",
+      "size": 64343,
+      "sha256": "791438af760adf515f0d9c4050fb669acb4664f88ad7c81029a3940160ba5747"
+    },
+    {
+      "path": "initial/lab-boot2/strict-fsck.json",
+      "size": 892,
+      "sha256": "377bd3858d88ec7298d3682066b82a4b329abc85df6049e3c4a19c17e8c955e0"
+    },
+    {
+      "path": "initial/lab-boot2/strict-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "path": "initial/lab-boot2/strict-fsck.stdout.log",
+      "size": 317,
+      "sha256": "bfc17f9fcb9f674564fb5134108b4f390d8922986bf47bafe44be2e2c0197fea"
+    },
+    {
+      "path": "initial/orchestrator.stderr.log",
+      "size": 1007,
+      "sha256": "5decde28311176d27448c88f745895aebcc9df46dc2adc771fa2d88d2773a073"
+    },
+    {
+      "path": "initial/orchestrator.stdout.log",
+      "size": 178,
+      "sha256": "36eb232aa75762c85f7f6d904c6970945bd236fe5846ca36a2232011a5233d91"
+    },
+    {
+      "path": "initial/run_seed_acceptance.py",
+      "size": 5936,
+      "sha256": "2ce23f8f3b1ca4a2c817aa77bdc933407269a000d1b0cd24e1227a00cec8d661"
+    },
+    {
+      "path": "lab-boot1/after-input.png",
+      "size": 34987,
+      "sha256": "05ae5ab173e8a25eb565fc66a3815a183310d6938cc80054cac8d68849791237"
+    },
+    {
+      "path": "lab-boot1/control.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lab-boot1/desktop-menu.png",
+      "size": 37803,
+      "sha256": "48e2aa1d93bd822cfef848d2a92b2c6c71c1ca1a76f32890b95ed721b4b7e9be"
+    },
+    {
+      "path": "lab-boot1/desktop.png",
+      "size": 23681,
+      "sha256": "5f9c186d8ed34a0d16b558c543958507a4433f4937f6a6eb0df0c4cbad25efb7"
+    },
+    {
+      "path": "lab-boot1/package-manifest.tsv",
+      "size": 17465,
+      "sha256": "7cac249c6410e6b3ef6fa9d28adc1652d5ec627e7aeb37508597d2110a7e4b3b"
+    },
+    {
+      "path": "lab-boot1/result.json",
+      "size": 6143,
+      "sha256": "851b5dd045f7702d0aef8b6f4d1ee3a3e3e58a44cbc5626a6f64ca3eff6e226e"
+    },
+    {
+      "path": "lab-boot1/runner-source.py",
+      "size": 21871,
+      "sha256": "5e0ad053f60341e138e0675452f17a15906a9bca183da188131bbde2ad40d2eb"
+    },
+    {
+      "path": "lab-boot1/serial.log",
+      "size": 65067,
+      "sha256": "d0aa9e4063b3bfe75970a42c09279628dac9e3b4f26798a57cf5e1a308746887"
+    },
+    {
+      "path": "lab-boot1/strict-fsck.json",
+      "size": 928,
+      "sha256": "6398c8f3dd6e99c40a3f535d4bf514898912c086b7e282c733ec80fd35840094"
+    },
+    {
+      "path": "lab-boot1/strict-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "path": "lab-boot1/strict-fsck.stdout.log",
+      "size": 326,
+      "sha256": "947bcf7f5218bc034f2d0b6d5f0242a76402d5c0d2fb161c440aba253e8d89bb"
+    },
+    {
+      "path": "lab-boot2/after-input.png",
+      "size": 34240,
+      "sha256": "5dc0f52e51398f5c8a39b3cedd37a92e8646dc3955d221b0a3d6556cbb34cf24"
+    },
+    {
+      "path": "lab-boot2/control.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lab-boot2/desktop-menu.png",
+      "size": 34223,
+      "sha256": "ef94dc379041296014b009164f34d3ad2d9b25704f3af5a6fcc08002342d9ec7"
+    },
+    {
+      "path": "lab-boot2/desktop.png",
+      "size": 36014,
+      "sha256": "c74b85c581823b0311e5d206dc34407eccdeda4c16ae9858ca329c6ccb89688c"
+    },
+    {
+      "path": "lab-boot2/package-manifest.tsv",
+      "size": 17465,
+      "sha256": "7cac249c6410e6b3ef6fa9d28adc1652d5ec627e7aeb37508597d2110a7e4b3b"
+    },
+    {
+      "path": "lab-boot2/result.json",
+      "size": 6142,
+      "sha256": "7a71d431ed49049d1b9de38637410a0b5b97a8efdf0d7a552b8e82675628c6da"
+    },
+    {
+      "path": "lab-boot2/runner-source.py",
+      "size": 21871,
+      "sha256": "5e0ad053f60341e138e0675452f17a15906a9bca183da188131bbde2ad40d2eb"
+    },
+    {
+      "path": "lab-boot2/serial.log",
+      "size": 64128,
+      "sha256": "27a7c468fda86a2c4190a31481ecc4ef6f2e159929ea8b488f13ba535376700f"
+    },
+    {
+      "path": "lab-boot2/strict-fsck.json",
+      "size": 928,
+      "sha256": "d878b77cdaf0ff2c06962be3aff81e8ba20b4117e2868e2424cd6f1972fe8562"
+    },
+    {
+      "path": "lab-boot2/strict-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "path": "lab-boot2/strict-fsck.stdout.log",
+      "size": 326,
+      "sha256": "13db56aa31b4050be62e510400955c2fb6d59224fffb1eca008134eeed1a7008"
+    },
+    {
+      "path": "locked-downloads.json",
+      "size": 7232,
+      "sha256": "55b495f3fd71ae71d35d4d10e8ad3b6126644f0e1242f7d43890eebfb6950528"
+    },
+    {
+      "path": "orchestrator.stderr.log",
+      "size": 655,
+      "sha256": "f1d58bd0023d1a2052e14dc440d35770b457f413651737712b0d3c21eb6f5356"
+    },
+    {
+      "path": "orchestrator.stdout.log",
+      "size": 178,
+      "sha256": "36eb232aa75762c85f7f6d904c6970945bd236fe5846ca36a2232011a5233d91"
+    },
+    {
+      "path": "preparation-error/orchestrator.stderr.log",
+      "size": 499,
+      "sha256": "d3259b594dbb13ca6c805c413b4e63053d87f5bddd7b76ba4ef9acc67223b340"
+    },
+    {
+      "path": "preparation-error/orchestrator.stdout.log",
+      "size": 54,
+      "sha256": "4c54ab3188cadd2d6daf345e074243ee99af2a4d4a96eaa5f59d8d2ad1314871"
+    },
+    {
+      "path": "preparation-error/run_seed_acceptance_v2.py",
+      "size": 5969,
+      "sha256": "275d611f27743dd41edf411af3b504826571265530277c24d363ed70fdd76d4a"
+    },
+    {
+      "path": "preserved-provision.json",
+      "size": 211,
+      "sha256": "bcd005e4f8a73278222db668025423148dd6b8e9ad5288b88f4cbfb3bf9fb765"
+    },
+    {
+      "path": "run_seed_acceptance_v3.py",
+      "size": 5969,
+      "sha256": "7db1d5ab9e1ed7ff65e17e55f9e7cdbd3df835d0145b20766b3a06c27fa8c574"
+    },
+    {
+      "path": "scope.json",
+      "size": 420,
+      "sha256": "251cb7fc7406f641d00a2d7662d2c41df0687c16b9ee3a390b55bc13a4728955"
+    },
+    {
+      "path": "seed-cleanup/after-input.png",
+      "size": 34225,
+      "sha256": "3f60c3a327074ffb243feaa4a8e2f4191e7c0f51f529eff75f09d616d9fa853e"
+    },
+    {
+      "path": "seed-cleanup/control.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "seed-cleanup/desktop-menu.png",
+      "size": 37061,
+      "sha256": "dc2127a3d3a7ecd3a5f7f736171347ed2889819003eb3620bc9c1f81c75426c5"
+    },
+    {
+      "path": "seed-cleanup/desktop.png",
+      "size": 35998,
+      "sha256": "17db45f421286e9bf31510734f59b42ed581eeaf9cd3de2c19a8d66321ac95ce"
+    },
+    {
+      "path": "seed-cleanup/package-manifest.tsv",
+      "size": 17465,
+      "sha256": "7cac249c6410e6b3ef6fa9d28adc1652d5ec627e7aeb37508597d2110a7e4b3b"
+    },
+    {
+      "path": "seed-cleanup/result.json",
+      "size": 4332,
+      "sha256": "16dacd58fa9b535417545c7ef4f3d2f71adbec5d0cbb82c3340730020e3b74e4"
+    },
+    {
+      "path": "seed-cleanup/runner-source.py",
+      "size": 21871,
+      "sha256": "5e0ad053f60341e138e0675452f17a15906a9bca183da188131bbde2ad40d2eb"
+    },
+    {
+      "path": "seed-cleanup/serial.log",
+      "size": 49769,
+      "sha256": "4c5a27782d4c208ad2d2826a1cb43326b3fc91e4936f74acefc8e5de40686599"
+    },
+    {
+      "path": "seed-cleanup/strict-fsck.json",
+      "size": 956,
+      "sha256": "e6a0f165020cb58697f800d752978c41fb865144990ea377521065dcdf3cb5c6"
+    },
+    {
+      "path": "seed-cleanup/strict-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "path": "seed-cleanup/strict-fsck.stdout.log",
+      "size": 333,
+      "sha256": "cd9cb0a80a3698faa473e467a91b11a0dce8fb614b8b8a21b74e29d91b4d7e57"
+    },
+    {
+      "path": "seed-offline/strict-fsck.json",
+      "size": 960,
+      "sha256": "244c0b6499d8767c6f5abd6c4b445da5f1870f901e4bf6774e9d427cbf206d1d"
+    },
+    {
+      "path": "seed-offline/strict-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "path": "seed-offline/strict-fsck.stdout.log",
+      "size": 337,
+      "sha256": "69defe9f7eb389cdb266ac6ba28188b6886f577aa2158db42d169b40235c8436"
+    },
+    {
+      "path": "storage.json",
+      "size": 619,
+      "sha256": "50c5dcf451dca1084a1a0ca7572a0a5ef664fb9615b9a5a54f90c53ded6da823"
+    },
+    {
+      "path": "summary.json",
+      "size": 3272,
+      "sha256": "873ff813f03ca43267e303c956012b3aefd1844e320c5903ee702d97e1d94371"
+    }
+  ]
+}

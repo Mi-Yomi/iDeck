@@ -1,0 +1,14 @@
+{
+  "observed_at_utc": "2026-10-17T13:11:46.662579+00:00",
+  "workspace_capacity_bytes": 33770192896,
+  "workspace_used_bytes": 16343769088,
+  "workspace_free_bytes": 15691661312,
+  "steam_profile_virtual_disk_bytes": 12884901888,
+  "offline_fsck_reserve_bytes": 4294967296,
+  "minimum_flattened_copy_plus_reserve_bytes": 17179869184,
+  "minimum_headroom_present": false,
+  "shortfall_before_any_new_client_or_overlay_bytes": 1488207872,
+  "source_images_and_failed_outputs_preserved": true,
+  "automatic_cleanup": false,
+  "scope": "resource budget for future Steam work; experimental GUI acceptance already passed"
+}

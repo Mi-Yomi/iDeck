@@ -1,5 +1,16 @@
 # Steam IPC diagnosis and online handoff — 2026-10-17
 
+Cloud input follow-up: a **separate experimental GUI seed** now passed full
+offline acceptance, SHA-256
+`a7758d821f67ec48646d4586ec54aeab8b8db31238f0be6dfaabc5966c46a5a2`.
+Production GUI lock/seed are unchanged. See
+[cloud seed receipts and exact network requirements](evidence/steam-cloud-seed-20261017/README.md).
+The official locked Steam download still has zero ZIPs after tunnel403; no
+Steam/CEF runtime or new root-cause claim follows from GUI seed acceptance.
+The current Steam runner still needs its separate experimental-seed contract
+before using these new bytes, and storage must be rechecked before any 12GiB
+offline copy. No security/network settings or Steam runtime flags were changed.
+
 **Main UI and Big Picture remain NOT REACHED.** The owner stopped local work to
 take the laptop away. Continue in the private cloud environment, independently
 of this laptop. The current evidence directory is `evidence/steam-ipc-20261017`;

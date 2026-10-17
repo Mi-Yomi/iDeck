@@ -1,5 +1,58 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Separate cloud experimental seed accepted; exact network request — 2026-10-17
+
+Follow-up started clean at remote Steam commit
+`96268f4c95ed9c9e07279d9ccd9b0b716f85171f`. The independently built cloud
+experimental seed passed two lab GUI boots, a cleanup boot, then two GUI boots
+with the exact original Alpine 6.18.35 kernel/bootstrap. Actual typing,
+pointer/scroll/menu, save/reopen, machine-ID persistence, UID1000 apps and all
+clean Stop/QEMU exit0/fsync/strict offline fsck checks passed. Four boots also
+executed all 423 real glibc loader checks. This is GUI seed acceptance, not Steam.
+See [receipts, screenshots and network request](experiments/linux-guest/evidence/steam-cloud-seed-20261017/README.md).
+
+New private seed under `/workspace/steam-cloud-20261017/experimental-seed-v4/seed`:
+
+- Raw: 1342177280 bytes, SHA-256
+  `a7758d821f67ec48646d4586ec54aeab8b8db31238f0be6dfaabc5966c46a5a2`.
+- Gzip: 270444186 bytes, SHA-256
+  `a5f23c8978bdef7846a800fd3c6207fe032ed4f1bc48450fe17a1704c0f6d05d`.
+- This is a separate experimental identity. Production `9c4d978f…`, GUI locks,
+  guest scripts, GUI payload/Release, main/GUI branches and Codemagic are unchanged.
+  No disk/client was committed, published or supplied as a download link.
+
+One acceptance helper readiness gap was closed after a retained empty wheel
+capture: synchronously open evdev before the ready marker, inherit that descriptor
+in the same two-second bounded reader, then close it and retain reader failures.
+No timeout/CPU/RAM/security change. The old failure's unique cause is unproven;
+the new tests establish readiness and the final five boots passed actual input.
+49 GUI tests passed, including three real-shell descriptor/failure regressions.
+The old failed cleanup and its strict fsck, plus preparation errors rejected by
+the original verifiers, are retained. No provenance gate was weakened.
+
+The exact Steam tunnel403 was for
+`https://client-update.fastly.steamstatic.com/bins_hardware_all.zip.58d828f4b4d9969be201b7731579a74bae0c3ea8`.
+GUI shell `Forbidden` was for
+`https://api.github.com/repos/Mi-Yomi/iDeck/releases/assets/650023557`; its HTTP
+status/body/redirect were not received. Existing GitHub metadata access works.
+For locked downloads plus the GUI API route, the narrow host list is
+`client-update.fastly.steamstatic.com`, `api.github.com`, and the documented
+potential redirect host `release-assets.githubusercontent.com`, HTTPS443/GET.
+The actual private redirect URL was not observed or disclosed. Owner/admin
+environment allowlist/Agent Security configuration is required; no setting was
+changed and no failed URL was retried. Full paths/settings and official references
+are in the new evidence's `NETWORK.md` and `locked-downloads.json`.
+
+Steam ZIPs remain 0/17, extra45 packages cached but NOT INSTALLED. Main Steam UI,
+Big Picture, their input/restart, Steam RAM/SHM, IPC/ARM64 stack capture, Apple,
+iPhone and GPU acceleration remain NOT RUN. The Steam runner's production-seed
+hash guard remains intact: later use of this accepted experimental seed requires
+a separate verified Steam-only seed contract, not a production GUI lock change.
+All task VMs are stopped; originals/frozen snapshots and failed outputs remain
+private. Recheck storage before Steam: the retained cloud files now leave less
+than the 16GiB minimum for a 12GiB offline copy plus 4GiB reserve, before client
+and overlay growth. Nothing was deleted to mask that headroom constraint.
+
 ## Private cloud Steam continuation: input transfer blocker — 2026-10-17
 
 Started from the verified remote Steam branch at

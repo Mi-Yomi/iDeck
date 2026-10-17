@@ -151,8 +151,25 @@ func runGUIRecoveryChecks(root: URL, fixture: URL) throws {
 
     var progress = LinuxRecoveryProgress()
     let digestLine = "IDECK_RECOVERY_IMAGE_SHA256:" + checkedHash
+    var hashing = LinuxRecoveryProgress()
+    for line in ["IDECK_RECOVERY_ASSESS:0", "IDECK_RECOVERY_REPLAY:0", "IDECK_RECOVERY_VERIFY:0", "IDECK_RECOVERY_SCAN_CLEAN"] { try hashing.observe(line) }
+    check(hashing.phase == "checking_image" && !hashing.done)
+    check(hashing.message.contains("hashing") && hashing.message.contains("keep iDeck open"))
+    check(!hashing.message.contains("desktop ready") && !hashing.message.contains("reopen"))
+    var watchdog = LinuxRecoveryWatchdog(started: 100)
+    check(watchdog.nextDeadline == 160 && watchdog.timeout(at: 159) == nil)
+    check(watchdog.timeout(at: 160) == .supervisor)
+    watchdog.advanced(at: 110, supervisor: true)
+    watchdog.advanced(at: 145) // final scan, then whole-image hashing
+    check(watchdog.timeout(at: 165) == nil, "65-second recovery falsely timed out")
+    check(watchdog.nextDeadline == 235 && watchdog.timeout(at: 234) == nil)
+    var ongoing = watchdog
+    check(watchdog.timeout(at: 235) == .progress, "stalled hashing has no watchdog")
+    for time in [190.0, 270.0, 279.0] { ongoing.advanced(at: time) }
+    check(ongoing.nextDeadline == 280 && ongoing.timeout(at: 280) == .deadline, "progress renewed absolute recovery deadline")
     for line in ["IDECK_RECOVERY_ASSESS:4", "IDECK_RECOVERY_REPLAY:1", "IDECK_RECOVERY_VERIFY:0", "IDECK_RECOVERY_SCAN_CLEAN", digestLine, "IDECK_RECOVERY_DONE"] { try progress.observe(line) }
     precondition(progress.done && progress.imageSHA256 == checkedHash)
+    check(progress.message.contains("Waiting for Linux shutdown") && !progress.message.contains("reopen"))
     var scoped = LinuxRecoveryProgress()
     for line in ["IDECK_RECOVERY_ASSESS:0", "IDECK_RECOVERY_REPLAY:0", "IDECK_RECOVERY_SUMMARY_ELIGIBLE"] { try scoped.observe(line) }
     do { try scoped.observe("IDECK_RECOVERY_VERIFY:0"); preconditionFailure("unfinished scope accepted") }

@@ -460,7 +460,7 @@ func runTerminalChecks() throws {
     check(cleanReport.contains("| Accelerated guest GPU | NOT VERIFIED |"))
     check(cleanReport.contains("| Steam | NOT RUN |"))
     check(cleanReport.contains("does not itself verify a file after a second guest boot"))
-    for status in ["terminal_startup_timeout", "terminal_stop_timeout", "terminal_stop_failed"] {
+    for status in ["terminal_startup_timeout", "terminal_stop_timeout", "terminal_stop_failed", "terminal_recovery_timeout"] {
         let failedReport = LinuxProbeReport.render(report: ["mode": "terminal", "status": status,
             "host_disk_fsync_passed": NSNumber(value: 1)])
         check(failedReport.contains("orderly stop is not established"))

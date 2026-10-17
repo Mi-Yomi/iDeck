@@ -15,7 +15,7 @@ enum LinuxProbeReport {
                                      "guest_frames_and_input_verified", "first_frame_not_observed",
                                      "terminal_prepared", "terminal_running", "terminal_stopping", "terminal_clean_stopped",
                                      "terminal_unclean_stopped", "terminal_prepare_failed", "terminal_stop_failed",
-                                     "terminal_startup_timeout", "terminal_stop_timeout"]
+                                     "terminal_startup_timeout", "terminal_stop_timeout", "terminal_recovery_timeout"]
         let status = (report["status"] as? String).flatMap { statuses.contains($0) ? $0 : nil }
         let summary: String
         switch status {
@@ -97,6 +97,7 @@ enum LinuxProbeReport {
                 if desktop {
                     row("Recovery phase", text(report["recovery_phase"], allowed: ["backup", "work_copy", "prepared", "assessed", "replayed", "summary_reconciling", "summary_reconciled", "checking_image", "verified", "awaiting_exit", "relaunch_required", "promoted", "manual_review"]))
                     row("Recovery failure", text(report["recovery_failure"], allowed: ["metadata", "busy", "io", "space", "changed", "receipt", "manualReview", "relaunch"]))
+                    row("Recovery watchdog", text(report["recovery_watchdog_timeout"], allowed: ["supervisor", "progress", "deadline"]))
                     row("Recovery guest failure", text(report["recovery_guest_failure"], allowed: ["proc", "sys", "dev", "applets", "module", "ext4", "control", "control_open", "duplicate_tools", "duplicate_work", "disk_identity", "extra_disk", "readonly", "size", "uuid", "tools_mount", "bind_dev", "bind_proc", "target_mode", "assessment", "replay", "manual_review", "sync", "unmount_proc", "unmount_dev", "unmount_tools", "final_sync", "cancelled", "poweroff_returned", "control_receipt", "verification_output", "scope_head", "scope_hash", "image_hash", "counter_scope", "counter_eligibility", "counter_directory", "counter_mount", "counter_sync", "counter_unmount"]))
                     row("Read-only output gate", flag(report["recovery_output_clean"], yes: "CLEAN OUTPUT", no: "NOT ESTABLISHED"))
                     row("Guest checked image SHA-256", hex(report["recovery_checked_image_sha256"], count: 64))

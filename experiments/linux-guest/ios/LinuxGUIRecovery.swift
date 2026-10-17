@@ -310,7 +310,8 @@ struct LinuxRecoveryProgress {
         "duplicate_tools", "duplicate_work", "disk_identity", "extra_disk", "readonly", "size", "uuid", "tools_mount",
         "bind_dev", "bind_proc", "target_mode", "assessment", "replay", "manual_review", "sync", "unmount_proc",
         "unmount_dev", "unmount_tools", "final_sync", "cancelled", "poweroff_returned", "control_receipt", "verification_output",
-        "scope_head", "scope_hash", "image_hash", "counter_scope", "counter_eligibility", "counter_directory", "counter_mount", "counter_sync", "counter_unmount"]
+        "scope_head", "scope_hash", "image_hash", "counter_scope", "counter_eligibility", "counter_directory", "counter_mount", "counter_sync", "counter_unmount",
+        "watchdog_supervisor", "watchdog_progress", "watchdog_deadline"]
     static func failure(_ line: String) -> String? {
         let prefix = "IDECK_RECOVERY_FAILED:"
         guard line.hasPrefix(prefix) else { return nil }
@@ -325,6 +326,19 @@ struct LinuxRecoveryProgress {
     private(set) var summaryEligible = false
     private(set) var summaryReconciled = false
     private(set) var done = false
+    var phase: String {
+        if done { return "awaiting_exit" }
+        if imageSHA256 != nil { return "verified" }
+        if verification != nil { return "checking_image" }
+        if summaryEligible { return summaryReconciled ? "summary_reconciled" : "summary_reconciling" }
+        return replay != nil ? "replayed" : "assessed"
+    }
+    var message: String {
+        if done { return "Recovery checks finished. Waiting for Linux shutdown and host sync. Keep iDeck open." }
+        if imageSHA256 != nil { return "Recovery image hash recorded. Finishing checks; keep iDeck open. The original remains preserved." }
+        if scanClean { return "Recovery: hashing the checked work copy. This can take some time; keep iDeck open. The original remains preserved." }
+        return "Recovery: checking the separate work copy (\(phase)). Keep iDeck open until completion. The original remains preserved."
+    }
     mutating func observe(_ line: String) throws {
         guard !done else { throw LinuxGUIRecovery.Invalid.receipt }
         if line == "IDECK_RECOVERY_ASSESS:0" || line == "IDECK_RECOVERY_ASSESS:4" {
@@ -351,5 +365,31 @@ struct LinuxRecoveryProgress {
         } else if line == "IDECK_RECOVERY_DONE" {
             guard verification == 0, scanClean, imageSHA256 != nil else { throw LinuxGUIRecovery.Invalid.receipt }; done = true
         } else { throw LinuxGUIRecovery.Invalid.manualReview }
+    }
+}
+
+/// Monotonic, finite recovery deadlines, separate from graphical readiness.
+/// Real trusted milestones may renew inactivity, never the absolute limit.
+struct LinuxRecoveryWatchdog {
+    enum Timeout: String, Equatable { case supervisor, progress, deadline }
+    static let supervisorSeconds: TimeInterval = 60
+    static let progressSeconds: TimeInterval = 90
+    static let totalSeconds: TimeInterval = 180
+    let started: TimeInterval
+    private(set) var lastProgress: TimeInterval
+    private(set) var supervisorReady = false
+    init(started: TimeInterval) { self.started = started; self.lastProgress = started }
+    mutating func advanced(at now: TimeInterval, supervisor: Bool = false) {
+        lastProgress = max(lastProgress, now)
+        supervisorReady = supervisorReady || supervisor
+    }
+    var nextDeadline: TimeInterval {
+        min(started + Self.totalSeconds, supervisorReady ? lastProgress + Self.progressSeconds : started + Self.supervisorSeconds)
+    }
+    func timeout(at now: TimeInterval) -> Timeout? {
+        if now >= started + Self.totalSeconds { return .deadline }
+        if !supervisorReady, now >= started + Self.supervisorSeconds { return .supervisor }
+        if supervisorReady, now >= lastProgress + Self.progressSeconds { return .progress }
+        return nil
     }
 }

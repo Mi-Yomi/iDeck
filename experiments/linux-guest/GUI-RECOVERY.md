@@ -30,6 +30,18 @@ and checks actual free space again. Verified backups and the source are preserve
 No existing image is resized/reformatted/reseeded. Console and Probe disks are
 outside this workflow.
 
+Recovery has its own monotonic watchdog, independent of desktop readiness:
+60seconds for supervisor startup,90seconds without an accepted trusted milestone,
+and180seconds absolute for checks. Progress never renews the absolute deadline.
+Hashing is an explicit in-progress state: keep iDeck open until confirmed finish.
+DONE starts the existing30second shutdown watchdog. A timeout latches failure,
+records supervisor/progress/deadline in diagnostics and prevents promotion from
+that attempt; original/backup and native locks remain preserved. It performs no
+forced native teardown. Normal desktop/console startup remains60seconds.
+The mandatory Swift fake-clock regressions are wired but NOT RUN here (no Apple
+compiler/runtime). The existing old46fea VM receipt covers unchanged guest inputs,
+not execution of this native timer/controller change.
+
 Recovery attaches ONLY the work copy and the immutable bundled seed. The latter
 is RO/noload and supplies pinned glibc e2fsck, Bash and coreutils through chroot;
 no executable/configuration comes from the mutable target. Unique virtio serials,

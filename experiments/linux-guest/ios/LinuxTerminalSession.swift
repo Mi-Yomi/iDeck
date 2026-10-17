@@ -397,6 +397,9 @@ private final class LinuxTerminalWorker {
     var transcriptRevision: UInt64 = 0
     var recovery: LinuxGUIRecovery?
     var recoveryProgress = LinuxRecoveryProgress()
+    var recoveryWatchdog: LinuxRecoveryWatchdog?
+    var recoveryWatchdogRevision: UInt64 = 0
+    var recoveryTimedOut = false
     var isRecovery: Bool
 
     init(owner: LinuxTerminalSession, bundle: URL, session: URL, dataDirectory: URL, metadata: [String: Any],
@@ -743,19 +746,23 @@ private final class LinuxTerminalWorker {
             // readiness/unmount. A shell echo in the serial transcript cannot.
             let prefix = owner.isDesktop ? "IDECK_DESKTOP_" : (owner.isDebian ? "IDECK_DEBIAN_" : "IDECK_TERMINAL_")
             if isRecovery, let text = String(data: line, encoding: .utf8), text.hasPrefix("IDECK_RECOVERY_") {
+                guard acceptRecoveryActivity() else { continue }
                 do {
                     try recoveryProgress.observe(text)
+                    recoveryWatchdog?.advanced(at: ProcessInfo.processInfo.systemUptime)
+                    armRecoveryTimeout()
                     report["recovery_assessment_exit"] = recoveryProgress.assessment
                     report["recovery_replay_exit"] = recoveryProgress.replay
                     report["recovery_verification_exit"] = recoveryProgress.verification
                     report["recovery_output_clean"] = recoveryProgress.scanClean
                     report["recovery_checked_image_sha256"] = recoveryProgress.imageSHA256
                     report["recovery_summary_reconciled"] = recoveryProgress.summaryReconciled
-                    let stage = recoveryProgress.done ? "awaiting_exit" : (recoveryProgress.imageSHA256 != nil ? "verified" : (recoveryProgress.verification != nil ? "checking_image" : (recoveryProgress.summaryEligible ? (recoveryProgress.summaryReconciled ? "summary_reconciled" : "summary_reconciling") : (recoveryProgress.replay != nil ? "replayed" : "assessed"))))
+                    let stage = recoveryProgress.phase
                     report["recovery_phase"] = stage
                     checkpoint(recoveryProgress.done ? .recoveryRelaunch : (recoveryProgress.imageSHA256 != nil ? .recoveryVerified : (recoveryProgress.replay != nil ? .recoveryReplay : .recoveryAssessment)))
-                    if recoveryProgress.done { lifecycle.record(.stop); stopRequested = true }
-                    owner.publish { $0.message = "Recovery: \(stage). The original remains preserved; activation requires closing and reopening the app." }
+                    if recoveryProgress.done { lifecycle.record(.stop); stopRequested = true; scheduleStopTimeout() }
+                    let message = recoveryProgress.message
+                    owner.publish { $0.message = message }
                 } catch {
                     let reason = LinuxRecoveryProgress.failure(text) ?? "control_receipt"
                     stopFailed = true; ready = false; report["recovery_phase"] = "manual_review"
@@ -768,15 +775,21 @@ private final class LinuxTerminalWorker {
                 persist(); continue
             }
             if owner.isDesktop, line == Data("IDECK_DESKTOP_RECOVERY_READY".utf8), !guestWasReady, !loopReturned, !stopRequested {
+                if isRecovery, acceptRecoveryActivity() {
+                    recoveryWatchdog?.advanced(at: ProcessInfo.processInfo.systemUptime, supervisor: true)
+                    armRecoveryTimeout()
+                }
                 checkpoint(.terminalReady)
                 lifecycle.record(.ready)
                 guestWasReady = true
                 report["terminal_ready"] = true
                 report["desktop_gui_ready"] = false
                 persist()
+                let timedOut = recoveryTimedOut
                 owner.publish {
                     $0.serialReady = !$0.recoveryMode; $0.canStop = true
-                    $0.message = $0.recoveryMode ? "Offline recovery is checking the unmounted work copy. Original data is preserved."
+                    $0.message = timedOut ? "Recovery timed out; no copy can be activated. Stop is available now. Original data remains preserved."
+                        : $0.recoveryMode ? "Offline recovery is checking the unmounted work copy. Keep iDeck open until completion. Original data is preserved."
                         : "Recovery console is ready. Starting Xorg and the desktop…"
                 }
                 continue
@@ -788,7 +801,7 @@ private final class LinuxTerminalWorker {
                 owner.publish { $0.ready = false; $0.desktopInput?.setFocused(false); $0.message = "Graphical startup failed. Serial recovery and Stop remain available; save the report." }
                 continue
             }
-            if line == Data((prefix + "READY").utf8), !ready, !loopReturned, !stopRequested {
+            if !isRecovery, line == Data((prefix + "READY").utf8), !ready, !loopReturned, !stopRequested {
                 if !guestWasReady { checkpoint(.terminalReady) }
                 lifecycle.record(.ready)
                 guestWasReady = true
@@ -812,7 +825,12 @@ private final class LinuxTerminalWorker {
                 cleanUnmount = true
                 checkpoint(.guestCleanUnmount)
                 report["terminal_clean_unmount"] = true
-                owner.publish { $0.ready = false; $0.serialReady = false; $0.canStop = false; $0.message = "User data was unmounted. Waiting for Linux to stop…" }
+                let timedOut = recoveryTimedOut
+                owner.publish {
+                    $0.ready = false; $0.serialReady = false; $0.canStop = false
+                    $0.message = timedOut ? "The recovery guest unmounted after timeout. Recovery is not accepted; original data remains preserved. Save diagnostics."
+                        : "User data was unmounted. Waiting for Linux to stop…"
+                }
                 persist()
                 // Parse the rest of this control batch before considering a
                 // pass: poweroff may have returned and emitted STOP_FAILED.
@@ -857,7 +875,7 @@ private final class LinuxTerminalWorker {
         lifecycle.record(.loopReturned)
         ready = false
         report["qemu_main_loop_returned"] = true
-        report["status"] = stopFailed ? "terminal_stop_failed" : "terminal_unclean_stopped"
+        report["status"] = recoveryTimedOut ? "terminal_recovery_timeout" : (stopFailed ? "terminal_stop_failed" : "terminal_unclean_stopped")
         if !cleanUnmount { checkpoint(.uncleanStopped) }
         persist()
         owner.publish { $0.running = false; $0.ready = false; $0.serialReady = false; $0.stopping = false; $0.canStop = false }
@@ -926,8 +944,13 @@ private final class LinuxTerminalWorker {
     }
 
     private func scheduleStartupTimeout() {
+        if isRecovery {
+            recoveryWatchdog = LinuxRecoveryWatchdog(started: ProcessInfo.processInfo.systemUptime)
+            armRecoveryTimeout()
+            return
+        }
         queue.asyncAfter(deadline: .now() + 60) {
-            guard !self.ready, !self.stopRequested, !self.loopReturned, !self.finalized, !self.startupAborted else { return }
+            guard !self.isRecovery, !self.ready, !self.stopRequested, !self.loopReturned, !self.finalized, !self.startupAborted else { return }
             self.checkpoint(.startupTimeout)
             self.report["terminal_startup_timed_out"] = true
             self.report["status"] = "terminal_startup_timeout"
@@ -935,6 +958,46 @@ private final class LinuxTerminalWorker {
             self.owner.publish {
                 $0.message = $0.isDesktop ? "Desktop readiness was not confirmed within 60 seconds. Serial recovery and Stop remain available once the supervisor is ready. Save the report; the disk remains locked until app exit." : "Linux terminal readiness was not confirmed within 60 seconds. No forced stop was attempted. Save the report; the disk remains locked until app exit."
             }
+        }
+    }
+
+    private func acceptRecoveryActivity() -> Bool {
+        guard !recoveryTimedOut, !stopFailed else { return false }
+        if !stopRequested, let reason = recoveryWatchdog?.timeout(at: ProcessInfo.processInfo.systemUptime) {
+            recoveryTimeout(reason); return false
+        }
+        return true
+    }
+
+    private func armRecoveryTimeout() {
+        guard isRecovery, !recoveryProgress.done, !recoveryTimedOut, !stopFailed, !stopRequested,
+              !loopReturned, !finalized, !startupAborted, let watchdog = recoveryWatchdog else { return }
+        recoveryWatchdogRevision &+= 1
+        let revision = recoveryWatchdogRevision
+        let delay = max(0, watchdog.nextDeadline - ProcessInfo.processInfo.systemUptime)
+        queue.asyncAfter(deadline: .now() + delay) {
+            guard revision == self.recoveryWatchdogRevision, !self.recoveryProgress.done, !self.recoveryTimedOut,
+                  !self.stopFailed, !self.stopRequested, !self.loopReturned, !self.finalized, !self.startupAborted else { return }
+            if let reason = self.recoveryWatchdog?.timeout(at: ProcessInfo.processInfo.systemUptime) { self.recoveryTimeout(reason) }
+            else { self.armRecoveryTimeout() }
+        }
+    }
+
+    private func recoveryTimeout(_ reason: LinuxRecoveryWatchdog.Timeout) {
+        guard !recoveryTimedOut, !stopFailed, !stopRequested, !loopReturned, !finalized, !startupAborted else { return }
+        recoveryTimedOut = true; stopFailed = true; ready = false
+        recoveryWatchdogRevision &+= 1
+        lifecycle.record(.failed)
+        checkpoint(.recoveryTimeout, failure: .recoveryFailed)
+        report["recovery_watchdog_timeout"] = reason.rawValue
+        report["terminal_clean_stop"] = false; report["status"] = "terminal_recovery_timeout"
+        do { try recovery?.recordFailure("watchdog_" + reason.rawValue) } catch { owner.publish { $0.diagnosticFailure() } }
+        persist()
+        let canStop = guestWasReady && (control?.peer ?? -1) >= 0
+        owner.publish {
+            $0.ready = false; $0.serialReady = false; $0.desktopInput?.setFocused(false)
+            $0.canStop = canStop
+            $0.message = "Recovery exceeded its \(reason.rawValue) time limit. No copy can be activated from this attempt. Original and backup remain preserved; save diagnostics and use Stop when available. The disk stays locked until app exit."
         }
     }
 

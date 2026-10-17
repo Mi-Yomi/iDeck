@@ -2,12 +2,12 @@
   "schema": 1,
   "status": "source_and_old_seed_digest_bound_host_pass_current_production_blocked",
   "python_tests": {
-    "total": 315,
-    "passed": 310,
+    "total": 316,
+    "passed": 311,
     "skipped": 5,
     "failures": 0,
     "errors": 0,
-    "log_sha256": "56de865cca8252ded5400ae3c1d336c7d9632978e1ef24cd6ebcefa192c3b402"
+    "log_sha256": "55f539247225c050e997350bd16f8ebd9df6c0556163fcd01a5558c93a2b99a7"
   },
   "offline_husk_overlay": {
     "status": "pass",
@@ -42,6 +42,19 @@
   "native_regressions_not_run": [
     "fresh child rejects non-superblock byte mutation after verified receipt",
     "fresh child rejects missing checked digest",
-    "before/after rename interruption idempotence with checked digest"
-  ]
+    "before/after rename interruption idempotence with checked digest",
+    "65s recovery avoids desktop timeout; stalled hashing/supervisor and absolute deadline expire",
+    "recovery progress messages never promise desktop-ready or reopen before shutdown+fsync"
+  ],
+  "recovery_watchdog": {
+    "supervisor_seconds": 60,
+    "inactivity_seconds": 90,
+    "absolute_check_seconds": 180,
+    "shutdown_seconds": 30,
+    "clock": "ProcessInfo.systemUptime, separate from desktop ready",
+    "failure": "latched worker+lifecycle failure, typed journal/report reason, no promotion, no forced teardown/unlock",
+    "native_fake_clock_tests": "WIRED mandatory Apple gate; NOT RUN here",
+    "host_guest_inputs_unchanged": true,
+    "new_vm_or_device_execution": false
+  }
 }

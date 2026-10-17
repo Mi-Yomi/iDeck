@@ -1,5 +1,33 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Recovery watchdog follow-up — 2026-10-17
+
+Review05cd7d6 found that the ordinary60s desktop-ready timer could report a false
+startup timeout during the measured63–65s recovery. Recovery now has separate
+monotonic state/deadlines:60s for supervisor startup,90s without an accepted
+trusted milestone,180s absolute checks limit. Accepted progress renews inactivity
+only, never the absolute limit; generation-guarded delayed callbacks avoid stale
+timers. Receipt handling checks expiry too. DONE starts the existing30s shutdown
+watchdog. Normal desktop/console60s startup and30s Stop limits remain unchanged.
+
+Timeout records typed recoveryTimeout plus an allowlisted supervisor/progress/
+deadline reason, latches worker+lifecycle failure and refuses further recovery
+receipts/promotion. No forced native teardown, unlock or disk replacement. Stop
+can become available when the supervisor responds late. Recovery cannot set GUI
+ready; hashing asks the user to keep iDeck open. Only confirmed guest shutdown+
+host sync presents close/reopen instructions. Final image digest binding remains.
+
+316tests:311PASS/5explicitSKIP/0failures/errors; exact offline Husk overlay PASS
+(81members/45inputs/28copies/10patches/21addedSwift). Mandatory actual Swift clock
+regressions cover65s non-timeout, stalled hashing, supervisor timeout and the
+non-renewable absolute deadline, but Apple/Swift execution is NOT RUN here.
+Guest suffix, six host-proof inputs, large GUI assets and locks are unchanged;
+no new VM/device run claimed. Previous two-cycle old46fea evidence still applies
+to those unchanged guest inputs. Current9c4d and Apple/iPhone acceptance remain
+blocked. Parent additionally reports direct local task failure again:
+`DesktopTaskWorkspaceUnavailableError`. Library failure evidence is unchanged.
+CI was not dispatched.
+
 ## Review follow-up: bind the checked recovery image — 2026-10-17
 
 Native review found a real gap in528c2eb: `verified` stored SCAN_CLEAN but no

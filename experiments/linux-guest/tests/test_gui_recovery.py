@@ -132,6 +132,31 @@ class GUIRecovery(unittest.TestCase):
         final=next(node for node in ast.walk(run) if isinstance(node,ast.If) and 'final_fsck.returncode' in ast.unparse(node.test))
         self.assertIn('output_gate(final_fsck.stdout + final_fsck.stderr, active)',ast.unparse(final.test))
 
+    def test_recovery_has_separate_bounded_watchdog_and_never_sets_desktop_ready(self):
+        source=(ROOT/'ios/LinuxTerminalSession.swift').read_text()
+        startup=swift_block(source,'private func scheduleStartupTimeout()')
+        self.assertIn('if isRecovery {',startup)
+        self.assertIn('LinuxRecoveryWatchdog(started: ProcessInfo.processInfo.systemUptime)',startup)
+        self.assertIn('guard !self.isRecovery',startup)
+        self.assertIn('queue.asyncAfter(deadline: .now() + 60)',startup)
+        control=swift_block(source,'private func receiveControl(')
+        self.assertIn('if !isRecovery, line == Data((prefix + "READY").utf8)',control)
+        self.assertIn('guard acceptRecoveryActivity() else { continue }',control)
+        self.assertIn('recoveryWatchdog?.advanced(at: ProcessInfo.processInfo.systemUptime)',control)
+        self.assertIn('stopRequested = true; scheduleStopTimeout()',control)
+        timeout=swift_block(source,'private func recoveryTimeout(')
+        for field in ['stopFailed = true','lifecycle.record(.failed)','report["terminal_clean_stop"] = false',
+                      'report["status"] = "terminal_recovery_timeout"','recordFailure("watchdog_"']:
+            self.assertIn(field,timeout)
+        for forbidden in ['promotePending','closeUnused','qemu_cleanup','Darwin.kill','exit(']:self.assertNotIn(forbidden,timeout)
+        arm=swift_block(source,'private func armRecoveryTimeout()')
+        self.assertIn('recoveryWatchdogRevision',arm)
+        self.assertIn('watchdog.nextDeadline - ProcessInfo.processInfo.systemUptime',arm)
+        checks=(ROOT/'ios/tests/GUIRecoveryChecks.swift').read_text()
+        for text in ['65-second recovery falsely timed out','stalled hashing has no watchdog',
+                     'progress renewed absolute recovery deadline','hashing.message.contains("hashing")']:
+            self.assertIn(text,checks)
+
     def test_terminal_echo_partial_lines_and_failed_commands_never_satisfy_sync_receipt(self):
         nonce='0123456789abcdef0123456789abcdef'
         command,marker,failed=serial_command('printf canary > /tmp/lab-file && sync',nonce)

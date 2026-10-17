@@ -31,7 +31,7 @@ final class LinuxTerminalDiagnostics {
         case cleanStopped, stopFailed, uncleanStopped, preparationFailed, startupTimeout, stopTimeout
         case qemuOwnerThreadRetained, consoleLogCloseBegin, consoleLogCloseReturned
         case consolePeersCloseBegin, consolePeersCloseReturned
-        case recoveryBackup, recoveryWorkCopy, recoveryPrepared, recoveryAssessment, recoveryReplay, recoveryVerified, recoveryRelaunch
+        case recoveryBackup, recoveryWorkCopy, recoveryPrepared, recoveryAssessment, recoveryReplay, recoveryVerified, recoveryRelaunch, recoveryTimeout
     }
     enum Problem: Error { case directory, open, metadata, read, write, synchronize, limit, invalid }
     struct Ext4State: Codable, Equatable {

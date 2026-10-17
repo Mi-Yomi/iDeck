@@ -1,0 +1,26 @@
+{
+  "replay_runs": 2,
+  "byte_identical_outputs": true,
+  "independent_readelf_relocations": "PASS",
+  "prior_evidence_manifests": [
+    {
+      "path": "linux-guest/evidence/steam-fresh-network-20261017/manifest.json",
+      "manifest_sha256": "a289a48a896aab1250a6e9d82e7e8a8cbfe05897d419b2e3a0721c487d172747",
+      "entries": 69,
+      "status": "PASS"
+    },
+    {
+      "path": "linux-guest/evidence/steam-network-readonly-20261017/manifest.json",
+      "manifest_sha256": "4b5c6387b0c1ed434b163e80799ab42a6627bd3717568388b3a5d7e9d672294f",
+      "entries": 12,
+      "status": "PASS"
+    },
+    {
+      "path": "linux-guest/evidence/steam-ipc-20261017/manifest.json",
+      "manifest_sha256": "fb7d0e61cdd5a6038d37c73f54cba1228b2e1d0d9677d1d81d4ed26f7b97dfef",
+      "entries": 94,
+      "status": "PASS"
+    }
+  ],
+  "runtime_tests": "NOT RUN: no runtime changes or guest target"
+}

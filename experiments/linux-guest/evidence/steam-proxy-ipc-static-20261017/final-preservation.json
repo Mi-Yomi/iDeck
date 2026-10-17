@@ -1,0 +1,21 @@
+{
+  "utc": "2026-10-17T14:46:20.399314+00:00",
+  "disk_rehashes": {
+    "run1": {
+      "size": 1500643328,
+      "sha256": "1f6816b06b927423b7545a90a6c81cdb08e1a319ebdef7c011f758e8e6253415",
+      "unchanged": true
+    },
+    "run2": {
+      "size": 1498939392,
+      "sha256": "462a5804f296ec1333196fce0ad1a893204e841611c76f5f31e608a7b99a11e3",
+      "unchanged": true
+    }
+  },
+  "qemu_pids": [],
+  "task_mounts": [],
+  "no_new_VM_or_image_writer": true,
+  "network_configuration_changes": false,
+  "refused_updater_host_retried": false,
+  "free_bytes": 22221479936
+}

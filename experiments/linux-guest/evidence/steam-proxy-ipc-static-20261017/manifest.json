@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "scope": "static exact Steam proxy and Chrome IPC readiness; no runtime or configuration changes",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "size": 63,
+      "sha256": "9ad0be5e9ac2efa47ef9cccb38e39e9127c8923243368ac0ef0d89de7b221d25"
+    },
+    {
+      "path": "README.md",
+      "size": 12058,
+      "sha256": "709b3b2fd0ab921ee629d48a254fbcf3e2594d271cf501a6b9f405c941541070"
+    },
+    {
+      "path": "binary-inputs.json",
+      "size": 4994,
+      "sha256": "57bc157da6448a8fa392397fd1d1a5051209fa6c469e78dc29a36223ed246ab5"
+    },
+    {
+      "path": "capstone-provenance.json",
+      "size": 702,
+      "sha256": "0e2e4aedd0e3a25a49c3b435842b7a9325d7d6e6a4153df7512c1d45627d08fb"
+    },
+    {
+      "path": "chromehtml.so.selected-disassembly.txt",
+      "size": 11559,
+      "sha256": "fca49e483926b26d23c9fbdfe9bb826108af7fffc40281163d8d235e233a2962"
+    },
+    {
+      "path": "environment-verification.json",
+      "size": 1176,
+      "sha256": "8eabe6e2dd10b67d067932040873b5b9af9090ffaf0d94c0153d377ccbddbefc"
+    },
+    {
+      "path": "final-preservation.json",
+      "size": 572,
+      "sha256": "0cc880c1383bea97bb4fcd22f653294b39891f3242f66157742ed9e63fed94a9"
+    },
+    {
+      "path": "independent-readelf.txt",
+      "size": 166,
+      "sha256": "204606f4b192f596ad1ae900195cb2a8784d4be48a2749d6662ba1f34f3275ce"
+    },
+    {
+      "path": "replay_static.py",
+      "size": 9441,
+      "sha256": "3c34356a1522a2b1e021dc5b8a02ebcb5365090f285943b059deda946a1022f9"
+    },
+    {
+      "path": "static-replay.json",
+      "size": 2668,
+      "sha256": "f80e6c36a83cde10c0acea71d4b46d0b3e9fda2b67c1d51eb836ae6bfc1d0732"
+    },
+    {
+      "path": "steam.selected-disassembly.txt",
+      "size": 16643,
+      "sha256": "f8ae4880cd4e370117503624a54da27fbf241fcc39bfe3e9e3349ce175796903"
+    },
+    {
+      "path": "steamui.so.selected-disassembly.txt",
+      "size": 2201,
+      "sha256": "8b1605ea1339c22a54c802bf8d4b18fa2c7ae3c8707cd54181d974ed22fdb847"
+    },
+    {
+      "path": "verification.json",
+      "size": 890,
+      "sha256": "cdd0ad3cbee44c99ebd7ced94fc2539a5a5798d0e52134ef53fe7cbe0d3acb8e"
+    }
+  ]
+}

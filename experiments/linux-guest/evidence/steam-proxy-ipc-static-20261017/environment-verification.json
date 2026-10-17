@@ -1,0 +1,47 @@
+{
+  "utc": "2026-10-17T14:35:13.342097+00:00",
+  "selected_cloud_environment_accessible": true,
+  "source_sha": "d0a8201f6495989fd5ab7c01e1bb17c7604747ca",
+  "branch": "codex/steam-arm64-experiment-20261017",
+  "preserved_inputs": {
+    "run1": {
+      "size": 1500643328,
+      "sha256": "1f6816b06b927423b7545a90a6c81cdb08e1a319ebdef7c011f758e8e6253415",
+      "unchanged": true
+    },
+    "run2": {
+      "size": 1498939392,
+      "sha256": "462a5804f296ec1333196fce0ad1a893204e841611c76f5f31e608a7b99a11e3",
+      "unchanged": true
+    },
+    "zip_cache": {
+      "count": 17,
+      "bytes": 360938891,
+      "all_sha256_match": true
+    },
+    "deb_cache": {
+      "count": 45,
+      "bytes": 18238048,
+      "all_sha256_match": true
+    }
+  },
+  "proxies_sanitized": {
+    "https": {
+      "scheme": "http",
+      "hostname": "proxy",
+      "port": 8080,
+      "credentials_present": false
+    },
+    "http": {
+      "scheme": "http",
+      "hostname": "proxy",
+      "port": 8080,
+      "credentials_present": false
+    }
+  },
+  "qemu_pids": [],
+  "free_bytes": 22333411328,
+  "blocked_host_retried": false,
+  "VM_started": false,
+  "network_security_changes": false
+}

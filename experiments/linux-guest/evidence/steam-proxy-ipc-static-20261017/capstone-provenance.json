@@ -1,0 +1,18 @@
+{
+  "package_pin": {
+    "name": "libcapstone5",
+    "version": "5.0.7-1~deb13u1",
+    "architecture": "amd64",
+    "filename": "pool/main/c/capstone/libcapstone5_5.0.7-1~deb13u1_amd64.deb",
+    "sha256": "775187a7be26bb0b076d1979a02163b943dbc13eb4adb0efc503223a03c75422",
+    "size": 778216,
+    "installed_size_kib": 9148
+  },
+  "archive_size": 778216,
+  "archive_sha256": "775187a7be26bb0b076d1979a02163b943dbc13eb4adb0efc503223a03c75422",
+  "member": "./usr/lib/x86_64-linux-gnu/libcapstone.so.5",
+  "binary_size": 9334752,
+  "binary_sha256": "6db7eb6c4b7899a9f7b236e63f0aec33940fb6c7029384e33d69807e4d5fc201",
+  "existing_extracted_binary_identical": true,
+  "system_install_or_download": false
+}

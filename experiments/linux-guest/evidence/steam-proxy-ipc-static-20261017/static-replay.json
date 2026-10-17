@@ -1,0 +1,110 @@
+{
+  "schema": 1,
+  "scope": "static pinned ELF inspection only",
+  "binaries": {
+    "steam": {
+      "size": 10174384,
+      "sha256": "73da03ead208a74e14bee566869a4235063dc4a9e1063f29c4608de6d78bd4ea"
+    },
+    "steamclient.so": {
+      "size": 47744848,
+      "sha256": "276f021548f9016de834274f4042b796604530d910d114b77ee170b46e409072"
+    },
+    "steamui.so": {
+      "size": 39120760,
+      "sha256": "9a59e3bbbee2c6de7a2559986ae5407c01e7416ac5ac2d9e40f11c8aceffc1ee"
+    },
+    "chromehtml.so": {
+      "size": 2923856,
+      "sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7"
+    }
+  },
+  "capstone": {
+    "size": 9334752,
+    "sha256": "6db7eb6c4b7899a9f7b236e63f0aec33940fb6c7029384e33d69807e4d5fc201",
+    "version": [
+      5,
+      0
+    ]
+  },
+  "nop_ret_abi_check": "PASS",
+  "independent_instruction_field_checks": "PASS",
+  "chrome_controller_vtable_address": "0x2af930",
+  "slots": {
+    "0": {
+      "relocation": "0x2af930",
+      "target": "0x42bb0"
+    },
+    "8": {
+      "relocation": "0x2af938",
+      "target": "0x43180"
+    },
+    "16": {
+      "relocation": "0x2af940",
+      "target": "0x410c8"
+    },
+    "24": {
+      "relocation": "0x2af948",
+      "target": "0x41128"
+    },
+    "32": {
+      "relocation": "0x2af950",
+      "target": "0x41130"
+    },
+    "40": {
+      "relocation": "0x2af958",
+      "target": "0x41248"
+    },
+    "48": {
+      "relocation": "0x2af960",
+      "target": "0x50fb8"
+    },
+    "56": {
+      "relocation": "0x2af968",
+      "target": "0x41058"
+    },
+    "64": {
+      "relocation": "0x2af970",
+      "target": "0x480b8"
+    },
+    "72": {
+      "relocation": "0x2af978",
+      "target": "0x4ea10"
+    },
+    "80": {
+      "relocation": "0x2af980",
+      "target": "0x4ea18"
+    },
+    "88": {
+      "relocation": "0x2af988",
+      "target": "0x51068"
+    },
+    "96": {
+      "relocation": "0x2af990",
+      "target": "0x43fc0"
+    }
+  },
+  "readiness_object_offset": "0x20c",
+  "ipc_subobject_offset": "0x170",
+  "ipc_connection_flag_offset": "0x9c",
+  "outputs": [
+    {
+      "path": "steam.selected-disassembly.txt",
+      "size": 16643,
+      "sha256": "f8ae4880cd4e370117503624a54da27fbf241fcc39bfe3e9e3349ce175796903"
+    },
+    {
+      "path": "steamui.so.selected-disassembly.txt",
+      "size": 2201,
+      "sha256": "8b1605ea1339c22a54c802bf8d4b18fa2c7ae3c8707cd54181d974ed22fdb847"
+    },
+    {
+      "path": "chromehtml.so.selected-disassembly.txt",
+      "size": 11559,
+      "sha256": "fca49e483926b26d23c9fbdfe9bb826108af7fffc40281163d8d235e233a2962"
+    }
+  ],
+  "network_requests": 0,
+  "guest_or_disk_execution": false,
+  "configuration_changes": false
+}

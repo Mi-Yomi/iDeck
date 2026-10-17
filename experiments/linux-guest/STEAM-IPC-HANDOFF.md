@@ -1,5 +1,17 @@
 # Steam IPC diagnosis and online handoff — 2026-10-17
 
+New static follow-up at verified Steam remote `d0a8201f…`: the virtual
+`ChromeHTML_Controller_003` readiness target is now resolved to
+`chromehtml.so:0x4ea10`, reading controller+`0x20c` = IPC+`0x9c`. The exact
+shared-stream response path sets that flag at `0x5b3e8`; disconnect clears it.
+This is the flag the120000ms Steam UI loop polls. The per-browser BrowserReady
+message and Chromium child's EnsureConnected timeout remain separate paths.
+See [bounded disassembly, verified vtable and measurement implications](evidence/steam-proxy-ipc-static-20261017/README.md).
+No historical runtime timeout/root cause is proven; no new trace or ARM64 stack
+capture ran. The current cloud client still stops before CEF, pending approved
+updater access plus a supported guest network/proxy/TLS path. Native application
+proxy mechanisms were statically found, but no configuration was changed.
+
 Latest independent cloud attempt: all17 locked ZIPs and the production GUI Release
 were actually obtained, production9c4d booted, and all45 dependencies installed
 with empty successful dpkg audit. The updater then failed before CEF: host

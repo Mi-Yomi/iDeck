@@ -1,5 +1,15 @@
 # Safe checkpoint for the replacement cloud task
 
+**Latest read-only follow-up:** the selected cloud remained accessible after a
+reported disconnect; installed disks/caches rehashed unchanged, no VM or writer.
+At verified remote Steam `d0a8201f…`, exact native code establishes application
+proxy discovery / `-bootstrapperproxy` / HTTPS CONNECT, but guest proxy
+reachability/resolution, TLS and approval for the new updater host remain
+unverified. The denied hostname was not retried. No DNS/proxy/security patch was
+made. Static Chrome-init readiness is now mapped to the controller's shared IPC
+connection byte. Read [current findings and exact approval boundary](evidence/steam-proxy-ipc-static-20261017/README.md)
+before any continuation. UI/Big Picture remain NOT REACHED.
+
 **Fresh-task follow-up:** the next executor actually downloaded all17 locked
 Steam ZIPs and the exact production Release, restored production9c4d and installed
 the client/45 dependencies on an independent cloud disk. It is now stopped after

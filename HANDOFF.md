@@ -1,5 +1,35 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Native proxy and Chrome IPC static follow-up — 2026-10-17
+
+Selected cloud access was confirmed after the reported disconnect. At verified
+remote Steam SHA `d0a8201f6495989fd5ab7c01e1bb17c7604747ca`, both stopped disks and
+17 ZIP/45 dependency caches rehashed unchanged. No VM, disk writer, updater-host
+retry or networking/security change occurred. See [reproducible native proxy and
+Chrome readiness evidence](experiments/linux-guest/evidence/steam-proxy-ipc-static-20261017/README.md).
+
+Exact native Steam implements environment proxy discovery, registers
+`-bootstrapperproxy` and passes it to the bootstrap HTTP client, and has an HTTPS
+CONNECT path. This is static mechanism verification, not guest connectivity.
+The closed launcher passes no proxy configuration; supported guest access/name
+resolution to the existing managed proxy, TLS trust and owner confirmation of
+the newly published updater hostname remain missing. Native code also attempts
+origin getaddrinfo before proxy selection; failed-DNS behavior is untested.
+No speculative forwarding/endpoint/IP/CA change was applied. Any one-variable
+application proxy experiment requires the explicit owner/platform agreement
+spelled out in the evidence, preserving policy and certificate verification.
+
+The previously unresolved Chrome-init virtual target is now exact:
+`ChromeHTML_Controller_003` factory → controller vtable `0x2af930`; slot64 pumps,
+slot72 reads controller+`0x20c` = IPC-subobject+`0x9c`. That flag is set on the
+shared-stream handshake response path and cleared by disconnect. This narrows
+future PC/stack interpretation; it does not prove the historical500ms timeout
+or explain first-attempt SHM growth. Two static replays were byte-identical;
+independent readelf relocation checks and prior69/12/94-file manifests passed.
+No runtime flags, helper, sandbox, timeouts, CPU, caches/sentinel or SHM changed.
+Main UI/Big Picture remain NOT REACHED; new IPC/ARM64 capture and Apple/iPhone/GPU
+remain NOT RUN. Continue only after the precise network prerequisites are met.
+
 ## Read-only follow-up: host DNS refusal and missing QEMU proxy path — 2026-10-17
 
 At verified remote Steam SHA `170c0e0c928a41b2af5ededeb774ee19f886bb88`, the owner

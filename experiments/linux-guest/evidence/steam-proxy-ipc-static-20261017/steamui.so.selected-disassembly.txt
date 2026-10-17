@@ -1,0 +1,64 @@
+RANGE 0xe6c6b8..0xe6c6dc (exclusive end)
+0x00e6c6b8: ldr      x2, [x23]
+0x00e6c6bc: adrp     x1, #0x1b2e000
+0x00e6c6c0: mov      x0, x23
+0x00e6c6c4: add      x1, x1, #0x1e0
+0x00e6c6c8: ldr      x2, [x2, #0x28]
+0x00e6c6cc: blr      x2
+0x00e6c6d0: ldr      w1, [sp, #0x90]
+0x00e6c6d4: add      x2, x22, #0xa88
+0x00e6c6d8: str      x0, [x2, #0x168]
+
+RANGE 0x1000b88..0x1000c58 (exclusive end)
+0x01000b88: stp      x29, x30, [sp, #-0x40]!
+0x01000b8c: adrp     x2, #0x24ea000
+0x01000b90: mov      x29, sp
+0x01000b94: ldr      x2, [x2, #0xc30]
+0x01000b98: stp      x19, x20, [sp, #0x10]
+0x01000b9c: mov      x20, x0
+0x01000ba0: stp      x21, x22, [sp, #0x20]
+0x01000ba4: mov      w21, w1
+0x01000ba8: ldr      w0, [x2]
+0x01000bac: cbnz     w0, #0x1000c5c
+0x01000bb0: str      xzr, [sp, #0x38]
+0x01000bb4: bl       #0x46d7f8 ; Plat_MSTime64
+0x01000bb8: ldr      x1, [x20, #0xd8]
+0x01000bbc: add      x21, x0, w21, sxtw
+0x01000bc0: mov      x0, x1
+0x01000bc4: ldr      x1, [x1]
+0x01000bc8: ldr      x1, [x1, #0x40]
+0x01000bcc: blr      x1
+0x01000bd0: mov      w19, #1
+0x01000bd4: mov      w22, #0x32
+0x01000bd8: b        #0x1000c0c
+0x01000bdc: bl       #0x46d7f8 ; Plat_MSTime64
+0x01000be0: cmp      x21, x0
+0x01000be4: b.ls     #0x1000c24
+0x01000be8: sxtw     x0, w19
+0x01000bec: bl       #0x46c388 ; ThreadSleep
+0x01000bf0: ldr      x0, [x20, #0xd8]
+0x01000bf4: lsl      w19, w19, #1
+0x01000bf8: cmp      w19, #0x32
+0x01000bfc: csel     w19, w19, w22, le
+0x01000c00: ldr      x1, [x0]
+0x01000c04: ldr      x1, [x1, #0x40]
+0x01000c08: blr      x1
+0x01000c0c: ldr      x0, [x20, #0xd8]
+0x01000c10: ldr      x1, [x0]
+0x01000c14: ldr      x1, [x1, #0x48]
+0x01000c18: blr      x1
+0x01000c1c: tst      w0, #0xff
+0x01000c20: b.eq     #0x1000bdc
+0x01000c24: ldr      x0, [x20, #0xd8]
+0x01000c28: ldr      x1, [x0]
+0x01000c2c: ldr      x1, [x1, #0x48]
+0x01000c30: blr      x1
+0x01000c34: ldr      x1, [sp, #0x38]
+0x01000c38: mov      w19, w0
+0x01000c3c: cbz      x1, #0x1000c48
+0x01000c40: mov      x0, x1
+0x01000c44: bl       #0x46ba08 ; CVProfile_ExitScope
+0x01000c48: mov      w0, w19
+0x01000c4c: ldp      x19, x20, [sp, #0x10]
+0x01000c50: ldp      x21, x22, [sp, #0x20]
+0x01000c54: ldp      x29, x30, [sp], #0x40

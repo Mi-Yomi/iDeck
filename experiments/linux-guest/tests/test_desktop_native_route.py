@@ -33,7 +33,8 @@ class DesktopRoute(unittest.TestCase):
         self.assertLess(session.index('self.owner.desktopInput?.guestEnded()'),session.index('LinuxQEMUThreadLifetime.retainCurrentThread'))
         self.assertIn('desktopInput.prepareStop',session)
         inputs=(ROOT/'ios/LinuxDesktopInput.swift').read_text()
-        self.assertIn('queue.async { self.deliver(events) }',inputs)
+        self.assertIn('let generation = gate.inputGeneration()',inputs)
+        self.assertIn('queue.async { self.deliver(self.gate.eventsForDelivery(events, generation: generation)) }',inputs)
         self.assertIn('.milliseconds(250)',inputs) # Stop can bypass a stalled input/BQL queue.
         self.assertIn('gate.finish()',inputs)
         view=(ROOT/'ios/LinuxDesktopView.swift').read_text()
@@ -50,6 +51,50 @@ class DesktopRoute(unittest.TestCase):
         self.assertIn('1024 * 1024',profile)
         self.assertNotIn('readToEnd()',profile)
         self.assertIn('512 * 1024 * 1024',profile)
+
+    def test_focus_cancellation_reaches_the_real_queue_without_discarding_releases(self):
+        from test_terminal import swift_block
+        source=(ROOT/'ios/LinuxDesktopInput.swift').read_text()
+        state=(ROOT/'ios/LinuxDesktopInputState.swift').read_text()
+        release=swift_block(source,'func releaseHeld()')
+        self.assertLess(release.index('gate.invalidateInput()'),release.index('emit(state.releaseAll())'))
+        emit=swift_block(source,'private func emit(')
+        self.assertIn('gate.inputGeneration()',emit)
+        self.assertIn('gate.eventsForDelivery(events, generation: generation)',emit)
+        delivery=swift_block(source,'private func deliver(')
+        self.assertIn('guard gate.active()',delivery)
+        self.assertIn('case .pointerRelease',delivery)
+        self.assertIn('husk_display_send_pointer_buttons(x, y, 0, 0)',delivery)
+        self.assertNotIn('eventsForDelivery',delivery) # Complete an in-flight paired batch.
+        gate=swift_block(state,'final class LinuxInputGate')
+        self.assertNotIn('husk_display_',gate) # No gate lock held across BQL/native calls.
+        self.assertIn('case .key(_, false), .pointerRelease: return true',gate)
+        for method in ('func key(', 'func toggle(', 'func physical('):
+            block=swift_block(source,method)
+            self.assertIn('gate.cancelText()',block)
+            self.assertNotIn('gate.invalidateInput()',block) # Rapid keys must not cancel one another.
+        checks=(ROOT/'ios/tests/DesktopInputChecks.swift').read_text()
+        for token in ('let keyUp = queued.toggle("ctrl")','let pointerUp = queued.releasePointer()',
+                      'gate.eventsForDelivery(move', 'DispatchGroup()', 'gate.finish(); gate.begin()'):
+            self.assertIn(token,checks)
+
+    def test_keyboard_accessory_exposes_native_keys_above_the_software_keyboard(self):
+        from test_terminal import swift_block
+        source=(ROOT/'ios/LinuxDesktopView.swift').read_text()
+        self.assertIn('override var inputAccessoryView: UIView?',source)
+        self.assertIn('softwareKeyboard ? keyAccessory : nil',source)
+        bar=swift_block(source,'private func makeAccessory()')
+        for name in ('esc','tab','ctrl','alt','left','up','down','right','ret','backspace'):
+            self.assertIn('"'+name+'"',bar)
+        for call in ('input?.key(', 'input?.toggle(', 'input?.releaseHeld()', 'hideKeyboard?()'):
+            self.assertIn(call,bar)
+        self.assertIn('equalToConstant: 44',bar)
+        self.assertIn('button.accessibilityTraits = selected ? [.button, .selected] : [.button]',source)
+        self.assertIn('button.addAction(UIAction { [weak self]',source)
+        self.assertIn('view.hideKeyboard = hide',source)
+        self.assertIn('view.refreshAccessory()',source)
+        self.assertIn('hide: { keyboard = false }',source)
+        self.assertNotIn('UIPasteboard',source)
 
     def test_production_supervisor_mount_and_readiness_order(self):
         source=(ROOT/'guest/gui/ideck-desktop-init').read_text()

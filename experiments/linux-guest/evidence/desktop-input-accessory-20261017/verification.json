@@ -1,0 +1,104 @@
+{
+  "observed_utc": "2026-10-17T18:07:23.426174+00:00",
+  "scope": "app GUI input implementation after task correction; separate clean single-branch clone",
+  "branch": "codex/linux-guest-feasibility-20261015",
+  "base_source_sha": "7e3235e8a533112fb543855d7aded2502f50b5c9",
+  "base_remote_sha": "7e3235e8a533112fb543855d7aded2502f50b5c9",
+  "base_remote_verified": true,
+  "repo_or_ancestor_AGENTS_found": false,
+  "applicable_local_skill_files_found": false,
+  "code_and_handoff_sha256": {
+    "HANDOFF.md": "dcfca2af27d4cf265606ed8155c6147e17b02b4167ff1c1ea196e1d06b1127e1",
+    "experiments/linux-guest/husk/overlay.lock.json": "b796aad23035ed3c7fe8807d46895cad236285c39320540f149785dd30b39861",
+    "experiments/linux-guest/ios/LinuxDesktopInput.swift": "2257cd7675511d1d9272259b191deec2440e2d7d7d90917d9b50f66331816008",
+    "experiments/linux-guest/ios/LinuxDesktopInputState.swift": "dab72ec977e6f0e61fb1afa21be77991263ecf31c74074705fc0f801a6bc1e3a",
+    "experiments/linux-guest/ios/LinuxDesktopView.swift": "76534d693b201752b11b0e6cbe59bc35bcae22dda6aef792da2bb497769b66ad",
+    "experiments/linux-guest/ios/tests/DesktopInputChecks.swift": "8fa7429ce74f43a3565aa6cc29a6b4db2767c11e34d1bb63e1d6bd5d5f3bbe93",
+    "experiments/linux-guest/tests/test_desktop_native_route.py": "75c68e6906890c01be52d6d5c9167cc7a5851a22f4879407e660fbb6d5b136c1"
+  },
+  "overlay": {
+    "inputs": 45,
+    "copies": 28,
+    "changed_input_pins": [
+      "ios/LinuxDesktopInput.swift",
+      "ios/LinuxDesktopInputState.swift",
+      "ios/LinuxDesktopView.swift"
+    ]
+  },
+  "host_tests": {
+    "total": 326,
+    "passed": 321,
+    "skipped": 5,
+    "failures": 0,
+    "errors": 0,
+    "skips": [
+      "test_actual_swift_owner_and_validation_regressions (test_desktop_disk.DesktopDiskChecks.test_actual_swift_owner_and_validation_regressions) ... skipped 'explicit existing Swift toolchain required'",
+      "test_actual_swift_input_model (test_desktop_native_route.DesktopRoute.test_actual_swift_input_model) ... skipped 'Swift compiler unavailable; mandatory Apple checks remain pending'",
+      "test_actual_swift_paired_release_state (test_display_pointer.DisplayPointerChecks.test_actual_swift_paired_release_state) ... skipped 'Swift compiler unavailable; mandatory Apple execution remains pending'",
+      "test_native_pinned_registry_thread_exit_and_retention (test_qemu_owner_lifetime.QEMUOwnerLifetime.test_native_pinned_registry_thread_exit_and_retention) ... skipped 'explicit existing pinned QEMU SOURCE archive and C compiler required'",
+      "test_actual_locked_arm64_busybox_commands_and_pty (test_terminal.TerminalBundleChecks.test_actual_locked_arm64_busybox_commands_and_pty) ... skipped 'explicit existing user-mode QEMU required'"
+    ],
+    "new_source_wiring_cases": 2,
+    "native_c_bridge_body_harness": "PASS; queue callbacks supplied by harness, not a guest UI test"
+  },
+  "staging": {
+    "source_archive_sha256": "58f6b18320d4d541a70c2a0112d2e9caebe8d15ffb3d3d9cb817edddb56bc7b1",
+    "upstream_swift_files": 69,
+    "patched_swift_files": 90,
+    "staged": "PASS",
+    "swift_compiled": false,
+    "apple_sdk_used": false
+  },
+  "swift_compiler_available": false,
+  "apple_tools_available": false,
+  "new_swift_runtime_checks": "NOT RUN; mandatory Apple gate",
+  "new_uikit_typecheck": "NOT RUN; mandatory Apple gate",
+  "new_iphone_keyboard_acceptance": "NOT RUN",
+  "baseline_acceptance": {
+    "source_sha": "7e3235e8a533112fb543855d7aded2502f50b5c9",
+    "attribution": "owner/parent-reported, raw CI/device logs not obtained here",
+    "apple_profile_ci": "6ad3924d7550aed8108f99df",
+    "native_ipa_ci": "6ad393b57550aed8108f9a41",
+    "ipa_delivered": true,
+    "device_scope": [
+      "recovery works on iPhone",
+      "normal start after recovery works",
+      "edits persist after leaving",
+      "no problems noticed in checked scenario"
+    ],
+    "exhaustive_scenarios_claimed": false,
+    "applies_to_new_code": false
+  },
+  "release_concurrency_review": {
+    "ui_state": "main thread; existing UIKit/SwiftUI callbacks and preconditions",
+    "native_calls": "existing serial input queue, outside gate lock",
+    "focus_epoch": "independent from text cancellation so rapid normal keys retain FIFO delivery",
+    "stale_events": "press/move/wheel dropped; key-up and explicit pointer release retained",
+    "in_flight_batch": "complete paired releases; existing per-event VM gate remains",
+    "stop": "existing independent 250 ms fallback and native owner retention unchanged",
+    "accessory_ownership": "weak responder capture in UIActions; modifier state refreshed without ObservableObject mutation"
+  },
+  "unchanged_scope": [
+    "LinuxTerminalSession",
+    "disk/recovery algorithms and formats",
+    "native QEMU ownership/runtime",
+    "guest/profile/GUI payload/Release",
+    "network/JIT/security",
+    "CI workflows",
+    "clipboard behavior"
+  ],
+  "steam_branch_or_disks_touched_by_app_implementation": false,
+  "steam_network_probes_after_correction": false,
+  "vm_started_by_app_implementation": false,
+  "ci_dispatched": false,
+  "subagents_created": false,
+  "next_apple_gate": {
+    "workflow": "ideck-linux-guest-profile-check",
+    "branch": "codex/linux-guest-feasibility-20261015",
+    "expected_commit": "full final app SHA from completion response",
+    "free_quota_verified": "true only after current verification",
+    "private_source_verified": "true only after current verification",
+    "required_marker": "LINUX_DESKTOP_INPUT_PASS plus all existing markers and patched-Husk typecheck",
+    "payload_or_ipa_needed_for_profile_gate": false
+  }
+}

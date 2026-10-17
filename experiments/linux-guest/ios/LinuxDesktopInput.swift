@@ -2,19 +2,6 @@ import Foundation
 import Combine
 import UIKit
 
-/// A monotonic VM-liveness gate. Never hold this lock while entering QEMU/BQL.
-private final class LinuxInputGate {
-    private let lock = NSLock()
-    private var started = false
-    private var ended = false
-    private var textGeneration: UInt64 = 0
-    func begin() { lock.lock(); if !ended { started = true }; lock.unlock() }
-    func finish() { lock.lock(); ended = true; textGeneration &+= 1; lock.unlock() }
-    func active() -> Bool { lock.lock(); defer { lock.unlock() }; return started && !ended }
-    func cancelText() -> UInt64 { lock.lock(); defer { lock.unlock() }; textGeneration &+= 1; return textGeneration }
-    func generation() -> UInt64 { lock.lock(); defer { lock.unlock() }; return textGeneration }
-}
-
 /// Graphical input always enters QEMU on a dedicated queue, never the main UI
 /// thread. A late BQL wait cannot freeze iOS; VM lifetime/locks remain retained.
 final class LinuxDesktopInput: ObservableObject {
@@ -44,7 +31,8 @@ final class LinuxDesktopInput: ObservableObject {
     }
     private func emit(_ events: [LinuxDesktopInputState.Event]) {
         guard !events.isEmpty else { return }
-        queue.async { self.deliver(events) }
+        let generation = gate.inputGeneration()
+        queue.async { self.deliver(self.gate.eventsForDelivery(events, generation: generation)) }
     }
     private func deliver(_ events: [LinuxDesktopInputState.Event]) {
         for event in events {
@@ -54,12 +42,14 @@ final class LinuxDesktopInput: ObservableObject {
                 _ = name.withCString { husk_display_send_key($0, down) }
             case .pointer(let x, let y, let buttons, let wheel):
                 _ = husk_display_send_pointer_buttons(x, y, buttons, wheel)
+            case .pointerRelease(let x, let y):
+                _ = husk_display_send_pointer_buttons(x, y, 0, 0)
             }
         }
     }
     func releaseHeld() {
         precondition(Thread.isMainThread)
-        _ = gate.cancelText()
+        gate.invalidateInput()
         emit(state.releaseAll()); latched = []
     }
     func prepareStop(_ completion: @escaping () -> Void) {

@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "size": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "host-tests.log",
+      "size": 54606,
+      "sha256": "c9b0cca3e7117b34b64a84f6427b57fca4c080f5e335a1f87c24bed10306dd90"
+    },
+    {
+      "path": "staging.json",
+      "size": 231,
+      "sha256": "dc7ef8be8395e3f6aff514dcf2afa81b1d6f802eb7b10354391e3140788566fe"
+    },
+    {
+      "path": "verification.json",
+      "size": 5611,
+      "sha256": "4a48a696c2fc4315c50a0fb15714d43a602453a3addbbbe0df978a61943480c4"
+    }
+  ]
+}

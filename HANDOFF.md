@@ -1,5 +1,79 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Phone input: keyboard accessory and queued-event release — 2026-10-17
+
+**Baseline acceptance update, owner/parent-reported:** source
+`7e3235e8a533112fb543855d7aded2502f50b5c9` passed Apple profile CI
+`6ad3924d7550aed8108f99df` and native IPA CI `6ad393b57550aed8108f9a41`;
+the IPA was delivered. The owner reports that recovery works on iPhone, normal
+start after recovery works, edits persist after leaving, and no problem was
+noticed in that checked scenario. No raw CI/device logs were obtained here.
+This supersedes the historical NOT RUN statements for that baseline only; it
+does not establish exhaustive recovery/cancellation/input tests or acceptance
+of the new source below.
+
+The app change starts from that remote-verified SHA in a separate clean
+single-branch clone, `codex/linux-guest-feasibility-20261015`. No repo/ancestor
+AGENTS.md or applicable local skill files were found. Inspection confirmed that
+Keyboard, Esc/Tab/Ctrl/Alt/arrows, Release keys and the real native QEMU input
+bridge already exist. Share report/Diagnostics are already fixed above the
+scroll/input subtree, expose saved MD without VM/JIT, and dismiss/release guest
+input before opening. These features were preserved rather than duplicated.
+
+Two concrete input gaps are fixed:
+
+- With the software keyboard shown, the existing special-key grid is covered.
+  A two-row `inputAccessoryView` now provides Esc, Tab, Ctrl/Alt, arrows, Enter,
+  Backspace, Release and Hide directly above the keyboard. Rows are 44 pt tall;
+  modifier selection has visible and accessibility state. Actions call the
+  existing native input route. Hide releases held input and keeps the hardware
+  responder available. No clipboard read/automatic paste or guest UI substitute.
+- Focus loss previously cancelled queued text only. Ordinary queued presses,
+  pointer motion and scrolling could still reach the guest after a modal,
+  background transition or Release. A separate input epoch now invalidates those
+  pending events without making rapid keys cancel each other. Stale key-ups and
+  explicit pointer releases are retained: they may be the sole release for an
+  earlier delivered press after UI ownership already ended. A distinct internal
+  pointer-release event prevents old hover/move events from being replayed.
+
+Release/concurrency review: UI ownership remains on the main thread and native
+calls remain on one serial input queue. The gate lock is released before any
+QEMU/BQL call. Epoch selection happens once per queued batch, so a batch already
+in flight completes its paired releases; text still cancels only between whole
+character units. Duplicate release/focus callbacks preserve releases. VM-end is
+monotonic and rejects subsequent queued delivery. The existing 250 ms independent Stop
+fallback, native owner/thread retention and all session/disk/recovery lifecycle
+code are unchanged. UIKit action closures capture the responder weakly; accessory
+updates do not mutate ObservableObject state. No guest/profile, disk format,
+payload/Release, JIT/security/network or workflow change is part of this app diff.
+
+Host validation: 326 checks / 321 PASS / 5 explicit SKIP / 0 failures/errors. The real
+native C bridge-body harness and exact locked upstream/overlay staging pass
+(69 upstream → 90 patched Swift files, 28 copies). The five skips remain Swift
+disk-owner, Swift desktop input, Swift paired pointer, pinned native QEMU RCU
+archive and ARM64 BusyBox/PTY prerequisites. New mandatory Foundation Swift
+checks cover sole queued Ctrl/button release, stale moves/wheel/presses, rapid
+keys, duplicate focus loss, 100 concurrent gate cancellations and VM-end refusal.
+**Those Swift checks, full UIKit typecheck and phone behavior are NOT RUN here**:
+this Linux host has no swiftc/xcrun/Apple SDK. Python/source checks are not device
+proof. No CI was dispatched.
+
+Next gate, not dispatched: manual `ideck-linux-guest-profile-check`, app branch,
+with `expected_commit` equal to the full final app SHA in the completion response;
+`free_quota_verified='true'` and `private_source_verified='true'` only after current
+verification. YAML maps to EXPECTED_COMMIT/FREE_QUOTA_VERIFIED/
+PRIVATE_SOURCE_VERIFIED and sets IDECK_WORKFLOW_ID. Provider CM_BRANCH/CM_COMMIT/
+CM_REPO_SLUG must match that branch/SHA and Mi-Yomi/iDeck. Xcode27.0/mac_mini_m2,
+10-minute cap/480-second script budget; no payload groups/download/sign/IPA for
+this gate and no unrelated inherited EXPECTED_* values. Require all existing
+markers including LINUX_DESKTOP_INPUT_PASS and complete patched-Husk typecheck.
+After a passing gate, a new IPA/device check must verify keyboard accessory in
+both orientations, Ctrl/Alt shortcuts, arrows, hiding keyboard, pointer drag plus
+focus/background/modal release, and saved MD sharing before startup/after failure
+and with keyboard open. The already delivered baseline IPA lacks these changes.
+
+Evidence: [host checks, source identities and explicit Apple/device limits](experiments/linux-guest/evidence/desktop-input-accessory-20261017/verification.json).
+
 ## Focused cancellation self-review follow-up — 2026-10-17
 
 Reviewed `e0b493c542e4002bb39eae1e5b82309918cd4069` against primary base

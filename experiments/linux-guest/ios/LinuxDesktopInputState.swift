@@ -1,9 +1,50 @@
+import Foundation
+
+/// Monotonic VM liveness plus independent text and focus cancellation. Never
+/// hold this lock while entering QEMU/BQL. Only queued batches are filtered;
+/// an already started batch completes its paired releases on the serial queue.
+final class LinuxInputGate {
+    private let lock = NSLock()
+    private var started = false
+    private var ended = false
+    private var textGeneration: UInt64 = 0
+    private var inputEpoch: UInt64 = 0
+    func begin() { lock.lock(); if !ended { started = true }; lock.unlock() }
+    func finish() {
+        lock.lock(); ended = true; textGeneration &+= 1; inputEpoch &+= 1; lock.unlock()
+    }
+    func active() -> Bool { lock.lock(); defer { lock.unlock() }; return started && !ended }
+    func cancelText() -> UInt64 { lock.lock(); defer { lock.unlock() }; textGeneration &+= 1; return textGeneration }
+    func generation() -> UInt64 { lock.lock(); defer { lock.unlock() }; return textGeneration }
+    func inputGeneration() -> UInt64 { lock.lock(); defer { lock.unlock() }; return inputEpoch }
+    func invalidateInput() {
+        lock.lock(); textGeneration &+= 1; inputEpoch &+= 1; lock.unlock()
+    }
+    func eventsForDelivery(_ events: [LinuxDesktopInputState.Event], generation: UInt64) -> [LinuxDesktopInputState.Event] {
+        lock.lock()
+        let live = started && !ended
+        let current = generation == inputEpoch
+        lock.unlock()
+        guard live else { return [] }
+        if current { return events }
+        // A queued key-up may be the only release for an earlier delivered
+        // key-down: UI ownership can already have ended before focus is lost.
+        return events.filter {
+            switch $0 {
+            case .key(_, false), .pointerRelease: return true
+            default: return false
+            }
+        }
+    }
+}
+
 /// Named QKeyCode transitions. UIKit text is converted to the guest's US layout;
 /// serial recovery is deliberately not involved in graphical input.
 struct LinuxDesktopInputState {
     enum Event: Equatable {
         case key(String, Bool)
         case pointer(Int32, Int32, UInt32, Int32)
+        case pointerRelease(Int32, Int32)
     }
     static let modifiers: Set<String> = ["ctrl", "alt", "shift", "meta_l"]
     private(set) var latched: Set<String> = []
@@ -106,11 +147,11 @@ struct LinuxDesktopInputState {
     mutating func releasePointer() -> [Event] {
         guard buttons != 0 else { return [] }
         buttons = 0
-        return [.pointer(x, y, 0, 0)]
+        return [.pointerRelease(x, y)]
     }
     mutating func clickRight() -> [Event] {
         let release = releasePointer()
-        return release + [.pointer(x, y, 2, 0), .pointer(x, y, 0, 0)]
+        return release + [.pointer(x, y, 2, 0), .pointerRelease(x, y)]
     }
     func scroll(_ steps: Int32) -> [Event] {
         guard steps != 0 else { return [] }

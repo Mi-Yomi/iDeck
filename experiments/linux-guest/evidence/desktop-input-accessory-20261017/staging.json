@@ -1,0 +1,8 @@
+{
+  "source_archive_sha256": "58f6b18320d4d541a70c2a0112d2e9caebe8d15ffb3d3d9cb817edddb56bc7b1",
+  "upstream_swift_files": 69,
+  "patched_swift_files": 90,
+  "staged": "PASS",
+  "swift_compiled": false,
+  "apple_sdk_used": false
+}

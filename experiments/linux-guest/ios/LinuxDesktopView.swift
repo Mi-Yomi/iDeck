@@ -1,11 +1,20 @@
 import SwiftUI
 import UIKit
 
+private final class LinuxDesktopKeyAccessory: UIInputView {
+    override var intrinsicContentSize: CGSize { CGSize(width: UIView.noIntrinsicMetric, height: 100) }
+}
+
 private final class LinuxDesktopKeyView: UIView, UIKeyInput {
     var input: LinuxDesktopInput?
-    var available = false
+    var hideKeyboard: (() -> Void)?
+    var available = false { didSet { refreshAccessory() } }
+    private var accessoryButtons: [UIButton] = []
+    private var modifierButtons: [String: UIButton] = [:]
+    private lazy var keyAccessory = makeAccessory()
     private let emptyInput = UIView(frame: .zero)
     override var inputView: UIView? { softwareKeyboard ? nil : emptyInput }
+    override var inputAccessoryView: UIView? { softwareKeyboard ? keyAccessory : nil }
     var softwareKeyboard = false {
         didSet { if oldValue != softwareKeyboard { reloadInputViews() } }
     }
@@ -27,18 +36,87 @@ private final class LinuxDesktopKeyView: UIView, UIKeyInput {
     private func hardware(_ presses: Set<UIPress>, down: Bool) {
         for press in presses { if let key = press.key { input?.physical(Int(key.keyCode.rawValue), down: down, flags: key.modifierFlags) } }
     }
+    private func accessoryButton(_ title: String, code: String, label: String? = nil,
+                                 action: @escaping (LinuxDesktopKeyView) -> Void) -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle(title, for: .normal)
+        button.titleLabel?.font = .preferredFont(forTextStyle: .caption1)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.titleLabel?.minimumScaleFactor = 0.75
+        button.accessibilityLabel = label ?? title
+        button.accessibilityIdentifier = "ideck-desktop-accessory-\(code)"
+        button.layer.cornerRadius = 6
+        button.addAction(UIAction { [weak self] _ in
+            guard let self else { return }
+            action(self); self.refreshAccessory()
+        }, for: .touchUpInside)
+        accessoryButtons.append(button)
+        return button
+    }
+    private func makeAccessory() -> UIInputView {
+        let bar = LinuxDesktopKeyAccessory(frame: CGRect(x: 0, y: 0, width: 320, height: 100), inputViewStyle: .keyboard)
+        bar.autoresizingMask = [.flexibleWidth]
+        let first = UIStackView()
+        for key in [("Esc", "esc"), ("Tab", "tab")] {
+            first.addArrangedSubview(accessoryButton(key.0, code: key.1) { $0.input?.key(key.1) })
+        }
+        for key in [("Ctrl", "ctrl"), ("Alt", "alt")] {
+            let button = accessoryButton(key.0, code: key.1) { $0.input?.toggle(key.1) }
+            modifierButtons[key.1] = button; first.addArrangedSubview(button)
+        }
+        first.addArrangedSubview(accessoryButton("Release", code: "release", label: "Release all keys and mouse buttons") { $0.input?.releaseHeld() })
+        first.addArrangedSubview(accessoryButton("Hide", code: "hide", label: "Hide keyboard and release held input") {
+            $0.input?.releaseHeld(); $0.hideKeyboard?()
+        })
+        let second = UIStackView()
+        for key in [("←", "left", "Left arrow"), ("↑", "up", "Up arrow"), ("↓", "down", "Down arrow"),
+                    ("→", "right", "Right arrow"), ("Enter", "ret", "Enter"), ("⌫", "backspace", "Backspace")] {
+            second.addArrangedSubview(accessoryButton(key.0, code: key.1, label: key.2) { $0.input?.key(key.1) })
+        }
+        for row in [first, second] {
+            row.axis = .horizontal; row.distribution = .fillEqually; row.spacing = 4
+            row.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        }
+        let stack = UIStackView(arrangedSubviews: [first, second])
+        stack.axis = .vertical; stack.spacing = 4; stack.translatesAutoresizingMaskIntoConstraints = false
+        bar.addSubview(stack)
+        NSLayoutConstraint.activate([
+            stack.leadingAnchor.constraint(equalTo: bar.leadingAnchor, constant: 8),
+            stack.trailingAnchor.constraint(equalTo: bar.trailingAnchor, constant: -8),
+            stack.topAnchor.constraint(equalTo: bar.topAnchor, constant: 4),
+            stack.bottomAnchor.constraint(equalTo: bar.bottomAnchor, constant: -4)
+        ])
+        refreshAccessory()
+        return bar
+    }
+    func refreshAccessory() {
+        for button in accessoryButtons {
+            button.isEnabled = available && input?.enabled == true
+            button.backgroundColor = .secondarySystemBackground
+        }
+        for (code, button) in modifierButtons {
+            let selected = input?.latched.contains(code) == true
+            button.isSelected = selected
+            button.accessibilityTraits = selected ? [.button, .selected] : [.button]
+            button.backgroundColor = selected ? UIColor.systemOrange.withAlphaComponent(0.3) : .secondarySystemBackground
+        }
+    }
 }
 
 private struct LinuxDesktopKeyboard: UIViewRepresentable {
     let input: LinuxDesktopInput
     let available: Bool
     let show: Bool
+    let hide: () -> Void
     func makeUIView(context: Context) -> LinuxDesktopKeyView {
         let view = LinuxDesktopKeyView(); view.input = input
         return view
     }
     func updateUIView(_ view: LinuxDesktopKeyView, context: Context) {
+        view.hideKeyboard = hide
         view.available = available; view.softwareKeyboard = show
+        view.refreshAccessory()
         if available {
             DispatchQueue.main.async { if view.available, view.window != nil, !view.isFirstResponder { _ = view.becomeFirstResponder() } }
         } else if view.isFirstResponder { _ = view.resignFirstResponder() }
@@ -97,7 +175,7 @@ struct LinuxDesktopView: View {
         // keyboard may cover guest controls, never this fixed top safe-area bar.
         .safeAreaInset(edge: .top, spacing: 0) { persistentActions }
         .ignoresSafeArea(.keyboard, edges: .bottom)
-        .background(LinuxDesktopKeyboard(input: input, available: inputAvailable, show: keyboard).frame(width: 1,height: 1).opacity(0.01))
+        .background(LinuxDesktopKeyboard(input: input, available: inputAvailable, show: keyboard, hide: { keyboard = false }).frame(width: 1,height: 1).opacity(0.01))
         .sheet(isPresented: $jit.showSetup) { JITSetupFlow() }
         .sheet(isPresented: $showDiagnostics) { LinuxDesktopDiagnosticsView(session: session) }
         .sheet(isPresented: $showShare) { ShareSheet(items: shareItems) }
@@ -169,8 +247,10 @@ struct LinuxDesktopView: View {
                 Text("After a blocked unclean disk: Recover disk first. Requires space for two full copies plus 512 MiB reserve.").font(.caption2)
             }
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 5) {
-                Button("Keyboard") { keyboard.toggle() }
-                Button("Release keys") { input.releaseHeld() }
+                Button("Keyboard") { if keyboard { input.releaseHeld() }; keyboard.toggle() }
+                    .accessibilityIdentifier("ideck-desktop-keyboard")
+                    .accessibilityValue(keyboard ? "Shown" : "Hidden")
+                Button("Release keys") { input.releaseHeld() }.accessibilityIdentifier("ideck-desktop-release-input")
                 Button("Right click") { input.rightClick() }
                 Button("Scroll ↑") { input.scroll(3) }
                 Button("Scroll ↓") { input.scroll(-3) }

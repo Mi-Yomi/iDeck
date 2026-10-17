@@ -7,7 +7,8 @@ enum LinuxProbeReport {
     static let filename = "iDeck-Linux-Probe-Report.md"
 
     static func render(report: [String: Any], serial: String? = nil) -> String {
-        let debian = report["mode"] as? String == "debian"
+        let desktop = report["mode"] as? String == "desktop"
+        let debian = report["mode"] as? String == "debian" || desktop
         let console = debian || report["mode"] as? String == "terminal"
         let statuses: Set<String> = ["prepared", "booting", "guest_stopped", "prepare_failed", "report_write_failed",
                                      "probe_timeout", "serial_limit", "guest_failed", "evidence_failed",
@@ -33,7 +34,7 @@ enum LinuxProbeReport {
         case .none:
             summary = "Reported outcome: UNKNOWN; individual evidence fields follow."
         }
-        var lines = [debian ? "# iDeck Debian Console Report" : "# iDeck Linux Probe Report", "", summary, "", "## Snapshot", "", "| Field | Value |", "| --- | --- |"]
+        var lines = [desktop ? "# iDeck Debian Desktop Report" : (debian ? "# iDeck Debian Console Report" : "# iDeck Linux Probe Report"), "", summary, "", "## Snapshot", "", "| Field | Value |", "| --- | --- |"]
         func row(_ label: String, _ value: String) { lines.append("| \(label) | \(value) |") }
         row("Version", text(report["app_version"]))
         row("Build", text(report["app_bundle_version"]))
@@ -42,7 +43,7 @@ enum LinuxProbeReport {
         row("Device class", text(report["device_class"]))
         row("OS", text(report["os"]))
         row("Schema", integer(report["schema"]))
-        row("Mode", debian ? "DEBIAN ARM64 / EXT4" : (console ? "TERMINAL" : "DIAGNOSTIC PROBE"))
+        row("Mode", desktop ? "DEBIAN DESKTOP / EXT4" : (debian ? "DEBIAN ARM64 / EXT4" : (console ? "TERMINAL" : "DIAGNOSTIC PROBE")))
         row("Status", status.map(escape) ?? "UNKNOWN")
         row("Started UTC", text(report["started_utc"]))
         row("Installed executable SHA-256", hex(report["app_executable_sha256"], count: 64))
@@ -69,6 +70,11 @@ enum LinuxProbeReport {
         if console {
             lines += ["", "## Persistent terminal", "", "| Check | Result |", "| --- | --- |"]
             row("Terminal ready", flag(report["terminal_ready"]))
+            if desktop {
+                row("Guest X connection and mapped desktop windows", flag(report["desktop_gui_ready"]))
+                row("Graphical startup failure", flag(report["desktop_gui_failed"], yes: "REPORTED", no: "NONE REPORTED"))
+                row("Software modesetting requested", flag(report["desktop_software_rendering"], yes: "REQUESTED"))
+            }
             row("Guest disk unmounted", flag(report["terminal_clean_unmount"]))
             row("QEMU loop returned", flag(report["qemu_main_loop_returned"]))
             row("Host disk sync", flag(report["host_disk_fsync_passed"]))
@@ -85,8 +91,8 @@ enum LinuxProbeReport {
                 row("Seed SHA-256", hex(report["debian_seed_sha256"], count: 64))
                 row("Production initramfs SHA-256", hex(report["terminal_initramfs_sha256"], count: 64))
             }
-            lines += ["", debian ? "Debian runs through chroot from Alpine initramfs. Its ext4 root is persistent; /run is temporary. This is a line console."
-                      : "Files in /data use the persistent VFAT volume. The initramfs root is temporary.",
+            lines += ["", desktop ? "Local Debian graphical desktop. /home/ideck persists on the separate GUI ext4 disk. Metal presents software scanout; guest GPU acceleration is not established." : (debian ? "Debian runs through chroot from Alpine initramfs. Its ext4 root is persistent; /run is temporary. This is a line console."
+                      : "Files in /data use the persistent VFAT volume. The initramfs root is temporary."),
                       "Orderly stop records guest unmount, QEMU loop return and host sync. It does not establish QEMU block-layer teardown; the disk lock stays held until this app exits.",
                       "The framebuffer/input diagnostic checks below are not run in terminal mode.",
                       "This report does not itself verify a file after a second guest boot."]

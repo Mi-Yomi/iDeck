@@ -1,0 +1,71 @@
+--- a/src/ios-jit/husk-display.c
++++ b/src/ios-jit/husk-display.c
+@@ -403,3 +403,38 @@
+     graphic_hw_update(husk.dcl.con);
+     bql_unlock();
+ }
++
++/* Complete desktop pointer state. Called only by the serialized input queue.
++ * No runtime teardown, RCU change, or display reinitialization is introduced. */
++bool husk_display_send_pointer_buttons(int32_t x, int32_t y,
++                                      uint32_t buttons, int32_t wheel)
++{
++    QemuConsole *con;
++    int w, h;
++    if ((buttons & ~7u) || wheel < -8 || wheel > 8) {
++        return false;
++    }
++    bql_lock();
++    con = husk_input_console();
++    husk_input_size(con, &w, &h);
++    bool available = con && w > 0 && h > 0;
++    if (available) {
++        x = MAX(0, MIN(x, w - 1));
++        y = MAX(0, MIN(y, h - 1));
++        qemu_input_queue_abs(con, INPUT_AXIS_X, x, 0, w);
++        qemu_input_queue_abs(con, INPUT_AXIS_Y, y, 0, h);
++        qemu_input_queue_btn(con, INPUT_BUTTON_LEFT, (buttons & 1) != 0);
++        qemu_input_queue_btn(con, INPUT_BUTTON_RIGHT, (buttons & 2) != 0);
++        qemu_input_queue_btn(con, INPUT_BUTTON_MIDDLE, (buttons & 4) != 0);
++        qemu_input_event_sync();
++        InputButton direction = wheel > 0 ? INPUT_BUTTON_WHEEL_UP : INPUT_BUTTON_WHEEL_DOWN;
++        for (int i = 0; i < abs(wheel); i++) {
++            qemu_input_queue_btn(con, direction, true);
++            qemu_input_event_sync();
++            qemu_input_queue_btn(con, direction, false);
++            qemu_input_event_sync();
++        }
++    }
++    bql_unlock();
++    return available;
++}
+--- a/src/ios-jit/husk-display.h
++++ b/src/ios-jit/husk-display.h
+@@ -67,6 +67,7 @@
+  * safe to call from the UI thread.
+  */
+ HUSK_EXPORT void husk_display_send_pointer(int32_t x, int32_t y, bool button_down);
++HUSK_EXPORT bool husk_display_send_pointer_buttons(int32_t x, int32_t y, uint32_t buttons, int32_t wheel);
+ 
+ /* Ask the guest to redraw. Safe from any thread. */
+ /*
+--- a/src/app/Husk/HuskBridge.h
++++ b/src/app/Husk/HuskBridge.h
+@@ -36,6 +36,7 @@
+ void     husk_display_unlock_frame(void);
+ uint64_t husk_display_sequence(void);
+ void     husk_display_send_pointer(int32_t x, int32_t y, bool button_down);
++bool     husk_display_send_pointer_buttons(int32_t x, int32_t y, uint32_t buttons, int32_t wheel);
+ bool     husk_display_send_key(const char *qcode_name, bool down);
+ void     husk_display_request_update(void);
+ 
+--- a/scripts/integrate_husk.sh
++++ b/scripts/integrate_husk.sh
+@@ -607,6 +607,7 @@
+     "husk_display_send_pointer",
+     "husk_display_request_update",
+     "husk_display_send_key",
++    "husk_display_send_pointer_buttons",
+     "husk_display_gl_create",
+     "husk_display_gl_bind",
+     "husk_display_gl_probe",

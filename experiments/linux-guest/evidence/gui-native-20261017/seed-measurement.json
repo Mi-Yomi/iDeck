@@ -1,0 +1,15 @@
+{
+  "kernel": "Debian 6.12.107+deb13-arm64",
+  "host_qemu": "QEMU emulator version 10.0.13 (Debian 1:10.0.13+ds-0+deb13u1)\nCopyright (c) 2003-2025 Fabrice Bellard and the QEMU Project developers",
+  "ios_kernel": "Alpine 6.18.35-0-virt",
+  "ios_qemu": "10.0.12-utm",
+  "host_qemu_sha256": "2e7fe3008a900980493a85e606036793fd162153edac0228477579988c53e1f5",
+  "raw_size": 1342177280,
+  "raw_sha256": "46fea0230963ca494a5adeef19f46668f559f77522e3b82215d5f543646b0791",
+  "gzip_size": 270352431,
+  "gzip_sha256": "8deb611138ad0afe400669d4d615093fea567d0950f48f55c97d608446a61769",
+  "streaming_gzip_roundtrip_verified": true,
+  "used_block_bytes": 884068352,
+  "free_block_bytes": 458108928,
+  "image_unchanged": true
+}

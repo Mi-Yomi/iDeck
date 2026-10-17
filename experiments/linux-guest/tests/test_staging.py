@@ -102,12 +102,12 @@ class BundleGuards(unittest.TestCase):
     def test_exact_offline_source_slice_and_patch(self):
         out = self.root / "source-slice"
         lock = typecheck_source.restore(out)
-        self.assertEqual(len(lock["files"]), 78)
+        self.assertEqual(len(lock["files"]), 81)
         self.assertTrue((out / "src/translation-layer-next/husk-console-abi.h").is_file())
         before = typecheck_source.swift_sources(out)
         typecheck_source.overlay(out)
         after = typecheck_source.swift_sources(out)
-        self.assertEqual(len(after), len(before) + 14)
+        self.assertEqual(len(after), len(before) + 18)
         self.assertIn("LinuxProbeRoot()", (out / "src/app/Husk/HuskApp.swift").read_text())
         self.assertTrue((out / "src/translation-layer/husk-tl.h").is_file())
         with self.assertRaises(ValueError):

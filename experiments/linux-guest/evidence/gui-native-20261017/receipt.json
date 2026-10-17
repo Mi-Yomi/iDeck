@@ -1,0 +1,268 @@
+{
+  "schema": 1,
+  "status": "host_gui_and_native_source_verified_production_blocked",
+  "base_commit": "9a6d18ea0c05d026b7feb142e511bdb2d1c2b950",
+  "host_only": true,
+  "host_kernel": "Debian 6.12.107+deb13-arm64",
+  "host_qemu": "QEMU emulator version 10.0.13 (Debian 1:10.0.13+ds-0+deb13u1)\nCopyright (c) 2003-2025 Fabrice Bellard and the QEMU Project developers",
+  "host_qemu_sha256": "2e7fe3008a900980493a85e606036793fd162153edac0228477579988c53e1f5",
+  "production_kernel": "Alpine 6.18.35-0-virt",
+  "ios_qemu": "10.0.12-utm",
+  "production_matching_kernel_gui": "NOT RUN",
+  "ios_compilation": "NOT RUN",
+  "ipa": "NOT RUN",
+  "device_gui": "NOT RUN",
+  "accelerated_guest_gpu": "NOT RUN",
+  "steam": "NOT RUN",
+  "ci_dispatched": false,
+  "seed": {
+    "rootfs": {
+      "file": "gui-rootfs-v1.raw",
+      "size": 1342177280,
+      "sha256": "46fea0230963ca494a5adeef19f46668f559f77522e3b82215d5f543646b0791"
+    },
+    "gzip": {
+      "file": "gui-rootfs-v1.raw.gz",
+      "size": 270352431,
+      "sha256": "8deb611138ad0afe400669d4d615093fea567d0950f48f55c97d608446a61769"
+    },
+    "uuid": "b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7",
+    "used_block_bytes": 884068352,
+    "free_block_bytes": 458108928,
+    "immutable_seed_unchanged": true,
+    "streaming_gzip_roundtrip_verified": true,
+    "app_payload_ready": false
+  },
+  "boots": {
+    "boot1": {
+      "status": "pass",
+      "elapsed_seconds": 40.775,
+      "qemu_peak_rss_bytes": 816996352,
+      "gui_mapped": true,
+      "emulated_pointer_move_resize": true,
+      "wheel_evdev_verified": true,
+      "real_root_menu_launch": true,
+      "keyboard_input_verified": true,
+      "editor_typed_saved": true,
+      "editor_reopened_after_boot": false,
+      "persistence_read_before_write": false,
+      "clean_unmount": true,
+      "read_only_fsck": true
+    },
+    "boot2": {
+      "status": "pass",
+      "elapsed_seconds": 38.621,
+      "qemu_peak_rss_bytes": 804188160,
+      "gui_mapped": true,
+      "emulated_pointer_move_resize": true,
+      "wheel_evdev_verified": true,
+      "real_root_menu_launch": true,
+      "keyboard_input_verified": true,
+      "editor_typed_saved": false,
+      "editor_reopened_after_boot": true,
+      "persistence_read_before_write": true,
+      "clean_unmount": true,
+      "read_only_fsck": true
+    }
+  },
+  "visual_review": "Actual system-QEMU scanout shows three real applications, panel and root menu. Menu launches an extra xterm via virtual pointer/keyboard. Not an iPhone screenshot.",
+  "offline_tests": {
+    "total": 269,
+    "passed": 264,
+    "skipped": 5,
+    "failures": 0,
+    "errors": 0,
+    "scope": "Python/real files/C function body unit fixture; Swift/Apple skips remain explicit"
+  },
+  "source_checks": {
+    "overlay_inputs": 37,
+    "pinned_original_files": 81,
+    "patched_files": 10,
+    "exact_copies": 25,
+    "git_blob_identity_verified": true,
+    "full_source_staged": true,
+    "native_recipe_patch_check": true,
+    "new_c_function_unit_compiled": true,
+    "full_qemu_ios_compile": false
+  },
+  "blocker": {
+    "missing": "Exact matching Alpine ext4 module bytes in this executor",
+    "modloop_size": 17670144,
+    "modloop_sha256": "f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b",
+    "alternate": "4 pinned .ko + 3 metadata files + manifest from local-debian-ext4-modules.json",
+    "official_cdn": "403 CONNECT tunnel failed",
+    "library_helper": "hosted apps tools/list request failed: network",
+    "library_materialization_workspace_path": null,
+    "drive_archive": "HTTP 413; 431008592 exceeds 268435456-byte limit",
+    "streamed_reference_get": "URLError before bytes",
+    "drive_inline": "Transport closed",
+    "download_file_tool_available": false,
+    "parent_copy_reported_verified": true,
+    "local_bytes_verified": false
+  },
+  "artifacts_retained": ".work/gui-20261017/gui-seed-final-v4/seed (raw, gzip, preparation receipt); authenticated cache; clean-seed-v4-final; original immutable host-gui-acceptance-2boots.raw",
+  "source_files": {
+    "husk/overlay.lock.json": {
+      "size": 6927,
+      "sha256": "2b2a1ba7489c469ea55b22dc789c5b79c6cc046785249855e6527a404753dba1"
+    },
+    "ios/LinuxDesktopInput.swift": {
+      "size": 5317,
+      "sha256": "5de0b1c9d175405b865f9b32c8169b495aa72a83acf8f3072ded52859cac9b36"
+    },
+    "ios/LinuxDesktopInputState.swift": {
+      "size": 6885,
+      "sha256": "5a6e62e6be37ce809610cb9c7e33fd727941f8c2dd38aec1007a62369c87f560"
+    },
+    "ios/LinuxDesktopView.swift": {
+      "size": 8678,
+      "sha256": "24f32eaafee435149857ab31229c1fa08a1a56c52b9b904b382336c154b4cb7e"
+    },
+    "ios/LinuxGUIProfile.swift": {
+      "size": 6895,
+      "sha256": "1780558613046862b22ec7c1a740474609aef418505cc7933a3c5ac965808d6f"
+    },
+    "ios/LinuxTerminalSession.swift": {
+      "size": 49842,
+      "sha256": "53ddabb1c5e8286766877d62d3f2c7d3505fabf493c3ed625e0f86787391a2b9"
+    },
+    "ipa/gui-inputs.lock.json": {
+      "size": 142686,
+      "sha256": "8b3ee6d1f255c7486e7226c65ab304036363edccea4e145b472fe7df1cf6ed98"
+    },
+    "ipa/gui.lock.json": {
+      "size": 481,
+      "sha256": "b65bba45b649b1588793e95fa8cad272cfc8afcbeca21d8325c1e8cf78d2e383"
+    },
+    "tools/gui_bootstrap.py": {
+      "size": 3859,
+      "sha256": "6d3c3a02e27aa2ab87f61404609407779abac4831354e36816804f037a097c94"
+    },
+    "tools/gui_bundle.py": {
+      "size": 18883,
+      "sha256": "55b10151e44ab0f3e091e4f37927fb8eceb9bc5d3b5c175d0b8ee14103b82015"
+    },
+    "tools/gui_gate.py": {
+      "size": 4313,
+      "sha256": "46162b21c1c4167c350faa12f4ccdc996d141c0d43dcc6ee99e475a29d9e1f43"
+    },
+    "tools/gui_seed.py": {
+      "size": 7269,
+      "sha256": "e8332dde2c068316b5e2df59c2ac2d0fd5eeec92cd35c18a2e014ba18c3940f1"
+    },
+    "tools/seal_gui_payload.py": {
+      "size": 7148,
+      "sha256": "8aa8b821e8a86643a22863e2c1d939af2760757b5eb468a5784da1d2ede5f38e"
+    }
+  },
+  "evidence_files": {
+    ".gitattributes": {
+      "size": 26,
+      "sha256": "c87771adfc9ad867ebcc5b10ee61d782725494f35c1e29f4ca8f6d433748a558"
+    },
+    "boot1/after-input.png": {
+      "size": 35263,
+      "sha256": "90a586c4263d7c0997faa9163437f5c9d6581f00880c8b02b81bf3d7929c5348"
+    },
+    "boot1/control.log": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "boot1/desktop-menu.png": {
+      "size": 38125,
+      "sha256": "84eed278f227ff82c3cab2c3e470945d9f650a63b953beffd45beba08cb7f4a5"
+    },
+    "boot1/filesystem.log": {
+      "size": 2056,
+      "sha256": "8ff125c26fc3694d2caf80fd284c104da9a11bfa7e07ad3dbc15a4ac907726ab"
+    },
+    "boot1/fsck.log": {
+      "size": 488,
+      "sha256": "94da0cc8801a82197de755b389cfd00d07a05f5b64841463b096c134177a7678"
+    },
+    "boot1/package-manifest.tsv": {
+      "size": 17465,
+      "sha256": "7cac249c6410e6b3ef6fa9d28adc1652d5ec627e7aeb37508597d2110a7e4b3b"
+    },
+    "boot1/qemu.log": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "boot1/result.json": {
+      "size": 5331,
+      "sha256": "76f4a3328675a99ba47960f12187e09c32057534e62fa895c01e13cb4d21700b"
+    },
+    "boot1/runner-source.py": {
+      "size": 19886,
+      "sha256": "4b671704837531a9b2af1da0d6470fb7886ee890dc0cea3129d0c5d126847e0a"
+    },
+    "boot1/serial.log": {
+      "size": 49419,
+      "sha256": "30085735ece1f32c51587e210aef175fa692a44e5ceb8fe3da3d72fd830ed956"
+    },
+    "boot2/after-input.png": {
+      "size": 34357,
+      "sha256": "ce3698212d456f88ec2f97400413c967590ace5b63ccfed8d36cc153783dd3d8"
+    },
+    "boot2/control.log": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "boot2/desktop-menu.png": {
+      "size": 37197,
+      "sha256": "d09206404a19162831b80e7fa2341f6f4fe3741e214f13253ede6a16f1bf98c4"
+    },
+    "boot2/filesystem.log": {
+      "size": 2056,
+      "sha256": "816a804d198250628441718b3d29055c142820d3cb1bd55a45b3b868a52f00bd"
+    },
+    "boot2/fsck.log": {
+      "size": 363,
+      "sha256": "21982afb280793afcc3d77b9d54e4aaa0274c77029fedbb42626c67149bc72d3"
+    },
+    "boot2/package-manifest.tsv": {
+      "size": 17465,
+      "sha256": "7cac249c6410e6b3ef6fa9d28adc1652d5ec627e7aeb37508597d2110a7e4b3b"
+    },
+    "boot2/qemu.log": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "boot2/result.json": {
+      "size": 5330,
+      "sha256": "4087a5ec7d479c8008dbf131ca2a1cfe75bb7a11b0be02f3a03139797dfa61cd"
+    },
+    "boot2/runner-source.py": {
+      "size": 19886,
+      "sha256": "4b671704837531a9b2af1da0d6470fb7886ee890dc0cea3129d0c5d126847e0a"
+    },
+    "boot2/serial.log": {
+      "size": 49292,
+      "sha256": "9857a06cdc17df0a34e7dc6c3f9eaeb4085c8fd7c8201a7e4d87b7447a3af154"
+    },
+    "offline-tests.log": {
+      "size": 44849,
+      "sha256": "02cb3ac2c54a120ae6c7977d26262e5b59b05d71a8bf76934f58b94131275bf2"
+    },
+    "seed-filesystem.log": {
+      "size": 2056,
+      "sha256": "af794c4945a5bbb053897926868e223887271f05f11f5f29dff13a83eee700ee"
+    },
+    "seed-fsck.log": {
+      "size": 365,
+      "sha256": "2a060c8f53f91f1fe8d90b1549460fd609f7cd2286b9f75b591bdf0ceb4014e3"
+    },
+    "seed-measurement.json": {
+      "size": 718,
+      "sha256": "5379cc59f51ed31829d4667e160b5125d8b40f23c4e0a6b881f60c887c474c50"
+    },
+    "seed-preparation.json": {
+      "size": 5762,
+      "sha256": "60b218fdf4218db7307e7e736a7b7cda2667689c44175437103d2d26aa1120ca"
+    },
+    "source-stage.json": {
+      "size": 5296,
+      "sha256": "fba1aba122c878025b100874fbc6d3bc545d1977900999dda9c945763f90ae25"
+    }
+  }
+}

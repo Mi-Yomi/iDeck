@@ -1,0 +1,110 @@
+#!/bin/sh
+# Production GUI PID1. Exact original Alpine kernel; no provisioning/network.
+BB=/usr/bin/busybox
+export PATH=/run/ideck-bin:/usr/sbin:/usr/bin:/sbin:/bin
+stopping=0
+control_open=0
+mounted=0
+fail() {
+    echo "IDECK_DESKTOP_FAILED:$1"
+    if [ "$control_open" = 1 ]; then
+        if [ "$stopping" = 1 ]; then echo IDECK_DESKTOP_STOP_FAILED >&3
+        else echo IDECK_DESKTOP_GUI_FAILED >&3; fi
+    fi
+    while :; do $BB sleep 3600 & wait "$!"; done
+}
+shutdown() {
+    [ "$stopping" = 0 ] || return
+    stopping=1
+    trap '' USR2 TERM INT
+    $BB kill -TERM -1 || true
+    $BB sleep 2
+    $BB kill -KILL -1 || true
+    wait 2>/dev/null || true
+    $BB sync || fail sync
+    [ "$mounted" = 1 ] || fail not_mounted
+    for name in run dev/shm dev/pts dev sys proc; do
+        $BB umount "/sysroot/$name" || fail "unmount_$name"
+    done
+    $BB umount /sysroot || fail unmount_ext4
+    mounted=0
+    $BB sync || fail final_sync
+    echo IDECK_DESKTOP_CLEAN_UNMOUNT
+    echo IDECK_DESKTOP_CLEAN_UNMOUNT >&3
+    $BB poweroff -f
+    fail poweroff_returned
+}
+trap shutdown USR2 TERM INT
+$BB mkdir -p /proc /sys /dev /run /sysroot || fail directories
+$BB mount -t proc proc /proc || fail proc
+$BB mount -t sysfs sysfs /sys || fail sys
+$BB mount -t devtmpfs devtmpfs /dev || fail dev
+exec </dev/console >/dev/console 2>&1
+$BB mkdir -p /run/ideck-bin
+$BB --install -s /run/ideck-bin || fail applets
+echo IDECK_DESKTOP_BOOT
+echo "IDECK_DESKTOP_KERNEL:$(uname -r)"
+for module in virtio_pci virtio_mmio virtio_blk virtio_gpu virtio_input; do modprobe "$module" || fail "module_$module"; done
+insmod /ideck/evdev.ko || fail evdev
+while IFS= read -r module; do insmod "/lib/modules/6.18.35-0-virt/$module" || fail "insmod_$module"; done < /ideck/ext4-load-order
+n=0
+root_disk=
+control=
+while [ "$n" -lt 30 ]; do
+    for device in /dev/vd*; do
+        [ -b "$device" ] || continue
+        case "$(blkid "$device")" in
+            *'UUID="b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7"'*) [ -z "$root_disk" ] || [ "$root_disk" = "$device" ] || fail duplicate_root; root_disk=$device ;;
+        esac
+    done
+    for port in /sys/class/virtio-ports/*; do
+        [ -r "$port/name" ] || continue
+        [ "$(cat "$port/name")" != org.ideck.control ] || control=/dev/${port##*/}
+    done
+    [ -b "$root_disk" ] && [ -c "$control" ] && break
+    n=$((n+1)); sleep 1
+done
+[ -b "$root_disk" ] && [ -c "$control" ] || fail disk_control
+exec 3<>"$control" || fail control_open
+control_open=1
+mount -t ext4 -o rw "$root_disk" /sysroot || fail root_mount
+mounted=1
+for name in proc sys dev; do mount -o bind "/$name" "/sysroot/$name" || fail "bind_$name"; done
+mkdir -p /dev/pts /dev/shm
+mount -t devpts -o newinstance,ptmxmode=0666,mode=0620,gid=5 devpts /sysroot/dev/pts || fail devpts
+ln -sf pts/ptmx /dev/ptmx
+ln -sf /proc/self/fd /dev/fd
+mount -t tmpfs -o mode=1777 tmpfs /sysroot/dev/shm || fail shm
+mount -t tmpfs -o mode=0755 tmpfs /sysroot/run || fail run
+(
+    while IFS= read -r command <&3; do
+        if [ "$command" = IDECK_STOP_V1 ]; then kill -USR2 1; exit; fi
+    done
+) &
+# Serial recovery is live even when Xorg cannot start; every child closes FD3.
+$BB getty -n -l /ideck-desktop-login -L 115200 ttyAMA0 dumb 3>&- &
+shell_pid=$!
+echo IDECK_DESKTOP_RECOVERY_READY >&3
+chroot /sysroot /bin/hostname ideck 3>&- || fail hostname
+chroot /sysroot dbus-uuidgen --ensure=/etc/machine-id 3>&- || fail machine_id
+SYSTEMD_IN_CHROOT=0 chroot /sysroot /usr/lib/systemd/systemd-udevd --daemon 3>&- || fail udevd
+SYSTEMD_IN_CHROOT=0 chroot /sysroot udevadm trigger --action=add 3>&- || fail trigger
+SYSTEMD_IN_CHROOT=0 chroot /sysroot udevadm settle --timeout=30 3>&- || fail settle
+[ -c /dev/dri/card0 ] && [ -c /dev/tty0 ] && [ -c /dev/tty1 ] || fail drm_vt
+chroot /sysroot /bin/sh -c 'cd /home/ideck && exec /usr/local/lib/ideck/start' 3>&- &
+start_pid=$!
+n=0
+while [ ! -f /sysroot/run/ideck/gui-ready ]; do
+    kill -0 "$start_pid" || fail desktop_session
+    n=$((n+1)); [ "$n" -lt 90 ] || fail gui_timeout
+    sleep 1
+done
+# start validated X connection, 800x600 and mapped expected application windows.
+echo IDECK_DESKTOP_READY
+echo IDECK_DESKTOP_READY >&3
+while kill -0 "$shell_pid" 2>/dev/null; do
+    kill -0 "$start_pid" 2>/dev/null || fail gui_exited
+    sleep 1 & wait "$!"
+done
+wait "$shell_pid" || true
+shutdown

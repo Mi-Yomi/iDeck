@@ -8,6 +8,14 @@ import zipfile
 from pathlib import Path
 
 
+def sha256_file(path):
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        while chunk := stream.read(1024 * 1024):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def check_plist(info):
     if info.get("CFBundleIdentifier") != "dev.ideck.linuxprobe":
         raise ValueError("Probe must have its own bundle identifier, separate from Husk")
@@ -101,6 +109,8 @@ def package(worker, built, source, commit):
     # changed, or incomplete. Stream the large seed; never load it into RAM.
     from debian_bundle import verify as verify_debian, load_lock as load_debian_lock
     verify_debian(app / "iDeckDebian", load_debian_lock(Path(__file__).parent / "debian.lock.json"))
+    from gui_bundle import verify as verify_gui, load_lock as load_gui_lock
+    verify_gui(app / "iDeckLinuxDesktop", load_gui_lock(Path(__file__).parent / "gui.lock.json"))
     for extension in (app / "PlugIns").glob("*.appex"):
         metadata = plistlib.loads((extension / "Info.plist").read_bytes())
         if not metadata.get("CFBundleIdentifier", "").startswith("dev.ideck.linuxprobe."):
@@ -145,4 +155,4 @@ def package(worker, built, source, commit):
             raise ValueError("Wrong IPA payload layout")
     return {"ipa_created": True, "runtime_linked": True, "signing": "ad-hoc; owner sideload signing required",
             "ipa": output.name, "ipa_size": output.stat().st_size,
-            "ipa_sha256": hashlib.sha256(output.read_bytes()).hexdigest()}
+            "ipa_sha256": sha256_file(output)}

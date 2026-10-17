@@ -370,7 +370,7 @@ class TerminalSourceContracts(unittest.TestCase):
         self.assertIn("S_IFDIR", validate)
         session = (EXPERIMENT / "ios/LinuxTerminalSession.swift").read_text()
         self.assertLess(session.index("LinuxTerminalDisk.trustedDirectory("),
-                        session.index('appendingPathComponent(isDebian ? "iDeckDebian" : "iDeckLinux"'))
+                        session.index('appendingPathComponent(isDesktop ? "iDeckDebianGUI-v1" : (isDebian ? "iDeckDebian" : "iDeckLinux")'))
         checks = (EXPERIMENT / "ios/tests/TerminalChecks.swift").read_text()
         self.assertLess(checks.index("LinuxTerminalDisk.trustedDirectory(manager.temporaryDirectory)"),
                         checks.index('appendingPathComponent("ideck-terminal-checks-'))
@@ -418,7 +418,7 @@ class TerminalSourceContracts(unittest.TestCase):
         finalize = swift_block(session, "private func finalizeIfClean()")
         disconnected = swift_block(session, "private func channelDisconnected(")
         self.assertNotIn("cleanUnmount = true", serial)
-        self.assertIn('let prefix = owner.isDebian ? "IDECK_DEBIAN_" : "IDECK_TERMINAL_"', control)
+        self.assertIn('let prefix = owner.isDesktop ? "IDECK_DESKTOP_" : (owner.isDebian ? "IDECK_DEBIAN_" : "IDECK_TERMINAL_")', control)
         self.assertIn('line == Data((prefix + "CLEAN_UNMOUNT").utf8)', control)
         self.assertIn("cleanUnmount = true", control)
         self.assertIn("guard cleanUnmount, loopReturned, !finalized, !stopFailed, let disk", finalize)

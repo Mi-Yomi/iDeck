@@ -99,12 +99,14 @@ class IPAInputs(unittest.TestCase):
         self.assertIn("libqemu-aarch64-softmmu.dylib", dependencies)
         self.assertIn("libANGLE-shared.dylib", dependencies)
         self.assertIn("HuskJITHelper", dependencies)
-        self.assertEqual(len(target["preBuildScripts"]), 3)
+        self.assertEqual(len(target["preBuildScripts"]), 4)
         self.assertIn("ideck-stage-linux-guest.py", target["preBuildScripts"][0]["script"])
         self.assertIn("ideck-stage-linux-terminal.py", target["preBuildScripts"][1]["script"])
         self.assertIn("iDeckLinuxTerminal", target["preBuildScripts"][1]["script"])
         self.assertIn("ideck-stage-debian.py", target["preBuildScripts"][2]["script"])
         self.assertIn("iDeckDebian", target["preBuildScripts"][2]["script"])
+        self.assertIn("ideck-stage-desktop.py", target["preBuildScripts"][3]["script"])
+        self.assertIn("iDeckLinuxDesktop", target["preBuildScripts"][3]["script"])
         self.assertIn("IDECK_LINUX_PROBE_ONLY", project["settings"]["base"]["SWIFT_ACTIVE_COMPILATION_CONDITIONS"])
 
     def test_package_rejects_husk_identity_and_simulator(self):

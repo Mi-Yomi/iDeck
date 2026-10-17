@@ -20,6 +20,7 @@ until xdpyinfo >/run/ideck/xdpyinfo 2>/dev/null; do
     n=$((n+1)); [ "$n" -lt 60 ]; sleep 1
 done
 xrandr --output Virtual-1 --mode 800x600
+test "$(xdpyinfo | awk '/dimensions:/ {print $2}')" = 800x600
 setpriv --reuid=1000 --regid=1000 --init-groups /usr/bin/env -i \
     PATH=/usr/sbin:/usr/bin:/sbin:/bin HOME=/home/ideck USER=ideck LOGNAME=ideck \
     LANG=C.UTF-8 DISPLAY=:0 XAUTHORITY=/run/user/1000/Xauthority \

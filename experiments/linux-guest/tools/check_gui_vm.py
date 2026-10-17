@@ -9,6 +9,7 @@ import select
 import shlex
 import socket
 import subprocess
+import struct
 import time
 
 import debian_rootfs as base
@@ -25,6 +26,12 @@ def validate_loader_paths(paths):
 
 def boot(vm, output, provision=False, persistence=False, loader_inventory=None):
     prep=json.loads((vm/'preparation.json').read_text())
+    production=prep.get('production_bootstrap') is True
+    if production:
+        from desktop_modules import KERNEL, KERNEL_SHA256
+        if provision or prep['kernel_release']!=KERNEL or prep['kernel_sha256']!=KERNEL_SHA256:
+            raise ValueError('invalid production GUI acceptance kernel')
+    prefix=b'IDECK_DESKTOP_' if production else b'IDECK_GUI_HOST_'
     for path,digest in [(vm/'initramfs-gui-host.gz',prep['initramfs_sha256']),
                         (vm/'kernel/boot'/('vmlinuz-'+prep['kernel_release']),prep['kernel_sha256'])]:
         if base.sha256(path)!=digest:raise ValueError('immutable VM boot input differs from preparation')
@@ -41,19 +48,22 @@ def boot(vm, output, provision=False, persistence=False, loader_inventory=None):
           '-accel','tcg,thread=multi,tb-size=256','-display','none','-nodefaults','-nic','none','-no-reboot',
           '-kernel',vm/'kernel/boot'/('vmlinuz-'+prep['kernel_release']),
           '-initrd',vm/'initramfs-gui-host.gz','-append',
-          'console=ttyAMA0 rdinit=/ideck-gui-host-init panic=0 loglevel=4'+(' ideck.provision=1' if provision else ''),
+          ('console=ttyAMA0 rdinit=/ideck-desktop-init panic=0 loglevel=4' if production else
+           'console=ttyAMA0 rdinit=/ideck-gui-host-init panic=0 loglevel=4')+(' ideck.provision=1' if provision else ''),
           '-drive','if=none,id=root,format=raw,cache=writethrough,file='+str(vm/'scratch-gui.raw'),
-          '-device','virtio-blk-device,drive=root','-drive',
-          'if=none,id=packages,format=raw,readonly=on,file='+str(vm/'packages.raw'),
-          '-device','virtio-blk-device,drive=packages',
+          '-device','virtio-blk-device,drive=root',
           '-device','virtio-gpu-pci,xres=800,yres=600','-device','virtio-tablet-pci','-device','virtio-keyboard-pci',
           '-qmp','unix:'+str(qmp_path)+',server=on,wait=off']
+    if not production:
+        args+=['-drive','if=none,id=packages,format=raw,readonly=on,file='+str(vm/'packages.raw'),
+               '-device','virtio-blk-device,drive=packages']
     for name,s in zip(('serial','control'),servers):
         args+=['-chardev',f'socket,id={name},host=127.0.0.1,port={s.getsockname()[1]}']
     args+=['-serial','chardev:serial','-device','virtio-serial-pci','-device','virtserialport,chardev=control,name=org.ideck.control']
     args=[str(a) for a in args]; logs=[bytearray(),bytearray()]; peers=[]; qmp=None; qfile=None; process=None
     started=time.monotonic();peak=0;pump=None;command=None
     report={'schema':1,'status':'failed','host_only':True,'production_kernel_changed':False,
+            'production_bootstrap':production,
             'rss_measurement':'maximum sampled QEMU VmHWM on Linux host; not iOS or guest process memory',
             'provision':provision,'persistence_boot':persistence,'argv':args,'preparation':prep,'runner_sha256':base.sha256(Path(__file__))}
     try:
@@ -93,7 +103,7 @@ def boot(vm, output, provision=False, persistence=False, loader_inventory=None):
                 deadline=time.monotonic()+seconds
                 while not predicate():
                     pump()
-                    if b'IDECK_GUI_HOST_FAILED:' in logs[0]:raise RuntimeError('guest host supervisor failed')
+                    if prefix+b'FAILED:' in logs[0]:raise RuntimeError('guest supervisor failed')
                     if process.poll() is not None and not predicate():
                         pump()
                         if not predicate():raise RuntimeError('QEMU exited before evidence')
@@ -103,7 +113,9 @@ def boot(vm, output, provision=False, persistence=False, loader_inventory=None):
                 report['package_configuration_verified']=True
                 until(lambda:process.poll() is not None,seconds=30)
             else:
-                until(lambda:b'IDECK_GUI_HOST_READY\r\n' in logs[0])
+                until(lambda:prefix+b'READY\r\n' in logs[0])
+                if production and (prefix+b'KERNEL:'+prep['kernel_release'].encode()+b'\r\n') not in logs[0]:
+                    raise RuntimeError('production kernel version not observed')
                 report['gui_mapped']=True
                 command('screendump',{'filename':str(output/'desktop.png'),'format':'png'})
                 # Genuine input must travel through QEMU's emulated keyboard.
@@ -126,6 +138,8 @@ def boot(vm, output, provision=False, persistence=False, loader_inventory=None):
                     report['actual_glibc_loader_executables_passed']=len(paths)
                     report['loader_inventory_sha256']=base.sha256(loader_inventory)
                 serial("for name in openbox tint2 pcmanfm mousepad xterm; do pid=$(pgrep -xo $name) || exit 1; test $(awk '/^Uid:/ {print $2}' /proc/$pid/status) = 1000 || exit 1; done", 'client_uid')
+                if production:
+                    serial('test "$(readlink /proc/$(pgrep -xo xterm)/cwd)" = /home/ideck','terminal_home')
                 serial("xdotool search --onlyvisible --class XTerm | head -1 > /run/ideck/xterm; xdotool windowactivate --sync $(cat /run/ideck/xterm)", 'focus')
                 def key(name,down):
                     command('input-send-event',{'events':[{'type':'key','data':{'down':down,'key':{'type':'qcode','data':name}}}]})
@@ -176,6 +190,16 @@ def boot(vm, output, provision=False, persistence=False, loader_inventory=None):
                 if abs(resized['WIDTH']-moved['WIDTH'])<15 or abs(resized['HEIGHT']-moved['HEIGHT'])<10:
                     raise RuntimeError('emulated pointer did not resize the real window')
                 report.update(emulated_pointer_move_resize=True,window_geometries=geometries)
+                serial('tablet=$(for p in /sys/class/input/event*; do case "$(cat "$p/device/name")" in *"Virtio Tablet"*) echo /dev/input/${p##*/};; esac; done); test -c "$tablet"; timeout 2 cat "$tablet" > /run/ideck/wheel.events & echo $! > /run/ideck/wheel.pid','wheel_capture')
+                time.sleep(0.1)
+                for direction in ('wheel-up','wheel-down'):
+                    button(direction,True);button(direction,False)
+                data=serial('wait $(cat /run/ideck/wheel.pid) || test "$?" = 124; od -An -v -tx1 /run/ideck/wheel.events | sed "s/^/WHEEL_BYTES:/"','wheel_events')
+                raw=bytes.fromhex(' '.join(row.decode() for row in re.findall(rb'(?m)^WHEEL_BYTES:([ 0-9a-f]+)\r?$',data)))
+                if not raw or len(raw)%24:raise RuntimeError('invalid actual tablet evdev capture')
+                events=[struct.unpack_from('<qqHHi',raw,i)[2:] for i in range(0,len(raw),24)]
+                if (2,8,1) not in events or (2,8,-1) not in events:raise RuntimeError('virtual tablet wheel events missing')
+                report['wheel_evdev_verified']=True
                 def combo(*names):
                     for name in names:key(name,True)
                     for name in reversed(names):key(name,False)
@@ -189,6 +213,12 @@ def boot(vm, output, provision=False, persistence=False, loader_inventory=None):
                     serial('i=0; until test "$(cat /home/ideck/Documents/editor.txt)" = ideck-editor-persistence; do i=$((i+1)); test "$i" -lt 20 || exit 1; sleep 1; done', 'editor_saved')
                 serial('test "$(cat /home/ideck/Documents/editor.txt)" = ideck-editor-persistence && xdotool search --onlyvisible --name editor.txt', 'editor_reopened')
                 serial('w=$(cat /run/ideck/editor); xdotool windowmove "$w" 20 270 windowsize "$w" 440 270; f=$(xdotool search --onlyvisible --class Pcmanfm | head -1); xdotool windowmove "$f" 430 40 windowsize "$f" 350 440', 'client_layout')
+                serial('pgrep -xc xterm > /run/ideck/xterm-count','menu_baseline')
+                point(790,540);button('right',True);button('right',False);time.sleep(0.3)
+                command('screendump',{'filename':str(output/'desktop-menu.png'),'format':'png'})
+                key('home',True);key('home',False);key('ret',True);key('ret',False)
+                serial('i=0; until test "$(pgrep -xc xterm)" -gt "$(cat /run/ideck/xterm-count)"; do i=$((i+1)); test "$i" -lt 15 || exit 1; sleep 1; done','menu_launched_terminal')
+                report['real_root_menu_launch']=True
                 report['editor_file_loaded']=True
                 report['editor_typed_saved']=not persistence
                 report['editor_reopened_after_boot']=persistence
@@ -199,7 +229,7 @@ def boot(vm, output, provision=False, persistence=False, loader_inventory=None):
                 report['keyboard_input_verified']=True
                 report['persistence_read_before_write']=persistence
             pump()
-            if process.wait()!=0 or b'IDECK_GUI_HOST_CLEAN_UNMOUNT\r\n' not in logs[0]:
+            if process.wait()!=0 or prefix+b'CLEAN_UNMOUNT\r\n' not in logs[0]:
                 raise RuntimeError('no clean VM stop')
             fsck=base.run([vm/'host/usr/sbin/e2fsck','-fn',vm/'scratch-gui.raw'],env=env)
             (output/'fsck.log').write_text(fsck.stdout+fsck.stderr)
@@ -223,7 +253,7 @@ def boot(vm, output, provision=False, persistence=False, loader_inventory=None):
                 peers[1].sendall(b'IDECK_STOP_V1\n')
                 deadline=time.monotonic()+15
                 while process.poll() is None and time.monotonic()<deadline:pump()
-                if b'IDECK_GUI_HOST_CLEAN_UNMOUNT\r\n' in logs[0]:
+                if prefix+b'CLEAN_UNMOUNT\r\n' in logs[0]:
                     report['cleanup_clean_unmount']=True
             except OSError:pass
         if process and process.poll() is None:

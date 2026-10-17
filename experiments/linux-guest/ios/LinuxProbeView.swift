@@ -4,7 +4,7 @@ import SwiftUI
 /// QEMU and the translation runtimes own global state and a shared JIT region.
 @MainActor
 final class LinuxProbeRoute: ObservableObject {
-    enum Destination { case choose, linux, terminal, debian, library }
+    enum Destination { case choose, linux, terminal, debian, desktop, library }
     static let shared = LinuxProbeRoute()
     @Published private(set) var destination: Destination = .choose
 
@@ -37,6 +37,7 @@ struct LinuxProbeRoot: View {
             case .linux: LinuxProbeView()
             case .terminal: LinuxTerminalView()
             case .debian: LinuxTerminalView(session: .debian)
+            case .desktop: LinuxDesktopView()
             case .library: Text("Close and reopen the app to choose a Linux mode.")
             }
         }
@@ -51,6 +52,8 @@ struct LinuxProbeRoot: View {
                 LinuxTerminalView()
             case .debian:
                 LinuxTerminalView(session: .debian)
+            case .desktop:
+                LinuxDesktopView()
             case .library:
                 ContentView()
             }
@@ -70,6 +73,8 @@ struct LinuxProbeRoot: View {
                 .buttonStyle(.borderedProminent)
             Button("Boot, display and input diagnostic") { route.choose(.linux) }
                 .buttonStyle(.bordered)
+            Button("Debian desktop · windows and apps") { route.choose(.desktop) }
+                .buttonStyle(.borderedProminent)
             Button("Debian ARM64 · persistent ext4") { route.choose(.debian) }
                 .buttonStyle(.bordered)
             #if !IDECK_LINUX_PROBE_ONLY

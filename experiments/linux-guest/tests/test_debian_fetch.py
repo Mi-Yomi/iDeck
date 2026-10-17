@@ -329,6 +329,7 @@ class DebianFetchChecks(unittest.TestCase):
         with patch.object(build, "ROOT", self.root), patch.object(build.platform, "system", return_value="Darwin"), \
                 patch.object(build, "Worker", return_value=worker), patch.object(check_build_request, "main"), \
                 patch.object(bundle, "load_lock", return_value=self.lock), \
+                patch("gui_bundle.load_lock", return_value={"status":"ready"}), \
                 patch.dict(os.environ, {"IDECK_WORKFLOW_ID": "ideck-linux-probe-ipa", "NATIVE_BUILD_APPROVED": "true"}), \
                 contextlib.redirect_stdout(output):
             try:

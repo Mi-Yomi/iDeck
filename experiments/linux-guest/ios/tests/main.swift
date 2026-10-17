@@ -122,3 +122,7 @@ try runDesktopProfileChecks(fixture: desktopGolden)
 try runConsoleLifecycleChecks()
 
 runDisplayPointerChecks()
+
+runDesktopInputChecks()
+
+try runGUIProfileChecks(root: root)

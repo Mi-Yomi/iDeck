@@ -7,19 +7,25 @@
  import SwiftUI
  import os
  
-@@ -17,6 +18,8 @@
+@@ -17,6 +18,9 @@
      private var lastSequence: UInt64 = .max
  
      /// Guest surface size, for mapping touches back into guest coordinates.
++    var desktopInput: LinuxDesktopInput? { didSet { isMultipleTouchEnabled = desktopInput != nil } }
 +    private var pointer = LinuxDisplayPointer()
 +
      private var guestWidth: Int32 = 0
      private var guestHeight: Int32 = 0
  
-@@ -33,6 +36,22 @@
+@@ -33,6 +37,42 @@
          self.delegate = self
          self.clearColor = MTLClearColorMake(0, 0, 0, 1)
          buildPipeline()
++        let scroll = UIPanGestureRecognizer(target: self, action: #selector(desktopScroll(_:)))
++        scroll.minimumNumberOfTouches = 2; scroll.maximumNumberOfTouches = 2
++        scroll.allowedScrollTypesMask = .all
++        addGestureRecognizer(scroll)
++        addGestureRecognizer(UIHoverGestureRecognizer(target: self, action: #selector(desktopHover(_:))))
 +        for name in [UIApplication.willResignActiveNotification,
 +                     UIApplication.didEnterBackgroundNotification,
 +                     Notification.Name("iDeck.releaseDisplayInput")] {
@@ -35,29 +41,49 @@
 +    }
 +
 +    @objc private func releasePointer() {
++        desktopInput?.pointerUp()
 +        if let event = pointer.release() { husk_display_send_pointer(event.x, event.y, event.down) }
++    }
++
++    @objc private func desktopHover(_ recognizer: UIHoverGestureRecognizer) {
++        guard let desktopInput, let (x,y) = guestPoint(from: recognizer.location(in: self)) else { return }
++        desktopInput.point(x: x, y: y)
++    }
++    @objc private func desktopScroll(_ recognizer: UIPanGestureRecognizer) {
++        guard let desktopInput else { return }
++        releasePointer()
++        let delta = recognizer.translation(in: self).y
++        if abs(delta) >= 18 {
++            desktopInput.scroll(delta > 0 ? 1 : -1)
++            recognizer.setTranslation(.zero, in: self)
++        }
      }
  
      private func buildPipeline() {
-@@ -75,27 +94,28 @@
+@@ -75,27 +115,33 @@
          return (Int32(gx), Int32(gy))
      }
  
 -    private func send(_ touch: UITouch, down: Bool) {
-+    private func send(_ touch: UITouch, began: Bool) {
++    private func send(_ touch: UITouch, began: Bool, event: UIEvent?) {
          guard let (x, y) = guestPoint(from: touch.location(in: self)) else { return }
 -        husk_display_send_pointer(x, y, down)
++        if let desktopInput {
++            let button: UInt32 = event?.buttonMask.contains(.secondary) == true ? 2 : 1
++            desktopInput.point(x: x, y: y, begin: began ? button : nil)
++            return
++        }
 +        let event = began ? pointer.press(x: x, y: y) : pointer.move(x: x, y: y)
 +        if let event { husk_display_send_pointer(event.x, event.y, event.down) }
      }
  
      override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 -        if let t = touches.first { send(t, down: true) }
-+        if let t = touches.first { send(t, began: true) }
++        if let t = touches.first { send(t, began: true, event: event) }
      }
      override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
 -        if let t = touches.first { send(t, down: true) }
-+        if let t = touches.first { send(t, began: false) }
++        if let t = touches.first { send(t, began: false, event: event) }
      }
      override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 -        if let t = touches.first { send(t, down: false) }

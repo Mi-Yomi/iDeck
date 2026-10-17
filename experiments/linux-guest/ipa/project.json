@@ -135,6 +135,10 @@
         {
           "name": "Stage verified iDeck Debian console",
           "script": "set -e\npython3 \"$SRCROOT/../../scripts/ideck-stage-debian.py\" stage \\\n  \"$SRCROOT/../../guests/ideck-debian\" \\\n  \"$SRCROOT/../../scripts/ideck-debian.lock.json\" \\\n  --destination \"$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/iDeckDebian\"\n"
+        },
+        {
+          "name": "Stage verified iDeck Debian desktop",
+          "script": "set -e\npython3 \"$SRCROOT/../../scripts/ideck-stage-desktop.py\" stage \\\n  \"$SRCROOT/../../guests/ideck-desktop\" \\\n  \"$SRCROOT/../../scripts/ideck-desktop.lock.json\" \\\n  --destination \"$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/iDeckLinuxDesktop\"\n"
         }
       ],
       "postBuildScripts": [

@@ -1,10 +1,13 @@
 # Следующий milestone: persistent POSIX Linux и минимальный desktop
 
 Обновление **2026-10-17**: [GUI-DESKTOP.md](GUI-DESKTOP.md) описывает настоящий
-Xorg/Openbox/tint2/PCManFM/Mousepad/xterm на disposable system-QEMU, locked
-GUI closure и native paired-pointer fix. Debian provision-kernel host gate
-отделён от production Alpine/iPhone. Production module transfer, native Desktop
-payload/route и Apple/device GUI остаются открыты; ранние статусы ниже исторические.
+Xorg/Openbox/tint2/PCManFM/Mousepad/xterm, clean1.25GiB GUI seed и два real host
+boot со вводом/scroll/menu/save/reopen/Stop/fsck. Native Desktop route и отдельные
+profile/disk/payload staging уже реализованы в исходниках;269 tests/5SKIP.
+Host Debian6.12.107/QEMU10.0.13 отличается от production Alpine6.18.35/iOS10.0.12.
+Доставка exact modules блокирует matching-kernel GUI gate и sealing asset lock.
+Apple/full native link/IPA/device GUI NOT RUN; CI не запускался. Старые статусы
+ниже исторические, новый `ipa/gui.lock.json` намеренно blocked.
 
 Обновление реализации G0/G1: [DESKTOP-ROOTFS.md](DESKTOP-ROOTFS.md) и новый
 host receipt описывают locked Debian builder и отдельный ext4 storage contract.

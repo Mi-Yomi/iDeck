@@ -1,5 +1,94 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Native Desktop route + clean GUI seed; matching Alpine gate blocked — 2026-10-17
+
+Продолжение после **9a6d18ea0c05d026b7feb142e511bdb2d1c2b950**, та же ветка
+`codex/linux-guest-feasibility-20261015`, origin `Mi-Yomi/iDeck` проверен.
+Fresh fetch показал тот же9a6d18e, новых чужих коммитов нет. В окружении нет
+AGENTS.md/Apple SDK/Swift compiler; subagents, main/work, CI и credentials не трогались.
+Commit/push только своей проверенной части разрешены делегацией.
+
+**Реализован native route в исходниках:** `LinuxDesktopView`, отдельный
+`LinuxGUIProfile`, `Documents/iDeckDebianGUI-v1/rootfs-v1.raw` и UUID
+`b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7`. Реальный существующий Husk Metal
+framebuffer; landscape controls; normal keyboard events, special keys/F1–F12,
+Ctrl/Alt/Shift/Super, right click и scroll. Serial recovery выделен отдельно;
+serial sendLine не выдаётся за графическую клавиатуру. Soft text — US/ASCII,
+максимум4096 символов; неподдержанный Unicode paste отклоняется целиком.
+Unicode/IME ещё не заявляются. Keyboard HID/modifier ownership, cancel/outside
+letterbox/focus/background/Stop releases парные. C/BQL input — отдельная очередь;
+Stop имеет250ms независимый control fallback при застрявшей input queue.
+Ни cleanup/unregister/unlock, ни userdata reset/resize/reseed не добавлены.
+QEMU owner thread/NSCondition и disk lock до process exit сохранены.
+
+**Guest production bootstrap написан, но NOT RUN:** исходное Alpine6.18.35,
+точные virtio GPU/input/evdev/ext4, udev, DRM/VT, root Xorg с private Xauthority,
+UID1000 session, local X socket/nic none, devpts/shm/run и обратный unmount.
+RECOVERY_READY позволяет serial/Stop до X. GUI READY возможен только после
+X connection +800x600 +mapped XTerm/Pcmanfm/Mousepad. Exit GUI оставляет recovery.
+
+**Чистый seed v4 сохранён локально:**
+`.work/gui-20261017/gui-seed-final-v4/seed/`:
+
+- raw1342177280bytes, SHA `46fea0230963ca494a5adeef19f46668f559f77522e3b82215d5f543646b0791`;
+- gzip270352431bytes, SHA `8deb611138ad0afe400669d4d615093fea567d0950f48f55c97d608446a61769`;
+- used884068352 /free458108928bytes; streaming gzip/raw count+digest совпали;
+- accepted sourceA32... не менялся. Cleanup в настоящей VM завершает writers,
+  удаляет acceptance files/history/logs, normal configure/audit; e2image копирует
+  только allocated blocks в НОВЫЙ raw; read-only fsck/UUID/размер/scripts проверены.
+
+**Финальные два boot на свежей копии seed**40.775/38.621s PASS:
+actual apps/UID1000, pointer move/resize, evdev REL_WHEEL ±1, real right-click
+menu запускает ещё xterm, ввод/сохранение Mousepad, reopen до записи на boot2,
+два clean Stop и read-only fsck. QEMU peak host VmHWM816996352/804188160bytes.
+Гостевые1024MiB/4vCPU/256MiB TCG прежние. Runner source заморожен на оба boot,
+его сохранённые bytes/hashes совпадают с текущим скриптом. Важно: **и kernel,
+и QEMU отличаются** — host Debian6.12.107+deb13-arm64 /QEMU10.0.13, app original
+Alpine6.18.35-0-virt /iOS10.0.12-utm. Это НЕ matching-kernel или iPhone acceptance.
+Evidence: `experiments/linux-guest/evidence/gui-native-20261017/receipt.json`,
+два набора оригинальных logs/results/fsck и actual scanout/menu. Крупные raw/gzip
+не в git. Старые disposable test roots частично удалены, evidence сохранено;
+актуальный seed v4 и исходный immutable laboratory snapshot сохранены.
+
+**Отдельная payload chain реализована, fail-closed:** `gui_bootstrap.py` →
+`gui_gate.py` (два real original-kernel GUI boots) → `seal_gui_payload.py`
+(только exact successful evidence) → `gui_bundle.py` (verify/restore/stage/exact
+rebuild). Отдельные GUI lock/HTTPS transport, gzip bounds, hash/size/low-space,
+Xcode prebuild и IPA verify; IPA SHA тоже streaming1MiB. iPhone по-прежнему
+импортирует verified raw из Xcode assets; gzip importer на iPhone не существует.
+`ipa/gui.lock.json` намеренно **blocked**, без выдуманных hashes: build recipe
+останавливается ДО Apple/native setup/private fetch. Финальный asset lock/archive
+пока НЕ sealed, НЕ опубликован, НЕ готов к IPA. Console payload locks неизменны.
+
+**Проверки:**269 tests,264PASS,5SKIP,0fail/error; полный overlay37 inputs,
+81 original files,10 patched hashes,25 copies PASS;81 исходник совпал с real
+Husk Git blobs0695248. Full source stage/native recipe patch --check PASS.
+Новый C pointer function body действительно compiled/executed с unit queue
+fixtures; это не full QEMU compile. Swift executable +UIKit/Apple checks NOT RUN;
+обязательные actual Swift state/profile tests добавлены в Apple gate.
+
+**Реальный blocker:** точные Alpine module bytes не materialized в этом executor.
+Parent сообщает свой verified modloop, но его paths/file IDs не local files здесь.
+CDN CONNECT403; Library tools/list network; Library prepare workspace_path:null;
+Drive archive HTTP413(431008592>268435456); supported streamed-reference GET
+URLError; inline modloop fetch `Transport closed`; download_file tool отсутствует.
+Бесконечные retries/unknown binaries/live token requests не делались.
+Минимум: modloop17670144bytes SHA
+`f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b`, ИЛИ
+4 exact .ko +3 metadata(~1.99MB)+manifest по `local-debian-ext4-modules.json`.
+Bootstrap сверяет content с уже принятым pinned closure; provenance standalone
+допустим, self-asserted hashes других модулей — нет. Прямой scan kernel не дал
+читаемого config; DRM/VT acceptance остаётся реальным VM gate.
+
+Следующий исполнитель: доставить эти bytes в cloud, выполнить bootstrap/gate/
+seal по `GUI-DESKTOP.md`, review готового lock +refresh overlay hashes +tests,
+передачу large private Release/CI согласовать с parent. **Не запускать CI**:
+parent координирует одну сборку после review/fresh free-quota/paidOFF checks.
+Apple/full native link/IPA/device GUI, accelerated guest GPU, Steam — NOT RUN.
+
+Историческая запись предыдущего checkpoint ниже сохранена.
+
+
 ## Настоящий GUI на host; production Alpine transfer заблокирован — 2026-10-17
 
 Продолжение от **b8a943f063302883e87d7deac0cb9abec0e37172** в сохранённом

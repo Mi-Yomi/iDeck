@@ -2,7 +2,22 @@
 set -eu
 export LC_ALL=C
 # A real WM and clients, all owned by UID1000, on the local authenticated X socket.
-openbox &
+cat > "$XDG_RUNTIME_DIR/openbox-menu.xml" <<'MENU'
+<?xml version="1.0" encoding="UTF-8"?>
+<openbox_menu xmlns="http://openbox.org/3.4/menu">
+  <menu id="root-menu" label="Debian desktop">
+    <item label="Terminal"><action name="Execute"><command>xterm</command></action></item>
+    <item label="Files"><action name="Execute"><command>pcmanfm /home/ideck</command></action></item>
+    <item label="Text editor"><action name="Execute"><command>mousepad</command></action></item>
+    <separator/>
+    <item label="Reconfigure desktop"><action name="Reconfigure"/></item>
+  </menu>
+</openbox_menu>
+MENU
+sed -e '\|<file>/var/lib/openbox/debian-menu.xml</file>|d' \
+    -e 's|<file>menu.xml</file>|<file>/run/user/1000/openbox-menu.xml</file>|' \
+    /etc/xdg/openbox/rc.xml > "$XDG_RUNTIME_DIR/openbox-rc.xml"
+openbox --config-file "$XDG_RUNTIME_DIR/openbox-rc.xml" &
 wm=$!
 n=0
 until xprop -root _NET_SUPPORTING_WM_CHECK | grep -q 'window id # 0x'; do

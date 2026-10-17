@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "kind": "ideck-debian-gui",
+  "status": "blocked",
+  "blocker": "Exact Alpine 6.18.35-0-virt modloop is not materialized in this executor; production bootstrap and two real matching-kernel GUI boots are required before sealing.",
+  "required_modloop": {
+    "size": 17670144,
+    "sha256": "f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b"
+  },
+  "matching_kernel_gui_verified": false,
+  "app_payload_ready": false,
+  "device_verified": false
+}

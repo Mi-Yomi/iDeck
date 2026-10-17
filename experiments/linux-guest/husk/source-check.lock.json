@@ -3,8 +3,8 @@
   "repository": "https://github.com/Leviidev/Husk",
   "commit": "0695248f491cda877f7969d1f0cc89aeede1482e",
   "archive": "husk119-source-check.tar.gz",
-  "archive_sha256": "4f534374ef02d9de14203705afc58228b859ce978c66707c42e35b3e3b38c0d6",
-  "archive_size": 341837,
+  "archive_sha256": "58f6b18320d4d541a70c2a0112d2e9caebe8d15ffb3d3d9cb817edddb56bc7b1",
+  "archive_size": 354986,
   "files": {
     "LICENSE": {
       "size": 17992,
@@ -395,6 +395,21 @@
       "size": 5334,
       "sha256": "43b2324ff480cd0c06878377a323d552f4cc414a14b77a611f0ba83d9278115d",
       "git_blob": "d0297ba81a0aa6ebc87f8f12f2ce2cec5841f9d5"
+    },
+    "src/ios-jit/husk-display.c": {
+      "size": 13870,
+      "sha256": "4baec7e0595f5a2c27065aaa076a944cd71b990f4442f1eff67204cb5bcd6cb4",
+      "git_blob": "372befe3900f30328640fc3ba4050e27e48b6ef9"
+    },
+    "src/ios-jit/husk-display.h": {
+      "size": 3042,
+      "sha256": "21f1e5bc1f27b489e373891c8ada12731da8e1898db8459ccfd44bc8b182538c",
+      "git_blob": "951e6cdfbd3e1e344324a1734c73591cec82939c"
+    },
+    "scripts/integrate_husk.sh": {
+      "size": 26047,
+      "sha256": "7a02031a1cf6ee09fcc3682bcff3e62f17a1f6c7cc8386663e6baf89ca650309",
+      "git_blob": "767726f83081b151b01e0fa030b3f55b123cf082"
     }
   },
   "scope": "Exact upstream Swift/header source slice for SDK typechecking; no native binaries, guest assets or standalone runtime"

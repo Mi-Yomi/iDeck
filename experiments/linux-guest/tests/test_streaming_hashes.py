@@ -98,6 +98,13 @@ class StreamingHashChecks(unittest.TestCase):
                     self.assertEqual(builder.sha(path), expected(data)["sha256"])
                 self.assertEqual(len(reads), (len(data) + MIB - 1) // MIB + 1)
 
+    def test_large_ipa_hash_empty_small_and_multiblock_bounded(self):
+        path = self.root / "fixture.ipa"
+        for data in CASES:
+            path.write_bytes(data)
+            with bounded_reads(self):
+                self.assertEqual(package_probe.sha256_file(path), expected(data)["sha256"])
+
     def test_terminal_package_gate_empty_small_and_multiblock_bounded(self):
         names = ("terminal-profile.json", "initramfs-terminal.gz",
                  "userdata-seed.raw", "LICENSES-terminal.txt")

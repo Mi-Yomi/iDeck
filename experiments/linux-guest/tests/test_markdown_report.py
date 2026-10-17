@@ -69,7 +69,7 @@ class MarkdownIntegration(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             output = Path(temp) / "source"
             restored = typecheck_source.restore(output)
-            self.assertEqual(len(restored["files"]), 78)
+            self.assertEqual(len(restored["files"]), 81)
             typecheck_source.overlay(output)
             staged = output / lock["copies"][renderer]
             self.assertEqual(staged.read_bytes(), (stage_husk.ROOT / renderer).read_bytes())

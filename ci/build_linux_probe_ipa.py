@@ -34,6 +34,7 @@ sys.path.insert(0, str(EXPERIMENT / "tools"))
 from stage_husk import PIN, prepare
 from stage_bundle import verify
 from debian_bundle import FetchError
+from gui_bundle import FetchError as GUIFetchError
 
 DOWNLOAD_MAX_ATTEMPTS = 3
 DOWNLOAD_TIMEOUT_SECONDS = 300
@@ -456,6 +457,12 @@ def main():
         sys.path.insert(0, str(ROOT / "ci"))
         from check_build_request import main as check_request
         check_request()
+        # A pending GUI lock blocks before Apple tool/dependency setup or any
+        # private payload request. Only seal_gui_payload can produce the ready
+        # contract after the real original-kernel acceptance gates.
+        from gui_bundle import load_lock as load_gui_lock, fetch as fetch_gui, restore as restore_gui
+        gui_lock = EXPERIMENT / "ipa/gui.lock.json"
+        load_gui_lock(gui_lock)
         worker = Worker(out)
         report["steps"] = worker.steps
         report["downloads"] = worker.downloads
@@ -471,6 +478,11 @@ def main():
         report["debian_payload"] = fetch_debian(debian_archive, debian_lock, diagnostic=report["debian_payload_fetch"])
         debian_assets = out / "debian-assets"
         report["debian_assets"] = restore_debian(debian_archive, debian_assets, debian_lock)
+        gui_archive = out / "ideck-debian-gui-v1.tar"
+        report["gui_payload_fetch"] = {}
+        report["gui_payload"] = fetch_gui(gui_archive, gui_lock, diagnostic=report["gui_payload_fetch"])
+        gui_assets = out / "gui-assets"
+        report["gui_assets"] = restore_gui(gui_archive, gui_assets, gui_lock)
         lock = json.loads((EXPERIMENT / "ipa/native-sources.lock.json").read_text())
         if lock["husk_commit"] != PIN:
             raise ValueError("Native recipe and app source use different Husk commits")
@@ -497,6 +509,8 @@ def main():
         report["source_stage"] = prepare(upstream, guest, source)
         from debian_bundle import stage as stage_debian
         stage_debian(debian_assets, source / "guests/ideck-debian", debian_lock)
+        from gui_bundle import stage as stage_gui
+        stage_gui(gui_assets, source / "guests/ideck-desktop", gui_lock)
         worker.run("native-recipe-patch", ["git", "apply", "--check", EXPERIMENT / "ipa/0001-fail-closed-native-build.patch"], source)
         worker.run("native-recipe-apply", ["git", "apply", EXPERIMENT / "ipa/0001-fail-closed-native-build.patch"], source)
         downloads = source / "third_party/sources"
@@ -565,9 +579,9 @@ def main():
         from package_probe import package
         report.update(package(worker, derived / "Build/Products/Release-iphoneos/Husk.app", source, report["commit"]))
         report["status"] = "linux_probe_ipa_built"
-    except FetchError as error:
+    except (FetchError, GUIFetchError) as error:
         report["failure"] = error.diagnostic["code"]
-        report["debian_payload_fetch"] = error.diagnostic
+        report["gui_payload_fetch" if isinstance(error, GUIFetchError) else "debian_payload_fetch"] = error.diagnostic
         # No transport exception text/chain reaches the generic build handler.
         raise SystemExit(1) from None
     except Exception as error:

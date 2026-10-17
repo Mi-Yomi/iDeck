@@ -5,19 +5,19 @@
   "inputs": {
     "ios/LinuxGuestProfile.swift": "ddfea00eba911033c44168103f0727836521849eadab7fed5dfac479ab36bef3",
     "ios/LinuxProbeEvidence.swift": "e17ee28c23a8879a6e74dd783f901297d2bcd8d089ad4e515c972b0016f034d4",
-    "ios/LinuxProbeSession.swift": "254ea01f02323981e4ef65c2d5b4e51bde36d0e77ae5444b092c4b4e752f47d4",
-    "ios/LinuxProbeView.swift": "bf62258b490f7d1322f10670b53809caef1e650d003591a7300853a98ba243eb",
+    "ios/LinuxProbeSession.swift": "562a3d295c4fd46637cde517b5532a6c310ef152ec7c6fed5684f2a0e6df239f",
+    "ios/LinuxProbeView.swift": "574bec1dd47b7689ceb58aa0eada52eb75d36750ad3a6bf4af5502059f48af1f",
     "tools/stage_bundle.py": "267a95eb31f50dba82a8f75547925a60533faebb53e3198cdeea83703cd77c83",
     "tools/stage_husk.py": "f211a73db58c51b30750d4c478ab277cd24109c62962172939a8df3816b73d2d",
-    "husk/patches/series": "4d1d046a5966d9ac17604d02f8ca585f95493938de2c9682a97b03e771833df7",
+    "husk/patches/series": "42796cae2762daa282840eab2f89fb39ae2526be853a021268fc00aed5b20689",
     "husk/patches/0001-isolated-linux-probe-route.patch": "d037311ec48784fa03c3191cbb19c60b9c811c8f01c7e119dbebaca054d2c8cf",
     "tools/typecheck_source.py": "5a5418cb654db1ae704142b8e75a99870fb01cb1bfa72e9469f98ddda1e3d360",
-    "husk/source-check.lock.json": "44db4e8620229cd07dbf302312eda0ff86d358284d0ebe9b96b89ca85fe2457d",
-    "husk/husk119-source-check.tar.gz": "4f534374ef02d9de14203705afc58228b859ce978c66707c42e35b3e3b38c0d6",
+    "husk/source-check.lock.json": "aa90962030511770fb7656162f265933ebc9fb3d96264131e2b23f528c5a86ec",
+    "husk/husk119-source-check.tar.gz": "58f6b18320d4d541a70c2a0112d2e9caebe8d15ffb3d3d9cb817edddb56bc7b1",
     "husk/patches/0002-jit-setup-routing.patch": "a93a4af2b82418280c14c1b7e7ec64c8e6f2395602987dc59b95a1c841ed3ec4",
-    "ios/LinuxProbeReport.swift": "687626123c57ce77f2d75bd79c54302dea34902a93d1623055462babb30b2cd0",
+    "ios/LinuxProbeReport.swift": "506f423b244972ab66b606b8ded284566d66626a68032fb843a57980db4958f1",
     "ios/LinuxTerminalProfile.swift": "04d488d0052ab0f1fc3fbf9e3976aa72fb722e492f535ff7dd5f1e6a18149bc7",
-    "ios/LinuxTerminalSession.swift": "9ecd9e6e5fdafee8c9c55ec4bdc46c7a152735e29e1182079776ec1f3c173b12",
+    "ios/LinuxTerminalSession.swift": "53ddabb1c5e8286766877d62d3f2c7d3505fabf493c3ed625e0f86787391a2b9",
     "ios/LinuxTerminalView.swift": "32cb24c27024f26628caa7d7fbe1b17532cc0f271dad8c91e49d587301bd733c",
     "tools/terminal_bundle.py": "c1c696498690085c6ddd4dc1eaf06dc4afa51b4dea738d883f498194cbbdef61",
     "ipa/terminal.lock.json": "e39514b53a2ae33de96b300b2578c760fb95b2b2685bb7a99502f0f2d0c6a98e",
@@ -32,7 +32,14 @@
     "tools/debian_bundle.py": "e1bb0b89a87c4f95b3169c6f2772c37a515d5e6873c2db00e1d9a541e702a450",
     "ipa/debian.lock.json": "45f3985e5ca35e95849f56a658811601b923168abc714bbdadaa329d81e1e9bd",
     "ios/LinuxDisplayPointer.swift": "7d3e5886f263bc7295b76c251c491d49befc7ba5fb13682d00ce31c18f993d59",
-    "husk/patches/0003-paired-display-pointer-release.patch": "503b4d827269616eddb3ac8a950c41ebfabb3ce4c52eed36e300ae8238c3890d"
+    "husk/patches/0003-paired-display-pointer-release.patch": "ee63376d9b7ad0dc85412c98aced7fe577e5dadfd6c58edc4cc6e9d8bb972f52",
+    "ios/LinuxGUIProfile.swift": "1780558613046862b22ec7c1a740474609aef418505cc7933a3c5ac965808d6f",
+    "ios/LinuxDesktopInputState.swift": "5a6e62e6be37ce809610cb9c7e33fd727941f8c2dd38aec1007a62369c87f560",
+    "ios/LinuxDesktopInput.swift": "5de0b1c9d175405b865f9b32c8169b495aa72a83acf8f3072ded52859cac9b36",
+    "ios/LinuxDesktopView.swift": "24f32eaafee435149857ab31229c1fa08a1a56c52b9b904b382336c154b4cb7e",
+    "husk/patches/0004-desktop-input-bridge.patch": "3eb1da30aa9724440ce4e79a48fbae7326aee8115be00e6299fd28b9fe326ee0",
+    "tools/gui_bundle.py": "55b10151e44ab0f3e091e4f37927fb8eceb9bc5d3b5c175d0b8ee14103b82015",
+    "ipa/gui.lock.json": "b65bba45b649b1588793e95fa8cad272cfc8afcbeca21d8325c1e8cf78d2e383"
   },
   "copies": {
     "ios/LinuxGuestProfile.swift": "src/app/Husk/LinuxGuestProfile.swift",
@@ -53,7 +60,13 @@
     "ios/LinuxConsoleLifecycle.swift": "src/app/Husk/LinuxConsoleLifecycle.swift",
     "tools/debian_bundle.py": "scripts/ideck-stage-debian.py",
     "ipa/debian.lock.json": "scripts/ideck-debian.lock.json",
-    "ios/LinuxDisplayPointer.swift": "src/app/Husk/LinuxDisplayPointer.swift"
+    "ios/LinuxDisplayPointer.swift": "src/app/Husk/LinuxDisplayPointer.swift",
+    "ios/LinuxGUIProfile.swift": "src/app/Husk/LinuxGUIProfile.swift",
+    "ios/LinuxDesktopInputState.swift": "src/app/Husk/LinuxDesktopInputState.swift",
+    "ios/LinuxDesktopInput.swift": "src/app/Husk/LinuxDesktopInput.swift",
+    "ios/LinuxDesktopView.swift": "src/app/Husk/LinuxDesktopView.swift",
+    "tools/gui_bundle.py": "scripts/ideck-stage-desktop.py",
+    "ipa/gui.lock.json": "scripts/ideck-desktop.lock.json"
   },
   "patched_files": {
     "src/app/Husk/HuskApp.swift": "18ff389fa29628fd1d4eb168a18a3b12f6b8c75caf6804651699e926b1ab9e31",
@@ -61,6 +74,10 @@
     "src/app/Husk/JITBootstrap.swift": "e62daeeca0c95d9ae955a62c7d7885f7f4b36b34538c22d50bee4b67605cbb34",
     "src/app/Husk/JITSetup.swift": "e4963dea166bf5c5481c220330443c08fcc7a96a3a57fbc240e42884b8b5765d",
     "src/app/Husk/JITSetupView.swift": "9b451834edaa1840dd6c2bfe2f56b10443111cd30b914d97cb4d8b934dac602d",
-    "src/app/Husk/HuskMetalView.swift": "69be9035829088b26608af3ae022fb2b6f7630731cf0b9715fb1fb7c908db8cf"
+    "src/app/Husk/HuskMetalView.swift": "f4d3b493cb52be7d9cdb09377610e6c65f3cc7b0e872769a8a86cbe869ae4682",
+    "src/ios-jit/husk-display.c": "251f596db5e59c0fa88026ad5f5daf33e283016316efbf68f9ba1832adced3ae",
+    "src/ios-jit/husk-display.h": "5f0f82c68c377aab24ebfed89ac4c5ae3ccdc37280311ec4687dc08974bc2b8f",
+    "src/app/Husk/HuskBridge.h": "ff50b39056da2b39b13f9485ade0f2be52e5499e70b1fdec3cd526e14f5de493",
+    "scripts/integrate_husk.sh": "bf6098d13094b120566f414852380d7e87c3cfc10edc1ccb368cbf32d01d7960"
   }
 }

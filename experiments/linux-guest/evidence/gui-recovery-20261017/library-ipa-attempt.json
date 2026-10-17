@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "date_utc": "2026-10-17T11:45:22.194570+00:00",
+  "library_file_id": "libfile_9e77220306dc8191bc53fd87d98e51b8",
+  "requested_file_name": "iDeck-Linux-Probe.ipa",
+  "returned_file_name": "iDeck-Linux-Probe(8).ipa",
+  "expected_size_bytes": 423782833,
+  "expected_sha256": "dce48202a5882309458be7afa4bfc94f07ab65f24323eae76bb5aef6af398ec2",
+  "flow": "resolved reference -> prepare_materialize -> unchanged official library_file_transfer.py materialize; full transfer JSON on stdin",
+  "helper_sha256": "5c81478cd94a59d721a1677d0bd36f7cec23c18a21b48740b1c9ff94d27fb26f",
+  "attempts": [
+    {
+      "attempt": 1,
+      "prepare_is_error": false,
+      "transfers": 1,
+      "unavailable_items": 0,
+      "workspace_path": null,
+      "helper_exit": 1,
+      "helper_output": "library file transfer failed: download failed"
+    },
+    {
+      "attempt": 2,
+      "prepare_is_error": false,
+      "transfers": 1,
+      "unavailable_items": 0,
+      "workspace_path": null,
+      "helper_exit": 1,
+      "helper_output": "library file transfer failed: download failed"
+    }
+  ],
+  "retry": "one refreshed prepare_materialize transfer, same supported helper, no further transport attempts",
+  "materialized_bytes_present": false,
+  "ipa_verified": false,
+  "production_assets_verified": false,
+  "production_host_gate": "NOT RUN: assets absent",
+  "ci_dispatched": false,
+  "github_token_read": false,
+  "signed_urls_in_this_evidence": false
+}

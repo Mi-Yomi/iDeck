@@ -1,6 +1,44 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
-## Scoped counter recovery PASS on old seed; production access blocked — 2026-10-17
+## Review follow-up: bind the checked recovery image — 2026-10-17
+
+Native review found a real gap in528c2eb: `verified` stored SCAN_CLEAN but no
+checked image digest; the next process established its own baseline. The new
+suffix hashes ALL1342177280 bytes with immutable guest tools AFTER final strict
+fsck/SCAN_CLEAN+sync, while the unmounted work block device remains RO. Pipefail,
+exact dd byte count and lowercase64hex reject partial/error reads. Only the
+trusted supervisor control port emits the ordered IMAGE_SHA256 receipt. No target
+writes follow. Native recordResult stores this digest without reading native-owned
+work; DONE and verified require it. Fresh-process promotion MUST compare its full
+work hash against that recorded guest value, never accept nil/set a new baseline.
+The before/after-rename crash path remains bound to the same digest.
+
+Added host regression mutating a byte outside the superblock, and mandatory real
+Swift fresh-child tests for the same mutation and a legacy/missing digest. Apple
+execution remains NOT RUN. Final host Stop now requires strict full fsck output
+as well as exit0. Fresh TWO-cycle host proof with the new suffix PASS on OLD46fea:
+SIGKILL after nonce-confirmed sync, original/backup preservation, full guest digest
+matching host work BEFORE activation, first file read before writes on cycle2,
+both files reopened on final GUI boot, clean Stop plus full output-gated fsck.
+Recovery65.08/63.53s; sampled QEMU VmHWM1254961152/1253941248bytes. Guest settings
+remain1024MiB/4CPU/256MiB TCG. Host samples do not establish iOS memory behavior.
+The prior scoped receipt remains historical; use
+[digest receipt](experiments/linux-guest/evidence/gui-recovery-20261017/digest-receipt.json)
+and its frozen guest/runner sources/control/fsck logs. Current9c4d remains separate.
+New suffix15856bytes, SHAaf2591aaf362e150f80d66ccff1ca11acc6379f240e387e1667b51f70ec30ff5.
+Accepted large assets/GUI locks unchanged; no new payload required.
+All315 regressions:310PASS/5explicitSKIP/0failures/errors. Exact offline Husk
+restore/overlay PASS (81members/45inputs/28copies/10patches/21addedSwift).
+Swift runtime, Apple compiler/link/new IPA/iPhone recovery remain NOT RUN.
+
+**Production transport blocker:** Library resolved
+`libfile_9e77220306dc8191bc53fd87d98e51b8` to the423782833-byte IPA, but its current
+official materialize helper returned exit1 / `library file transfer failed:
+download failed`. ONE refreshed prepare_materialize retry returned the same error.
+No file was materialized, no signed URL was bypassed, no credential/token read,
+and no CI dispatched. See the sanitized library-ipa-attempt.json evidence.
+
+## Historical528c2eb: scoped counter recovery on old seed; production blocked — 2026-10-17
 
 Published intermediate checkpoint: `1acee7b02e221df2d1bbecdfb4e037fbe8076dbc`.
 Its fail-closed/withdrawal record below is historical. The new scoped method has

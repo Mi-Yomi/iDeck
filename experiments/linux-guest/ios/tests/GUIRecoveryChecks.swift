@@ -8,11 +8,14 @@ func recoveryUnitSpecification() -> LinuxDesktopDisk.Specification {
 }
 
 func runRecoveryPromotionChild(directory: URL, interruption: String) throws -> Never {
-    let promoted = try LinuxGUIRecovery.promotePending(directory: directory, specification: recoveryUnitSpecification(),
-        toolSeedSHA256: String(repeating: "a", count: 64), fault: { phase in
-            if phase == interruption { _exit(phase == "before_rename" ? 85 : 86) }
-        })
-    precondition(promoted); _exit(0)
+    do {
+        let promoted = try LinuxGUIRecovery.promotePending(directory: directory, specification: recoveryUnitSpecification(),
+            toolSeedSHA256: String(repeating: "a", count: 64), fault: { phase in
+                if phase == interruption { _exit(phase == "before_rename" ? 85 : 86) }
+            })
+        precondition(promoted && !interruption.hasPrefix("reject_")); _exit(0)
+    } catch LinuxGUIRecovery.Invalid.changed where interruption == "reject_changed" { _exit(87) }
+      catch LinuxGUIRecovery.Invalid.receipt where interruption == "reject_receipt" { _exit(88) }
 }
 
 /// Actual bounded IO/locking/atomic-rename checks with sparse synthetic bodies.
@@ -21,9 +24,23 @@ func runRecoveryPromotionChild(directory: URL, interruption: String) throws -> N
 func runGUIRecoveryChecks(root: URL, fixture: URL) throws {
     func check(_ condition: Bool, _ message: String = "recovery IO check") { precondition(condition, message) }
     let manager = FileManager.default
+    func hash(_ path: URL) throws -> String {
+        let file = try FileHandle(forReadingFrom: path); defer { try? file.close() }
+        var hash = SHA256()
+        while let bytes = try file.read(upToCount: 1024 * 1024), !bytes.isEmpty { hash.update(data: bytes) }
+        return hash.finalize().map { String(format: "%02x", $0) }.joined()
+    }
     let directory = root.appendingPathComponent("gui-recovery-unit-" + UUID().uuidString)
     try manager.createDirectory(at: directory, withIntermediateDirectories: true)
     defer { try? manager.removeItem(at: directory) }
+    func child(_ interruption: String, expected: Int32) throws {
+        let child = Process(), finished = DispatchSemaphore(value: 0)
+        child.executableURL = URL(fileURLWithPath: CommandLine.arguments[0])
+        child.arguments = ["--gui-recovery-promote", directory.path, interruption]
+        child.terminationHandler = { _ in finished.signal() }; try child.run()
+        if finished.wait(timeout: .now()+60) == .timedOut { child.terminate(); preconditionFailure("promotion child timed out") }
+        precondition(child.terminationStatus == expected)
+    }
     let spec = recoveryUnitSpecification()
     var header = try DesktopGolden.load(fixture).header
     func u32(_ n: Int) -> UInt32 { UInt32(header[n]) | UInt32(header[n+1]) << 8 | UInt32(header[n+2]) << 16 | UInt32(header[n+3]) << 24 }
@@ -60,14 +77,18 @@ func runGUIRecoveryChecks(root: URL, fixture: URL) throws {
     check(try readHeader(backup) == Data(header))
     try transaction!.markRunning(toolSeedSHA256: String(repeating: "a", count: 64))
     do {
-        try transaction!.recordResult(assessment: 0, replay: 0, verification: 0, scanClean: false)
+        try transaction!.recordResult(assessment: 0, replay: 0, verification: 0, scanClean: false, imageSHA256: String(repeating: "a", count: 64))
         preconditionFailure("exit0 without clean output accepted")
     } catch LinuxGUIRecovery.Invalid.manualReview { }
     let workURL = transaction!.url
     let writer = try FileHandle(forWritingTo: workURL)
     set32(0x60, 194); set32(1020, LinuxDesktopDisk.crc32c(header[0..<1020]))
     try writer.seek(toOffset: 1024); try writer.write(contentsOf: Data(header)); try writer.synchronize(); try writer.close()
-    try transaction!.recordResult(assessment: 0, replay: 0, verification: 0, scanClean: true)
+    // Unit stand-in for the trusted guest digest; no VM/fsck claim for this
+    // synthetic image. The production result is received through control FD3.
+    let checkedHash = try hash(workURL)
+    try transaction!.recordResult(assessment: 0, replay: 0, verification: 0, scanClean: true, imageSHA256: checkedHash)
+    check(transaction!.receipt!.recoveredSHA256 == checkedHash)
     do {
         _ = try LinuxGUIRecovery.promotePending(directory: directory, specification: spec, toolSeedSHA256: String(repeating: "a", count: 64))
         preconditionFailure("same-process or owned disk promotion accepted")
@@ -75,13 +96,23 @@ func runGUIRecoveryChecks(root: URL, fixture: URL) throws {
     // No native VM was entered in this unit fixture. Real workers never close
     // after entry; the retained owner holds these descriptors through app exit.
     transaction!.closeUnused(); transaction = nil
+    let preservedHash = try hash(original)
+    let tamper = try FileHandle(forWritingTo: workURL)
+    try tamper.seek(toOffset: 4 * 1024 * 1024); try tamper.write(contentsOf: Data([0x91])); try tamper.synchronize()
+    try child("reject_changed", expected: 87)
+    check(try hash(original) == preservedHash && hash(backup) == preservedHash, "tamper refusal changed preserved images")
+    check(try hash(workURL) != checkedHash, "test did not mutate non-superblock byte")
+    try tamper.seek(toOffset: 4 * 1024 * 1024); try tamper.write(contentsOf: Data([0])); try tamper.synchronize(); try tamper.close()
+    check(try hash(workURL) == checkedHash)
+    var savedReceipt = try JSONDecoder().decode(LinuxGUIRecovery.Receipt.self, from: Data(contentsOf: stateURL))
+    savedReceipt.recoveredSHA256 = nil
+    try JSONEncoder().encode(savedReceipt).write(to: stateURL, options: .atomic)
+    try child("reject_receipt", expected: 88)
+    check(try hash(original) == preservedHash)
+    savedReceipt.recoveredSHA256 = checkedHash
+    try JSONEncoder().encode(savedReceipt).write(to: stateURL, options: .atomic)
     for (interruption, expected) in [("before_rename", Int32(85)), ("after_rename", Int32(86)), ("none", Int32(0))] {
-        let child = Process(), finished = DispatchSemaphore(value: 0)
-        child.executableURL = URL(fileURLWithPath: CommandLine.arguments[0])
-        child.arguments = ["--gui-recovery-promote", directory.path, interruption]
-        child.terminationHandler = { _ in finished.signal() }; try child.run()
-        if finished.wait(timeout: .now()+60) == .timedOut { child.terminate(); preconditionFailure("promotion child timed out") }
-        precondition(child.terminationStatus == expected)
+        try child(interruption, expected: expected)
     }
     let opened = try LinuxDesktopDisk.openExisting(directory: directory, specification: spec)
     try opened.validateOwnership()
@@ -119,20 +150,29 @@ func runGUIRecoveryChecks(root: URL, fixture: URL) throws {
     precondition(marker == Data("SYNTHETIC_RECOVERY_UNIT_CANARY".utf8))
 
     var progress = LinuxRecoveryProgress()
-    for line in ["IDECK_RECOVERY_ASSESS:4", "IDECK_RECOVERY_REPLAY:1", "IDECK_RECOVERY_VERIFY:0", "IDECK_RECOVERY_SCAN_CLEAN", "IDECK_RECOVERY_DONE"] { try progress.observe(line) }
-    precondition(progress.done)
+    let digestLine = "IDECK_RECOVERY_IMAGE_SHA256:" + checkedHash
+    for line in ["IDECK_RECOVERY_ASSESS:4", "IDECK_RECOVERY_REPLAY:1", "IDECK_RECOVERY_VERIFY:0", "IDECK_RECOVERY_SCAN_CLEAN", digestLine, "IDECK_RECOVERY_DONE"] { try progress.observe(line) }
+    precondition(progress.done && progress.imageSHA256 == checkedHash)
     var scoped = LinuxRecoveryProgress()
     for line in ["IDECK_RECOVERY_ASSESS:0", "IDECK_RECOVERY_REPLAY:0", "IDECK_RECOVERY_SUMMARY_ELIGIBLE"] { try scoped.observe(line) }
     do { try scoped.observe("IDECK_RECOVERY_VERIFY:0"); preconditionFailure("unfinished scope accepted") }
     catch { }
     try scoped.observe("IDECK_RECOVERY_SUMMARY_RECONCILED")
-    for line in ["IDECK_RECOVERY_VERIFY:0", "IDECK_RECOVERY_SCAN_CLEAN", "IDECK_RECOVERY_DONE"] { try scoped.observe(line) }
+    for line in ["IDECK_RECOVERY_VERIFY:0", "IDECK_RECOVERY_SCAN_CLEAN", digestLine, "IDECK_RECOVERY_DONE"] { try scoped.observe(line) }
     precondition(scoped.done && scoped.summaryReconciled)
     var legacyProgress = LinuxRecoveryProgress()
     for line in ["IDECK_RECOVERY_ASSESS:0", "IDECK_RECOVERY_REPLAY:0", "IDECK_RECOVERY_VERIFY:0"] { try legacyProgress.observe(line) }
     do { try legacyProgress.observe("IDECK_RECOVERY_DONE"); preconditionFailure("legacy receipt without SCAN_CLEAN accepted") }
     catch { }
     precondition(!legacyProgress.done)
+    try legacyProgress.observe("IDECK_RECOVERY_SCAN_CLEAN")
+    do { try legacyProgress.observe("IDECK_RECOVERY_DONE"); preconditionFailure("receipt without image digest accepted") } catch { }
+    for invalid in ["", String(repeating: "a", count: 63), String(repeating: "A", count: 64), String(repeating: "g", count: 64), checkedHash + " "] {
+        do { try legacyProgress.observe("IDECK_RECOVERY_IMAGE_SHA256:" + invalid); preconditionFailure("invalid image digest accepted") } catch { }
+    }
+    try legacyProgress.observe(digestLine)
+    do { try legacyProgress.observe(digestLine); preconditionFailure("duplicate image digest accepted") } catch { }
+    try legacyProgress.observe("IDECK_RECOVERY_DONE")
     for line in ["IDECK_RECOVERY_DONE", "IDECK_RECOVERY_REPLAY:0", "IDECK_RECOVERY_ASSESS:8", "IDECK_RECOVERY_FAILED:manual_review"] {
         var invalid = LinuxRecoveryProgress()
         do { try invalid.observe(line); preconditionFailure("invalid recovery receipt accepted") } catch { }

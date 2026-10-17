@@ -2,11 +2,18 @@
 
 Two real force-kill/recovery/GUI-relaunch cycles PASS on the explicitly OLD cloud
 seed46fea with corrected nonce framing, preserved files, clean Stop and independent
-full fsck. [Scoped receipt](evidence/gui-recovery-20261017/scoped-receipt.json).
+full output-gated fsck. The latest run ALSO binds each full guest image SHA256
+to the exact host work before activation:
+[digest receipt](evidence/gui-recovery-20261017/digest-receipt.json).
+Recovery65.08/63.53s, sampled host VmHWM1254961152/1253941248bytes with unchanged
+1024MiB guest/4CPU/256MiB TCG. These are host samples, not iOS memory proof.
 **Current production9c4d, Apple/native execution and iPhone recovery are not verified.**
 The confirmed Release request failed at the proxy: `Tunnel connection failed: 403
-Forbidden`. This is the remaining exact-assets blocker, not a GitHub authorization
-finding. No credential/token was read and no CI was dispatched.
+Forbidden`. The supported Library route also resolved the423782833-byte IPA but
+the unchanged official materialize helper failed twice (one refreshed transfer):
+`library file transfer failed: download failed`, exit1. No local IPA exists. See
+[library attempt](evidence/gui-recovery-20261017/library-ipa-attempt.json).
+No credential/token was read and no CI was dispatched.
 
 ## App workflow
 
@@ -57,15 +64,22 @@ all inode/directory/file/link/permission/xattr/bitmap/journal bytes. See
 
 ## Native ownership and activation
 
-Ordered assessment/replay/scope/verification/SCAN_CLEAN receipts, guest shutdown
-and host fsync authorize a verified RECEIPT only. The QEMU owner thread, source/
-work descriptors and locks remain retained until PROCESS exit. Main-loop return
+After final strict fsck/SCAN_CLEAN and sync, immutable guest tools hash ALL
+1342177280 bytes while the unmounted work device remains RO. Bash pipefail and
+an exact dd byte count reject partial reads. Only the trusted supervisor control
+port emits the lowercase64hex IMAGE_SHA256 result. No target writes follow.
+Ordered assessment/replay/scope/verification/SCAN_CLEAN/IMAGE_SHA256 receipts,
+guest shutdown and host fsync authorize a verified RECEIPT only. This receipt
+stores the GUEST digest without hashing a native-owned file on the host. The
+QEMU owner thread, source/work descriptors and locks remain retained until PROCESS exit. Main-loop return
 never authorizes rename, closing a native-owned image or another qemu_init.
 Fully close/reopen iDeck, then Start desktop.
 
 In the fresh process BEFORE its VM, promotion requires a different process UUID
 AND exclusive locks, bound tool/suffix receipts, original/backup hashes and source
-identity, plus the existing strict clean header on work. It hashes/fsyncs work,
+identity, plus the existing strict clean header on work. It hashes the whole
+work file and MUST match the recorded guest digest before promotion. Missing or
+changed digests fail closed; it never establishes a fresh baseline. It fsyncs work,
 durably records promoting, atomically activates it, fsyncs directories and records
 promoted. Kills around rename are idempotent: only recorded original/recovered
 hashes are accepted. Original.raw and generation receipts remain for rollback/
@@ -74,6 +88,13 @@ never become destructive automatic repair. SIGKILL cannot be intercepted and
 unsaved/uncommitted writes are not guaranteed.
 
 ## Evidence and remaining gates
+
+The prior [scoped receipt](evidence/gui-recovery-20261017/scoped-receipt.json)
+is historical evidence for the earlier suffix. Review528c2eb found that native
+verified receipts did not yet bind the checked whole-image hash; a changed byte
+outside the superblock could pass promotion. The current implementation records
+the final guest digest and rejects missing/mismatched digests. Its new real
+TWO-cycle digest receipt supersedes that run for current source acceptance.
 
 The initial [receipt](evidence/gui-recovery-20261017/receipt.json) is WITHDRAWN:
 exit0 did not exclude Fix?no and its serial substring token could match tty echo.
@@ -107,7 +128,9 @@ python3 experiments/linux-guest/tools/check_gui_recovery.py \
 ```
 
 Then parent reviews/runs the coordinated Apple gate: real Swift IO/lock/low-space/
-partial-copy/receipt and fresh-child before/after-rename tests, full Husk typecheck,
+partial-copy/receipt and fresh-child before/after-rename tests, mutation outside
+the superblock between verified receipt and promotion, missing-digest rejection,
+full Husk typecheck,
 new IPA and owner device checks. These are NOT RUN here. The owner's original
 image was not available/accessed/restored. Exact current9c4d acceptance remains
 blocked on [the recorded asset request](evidence/gui-recovery-20261017/current-asset-attempt.json).

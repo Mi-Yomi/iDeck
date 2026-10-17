@@ -749,10 +749,11 @@ private final class LinuxTerminalWorker {
                     report["recovery_replay_exit"] = recoveryProgress.replay
                     report["recovery_verification_exit"] = recoveryProgress.verification
                     report["recovery_output_clean"] = recoveryProgress.scanClean
+                    report["recovery_checked_image_sha256"] = recoveryProgress.imageSHA256
                     report["recovery_summary_reconciled"] = recoveryProgress.summaryReconciled
-                    let stage = recoveryProgress.done ? "awaiting_exit" : (recoveryProgress.verification != nil ? "verified" : (recoveryProgress.summaryEligible ? (recoveryProgress.summaryReconciled ? "summary_reconciled" : "summary_reconciling") : (recoveryProgress.replay != nil ? "replayed" : "assessed")))
+                    let stage = recoveryProgress.done ? "awaiting_exit" : (recoveryProgress.imageSHA256 != nil ? "verified" : (recoveryProgress.verification != nil ? "checking_image" : (recoveryProgress.summaryEligible ? (recoveryProgress.summaryReconciled ? "summary_reconciled" : "summary_reconciling") : (recoveryProgress.replay != nil ? "replayed" : "assessed"))))
                     report["recovery_phase"] = stage
-                    checkpoint(recoveryProgress.done ? .recoveryRelaunch : (recoveryProgress.verification != nil ? .recoveryVerified : (recoveryProgress.replay != nil ? .recoveryReplay : .recoveryAssessment)))
+                    checkpoint(recoveryProgress.done ? .recoveryRelaunch : (recoveryProgress.imageSHA256 != nil ? .recoveryVerified : (recoveryProgress.replay != nil ? .recoveryReplay : .recoveryAssessment)))
                     if recoveryProgress.done { lifecycle.record(.stop); stopRequested = true }
                     owner.publish { $0.message = "Recovery: \(stage). The original remains preserved; activation requires closing and reopening the app." }
                 } catch {
@@ -880,9 +881,11 @@ private final class LinuxTerminalWorker {
             checkpoint(.hostDiskSynced)
             if let recovery {
                 guard recoveryProgress.done, let assessment = recoveryProgress.assessment,
-                      let replay = recoveryProgress.replay, let verification = recoveryProgress.verification else { throw LinuxGUIRecovery.Invalid.receipt }
+                      let replay = recoveryProgress.replay, let verification = recoveryProgress.verification,
+                      let imageSHA256 = recoveryProgress.imageSHA256 else { throw LinuxGUIRecovery.Invalid.receipt }
                 try recovery.recordResult(assessment: assessment, replay: replay, verification: verification,
-                                          scanClean: recoveryProgress.scanClean, summaryReconciled: recoveryProgress.summaryReconciled)
+                                          scanClean: recoveryProgress.scanClean, imageSHA256: imageSHA256,
+                                          summaryReconciled: recoveryProgress.summaryReconciled)
                 report["recovery_phase"] = "relaunch_required"
             }
             finalized = true

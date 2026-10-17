@@ -60,6 +60,25 @@ def output_gate(text, target):
     return subprocess.run(['awk','-f',str(recovery_guest.SCAN)],input=normalized,text=True,capture_output=True).returncode
 
 
+def checked_image_digest(control):
+    lines=complete_lines(control)
+    prefix='IDECK_RECOVERY_IMAGE_SHA256:'
+    digests=[line for line in lines if line.startswith(prefix)]
+    if len(digests)!=1 or not re.fullmatch(prefix+r'[0-9a-f]{64}',digests[0]):
+        raise RuntimeError('missing or invalid guest checked-image digest')
+    if lines.count('IDECK_RECOVERY_SCAN_CLEAN')!=1 or lines.count('IDECK_RECOVERY_DONE')!=1:
+        raise RuntimeError('missing ordered image verification')
+    if not lines.index('IDECK_RECOVERY_SCAN_CLEAN')<lines.index(digests[0])<lines.index('IDECK_RECOVERY_DONE'):
+        raise RuntimeError('unordered checked-image digest')
+    return digests[0][len(prefix):]
+
+
+def verify_checked_image(path, control):
+    expected=checked_image_digest(control)
+    if base.sha256(path)!=expected:raise RuntimeError('work differs from guest checked image')
+    return expected
+
+
 def strict_header(path, image):
     with path.open('rb') as stream:
         stream.seek(1024); h=stream.read(1024)
@@ -198,11 +217,13 @@ def run(assets, host, output, cycles):
             (output/f'fsck-{index}.log').write_text(fsck.stdout+fsck.stderr)
             if fsck.returncode != 0 or output_gate(fsck.stdout+fsck.stderr,work)!=0: raise RuntimeError('post-recovery readonly/output gate')
             clean_header = strict_header(work, profile['image'])
+            checked_hash = verify_checked_image(work, vm.logs[1])
             os.replace(work, active)
             result['cycles'].append({'cycle':index,'forcekill_exit':-9,'dirty_header':dirty,
                 'original_sha256':original_hash,'original_preserved':True,'recovery_exit':status,
                 'post_fsck_exit':fsck.returncode,'prior_control_files_read_before_write':index-1,
                 'strict_clean_header':clean_header,
+                'guest_checked_image_sha256':checked_hash,'checked_image_hash_matched_before_promotion':True,
                 'serial_receipts':serial_receipts,'recovery_seconds':vm.elapsed,'recovery_sampled_peak_rss_bytes':vm.peak_rss,
                 'control_markers':vm.logs[1].decode()})
         vm = VM(assets, host, active, output/'final-relaunch',False)
@@ -216,9 +237,9 @@ def run(assets, host, output, cycles):
             vm.close(kill=True); raise
         final_fsck=subprocess.run(gui_host_tools.command(host,[host/'usr/sbin/e2fsck','-fn',active]),capture_output=True,text=True)
         (output/'final-fsck.log').write_text(final_fsck.stdout+final_fsck.stderr)
-        if final_fsck.returncode!=0:raise RuntimeError('final readonly fsck')
+        if final_fsck.returncode!=0 or output_gate(final_fsck.stdout+final_fsck.stderr,active)!=0:raise RuntimeError('final readonly fsck/output gate')
         result.update(status='pass',all_control_files_reopened=True,final_clean_stop=True,
-                      final_fsck_exit=0,final_strict_header=strict_header(active,profile['image']))
+                      final_fsck_exit=0,final_output_gate_exit=0,final_strict_header=strict_header(active,profile['image']))
         return result
     finally:
         (output/'receipt.json').write_text(json.dumps(result,indent=2)+'\n')

@@ -196,12 +196,15 @@ func runMarkdownReportChecks() throws {
     expect(cell(debian, "Ext4 RECOVER bit") == "UNKNOWN", "old report does not synthesize ext4 observations")
     let recoveryMD = LinuxProbeReport.render(report: ["mode": "desktop", "recovery_phase": "prepared",
         "recovery_failure": "space", "recovery_assessment_exit": 4, "recovery_replay_exit": 0,
-        "recovery_verification_exit": 0, "recovery_private_file_contents": secret])
+        "recovery_verification_exit": 0, "recovery_checked_image_sha256": String(repeating: "b", count: 64),
+        "recovery_private_file_contents": secret])
     expect(cell(recoveryMD, "Recovery phase") == "prepared", "known phase is explicit")
     expect(cell(recoveryMD, "Recovery failure") == "space", "space refusal is retained")
     expect(cell(recoveryMD, "Recovery assessment exit") == "4", "nonmutating assessment can report an error")
+    expect(cell(recoveryMD, "Guest checked image SHA-256") == String(repeating: "b", count: 64), "checked image is explicit")
     expect(!recoveryMD.contains(secret), "recovery exports exclude contents")
-    let unknownRecovery = LinuxProbeReport.render(report: ["mode": "desktop", "recovery_phase": secret, "recovery_failure": secret])
+    let unknownRecovery = LinuxProbeReport.render(report: ["mode": "desktop", "recovery_phase": secret, "recovery_failure": secret,
+        "recovery_checked_image_sha256": secret])
     expect(!unknownRecovery.contains(secret), "unknown recovery strings remain excluded")
     print("LINUX_MARKDOWN_REPORT_CHECKS_PASS (\(assertions) assertions; actual Foundation renderer, no device/runtime execution)")
 }

@@ -79,7 +79,7 @@ final class LinuxGUIRecovery: LinuxConsoleDisk {
         for fd in [work, backup, source, lease, generation, root, parent] where fd >= 0 { _ = Darwin.close(fd) }
         work = -1; backup = -1; source = -1; lease = -1; generation = -1; root = -1; parent = -1
     }
-    private static func digest(_ value: String) -> Bool {
+    fileprivate static func digest(_ value: String) -> Bool {
         value.utf8.count == 64 && value.utf8.allSatisfy { "0123456789abcdef".utf8.contains($0) }
     }
     private func regular(_ fd: Int32, size: Int64?) throws {
@@ -228,6 +228,7 @@ final class LinuxGUIRecovery: LinuxConsoleDisk {
         guard try transaction.hash(transaction.work) == sourceHash,
               try transaction.hash(transaction.source) == sourceHash else { throw Invalid.changed }
         receipt.phase = .prepared; receipt.process = process; receipt.assessment = nil; receipt.replay = nil; receipt.verification = nil; receipt.failure = nil
+        receipt.recoveredSHA256 = nil; receipt.scanClean = nil; receipt.summaryReconciled = nil
         transaction.receipt = receipt; try transaction.save(); try transaction.validateOwnership()
         progress?("prepared")
         return transaction
@@ -237,11 +238,13 @@ final class LinuxGUIRecovery: LinuxConsoleDisk {
         receipt?.toolSeedSHA256 = toolSeedSHA256; receipt?.suffixSHA256 = LinuxRecoveryGuest.sha256
         receipt?.phase = .running; try save()
     }
-    func recordResult(assessment: Int, replay: Int, verification: Int, scanClean: Bool, summaryReconciled: Bool = false) throws {
-        guard receipt?.phase == .running, [0,4].contains(assessment), [0,1].contains(replay), verification == 0, scanClean else { throw Invalid.manualReview }
+    func recordResult(assessment: Int, replay: Int, verification: Int, scanClean: Bool, imageSHA256: String, summaryReconciled: Bool = false) throws {
+        guard receipt?.phase == .running, [0,4].contains(assessment), [0,1].contains(replay), verification == 0,
+              scanClean, Self.digest(imageSHA256) else { throw Invalid.manualReview }
         // Receipt only. NEVER inspect/hash/promote a native-owned work image here.
         receipt?.assessment = assessment; receipt?.replay = replay; receipt?.verification = verification
         receipt?.scanClean = true
+        receipt?.recoveredSHA256 = imageSHA256
         receipt?.summaryReconciled = summaryReconciled
         receipt?.phase = .verified; try save()
     }
@@ -263,11 +266,12 @@ final class LinuxGUIRecovery: LinuxConsoleDisk {
         guard receipt.process != process else { throw Invalid.relaunch }
         guard [0,4].contains(receipt.assessment ?? -1), [0,1].contains(receipt.replay ?? -1), receipt.verification == 0,
               receipt.scanClean == true, receipt.toolSeedSHA256 == toolSeedSHA256,
-              receipt.suffixSHA256 == LinuxRecoveryGuest.sha256 else { throw Invalid.receipt }
+              receipt.suffixSHA256 == LinuxRecoveryGuest.sha256,
+              let checkedSHA256 = receipt.recoveredSHA256, Self.digest(checkedSHA256) else { throw Invalid.receipt }
         transaction.backup = try transaction.file("original.raw", create: false)
         guard try transaction.hash(transaction.backup) == receipt.sourceSHA256 else { throw Invalid.changed }
         let activeHash = try transaction.hash(transaction.source)
-        if receipt.phase == .promoting, activeHash == receipt.recoveredSHA256 {
+        if receipt.phase == .promoting, activeHash == checkedSHA256 {
             do { try LinuxDesktopDisk.validateSuperblock(fd: transaction.source, specification: specification) }
             catch { receipt.phase = .manualReview; transaction.receipt = receipt; try transaction.save(); throw Invalid.manualReview }
             guard fsync(transaction.parent) == 0, fsync(transaction.generation) == 0 else { throw Invalid.io }
@@ -283,13 +287,13 @@ final class LinuxGUIRecovery: LinuxConsoleDisk {
         do { try LinuxDesktopDisk.validateSuperblock(fd: transaction.work, specification: specification) }
         catch { receipt.phase = .manualReview; transaction.receipt = receipt; try transaction.save(); throw Invalid.manualReview }
         let recoveredHash = try transaction.hash(transaction.work)
-        if let expected = receipt.recoveredSHA256, expected != recoveredHash { throw Invalid.changed }
+        guard recoveredHash == checkedSHA256 else { throw Invalid.changed }
         var workState = stat(); guard fstat(transaction.work, &workState) == 0 else { throw Invalid.io }
         if workState.st_gid != receipt.sourceGID {
             guard fchown(transaction.work, receipt.sourceUID, receipt.sourceGID) == 0 else { throw Invalid.metadata }
         }
         guard fchmod(transaction.work, mode_t(receipt.sourceMode)) == 0, fsync(transaction.work) == 0 else { throw Invalid.io }
-        receipt.recoveredSHA256 = recoveredHash; receipt.phase = .promoting
+        receipt.phase = .promoting
         transaction.receipt = receipt; try transaction.save(); try transaction.validateOwnership()
         fault?("before_rename")
         guard renameat(transaction.generation, "work.raw", transaction.parent, "rootfs-v1.raw") == 0,
@@ -306,7 +310,7 @@ struct LinuxRecoveryProgress {
         "duplicate_tools", "duplicate_work", "disk_identity", "extra_disk", "readonly", "size", "uuid", "tools_mount",
         "bind_dev", "bind_proc", "target_mode", "assessment", "replay", "manual_review", "sync", "unmount_proc",
         "unmount_dev", "unmount_tools", "final_sync", "cancelled", "poweroff_returned", "control_receipt", "verification_output",
-        "scope_head", "scope_hash", "counter_scope", "counter_eligibility", "counter_directory", "counter_mount", "counter_sync", "counter_unmount"]
+        "scope_head", "scope_hash", "image_hash", "counter_scope", "counter_eligibility", "counter_directory", "counter_mount", "counter_sync", "counter_unmount"]
     static func failure(_ line: String) -> String? {
         let prefix = "IDECK_RECOVERY_FAILED:"
         guard line.hasPrefix(prefix) else { return nil }
@@ -317,6 +321,7 @@ struct LinuxRecoveryProgress {
     private(set) var replay: Int?
     private(set) var verification: Int?
     private(set) var scanClean = false
+    private(set) var imageSHA256: String?
     private(set) var summaryEligible = false
     private(set) var summaryReconciled = false
     private(set) var done = false
@@ -339,8 +344,12 @@ struct LinuxRecoveryProgress {
             summaryReconciled = true
         } else if line == "IDECK_RECOVERY_SCAN_CLEAN" {
             guard verification == 0, !scanClean else { throw LinuxGUIRecovery.Invalid.receipt }; scanClean = true
+        } else if line.hasPrefix("IDECK_RECOVERY_IMAGE_SHA256:") {
+            let value = String(line.dropFirst("IDECK_RECOVERY_IMAGE_SHA256:".count))
+            guard scanClean, imageSHA256 == nil, LinuxGUIRecovery.digest(value) else { throw LinuxGUIRecovery.Invalid.receipt }
+            imageSHA256 = value
         } else if line == "IDECK_RECOVERY_DONE" {
-            guard verification == 0, scanClean else { throw LinuxGUIRecovery.Invalid.receipt }; done = true
+            guard verification == 0, scanClean, imageSHA256 != nil else { throw LinuxGUIRecovery.Invalid.receipt }; done = true
         } else { throw LinuxGUIRecovery.Invalid.manualReview }
     }
 }

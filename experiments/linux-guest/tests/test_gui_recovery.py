@@ -13,7 +13,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'tools'))
 import recovery_guest
-from check_gui_recovery import strict_header, serial_command, serial_result, output_gate
+from check_gui_recovery import strict_header, serial_command, serial_result, output_gate, checked_image_digest, verify_checked_image
 from test_terminal import swift_block
 
 
@@ -77,7 +77,11 @@ class GUIRecovery(unittest.TestCase):
         promotion = swift_block(store,'static func promotePending(')
         self.assertLess(promotion.index('validateSuperblock(fd: transaction.work'),promotion.index('renameat('))
         self.assertLess(promotion.index('try transaction.save()'),promotion.index('renameat('))
-        self.assertIn('activeHash == receipt.recoveredSHA256',promotion)
+        self.assertIn('activeHash == checkedSHA256',promotion)
+        self.assertIn('let checkedSHA256 = receipt.recoveredSHA256',promotion)
+        self.assertIn('guard recoveredHash == checkedSHA256',promotion)
+        self.assertNotIn('receipt.recoveredSHA256 =',promotion)
+        self.assertIn('receipt?.recoveredSHA256 = imageSHA256',result)
         session = (ROOT/'ios/LinuxTerminalSession.swift').read_text()
         stop = swift_block(session,'private func finalizeIfClean()')
         self.assertIn('recovery.recordResult(',stop)
@@ -88,6 +92,45 @@ class GUIRecovery(unittest.TestCase):
         self.assertIn('catch LinuxDesktopDisk.Invalid.needsRecovery',session)
         prepare = swift_block(session,'private func prepareRecovery(')
         self.assertIn('guard !enteredQEMU',prepare)
+
+    def test_guest_final_full_image_digest_is_after_clean_scan_and_readonly(self):
+        script=recovery_guest.SCRIPT.read_text()
+        final=script[script.index('echo IDECK_RECOVERY_SCAN_CLEAN >&3'):]
+        self.assertLess(final.index('sync || fail sync'),final.index('checked_hash=$(image_hash'))
+        self.assertLess(final.index('cat /sys/block/"$work"/ro'),final.index('checked_hash=$(image_hash'))
+        self.assertIn('$1==1342177280',final)
+        self.assertIn('*[!0-9a-f]*',final)
+        self.assertLess(final.index('IDECK_RECOVERY_IMAGE_SHA256:'),final.index('umount /tools'))
+        after=final[final.index('IDECK_RECOVERY_IMAGE_SHA256:'):]
+        self.assertNotIn('set_target_mode rw',after)
+        self.assertNotIn('check ',after)
+        function=script[script.index('image_hash() {'):script.index('header_snapshot() {')]
+        self.assertIn('/bin/bash -o pipefail',function)
+        self.assertIn('bs=1048576 iflag=fullblock | sha256sum',function)
+        self.assertNotIn('skip=',function)
+
+    def test_changed_byte_outside_superblock_cannot_use_checked_receipt(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'work.raw'
+            path.write_bytes(bytes(65536))
+            digest=hashlib.sha256(path.read_bytes()).hexdigest()
+            control=('IDECK_RECOVERY_SCAN_CLEAN\nIDECK_RECOVERY_IMAGE_SHA256:'+digest+'\nIDECK_RECOVERY_DONE\n').encode()
+            self.assertEqual(verify_checked_image(path,control),digest)
+            with path.open('r+b') as stream:stream.seek(32768);stream.write(b'X')
+            with self.assertRaisesRegex(RuntimeError,'differs from guest checked image'):verify_checked_image(path,control)
+            for invalid in [control.replace(b'IDECK_RECOVERY_IMAGE_SHA256:',b'old:'),
+                            control.replace(digest.encode(),digest.upper().encode()),
+                            control.replace(b'IDECK_RECOVERY_DONE\n',b''),
+                            control.replace(b'IDECK_RECOVERY_SCAN_CLEAN\n',b''),
+                            control+control,control[::-1]]:
+                with self.assertRaises(RuntimeError):checked_image_digest(invalid)
+
+    def test_final_stop_runner_enforces_full_output_gate(self):
+        source=(ROOT/'tools/check_gui_recovery.py').read_text()
+        parsed=ast.parse(source)
+        run=next(node for node in parsed.body if isinstance(node,ast.FunctionDef) and node.name=='run')
+        final=next(node for node in ast.walk(run) if isinstance(node,ast.If) and 'final_fsck.returncode' in ast.unparse(node.test))
+        self.assertIn('output_gate(final_fsck.stdout + final_fsck.stderr, active)',ast.unparse(final.test))
 
     def test_terminal_echo_partial_lines_and_failed_commands_never_satisfy_sync_receipt(self):
         nonce='0123456789abcdef0123456789abcdef'
@@ -128,8 +171,8 @@ class GUIRecovery(unittest.TestCase):
             self.assertTrue(all(r['marker_absent_from_input'] and r['complete_output_line'] and r['exit_status']==0
                                 for r in row['serial_receipts']))
 
-    def test_scoped_real_acceptance_is_bound_to_current_sources_and_clean_output(self):
-        r=json.loads((ROOT/'evidence/gui-recovery-20261017/scoped-receipt.json').read_text())
+    def test_digest_real_acceptance_is_bound_to_current_sources_and_clean_output(self):
+        r=json.loads((ROOT/'evidence/gui-recovery-20261017/digest-receipt.json').read_text())
         self.assertEqual(r['status'],'pass');self.assertEqual(len(r['cycles']),2)
         self.assertIn('OLD cloud seed46fea only',r['acceptance_scope'])
         self.assertEqual(r['suffix_sha256'],hashlib.sha256(recovery_guest.suffix(recovery_guest.SCRIPT.read_bytes())).hexdigest())
@@ -138,7 +181,10 @@ class GUIRecovery(unittest.TestCase):
             self.assertEqual(c['post_fsck_exit'],0);self.assertTrue(c['original_preserved'])
             self.assertIn('IDECK_RECOVERY_SUMMARY_RECONCILED\n',c['control_markers'])
             self.assertIn('IDECK_RECOVERY_SCAN_CLEAN\n',c['control_markers'])
+            self.assertEqual(checked_image_digest(c['control_markers'].encode()),c['guest_checked_image_sha256'])
+            self.assertTrue(c['checked_image_hash_matched_before_promotion'])
             self.assertGreater(c['recovery_sampled_peak_rss_bytes'],0)
+        self.assertEqual(r['final_output_gate_exit'],0)
 
     def test_header_scope_refuses_boot_uuid_state_and_feature_changes(self):
         fixture=json.loads((ROOT/'ios/tests/fixtures/desktop-ext4-superblock.json').read_text())
@@ -196,7 +242,8 @@ class GUIRecovery(unittest.TestCase):
             self.assertTrue({'recovery','recovery_guest'}.issubset(names))
         self.assertIn('"LINUX_GUI_RECOVERY_PASS"',ci)
         checks=(ROOT/'ios/tests/GUIRecoveryChecks.swift').read_text()
-        for item in ('before_rename','after_rename','Invalid.space','Invalid.busy','--gui-recovery-promote'):
+        for item in ('before_rename','after_rename','Invalid.space','Invalid.busy','--gui-recovery-promote',
+                     'reject_changed','reject_receipt','4 * 1024 * 1024','recoveredSHA256 = nil'):
             self.assertIn(item,checks)
 
     def test_strict_gate_uses_real_mke2fs_header_and_refuses_dirty_and_checksum_damage(self):

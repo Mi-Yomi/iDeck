@@ -1,5 +1,18 @@
 # Следующий milestone: persistent POSIX Linux и минимальный desktop
 
+Review follow-up2026-10-17: whole work-image SHA256 now comes from trusted guest
+AFTER final strict scan, with target unmounted+RO; verified receipt and fresh-
+process promotion require this SAME digest. Missing digest or changed non-SB byte
+fails closed; mandatory Swift child regressions are wired (Apple NOT RUN).
+New TWO actual old46fea force-kill/recovery/GUI-relaunch cycles PASS, including
+file persistence, guest/host full-image hashes and final Stop strict output gate:
+[latest digest evidence](evidence/gui-recovery-20261017/digest-receipt.json).
+Recovery65.08/63.53s, host sampled VmHWM1254961152/1253941248bytes at unchanged RAM.
+Production9c4d remains blocked: official Library helper resolved IPA but download
+failed twice including ONE refreshed transfer, exit1 `library file transfer
+failed: download failed`. No local IPA; no direct-URL bypass/token/CI. All earlier
+source-specific receipts below are historical; Apple/iPhone recovery pending.
+
 Scoped update2026-10-17: два настоящих OLD46fea force-kill/recovery/GUI-relaunch
 цикла PASS с новым nonce-протоколом, сохранением файлов и clean fsck. Узкий класс
 summary counters исправляется empty kernel mount/unmount КОПИИ после полной

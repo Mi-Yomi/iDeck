@@ -76,6 +76,12 @@ scope_hash() {
     chroot /tools /usr/bin/env -i PATH=/usr/sbin:/usr/bin:/sbin:/bin LC_ALL=C \
         /bin/bash -o pipefail -c 'dd if="$1" bs=1048576 skip=4096 iflag=skip_bytes,fullblock | sha256sum' scope "/dev/$work" 3>&-
 }
+image_hash() {
+    # The final checked image is unmounted and block-device RO. Hash EVERY byte
+    # using only immutable tools; pipefail plus dd's count rejects partial reads.
+    chroot /tools /usr/bin/env -i PATH=/usr/sbin:/usr/bin:/sbin:/bin LC_ALL=C \
+        /bin/bash -o pipefail -c 'dd if="$1" bs=1048576 iflag=fullblock | sha256sum' image "/dev/$work" 3>&-
+}
 header_snapshot() {
     dd if="/dev/$work" of="/run/head-$1.raw" bs=4096 count=1 2>/dev/null || fail scope_head
     od -An -v -tu1 "/run/head-$1.raw" >"/run/head-$1.txt" || fail scope_head
@@ -140,6 +146,15 @@ echo "IDECK_RECOVERY_VERIFY:$verified" >&3
 awk -f /ideck-fsck-clean.awk /run/verification.log 3>&- || fail verification_output
 echo IDECK_RECOVERY_SCAN_CLEAN >&3
 sync || fail sync
+[ "$(cat /sys/block/"$work"/ro)" = 1 ] || fail target_mode
+checked_hash=$(image_hash 2>/run/image-hash.log) || fail image_hash
+awk '$1==1342177280 && $2=="bytes" {ok++} END {exit(ok!=1)}' /run/image-hash.log 3>&- || fail image_hash
+set -- $checked_hash
+[ "$#" = 2 ] && [ "$2" = - ] && [ "${#1}" = 64 ] || fail image_hash
+case "$1" in *[!0-9a-f]*) fail image_hash;; esac
+# No target writes follow this digest. Fresh-process activation must compare
+# the whole work file to THIS guest result, never establish a new baseline.
+echo "IDECK_RECOVERY_IMAGE_SHA256:$1" >&3
 umount /tools/proc || fail unmount_proc
 umount /tools/dev || fail unmount_dev
 umount /tools || fail unmount_tools

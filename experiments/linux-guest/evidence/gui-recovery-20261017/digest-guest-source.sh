@@ -1,0 +1,165 @@
+#!/bin/sh
+# Clone-only recovery. Tools come from the immutable, RO bundled Debian seed.
+# Every fsck runs unmounted. A checked counter-only class may get an empty
+# kernel mount/unmount with no file access; full-body hashes constrain its writes.
+# No general preen, -y, or dirty-bit editing. Original is never attached.
+BB=/usr/bin/busybox
+export PATH=/run/bin:/usr/sbin:/usr/bin:/sbin:/bin
+control_open=0
+counter_mounted=0
+fail() {
+    echo "IDECK_RECOVERY_FAILED:$1"
+    [ "$control_open" = 0 ] || echo "IDECK_RECOVERY_FAILED:$1" >&3
+    $BB sync
+    [ "$counter_mounted" = 0 ] || $BB umount /counter-sync || true
+    $BB poweroff -f
+    while :; do $BB sleep 3600; done
+}
+$BB mkdir -p /proc /sys /dev /run /tools
+$BB mount -t proc proc /proc || fail proc
+$BB mount -t sysfs sysfs /sys || fail sys
+$BB mount -t devtmpfs devtmpfs /dev || fail dev
+exec </dev/console >/dev/console 2>&1
+$BB mkdir -p /run/bin
+$BB --install -s /run/bin || fail applets
+for module in virtio_pci virtio_mmio virtio_blk; do modprobe "$module" || fail module; done
+while IFS= read -r module; do insmod "/lib/modules/6.18.35-0-virt/$module" || fail ext4; done < /ideck/ext4-load-order
+n=0
+control=
+while [ "$n" -lt 30 ]; do
+    for port in /sys/class/virtio-ports/*; do
+        [ -r "$port/name" ] || continue
+        [ "$(cat "$port/name")" != org.ideck.control ] || control=/dev/${port##*/}
+    done
+    [ -b /dev/vda ] && [ -b /dev/vdb ] && [ -c "$control" ] && break
+    n=$((n+1)); sleep 1
+done
+[ -c "$control" ] || fail control
+exec 3<>"$control" || fail control_open
+control_open=1
+trap 'fail cancelled' USR2 TERM INT
+(
+    while IFS= read -r command <&3; do
+        if [ "$command" = IDECK_STOP_V1 ]; then kill -USR2 1; exit; fi
+    done
+) &
+echo IDECK_DESKTOP_RECOVERY_READY >&3
+# Same UUID in seed and clone is intentional. Never select either by UUID alone.
+tools=
+work=
+for disk in /sys/block/vd*; do
+    case "$disk" in /sys/block/vda|/sys/block/vdb) ;; *) fail extra_disk;; esac
+    case "$(cat "$disk/serial")" in
+        ideck-recovery-tools) [ -z "$tools" ] || fail duplicate_tools; tools=${disk##*/} ;;
+        ideck-recovery-work) [ -z "$work" ] || fail duplicate_work; work=${disk##*/} ;;
+        *) fail disk_identity ;;
+    esac
+done
+[ -n "$tools" ] && [ -n "$work" ] && [ "$tools" != "$work" ] || fail disk_identity
+[ "$(cat /sys/block/"$tools"/ro)" = 1 ] && [ "$(cat /sys/block/"$work"/ro)" = 0 ] || fail readonly
+[ "$(cat /sys/block/"$tools"/size)" = 2621440 ] && [ "$(cat /sys/block/"$work"/size)" = 2621440 ] || fail size
+for disk in "/dev/$tools" "/dev/$work"; do
+    case "$(blkid "$disk")" in *'UUID="b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7"'*) ;; *) fail uuid;; esac
+done
+mount -t ext4 -o ro,noload "/dev/$tools" /tools || fail tools_mount
+mount -o bind /dev /tools/dev || fail bind_dev
+mount -o bind /proc /tools/proc || fail bind_proc
+# Explicit chroot invokes the seed's glibc ELF interpreter and pinned libraries.
+# No executable, library or configuration is read from the mutable target.
+check() {
+    chroot /tools /usr/bin/env -i PATH=/usr/sbin:/usr/bin:/sbin:/bin LC_ALL=C E2FSCK_CONFIG=/dev/null \
+        /usr/sbin/e2fsck "$@" "/dev/$work" 3>&-
+}
+scope_hash() {
+    # Bash pipefail prevents an input read failure from becoming the hash of an
+    # empty/partial stream. Both tools and shell are from the immutable RO seed.
+    chroot /tools /usr/bin/env -i PATH=/usr/sbin:/usr/bin:/sbin:/bin LC_ALL=C \
+        /bin/bash -o pipefail -c 'dd if="$1" bs=1048576 skip=4096 iflag=skip_bytes,fullblock | sha256sum' scope "/dev/$work" 3>&-
+}
+image_hash() {
+    # The final checked image is unmounted and block-device RO. Hash EVERY byte
+    # using only immutable tools; pipefail plus dd's count rejects partial reads.
+    chroot /tools /usr/bin/env -i PATH=/usr/sbin:/usr/bin:/sbin:/bin LC_ALL=C \
+        /bin/bash -o pipefail -c 'dd if="$1" bs=1048576 iflag=fullblock | sha256sum' image "/dev/$work" 3>&-
+}
+header_snapshot() {
+    dd if="/dev/$work" of="/run/head-$1.raw" bs=4096 count=1 2>/dev/null || fail scope_head
+    od -An -v -tu1 "/run/head-$1.raw" >"/run/head-$1.txt" || fail scope_head
+}
+set_target_mode() {
+    chroot /tools /usr/sbin/blockdev "--set$1" "/dev/$work" 3>&- || fail target_mode
+    [ "$(cat /sys/block/"$work"/ro)" = "$2" ] || fail target_mode
+}
+set_target_mode ro 1
+check -f -n
+assessment=$?
+echo "IDECK_RECOVERY_ASSESS:$assessment" >&3
+case "$assessment" in 0|4) ;; *) fail assessment;; esac
+set_target_mode rw 0
+check -p -E journal_only
+replay=$?
+echo "IDECK_RECOVERY_REPLAY:$replay" >&3
+case "$replay" in 0|1) ;; *) fail replay;; esac
+set_target_mode ro 1
+(ulimit -f 2048 || exit 8; check -f -n -E fixes_only) >/run/eligibility.log 2>&1
+eligible_exit=$?
+cat /run/eligibility.log 3>&-
+[ "$eligible_exit" = 0 ] || fail manual_review
+if ! awk -f /ideck-fsck-clean.awk /run/eligibility.log 3>&-; then
+    # A separate grammar permits ONLY primary free-summary-counter warnings,
+    # with all five checks complete. No group/inode/directory repair is allowed.
+    awk -v allow_counters=1 -f /ideck-fsck-clean.awk /run/eligibility.log 3>&- || fail verification_output
+    # Test-only refusal switch. Native arguments never include it; it can only
+    # disable reconciliation, never bypass any validation.
+    case " $(cat /proc/cmdline) " in *' ideck.recovery.journal_only=1 '*) fail verification_output;; esac
+    header_snapshot before
+    awk -v eligible=1 -f /ideck-scope-head.awk /run/head-before.txt 3>&- || fail counter_eligibility
+    echo IDECK_RECOVERY_SUMMARY_ELIGIBLE >&3
+    scope_before=$(scope_hash 2>/run/scope-before.log) || fail scope_hash
+    awk '$1==1342173184 && $2=="bytes" {ok++} END {exit(ok!=1)}' /run/scope-before.log 3>&- || fail scope_hash
+    set -- $scope_before
+    [ "$#" = 2 ] && [ "$2" = - ] && [ "${#1}" = 64 ] || fail scope_hash
+    scope_before=$1
+    set_target_mode rw 0
+    mkdir -p /counter-sync || fail counter_directory
+    mount -t ext4 -o rw,noatime,nosuid,nodev,noexec "/dev/$work" /counter-sync || fail counter_mount
+    counter_mounted=1
+    sync || fail counter_sync
+    umount /counter-sync || fail counter_unmount
+    counter_mounted=0
+    set_target_mode ro 1
+    scope_after=$(scope_hash 2>/run/scope-after.log) || fail scope_hash
+    awk '$1==1342173184 && $2=="bytes" {ok++} END {exit(ok!=1)}' /run/scope-after.log 3>&- || fail scope_hash
+    set -- $scope_after
+    [ "$#" = 2 ] && [ "$2" = - ] && [ "$scope_before" = "$1" ] || fail counter_scope
+    header_snapshot after
+    awk -f /ideck-scope-head.awk /run/head-before.txt /run/head-after.txt 3>&- || fail counter_scope
+    echo IDECK_RECOVERY_SUMMARY_RECONCILED >&3
+fi
+# Independent final FULL check; fixes_only omits optional optimizations, never
+# consistency repairs. All unresolved/unknown output still rejects SCAN_CLEAN.
+(ulimit -f 2048 || exit 8; check -f -n -E fixes_only) >/run/verification.log 2>&1
+verified=$?
+cat /run/verification.log 3>&-
+echo "IDECK_RECOVERY_VERIFY:$verified" >&3
+[ "$verified" = 0 ] || fail manual_review
+awk -f /ideck-fsck-clean.awk /run/verification.log 3>&- || fail verification_output
+echo IDECK_RECOVERY_SCAN_CLEAN >&3
+sync || fail sync
+[ "$(cat /sys/block/"$work"/ro)" = 1 ] || fail target_mode
+checked_hash=$(image_hash 2>/run/image-hash.log) || fail image_hash
+awk '$1==1342177280 && $2=="bytes" {ok++} END {exit(ok!=1)}' /run/image-hash.log 3>&- || fail image_hash
+set -- $checked_hash
+[ "$#" = 2 ] && [ "$2" = - ] && [ "${#1}" = 64 ] || fail image_hash
+case "$1" in *[!0-9a-f]*) fail image_hash;; esac
+# No target writes follow this digest. Fresh-process activation must compare
+# the whole work file to THIS guest result, never establish a new baseline.
+echo "IDECK_RECOVERY_IMAGE_SHA256:$1" >&3
+umount /tools/proc || fail unmount_proc
+umount /tools/dev || fail unmount_dev
+umount /tools || fail unmount_tools
+sync || fail final_sync
+echo IDECK_RECOVERY_DONE >&3
+echo IDECK_DESKTOP_CLEAN_UNMOUNT >&3
+poweroff -f
+fail poweroff_returned

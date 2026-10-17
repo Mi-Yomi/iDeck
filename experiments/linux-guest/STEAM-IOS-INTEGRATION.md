@@ -58,6 +58,12 @@ libraries need separate inspection. Verify an authorized game's actual renderer,
 input, frame timing, repeated launches and saved data on the physical iPhone;
 host QEMU software-rendered Steam UI does not satisfy these checks.
 
+The host runner accepts an explicit `--experimental-memory-mib 2560` control
+after measured guest memory pressure; its default remains the pinned 1536 MiB.
+Receipts distinguish the profile budget from the effective QEMU budget. Run20
+measured direct reclaim and allocation stalls without a kernel OOM kill. This
+motivates a comparison, not an iPhone RAM recommendation or a verified UI fix.
+
 ## Guest inputs and delivery
 
 - [ ] Start a separate Steam asset/profile contract and permanent disk identity.

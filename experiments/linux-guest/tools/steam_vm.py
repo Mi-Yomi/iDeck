@@ -213,12 +213,22 @@ def boot(args):
             or profile['network']['kind'] != 'qemu-user-nat' or profile['network']['host_forwarding']
             or profile['client_bundled'] or profile['app_route_enabled']):
         raise ValueError('unsafe experiment profile')
+    configured_memory = profile['memory_mib']
+    memory_override = getattr(args, 'experimental_memory_mib', None)
+    if memory_override is not None:
+        if type(memory_override) is not int or memory_override not in (1536, 2560):
+            raise ValueError('unsupported host memory experiment')
+        # Explicit host control for measured reclaim pressure; never an iOS budget.
+        profile['memory_mib'] = memory_override
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     report = {'schema': 1, 'status': 'failed', 'host_only': True,
               'iphone_tested': False, 'steam_window_verified': False,
               'big_picture_verified': False, 'clean_shutdown': False,
               'qemu_started': False,
+              'profile_memory_mib': configured_memory,
+              'effective_memory_mib': profile['memory_mib'],
+              'experimental_memory_override': memory_override is not None,
               'runner_sha256': hashlib.sha256(RUNNER_SOURCE).hexdigest(),
               'network': 'explicit QEMU user NAT, no host forwarding', 'commands': []}
     total_started = time.monotonic()
@@ -460,6 +470,8 @@ if __name__ == '__main__':
     p.add_argument('--continue-from', type=Path, help='Explicit clean private run to COPY, never modify or repair')
     p.add_argument('--experimental-seed-contract', type=Path,
                    help='Explicit reviewed private seed contract; default still requires production GUI seed')
+    p.add_argument('--experimental-memory-mib', type=int, choices=(1536, 2560),
+                   help='Host-only memory pressure control; default preserves the pinned profile')
     p.add_argument('--enable-experimental-network', action='store_true', required=True)
     a = p.parse_args()
     print(json.dumps(boot(a), indent=2))

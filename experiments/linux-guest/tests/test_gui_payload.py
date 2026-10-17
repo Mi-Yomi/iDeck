@@ -115,7 +115,7 @@ class GUITransport(unittest.TestCase):
 class ProductionGUIBlocking(unittest.TestCase):
     def test_ready_lock_is_bound_to_real_original_kernel_acceptance(self):
         lock=bundle.load_lock(ROOT/'ipa/gui.lock.json')
-        receipt=ROOT/'evidence/gui-alpine-20261017/acceptance.json'
+        receipt=ROOT/'evidence/gui-local-20261017/acceptance.json'
         self.assertEqual(lock['status'],'ready')
         self.assertEqual(hashlib.sha256(receipt.read_bytes()).hexdigest(),lock['acceptance']['report_sha256'])
         gate=json.loads(receipt.read_text())

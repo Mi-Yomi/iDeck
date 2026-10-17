@@ -3,7 +3,10 @@
 These are command-failure regressions, not a mocked GUI acceptance gate. The
 same guard must additionally succeed in two real system-QEMU desktop boots.
 """
+import ast
 import os
+import re
+import shlex
 from pathlib import Path
 import subprocess
 import sys
@@ -13,6 +16,32 @@ import unittest
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
 from check_gui_vm import package_audit_script
+
+
+class SerialOutputFraming(unittest.TestCase):
+    def serial(self,script):
+        # Execute the actual nested runner helper with a delayed prompt and a
+        # real POSIX shell. This regression is not a GUI/device acceptance test.
+        module=ast.parse((ROOT/'tools/check_gui_vm.py').read_text())
+        node=next(n for n in ast.walk(module) if isinstance(n,ast.FunctionDef) and n.name=='serial')
+        logs=[bytearray()]
+        class Peer:
+            def sendall(self,data):
+                result=subprocess.run(['/bin/sh','-c',data.decode()],capture_output=True,timeout=5)
+                logs[0].extend(b'debian# '+result.stdout.replace(b'\n',b'\r\n'))
+        def until(predicate,seconds):
+            if not predicate():raise RuntimeError('acceptance marker absent')
+        scope={'logs':logs,'peers':[Peer()],'until':until,'shlex':shlex}
+        exec(compile(ast.Module(body=[node],type_ignores=[]),'<actual serial helper>','exec'),scope)
+        return scope['serial'](script,'fixture')
+
+    def test_prompt_cannot_swallow_first_evdev_or_machine_id_row(self):
+        data=self.serial("printf 'WHEEL_BYTES: 01 02 03\\n0123456789abcdef0123456789abcdef\\n'")
+        self.assertEqual(re.findall(rb'(?m)^WHEEL_BYTES:([ 0-9a-f]+)\r?$',data),[b' 01 02 03'])
+        self.assertEqual(len(re.findall(rb'(?m)^([0-9a-f]{32})\r?$',data)),1)
+
+    def test_framing_does_not_hide_command_failure(self):
+        with self.assertRaisesRegex(RuntimeError,'marker absent'):self.serial('false')
 
 
 class GUIPackageAudit(unittest.TestCase):

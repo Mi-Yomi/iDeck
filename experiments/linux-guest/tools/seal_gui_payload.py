@@ -14,6 +14,7 @@ import tarfile
 
 import debian_rootfs as base
 import gui_bundle as bundle
+import gui_host_tools
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -45,6 +46,7 @@ def seal(seed,bootstrap,acceptance,modules,output):
         if not all(result.get(k) is True for k in ('production_bootstrap','gui_mapped','emulated_pointer_move_resize',
                     'wheel_evdev_verified','real_root_menu_launch','keyboard_input_verified','clean_unmount','read_only_fsck')):raise ValueError('incomplete real GUI acceptance')
         if result.get('runner_sha256')!=base.sha256(ROOT/'tools/check_gui_vm.py'):raise ValueError('stale GUI runner')
+        if result.get('host_tools_sha256')!=base.sha256(Path(gui_host_tools.__file__)):raise ValueError('stale GUI host loader helper')
         identity=result.get('machine_id_sha256')
         if not isinstance(identity,str) or len(identity)!=64 or (machine_id is not None and machine_id!=identity):
             raise ValueError('missing or inconsistent guest machine ID')

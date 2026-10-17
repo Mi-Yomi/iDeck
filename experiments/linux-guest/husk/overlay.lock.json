@@ -39,7 +39,7 @@
     "ios/LinuxDesktopView.swift": "24f32eaafee435149857ab31229c1fa08a1a56c52b9b904b382336c154b4cb7e",
     "husk/patches/0004-desktop-input-bridge.patch": "3eb1da30aa9724440ce4e79a48fbae7326aee8115be00e6299fd28b9fe326ee0",
     "tools/gui_bundle.py": "0bdd90ba31ca0c512980629d8c76bdc98da9a525e88c88fea4902681b52dc079",
-    "ipa/gui.lock.json": "4bc3469a05a10f56315500f320873db7e645d35824119ccdde5fd1b805c5b8d8"
+    "ipa/gui.lock.json": "fef0bf4c5b72cad5ee921616639f6e28bec73bce7b1e689c95c3734aed82c7eb"
   },
   "copies": {
     "ios/LinuxGuestProfile.swift": "src/app/Husk/LinuxGuestProfile.swift",

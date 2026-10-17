@@ -1,0 +1,55 @@
+Warning: skipping journal recovery because doing a read-only filesystem check.
+Pass 1: Checking inodes, blocks, and sizes
+Deleted inode 370 has zero dtime.  Fix? no
+
+Inodes that were part of a corrupted orphan linked list found.  Fix? no
+
+Inode 1192 was part of the orphaned inode list.  IGNORED.
+Inode 1305 was part of the orphaned inode list.  IGNORED.
+Pass 2: Checking directory structure
+Entry 'excluded-aliases' in /var/lib/xfonts (19247) has deleted/unused inode 19267.  Clear? no
+
+Entry 'excluded-aliases' in /var/lib/xfonts (19247) has an incorrect filetype (was 1, should be 0).
+Fix? no
+
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Unattached inode 16882
+Connect to /lost+found? no
+
+Unattached inode 19248
+Connect to /lost+found? no
+
+Unattached inode 19260
+Connect to /lost+found? no
+
+Unattached inode 19261
+Connect to /lost+found? no
+
+Unattached inode 19262
+Connect to /lost+found? no
+
+Unattached inode 19263
+Connect to /lost+found? no
+
+Unattached inode 19264
+Connect to /lost+found? no
+
+Pass 5: Checking group summary information
+Block bitmap differences:  -(2481--2515) -(13352--13395) -(47527--47945) -(54547--54548) -(54553--54554) -56727 -56729 -56993
+Fix? no
+
+Free blocks count wrong (138213, counted=115774).
+Fix? no
+
+Inode bitmap differences:  -370 -1192 -1305 -(19265--19271)
+Fix? no
+
+Free inodes count wrong (146311, counted=143473).
+Fix? no
+
+
+/mnt/e/Freddy_Fazbear/iDeck.work/gui-local-20261017/posix/lab/scratch-gui.raw: ********** WARNING: Filesystem still has errors **********
+
+/mnt/e/Freddy_Fazbear/iDeck.work/gui-local-20261017/posix/lab/scratch-gui.raw: 17529/163840 files (0.3% non-contiguous), 189467/327680 blocks
+e2fsck 1.47.2 (1-Jan-2025)

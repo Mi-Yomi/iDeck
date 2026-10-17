@@ -1,0 +1,12 @@
+{
+  "status": "failed",
+  "reason": "600_second_provisioning_deadline",
+  "forced_termination": true,
+  "clean_shutdown": false,
+  "read_only_fsck_exit": 4,
+  "disk": {
+    "size": 1342177280,
+    "sha256": "19f85fd577b655caaf643f06aa300cfe2f892d428cdb58ffd7286ddbee4e80d6"
+  },
+  "disposition": "discarded disposable candidate; never reused or published; replacement starts from freshly authenticated package extraction"
+}

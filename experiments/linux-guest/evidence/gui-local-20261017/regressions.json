@@ -1,0 +1,26 @@
+{
+  "run": 295,
+  "passed": 292,
+  "failures": [],
+  "errors": [],
+  "skipped": [
+    [
+      "test_actual_swift_owner_and_validation_regressions (test_desktop_disk.DesktopDiskChecks.test_actual_swift_owner_and_validation_regressions)",
+      "explicit existing Swift toolchain required"
+    ],
+    [
+      "test_actual_swift_input_model (test_desktop_native_route.DesktopRoute.test_actual_swift_input_model)",
+      "Swift compiler unavailable; mandatory Apple checks remain pending"
+    ],
+    [
+      "test_actual_swift_paired_release_state (test_display_pointer.DisplayPointerChecks.test_actual_swift_paired_release_state)",
+      "Swift compiler unavailable; mandatory Apple execution remains pending"
+    ]
+  ],
+  "successful": true,
+  "elapsed_seconds": 61.089,
+  "swift_runtime_regressions": "NOT RUN: no Swift/Apple toolchain",
+  "apple_native_build_ipa": "NOT RUN",
+  "gui_on_iphone": "NOT RUN",
+  "temporary_storage": "/mnt/e/Freddy Fazbear/iDeck.work/gui-local-20261017/posix/tmp"
+}

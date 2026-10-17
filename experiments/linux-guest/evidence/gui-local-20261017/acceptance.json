@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "kind": "production-alpine-two-boots",
+  "status": "pass",
+  "kernel_sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+  "initramfs_sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4",
+  "rootfs_sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791",
+  "gui_package_lock_sha256": "8b3ee6d1f255c7486e7226c65ab304036363edccea4e145b472fe7df1cf6ed98",
+  "bootstrap_receipt_sha256": "fdb76b504e392d866d58b4cc4711ecfddf705e9637be7305bbd660172ff1db85",
+  "boot_reports": {
+    "boot1": "23cc5e1b9ef073e8a02887a6c751dbcf75d6ccf262dc24f2be0759b3ad8d3049",
+    "boot2": "1cd729ab9a92fdb49a5ca2c51464b5b49285fabcc3be4d746c2e5ee32809a0af"
+  },
+  "matching_kernel_gui": true,
+  "two_boots_clean": true,
+  "host_qemu_version": "QEMU emulator version 10.0.13 (Debian 1:10.0.13+ds-0+deb13u1)\nCopyright (c) 2003-2025 Fabrice Bellard and the QEMU Project developers",
+  "machine_id_persisted": true,
+  "ios_qemu_version": "10.0.12-utm",
+  "ios_compiled": false,
+  "device_verified": false,
+  "runner_sha256": "cb9d53d4f7f254828396a1e449f84e53eebf0edc8c984087c7f0bc388ecc70ba"
+}

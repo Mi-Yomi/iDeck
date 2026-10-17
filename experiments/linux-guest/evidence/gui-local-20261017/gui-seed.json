@@ -1,0 +1,193 @@
+{
+  "schema": 1,
+  "mode": "gui-seed",
+  "source_snapshot_sha256": "895e64289c95b3a3e29efd3e78ec9a67830f6eda3ee315a633e0eb5ab81bbbf1",
+  "source_size": 1342177280,
+  "preparation_sha256": "3b078ea67b4ca0101c94476d44dae758c23e31b303f7406bbdb7c6953a8fd70d",
+  "boot_reports": {
+    "provision": "4ae400edf38e181106add57f8a9fd95cba1a211e25a018fe76bde1b8c81223c4",
+    "boot1": "496fb9f36eb6d56e7f7269ed1eaf830732e9f10e4671ab9aded81f6558adf12a",
+    "boot2": "38a7657fd81ae633dfbb10b7db0391a4d7d6edaece3cd631e53f8bd1dd492e4c"
+  },
+  "runner_provenance": {
+    "provision_source_sha256": "efec5292ae82acd2c472acf4fec8dce02a42c8553fab002a4438afeea940a596",
+    "gui_source_sha256": "c0a06b5639a2f997cb7ab0686bd71ce7370046ef7740e6a75287940ff72844c5",
+    "provisioning_code_sha256": "3ae7b8570b003b79102b5cd04b1343d6f4d4fad13cca06f9675478b28a3b069d",
+    "comparison": "whole runner AST except inactive GUI branch; archived source never executed"
+  },
+  "rootfs": {
+    "file": "gui-rootfs-v1.raw",
+    "size": 1342177280,
+    "sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791"
+  },
+  "gzip": {
+    "file": "gui-rootfs-v1.raw.gz",
+    "size": 270384751,
+    "sha256": "fd9b0da7bc4a88a029aedc60fbfb2f1604c35ccf8d8f935697cb45574b7de44a"
+  },
+  "image": {
+    "uuid": "b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7",
+    "block_size": 4096,
+    "features": {
+      "compat": 44,
+      "incompat": 194,
+      "ro_compat": 1091
+    },
+    "inode_size": 256,
+    "descriptor_size": 64
+  },
+  "cleanup_boot": {
+    "schema": 1,
+    "status": "pass",
+    "host_only": true,
+    "production_kernel_changed": false,
+    "production_bootstrap": false,
+    "rss_measurement": "maximum sampled QEMU VmHWM on Linux host; not iOS or guest process memory",
+    "provision": false,
+    "persistence_boot": true,
+    "argv": [
+      "/mnt/e/Freddy Fazbear/iDeck.work/gui-local-20261017/posix/seed-final/vm/host/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+      "--library-path",
+      "/mnt/e/Freddy Fazbear/iDeck.work/gui-local-20261017/posix/seed-final/vm/host/usr/lib/x86_64-linux-gnu",
+      "/mnt/e/Freddy Fazbear/iDeck.work/gui-local-20261017/posix/seed-final/vm/host/usr/bin/qemu-system-aarch64",
+      "-L",
+      "/mnt/e/Freddy Fazbear/iDeck.work/gui-local-20261017/posix/seed-final/vm/host/usr/share/qemu",
+      "-machine",
+      "virt",
+      "-cpu",
+      "cortex-a72",
+      "-m",
+      "1024",
+      "-smp",
+      "4",
+      "-accel",
+      "tcg,thread=multi,tb-size=256",
+      "-display",
+      "none",
+      "-nodefaults",
+      "-nic",
+      "none",
+      "-no-reboot",
+      "-kernel",
+      "/mnt/e/Freddy Fazbear/iDeck.work/gui-local-20261017/posix/seed-final/vm/kernel/boot/vmlinuz-6.12.107+deb13-arm64",
+      "-initrd",
+      "/mnt/e/Freddy Fazbear/iDeck.work/gui-local-20261017/posix/seed-final/vm/initramfs-gui-host.gz",
+      "-append",
+      "console=ttyAMA0 rdinit=/ideck-gui-host-init panic=0 loglevel=4",
+      "-drive",
+      "if=none,id=root,format=raw,cache=writethrough,file=/mnt/e/Freddy Fazbear/iDeck.work/gui-local-20261017/posix/seed-final/vm/scratch-gui.raw",
+      "-device",
+      "virtio-blk-device,drive=root",
+      "-device",
+      "virtio-gpu-pci,xres=800,yres=600",
+      "-device",
+      "virtio-tablet-pci",
+      "-device",
+      "virtio-keyboard-pci",
+      "-qmp",
+      "unix:/mnt/e/Freddy Fazbear/iDeck.work/gui-local-20261017/posix/seed-final/cleanup-boot/qmp.sock,server=on,wait=off",
+      "-drive",
+      "if=none,id=packages,format=raw,readonly=on,file=/mnt/e/Freddy Fazbear/iDeck.work/gui-local-20261017/posix/seed-final/vm/packages.raw",
+      "-device",
+      "virtio-blk-device,drive=packages",
+      "-chardev",
+      "socket,id=serial,host=127.0.0.1,port=52887",
+      "-chardev",
+      "socket,id=control,host=127.0.0.1,port=55733",
+      "-serial",
+      "chardev:serial",
+      "-device",
+      "virtio-serial-pci",
+      "-device",
+      "virtserialport,chardev=control,name=org.ideck.control"
+    ],
+    "preparation": {
+      "schema": 1,
+      "status": "seed_finalization_host_only",
+      "kernel_release": "6.12.107+deb13-arm64",
+      "kernel_sha256": "9c37ace54ef7e1919411fd912e9f34d6982ddd7f4c8ef3c8aee56f4c4d70db67",
+      "initramfs_sha256": "2da0e3b3b07c8f234e3460bbd54b31820dbabdaa6a090b1f54a827a7187c8ab8",
+      "source_snapshot_sha256": "895e64289c95b3a3e29efd3e78ec9a67830f6eda3ee315a633e0eb5ab81bbbf1",
+      "module_load_order": [
+        "kernel/drivers/virtio/virtio_mmio.ko",
+        "kernel/drivers/block/virtio_blk.ko",
+        "kernel/drivers/gpu/drm/drm.ko",
+        "kernel/drivers/gpu/drm/drm_kms_helper.ko",
+        "kernel/drivers/gpu/drm/drm_shmem_helper.ko",
+        "kernel/drivers/virtio/virtio_dma_buf.ko",
+        "kernel/drivers/gpu/drm/virtio/virtio-gpu.ko",
+        "kernel/drivers/virtio/virtio_input.ko",
+        "kernel/drivers/input/evdev.ko",
+        "kernel/crypto/crc32c_generic.ko",
+        "kernel/fs/jbd2/jbd2.ko",
+        "kernel/fs/mbcache.ko",
+        "kernel/lib/crc16.ko",
+        "kernel/fs/ext4/ext4.ko"
+      ],
+      "production_kernel_changed": false
+    },
+    "runner_sha256": "c0a06b5639a2f997cb7ab0686bd71ce7370046ef7740e6a75287940ff72844c5",
+    "host_tools_sha256": "add901a078ca3936e08e704d6bfb80cf76539a3fcd33b629d59f586003701751",
+    "gui_mapped": true,
+    "emulated_pointer_move_resize": true,
+    "window_geometries": [
+      {
+        "X": 82,
+        "Y": 105,
+        "WIDTH": 556,
+        "HEIGHT": 316
+      },
+      {
+        "X": 122,
+        "Y": 129,
+        "WIDTH": 556,
+        "HEIGHT": 316
+      },
+      {
+        "X": 122,
+        "Y": 129,
+        "WIDTH": 598,
+        "HEIGHT": 342
+      }
+    ],
+    "wheel_evdev_verified": true,
+    "real_root_menu_launch": true,
+    "editor_file_loaded": true,
+    "editor_typed_saved": false,
+    "editor_reopened_after_boot": true,
+    "keyboard_typed_saved": false,
+    "keyboard_input_verified": true,
+    "persistence_read_before_write": true,
+    "clean_unmount": true,
+    "qemu_exit": 0,
+    "read_only_fsck": true,
+    "used_block_bytes": 884072448,
+    "free_block_bytes": 458104832,
+    "disk_sha256": "8c49218d4e5ccc5669ba334e8c79b7947dca2297677f24109c280fb28d687102",
+    "elapsed_seconds": 68.514,
+    "qemu_peak_rss_bytes": 796942336
+  },
+  "read_only_fsck": true,
+  "guest_files": {
+    "start": {
+      "size": 1801,
+      "sha256": "b5a0503a9cba8744f26cb7390d0a95890b728ac4b18108163aef2ea53986dced"
+    },
+    "session": {
+      "size": 1293,
+      "sha256": "3ff59826b985711ab7fe10570c103ce447f5f5111a0700352e203d8f56cb7506"
+    },
+    "tint2rc": {
+      "size": 706,
+      "sha256": "24d67733846c50b0ed1a8ef3acf061e7120ab7dbf5c53c3e4061d75c03d0b22b"
+    },
+    "xorg.conf": {
+      "size": 471,
+      "sha256": "c69b52c296a910995425efbe3abc509714f1608ae69fb9ff70f7484af125dc43"
+    }
+  },
+  "production_matching_kernel_gui_verified": false,
+  "app_payload_ready": false,
+  "gui_package_lock_sha256": "8b3ee6d1f255c7486e7226c65ab304036363edccea4e145b472fe7df1cf6ed98",
+  "builder_sha256": "d3ddb509e5b35b54ddbd04e9d81caa208f867a00767e53dad4044f94ab6183ed"
+}

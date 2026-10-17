@@ -1,64 +1,39 @@
-# GUI v1 private Release handoff — 2026-10-17
+# GUI payload delivery — local rebuild 2026-10-17
 
-The payload is sealed and validated locally. It has **not** been uploaded to a
-Release. The current executor's existing `gh` access rejects both GraphQL and
-REST reads with `Forbidden`. No token was created, read, printed or changed.
-The connected GitHub tools expose no Release-asset upload action here.
+The new payload is validated locally. Release upload is pending the source/evidence
+push; the following bytes supersede the unavailable cloud seed.
 
 | Artifact | Value |
 | --- | --- |
-| Cloud archive | `/workspace/iDeck/.work/gui-20261017/sealed-gui/ideck-debian-gui-v1.tar` |
-| Bytes | 292034560 |
-| SHA-256 | `4b4b0bb1f75d5b662a8c1d866f482329449ee4d52d181e585ef4964a3540bbdb` |
-| Checksum file | `/workspace/iDeck/.work/gui-20261017/sealed-gui/SHA256SUMS` |
-| Reviewed trust root | [ipa/gui.lock.json](ipa/gui.lock.json) |
-| GUI evidence | [acceptance.json](evidence/gui-alpine-20261017/acceptance.json) |
-| Replay/restore/staging | [payload-validation.json](evidence/gui-alpine-20261017/payload-validation.json) |
+| Local archive | `E:\Freddy Fazbear\iDeck.work\gui-local-20261017\payload-final\ideck-debian-gui-v1.tar` |
+| Bytes | 292065280 |
+| SHA-256 | `112bdba6e12ae182fb347e52e7368e26f748bb3dc2bcd77dbd3122fb14dcdedd` |
+| Checksum | `E:\Freddy Fazbear\iDeck.work\gui-local-20261017\payload-final\SHA256SUMS` |
+| Trust root | [gui.lock.json](ipa/gui.lock.json) |
+| Evidence | [local receipt](evidence/gui-local-20261017/receipt.json) |
 
-An offline rebuild produces the identical tar hash. The archive is an
-uncompressed, flat USTAR containing five locked transport members: the root
-image is gzip compressed inside it. Restoring it yields five verified app
-assets, including the 1.25GiB raw image. It exceeds Drive's observed256MiB
-raw-download limit; retain it as a private Release asset rather than a Drive
-raw-export dependency. Large root images and this tar are not Git objects.
+Offline replay matches the new tar exactly. Restore and isolated full Husk staging
+verify all five assets. Large images/tar are not Git objects. The old console Release,
+URL, token and payload remain untouched. Upload uses existing `gh`, no new token and
+no `--clobber`; an existing destination must be verified rather than replaced.
 
-Parent's required step is to transfer this exact archive and checksum file from
-the retained cloud workspace to a host with **existing approved private Release
-upload access**, then upload to the parent-approved private Release. Verify the
-SHA-256 before and after transfer. Do not create credentials or overwrite an
-existing asset. With that approved host's existing `gh` setup:
+## Apple handoff (do not dispatch automatically)
 
-```sh
-# Run in the directory containing the validated archive and SHA256SUMS.
-sha256sum -c SHA256SUMS
-# Set IDECK_GUI_RELEASE_TAG to the actual parent-approved private Release tag.
-gh release upload "$IDECK_GUI_RELEASE_TAG" \
-  ideck-debian-gui-v1.tar SHA256SUMS --repo Mi-Yomi/iDeck
-```
+Gwen must check the actual pushed HEAD of `codex/linux-guest-feasibility-20261015`,
+private `Mi-Yomi/iDeck`, at least120 free macOS minutes and paid billing OFF for this
+run. Select workflow `ideck-linux-probe-ipa` (Xcode27.0), with `expected_commit` equal
+to that full pushed SHA. Only after preflight set `free_quota_verified=true`,
+`private_source_verified=true` and `native_build_approved=true`; dispatch once.
 
-The command deliberately omits `--clobber`. If an asset of the same name
-exists, stop and resolve the destination with parent rather than replacing it.
-Download the uploaded asset into a new directory through that host's existing
-approved access, then verify its exact bytes/hash again.
+Set a separate `IDECK_GUI_PAYLOAD_URL` to the verified numeric GitHub asset API URL
+returned after publication. Put it in the already imported `ideck-debian-payload`
+group (Secret). Keep `IDECK_DEBIAN_PAYLOAD_URL` and `IDECK_DEBIAN_PAYLOAD_TOKEN` intact.
+When `IDECK_GUI_PAYLOAD_TOKEN` is unset/empty, only the exact approved HTTPS API for
+Mi-Yomi/iDeck release assets can reuse the existing Debian token. No new token/group
+is required. Never substitute the browser download URL or a local E: path.
 
-After actual upload, obtain the real numeric asset ID from the Release and
-configure the existing private CI download route:
-
-```text
-IDECK_GUI_PAYLOAD_URL=https://api.github.com/repos/Mi-Yomi/iDeck/releases/assets/<actual-uploaded-asset-id>
-```
-
-`IDECK_GUI_PAYLOAD_TOKEN` is an optional override. When it is unset/empty,
-only for this exact approved Mi-Yomi/iDeck GitHub asset API, the downloader reuses
-`IDECK_DEBIAN_PAYLOAD_TOKEN` from the already imported `ideck-debian-payload` CI
-group. No new secret/group is needed. Other transports never read or receive
-this fallback. The GUI URL remains separate; Debian URL/token values are not
-replaced. This executor does not read or configure live credentials. Do not
-substitute an invented ID, public URL, refreshed payload hash or source image.
-`gui_bundle.py fetch` enforces the exact committed size/hash, HTTPS, the allowed
-repository asset API/token scope and safe redirects without logging credentials
-or signed URLs. The separate accepted Debian console URL/lock remains unchanged.
-
-Before the single Apple build, parent must review the source/ready GUI lock,
-confirm the Release download, and perform fresh free-quota/paid-OFF preflight.
-CI was not run here. Apple/full native link/IPA/iPhone GUI remain NOT RUN.
+The workflow performs the mandatory actual Swift runtime gate, downloads and
+verifies the exact new GUI tar via `gui_bundle.py`, restores/stages all five locked
+assets, and then attempts native linking/IPA packaging. This work did not run CI.
+Apple compilation/link/IPA, GUI on iPhone, Steam and guest GPU acceleration are
+NOT RUN. A host GUI PASS does not establish any of those results.

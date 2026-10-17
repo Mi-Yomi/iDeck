@@ -1,0 +1,186 @@
+{
+  "schema": 1,
+  "archive": {
+    "size": 292065280,
+    "sha256": "112bdba6e12ae182fb347e52e7368e26f748bb3dc2bcd77dbd3122fb14dcdedd"
+  },
+  "replay_archive": {
+    "size": 292065280,
+    "sha256": "112bdba6e12ae182fb347e52e7368e26f748bb3dc2bcd77dbd3122fb14dcdedd"
+  },
+  "bundles": {
+    "sealed": {
+      "LICENSES-desktop.txt": {
+        "size": 1403,
+        "sha256": "7b4062d88f64efbfc636be91018df833d7d45997140cda60030a1caa8bce40b9"
+      },
+      "desktop-profile.json": {
+        "size": 761,
+        "sha256": "c8c487fdf7f847db8df51f9c6d6d2aefbed0d3967059a022c18922a034e88c71"
+      },
+      "gui-rootfs-v1.raw": {
+        "size": 1342177280,
+        "sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791"
+      },
+      "initramfs-desktop.gz": {
+        "size": 11319304,
+        "sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4"
+      },
+      "vmlinuz-virt": {
+        "size": 10351104,
+        "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+      }
+    },
+    "replay": {
+      "LICENSES-desktop.txt": {
+        "size": 1403,
+        "sha256": "7b4062d88f64efbfc636be91018df833d7d45997140cda60030a1caa8bce40b9"
+      },
+      "desktop-profile.json": {
+        "size": 761,
+        "sha256": "c8c487fdf7f847db8df51f9c6d6d2aefbed0d3967059a022c18922a034e88c71"
+      },
+      "gui-rootfs-v1.raw": {
+        "size": 1342177280,
+        "sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791"
+      },
+      "initramfs-desktop.gz": {
+        "size": 11319304,
+        "sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4"
+      },
+      "vmlinuz-virt": {
+        "size": 10351104,
+        "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+      }
+    },
+    "restored": {
+      "LICENSES-desktop.txt": {
+        "size": 1403,
+        "sha256": "7b4062d88f64efbfc636be91018df833d7d45997140cda60030a1caa8bce40b9"
+      },
+      "desktop-profile.json": {
+        "size": 761,
+        "sha256": "c8c487fdf7f847db8df51f9c6d6d2aefbed0d3967059a022c18922a034e88c71"
+      },
+      "gui-rootfs-v1.raw": {
+        "size": 1342177280,
+        "sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791"
+      },
+      "initramfs-desktop.gz": {
+        "size": 11319304,
+        "sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4"
+      },
+      "vmlinuz-virt": {
+        "size": 10351104,
+        "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+      }
+    },
+    "staged": {
+      "LICENSES-desktop.txt": {
+        "size": 1403,
+        "sha256": "7b4062d88f64efbfc636be91018df833d7d45997140cda60030a1caa8bce40b9"
+      },
+      "desktop-profile.json": {
+        "size": 761,
+        "sha256": "c8c487fdf7f847db8df51f9c6d6d2aefbed0d3967059a022c18922a034e88c71"
+      },
+      "gui-rootfs-v1.raw": {
+        "size": 1342177280,
+        "sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791"
+      },
+      "initramfs-desktop.gz": {
+        "size": 11319304,
+        "sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4"
+      },
+      "vmlinuz-virt": {
+        "size": 10351104,
+        "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+      }
+    }
+  },
+  "source_stage": {
+    "schema": 1,
+    "status": "source_and_guest_staged",
+    "upstream_commit": "0695248f491cda877f7969d1f0cc89aeede1482e",
+    "overlay_lock_sha256": "d621d1427692b753f8d51ff4ccc82fbbb8e23d98eb8207ab50731738acb251ec",
+    "changed_files": {
+      "src/app/Husk/HuskApp.swift": "18ff389fa29628fd1d4eb168a18a3b12f6b8c75caf6804651699e926b1ab9e31",
+      "src/app/project.yml": "9d7609c60bc137099456daa2ae92b9bd6a709c4218495666dc393312ba27997c",
+      "src/app/Husk/JITBootstrap.swift": "e62daeeca0c95d9ae955a62c7d7885f7f4b36b34538c22d50bee4b67605cbb34",
+      "src/app/Husk/JITSetup.swift": "e4963dea166bf5c5481c220330443c08fcc7a96a3a57fbc240e42884b8b5765d",
+      "src/app/Husk/JITSetupView.swift": "9b451834edaa1840dd6c2bfe2f56b10443111cd30b914d97cb4d8b934dac602d",
+      "src/app/Husk/HuskMetalView.swift": "f4d3b493cb52be7d9cdb09377610e6c65f3cc7b0e872769a8a86cbe869ae4682",
+      "src/ios-jit/husk-display.c": "251f596db5e59c0fa88026ad5f5daf33e283016316efbf68f9ba1832adced3ae",
+      "src/ios-jit/husk-display.h": "5f0f82c68c377aab24ebfed89ac4c5ae3ccdc37280311ec4687dc08974bc2b8f",
+      "src/app/Husk/HuskBridge.h": "ff50b39056da2b39b13f9485ade0f2be52e5499e70b1fdec3cd526e14f5de493",
+      "scripts/integrate_husk.sh": "bf6098d13094b120566f414852380d7e87c3cfc10edc1ccb368cbf32d01d7960",
+      "src/app/Husk/LinuxGuestProfile.swift": "ddfea00eba911033c44168103f0727836521849eadab7fed5dfac479ab36bef3",
+      "src/app/Husk/LinuxProbeEvidence.swift": "e17ee28c23a8879a6e74dd783f901297d2bcd8d089ad4e515c972b0016f034d4",
+      "src/app/Husk/LinuxProbeSession.swift": "562a3d295c4fd46637cde517b5532a6c310ef152ec7c6fed5684f2a0e6df239f",
+      "src/app/Husk/LinuxProbeView.swift": "574bec1dd47b7689ceb58aa0eada52eb75d36750ad3a6bf4af5502059f48af1f",
+      "scripts/ideck-stage-linux-guest.py": "267a95eb31f50dba82a8f75547925a60533faebb53e3198cdeea83703cd77c83",
+      "src/app/Husk/LinuxProbeReport.swift": "506f423b244972ab66b606b8ded284566d66626a68032fb843a57980db4958f1",
+      "src/app/Husk/LinuxTerminalProfile.swift": "04d488d0052ab0f1fc3fbf9e3976aa72fb722e492f535ff7dd5f1e6a18149bc7",
+      "src/app/Husk/LinuxTerminalSession.swift": "53ddabb1c5e8286766877d62d3f2c7d3505fabf493c3ed625e0f86787391a2b9",
+      "src/app/Husk/LinuxTerminalView.swift": "32cb24c27024f26628caa7d7fbe1b17532cc0f271dad8c91e49d587301bd733c",
+      "scripts/ideck-stage-linux-terminal.py": "c1c696498690085c6ddd4dc1eaf06dc4afa51b4dea738d883f498194cbbdef61",
+      "scripts/ideck-terminal.lock.json": "e39514b53a2ae33de96b300b2578c760fb95b2b2685bb7a99502f0f2d0c6a98e",
+      "src/app/Husk/LinuxTerminalDiagnostics.swift": "ac41aa902a39656f0980b06d9daf9c7d1cc9dc30d0e73f51922a1493edd23141",
+      "src/app/Husk/LinuxDesktopDisk.swift": "45b4626f6227d438bf6b63a12e73df96e0b742f14ed82584df1b41dc69db4bcf",
+      "src/app/Husk/LinuxDesktopProfile.swift": "aeee17701ba6aab2e2b847ccc85fb77f00cf7f3154271adafa5215bcf769c1f8",
+      "src/app/Husk/LinuxDebianProfile.swift": "6b1486e22819220aea29830a31fcec25bb6b31fd1fcacf52ca7c4fd2c3185912",
+      "src/app/Husk/LinuxConsoleLifecycle.swift": "a87b2dc2db56a72c97091b848fb23d883f8f6c0fe1284004090fb4e73a831d8d",
+      "scripts/ideck-stage-debian.py": "e1bb0b89a87c4f95b3169c6f2772c37a515d5e6873c2db00e1d9a541e702a450",
+      "scripts/ideck-debian.lock.json": "45f3985e5ca35e95849f56a658811601b923168abc714bbdadaa329d81e1e9bd",
+      "src/app/Husk/LinuxDisplayPointer.swift": "7d3e5886f263bc7295b76c251c491d49befc7ba5fb13682d00ce31c18f993d59",
+      "src/app/Husk/LinuxGUIProfile.swift": "1780558613046862b22ec7c1a740474609aef418505cc7933a3c5ac965808d6f",
+      "src/app/Husk/LinuxDesktopInputState.swift": "5a6e62e6be37ce809610cb9c7e33fd727941f8c2dd38aec1007a62369c87f560",
+      "src/app/Husk/LinuxDesktopInput.swift": "5de0b1c9d175405b865f9b32c8169b495aa72a83acf8f3072ded52859cac9b36",
+      "src/app/Husk/LinuxDesktopView.swift": "24f32eaafee435149857ab31229c1fa08a1a56c52b9b904b382336c154b4cb7e",
+      "scripts/ideck-stage-desktop.py": "0bdd90ba31ca0c512980629d8c76bdc98da9a525e88c88fea4902681b52dc079",
+      "scripts/ideck-desktop.lock.json": "fef0bf4c5b72cad5ee921616639f6e28bec73bce7b1e689c95c3734aed82c7eb"
+    },
+    "guest_assets": {
+      "profile.json": {
+        "size": 1599,
+        "sha256": "65ae64e005b9fa29f3e0ee6a9bed079366b16633e2dbebd8ca08aa15bdce0fb6"
+      },
+      "vmlinuz-virt": {
+        "size": 10351104,
+        "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+      },
+      "initramfs-ideck.gz": {
+        "size": 9402391,
+        "sha256": "5f64312eeef340991c6b0d97bd9d1fb01649c1763e14d7fb8231ad16551e9343"
+      }
+    },
+    "terminal_assets": {
+      "terminal-profile.json": {
+        "size": 717,
+        "sha256": "17867bc21c57c6b616da3cd7e9ca56b362cf5a46b50940941b8ee6008cae676a"
+      },
+      "initramfs-terminal.gz": {
+        "size": 9406442,
+        "sha256": "48bc711f2acdd594edcf5ae55adebf0f086e5c7a9664d7779827fc1be5984ab4"
+      },
+      "userdata-seed.raw": {
+        "size": 134217728,
+        "sha256": "a09478ab12b7238eb929de5f3780f1107e6f9348821e68b74686690d32310552"
+      },
+      "LICENSES-terminal.txt": {
+        "size": 1635,
+        "sha256": "50cf68a71ffa53f5bbd8b9cdaab3ad93b37157399ff7b787eabaa1c635b7ac3a"
+      }
+    },
+    "ios_compiled": false,
+    "runtime_linked": false,
+    "device_executed": false,
+    "next": "On an existing Husk Apple build host: regenerate Xcode project, build unsigned, then perform authorized device test."
+  },
+  "native_recipe_patch_check": "PASS",
+  "post_sync_revalidation": "PASS",
+  "first_replay": "Rejected kernel hash mismatch; no lock relaxation. Copy microtest did not reproduce; root cause unknown.",
+  "apple_compiled": false,
+  "ipa_created": false,
+  "device_verified": false
+}

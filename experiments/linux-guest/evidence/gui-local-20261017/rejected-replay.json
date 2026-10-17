@@ -1,0 +1,40 @@
+{
+  "status": "REJECTED",
+  "phase": "first offline replay bundle verification",
+  "failure": "GUI integrity mismatch: vmlinuz-virt",
+  "files": {
+    "bootstrap/vmlinuz-virt": {
+      "size": 10351104,
+      "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+      "differing_bytes": 0,
+      "first_difference": null,
+      "last_difference": null
+    },
+    "replay/bootstrap/probe/vmlinuz-virt": {
+      "size": 10351104,
+      "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+      "differing_bytes": 0,
+      "first_difference": null,
+      "last_difference": null
+    },
+    "replay/bootstrap/vmlinuz-virt": {
+      "size": 10351104,
+      "sha256": "be3b9814bbf80fbfbd279cdf69d4d6dfebdf6b8f2d15b79c13bee87e33b974ce",
+      "differing_bytes": 697,
+      "first_difference": 10346496,
+      "last_difference": 10350615
+    },
+    "replay/bundle/vmlinuz-virt": {
+      "size": 10351104,
+      "sha256": "784c0c012d736bff824bf27cb1fd3f66b1585606ead40e14206d785d46669229",
+      "differing_bytes": 1950682,
+      "first_difference": 8388608,
+      "last_difference": 10350615
+    }
+  },
+  "root_cause": "UNKNOWN; four-method isolated copy experiment did not reproduce",
+  "lock_or_payload_relaxed": false,
+  "first_replay_published": false,
+  "retry": "new replay-verified output; full exact tar and all five asset hashes checked after sync",
+  "reclaimed": "Only redundant first-replay raw copy, after exact seed hash verification; rejected kernels retained"
+}

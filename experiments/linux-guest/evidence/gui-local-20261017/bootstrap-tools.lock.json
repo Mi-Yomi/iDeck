@@ -1,0 +1,156 @@
+{
+  "release": {
+    "url": "https://deb.debian.org/debian/dists/trixie/InRelease",
+    "size": 140421,
+    "sha256": "0584fba32e13e0ab8285fb16c27adea1ec03a73669c18702821094fd6ca86675",
+    "indexes": [
+      {
+        "architecture": "arm64",
+        "size": 9614192,
+        "sha256": "be16b37b2f740f066ea93d35d56f04f94d63693e5a3eb421b052bf86fae75bcd",
+        "url": "https://deb.debian.org/debian/dists/trixie/main/binary-arm64/by-hash/SHA256/be16b37b2f740f066ea93d35d56f04f94d63693e5a3eb421b052bf86fae75bcd"
+      },
+      {
+        "architecture": "amd64",
+        "size": 9678380,
+        "sha256": "7778d3e3f303b7ddb8ce0fe7c8d57473a076c6bf2e8f241f75421d2396352498",
+        "url": "https://deb.debian.org/debian/dists/trixie/main/binary-amd64/by-hash/SHA256/7778d3e3f303b7ddb8ce0fe7c8d57473a076c6bf2e8f241f75421d2396352498"
+      }
+    ],
+    "signer_fingerprints": [
+      "04B54C3CDCA79751B16BC6B5225629DF75B188BD",
+      "41587F7DB8C774BCCF131416762F67A0B2C39DE4",
+      "B8B80B5B623EAB6AD8775C45B7C5D7D6350947F8"
+    ],
+    "date": "Sat, 12 Sep 2026 07:55:41 UTC",
+    "max_age_days": 90
+  },
+  "packages": [
+    {
+      "name": "apt",
+      "version": "3.0.3",
+      "architecture": "amd64",
+      "filename": "pool/main/a/apt/apt_3.0.3_amd64.deb",
+      "sha256": "55e341fbe92d7502c98faf1b3c235393ea0744db119cf2173603e965b658aef4",
+      "size": 1452192,
+      "installed_size_kib": 4480
+    },
+    {
+      "name": "libapt-pkg7.0",
+      "version": "3.0.3",
+      "architecture": "amd64",
+      "filename": "pool/main/a/apt/libapt-pkg7.0_3.0.3_amd64.deb",
+      "sha256": "fdcc9f780c7de466c7f0038e6e242c73cb63c8f9fe2781a3185a2c810984ab0a",
+      "size": 1112916,
+      "installed_size_kib": 3855
+    },
+    {
+      "name": "libxxhash0",
+      "version": "0.8.3-2",
+      "architecture": "amd64",
+      "filename": "pool/main/x/xxhash/libxxhash0_0.8.3-2_amd64.deb",
+      "sha256": "81da7064d56fc044f5db4bb3c1e80ff50a4986dcbbf80d958eeca565b44c157f",
+      "size": 27096,
+      "installed_size_kib": 92
+    },
+    {
+      "name": "liblz4-1",
+      "version": "1.10.0-4",
+      "architecture": "amd64",
+      "filename": "pool/main/l/lz4/liblz4-1_1.10.0-4_amd64.deb",
+      "sha256": "c31ec4c7c82755a38b2f3fe066fc0c5518cc91a601a268fbcd19bdacb1f22e1e",
+      "size": 63900,
+      "installed_size_kib": 173
+    },
+    {
+      "name": "libzstd1",
+      "version": "1.5.7+dfsg-1",
+      "architecture": "amd64",
+      "filename": "pool/main/libz/libzstd/libzstd1_1.5.7+dfsg-1_amd64.deb",
+      "sha256": "2f6a2aeacfc925eba8b00ac9139bc4bfccf8cacb09eb93de067074b26948eef9",
+      "size": 303836,
+      "installed_size_kib": 847
+    },
+    {
+      "name": "libbz2-1.0",
+      "version": "1.0.8-6",
+      "architecture": "amd64",
+      "filename": "pool/main/b/bzip2/libbz2-1.0_1.0.8-6_amd64.deb",
+      "sha256": "cba4cda04244b5e481bb15524bc3c983a7d1b6f330013b9b381706a2fcb65310",
+      "size": 37912,
+      "installed_size_kib": 96
+    },
+    {
+      "name": "liblzma5",
+      "version": "5.8.1-1+deb13u1",
+      "architecture": "amd64",
+      "filename": "pool/main/x/xz-utils/liblzma5_5.8.1-1+deb13u1_amd64.deb",
+      "sha256": "1cfcc6e0dc36f438a79b6e2189facdb9d150b08f57d190a60e01c98075c7f896",
+      "size": 309492,
+      "installed_size_kib": 435
+    },
+    {
+      "name": "libudev1",
+      "version": "257.13-1~deb13u1",
+      "architecture": "amd64",
+      "filename": "pool/main/s/systemd/libudev1_257.13-1~deb13u1_amd64.deb",
+      "sha256": "5d41c284f5a93b05bc7d648b61a02dd2bb9ff05b2261ad1a8b7d96044a0cfa88",
+      "size": 152300,
+      "installed_size_kib": 357
+    },
+    {
+      "name": "libsystemd0",
+      "version": "257.13-1~deb13u1",
+      "architecture": "amd64",
+      "filename": "pool/main/s/systemd/libsystemd0_257.13-1~deb13u1_amd64.deb",
+      "sha256": "ab0d4127b5e46e6f8c015a1db15a62ba9ae274cdefa150083adf90ada0600ea1",
+      "size": 454648,
+      "installed_size_kib": 1223
+    },
+    {
+      "name": "libcap2",
+      "version": "1:2.75-10+deb13u1+b3",
+      "architecture": "amd64",
+      "filename": "pool/main/libc/libcap2/libcap2_2.75-10+deb13u1+b3_amd64.deb",
+      "sha256": "89fc4d34fc7a28ad6f0fcd0c561ab253b9dedf6f77f5a000b47c276c8295bf67",
+      "size": 28988,
+      "installed_size_kib": 92
+    },
+    {
+      "name": "libgcrypt20",
+      "version": "1.11.0-7+deb13u1",
+      "architecture": "amd64",
+      "filename": "pool/main/libg/libgcrypt20/libgcrypt20_1.11.0-7+deb13u1_amd64.deb",
+      "sha256": "f0eb41f8cb40896e0822e9ab65611e8383c12b721c76c54764f744abb4a8c247",
+      "size": 843104,
+      "installed_size_kib": 1999
+    },
+    {
+      "name": "libgpg-error0",
+      "version": "1.51-4",
+      "architecture": "amd64",
+      "filename": "pool/main/libg/libgpg-error/libgpg-error0_1.51-4_amd64.deb",
+      "sha256": "22b95570fd41c113ef6f5651563b4d748292844baab1278a46eb940c1dec2322",
+      "size": 82108,
+      "installed_size_kib": 208
+    },
+    {
+      "name": "libseccomp2",
+      "version": "2.6.0-2",
+      "architecture": "amd64",
+      "filename": "pool/main/libs/libseccomp/libseccomp2_2.6.0-2_amd64.deb",
+      "sha256": "89d5138e05fb6a86b9afd8b54dc0fb4b14f4c27c05e6c5f767c2132bdf808531",
+      "size": 51712,
+      "installed_size_kib": 201
+    },
+    {
+      "name": "libssl3t64",
+      "version": "3.5.7-1~deb13u2",
+      "architecture": "amd64",
+      "filename": "pool/main/o/openssl/libssl3t64_3.5.7-1~deb13u2_amd64.deb",
+      "sha256": "916f7f40b34a06e6ebfaefcdab331bff458328411da672598f126a760472467d",
+      "size": 2453872,
+      "installed_size_kib": 8103
+    }
+  ]
+}

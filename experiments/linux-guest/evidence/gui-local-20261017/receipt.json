@@ -1,0 +1,372 @@
+{
+  "schema": 1,
+  "status": "local_rebuild_production_alpine_two_boots_pass",
+  "source_base_commit": "d88aaefea758479f1da4fb81f15a02bc904898b5",
+  "branch": "codex/linux-guest-feasibility-20261015",
+  "local_workspace": "E:\\Freddy Fazbear\\iDeck.work\\gui-local-20261017",
+  "host": "Windows / existing Arch WSL, ext4 build volume entirely on E:",
+  "package_inputs_changed": false,
+  "guest_scripts_changed": false,
+  "app_runtime_changed": false,
+  "host_qemu": "QEMU emulator version 10.0.13 (Debian 1:10.0.13+ds-0+deb13u1)\nCopyright (c) 2003-2025 Fabrice Bellard and the QEMU Project developers",
+  "ios_qemu": "10.0.12-utm",
+  "production_kernel": "Alpine 6.18.35-0-virt",
+  "kernel_sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+  "payload": {
+    "filename": "ideck-debian-gui-v1.tar",
+    "size": 292065280,
+    "sha256": "112bdba6e12ae182fb347e52e7368e26f748bb3dc2bcd77dbd3122fb14dcdedd"
+  },
+  "rootfs": {
+    "size": 1342177280,
+    "sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791"
+  },
+  "initramfs": {
+    "size": 11319304,
+    "sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4"
+  },
+  "old_cloud_tar_sha256": "4b4b0bb1f75d5b662a8c1d866f482329449ee4d52d181e585ef4964a3540bbdb",
+  "new_seed_not_claimed_identical_to_cloud": true,
+  "boots": {
+    "boot1": {
+      "status": "pass",
+      "elapsed_seconds": 105.071,
+      "qemu_peak_rss_bytes": 977494016,
+      "gui_mapped": true,
+      "emulated_pointer_move_resize": true,
+      "wheel_evdev_verified": true,
+      "real_root_menu_launch": true,
+      "keyboard_input_verified": true,
+      "editor_typed_saved": true,
+      "editor_reopened_after_boot": false,
+      "persistence_read_before_write": false,
+      "clean_unmount": true,
+      "read_only_fsck": true,
+      "machine_id_sha256": "06c0b23077d3b57bf07da593183ca6490009e154b91489e3a6356b67ada52984",
+      "actual_glibc_loader_executables_passed": 423
+    },
+    "boot2": {
+      "status": "pass",
+      "elapsed_seconds": 53.775,
+      "qemu_peak_rss_bytes": 973451264,
+      "gui_mapped": true,
+      "emulated_pointer_move_resize": true,
+      "wheel_evdev_verified": true,
+      "real_root_menu_launch": true,
+      "keyboard_input_verified": true,
+      "editor_typed_saved": false,
+      "editor_reopened_after_boot": true,
+      "persistence_read_before_write": true,
+      "clean_unmount": true,
+      "read_only_fsck": true,
+      "machine_id_sha256": "06c0b23077d3b57bf07da593183ca6490009e154b91489e3a6356b67ada52984",
+      "actual_glibc_loader_executables_passed": 423
+    }
+  },
+  "immutable_seed_unchanged": true,
+  "machine_id_persisted": true,
+  "visual_review": "Real QEMU scanout reviewed; desktop apps, saved text and root menu. Not iPhone screenshots.",
+  "regressions": {
+    "run": 295,
+    "passed": 292,
+    "failures": [],
+    "errors": [],
+    "skipped": [
+      [
+        "test_actual_swift_owner_and_validation_regressions (test_desktop_disk.DesktopDiskChecks.test_actual_swift_owner_and_validation_regressions)",
+        "explicit existing Swift toolchain required"
+      ],
+      [
+        "test_actual_swift_input_model (test_desktop_native_route.DesktopRoute.test_actual_swift_input_model)",
+        "Swift compiler unavailable; mandatory Apple checks remain pending"
+      ],
+      [
+        "test_actual_swift_paired_release_state (test_display_pointer.DisplayPointerChecks.test_actual_swift_paired_release_state)",
+        "Swift compiler unavailable; mandatory Apple execution remains pending"
+      ]
+    ],
+    "successful": true,
+    "elapsed_seconds": 61.089,
+    "swift_runtime_regressions": "NOT RUN: no Swift/Apple toolchain",
+    "apple_native_build_ipa": "NOT RUN",
+    "gui_on_iphone": "NOT RUN",
+    "temporary_storage": "/mnt/e/Freddy Fazbear/iDeck.work/gui-local-20261017/posix/tmp"
+  },
+  "apple_swift_runtime": "NOT RUN",
+  "apple_native_link_ipa": "NOT RUN",
+  "gui_on_iphone": "NOT RUN",
+  "steam": "NOT RUN",
+  "guest_gpu_acceleration": "NOT RUN",
+  "ci_dispatched": false,
+  "local_portability_fixes": [
+    "matching pinned ELF loader/libc for extracted amd64 tools",
+    "module path parsing preserves spaces and trims kmod trailing whitespace",
+    "new local snapshot bound to provisioning, two boots and boot2 disk SHA-256",
+    "30-minute provision-only deadline after honest failed/forced 10-minute attempt; no acceptance condition relaxed",
+    "serial output starts on a new line so late prompts cannot swallow first evdev/machine-id rows; both GUI runs repeated",
+    "archived provisioning runner retained and hashed; whole AST identical except inactive GUI branch; current full runner required for GUI boots"
+  ],
+  "rejected_first_replay": "Kernel copy hash mismatch; rejected. Isolated copy experiment did not reproduce, root cause unknown. Exact new-directory replay, restore and staging pass after sync; payload/lock checks unchanged.",
+  "records": {
+    "acceptance.json": {
+      "size": 1152,
+      "sha256": "d64b8a06e5245041d66596fb872f2b4febe8c728910ef67f2e4d0dcee9830a22"
+    },
+    "boot1/after-input.png": {
+      "size": 34052,
+      "sha256": "537f0f3177a6a955f4f7a107b01f81cc597c27ba74f37c68e4d10c7665a736b2"
+    },
+    "boot1/after-pointer-move.png": {
+      "size": 23519,
+      "sha256": "a8b900e7946ca2ee3a7a56421b96079985e00d4066336d3a8d7a70c21c870686"
+    },
+    "boot1/control.log": {
+      "size": 77,
+      "sha256": "b38ca9e8f47dbb1066551a18d5e3b1f0a58f290ef0e0ca26c584291c737b9b01"
+    },
+    "boot1/desktop-menu.png": {
+      "size": 36865,
+      "sha256": "7dba60363ee4798d8d86b7abab3b16fd5ad9ee59160066880c0e8d1d4da92334"
+    },
+    "boot1/desktop.png": {
+      "size": 35088,
+      "sha256": "a2a74f07cc56373daa89385be8ff1f8c5444e152c6c5c3dde8b1eb3df1fc65e1"
+    },
+    "boot1/filesystem.log": {
+      "size": 2056,
+      "sha256": "da4b7882372cc2022719f853492ba8944c04a5eaf0fa2d257ba8792fc1b2e698"
+    },
+    "boot1/fsck.log": {
+      "size": 376,
+      "sha256": "44843b44d7c0ec90c6b616cbab02d42ec91a02beb81d47117e31a3ad0033022e"
+    },
+    "boot1/package-manifest.tsv": {
+      "size": 17465,
+      "sha256": "7cac249c6410e6b3ef6fa9d28adc1652d5ec627e7aeb37508597d2110a7e4b3b"
+    },
+    "boot1/qemu.log": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "boot1/result.json": {
+      "size": 3720,
+      "sha256": "23cc5e1b9ef073e8a02887a6c751dbcf75d6ccf262dc24f2be0759b3ad8d3049"
+    },
+    "boot1/runner-source.py": {
+      "size": 21517,
+      "sha256": "c0a06b5639a2f997cb7ab0686bd71ce7370046ef7740e6a75287940ff72844c5"
+    },
+    "boot1/serial.log": {
+      "size": 64206,
+      "sha256": "8b2a26a7b39849da6bf88843b448938ae6f4063ace645976cb0fe77102eb40e1"
+    },
+    "boot2/after-input.png": {
+      "size": 33208,
+      "sha256": "18a0b8b213582107254ceb5791150b1007171939ceaaa60f7a0cde598ba08a24"
+    },
+    "boot2/after-pointer-move.png": {
+      "size": 22824,
+      "sha256": "fc73404fcf10626bef2a9de859a395f64d392c8752c15c661d7169d978cd3e88"
+    },
+    "boot2/control.log": {
+      "size": 77,
+      "sha256": "b38ca9e8f47dbb1066551a18d5e3b1f0a58f290ef0e0ca26c584291c737b9b01"
+    },
+    "boot2/desktop-menu.png": {
+      "size": 36017,
+      "sha256": "54d899af4027cf66287686194c33f17d95f1046d8879eb15d63bf7c17cc37f9f"
+    },
+    "boot2/desktop.png": {
+      "size": 35154,
+      "sha256": "686d5ee128add64c06159d54badd90db2bd097da824676dd1f208af2155bf82e"
+    },
+    "boot2/filesystem.log": {
+      "size": 2056,
+      "sha256": "8aeed5dfb57c8bc7e1d4573404450fca69c9dab5d861a71d393e7089dab9a4e1"
+    },
+    "boot2/fsck.log": {
+      "size": 376,
+      "sha256": "67058d4d16e9fb9dab13222e8069e98c647f18ba4ecb6c50668a9e712d92bac2"
+    },
+    "boot2/package-manifest.tsv": {
+      "size": 17465,
+      "sha256": "7cac249c6410e6b3ef6fa9d28adc1652d5ec627e7aeb37508597d2110a7e4b3b"
+    },
+    "boot2/qemu.log": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "boot2/result.json": {
+      "size": 3718,
+      "sha256": "1cd729ab9a92fdb49a5ca2c51464b5b49285fabcc3be4d746c2e5ee32809a0af"
+    },
+    "boot2/runner-source.py": {
+      "size": 21517,
+      "sha256": "c0a06b5639a2f997cb7ab0686bd71ce7370046ef7740e6a75287940ff72844c5"
+    },
+    "boot2/serial.log": {
+      "size": 64302,
+      "sha256": "df5a67115d8cdc71d7f1e38d76d5363f51454d95873f87ec11a22009d80d9ffb"
+    },
+    "bootstrap-tools.lock.json": {
+      "size": 5544,
+      "sha256": "ce630396c1df8495b07ffcdfbbc4c84570791bbb442abc9e383666d501e6f447"
+    },
+    "bootstrap.json": {
+      "size": 696,
+      "sha256": "fdb76b504e392d866d58b4cc4711ecfddf705e9637be7305bbd660172ff1db85"
+    },
+    "cleanup/fsck.log": {
+      "size": 376,
+      "sha256": "09cfd7023dd2a52abc3e88fc3c746416e976d0ea308c5fe5b4b2e70cee877804"
+    },
+    "cleanup/result.json": {
+      "size": 4476,
+      "sha256": "d04f8b20216adbc14e238f08d27a4f6f78777d5344f4b6df62f9b06c82487d47"
+    },
+    "cleanup/serial.log": {
+      "size": 49849,
+      "sha256": "d73055014e185fd2725d342b50715a8eca8380a0f21efcb36bbc77beb3f2275a"
+    },
+    "copy-investigation.json": {
+      "size": 2263,
+      "sha256": "d88441fe2311542ca4f78748bc8d6d600d6836922b058c291084fa7034b94db4"
+    },
+    "elf-inventory.json": {
+      "size": 11233,
+      "sha256": "c8a2928d14bc97f99d593ce328bacbb0b9c819dd894c35dec440ef806e63247d"
+    },
+    "failed-provision/disposition.json": {
+      "size": 424,
+      "sha256": "37a2218decde221eaa59e898a9ef492107da2a1663dc46a777b4820d8c3aaee3"
+    },
+    "failed-provision/fsck.log": {
+      "size": 1702,
+      "sha256": "5a6e5789e6b9cb14bfa62051402ad2b0f3cc00e70711f558e7d3fa292d8dc465"
+    },
+    "failed-provision/result.json": {
+      "size": 5337,
+      "sha256": "640134eb7ffa29fd778c7216642d6d1e161af616111eb5e6c591d02cdc83b2c1"
+    },
+    "failed-provision/serial.log": {
+      "size": 107466,
+      "sha256": "eed9a09a4a4f16bc1ab8d683f91f4e29089309a5f309d04e72dd87ce4316a7a8"
+    },
+    "gui-seed.json": {
+      "size": 7072,
+      "sha256": "ba651ec07b32820227f6c3eaec9d1589d7db7117165baf4def2ee93dcbd59670"
+    },
+    "lab/boot1/fsck.log": {
+      "size": 381,
+      "sha256": "1d3c8b51f528e57604487a5b67c83c9478e8ac849fcf066d2845d678e17b5396"
+    },
+    "lab/boot1/package-manifest.tsv": {
+      "size": 17465,
+      "sha256": "7cac249c6410e6b3ef6fa9d28adc1652d5ec627e7aeb37508597d2110a7e4b3b"
+    },
+    "lab/boot1/result.json": {
+      "size": 6391,
+      "sha256": "496fb9f36eb6d56e7f7269ed1eaf830732e9f10e4671ab9aded81f6558adf12a"
+    },
+    "lab/boot1/runner-source.py": {
+      "size": 21517,
+      "sha256": "c0a06b5639a2f997cb7ab0686bd71ce7370046ef7740e6a75287940ff72844c5"
+    },
+    "lab/boot1/serial.log": {
+      "size": 64366,
+      "sha256": "77bbdc756573d3aeae81533eaa4943b8e0d8f854246b3c78a91701330051e66e"
+    },
+    "lab/boot2/fsck.log": {
+      "size": 381,
+      "sha256": "1d3c8b51f528e57604487a5b67c83c9478e8ac849fcf066d2845d678e17b5396"
+    },
+    "lab/boot2/package-manifest.tsv": {
+      "size": 17465,
+      "sha256": "7cac249c6410e6b3ef6fa9d28adc1652d5ec627e7aeb37508597d2110a7e4b3b"
+    },
+    "lab/boot2/result.json": {
+      "size": 6390,
+      "sha256": "38a7657fd81ae633dfbb10b7db0391a4d7d6edaece3cd631e53f8bd1dd492e4c"
+    },
+    "lab/boot2/runner-source.py": {
+      "size": 21517,
+      "sha256": "c0a06b5639a2f997cb7ab0686bd71ce7370046ef7740e6a75287940ff72844c5"
+    },
+    "lab/boot2/serial.log": {
+      "size": 64040,
+      "sha256": "56ab9b0f923b078438ff9ea0a08b16874741140704434a5c3478b304cf5ec993"
+    },
+    "lab/provision/fsck.log": {
+      "size": 381,
+      "sha256": "860560dd5c5b8799456fbc008b142d77fa14289d1c58ddbcb5f672a375731032"
+    },
+    "lab/provision/package-manifest.tsv": {
+      "size": 17465,
+      "sha256": "7cac249c6410e6b3ef6fa9d28adc1652d5ec627e7aeb37508597d2110a7e4b3b"
+    },
+    "lab/provision/result.json": {
+      "size": 5730,
+      "sha256": "4ae400edf38e181106add57f8a9fd95cba1a211e25a018fe76bde1b8c81223c4"
+    },
+    "lab/provision/runner-source.py": {
+      "size": 21327,
+      "sha256": "efec5292ae82acd2c472acf4fec8dce02a42c8553fab002a4438afeea940a596"
+    },
+    "lab/provision/serial.log": {
+      "size": 117577,
+      "sha256": "d80b16a2ad32c79a58fa63df9adb1f043ef310a9595198934b20e67fbe87ef4d"
+    },
+    "lab-preparation.json": {
+      "size": 2682,
+      "sha256": "3b078ea67b4ca0101c94476d44dae758c23e31b303f7406bbdb7c6953a8fd70d"
+    },
+    "lab-snapshot.sha256": {
+      "size": 82,
+      "sha256": "aecf7e39d592f5fb33e2296e748979d1af32ee8a7867b115d5f98f3516ef958b"
+    },
+    "modules.json": {
+      "size": 3540,
+      "sha256": "af8303f8f91736c419b5a95d579cbf60b8674d56c4a9f73b8b20ca6a212a16d1"
+    },
+    "payload-validation.json": {
+      "size": 9101,
+      "sha256": "079bf8eca50d458c0b4a03270f087d7d005bc6eb2f93905a77f6ecbb9afbc87c"
+    },
+    "regressions.json": {
+      "size": 995,
+      "sha256": "20b01ee5ed57ebb5d5a5b1ff5d9b32eb31b1f61a0cd361d8b55154082071fc37"
+    },
+    "regressions.log": {
+      "size": 47199,
+      "sha256": "1ddbf52ff20590282f11f9b032a7466e9abc8201bf32c74e01bd3f2c7c5c69cd"
+    },
+    "rejected-replay.json": {
+      "size": 1521,
+      "sha256": "e3adb8a4bdf73450cffdf6a32d218b0e9ebdbfdbd3a8a71b9ac0a7ca6c229d6b"
+    },
+    "seed-fsck.log": {
+      "size": 380,
+      "sha256": "4b25087c2fd61c01cb44982407403e711b927120eca78add97dcbcbf7cb271bf"
+    },
+    "serial-framing-failure/fsck.log": {
+      "size": 381,
+      "sha256": "1d3c8b51f528e57604487a5b67c83c9478e8ac849fcf066d2845d678e17b5396"
+    },
+    "serial-framing-failure/result.json": {
+      "size": 5932,
+      "sha256": "48d3cbba7733180ced91409813d9d7287a15c59d213be336db654ec38b4f2866"
+    },
+    "serial-framing-failure/runner-source.py": {
+      "size": 21327,
+      "sha256": "efec5292ae82acd2c472acf4fec8dce02a42c8553fab002a4438afeea940a596"
+    },
+    "serial-framing-failure/serial.log": {
+      "size": 63885,
+      "sha256": "1f10767765a564406dc3616b2b033768e68da244a52435cbec428a4b8a2b86c8"
+    },
+    ".gitattributes": {
+      "size": 105,
+      "sha256": "86e9ecc2e2281be4951545eef0cbea17eb462012a665f4653bd51c0ec5e77506"
+    }
+  }
+}

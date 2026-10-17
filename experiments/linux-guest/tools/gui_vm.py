@@ -18,6 +18,7 @@ import tarfile
 import debian_rootfs as base
 import desktop_modules as modules
 import gui_rootfs as gui
+import gui_host_tools
 from check_debian_ext4_boot import cpio_suffix
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -49,7 +50,7 @@ def module_inputs(kernel, host, env):
     if len(releases) != 1:
         raise ValueError('ambiguous provision kernel')
     release = releases[0].name
-    run([host / 'usr/sbin/depmod', '-b', kernel, '-m', '/usr/lib/modules', release], env)
+    run(gui_host_tools.command(host,[host / 'usr/sbin/depmod', '-b', kernel, '-m', '/usr/lib/modules', release]), env)
     # Ask the real pinned kmod to resolve hard dependencies, aliases (including
     # crypto_crc32c), builtins and softdeps. A hand-written name graph cannot
     # safely interpret alias softdeps from this kernel.
@@ -57,13 +58,13 @@ def module_inputs(kernel, host, env):
     needed = ['virtio_pci', 'virtio_mmio', 'virtio_blk', 'virtio_gpu', 'virtio_input', 'evdev', 'ext4', 'virtio_console']
     order = []
     for name in needed:
-        result = run([host/'usr/sbin/modprobe','-d',kernel,'-S',release,'--show-depends',name],env)
+        result = run(gui_host_tools.command(host,[host/'usr/sbin/modprobe','-d',kernel,'-S',release,'--show-depends',name]),env)
         for row in result.stdout.splitlines():
             if row.startswith('builtin '): continue
-            parts = row.split()
-            if len(parts) != 2 or parts[0] != 'insmod':
+            instruction, separator, module = row.rstrip().partition(' ')
+            if not separator or instruction != 'insmod' or not module:
                 raise ValueError('unsupported provision module instruction')
-            path = Path(parts[1]).resolve().relative_to(releases[0].resolve()).as_posix()
+            path = Path(module).resolve().relative_to(releases[0].resolve()).as_posix()
             if not path.endswith('.ko.xz'):
                 raise ValueError('unsupported provision module compression')
             path = modules.module_path(path[:-3])
@@ -83,7 +84,7 @@ def prepare(lock_path, cache, output):
     lock = json.loads(lock_path.read_text())
     base.OFFLINE = True
     gui.download(lock, cache)
-    source_paths = [Path(__file__), Path(gui.__file__), Path(base.__file__),
+    source_paths = [Path(__file__), Path(gui.__file__), Path(base.__file__),Path(gui_host_tools.__file__),
                     *sorted((ROOT/'guest/gui').iterdir())]
     source_hashes = {str(p.relative_to(ROOT)):base.sha256(p) for p in source_paths}
     # Budget actual full copies, without relying on sparse allocation savings.
@@ -139,9 +140,9 @@ def prepare(lock_path, cache, output):
     def image(name, tree, capacity, uuid):
         path = output / name
         with path.open('xb') as f: f.truncate(capacity)
-        run([host/'usr/sbin/mke2fs', '-q','-F','-t','ext4','-b','4096','-I','256',
+        run(gui_host_tools.command(host,[host/'usr/sbin/mke2fs', '-q','-F','-t','ext4','-b','4096','-I','256',
              '-O',base.FEATURE_NAMES,'-E','lazy_itable_init=0,lazy_journal_init=0,root_owner=0:0',
-             '-m','0','-U',uuid,'-d',tree,path], env)
+             '-m','0','-U',uuid,'-d',tree,path]), env)
         return path
     raw = image('scratch-gui.raw', root, size, gui.UUID)
     commands = []
@@ -149,7 +150,7 @@ def prepare(lock_path, cache, output):
         rel = path.relative_to(root).as_posix(); uid,gid = ownership.get(rel,[0,0])
         commands += [f'sif {base.debugfs_quote("/"+rel)} uid {uid}', f'sif {base.debugfs_quote("/"+rel)} gid {gid}']
     script = output/'ownership.debugfs'; script.write_text('\n'.join(commands)+'\n')
-    result = run([host/'usr/sbin/debugfs','-w','-f',script,raw],env)
+    result = run(gui_host_tools.command(host,[host/'usr/sbin/debugfs','-w','-f',script,raw]),env)
     (output/'ownership.log').write_text(result.stdout)
     if any(s in result.stdout for s in ['File not found','not found by ext2_lookup','Command not found']):
         raise ValueError('scratch ownership publication failed')
@@ -173,7 +174,7 @@ def prepare(lock_path, cache, output):
             'lock_sha256':base.sha256(lock_path),'tree_logical_bytes':tree_bytes,'scratch_size_bytes':size,
             'kernel_release':release,'kernel_sha256':base.sha256(kernel_image),
             'module_load_order':order,'initramfs_sha256':base.sha256(initrd),
-            'qemu_version':run([host/'usr/bin/qemu-system-aarch64','--version'],env).stdout.splitlines()[0],
+            'qemu_version':run(gui_host_tools.command(host,[host/'usr/bin/qemu-system-aarch64','--version']),env).stdout.splitlines()[0],
             'builder_peak_rss_bytes':resource.getrusage(resource.RUSAGE_SELF).ru_maxrss*1024,
             'sources':source_hashes,
             'notice_policy':'All authenticated package /usr/share/doc files retained; no stripping'}

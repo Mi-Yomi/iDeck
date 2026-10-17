@@ -14,6 +14,7 @@ import struct
 import time
 
 import debian_rootfs as base
+import gui_host_tools
 
 
 def package_audit_script(audit_path='/run/ideck/dpkg-audit'):
@@ -73,12 +74,13 @@ def boot(vm, output, provision=False, persistence=False, loader_inventory=None):
     for name,s in zip(('serial','control'),servers):
         args+=['-chardev',f'socket,id={name},host=127.0.0.1,port={s.getsockname()[1]}']
     args+=['-serial','chardev:serial','-device','virtio-serial-pci','-device','virtserialport,chardev=control,name=org.ideck.control']
-    args=[str(a) for a in args]; logs=[bytearray(),bytearray()]; peers=[]; qmp=None; qfile=None; process=None
+    args=gui_host_tools.command(vm/'host',args); logs=[bytearray(),bytearray()]; peers=[]; qmp=None; qfile=None; process=None
     started=time.monotonic();peak=0;pump=None;command=None
     report={'schema':1,'status':'failed','host_only':True,'production_kernel_changed':False,
             'production_bootstrap':production,
             'rss_measurement':'maximum sampled QEMU VmHWM on Linux host; not iOS or guest process memory',
-            'provision':provision,'persistence_boot':persistence,'argv':args,'preparation':prep,'runner_sha256':base.sha256(Path(__file__))}
+            'provision':provision,'persistence_boot':persistence,'argv':args,'preparation':prep,'runner_sha256':base.sha256(Path(__file__)),
+            'host_tools_sha256':base.sha256(Path(gui_host_tools.__file__))}
     try:
         with (output/'qemu.log').open('wb') as log:
             process=subprocess.Popen(args,env=env,stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT)
@@ -122,7 +124,11 @@ def boot(vm, output, provision=False, persistence=False, loader_inventory=None):
                         if not predicate():raise RuntimeError('QEMU exited before evidence')
                     if time.monotonic()>deadline:raise TimeoutError('VM acceptance deadline')
             if provision:
-                until(lambda:b'IDECK_GUI_PACKAGES_CONFIGURED\r\n' in logs[0],seconds=600)
+                # Local nested ext4/WSL storage can spend >10 minutes in real
+                # dpkg fsync/maintainer scripts. This only enlarges provisioning
+                # time; audit, clean unmount, QEMU exit and fsck stay mandatory.
+                report['provision_deadline_seconds']=1800
+                until(lambda:b'IDECK_GUI_PACKAGES_CONFIGURED\r\n' in logs[0],seconds=1800)
                 report['package_configuration_verified']=True
                 until(lambda:process.poll() is not None,seconds=30)
             else:
@@ -137,7 +143,9 @@ def boot(vm, output, provision=False, persistence=False, loader_inventory=None):
                 peers[0].sendall(b"stty -echo; export DISPLAY=:0 XAUTHORITY=/run/ideck/Xauthority; printf '\\nRECOVERY_%s\\n' ready\n")
                 until(lambda:b'RECOVERY_ready\r\n' in logs[0],seconds=20)
                 def serial(script,tag):
-                    begin=len(logs[0]); peers[0].sendall((script+" && printf '\\nGUI_CHECK_%s\\n' "+tag+'\n').encode())
+                    # A delayed prompt can arrive after this log offset. Frame
+                    # real output on a fresh line for anchored ID/evdev parsing.
+                    begin=len(logs[0]); peers[0].sendall(("printf '\\n'; "+script+" && printf '\\nGUI_CHECK_%s\\n' "+shlex.quote(tag)+'\n').encode())
                     until(lambda:('GUI_CHECK_'+tag+'\r\n').encode() in logs[0][begin:],seconds=30)
                     return bytes(logs[0][begin:])
                 if production:
@@ -249,13 +257,13 @@ def boot(vm, output, provision=False, persistence=False, loader_inventory=None):
             pump()
             if process.wait()!=0 or prefix+b'CLEAN_UNMOUNT\r\n' not in logs[0]:
                 raise RuntimeError('no clean VM stop')
-            fsck=base.run([vm/'host/usr/sbin/e2fsck','-fn',vm/'scratch-gui.raw'],env=env)
+            fsck=base.run(gui_host_tools.command(vm/'host',[vm/'host/usr/sbin/e2fsck','-fn',vm/'scratch-gui.raw']),env=env)
             (output/'fsck.log').write_text(fsck.stdout+fsck.stderr)
-            stats=base.run([vm/'host/usr/sbin/dumpe2fs','-h',vm/'scratch-gui.raw'],env=env).stdout
+            stats=base.run(gui_host_tools.command(vm/'host',[vm/'host/usr/sbin/dumpe2fs','-h',vm/'scratch-gui.raw']),env=env).stdout
             (output/'filesystem.log').write_text(stats)
             fields=dict(row.split(':',1) for row in stats.splitlines() if ':' in row)
             block_size=int(fields['Block size']);blocks=int(fields['Block count']);free=int(fields['Free blocks'])
-            manifest=base.run([vm/'host/usr/sbin/debugfs','-R','cat /var/lib/ideck/package-manifest.tsv',vm/'scratch-gui.raw'],env=env).stdout
+            manifest=base.run(gui_host_tools.command(vm/'host',[vm/'host/usr/sbin/debugfs','-R','cat /var/lib/ideck/package-manifest.tsv',vm/'scratch-gui.raw']),env=env).stdout
             (output/'package-manifest.tsv').write_text(manifest)
             expected=(vm/'packages/expected-packages.tsv').read_text()
             if manifest != expected:raise RuntimeError('persisted package manifest differs')

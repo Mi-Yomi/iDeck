@@ -1,5 +1,55 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Local Windows/WSL GUI rebuild — 2026-10-17
+
+Rebuilt from the authenticated package closure on E:, starting at `d88aaefea758479f1da4fb81f15a02bc904898b5`.
+The former cloud seed was unavailable and was **not** reused or claimed identical.
+The new payload is `292065280` bytes, SHA-256 `112bdba6e12ae182fb347e52e7368e26f748bb3dc2bcd77dbd3122fb14dcdedd`;
+local archive: `E:\Freddy Fazbear\iDeck.work\gui-local-20261017\payload-final\ideck-debian-gui-v1.tar`.
+Current lock: [gui.lock.json](experiments/linux-guest/ipa/gui.lock.json).
+New proof: [receipt.json](experiments/linux-guest/evidence/gui-local-20261017/receipt.json).
+
+Two real Alpine 6.18.35 production boots PASS: keyboard/Mousepad save, reopen before
+any write on boot2, pointer move/resize, wheel, root menu/xterm, stable machine-id,
+independent control Stop, clean unmount, QEMU exit0 and read-only fsck after each.
+All 423 inventoried dynamic executables also pass the actual guest glibc loader in both runs.
+Host QEMU is pinned Debian10.0.13; iOS QEMU remains10.0.12-utm.
+Offline replay produces the identical new tar; seal/replay/restore/full-Husk-stage
+verify all five GUI assets. Native recipe patch check PASS.
+
+Regressions: 295 total / 292 PASS / 3 Swift-only SKIP / 0 failures/errors.
+Existing native C compiler, user-mode QEMU and pinned-source RCU regression ran.
+Swift runtime regressions, Apple/UIKit/native link/IPA and iPhone GUI are **NOT RUN**.
+No CI dispatch, Steam or guest GPU-acceleration claim.
+
+Local portability fixes: extracted amd64 tools now use their matching pinned ELF
+loader/libc; kmod paths preserve the space in `Freddy Fazbear` and trim its trailing
+separator; seeder accepts a new snapshot only when its digest matches boot2 plus
+current provisioning/source/input/two-boot evidence. No guest or iOS runtime file
+changed. Separate GUI disk, dirty/ownership safeguards, one VM and retained QEMU
+owner thread/disk lock remain unchanged. No existing user disk was opened.
+
+The first provisioning attempt hit600s and was forcibly stopped: FAILED, not clean;
+read-only fsck returned4. Its small evidence is retained, the temporary disk was
+discarded, and a fresh disk passed with an1800s provision-only deadline. No acceptance
+condition or production Stop deadline was relaxed. No system package/security change.
+The GUI runner also frames serial output with a leading newline: a delayed prompt
+had hidden the first actual evdev hex row. Failed evidence is retained, fsck0 confirmed,
+and both GUI runs were repeated. The saved provisioning runner is hashed and its
+whole AST must match current code except the inactive GUI branch; changed imports,
+top-level code, provisioning, shutdown or fsck reject reuse. GUI reports require
+the full current runner hash. No archived source is executed by that comparison.
+
+The first offline replay was rejected for a kernel-copy hash mismatch. A four-method
+isolated copy check did not reproduce it; the cause is UNKNOWN. The rejected files
+and metadata remain available. A new-directory replay reproduced the exact sealed
+tar, and seal/replay/restore/staged assets passed again after sync. No hash was
+relaxed and no damaged output was published.
+
+Private Release upload follows this source/evidence commit. See
+[delivery](experiments/linux-guest/GUI-PAYLOAD-DELIVERY.md) for the current publication
+state and the separate `IDECK_GUI_PAYLOAD_URL`; existing console URL/token stay unchanged.
+
 ## Limited GUI credential fallback; Library producer attempt failed — 2026-10-17
 
 После source/host readiness review parent указал avoidable CI setup blocker:

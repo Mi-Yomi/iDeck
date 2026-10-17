@@ -1,6 +1,7 @@
 """Input trust regressions only. No mocked X server is a GUI acceptance gate."""
 import copy
 import json
+import lzma
 import os
 import stat
 from pathlib import Path
@@ -119,3 +120,17 @@ class GUIInputs(unittest.TestCase):
     def test_unsupported_resolver_architecture_rejected(self):
         with self.assertRaisesRegex(ValueError,'unsupported resolver architecture'):
             base.resolve([],Path('/uncreated'),[],Path('/uncreated'),architecture='x86_64')
+
+    def test_real_module_path_with_spaces_is_not_split_into_arguments(self):
+        with tempfile.TemporaryDirectory(prefix='GUI modules with spaces ') as tmp:
+            root=Path(tmp);kernel=root/'kernel';host=root/'host';release='fixture-kernel'
+            module=kernel/'usr/lib/modules'/release/'kernel/drivers/fixture.ko.xz'
+            module.parent.mkdir(parents=True)
+            data=b'\x7fELF'+release.encode()+b' fixture'
+            module.write_bytes(lzma.compress(data))
+            with mock.patch.object(gui_vm.gui_host_tools,'command',side_effect=lambda host,args:args), \
+                 mock.patch.object(gui_vm,'run',return_value=type('Result',(),{'stdout':'insmod '+str(module)+' \n'})()):
+                actual,files,order=gui_vm.module_inputs(kernel,host,{})
+            self.assertEqual(actual,release)
+            self.assertEqual(order,['kernel/drivers/fixture.ko'])
+            self.assertEqual(files['ideck/modules/'+order[0]][0],data)

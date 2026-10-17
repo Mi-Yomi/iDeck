@@ -14,12 +14,13 @@ import shutil
 import debian_rootfs as base
 import desktop_modules as modules
 import gui_rootfs as inputs
+import gui_host_tools
 from check_gui_vm import boot
 
 ROOT=Path(__file__).resolve().parents[1]
 
 
-def run(seed, bootstrap, cache, output, lock_path):
+def run(seed, bootstrap, cache, output, lock_path, loader_inventory=None):
     lock=json.loads(lock_path.read_text());base.OFFLINE=True
     inputs.download(lock,cache)
     raw=seed/'gui-rootfs-v1.raw'
@@ -47,8 +48,9 @@ def run(seed, bootstrap, cache, output, lock_path):
           'kernel_sha256':modules.KERNEL_SHA256,'initramfs_sha256':info['initramfs']['sha256']}
     (vm/'preparation.json').write_text(json.dumps(prep,indent=2)+'\n')
     env={'PATH':os.defpath,'LC_ALL':'C','LD_LIBRARY_PATH':str(vm/'host/usr/lib/x86_64-linux-gnu')}
-    version=base.run([vm/'host/usr/bin/qemu-system-aarch64','--version'],env=env).stdout
-    first=boot(vm,output/'boot1');second=boot(vm,output/'boot2',persistence=True)
+    version=base.run(gui_host_tools.command(vm/'host',[vm/'host/usr/bin/qemu-system-aarch64','--version']),env=env).stdout
+    first=boot(vm,output/'boot1',loader_inventory=loader_inventory)
+    second=boot(vm,output/'boot2',persistence=True,loader_inventory=loader_inventory)
     if not first.get('machine_id_sha256') or first['machine_id_sha256']!=second.get('machine_id_sha256'):
         raise ValueError('guest machine ID changed across production boots')
     for result in (first,second):
@@ -71,4 +73,5 @@ def run(seed, bootstrap, cache, output, lock_path):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for flag in ('seed','bootstrap','cache','output','lock'):p.add_argument('--'+flag,type=Path,required=True)
-    a=p.parse_args();print(json.dumps(run(a.seed.resolve(),a.bootstrap.resolve(),a.cache.resolve(),a.output.resolve(),a.lock.resolve()),indent=2))
+    p.add_argument('--loader-inventory',type=Path)
+    a=p.parse_args();print(json.dumps(run(a.seed.resolve(),a.bootstrap.resolve(),a.cache.resolve(),a.output.resolve(),a.lock.resolve(),a.loader_inventory),indent=2))

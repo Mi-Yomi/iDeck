@@ -1,0 +1,11 @@
+IDECK_DESKTOP_BOOT
+IDECK_DESKTOP_KERNEL:6.18.35-0-virt
+
+
+Debian GUI recovery console. Files in /home/ideck are persistent.
+Use exit or Stop Linux before closing iDeck.
+
+debian# UUID file '/etc/machine-id' should contain a hex string of length 32, not length 0, with no other text
+IDECK_DESKTOP_FAILED:machine_id
+IDECK_DESKTOP_CLEAN_UNMOUNT
+[    4.960290] reboot: Power down

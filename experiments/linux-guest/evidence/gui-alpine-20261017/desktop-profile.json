@@ -1,0 +1,30 @@
+{
+  "control_port": "org.ideck.control",
+  "image": {
+    "block_size": 4096,
+    "features": {
+      "compat": 44,
+      "incompat": 194,
+      "ro_compat": 1091
+    },
+    "size_bytes": 1342177280,
+    "uuid": "b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7"
+  },
+  "initramfs": {
+    "file": "initramfs-desktop.gz",
+    "sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4",
+    "size": 11319304
+  },
+  "kernel": {
+    "file": "vmlinuz-virt",
+    "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+    "size": 10351104
+  },
+  "mode": "desktop",
+  "rootfs": {
+    "file": "gui-rootfs-v1.raw",
+    "sha256": "46fea0230963ca494a5adeef19f46668f559f77522e3b82215d5f543646b0791",
+    "size": 1342177280
+  },
+  "schema": 1
+}

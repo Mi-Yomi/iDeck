@@ -1,5 +1,83 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## ORIGINAL ALPINE GUI PASS; payload sealed, Apple inputs ready for review — 2026-10-17
+
+**Прежний module transfer blocker закрыт.** Parent commits
+`1d5f743d00a4de5f34637dc4cbd59e1675b15ab2` / `831b66c158239ac4c6de4dea0b9e470f05f30ad9`
+получены через fetch/fast-forward поверх a2c32c5 в той же разрешённой ветке.
+Vendor `experiments/linux-guest/vendor/alpine-3.24.1-aarch64/modloop-virt`
+проверен локально:17670144bytes, SHA
+`f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b`.
+Parent/index/worktree bytes совпадают. Добавлен per-directory binary attribute:
+глобальное text/eol правило иначе пыталось нормализовать этот binary при add.
+Оригинальные parent commits/bytes сохранены, main не трогался.
+
+Официальный unsquashfs извлечён из10 pinned Debian amd64 packages(4010988bytes),
+проверенных по уже подписанному trixie/main index и GPG/freshness. Никакой установки
+в host OS/maintainer scripts на host нет. Полный module closure/metadata/vermagic
+совпал с ранее принятыми ext4 pins. GPU/input/evdev bytes исходного probe сохранены.
+Production bootstrap использует тот же kernel SHA47970...1d756, не Debian provision kernel.
+
+**Первый production boot выявил реальную ошибку machine-id:** dbus-uuidgen
+отвергал existing empty seed placeholder. Исправление удаляет только пустой
+regular placeholder, сохраняет непустой ID, отвергает symlink. Failed run НЕ
+посчитан успешным GUI gate; serial recovery/independent Stop/clean unmount и
+последующий read-only fsck PASS. Два новых boot проверяют стабильный machine ID.
+
+**Два настоящих GUI boot с ORIGINAL Alpine6.18.35-0-virt PASS:**
+29.489/27.410s acceptance elapsed, QEMU host sampled VmHWM932151296/922447872bytes.
+Xorg modesetting DRM/KMS/VT1, root Xorg, UID1000 apps, real keyboard/pointer
+move/resize, evdev wheel±1, root menu запускает xterm, Mousepad save/reopen,
+проверка файлов до записи на boot2; normal configure + explicit audit status0
+AND byte-empty output, exact341-package manifest, два control Stop и clean fsck.
+RAM1024MiB/4vCPU/256MiB TCG/no swap прежние. Immutable GUI seed v4 не менялся.
+Host QEMU10.0.13 всё ещё отличается от iOS10.0.12-utm: **device GUI не проверен**.
+Evidence: `experiments/linux-guest/evidence/gui-alpine-20261017/acceptance.json`
+и receipt/logs/scanout/failure-recovery fsck в той же папке.
+
+**Seal/transport/staging PASS:** `ipa/gui.lock.json` теперь ready, это текущий
+контракт payload; старые blocked/not-tested записи ниже исторические.
+
+- raw1342177280bytes, SHA `46fea0230963ca494a5adeef19f46668f559f77522e3b82215d5f543646b0791`;
+- gzip270352431bytes, SHA `8deb611138ad0afe400669d4d615093fea567d0950f48f55c97d608446a61769`;
+- initrd11319304bytes, SHA `f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4`;
+- **tar292034560bytes**, SHA `4b4b0bb1f75d5b662a8c1d866f482329449ee4d52d181e585ef4964a3540bbdb`.
+
+Архив: `/workspace/iDeck/.work/gui-20261017/sealed-gui/ideck-debian-gui-v1.tar`,
+рядом `SHA256SUMS` и exact gui.lock. Offline rebuild дал побайтно тот же tar;
+sealed/replay/restored/staged bundles проверили все5 hashes/size. Исходный raw/gzip
+и `.work/gui-20261017/gui-rebuild-inputs`/`alpine-modules`/authenticated cache
+сохранены. Готовые raw assets: `.work/gui-20261017/desktop-app-assets/iDeckLinuxDesktop`.
+Большие root images/tar не добавлены в git. Obsolete private candidates/VM roots
+удалены после сохранения evidence, актуальные seed/production VM и source lab
+snapshot сохранены. Прежние preparation receipts отражают свой pre-gate момент;
+их false flags не переписывались задним числом.
+
+**Проверки:**274 tests /269PASS /5 explicit toolchain SKIP /0fail/error.
+Full pinned Husk source stage/native recipe patch check PASS; isolated copied
+GUI helper verify готовых assets PASS. Source81 original Git blobs,37 inputs,
+10 patched files,25 copies. Новый lock скопирован в overlay и inputs hashes обновлены.
+Console locks, console guest init, LinuxDesktopDisk и owner NSCondition lifecycle
+не изменены. Native Desktop route/input остаются в исходниках, готовые GUI assets
+и Apple recipe reviewable; Swift/UIKit/full native link всё ещё NOT RUN здесь.
+
+**Единственный delivery blocker:** текущий gh не может читать Release API:
+`Post https://api.github.com/graphql: Forbidden` и
+`Get https://api.github.com/repos/Mi-Yomi/iDeck/releases: Forbidden`.
+Writable Release upload tool не exposed. Токены не создавались/не читались/не
+менялись. Архив validated, но Release upload НЕ сделан. Точный необходимый шаг
+parent: перенести этот archive+SHA256SUMS из сохранённого cloud workspace на host
+с уже разрешённым private Release upload и загрузить без --clobber; затем проверить
+скачанный hash и установить actual asset API URL в существующий CI transport.
+См. `experiments/linux-guest/GUI-PAYLOAD-DELIVERY.md`; там нет guessed asset ID
+или token instructions. Перед единственной сборкой parent выполняет review и
+fresh free-quota/paidOFF preflight. **CI НЕ запускать здесь.**
+
+Apple compilation/full native link/IPA/iPhone GUI, guest GPU acceleration, Steam
+NOT RUN. Настоящий original-kernel host desktop и sealed GUI payload готовы;
+приёмка GUI на iPhone остаётся владельцу после parent build.
+
+
 ## Audit status regression fixed; Library consumer transfer rechecked — 2026-10-17
 
 После **e6fa8d17eb015d838a847e4c74a83f6f9cc55aba** readonly review нашёл

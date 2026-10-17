@@ -1,14 +1,13 @@
 # Следующий milestone: persistent POSIX Linux и минимальный desktop
 
-Обновление **2026-10-17**: [GUI-DESKTOP.md](GUI-DESKTOP.md) описывает настоящий
-Xorg/Openbox/tint2/PCManFM/Mousepad/xterm, clean1.25GiB GUI seed и два real host
-boot со вводом/scroll/menu/save/reopen/Stop/fsck. Native Desktop route и отдельные
-profile/disk/payload staging уже реализованы в исходниках;272 tests/5SKIP.
-Audit exit-status guard исправлен; два real host GUI boot повторены успешно.
-Host Debian6.12.107/QEMU10.0.13 отличается от production Alpine6.18.35/iOS10.0.12.
-Доставка exact modules блокирует matching-kernel GUI gate и sealing asset lock.
-Apple/full native link/IPA/device GUI NOT RUN; CI не запускался. Старые статусы
-ниже исторические, новый `ipa/gui.lock.json` намеренно blocked.
+Обновление **2026-10-17**: [GUI-DESKTOP.md](GUI-DESKTOP.md) описывает два
+успешных GUI boot с ORIGINAL production Alpine6.18.35 kernel, real input/apps/
+menu/save/reopen, два clean Stop/fsck и стабильный machine-id. Native Desktop
+route реализован, `ipa/gui.lock.json` ready; sealed tar292034560bytes прошёл exact
+replay/restore/staging.274 tests/5SKIP. Host QEMU10.0.13 отличается от iOS10.0.12.
+[Delivery handoff](GUI-PAYLOAD-DELIVERY.md): private Release upload ещё нужен,
+текущий gh API получает Forbidden. Apple/native link/IPA/device GUI NOT RUN;
+CI не запускался. Все более ранние blocked/design статусы ниже исторические.
 
 Обновление реализации G0/G1: [DESKTOP-ROOTFS.md](DESKTOP-ROOTFS.md) и новый
 host receipt описывают locked Debian builder и отдельный ext4 storage contract.

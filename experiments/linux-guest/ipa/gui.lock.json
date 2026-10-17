@@ -1,13 +1,93 @@
 {
   "schema": 1,
   "kind": "ideck-debian-gui",
-  "status": "blocked",
-  "blocker": "Exact Alpine 6.18.35-0-virt modloop is not materialized in this executor; production bootstrap and two real matching-kernel GUI boots are required before sealing.",
-  "required_modloop": {
-    "size": 17670144,
-    "sha256": "f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b"
+  "status": "ready",
+  "acceptance": {
+    "kind": "production-alpine-two-boots",
+    "matching_kernel_gui": true,
+    "two_boots_clean": true,
+    "kernel_sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+    "initramfs_sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4",
+    "rootfs_sha256": "46fea0230963ca494a5adeef19f46668f559f77522e3b82215d5f543646b0791",
+    "report_sha256": "843d6c6605cc9b9ff55b54d093caae452ff9c5b49cb815c7cb9e753e03c0acaa"
   },
-  "matching_kernel_gui_verified": false,
-  "app_payload_ready": false,
-  "device_verified": false
+  "files": {
+    "LICENSES-desktop.txt": {
+      "size": 1403,
+      "sha256": "7b4062d88f64efbfc636be91018df833d7d45997140cda60030a1caa8bce40b9"
+    },
+    "desktop-profile.json": {
+      "size": 761,
+      "sha256": "1b8fba159d03c10909b514dbda343a6906f34354173f075ded91bd8c9f667eb4"
+    },
+    "gui-rootfs-v1.raw": {
+      "size": 1342177280,
+      "sha256": "46fea0230963ca494a5adeef19f46668f559f77522e3b82215d5f543646b0791"
+    },
+    "initramfs-desktop.gz": {
+      "size": 11319304,
+      "sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4"
+    },
+    "vmlinuz-virt": {
+      "size": 10351104,
+      "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+    }
+  },
+  "transport_files": {
+    "LICENSES-desktop.txt": {
+      "size": 1403,
+      "sha256": "7b4062d88f64efbfc636be91018df833d7d45997140cda60030a1caa8bce40b9"
+    },
+    "desktop-profile.json": {
+      "size": 761,
+      "sha256": "1b8fba159d03c10909b514dbda343a6906f34354173f075ded91bd8c9f667eb4"
+    },
+    "gui-rootfs-v1.raw.gz": {
+      "size": 270352431,
+      "sha256": "8deb611138ad0afe400669d4d615093fea567d0950f48f55c97d608446a61769"
+    },
+    "initramfs-desktop.gz": {
+      "size": 11319304,
+      "sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4"
+    },
+    "vmlinuz-virt": {
+      "size": 10351104,
+      "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+    }
+  },
+  "payload": {
+    "filename": "ideck-debian-gui-v1.tar",
+    "size": 292034560,
+    "sha256": "4b4b0bb1f75d5b662a8c1d866f482329449ee4d52d181e585ef4964a3540bbdb"
+  },
+  "inputs": {
+    "seed": {
+      "gui-rootfs-v1.raw": {
+        "size": 1342177280,
+        "sha256": "46fea0230963ca494a5adeef19f46668f559f77522e3b82215d5f543646b0791"
+      },
+      "gui-rootfs-v1.raw.gz": {
+        "size": 270352431,
+        "sha256": "8deb611138ad0afe400669d4d615093fea567d0950f48f55c97d608446a61769"
+      }
+    },
+    "modules": {
+      "size": 3540,
+      "sha256": "af8303f8f91736c419b5a95d579cbf60b8674d56c4a9f73b8b20ca6a212a16d1"
+    },
+    "guest": {
+      "ideck-desktop-init": {
+        "size": 4666,
+        "sha256": "63c6b5c1cf55a7777fb6b05d9b24cae24e588668f659c7c5293b0715f01f990b"
+      },
+      "ideck-desktop-login": {
+        "size": 694,
+        "sha256": "2e1545d23b537be207c09d56cfae4eda9abb16227e4cf3754ec2686f481426a8"
+      },
+      "LICENSES-desktop.txt": {
+        "size": 1403,
+        "sha256": "7b4062d88f64efbfc636be91018df833d7d45997140cda60030a1caa8bce40b9"
+      }
+    }
+  }
 }

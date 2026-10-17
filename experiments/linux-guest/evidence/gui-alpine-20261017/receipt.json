@@ -1,0 +1,241 @@
+{
+  "schema": 1,
+  "base_commit": "831b66c158239ac4c6de4dea0b9e470f05f30ad9",
+  "status": "original_kernel_gui_passed_payload_sealed_for_apple_review",
+  "host_kernel": "original Alpine 6.18.35-0-virt",
+  "kernel_sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+  "host_qemu": "10.0.13 (Debian)",
+  "ios_qemu": "10.0.12-utm",
+  "matching_kernel_gui_verified": true,
+  "two_clean_boots": true,
+  "machine_id_persisted": true,
+  "seed_unchanged": true,
+  "payload": {
+    "filename": "ideck-debian-gui-v1.tar",
+    "size": 292034560,
+    "sha256": "4b4b0bb1f75d5b662a8c1d866f482329449ee4d52d181e585ef4964a3540bbdb"
+  },
+  "offline_replay_byte_identical": true,
+  "restore_and_stage_verified": true,
+  "first_start_fix": "Remove only a zero-byte /etc/machine-id seed placeholder before dbus-uuidgen --ensure. Preserve nonempty IDs; reject symlinks. Two real boots verify stable ID.",
+  "recovery_stop_after_gui_failure": {
+    "control_clean_unmount": true,
+    "read_only_fsck": "pass",
+    "gate_status": "failed; never counted as GUI pass"
+  },
+  "release_delivery": {
+    "status": "pending parent upload",
+    "published": false,
+    "gh_graphql_read": "Post https://api.github.com/graphql: Forbidden",
+    "gh_rest_read": "Get https://api.github.com/repos/Mi-Yomi/iDeck/releases: Forbidden",
+    "tokens_read_created_changed": false,
+    "archive": ".work/gui-20261017/sealed-gui/ideck-debian-gui-v1.tar"
+  },
+  "ios_compiled": false,
+  "ipa_created": false,
+  "device_verified": false,
+  "accelerated_guest_gpu_verified": false,
+  "steam_executed": false,
+  "ci_dispatched": false,
+  "evidence_files": {
+    ".gitattributes": {
+      "size": 26,
+      "sha256": "c87771adfc9ad867ebcc5b10ee61d782725494f35c1e29f4ca8f6d433748a558"
+    },
+    "LICENSES-desktop.txt": {
+      "size": 1403,
+      "sha256": "7b4062d88f64efbfc636be91018df833d7d45997140cda60030a1caa8bce40b9"
+    },
+    "acceptance.json": {
+      "size": 1152,
+      "sha256": "843d6c6605cc9b9ff55b54d093caae452ff9c5b49cb815c7cb9e753e03c0acaa"
+    },
+    "boot1/after-input.png": {
+      "size": 34061,
+      "sha256": "eeb189ac4cd5796183b25d752b3485972b0687304a0a6e8485ad141b093faef9"
+    },
+    "boot1/control.log": {
+      "size": 77,
+      "sha256": "b38ca9e8f47dbb1066551a18d5e3b1f0a58f290ef0e0ca26c584291c737b9b01"
+    },
+    "boot1/desktop-menu.png": {
+      "size": 36876,
+      "sha256": "3d823cff8db7a3b249c95a9a8a4e13333450e2636d541b645895975387430587"
+    },
+    "boot1/filesystem.log": {
+      "size": 2056,
+      "sha256": "96771953e9860183b667b314c7b6e189840b4ed2e409c174f01ec753b70e4da3"
+    },
+    "boot1/fsck.log": {
+      "size": 368,
+      "sha256": "6775f3034ea3f4c8af6342e47652ef7dacb4dbe53db7231260c410bddc313382"
+    },
+    "boot1/package-manifest.tsv": {
+      "size": 17465,
+      "sha256": "7cac249c6410e6b3ef6fa9d28adc1652d5ec627e7aeb37508597d2110a7e4b3b"
+    },
+    "boot1/qemu.log": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "boot1/result.json": {
+      "size": 3173,
+      "sha256": "e1f12921316b541bba152fc54e5d15a6a9c9a400ede9b329fa36158fcbb4d115"
+    },
+    "boot1/runner-source.py": {
+      "size": 20812,
+      "sha256": "a56adfdd00c0fe69b9158958c72210de4f428ae0b2fe198843599604065bd2b1"
+    },
+    "boot1/serial.log": {
+      "size": 48985,
+      "sha256": "9a9021cde6d2ef0f57b8fd42c305c0b4fb3b2ab160366d50bd25758785b5755e"
+    },
+    "boot2/after-input.png": {
+      "size": 33215,
+      "sha256": "20ca023515e9ae8910ec294e54b02948fda0d9cd85bad762b977f27e37690b31"
+    },
+    "boot2/control.log": {
+      "size": 77,
+      "sha256": "b38ca9e8f47dbb1066551a18d5e3b1f0a58f290ef0e0ca26c584291c737b9b01"
+    },
+    "boot2/desktop-menu.png": {
+      "size": 36027,
+      "sha256": "3e3a18332af132e714fa0dbe2112fa97a5a59077364ccadf74e18fde60f13481"
+    },
+    "boot2/filesystem.log": {
+      "size": 2056,
+      "sha256": "cba422c3c9f5bfccc42129aa459f912c2568c3a8bd54c79c256560ced230480e"
+    },
+    "boot2/fsck.log": {
+      "size": 368,
+      "sha256": "e7e081cd53ea7c362eab810bf271423fefb858712a56d2d5ef381074393bd508"
+    },
+    "boot2/package-manifest.tsv": {
+      "size": 17465,
+      "sha256": "7cac249c6410e6b3ef6fa9d28adc1652d5ec627e7aeb37508597d2110a7e4b3b"
+    },
+    "boot2/qemu.log": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "boot2/result.json": {
+      "size": 3171,
+      "sha256": "f9f502ce89aab76652049f5ef1944919e20de0279700da502e27e2f0413a5b20"
+    },
+    "boot2/runner-source.py": {
+      "size": 20812,
+      "sha256": "a56adfdd00c0fe69b9158958c72210de4f428ae0b2fe198843599604065bd2b1"
+    },
+    "boot2/serial.log": {
+      "size": 49067,
+      "sha256": "ad6119e8eb0c83f3256ba89177d8771d881721dc2b42dd4275c1d9c5af7075d4"
+    },
+    "bootstrap.json": {
+      "size": 696,
+      "sha256": "fdb76b504e392d866d58b4cc4711ecfddf705e9637be7305bbd660172ff1db85"
+    },
+    "desktop-profile.json": {
+      "size": 761,
+      "sha256": "1b8fba159d03c10909b514dbda343a6906f34354173f075ded91bd8c9f667eb4"
+    },
+    "first-start-recovery/control.log": {
+      "size": 82,
+      "sha256": "27a15fa404fd8a8f14882661cf024fce4d80acef30e8f7d484acc6d20dfadcab"
+    },
+    "first-start-recovery/fsck.log": {
+      "size": 365,
+      "sha256": "67feb487ed7e7330f1859e0290be0ce20f7ba8cf470c7eadb3b16282c544d50a"
+    },
+    "first-start-recovery/result.json": {
+      "size": 2260,
+      "sha256": "40c31325b00d3bab138deb4e0f8267109631086c62ddb9bf9f8ebe846866474c"
+    },
+    "first-start-recovery/runner-source.py": {
+      "size": 20442,
+      "sha256": "322f1fd2c7079c8256b63166c52263c8efa2d025988ed54362b3895fad869d76"
+    },
+    "first-start-recovery/serial.log": {
+      "size": 385,
+      "sha256": "581a8367fee22796b9eede97654ad555ddb27af891e8b48afbf16b542978a43a"
+    },
+    "isolated-helper-verify.log": {
+      "size": 665,
+      "sha256": "2cbbb971f476a56e7d8c53d05d3483cd44ea1980cfac8e5a9a9ab6779c80ca4e"
+    },
+    "module-manifest.json": {
+      "size": 3540,
+      "sha256": "af8303f8f91736c419b5a95d579cbf60b8674d56c4a9f73b8b20ca6a212a16d1"
+    },
+    "module-tools-version.log": {
+      "size": 560,
+      "sha256": "4ee982db5b13a2d60bb3de160fd29d6259d81a15613e481b4851dc73825db535"
+    },
+    "module-tools.lock.json": {
+      "size": 4539,
+      "sha256": "8d67b0438016aeb0dc048c7c224cb54496f6bbdf912d3a0820bfd4f61b4ff317"
+    },
+    "offline-tests.log": {
+      "size": 45655,
+      "sha256": "5a2fdd2fe348249155b701e3f36ee16c9f0e803ea45f2737153be2528e95e4aa"
+    },
+    "payload-validation.json": {
+      "size": 3401,
+      "sha256": "496186f382dec95a0b09cff1f0fd4f12a941d638b322f5753284e7980bddfdfa"
+    },
+    "source-stage.json": {
+      "size": 5296,
+      "sha256": "36c143a30ce6b3a8589d735a33e0cfbc65cff4e36ad097fd678338980f9371b3"
+    }
+  },
+  "tests": {
+    "total": 274,
+    "passed": 269,
+    "skipped": 5,
+    "failures": 0,
+    "errors": 0
+  },
+  "source_checks": {
+    "original_git_members": 81,
+    "overlay_inputs": 37,
+    "patched_files": 10,
+    "exact_copies": 25,
+    "full_source_staged": true,
+    "native_recipe_patch_check": true,
+    "isolated_gui_helper_verify": true,
+    "apple_compiled": false
+  },
+  "source_files": {
+    "tools/gui_bootstrap.py": {
+      "size": 3859,
+      "sha256": "6d3c3a02e27aa2ab87f61404609407779abac4831354e36816804f037a097c94"
+    },
+    "tools/gui_gate.py": {
+      "size": 4537,
+      "sha256": "6458180da54c8ff7389e5a5772d8ef9f44a4b782a421914e395c3086d25eda0a"
+    },
+    "tools/check_gui_vm.py": {
+      "size": 20812,
+      "sha256": "a56adfdd00c0fe69b9158958c72210de4f428ae0b2fe198843599604065bd2b1"
+    },
+    "tools/seal_gui_payload.py": {
+      "size": 7433,
+      "sha256": "c319bff11e966d7b2edd8ce624ba67514a4b8ee3fa334d4c62c837f2edc6741f"
+    },
+    "tools/gui_bundle.py": {
+      "size": 18883,
+      "sha256": "55b10151e44ab0f3e091e4f37927fb8eceb9bc5d3b5c175d0b8ee14103b82015"
+    },
+    "guest/gui/ideck-desktop-init": {
+      "size": 4666,
+      "sha256": "63c6b5c1cf55a7777fb6b05d9b24cae24e588668f659c7c5293b0715f01f990b"
+    },
+    "ipa/gui.lock.json": {
+      "size": 3102,
+      "sha256": "4bc3469a05a10f56315500f320873db7e645d35824119ccdde5fd1b805c5b8d8"
+    },
+    "husk/overlay.lock.json": {
+      "size": 6927,
+      "sha256": "c0ed4d054da2d90625e85b8c1f7a65ccd8384d7987f6405b7dc5ebae40445f7b"
+    }
+  }
+}

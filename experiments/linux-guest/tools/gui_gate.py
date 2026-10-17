@@ -49,6 +49,8 @@ def run(seed, bootstrap, cache, output, lock_path):
     env={'PATH':os.defpath,'LC_ALL':'C','LD_LIBRARY_PATH':str(vm/'host/usr/lib/x86_64-linux-gnu')}
     version=base.run([vm/'host/usr/bin/qemu-system-aarch64','--version'],env=env).stdout
     first=boot(vm,output/'boot1');second=boot(vm,output/'boot2',persistence=True)
+    if not first.get('machine_id_sha256') or first['machine_id_sha256']!=second.get('machine_id_sha256'):
+        raise ValueError('guest machine ID changed across production boots')
     for result in (first,second):
         if result['status']!='pass' or not all(result.get(k) is True for k in
                 ('production_bootstrap','gui_mapped','emulated_pointer_move_resize','wheel_evdev_verified','real_root_menu_launch','keyboard_input_verified','clean_unmount','read_only_fsck')):
@@ -60,6 +62,7 @@ def run(seed, bootstrap, cache, output, lock_path):
             'bootstrap_receipt_sha256':base.sha256(bootstrap/'bootstrap.json'),
             'boot_reports':{n:base.sha256(output/n/'result.json') for n in ('boot1','boot2')},
             'matching_kernel_gui':True,'two_boots_clean':True,'host_qemu_version':version.strip(),
+            'machine_id_persisted':True,
             'ios_qemu_version':'10.0.12-utm','ios_compiled':False,'device_verified':False,
             'runner_sha256':base.sha256(Path(__file__))}
     (output/'acceptance.json').write_text(json.dumps(report,indent=2)+'\n');return report

@@ -1,0 +1,24 @@
+iDeck Debian GUI seed v1
+
+Debian 13 (trixie/main), ARM64: Xorg modesetting software rendering, Openbox,
+tint2, PCManFM, Mousepad, xterm, D-Bus, udev, fonts and icon themes.
+Exact package versions, signed Debian InRelease/index hashes and .deb hashes:
+experiments/linux-guest/ipa/gui-inputs.lock.json in Mi-Yomi/iDeck.
+
+Every installed package retains its Debian copyright/licence information in
+/usr/share/doc/<package>/copyright inside this image. The checked per-package
+inventory is experiments/linux-guest/evidence/gui-host-20261017/notices-manifest.json.
+Corresponding Debian source packages can be obtained from the official Debian
+archive using the package source/version recorded in the package lock. Debian
+licensing information: https://www.debian.org/legal/licenses/
+
+The bootstrap retains the exact Alpine Linux 6.18.35-0-virt kernel and matching
+modules. Linux is GPL-2.0-only with exceptions recorded in its source. Sources:
+https://gitlab.alpinelinux.org/alpine/aports/-/tree/3.24-stable/main/linux-lts
+https://kernel.org/
+Alpine BusyBox is GPL-2.0-only; source: https://busybox.net/
+The original probe licence notices remain in the separate iDeckLinuxProbe bundle.
+
+Metal is the iOS framebuffer presenter. Guest GPU acceleration, Steam and games
+are not included in this payload. This file supplements the package copyright
+files and does not replace their original licences or notices.

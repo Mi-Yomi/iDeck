@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Run the real host-only GUI VM; production Alpine/iPhone gates remain separate."""
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -139,6 +140,11 @@ def boot(vm, output, provision=False, persistence=False, loader_inventory=None):
                     begin=len(logs[0]); peers[0].sendall((script+" && printf '\\nGUI_CHECK_%s\\n' "+tag+'\n').encode())
                     until(lambda:('GUI_CHECK_'+tag+'\r\n').encode() in logs[0][begin:],seconds=30)
                     return bytes(logs[0][begin:])
+                if production:
+                    data=serial('dbus-uuidgen --get=/etc/machine-id','machine_id')
+                    ids=re.findall(rb'(?m)^([0-9a-f]{32})\r?$',data)
+                    if len(ids)!=1:raise RuntimeError('invalid actual guest machine ID')
+                    report['machine_id_sha256']=hashlib.sha256(ids[0]).hexdigest()
                 serial(package_audit_script()+' && cat /run/ideck/windows && xrandr --current && ps -eo uid,pid,comm', 'audit')
                 serial("test $(xdpyinfo | awk '/dimensions:/ {print $2}') = 800x600 && cat /var/log/Xorg.0.log && cat /proc/bus/input/devices && udevadm info -q property -n /dev/input/event0 && free -b", 'display_input_evidence')
                 if loader_inventory:

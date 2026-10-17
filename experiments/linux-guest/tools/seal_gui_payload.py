@@ -38,12 +38,17 @@ def seal(seed,bootstrap,acceptance,modules,output):
         bundle.checked(seed/name,{k:info[kind][k] for k in ('size','sha256')})
     if (gate['rootfs_sha256']!=info['rootfs']['sha256'] or info['rootfs']['size']!=bundle.ROOTFS_SIZE
             or info.get('read_only_fsck') is not True):raise ValueError('acceptance covers a different seed')
+    machine_id=None
     for name in ('boot1','boot2'):
         path=acceptance/name/'result.json';result=read_json(path)
         if base.sha256(path)!=gate['boot_reports'][name] or result.get('status')!='pass':raise ValueError('changed/failed real boot')
         if not all(result.get(k) is True for k in ('production_bootstrap','gui_mapped','emulated_pointer_move_resize',
                     'wheel_evdev_verified','real_root_menu_launch','keyboard_input_verified','clean_unmount','read_only_fsck')):raise ValueError('incomplete real GUI acceptance')
         if result.get('runner_sha256')!=base.sha256(ROOT/'tools/check_gui_vm.py'):raise ValueError('stale GUI runner')
+        identity=result.get('machine_id_sha256')
+        if not isinstance(identity,str) or len(identity)!=64 or (machine_id is not None and machine_id!=identity):
+            raise ValueError('missing or inconsistent guest machine ID')
+        machine_id=identity
         if (name=='boot1' and result.get('editor_typed_saved') is not True) or (name=='boot2' and
                 (result.get('persistence_read_before_write') is not True or result.get('editor_reopened_after_boot') is not True)):
             raise ValueError('editor/persistence acceptance incomplete')

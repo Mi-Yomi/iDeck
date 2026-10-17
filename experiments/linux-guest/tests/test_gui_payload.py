@@ -113,6 +113,17 @@ class GUITransport(unittest.TestCase):
 
 
 class ProductionGUIBlocking(unittest.TestCase):
+    def test_ready_lock_is_bound_to_real_original_kernel_acceptance(self):
+        lock=bundle.load_lock(ROOT/'ipa/gui.lock.json')
+        receipt=ROOT/'evidence/gui-alpine-20261017/acceptance.json'
+        self.assertEqual(lock['status'],'ready')
+        self.assertEqual(hashlib.sha256(receipt.read_bytes()).hexdigest(),lock['acceptance']['report_sha256'])
+        gate=json.loads(receipt.read_text())
+        self.assertTrue(gate['matching_kernel_gui']);self.assertTrue(gate['two_boots_clean'])
+        self.assertTrue(gate['machine_id_persisted'])
+        self.assertEqual(gate['rootfs_sha256'],lock['files'][bundle.ROOTFS]['sha256'])
+        self.assertEqual(gate['kernel_sha256'],bundle.KERNEL_SHA256)
+
     def test_pending_lock_fails_without_fetch_or_native_setup(self):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp);experiment=root/'experiment';(experiment/'ipa').mkdir(parents=True)

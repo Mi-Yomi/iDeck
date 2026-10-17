@@ -1,334 +1,211 @@
 # Debian GUI implementation — 2026-10-17
 
-This work continues the accepted Debian console at `338ee806` and device
-acceptance documentation at `b8a943f`. The target is a real local VM desktop:
-Xorg modesetting, Openbox, tint2, PCManFM, Mousepad and xterm. Software rendering
-is the first stage. A Metal framebuffer presenter is not guest GPU acceleration.
-Steam client/runtime compatibility remains a later task; the upstream ARM64
-Steam client means x86 emulation is not an established client prerequisite.
-This is Debian, not SteamOS.
+The real local desktop now passes two system-QEMU boots with the **original
+production Alpine6.18.35-0-virt kernel**: Xorg modesetting/KMS/VT, Openbox, tint2,
+PCManFM, Mousepad and xterm. The native Desktop route and exact GUI payload are
+ready for Apple review. **Apple compilation, native link, IPA and iPhone GUI
+are NOT RUN.** Host QEMU10.0.13 differs from iOS10.0.12-utm.
 
-The native Desktop route and separate GUI transport/staging recipe are now
-implemented. **The production payload is blocked**, not published or installable:
-the exact Alpine module bytes are not materialized in this executor. Original
-kernel GUI boots, Apple compilation, IPA and iPhone GUI remain NOT RUN.
+This is Debian13 ARM64 with software rendering. Metal presents the framebuffer;
+it does not establish guest GPU acceleration. Steam, Big Picture and games are
+separate later gates. The upstream ARM64 Steam client means x86 emulation is
+not an established client prerequisite. Debian is not SteamOS.
 
-## Measured host result
+## Original-kernel evidence
 
-[Receipt and original logs](evidence/gui-host-20261017/receipt.json),
-[actual scanout after reopening the file](evidence/gui-host-20261017/desktop-after-reopen.png).
-The final offline preparation CLI completed with unchanged entry/exit source
-hashes. All341 packages configured in the actual ARM64 system VM, including
-systemd-sysusers and udev; normal configure, empty successful audit and exact
-persisted package manifest passed. This resolves the earlier PRoot sysusers
-assertion for host preparation without bypassing scripts.
+[Acceptance](evidence/gui-alpine-20261017/acceptance.json),
+[receipt](evidence/gui-alpine-20261017/receipt.json),
+[actual menu/window scanout](evidence/gui-alpine-20261017/boot2/desktop-menu.png).
 
-Two final GUI boots passed: **38.882s /34.546s**, each including scripted
-interaction and Stop. Both had actual Xorg/KMS, local X connection, mapped
-Openbox/tint2/PCManFM/Mousepad/xterm, UID1000 clients and emulated keyboard/pointer.
-Alt+left drag moved the xterm from82,105 to122,129; Alt+right resized556x316 to
-598x342. The two virtual input devices need ordering time between modifier
-press and mouse press in this automated harness. This is not a phone latency
-benchmark. File creation and the editor launch command are typed into real
-xterm through the emulated keyboard. Mousepad receives actual keyboard text
-and Ctrl-S; its saved text is independently checked on disk. On boot2 both
-files are checked before writes, then the existing file is opened in Mousepad.
-Two independent control Stops, clean unmounts and read-only fsck passed.
+Both fresh-copy runs passed actual X connections, mapped clients, UID1000,
+virtual keyboard typing/Mousepad save, pointer move/resize, tablet evdev wheel
+±1, right-click menu launching another xterm, and reopening saved documents
+before any writes on boot2. Each ended with an independent control Stop,
+terminated writers, reverse unmount, clean receipt and read-only `e2fsck -fn`.
+Normal `dpkg --configure -a`, explicitly successful `dpkg --audit` with byte-empty
+stdout, and the exact341-package installed manifest passed in both runs.
 
-A further **43.466s** boot passed the same interaction/Stop/fsck and actual
-`ld-linux-aarch64.so.1 --list` checks for all **423 PT_INTERP executables**.
-The inventory contains1133 AArch64 ELF files and3791 DT_NEEDED edges. One
-standalone static residual is retained: the non-executable private
-libsystemd-core DSO's reference to libsystemd-shared. No global private search
-path or fabricated library was added. This is an actual executable-loader
-resolution gate, not a claim to execute every DSO/plugin in every possible
-future load context. The old minbase checker is unchanged.
+| Original-kernel host run | Seconds | QEMU sampled peak VmHWM bytes |
+| --- | ---: | ---: |
+| Boot1 |29.489 |932151296 |
+| Boot2/persistence |27.410 |922447872 |
 
-| Final two-boot snapshot | Bytes |
-| --- | ---: |
-| Logical raw size |1342177280 |
-| Used filesystem blocks |884133888 |
-| Free filesystem blocks |458043392 |
-| gzip level9 (measured host snapshot, not app payload) |400617549 |
-| Raw+gzip+512MiB reserve |2279665741 |
+Timings cover the host acceptance run, not pure kernel boot or iPhone latency.
+Memory numbers are Linux-host QEMU measurements, not iOS Jetsam or guest-process
+peaks. Guest RAM1GiB,4vCPU,256MiB TCG/no swap remained unchanged.
 
-Raw snapshot SHA-256:
-`a32f7b9c0c59e651492811458e3a46667010eb4be54d07a79487e94c5e43ed06`.
-gzip SHA-256:
-`c1476f9e179b3dc5f6c8c3bbfce3e7e6e38351e4d914bc49aaa01b677a76b078`.
-Streaming decompression count/digest matches the retained raw snapshot. It
-contains acceptance files and post-install history/free-block contents; final
-app seed preparation/size/profile remains a separate gate. No optimized
-production transfer size is promised from this laboratory snapshot.
+Kernel SHA-256 stays
+`47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756`.
+The original virtio GPU/input modules and exact evdev stay in the accepted
+probe initramfs; its test init is not the GUI boot entrypoint. Matching ext4
+modules come from the verified vendor modloop, with the accepted metadata,
+vermagic, hashes and real dependency order. DRM/VT are now exercised, not inferred.
 
-Builder individual peak RSS **810754048bytes**; maximum sampled host-QEMU
-VmHWM: provisioning **1415208960**, GUI boots **826548224 /811683840**, loader
-boot **828547072bytes**. These are host measurements, not iOS Jetsam or guest
-process peaks. Guest RAM1GiB,4vCPU,256MiB TCG and no swap stayed unchanged.
+The first original-kernel attempt exposed a real first-start bug: dbus-uuidgen
+rejects an existing zero-byte machine-id placeholder. PID1 now removes only
+that empty regular placeholder, rejects a symlink, and preserves nonempty IDs.
+The two successful boots verify the same generated ID hash. The failed attempt
+was never counted as GUI success; its serial recovery/control Stop/clean unmount
+and subsequent read-only fsck also passed. Logs are retained under
+[evidence/first-start-recovery](evidence/gui-alpine-20261017/first-start-recovery).
 
-All341 configured package copyright files are present, resolved within the
-image and hashed in the notices manifest. The read-only rdump is only a
-content/ELF extraction: its host ownership errors are not claimed as an inode
-ownership audit. Actual client and saved-file UIDs were checked inside Linux.
-The raw image itself, clean unmount and fsck are the filesystem evidence.
+Previous Debian-kernel/QEMU preparation evidence remains in
+[gui-host-20261017](evidence/gui-host-20261017/receipt.json),
+[gui-native-20261017](evidence/gui-native-20261017/receipt.json) and
+[gui-audit-fix-20261017](evidence/gui-audit-fix-20261017/receipt.json).
+Those host preparation kernels were never substituted for the production kernel.
+The audit fix captures stdout to a file and checks status0 AND a byte-empty file;
+`test -z "$(dpkg --audit)"` is not used as an acceptance guard.
 
-Current offline suite: **272 tests,267 PASS,5 SKIP,0 failures/errors**. Skips
-are explicit Swift executable checks (existing profile, pointer and desktop
-input), user-QEMU BusyBox/PTY, and the original QEMU RCU source archive.
-All37 overlay inputs,81 original source members,10 patched hashes and25 exact
-copies validate. All81 original members also match the actual pinned Husk Git
-blobs. The full source stage and native-recipe patch check pass. The new C
-pointer function body compiles and runs against unit queue fixtures; this is
-not a full QEMU/iOS compilation. Mandatory Apple checks remain NOT RUN.
+## Separate authenticated build inputs
 
-Local retained artifacts: `.work/gui-20261017/vm-final/` (current mutable lab
-image), `host-gui-acceptance-2boots.raw` and `host-gui-acceptance.raw.gz` (exact
-measured two-boot snapshot), authenticated `cache/`, `configured-elf-tree/`
-and complete logs. Large artifacts are not in git or published to a Release.
-Preserve them before moving to another execution environment.
+[gui-inputs.lock.json](ipa/gui-inputs.lock.json) remains separate from the
+accepted console locks. It authenticates one Debian trixie/main InRelease with
+the accepted GPG signers/freshness, arm64/amd64 by-hash indexes, exact versions,
+architectures, sizes and .deb hashes. Offline replay reruns the APT solver and
+compares the entire closure. No security metadata is mixed into this schema.
 
-## Separate authenticated inputs
-
-[gui-inputs.lock.json](ipa/gui-inputs.lock.json) is deliberately separate from
-both accepted `desktop-rootfs.lock.json` and `debian.lock.json`. It locks one
-Debian trixie/main InRelease and its arm64/amd64 by-hash indexes. GPG validation
-requires the existing accepted Debian archive signers, freshness <=90 days and
-Valid-Until when supplied. Security metadata is not mixed into this lock.
-Every package identity, architecture, pool path, size, digest and declared
-Installed-Size is checked against those authenticated indexes. Offline replay
-reruns the APT solver using only those indexes and compares the entire closure;
-an authentic but incomplete subset is rejected. APT only simulates dependency
-resolution on the host. It does not install or download packages.
-
-| Input | Packages | Download bytes | Declared installed bytes |
+| Closure | Packages | Download bytes | Declared installed bytes |
 | --- | ---: | ---: | ---: |
-| ARM64/all GUI root | 341 | 175210844 | 736205824 |
-| amd64 host QEMU/e2fsprogs/kmod closure | 94 | 36998708 | 172119040 |
-| Provision-only Debian kernel | 1 | 92902468 | 177777664 |
+| ARM64/all desktop |341 |175210844 |736205824 |
+| amd64 QEMU/e2fsprogs/kmod |94 |36998708 |172119040 |
+| Provision-only Debian kernel |1 |92902468 |177777664 |
 
-All blobs have been downloaded and hashed in this cloud workspace. Guest
-copyright/notices remain in the packages' `/usr/share/doc` trees. No package
-maintainer script is executed on the host, and no host system package is
-installed. The helper extracts authenticated tools into its new private output.
+All package maintainer scripts, including sysusers/udev, ran in a real disposable
+ARM64 system VM from a read-only offline .deb volume. Bootstrap unpack is
+followed by normal configuration, empty successful audit and exact installed
+manifest. No maintainer script or dpkg success was fabricated. Temporary standard
+policy-rc.d prevents provisioning service autostart and is then removed. Every
+installed copyright file is present; the earlier notices manifest is retained.
 
-`gui_rootfs.py lock` creates a new lock with exclusive creation. `download`
-verifies blobs; `verify` authenticates metadata and replays dependency resolution.
-Mutable mirrors can remove pinned pool objects: preserve the authenticated cache.
-The retained InRelease is dated 2026-09-12; expiry must be handled by a reviewed
-repin, never by disabling freshness checks.
+Official host tools are extracted locally from authenticated .debs, without host
+system installation. An additional10-package/4010988-byte official amd64 closure
+provided unsquashfs; its signed-index provenance/pins are retained in
+[module-tools.lock.json](evidence/gui-alpine-20261017/module-tools.lock.json).
+The vendor modloop bytes came through parent commits1d5f743/831b66c, and their
+size17670144/SHAf969d12...6cb47b were independently checked after fast-forward.
+The vendor `.gitattributes` prevents the repository's global text/EOL rule from
+rewriting those binary bytes. Parent/index/worktree bytes match exactly.
 
-## Disposable system-VM preparation
+The Debian6.12.107 provision kernel was only a preparation instrument. The
+production suffix is built by `gui_bootstrap.py` from original kernel/probe bytes
+and the accepted Alpine module closure. `gui_gate.py` then executes two real
+original-kernel boots on a NEW private seed copy, checks persistence/Stop/fsck,
+source/input identities and immutable seed entry/exit hashes.
 
-[gui_vm.py](tools/gui_vm.py) requires an already complete offline cache. Missing
-or corrupt input fails before a VM output directory is created. It pre-extracts
-the guest packages to bootstrap dependency cycles, publishes actual archive
-ownership into a new ext4 image using debugfs, then packages the original `.deb`
-files on a separate read-only ext4 volume. The VM's actual ARM64 dpkg runs
-`--unpack`, every maintainer script, `--configure -a`, an empty successful
-`--audit`, and an exact installed-state/version/architecture manifest comparison.
-The bootstrap `--force-depends --unpack` is followed by mandatory normal
-configuration. No maintainer script is bypassed or rewritten to report success.
-A temporary standard policy-rc.d prevents service autostart during provisioning;
-it is removed after successful configuration. Udev is started during desktop boot.
+## Clean seed and sealed payload
 
-The provision kernel is official Debian `6.12.107+deb13-arm64`, authenticated by
-its `.deb` pin. Kmod resolves its real module dependencies, aliases, softdeps
-and builtins; compressed modules are extracted without importing them into the
-production Alpine module tree. This kernel is a **host preparation instrument**.
-It is not a proposed replacement for the iPhone's pinned `6.18.35-0-virt` kernel.
-
-The initial extracted tree measured 714733572 logical file bytes. Disposable
-scratch capacity was calculated as extraction +512 MiB workspace, rounded to
-256 MiB: **1342177280 bytes**. The same capacity is retained for the separate GUI v1 seed after clean
-configuration and measured desktop use (about884MB allocated,458MB free).
-It is not an automatic expansion of an existing user disk. Neither the
-old 512 MiB image nor the earlier unmeasured 4 GiB design is silently reused.
-Preparation has a free-space guard that budgets full copies rather than sparse
-savings and rejects existing output paths.
-
-```sh
-# From the repository root; retained cache is private, images stay out of git.
-python3 experiments/linux-guest/tools/gui_rootfs.py verify --offline \
-  --cache .work/gui-20261017/cache \
-  --lock experiments/linux-guest/ipa/gui-inputs.lock.json
-python3 experiments/linux-guest/tools/gui_vm.py \
-  --lock experiments/linux-guest/ipa/gui-inputs.lock.json \
-  --cache .work/gui-20261017/cache --output .work/gui-20261017/new-vm
-python3 experiments/linux-guest/tools/check_gui_vm.py \
-  --vm .work/gui-20261017/new-vm --output .work/gui-20261017/new-provision --provision
-python3 experiments/linux-guest/tools/check_gui_vm.py \
-  --vm .work/gui-20261017/new-vm --output .work/gui-20261017/new-desktop-1
-python3 experiments/linux-guest/tools/check_gui_vm.py \
-  --vm .work/gui-20261017/new-vm --output .work/gui-20261017/new-desktop-2 --persistence
-```
-
-The host script selects both ext4 volumes by UUID, not `/dev/vdX` enumeration.
-It mounts proc/sys/dev, a new devpts instance, dev/shm, run and the offline
-package volume explicitly. Stop terminates writers, waits, syncs, unmounts the
-package volume and nested mounts in reverse order, then root and final sync.
-Only then can the host-only clean marker be emitted. Failed runs retain logs
-and must not be represented as clean outputs.
-
-Xorg runs as root on VT1 with DRM KMS, modesetting/AccelMethod=none,
-ShadowFB=true, SWcursor=true and depth24. It listens only on local authenticated
-X sockets (`-nolisten tcp`). The session drops to UID/GID1000 with private
-Xauthority and XDG_RUNTIME_DIR, then uses dbus-run-session. Readiness requires a
-successful X connection and visible mapped XTerm, Pcmanfm and Mousepad clients.
-The panel has launchers for all three. The recovery console uses the proven background getty/wait path, so the
-PID1 Stop trap can interrupt its wait. The VM uses `-nic none`, 1GiB RAM,
-4 vCPU and 256MiB TCG; no display stream or remote desktop server is involved.
-
-`check_gui_vm.py` runs actual system QEMU, captures actual guest scanout and
-injects actual emulated keyboard events. It also checks client UIDs, package
-state, a typed/saved file, window movement/resizing and separate control Stop.
-A second boot checks the existing file before any write. These checks are
-separate from ordinary mocked input-trust unit tests; no mocked X server or
-framebuffer probe substitutes for the GUI gate.
-
-## Audit guard correction
-
-Readonly review found that `test -z "$(dpkg --audit)"` discarded a failing audit
-exit status when stdout was empty. The runner now captures stdout in a file,
-records exit status immediately, and requires both status0 and byte-empty
-output. Configure failure also blocks audit/acceptance. Three executable shell
-regressions cover nonzero+empty stdout, successful but nonempty/newline/space
-output, and configure failure. No fake dpkg success substitutes for VM evidence.
-
-[Fresh acceptance after the fix](evidence/gui-audit-fix-20261017/receipt.json):
-two private-copy real GUI boots43.556/37.786s, audit status0/empty file,
-input/wheel/menu/save/reopen, two clean Stops/fsck; immutable seed unchanged.
-Runner snapshots/digests match the corrected frozen source. Old receipts remain
-historical. The seal gate binds the current runner hash, rejecting old results.
-This remains host Debian6.12.107/QEMU10.0.13; Alpine/iOS acceptance is NOT RUN.
-
-## Clean GUI seed and native Desktop route
+The measured extracted tree was714733572 bytes. The initial tree plus512MiB
+workspace, rounded to256MiB, selected **1342177280 bytes**, retained after real
+configuration and measurements (about884MB used/458MB free). The accepted
+512MiB console disk is not reused or expanded.
 
 Current immutable seed: `.work/gui-20261017/gui-seed-final-v4/seed/`.
-It is prepared only from the exact retained lab snapshot above. A real offline
-VM terminates all session writers, installs the current desktop scripts/config,
-removes acceptance documents/history/recent-files/logs, clears the machine-id
-for first production boot, runs normal dpkg configuration/audit and unmounts.
-A NEW `e2image -ra` output omits unallocated stale blocks. Read-only fsck, UUID,
-size, and actual in-image script bytes are checked. The accepted console disk
-and immutable lab source are never changed. Full raw capacity is budgeted.
+A real offline VM stopped all writers, installed the current desktop scripts,
+removed acceptance documents/history/recent files/logs, cleared machine-id for
+first boot, ran normal configure/audit and unmounted. A NEW `e2image -ra` output
+omits unallocated stale blocks. Header/UUID/script bytes and read-only fsck pass.
 
-| Clean seed v4 | Value |
+| GUI v1 artifact | Value |
 | --- | --- |
-| Raw size |1342177280 bytes |
+| Raw bytes |1342177280 |
 | Raw SHA-256 | `46fea0230963ca494a5adeef19f46668f559f77522e3b82215d5f543646b0791` |
-| gzip size |270352431 bytes |
+| gzip bytes |270352431 |
 | gzip SHA-256 | `8deb611138ad0afe400669d4d615093fea567d0950f48f55c97d608446a61769` |
-| GUI UUID | `b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7` |
-| Bundle image | `iDeckLinuxDesktop/gui-rootfs-v1.raw` |
-| Mutable app disk | `Documents/iDeckDebianGUI-v1/rootfs-v1.raw` |
+| UUID | `b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7` |
+| Production initramfs bytes |11319304 |
+| Production initramfs SHA-256 | `f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4` |
+| Sealed tar bytes |292034560 |
+| Sealed tar SHA-256 | `4b4b0bb1f75d5b662a8c1d866f482329449ee4d52d181e585ef4964a3540bbdb` |
 
-[Clean-seed evidence](evidence/gui-native-20261017/receipt.json) records two
-fresh-copy boots, wheel evdev events in both directions, window move/resize,
-keyboard typing/Mousepad save, reopen before writes after boot, a real right
-click menu launching another xterm, two clean Stops and read-only fsck. The
-800x600 menu scanout is retained. Original seed entry/exit hashes are identical.
-**Both** host kernel and QEMU differ from the app: Debian6.12.107+deb13-arm64 /
-QEMU10.0.13 versus original Alpine6.18.35-0-virt / iOS10.0.12-utm. This is host
-GUI evidence and does not establish matching-kernel or iPhone GUI acceptance.
+[gui.lock.json](ipa/gui.lock.json) is now **ready**, bound to the exact original-
+kernel acceptance report and asset bytes. This is the current payload contract;
+earlier preparation receipts' false/not-tested flags describe their pre-gate
+state. `seal_gui_payload.py` rejects stale/missing/failed reports, wrong kernel,
+seed/initrd/package/source bindings and changed machine-id across boots.
 
-`LinuxDesktopView` presents the existing real Husk Metal framebuffer, with
-landscape side controls, hardware keyboard, software keyboard, arrows/function
-keys, Ctrl/Alt/Shift/Super, right click and scroll. Normal graphical text goes
-to QEMU keyboard events. Serial recovery is a separate explicit panel. The
-first text implementation supports the US layout and4096 ASCII characters per
-paste; an unsupported Unicode paste is wholly rejected, with a visible message.
+The archive is outside git at
+`.work/gui-20261017/sealed-gui/ideck-debian-gui-v1.tar`. Exact offline replay
+produced the identical tar. Seal/replay/restore/staged bundles all verify their
+five assets: kernel, production initrd, raw GUI root, desktop profile and notices.
+The independent GUI helper enforces HTTPS/token scope, hashes/size, safe flat
+archive members, bounded gzip/raw restore and low space. Xcode and IPA packaging
+both verify the GUI assets. Large IPA hashes stream1MiB chunks too.
+
+Private Release upload is **not complete**: existing gh GraphQL and REST reads
+return `Forbidden`; no Release upload action is exposed here. No credentials were
+read or changed. [GUI-PAYLOAD-DELIVERY.md](GUI-PAYLOAD-DELIVERY.md) gives the exact
+validated artifact/checksum, parent upload step and future private asset URL
+configuration. Parent must complete that transport before the single Apple build.
+The iPhone importer copies a verified raw Xcode resource; no streaming gzip
+importer on iPhone is claimed.
+
+Retain the current seed raw/gzip, sealed tar/checksum/lock, exact modules manifest,
+authenticated package cache and `sealed-gui/rebuild-inputs` small files. Old
+private VM/candidate copies were pruned after their evidence was retained. The
+immutable original lab snapshot and current production acceptance VM remain.
+
+## Native Desktop and lifecycle
+
+`LinuxDesktopView` displays the real existing Husk Metal framebuffer. It has
+landscape side controls, hardware/software keyboard, special/function keys,
+Ctrl/Alt/Shift/Super, right click, wheel/two-finger scroll and serial recovery.
+Graphical text goes to QEMU keyboard events. First soft text support is the US
+layout/ASCII, up to4096 characters; unsupported Unicode paste is wholly rejected.
 Unicode/IME/clipboard support is not claimed. Hardware left/right modifier
-ownership is paired and all held keys/buttons release on focus/background,
-view cancellation/removal and Stop. Input C/BQL calls run on a dedicated queue.
-Stop normally follows releases but has an independent250ms control fallback if
-the input queue stalls; it never forces QEMU teardown.
+ownership and key/button releases are paired through focus/background, cancel,
+view removal and Stop. Input C/BQL calls use a dedicated queue. Stop normally
+follows releases and has a250ms independent control fallback for a stalled queue.
 
-`LinuxGUIProfile` validates a separate versioned profile, original kernel hash,
-bounded initrd/profile reads, ext4 UUID/features/size, and streamed seed digest.
-The first copy needs raw capacity plus512MiB reserve. Existing GUI disks reopen
-by mutable filesystem identity and remain locked through process exit. The
-accepted Debian console seed/path is separate. One VM/process, same retained
-QEMU owner thread and existing Stop/fsync guards remain unchanged. No cleanup,
-unregister, unlock, user disk reset, resize or reseed is added.
+The app bundle is `iDeckLinuxDesktop/gui-rootfs-v1.raw`; the mutable disk is
+`Documents/iDeckDebianGUI-v1/rootfs-v1.raw`. The separate profile checks original
+kernel identity, bounded profile/initrd reads, streamed seed hash, ext4 UUID,
+geometry/features and disk ownership. Import budgets raw capacity plus512MiB
+reserve. Existing disks reopen by mutable filesystem identity, without reseed,
+resize or replacement. Accepted console/Terminal/Probe paths remain separate.
 
-Production PID1 explicitly loads the exact original virtio GPU/input/evdev and
-ext4 closure, uses udev/DRM/VT, private Xauthority, root Xorg and UID1000 clients,
-no network and local X sockets. It enables serial recovery/Stop before X
-readiness; only a tested X connection and mapped clients emit GUI READY.
-Unexpected desktop exit leaves recovery/Stop available. Session writers must
-terminate and mounts unmount in reverse order before the clean receipt.
-These production-script behaviors still require the original-kernel VM gate.
+One VM/process, the same retained QEMU owner thread with non-polling NSCondition,
+and host disk lock through process exit remain unchanged. No qemu_cleanup,
+unregister or unlock is added. Production PID1 uses udev, root Xorg on VT1,
+UID1000 dbus session, private Xauthority, local X socket/-nolisten tcp, fixed
+800x600/depth24, AccelMethod=none/ShadowFB/SWcursor and `-nic none`.
 
-## Production input blocker and remaining gates
+Serial recovery/Stop is enabled before X. GUI READY requires an actual X
+connection and mapped XTerm/Pcmanfm/Mousepad windows. GUI failure keeps recovery
+available. All writers terminate and mounts unmount in reverse order before
+CLEAN_UNMOUNT. Software modesetting follows the
+[Debian manual](https://manpages.debian.org/trixie/xserver-xorg-core/modesetting.4.en.html).
+The real-VM udev chroot override follows
+[upstream systemd v257](https://github.com/systemd/systemd/blob/v257/src/basic/virt.c#L846-L876).
+It is not used to bypass package configuration.
 
-Missing local bytes: original `boot/modloop-virt`,17670144 bytes, SHA-256
-`f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b`,
-from the locked official Alpine netboot archive. Parent reports a separately
-verified copy, but parent filesystem paths/file IDs are not local paths here.
-A direct scan of the original kernel did not produce a readable configuration;
-VT support is not established here. Actual DRM/VT/matching-kernel checks remain.
-
-Observed transfer failures (no endless retries, unknown binaries or live token
-requests): official CDN `403 CONNECT tunnel failed`; Library helper
-`hosted apps tools/list request failed: network`; Library prepare-materialize
-returns `workspace_path:null`; Drive raw archive exceeds its268435456-byte
-limit (HTTP413); the supported streamed file-reference GET fails with URLError;
-Drive inline modloop request returns `Transport closed`. No `download_file`
-tool/command is exposed here. No credentials or signed URLs appear in evidence.
-
-An alternative input is the exact extracted tree: four `.ko` files and three
-metadata files (~1.99MB), plus manifest, as already pinned by
-[local-debian-ext4-modules.json](evidence/local-debian-ext4-modules.json).
-`gui_bootstrap.py` compares those complete metadata/module identities against
-the accepted original closure, then rechecks every byte/ELF/vermagic and real
-dependency order. A self-asserted modloop digest cannot bless other modules.
-The standalone-modloop provenance may differ, while exact content must match.
-
-Next commands, only after those actual module bytes arrive:
+## Replay and remaining device gate
 
 ```sh
+# Existing retained cache and vendor modloop; supply official unsquashfs.
+python3 experiments/linux-guest/tools/desktop_modules.py \
+  --modloop experiments/linux-guest/vendor/alpine-3.24.1-aarch64/modloop-virt \
+  --unsquashfs /path/to/official/unsquashfs --out /new/alpine-modules
 python3 experiments/linux-guest/tools/gui_bootstrap.py \
-  --modules .work/gui-20261017/alpine-modules \
-  --output .work/gui-20261017/desktop-bootstrap
+  --modules /new/alpine-modules --output /new/desktop-bootstrap
 python3 experiments/linux-guest/tools/gui_gate.py \
   --seed .work/gui-20261017/gui-seed-final-v4/seed \
-  --bootstrap .work/gui-20261017/desktop-bootstrap \
-  --cache .work/gui-20261017/cache \
-  --lock experiments/linux-guest/ipa/gui-inputs.lock.json \
-  --output .work/gui-20261017/alpine-gui-acceptance
-python3 experiments/linux-guest/tools/seal_gui_payload.py \
-  --seed .work/gui-20261017/gui-seed-final-v4/seed \
-  --bootstrap .work/gui-20261017/desktop-bootstrap \
-  --acceptance .work/gui-20261017/alpine-gui-acceptance \
-  --modules .work/gui-20261017/alpine-modules \
-  --output .work/gui-20261017/sealed-gui
+  --bootstrap /new/desktop-bootstrap --cache .work/gui-20261017/cache \
+  --lock experiments/linux-guest/ipa/gui-inputs.lock.json --output /new/gui-gate
 ```
 
-The gate uses two private-copy system-QEMU boots with original kernel/initrd,
-all real GUI/input/menu/package/persistence checks, two Stops/fsck and immutable
-seed checks. The seal helper requires these exact successful reports and
-bindings to current source/package/seed/bootstrap identities. It emits a new
-reviewable lock and deterministic gzip-in-tar transport; it never uploads or
-modifies the committed lock. Retain original raw/gzip, module manifest and the
-small `sealed-gui/rebuild-inputs` files for exact offline replay. `gui_bundle.py prepare` takes a new combined seed-input directory containing these four files.
+All output paths must be new. `gui_bundle.py prepare` replays the already sealed
+lock from a combined seed-input directory containing raw/gzip and the two small
+rebuild files. The exact modules manifest must be retained because its provenance
+is locked too. Its offline rebuild, restore and isolated staging were exercised.
 
-Current [gui.lock.json](ipa/gui.lock.json) is deliberately `blocked`, with no
-invented asset hashes. CI fails before Apple/native tool setup or private fetch.
-After a reviewed seal, copy the exact lock, refresh overlay input hashes and
-review/tests before parent coordinates private Release transfer and the one
-approved Apple build. The transport is independent from the accepted Debian
-console lock: HTTPS-only token-scope/redirect guards, exact hashes/sizes,
-no links/traversal, bounded gzip/raw restore, low-space checks, independent
-written-file verification, Xcode prebuild stage and IPA packaging verification.
-IPA hashing streams1MiB chunks too. The iPhone importer still copies a verified
-raw Xcode resource; no streaming gzip-on-iPhone importer is claimed.
+Current regressions:274 tests,269 PASS,5 explicit toolchain SKIP. The full pinned
+source stage and native recipe patch check pass. Swift executable checks and
+Apple SDK/UIKit/full QEMU link remain NOT RUN here. These mandatory Apple checks
+are wired into the existing reviewed workflow; no stubs replace them.
 
-Apple compilation/full native link, IPA/device GUI, guest GPU acceleration and
-Steam are NOT RUN. CI remains parent-controlled and was not dispatched here.
-
-The exact source of systemd's chroot override is
-[upstream running_in_chroot](https://github.com/systemd/systemd/blob/v257/src/basic/virt.c#L846-L876).
-`SYSTEMD_IN_CHROOT=0` is used only for real VM udev startup/trigger/settle,
-not to bypass dpkg package configuration. Modesetting options follow the
-[Debian driver manual](https://manpages.debian.org/trixie/xserver-xorg-core/modesetting.4.en.html)
-and were exercised in the actual KMS server.
+Parent coordinates Release delivery, review, fresh free-quota/paid-OFF preflight
+and the single Apple build. Device acceptance must then show real windows and
+apps, launch/edit/save/reopen, move/resize/right click/scroll, focus-release and
+Stop on two fresh app launches with persisted files. Confirm actual screen and
+input on iPhone before calling the device GUI accepted. CI was not dispatched.

@@ -86,6 +86,12 @@ $BB getty -n -l /ideck-desktop-login -L 115200 ttyAMA0 dumb 3>&- &
 shell_pid=$!
 echo IDECK_DESKTOP_RECOVERY_READY >&3
 chroot /sysroot /bin/hostname ideck 3>&- || fail hostname
+# dbus-uuidgen --ensure rejects an existing empty file. A clean seed uses an
+# empty placeholder; only remove that placeholder, preserving any stored ID.
+[ ! -L /sysroot/etc/machine-id ] || fail machine_id_symlink
+if [ -f /sysroot/etc/machine-id ] && [ ! -s /sysroot/etc/machine-id ]; then
+    rm /sysroot/etc/machine-id || fail machine_id_placeholder
+fi
 chroot /sysroot dbus-uuidgen --ensure=/etc/machine-id 3>&- || fail machine_id
 SYSTEMD_IN_CHROOT=0 chroot /sysroot /usr/lib/systemd/systemd-udevd --daemon 3>&- || fail udevd
 SYSTEMD_IN_CHROOT=0 chroot /sysroot udevadm trigger --action=add 3>&- || fail trigger

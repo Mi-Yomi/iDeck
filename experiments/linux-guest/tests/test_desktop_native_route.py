@@ -14,6 +14,13 @@ from typecheck_source import restore,overlay
 
 
 class DesktopRoute(unittest.TestCase):
+    def test_verified_vendor_modloop_is_binary_without_eol_conversion(self):
+        path=ROOT/'vendor/alpine-3.24.1-aarch64/modloop-virt'
+        from gui_bundle import metadata
+        self.assertEqual(metadata(path),{'size':17670144,'sha256':'f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b'})
+        result=subprocess.run(['git','check-attr','text','--',str(path)],cwd=ROOT.parents[1],capture_output=True,text=True,check=True,timeout=10)
+        self.assertTrue(result.stdout.rstrip().endswith(': text: unset'))
+
     def test_separate_route_disk_control_and_existing_lifetime(self):
         session=(ROOT/'ios/LinuxTerminalSession.swift').read_text()
         self.assertIn('"iDeckDebianGUI-v1"',session)

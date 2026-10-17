@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "purpose": "production GUI bootstrap; runtime gate still required",
+  "kernel": {
+    "size": 10351104,
+    "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+  },
+  "initramfs": {
+    "size": 11319304,
+    "sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4"
+  },
+  "module_manifest_sha256": "af8303f8f91736c419b5a95d579cbf60b8674d56c4a9f73b8b20ca6a212a16d1",
+  "load_order": [
+    "kernel/lib/crc/crc16.ko",
+    "kernel/fs/mbcache.ko",
+    "kernel/fs/jbd2/jbd2.ko",
+    "kernel/fs/ext4/ext4.ko"
+  ],
+  "original_gpu_input_modules": "unchanged in pinned probe initramfs",
+  "gui_verified": false,
+  "device_verified": false
+}

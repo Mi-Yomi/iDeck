@@ -1,0 +1,35 @@
+{
+  "events": [
+    {
+      "event": "probe_loaded",
+      "pid": 870,
+      "mode": "extend-5000",
+      "only_verified_connect_wait": true
+    },
+    {
+      "event": "before_connect_wait",
+      "pid": 870,
+      "seq": 0,
+      "original_ms": 500,
+      "effective_ms": 5000,
+      "caller_va": "0x60420",
+      "caller_chain": [
+        "0x63a98",
+        "0x5b368"
+      ],
+      "chromehtml_sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7"
+    },
+    {
+      "event": "after_connect_wait",
+      "pid": 870,
+      "seq": 0,
+      "result": 0,
+      "errno": 0,
+      "elapsed_ns": 3322421696
+    }
+  ],
+  "source_command_log_sha256": "01d148d7aa264e99ed35aa20c8b0286d988366604b1fd4d77415705c9987986c",
+  "before_any_diagnostic_ptrace": true,
+  "normal_launcher_unchanged": true,
+  "only_steam_runtime_change": "gated native connect wait500ms to5s"
+}

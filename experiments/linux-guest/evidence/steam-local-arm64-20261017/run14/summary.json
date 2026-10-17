@@ -1,0 +1,18 @@
+{
+  "reason": "deadline",
+  "observer_failure_class": null,
+  "seconds": 603.893928534,
+  "frozen": [
+    870,
+    929,
+    957,
+    958,
+    967,
+    1057,
+    1065,
+    1084,
+    1130
+  ],
+  "launcher_pid": 850,
+  "path": "/home/ideck/steam-experiment-logs/resume-local-20261017-connect-5000-v6"
+}

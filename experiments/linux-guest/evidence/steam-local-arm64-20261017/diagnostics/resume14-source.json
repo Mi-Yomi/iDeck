@@ -1,0 +1,14 @@
+{
+  "selected_functions_ast_identical": [
+    "read",
+    "link",
+    "processes",
+    "identity",
+    "roles",
+    "pin_seen",
+    "freeze_pinned",
+    "watch"
+  ],
+  "command_sha256": "1c8f8c1645193692bea10d0c657b2a89731ade34f4524ef7f1a8e7b5244091e5",
+  "source_sha256": "97233e6e5c972c7dee97dd55dc812c4ab7595b7f4743b5d257d6fb626cab9a53"
+}

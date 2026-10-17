@@ -1,0 +1,572 @@
+[
+  {
+    "file": "resume-local-20261017-gamepadui-v13__application-stop.json",
+    "size": 5248,
+    "sha256": "63e1c2a10e85c8513b932dde04cffd4f962492d73cc780bc856181eeaf5ef5fc",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__auth-state.json",
+    "size": 202,
+    "sha256": "98fa665ad250cf1c48a34d75503bc4653babdfe1a0efe0052e9181a3c97115e9",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-appinfo_log.txt",
+    "size": 1285,
+    "sha256": "d3b3c2aa60866fa636a93530da303ebfc5b21c86080a058421a54e53f8c1ad3c",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-bootstrap_log.txt",
+    "size": 1974,
+    "sha256": "561f689d1cdf274aa0e5de4cc472837db5c573dc61a4968deaafa0bb7b78aa45",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-cef_log.txt",
+    "size": 3911,
+    "sha256": "5ab4daaf5a822e1ee324f3aa10ad5864277a177b46a416acb939fa29048c2a52",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-client_networkmanager.txt",
+    "size": 224,
+    "sha256": "17ea788df1625466ac7f176a9413a1ef3938cff5fec99fea11681bd33a2de33a",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-cloud_log.txt",
+    "size": 2908,
+    "sha256": "31f0a8fe651d698200b294e096d3556c206a913390e5b866ace0eaf681cd7bfa",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-compat_log.txt",
+    "size": 45942,
+    "sha256": "7589bfe1cb8a152509b4e85b99180066ffdfb91e60862248b6aac25310ea622b",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-configstore_log.txt",
+    "size": 2344,
+    "sha256": "e2f42095e5ab3caf434308ba62636ed1c0b782f2cf96e6600b613fc6c77349b9",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-connection_log.txt",
+    "size": 6366,
+    "sha256": "12689023dc3b3722243bfe41f9dfde3c46d1f4c3b8f1284824ef4a0007f75c5c",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-console_log.txt",
+    "size": 19846,
+    "sha256": "eeb9c80aff5116cea57129b9267e5d5aaaf4c82c32945241e342047776a5a5ff",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-content_log.txt",
+    "size": 390,
+    "sha256": "da83010a87e2a7f7690796a29af676a9c49397fd340f04a31df753a3135773a4",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-controller.txt",
+    "size": 177,
+    "sha256": "4c81dbe1f6a3351a4944956c20ed2ba6eb2ba5b774ced99808afb00709eb5f65",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-gameprocess_log.txt",
+    "size": 89,
+    "sha256": "7e66d205ba63f4ec8327b21c64c4f75d0da2442d6b6c489fb325335b46246ac6",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-librarysharing_log.txt",
+    "size": 169,
+    "sha256": "bef160cc7893a40b7960a089a6af607348959160cf2edca69e3109e890c48b6b",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-parental_log.txt",
+    "size": 344,
+    "sha256": "d3ddaeecdba415252a3b73fa1fc79229955ea4b7d2e9de90a17a5dd4d1dd6fff",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-remote_connections.txt",
+    "size": 486,
+    "sha256": "35b5361f514b4f374752cd7aaaf91041433cd9bbf39fa29eda4f1796a81b506d",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-shader_log.txt",
+    "size": 3096,
+    "sha256": "014efdb7a4b6dc7c7dd282eef3b5ddc954b70222b92531d62b3db89e83b5d823",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-stats_log.txt",
+    "size": 509,
+    "sha256": "dc2be238439f11cbb94aa5f066dc0e2e564e5f7d7763246083a18c4688a9e688",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-steamsysinfo.txt",
+    "size": 396,
+    "sha256": "0a68a3db46be7a140ee6eac503bd6ecd162e26f8d01f2a0eda9652d010257ce0",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-steamui_audio.txt",
+    "size": 543,
+    "sha256": "75c6c126fa06df06b68dc97dd3329f29a4551e11121a3adbd44906335e0480f0",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-steamui_html.txt",
+    "size": 2357,
+    "sha256": "0210ee087fb4d9d470bab2bb24dbb0f586447118664582895feea0f719afef08",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-steamui_librarycache.txt",
+    "size": 3630,
+    "sha256": "f7187f4390d6a8b347e3c46e7bbc04ff7e17a8c35182b185c43cce3803ee38bf",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-steamui_login.txt",
+    "size": 1254,
+    "sha256": "a67091ff77da80b0676865097f4ee050dcfd6ded67a44c604df22924982aa411",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-steamui_system.txt",
+    "size": 1617,
+    "sha256": "98620bdae949494f4fa612eb031d935ce23971dc5288634e653b9c85fdefe18f",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-steamui_update.txt",
+    "size": 105,
+    "sha256": "00c7d4a5791244ff4db1ae8764ed4a12a867f8e4ba4331526b6119e38def384e",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-streaming_log.txt",
+    "size": 292,
+    "sha256": "bd6d13702915de8385f0f5325476284ef0673fe860300aa0495900dca29eee60",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-systemaudiomanager.txt",
+    "size": 110,
+    "sha256": "efe83e636dda2677dbc8c3bd396f728034d09de2f144b216d72a140d81998f99",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-systemdisplaymanager.txt",
+    "size": 166,
+    "sha256": "f7a8896dad14e4e1221731b66ac00e4f425fb0b3b84cde15883d69ba76f172ca",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-systemdockmanager.txt",
+    "size": 108,
+    "sha256": "c62a5ffd6faade88003f2e79eec25e26803163e0f1a6fa9a834c9795ff14b8ee",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-systemmanager.txt",
+    "size": 1469,
+    "sha256": "3f7a3ebbdfce367921a1cb0d5e4c977f7d09e37c1f85eb060a73d988fedf6122",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-systemperfmanager.txt",
+    "size": 248,
+    "sha256": "e5dac6954a670c8f8e37908b3fad0909712ca774bdc330fcc7999c5ece8918df",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-systemperfreporting.txt",
+    "size": 110,
+    "sha256": "983b514c6c30c0cad110912a4570212a89cb06901ceae3f9dcbd8341ef45928c",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-text_filter_log.txt",
+    "size": 1057,
+    "sha256": "92537cc729006831911c4e93924df4fe85c4b35322dea2a162e54da1c08ccbf9",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-transport_client.txt",
+    "size": 210,
+    "sha256": "64b26a81109466efd44c94e51ba83dfd144d776a2825a90caead4e366d3ce955",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-transport_steamui.txt",
+    "size": 271,
+    "sha256": "3b1d6c97c7d4eb17d5c6d6b8bac968af48035dd7cc65c78d56c1cc33c8fa9885",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-updateui_child.txt",
+    "size": 672,
+    "sha256": "fe0a30b8bd52f3d9b749541ea1f8fc8c4e1f005e991efa87c744fed625c826e2",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-webhelper.txt",
+    "size": 20760,
+    "sha256": "8ec19ac1934ba901effcbe47aa138b1198f3f6054dccfee19dffe28b7df13400",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-webhelper_gpu.txt",
+    "size": 36175,
+    "sha256": "58219fd7ca371ed2fee2998c1c33cfd2c96feb12d10a9e8dba198cb302a1af14",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-webhelper_js.txt",
+    "size": 13624,
+    "sha256": "60faa9315372432ec44476811cd5c56349c496f61b2907d25d11e6bfdb03255f",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__delta-workshop_log.txt",
+    "size": 139,
+    "sha256": "279943c2236158c2a497baa73a0912ce5111f4b3410cb947d429353c1a178aeb",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__fast-guard.json",
+    "size": 132,
+    "sha256": "ef1f8d3fe1dc7f6275042ad51a68344dc334dd327c2ee9ede7900e67445296ef",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__finish-monitor",
+    "size": 5,
+    "sha256": "a11c3d917a2149a4b548217038bc8f2dd2130a1966e0c7af5c4225d81f25a8c3",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__freeze-identities.json",
+    "size": 1235,
+    "sha256": "004f1e8fa23aeec19c90c1e52f0532fff5842bce4e2e295c91ea1dd4cf26ad39",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__game-input.json",
+    "size": 419,
+    "sha256": "8880c504b9a2f1e3a20d0d6be6869d71dfd1a19399b50abe6a2f3b2d7254e81a",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__game-install.json",
+    "size": 398,
+    "sha256": "5261889b6944884d20b8fc5e7406d1a07874db227e78d0e6bd76a2430dcb8492",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__game-install.log",
+    "size": 243,
+    "sha256": "56ca2867f2a4f4cf1bac81db57883421d00c96dbd89bf6db7c06b6dda3383b71",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__game-process.json",
+    "size": 176,
+    "sha256": "678656df2203b89d56192f30b4068a0e791785fca58f8c6e8dc2c7877b6096d5",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__game-repeat__game-input.json",
+    "size": 419,
+    "sha256": "f02a9db1fc32f5bf1ea5ac285f7973d772f1fc7c77cfe78547a8c5ff6203a9c5",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__game-repeat__game-install.json",
+    "size": 398,
+    "sha256": "5261889b6944884d20b8fc5e7406d1a07874db227e78d0e6bd76a2430dcb8492",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__game-repeat__game-process.json",
+    "size": 176,
+    "sha256": "2723dfd20d3134a3af522bff20bf83cd88f4c6b1a0f738a07f31c5bf23de3963",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__game-repeat__game-result.json",
+    "size": 400,
+    "sha256": "6989a53b14a6ffcbd4af71cecf3974d1fe9e89164a2a1bf97ffb20a58eda056c",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__game-repeat__game-runtime.log",
+    "size": 59,
+    "sha256": "8da2d9fe9551a954bb98c90477299f120a30c377c298b551ddd0b82e45955a96",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__game-result.json",
+    "size": 399,
+    "sha256": "905a4d1e84669c29d6699cd7e0ad908298b8f58020d70db1c174b35fb331b7c2",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__game-runtime.log",
+    "size": 59,
+    "sha256": "8da2d9fe9551a954bb98c90477299f120a30c377c298b551ddd0b82e45955a96",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__games-post-check.json",
+    "size": 1000,
+    "sha256": "8039d0b1890d2129967d5eebe9495fb967656985d08c3087d9b23bce18e0a08a",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__ideck-ipc-connect-1026.jsonl",
+    "size": 91,
+    "sha256": "df0a91d4e82e3211702d976409621e94affd65f9f18fc96f5396d2c2aa16beb9",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__ideck-ipc-connect-1027.jsonl",
+    "size": 91,
+    "sha256": "52af0ebcddc6954fce80b1b3e71859a7043009088fa8a632a46b9dd535efd8f3",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__ideck-ipc-connect-1562.jsonl",
+    "size": 420,
+    "sha256": "9245ffa14199ef2d749ff8ba13e82e46989ce3cdbfdff73f1ad7c6447c50b57a",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__ideck-ipc-connect-1563.jsonl",
+    "size": 91,
+    "sha256": "753492941a3c1e17f2575438d5d62bcb6352d13beeca8c372b1d827058908445",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__launch-profile.json",
+    "size": 837,
+    "sha256": "da52760e1ed45082a4dbb253e6cd54a316a6504fb42c1983392fbe43f5a2dad7",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__launcher.log",
+    "size": 13062,
+    "sha256": "e8f3a765b6d94c1516acba3b263e652cd630a4c8bac60d293158767efb1256e6",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__post-application-check.json",
+    "size": 799,
+    "sha256": "4f609fa9458e611d343ccf4e6627c2d88b94d0279908bfb859e8311b07cf40fc",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__post-stop-tail-cef_log.txt",
+    "size": 32768,
+    "sha256": "508f935278fd5733906cfcf104eae22585a87b5ce479c08910279ce207df4b98",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__post-stop-tail-steamui_html.txt",
+    "size": 16370,
+    "sha256": "8c9b82d1471feaa9677313fbae234e155220c8f12bd78bf966a00405bb1a5371",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__post-stop-tail-webhelper.txt",
+    "size": 32768,
+    "sha256": "4f31b32116c3b7b8740ae088ec28abc6d35e1b74c684ff024ef7e6f05a4be99a",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__shutdown-request.log",
+    "size": 294,
+    "sha256": "c088d46d519af536ae69e7557415a33d349b989f6d509d347f6980af702f49b7",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__summary.json",
+    "size": 333,
+    "sha256": "a69d746f479a75e9f9c96c5922364cb9b9cbc16b1252e376d453289dea608334",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__timeline.jsonl",
+    "size": 4573247,
+    "sha256": "a6ad209c8fe77405197c7b016c49e509874b639c60b14e93578be71e16fb4c62",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__ui-health.json",
+    "size": 5104,
+    "sha256": "635bb0f83989dfabf7db00675fe0b8e413e8b2242a72aee75728bf1a785b0686",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v13__upstream-launch-path.txt",
+    "size": 4182,
+    "sha256": "58322432a39c3adbc6538ce36544f128b43e00bbe2a713cd51a33e28c12e5a2e",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v11__fast-guard.json",
+    "size": 137,
+    "sha256": "451d3269eaf844191512623d53f62a04894c889303deba8f226cddac4b8972ec",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v11__finish-monitor",
+    "size": 5,
+    "sha256": "a11c3d917a2149a4b548217038bc8f2dd2130a1966e0c7af5c4225d81f25a8c3",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v11__freeze-identities.json",
+    "size": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v11__launch-profile.json",
+    "size": 837,
+    "sha256": "c9c179f77c6dfdd39eac904afdd6b9d15008dcbae3371a9af4e795ecb04a1216",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v11__launcher.log",
+    "size": 7588,
+    "sha256": "d5ee974a8af9477b8be767d80d9fd21065b16071a5406c3a51967bd82003c66b",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v11__summary.json",
+    "size": 231,
+    "sha256": "9449bae61bc97415fc211ad0cdfdc9ed4978b19fe6a9283bcb70d1ee9e0b12ff",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v11__timeline.jsonl",
+    "size": 235843,
+    "sha256": "93244c6615fe23b4b41f41f2be6455c04ced527e9cc43bc2e81586b15db8520a",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v12__client-update-receipt.json",
+    "size": 1266,
+    "sha256": "ad0ecb2b2b95269b67cca5a4933379840b0695487cc681ae1a9308d8f2186c7c",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v12__delta-bootstrap_log.txt",
+    "size": 2120,
+    "sha256": "3cde9e71ebf1768204902a2aa0b863261240af4c0aa8d9f698e16f3983704bc6",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v12__delta-updateui_child.txt",
+    "size": 1214,
+    "sha256": "c34c6d4ac122556a877ee09fc38827001e4ff437e7f4a910e527c272cf6477e3",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v12__fast-guard.json",
+    "size": 137,
+    "sha256": "b593200ff91de9147ab72f073d47889dbc8adaf6d6156d1206c33668c92e9793",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v12__finish-monitor",
+    "size": 5,
+    "sha256": "a11c3d917a2149a4b548217038bc8f2dd2130a1966e0c7af5c4225d81f25a8c3",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v12__freeze-identities.json",
+    "size": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v12__ideck-ipc-connect-1026.jsonl",
+    "size": 91,
+    "sha256": "df0a91d4e82e3211702d976409621e94affd65f9f18fc96f5396d2c2aa16beb9",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v12__ideck-ipc-connect-1027.jsonl",
+    "size": 91,
+    "sha256": "52af0ebcddc6954fce80b1b3e71859a7043009088fa8a632a46b9dd535efd8f3",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v12__launch-profile.json",
+    "size": 837,
+    "sha256": "03460dcbdace36c434ea1b4423bb84c536f68af188b60956dfd6bb655c18b168",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v12__launcher.log",
+    "size": 11913,
+    "sha256": "39afeb7278d0df4c4010239cb02e18562897867a82e9c23374d984c68daff379",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v12__summary.json",
+    "size": 227,
+    "sha256": "4745696751b669f746dcbaded26e9b7d823d5954bdafcab2d97f5ad0b0fcf165",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v12__timeline.jsonl",
+    "size": 1021490,
+    "sha256": "2490f3c677af3b6be33cc97210bc59dfffefc7214098abf3f37c9590a5a5034a",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v12__updater-tail-bootstrap_log.txt",
+    "size": 8192,
+    "sha256": "3fd8f7234a03843189a938c6184ea645f94d2bbda0c60dfbf058173ec131bfe4",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v12__updater-tail-console_log.txt",
+    "size": 8192,
+    "sha256": "d6534cc5d15084e7bd6565339b6d6066f7f0d0a586fc64fa157c705c37fe825f",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-gamepadui-v12__upstream-restart-contract.txt",
+    "size": 614,
+    "sha256": "5faec0b758997eec4500abd09ba568f208ae476858ed6c656802ad7bc7a09de8",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-preflight__runtime-tests.json",
+    "size": 1339,
+    "sha256": "f240b4124bde2d94933233586df49d78de0448f3795cd887670ccf7d0ff6b995",
+    "source_log": "047-private-export.log"
+  },
+  {
+    "file": "connect-monitor.log",
+    "size": 9744,
+    "sha256": "f41c0cd4a342c8bcf82434fd316d9d05c5f90ce882e1a8a7e83e0439ca7386a1",
+    "source_log": "047-private-export.log"
+  }
+]

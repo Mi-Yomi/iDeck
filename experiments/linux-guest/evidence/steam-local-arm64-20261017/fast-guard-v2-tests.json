@@ -1,0 +1,74 @@
+{
+  "kind": "watcher functions, own harmless host children only",
+  "steam_guest_tested": false,
+  "script_sha256": "84f2f56a1b68c96908bced6defbdfe5411866e59dea0cd3199235c0ab1f70c76",
+  "results": [
+    {
+      "case": "resource_reserve",
+      "status": "pass",
+      "guard": {
+        "cause": "shared_memory_reserve",
+        "seconds": 0.02340033099972061,
+        "browser_pid": 1612,
+        "free_bytes_after_freeze": 367001600
+      },
+      "own_child_pid": 1612
+    },
+    {
+      "case": "first_browser_exit",
+      "status": "pass",
+      "guard": {
+        "cause": "first_browser_exit",
+        "seconds": 0.02252750699972239,
+        "browser_pid": 1614,
+        "free_bytes_after_freeze": 734003200
+      },
+      "own_child_pid": 1614
+    },
+    {
+      "case": "wrong_uid_refused",
+      "status": "pass"
+    },
+    {
+      "case": "owned_exec_change",
+      "status": "pass",
+      "guard": {
+        "owned_exec_changes": [
+          {
+            "before": {
+              "pid": 1617,
+              "starttime": "361807",
+              "exe": "/usr/bin/python3.14",
+              "uid": [
+                "1000",
+                "1000",
+                "1000",
+                "1000"
+              ],
+              "state": "R",
+              "tracer": 0
+            },
+            "current": {
+              "pid": 1617,
+              "starttime": "361807",
+              "exe": "/usr/bin/sleep",
+              "uid": [
+                "1000",
+                "1000",
+                "1000",
+                "1000"
+              ],
+              "state": "S",
+              "tracer": 0
+            }
+          }
+        ],
+        "cause": "shared_memory_reserve",
+        "seconds": 0.6223914859997421,
+        "browser_pid": 1617,
+        "free_bytes_after_freeze": 367001600
+      },
+      "own_child_pid": 1617
+    }
+  ]
+}

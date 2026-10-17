@@ -1,0 +1,339 @@
+{
+  "schema": 1,
+  "status": "reclaimed_manifested_orphans",
+  "manifest_sha256": "3d965693a88eaf72c3e82bb8a87b96cdf5712b673df30dbd67448edb1579f7fc",
+  "preflight_passed": true,
+  "removed": [
+    {
+      "name": "u1000-Shm_a893fe70",
+      "device": 27,
+      "inode": 258,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_b1fe678e",
+      "device": 27,
+      "inode": 253,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_e5e45f8a",
+      "device": 27,
+      "inode": 252,
+      "uid": 1000,
+      "size": 8208,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_acfbb111",
+      "device": 27,
+      "inode": 250,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_b59628ef",
+      "device": 27,
+      "inode": 248,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_bd169992",
+      "device": 27,
+      "inode": 245,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_a47b006c",
+      "device": 27,
+      "inode": 243,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_48e923e6",
+      "device": 27,
+      "inode": 237,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_5184ba18",
+      "device": 27,
+      "inode": 234,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_d0335002",
+      "device": 27,
+      "inode": 232,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_c95ec9fc",
+      "device": 27,
+      "inode": 229,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_3f42fcd4",
+      "device": 27,
+      "inode": 216,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_262f652a",
+      "device": 27,
+      "inode": 213,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_de5db8a2",
+      "device": 27,
+      "inode": 208,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_c730215c",
+      "device": 27,
+      "inode": 199,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_18204390",
+      "device": 27,
+      "inode": 195,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_14dda6e",
+      "device": 27,
+      "inode": 189,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_1bb6c64a",
+      "device": 27,
+      "inode": 181,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_2db5fb4",
+      "device": 27,
+      "inode": 179,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_4f162ce1",
+      "device": 27,
+      "inode": 177,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_567bb51f",
+      "device": 27,
+      "inode": 175,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_dc2883cc",
+      "device": 27,
+      "inode": 172,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_c5451a32",
+      "device": 27,
+      "inode": 171,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_5f99cf73",
+      "device": 27,
+      "inode": 168,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_46f4568d",
+      "device": 27,
+      "inode": 167,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_847e6b23",
+      "device": 27,
+      "inode": 165,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_9d13f2dd",
+      "device": 27,
+      "inode": 163,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_a5564b4d",
+      "device": 27,
+      "inode": 160,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_bc3bd2b3",
+      "device": 27,
+      "inode": 157,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_d15f8871",
+      "device": 27,
+      "inode": 153,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_c832118f",
+      "device": 27,
+      "inode": 151,
+      "uid": 1000,
+      "size": 26214416,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_517c64b7",
+      "device": 27,
+      "inode": 149,
+      "uid": 1000,
+      "size": 8208,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_aff5a745",
+      "device": 27,
+      "inode": 11,
+      "uid": 1000,
+      "size": 512016,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_160a4049",
+      "device": 27,
+      "inode": 10,
+      "uid": 1000,
+      "size": 512016,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_75f76ab8",
+      "device": 27,
+      "inode": 9,
+      "uid": 1000,
+      "size": 512016,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_3c3a3c3d",
+      "device": 27,
+      "inode": 8,
+      "uid": 1000,
+      "size": 1048592,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_671c2a99",
+      "device": 27,
+      "inode": 7,
+      "uid": 1000,
+      "size": 669632,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_fe20b6d7",
+      "device": 27,
+      "inode": 6,
+      "uid": 1000,
+      "size": 519488,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_c9edbd50",
+      "device": 27,
+      "inode": 5,
+      "uid": 1000,
+      "size": 97600,
+      "mode": 448
+    },
+    {
+      "name": "u1000-Shm_9b59e709",
+      "device": 27,
+      "inode": 4,
+      "uid": 1000,
+      "size": 1040,
+      "mode": 448
+    },
+    {
+      "name": "u1000-ValveIPCSharedObj-Steam",
+      "device": 27,
+      "inode": 2,
+      "uid": 1000,
+      "size": 2097152,
+      "mode": 448
+    }
+  ],
+  "automatic": false,
+  "removed_bytes": 792418448,
+  "seconds": 206.048
+}

@@ -1,0 +1,19 @@
+test_arbitrary_arguments_rejected (test_steam_launch.SteamLaunchTests.test_arbitrary_arguments_rejected) ... ok
+test_big_picture_without_steamos_device_mode_and_live_dbus (test_steam_launch.SteamLaunchTests.test_big_picture_without_steamos_device_mode_and_live_dbus) ... ok
+test_broken_existing_dbus_gets_new_session (test_steam_launch.SteamLaunchTests.test_broken_existing_dbus_gets_new_session) ... ok
+test_client_and_shutdown_failure_statuses_propagate (test_steam_launch.SteamLaunchTests.test_client_and_shutdown_failure_statuses_propagate) ... ok
+test_desktop_fixed_arguments_runtime_and_new_dbus (test_steam_launch.SteamLaunchTests.test_desktop_fixed_arguments_runtime_and_new_dbus) ... ok
+test_idle_stop_does_not_start_client_or_claim_clean_vm_shutdown (test_steam_launch.SteamLaunchTests.test_idle_stop_does_not_start_client_or_claim_clean_vm_shutdown) ... ok
+test_missing_client_and_symlink_lock_reject (test_steam_launch.SteamLaunchTests.test_missing_client_and_symlink_lock_reject) ... ok
+test_native_client_process_blocks_relaunch_after_wrapper_exit (test_steam_launch.SteamLaunchTests.test_native_client_process_blocks_relaunch_after_wrapper_exit) ... ok
+test_process_probe_error_is_not_treated_as_absent_client (test_steam_launch.SteamLaunchTests.test_process_probe_error_is_not_treated_as_absent_client) ... ok
+test_real_flock_serializes_launch_but_stop_bypasses_lock (test_steam_launch.SteamLaunchTests.test_real_flock_serializes_launch_but_stop_bypasses_lock) ... ok
+test_repeated_update_restart_is_bounded (test_steam_launch.SteamLaunchTests.test_repeated_update_restart_is_bounded) ... ok
+test_update_restart_keeps_mode_and_does_not_report_failure (test_steam_launch.SteamLaunchTests.test_update_restart_keeps_mode_and_does_not_report_failure) ... ok
+test_update_restart_refuses_a_remaining_native_client (test_steam_launch.SteamLaunchTests.test_update_restart_refuses_a_remaining_native_client) ... ok
+test_wrong_identity_environment_or_permissions_never_launch (test_steam_launch.SteamLaunchTests.test_wrong_identity_environment_or_permissions_never_launch) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 7.058s
+
+OK

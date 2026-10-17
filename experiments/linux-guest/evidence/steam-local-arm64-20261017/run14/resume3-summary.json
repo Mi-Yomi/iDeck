@@ -1,0 +1,11 @@
+{
+  "seconds": 94.36290811799995,
+  "guard": {
+    "cause": "resume_operator_budget",
+    "seconds": 94.3620477689999,
+    "browser_pid": 929,
+    "free_bytes_after_freeze": 679030784
+  },
+  "resume_only_same_client": true,
+  "steam_runtime_configuration_changed": false
+}

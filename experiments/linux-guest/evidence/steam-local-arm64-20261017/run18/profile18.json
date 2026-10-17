@@ -1,0 +1,9 @@
+{
+  "reference": "run16 V3",
+  "difference": "private launcher -nobigpicture replaced by -gamepadui only",
+  "source_disk": "clean run17; full offline check before writer",
+  "original_files_preserved": true,
+  "monitor_functions_identical": true,
+  "resources_sandbox_unchanged": true,
+  "native_wait_diagnostic_ms": 5000
+}

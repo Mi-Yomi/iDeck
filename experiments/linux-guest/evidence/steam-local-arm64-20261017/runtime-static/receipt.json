@@ -1,0 +1,70 @@
+[
+  {
+    "module": "libc.so.6",
+    "sha256": "70fa4c4cf57eabeb96097cce47582d02379c4cd1de3db3e98ade4dd7089a1b13",
+    "guest_dev": 64768,
+    "guest_inode": 9082,
+    "command": [
+      "gdb",
+      "-q",
+      "-nx",
+      "-batch",
+      "-iex",
+      "set auto-load off",
+      "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/review/cpu-probe/lib/libc.so.6",
+      "-ex",
+      "disassemble /r 0xa3f80,0xa3f98",
+      "-ex",
+      "disassemble /r 0xebdc0,0xebdf8"
+    ],
+    "output_sha256": "f37e160cbbe4d2d92567824e9b66ab40c03db1d175159a41399361b80dae77c5"
+  },
+  {
+    "module": "chromehtml.so",
+    "sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7",
+    "guest_dev": 64768,
+    "guest_inode": 606392,
+    "command": [
+      "gdb",
+      "-q",
+      "-nx",
+      "-batch",
+      "-iex",
+      "set auto-load off",
+      "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/review/cef-first-failure/chromehtml.so",
+      "-ex",
+      "disassemble /r 0x60390,0x60450",
+      "-ex",
+      "disassemble /r 0x63a00,0x63ad0",
+      "-ex",
+      "disassemble /r 0x5b078,0x5b410"
+    ],
+    "output_sha256": "c4a4b2f8b6d9dcc017b493df84cf8cc72d5a33c6f144db1b2cf64afb2030f072"
+  },
+  {
+    "module": "steamwebhelper",
+    "sha256": "0a849676a3ba0cc51ca23cba79be3df0546744fd92c2e2d628a1f71707a70a56",
+    "guest_dev": 64768,
+    "guest_inode": 606427,
+    "command": [
+      "gdb",
+      "-q",
+      "-nx",
+      "-batch",
+      "-iex",
+      "set auto-load off",
+      "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/review/cef-first-failure/steamwebhelper",
+      "-ex",
+      "disassemble /r 0x140730,0x1407e0",
+      "-ex",
+      "disassemble /r 0xdc7c0,0xdc8b0",
+      "-ex",
+      "disassemble /r 0xdae80,0xdaf80",
+      "-ex",
+      "disassemble /r 0x25a2c0,0x25a3c0",
+      "-ex",
+      "disassemble /r 0xd6540,0xd6620"
+    ],
+    "output_sha256": "f0bca722ad780c166cbedf0c497941ec1ab023a57e825018ec9995ae75259078"
+  }
+]

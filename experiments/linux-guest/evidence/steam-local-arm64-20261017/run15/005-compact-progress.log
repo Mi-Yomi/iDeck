@@ -1,0 +1,49 @@
+SAMPLE={"seconds": 94.869, "shm_free": 707452928, "processes": {"879": {"State": "S (sleeping)", "Seccomp": "0", "NoNewPrivs": "0", "PPid": "877", "mode_flags": ["-nobigpicture"]}, "938": {"State": "R (running)", "Seccomp": "0", "NoNewPrivs": "0", "PPid": "879"}, "962": {"State": "S (sleeping)", "Seccomp": "0", "NoNewPrivs": "1", "PPid": "938"}, "965": {"State": "S (sleeping)", "Seccomp": "0", "NoNewPrivs": "1", "PPid": "938"}, "979": {"State": "S (sleeping)", "Seccomp": "0", "NoNewPrivs": "1", "PPid": "965"}, "1037": {"State": "S (sleeping)", "Seccomp": "0", "NoNewPrivs": "1", "PPid": "962"}, "1039": {"State": "S (sleeping)", "Seccomp": "0", "NoNewPrivs": "1", "PPid": "938"}, "1061": {"State": "S (sleeping)", "Seccomp": "2", "NoNewPrivs": "1", "PPid": "979"}, "1111": {"State": "S (sleeping)", "Seccomp": "2", "NoNewPrivs": "1", "PPid": "979"}}}
+CONNECT={"event":"probe_loaded","pid":880,"mode":"extend-5000","only_verified_connect_wait":true}
+
+CONNECT={"event":"probe_loaded","pid":879,"mode":"extend-5000","only_verified_connect_wait":true}
+{"event":"before_connect_wait","pid":879,"seq":0,"original_ms":500,"effective_ms":5000,"caller_va":"0x60420","caller_chain":["0x63a98","0x5b368"],"chromehtml_sha256":"753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7"}
+{"event":"after_connect_wait","pid":879,"seq":0,"result":0,"errno":0,"elapsed_ns":383072947}
+
+LOG=steamui_html.txt
+
+
+[2026-10-17 20:25:29] Client version: 1792192922
+[2026-10-17 20:25:29] Started webhelper process 938
+[2026-10-17 20:25:29] STARTUP SteamUI browser requested at +19097ms
+[2026-10-17 20:25:29] CreateBrowser id:94805155 type:12 flags:1000000 (-2147483648, -2147483648) 0x0
+[2026-10-17 20:25:53] RetryCreateBrowser id:94805155 type:12 flags:16777216: (-2147483648, -2147483648) 0x0
+[2026-10-17 20:25:54] RetryCreateBrowser id:94805155 type:12 flags:16777216: (-2147483648, -2147483648) 0x0
+[2026-10-17 20:25:55] RetryCreateBrowser id:94805155 type:12 flags:16777216: (-2147483648, -2147483648) 0x0
+[2026-10-17 20:25:56] RetryCreateBrowser id:94805155 type:12 flags:16777216: (-2147483648, -2147483648) 0x0
+[2026-10-17 20:25:57] RetryCreateBrowser id:94805155 type:12 flags:16777216: (-2147483648, -2147483648) 0x0
+[2026-10-17 20:25:58] RetryCreateBrowser id:94805155 type:12 flags:16777216: (-2147483648, -2147483648) 0x0
+[2026-10-17 20:25:59] RetryCreateBrowser id:94805155 type:12 flags:16777216: (-2147483648, -2147483648) 0x0
+[2026-10-17 20:26:00] RetryCreateBrowser id:94805155 type:12 flags:16777216: (-2147483648, -2147483648) 0x0
+[2026-10-17 20:26:01] RetryCreateBrowser id:94805155 type:12 flags:16777216: (-2147483648, -2147483648) 0x0
+[2026-10-17 20:26:02] CreateResponse: id:94805155 handle:65536
+[2026-10-17 20:26:03] BrowserReady: handle:65536
+LOG=webhelper.txt
+[2026-10-17 20:26:02] CreateBrowser 94805155 type:12 flags:16777216  (-2147483648, -2147483648) 0x0 
+[2026-10-17 20:26:02] CreateBrowser 94805155 type:12 flags:16777216  (-2147483648, -2147483648) 0x0 
+[2026-10-17 20:26:02] CreateBrowser 94805155 type:12 flags:16777216  (-2147483648, -2147483648) 0x0 
+[2026-10-17 20:26:02] CreateBrowser 94805155 type:12 flags:16777216  (-2147483648, -2147483648) 0x0 
+[2026-10-17 20:26:02] CreateBrowser 94805155 type:12 flags:16777216  (-2147483648, -2147483648) 0x0 
+[2026-10-17 20:26:02] CreateBrowser 94805155 type:12 flags:16777216  (-2147483648, -2147483648) 0x0 
+[2026-10-17 20:26:02] UB-65536: AfterCreated handle:65536 type:12: (0, 0) 0x0
+[2026-10-17 20:26:02] UB-65536: STARTUP BrowserCreated t=25.890 +0.0ms from create
+[2026-10-17 20:26:02] UB-65536: SetName: SP Shared JS Context
+[2026-10-17 20:26:02] Browser - launching child process with: /home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper --type=renderer --enable-crash-reporter=, --change-stack-guard-on-fork=enable --enable-chrome-runtime --user-data-dir=/home/ideck/.local/share/Steam/config/htmlcache --user-agent-product=Valve Steam Client --buildid=1792192922 --steamid=0
+[2026-10-17 20:26:05] SP Shared JS Context: STARTUP ResourceHandler slow 32.7ms request:https://steamloopback.host/index.html?LOCAL_HOSTNAME=ideck&LANGUAGE=english&COUNTRY=KZ&LAUNCHER_TYPE=0&CLIENT_SESSION=1792268729&PACKAGE_CL=1792192922&IN_CLIENT=true&USE_POPUPS=true&PLATFORM=linux&ARCH=arm64
+[2026-10-17 20:26:07] SP Shared JS Context: STARTUP FirstPaint t=30.163 +4273.4ms from create
+[2026-10-17 20:26:08] SP Shared JS Context: STARTUP LoadStart t=32.168 +6278.5ms from create
+[2026-10-17 20:26:09] SP Shared JS Context: STARTUP ResourceHandler slow 6.9ms request:https://steamloopback.host/libraries/libraries~00299a408.js?contenthash=6913cbe13152f5081c25
+[2026-10-17 20:26:19] SP Shared JS Context-'SharedJSCo': STARTUP LoadEnd t=42.098 +16208.0ms from create
+[2026-10-17 20:26:19] SP Shared JS Context-'SharedJSCo': STARTUP ResourceHandler calls=4 total=43.4ms max=32.7ms
+[2026-10-17 20:26:19] SP Shared JS Context-'SharedJSCo': STARTUP ResourceHandler slow 9.7ms request:https://steamloopback.host/libraries/libraries~e8c5e5be4.js?contenthash=176e0eaef3b3ec6a1215
+[2026-10-17 20:26:20] SP Shared JS Context-'SharedJSCo': STARTUP ResourceHandler slow 5.5ms request:https://steamloopback.host/css/sp.css?contenthash=b795ff7dacb4537e376c
+[2026-10-17 20:26:20] SP Shared JS Context-'SharedJSCo': STARTUP ResourceHandler slow 9.2ms request:https://steamloopback.host/sp.js?contenthash=681b34098a975f20bf23
+[2026-10-17 20:26:21] SP Shared JS Context-'SharedJSCo': STARTUP ResourceHandler slow 20.9ms request:https://steamloopback.host/favicon.ico
+
+STEAM_COMMAND_005_0
+debian# 

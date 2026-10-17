@@ -1,0 +1,14 @@
+Warning: skipping journal recovery because doing a read-only filesystem check.
+Pass 1: Checking inodes, blocks, and sizes
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+Free blocks count wrong (2011422, counted=2007176).
+Fix? no
+
+Free inodes count wrong (1534974, counted=1534878).
+Fix? no
+
+/mnt/e/Freddy_Fazbear/iDeck.work/steam-arm64-experiment-20261017/resume-local-20261017/post-run11-fsck/offline-fsck.raw: 37890/1572864 files (0.5% non-contiguous), 1134306/3145728 blocks
+e2fsck 1.47.2 (1-Jan-2025)

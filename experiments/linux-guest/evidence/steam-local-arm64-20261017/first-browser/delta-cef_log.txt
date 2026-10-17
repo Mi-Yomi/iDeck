@@ -1,0 +1,7 @@
+[2295:2295:1017/181300.539006:WARNING:chrome_main_delegate.cc(748)] This is Chrome version 126.0.6478.183 (not a warning)
+[2295:2295:1017/181300.934954:WARNING:task_impl.cc(31)] No task runner for threadId 0
+[2295:2295:1017/181301.065708:WARNING:task_impl.cc(31)] No task runner for threadId 0
+[2295:2374:1017/181313.139185:ERROR:bus.cc(407)] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[2295:2399:1017/181324.028063:ERROR:bus.cc(407)] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[2295:2399:1017/181324.059731:ERROR:bus.cc(407)] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[2295:2295:1017/181336.859877:WARNING:account_consistency_mode_manager.cc(77)] Desktop Identity Consistency cannot be enabled as no OAuth client ID and client secret have been configured.

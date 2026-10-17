@@ -1,0 +1,14 @@
+{
+  "game": "xgalaga",
+  "version": "2.1.1.0-7",
+  "architecture": "arm64",
+  "package_sha256": "68986eaee721a9060fa99a661a564ef30ec7485912057e8fe97a8722f447f240",
+  "package_size": 212892,
+  "existing_packages_unchanged": true,
+  "new_packages": [
+    "xgalaga"
+  ],
+  "dpkg_audit_clean": true,
+  "started": false,
+  "scope": "native ARM64 X11 smoke test, not Steam/Proton or iPhone acceptance"
+}

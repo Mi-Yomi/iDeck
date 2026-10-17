@@ -1,0 +1,12 @@
+{
+  "mode": "normal-no-preload",
+  "original_deadline_ms": 500,
+  "effective_deadline_ms": 500,
+  "library_sha256": null,
+  "private_helper_used": false,
+  "private_helper_sha256": "96c929eafefb2f76aa7751fb1869baa6def54e5e31be2a0e6620a486bca64b0d",
+  "original_helper_sha256": "96c929eafefb2f76aa7751fb1869baa6def54e5e31be2a0e6620a486bca64b0d",
+  "original_helper_unchanged": true,
+  "sandbox_preserved": true,
+  "resource_profile_changed": false
+}

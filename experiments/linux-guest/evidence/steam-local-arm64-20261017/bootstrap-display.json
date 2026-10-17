@@ -1,0 +1,137 @@
+{
+  "schema": 1,
+  "purpose": "private disposable Steam experiment; runtime unverified",
+  "base_initramfs": {
+    "size": 11319304,
+    "sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4"
+  },
+  "initramfs": {
+    "size": 11673081,
+    "sha256": "d4622a524cdd7f9a99111fff85a1e467e07d35660c63bc2124a6a4462c04e0fe"
+  },
+  "required_kernel_sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+  "modloop_sha256": "f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b",
+  "module_metadata": {
+    "modules.dep": {
+      "size": 79770,
+      "sha256": "8cd0e53b89ef000dd6270a91da70334f6696c7d089523da75746c08594e815c9"
+    },
+    "modules.softdep": {
+      "size": 818,
+      "sha256": "7d211e6d22125a59819964da6c98395da2f892cb2f88c738264466d1c6c500b5"
+    },
+    "modules.builtin": {
+      "size": 4315,
+      "sha256": "01969d14f424e6c02778adb9e4bb8b561f1cce085d1b23e62206f79bdda590c4"
+    }
+  },
+  "network_load_order": [
+    "kernel/net/core/failover.ko",
+    "kernel/drivers/net/net_failover.ko",
+    "kernel/drivers/net/virtio_net.ko"
+  ],
+  "network_modules": [
+    {
+      "path": "kernel/net/core/failover.ko",
+      "name": "failover",
+      "size": 29183,
+      "sha256": "f812cfef580eb24facf105b3bfef6af7a93cb9a9352244d5b5c2d048ad58d7aa",
+      "vermagic": "6.18.35-0-virt SMP preempt mod_unload modversions aarch64",
+      "depends": [],
+      "signature": {
+        "kind": "PKCS#7",
+        "size": 695,
+        "sha256": "25c9e144c80425d6a8e2ede17052b76457b3bb71e965873cd1a50047ef48c61b",
+        "algorithm_id": 0,
+        "hash_id": 0,
+        "public_key_verification": "not_performed; pinned modloop digest authenticates bytes"
+      }
+    },
+    {
+      "path": "kernel/drivers/net/net_failover.ko",
+      "name": "net_failover",
+      "size": 42223,
+      "sha256": "76644582666b394e3351dc7936f1c6684843d72fc7c323d607cb90ddd93e2d6e",
+      "vermagic": "6.18.35-0-virt SMP preempt mod_unload modversions aarch64",
+      "depends": [
+        "failover"
+      ],
+      "signature": {
+        "kind": "PKCS#7",
+        "size": 695,
+        "sha256": "5f05f9748be2c078d36482f2414455a162fb4dbc08d875f1f068f3b73bcc9263",
+        "algorithm_id": 0,
+        "hash_id": 0,
+        "public_key_verification": "not_performed; pinned modloop digest authenticates bytes"
+      }
+    },
+    {
+      "path": "kernel/drivers/net/virtio_net.ko",
+      "name": "virtio_net",
+      "size": 184671,
+      "sha256": "0b015f1d29694b99fe7aec058c0b0b3dc050c17b1c58cc47487a7677fc392d79",
+      "vermagic": "6.18.35-0-virt SMP preempt mod_unload modversions aarch64",
+      "depends": [
+        "net_failover"
+      ],
+      "signature": {
+        "kind": "PKCS#7",
+        "size": 695,
+        "sha256": "862bae7477cc9cc6f33ebda23c6441ca8e7946870b4fe66dd2028aecc8b29e57",
+        "algorithm_id": 0,
+        "hash_id": 0,
+        "public_key_verification": "not_performed; pinned modloop digest authenticates bytes"
+      }
+    }
+  ],
+  "inputs": {
+    "guest/steam/ideck-steam": {
+      "size": 4326,
+      "sha256": "11cc1c70d2960a745b0f2c31a989eedc3ed23a1f6a95d5be7e6094cd25a7f790"
+    },
+    "guest/steam/install-cached.py": {
+      "size": 12332,
+      "sha256": "81e39f6c23a7e5d0bfff8c133a550bd6a754d4f86c321bb14650c7a77874e909"
+    },
+    "guest/steam/namespace-check.py": {
+      "size": 15718,
+      "sha256": "96c929eafefb2f76aa7751fb1869baa6def54e5e31be2a0e6620a486bca64b0d"
+    },
+    "guest/steam/prepare-display.py": {
+      "size": 6969,
+      "sha256": "b932d9b11d89717e66c396f0302ed2500942505918ca629e75f5761d68fc06cc"
+    },
+    "guest/steam/shm-recovery.py": {
+      "size": 12909,
+      "sha256": "f90092f629593f6f653825e35359dd9f4a08a3ffef7a370d417719a1a9070b7e"
+    },
+    "tools/steam_client.py": {
+      "size": 12638,
+      "sha256": "f642b54ee73c777330be843ba4d38153fed0ab22259b8030ef9d205d70a554b1"
+    },
+    "ipa/steam-client.lock.json": {
+      "size": 4757,
+      "sha256": "9b8bc9fe5e8074ae4d798f645d259066e968b8bc5512183c0aca34e1f54a8bdd"
+    },
+    "ipa/steam-dependencies.lock.json": {
+      "size": 17731,
+      "sha256": "0d153bbb2a9a39c32fb650d189cc972355fc1d94da39297cf0b9830fdbd922f6"
+    }
+  },
+  "original_shutdown_function_preserved": true,
+  "required_cmdline": [
+    "rdinit=/ideck-steam-init",
+    "ideck.steam_experiment=1",
+    "ideck.steam_disk_grow=1"
+  ],
+  "guest_network": {
+    "device": "virtio-net-device",
+    "address": "10.0.2.15/24",
+    "gateway": "10.0.2.2",
+    "dns": "10.0.2.3"
+  },
+  "gui_payload_changed": false,
+  "valve_client_bundled": false,
+  "guest_boot_verified": false,
+  "iphone_verified": false
+}

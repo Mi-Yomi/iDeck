@@ -1,0 +1,7 @@
+test_non_elf_and_missing_runtime_are_not_native_binaries (test_steam_game_preflight.GamePreflightTests.test_non_elf_and_missing_runtime_are_not_native_binaries) ... ok
+test_runtime_presence_never_claims_game_or_gpu_success_or_reads_accounts (test_steam_game_preflight.GamePreflightTests.test_runtime_presence_never_claims_game_or_gpu_success_or_reads_accounts) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.148s
+
+OK

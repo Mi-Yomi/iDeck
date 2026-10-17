@@ -1,0 +1,24 @@
+Dump of assembler code from 0xa3f80 to 0xa3f98:
+   0x00000000000a3f80:	d503245f	bti	c
+   0x00000000000a3f84:	aa0003e3	mov	x3, x0
+   0x00000000000a3f88:	19c10443	setp	[x3]!, x2!, x1
+   0x00000000000a3f8c:	19c14443	setm	[x3]!, x2!, x1
+   0x00000000000a3f90:	19c18443	sete	[x3]!, x2!, x1
+   0x00000000000a3f94:	d65f03c0	ret
+End of assembler dump.
+Dump of assembler code from 0xebdc0 to 0xebdf8:
+   0x00000000000ebdc0 <syscall+0>:	d503245f	bti	c
+   0x00000000000ebdc4 <syscall+4>:	2a0003e8	mov	w8, w0
+   0x00000000000ebdc8 <syscall+8>:	aa0103e0	mov	x0, x1
+   0x00000000000ebdcc <syscall+12>:	aa0203e1	mov	x1, x2
+   0x00000000000ebdd0 <syscall+16>:	aa0303e2	mov	x2, x3
+   0x00000000000ebdd4 <syscall+20>:	aa0403e3	mov	x3, x4
+   0x00000000000ebdd8 <syscall+24>:	aa0503e4	mov	x4, x5
+   0x00000000000ebddc <syscall+28>:	aa0603e5	mov	x5, x6
+   0x00000000000ebde0 <syscall+32>:	aa0703e6	mov	x6, x7
+   0x00000000000ebde4 <syscall+36>:	d4000001	svc	#0x0
+   0x00000000000ebde8 <syscall+40>:	b13ffc1f	cmn	x0, #0xfff
+   0x00000000000ebdec <syscall+44>:	54000042	b.cs	0xebdf4 <syscall+52>  // b.hs, b.nlast
+   0x00000000000ebdf0 <syscall+48>:	d65f03c0	ret
+   0x00000000000ebdf4 <syscall+52>:	17fcd983	b	0x22400
+End of assembler dump.

@@ -1,0 +1,19 @@
+{
+  "run": 17,
+  "native_wait_ms": 500,
+  "diagnostic_preload": false,
+  "real_main_ui_verified": false,
+  "big_picture_verified": false,
+  "observed_frame": "Linux desktop only",
+  "private_screenshot": "run17/005-normal-progress.png",
+  "private_screenshot_sha256": "c8b327ff2ae09eed14f00ba5dcd79eb12394a505dfb8041bac1bbfeabc740dc8",
+  "pixels_in_git": false,
+  "guard": "shared_memory_reserve",
+  "guard_seconds": 52.171025339,
+  "shm_bytes_free_after_freeze": 369274880,
+  "application_exit": "bounded owned TERM/KILL after ordinary request; native SIGKILL required",
+  "vm_stop": "original clean unmount/QEMU0/host fsync",
+  "iphone_verified": false,
+  "games_verified": false,
+  "post_run17_fsck": "PASS: full strict run18 preboot e2fsck -f -n, all five passes plus summary, no unexpected output"
+}

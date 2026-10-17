@@ -1,0 +1,309 @@
+{
+  "schema": 1,
+  "scope": "local continuation preflight; no VM or disk write",
+  "time": 1792256818.2755983,
+  "git_head": "12074eaf24cd8c51cf74cd0f185a5454057aa9d9",
+  "git_status": "",
+  "git_observation": "Windows Git source-state.json; Windows worktree gitfile is not a Linux Git path",
+  "manifests": {
+    "steam-fresh-network-20261017": {
+      "files": 69,
+      "sha256": "a289a48a896aab1250a6e9d82e7e8a8cbfe05897d419b2e3a0721c487d172747"
+    },
+    "steam-network-readonly-20261017": {
+      "files": 12,
+      "sha256": "4b5c6387b0c1ed434b163e80799ab42a6627bd3717568388b3a5d7e9d672294f"
+    },
+    "steam-proxy-ipc-static-20261017": {
+      "files": 13,
+      "sha256": "284194b880acd96db4354e7df304ea59a3949fda7b9aa400e85f13481fead450"
+    }
+  },
+  "client_cache": {
+    "bins_hardware_all.zip.58d828f4b4d9969be201b7731579a74bae0c3ea8": {
+      "size": 386432,
+      "sha256": "90b8202eb03a0a95bf444d0daa6849c7e63a0e32fa9367ddb369d6218d2978b1"
+    },
+    "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7": {
+      "size": 110509907,
+      "sha256": "26c731703e4a641c8d9ec1ac80e2bc40e3837fc312d180ab32316e33ed980834"
+    },
+    "bins_sdk_linuxarm64_linuxarm64.zip.ba5879ea9713e405a2f81a1875c4b75d3ea7e250": {
+      "size": 16139523,
+      "sha256": "90967914f073a4dca6bb3055ce46c9a51dc766e4127ba0f1a99399cdf80f3214"
+    },
+    "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230": {
+      "size": 11186876,
+      "sha256": "30fa6e5ad583de624772a415f063ff9328c330864a83420bafd20dba8652756a"
+    },
+    "public_all.zip.23986fbf050cd10589db123d1d192c0ec9121f67": {
+      "size": 31197793,
+      "sha256": "320f9bcc68b0f6936f5d8411b5517352ffc54ea6431c42271afc27ae59792646"
+    },
+    "resource_linuxarm64_linuxarm64.zip.6e5691ac5a1a55a554250468a98c3f8e454fea4a": {
+      "size": 2371,
+      "sha256": "f78280db38d95a74096a00f7d2bc3061286db135e9e61bbf963eb65de39d66fc"
+    },
+    "resources_all.zip.641e9eb30f1b8d771a28818779c8cbcc79e4f04b": {
+      "size": 4302726,
+      "sha256": "711185e036f0b82efb2aa83341cfea3b2dfed511c532ae75b061b5e6d0a3d9c7"
+    },
+    "resources_hidpi_all.zip.a110d78e994c028dc1c412951e87a0c4e9c819f7": {
+      "size": 98371,
+      "sha256": "5bdb97ec734f035c1d06a59b62980028b1b05b920c544ae3673b1a515d3d507e"
+    },
+    "resources_misc_all.zip.99ed79ed868d732d8e9e9a45444b8f003191e3dd": {
+      "size": 4317962,
+      "sha256": "187e562403c7544af7162e08baf7677d030ad6f60947c2cdc7dcbcbf0a7a7fe6"
+    },
+    "sdl3_linuxarm64_linuxarm64.zip.efa8d1a917106512c3703ee55f7e53546be04f9b": {
+      "size": 9314329,
+      "sha256": "e7fbba1a077f2bfc1f850dd8eb37d42ee010437f19ff74e5333f233cb79bf501"
+    },
+    "steamui_websrc_all.zip.31360adc289699ec1aa51322d8dc79848b2b58cd": {
+      "size": 35817233,
+      "sha256": "24fc33b504432d2425427c4ea4f44cd08484a314dbbbc3dd0692690085ead013"
+    },
+    "steamui_websrc_movies_all.zip.40e78cdda48e9a8a74baf614e0cdc7a6b96d26d1": {
+      "size": 10900690,
+      "sha256": "885a32533327f0fd5ea98e6c6f13552e965cab4852dad7ce9ccf3d929d726b5b"
+    },
+    "steamui_websrc_sounds_all.zip.74727ca40ef88c5012bb631488fd285418dce825": {
+      "size": 4676203,
+      "sha256": "c823bd39d234e7d9a5fdb5ec6605eae3f175e52bb847725e8826ff526a61641c"
+    },
+    "strings_all.zip.93ea36a0c61c152f06f19f63d24b61ff80bcae40": {
+      "size": 3995770,
+      "sha256": "b0d2e3d669df3df77a005c2fad2f4e4e9f564d1b1a44ae15c3b5a0193330874e"
+    },
+    "strings_en_all.zip.feda688b91f12c45b6e576c6ca63705793617543": {
+      "size": 114068,
+      "sha256": "920283d1b37cd256b9f9bb48a81dea72da0cf7cca86cfefcb2313d9433713146"
+    },
+    "tenfoot_images_all.zip.86419c7a56c12dd107b5e0d46f50c8a9b121f3cc": {
+      "size": 6582204,
+      "sha256": "990676bc29d01736477c6b571b5048258a6156284ef242503112fc68567cbf01"
+    },
+    "webkit_linuxarm64_linuxarm64.zip.c1d5fa58a564375f71b34bccaa51c19be1143137": {
+      "size": 111396433,
+      "sha256": "b8687e0f20668d24055d8f2e9f6c4fbcbe84fbb99a7bc9de4595530be7029990"
+    }
+  },
+  "dependency_cache": {
+    "libabsl20240722": {
+      "size": 452500,
+      "sha256": "eb6648c73cd69c577a2bc18c8d66d44de897c0207a734ffdb55f91945404d0ac"
+    },
+    "libasound2-data": {
+      "size": 21188,
+      "sha256": "04688afdff3769c0f685541daed7b2f6f0cb946799ddf1d5847ddf11fe245559"
+    },
+    "libasound2t64": {
+      "size": 341632,
+      "sha256": "9c808d819ccddc37c793dd3186c2ecd858b2feb2474cebb883f70386e7890d39"
+    },
+    "libasyncns0": {
+      "size": 11672,
+      "sha256": "818bbcaa7ada536a1bdd5b1c26b77608606403f5c15557691e83d0b4433b89ef"
+    },
+    "libdecor-0-0": {
+      "size": 15204,
+      "sha256": "34c0db59390767ef7b1cb5594f78f142b0673a5e7788e068cdd323f9c16f9207"
+    },
+    "libebur128-1": {
+      "size": 14636,
+      "sha256": "3b7ac8f30620590a710e6c8877bb28aad295e253a87a173f05f852a953be3326"
+    },
+    "libfftw3-single3": {
+      "size": 516600,
+      "sha256": "874b10ccab6219bcae210cc9ff9298389e266ad7308be086956c859ae1aa8ba5"
+    },
+    "libflac14": {
+      "size": 179768,
+      "sha256": "11800827306e56fcbd1a65ea67d9d13126fc02bf87fdfecd35e0f48a145b3c59"
+    },
+    "libgomp1": {
+      "size": 123520,
+      "sha256": "43e84cb7971d8a4d8870cab6204e998ea4f23ee1339bb0ff556dd881bac82d25"
+    },
+    "libgtk2.0-0t64": {
+      "size": 1674412,
+      "sha256": "28b2f1622197443f07f25a93e03db1a964184946ac12f501b8221c895026d0ca"
+    },
+    "libgtk2.0-common": {
+      "size": 2661068,
+      "sha256": "f874797252735a9d0d14e6e6baf93e7c1ea7b2bc7ee44ef7ec09fb715bfbc9e6"
+    },
+    "libibus-1.0-5": {
+      "size": 452584,
+      "sha256": "70ca5d33241c0b34b3ef617c3f87572810aeec8b10e002dc5660f7e86dc082d6"
+    },
+    "liblilv-0-0": {
+      "size": 41672,
+      "sha256": "eb14f680a7c639a9dce34928a2a560468baa25f03a79cb76b6acc9b35226b54e"
+    },
+    "liblsof0": {
+      "size": 127540,
+      "sha256": "a1ab035a948e010207680635ad7fedfb27cd69a43ab53bd5a4d647775bdf3020"
+    },
+    "libmp3lame0": {
+      "size": 354760,
+      "sha256": "ed3563722129ffa4def03b7af0b589fa20eef972bdcc4599202ddb1ac654c58e"
+    },
+    "libmpg123-0t64": {
+      "size": 143208,
+      "sha256": "d284df39ff3b64f1cdf274352613c52534c55eed82c3a2ff0fc7ba154acd7bf0"
+    },
+    "libmysofa1": {
+      "size": 1156924,
+      "sha256": "691ae51a7b5643fb9f7c81c917d12c1dc71c74eb1cf2073f0d3f71141fbffa8a"
+    },
+    "libnghttp2-14": {
+      "size": 71604,
+      "sha256": "ca222b98d5bef2193c05a1e736d0619798ba7a8f8e92526f3e1d06edcd0bf751"
+    },
+    "libnm0": {
+      "size": 426116,
+      "sha256": "084202c4c7b53f30352bc2ad5048479a246198e1a1ef205763a18cb5e907b861"
+    },
+    "libnspr4": {
+      "size": 102088,
+      "sha256": "b8cd0221e4c35a77ec6e3b89959ca96deb75919a3c55b6735ca0288a1b61bdbb"
+    },
+    "libnss3": {
+      "size": 1292972,
+      "sha256": "1a9f35c238e8bbb570fbdae88ffe43a3cf3462e1582cbe0903a9aa949e61f3e8"
+    },
+    "libogg0": {
+      "size": 23580,
+      "sha256": "d59a83ab352bf0c16ce9513fdf264f87214813ca8c628c652801ef476ece8286"
+    },
+    "libopenal-data": {
+      "size": 167780,
+      "sha256": "003fb223f6ccd387adc28357021c243c604591806afb84dc46e906b911d8de38"
+    },
+    "libopenal1": {
+      "size": 577344,
+      "sha256": "2431891da0bce880529768817087a7789000f07d24e201f13ff07a1ace9b40b5"
+    },
+    "libopus0": {
+      "size": 2812952,
+      "sha256": "1d980e8a4717074805a98dbe07671cb3bee068c25709315f3de836980c629836"
+    },
+    "libpipewire-0.3-0t64": {
+      "size": 260312,
+      "sha256": "f25ab475f09ab5ec952f13a2d6b7a870dd5eb8c7806664baf8be9bdee3ae995b"
+    },
+    "libpulse0": {
+      "size": 236376,
+      "sha256": "2de5610e3affe69cfb11110f890375261b47c9e0fc1a81eef7ecc4d6d2dc9a6d"
+    },
+    "libsamplerate0": {
+      "size": 944716,
+      "sha256": "5d9fad694b249d48d8457e1242ab60e04db6a30d7d56f80c6ae463ff122147ec"
+    },
+    "libsdl2-2.0-0": {
+      "size": 602568,
+      "sha256": "6312ccbc29645ac5cc9dde9f9ed8bd5c85a0233690c270c83c963b49f8cd49d5"
+    },
+    "libserd-0-0": {
+      "size": 45596,
+      "sha256": "01205ff5c346ae395ec3066034e151e8100e46f596afc65d9bba7a80cce129ae"
+    },
+    "libsndfile1": {
+      "size": 185528,
+      "sha256": "6c94f17e1f02778f98b96bb9ae19ff30085662e96685898a018c26bfd4bfc3f2"
+    },
+    "libsord-0-0": {
+      "size": 17284,
+      "sha256": "d2a648495869e680c7ecd107dad0c716590fec427817db703f3bebf719b37f59"
+    },
+    "libspa-0.2-modules": {
+      "size": 895964,
+      "sha256": "b13c1955882ea689f9135bf45c020a364d3cba2d2ed69251827b5c6abd41d4b7"
+    },
+    "libsratom-0-0": {
+      "size": 16040,
+      "sha256": "5ebc866e3632741477cc225a3a927ddacae432238494e73c50b07c00420d2406"
+    },
+    "libssh2-1t64": {
+      "size": 236268,
+      "sha256": "245565f4ce5493d67a3c54e26bc3d9cf28b1b70eeb912de7cda61af52268017d"
+    },
+    "libtirpc-common": {
+      "size": 11004,
+      "sha256": "300f582e2c9151a8d329568c705cadc76252c417147312fe331c4560d2c7a6c3"
+    },
+    "libtirpc3t64": {
+      "size": 79084,
+      "sha256": "ae390ce96435829f0d5252305fb9b22001f5bcc85477e452373ddb2a4fa4dbc1"
+    },
+    "libva2": {
+      "size": 74212,
+      "sha256": "7a5e7cbaaddf1f39973c10f9daae6769b704e0d6d72fe752d64003929272cbcf"
+    },
+    "libvdpau1": {
+      "size": 24356,
+      "sha256": "2ec2bf9930e402330e6b165645cdcb1e5b8528ac9782651d0217e4f827bf1451"
+    },
+    "libvorbis0a": {
+      "size": 83772,
+      "sha256": "6e8e64ebe692dd2d019af7f914f2e3b81bf13d4b1ce2516fb4248a0310ef7cf6"
+    },
+    "libvorbisenc2": {
+      "size": 75532,
+      "sha256": "4a477b3ae19ba50a288f036c8176d61cd9f3836ba65472f88b95e3f6b3bf2dd3"
+    },
+    "libwebrtc-audio-processing-1-3": {
+      "size": 340320,
+      "sha256": "b3222b13cac750380a6f6800aace801fbc0587ab1fa23a4aa2ce307ed0391ae2"
+    },
+    "libxss1": {
+      "size": 17088,
+      "sha256": "ffbdfe7ee0644984dfe7577a22edee74f1e3b2dd76721417c8e45aed9388a220"
+    },
+    "libzix-0-0": {
+      "size": 22532,
+      "sha256": "6848ea4b2911b670c8b7bf106c932eabd715c56819af4998f77a09a6be69a479"
+    },
+    "lsof": {
+      "size": 306172,
+      "sha256": "c15929d5a0263ca10659f6549d9f1037e2d62871837a1819b0d26db0e6807706"
+    }
+  },
+  "production_inputs": {
+    "seed": {
+      "size": 1342177280,
+      "sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791"
+    },
+    "kernel": {
+      "size": 10351104,
+      "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+    },
+    "gui_initramfs": {
+      "size": 11319304,
+      "sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4"
+    }
+  },
+  "runs": {
+    "run7": {
+      "status": "experiment_finished",
+      "clean_shutdown": true,
+      "qemu_exit_code": 0,
+      "seed_sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791",
+      "receipt_sha256": "af84b9fd17e937875afada8490e443cf516ae23c10e30e5ee65c93d5698c5fd4",
+      "disk_size": 4535484416
+    },
+    "run8": {
+      "status": "failed",
+      "clean_shutdown": true,
+      "qemu_exit_code": 0,
+      "seed_sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791",
+      "receipt_sha256": "c81feb2fe0ae27f12722d7df8085752b1c2e76f7a5fbe19d2c8516c187c6e05b",
+      "disk_size": 4535615488
+    }
+  },
+  "free_bytes": 139402870784,
+  "required_for_full_12GiB_copy_and_4GiB_reserve": 17179869184,
+  "status": "pass"
+}

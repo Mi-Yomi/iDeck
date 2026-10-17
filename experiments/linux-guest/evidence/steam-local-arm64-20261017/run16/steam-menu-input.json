@@ -1,0 +1,5 @@
+{
+  "time_ns": 1792272828264439244,
+  "action": "XTest click visible Steam menu at40,19",
+  "result": "awaiting visible menu; injection alone does not prove navigation"
+}

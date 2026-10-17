@@ -1,0 +1,49 @@
+{
+  "min_available_kB": 162564,
+  "first": {
+    "seconds": 1.645,
+    "MemAvailable_kB": 1260252,
+    "MemFree_kB": 439780,
+    "SwapFree_kB": 0,
+    "shm_free": 769449984,
+    "pids": []
+  },
+  "last": {
+    "seconds": 557.932,
+    "MemAvailable_kB": 872304,
+    "MemFree_kB": 492056,
+    "SwapFree_kB": 0,
+    "shm_free": 705196032,
+    "pids": [
+      "1562",
+      "1614",
+      "1638",
+      "1641",
+      "1650",
+      "1704",
+      "1726",
+      "1735",
+      "2117"
+    ]
+  },
+  "lowest": {
+    "seconds": 548.132,
+    "MemAvailable_kB": 162564,
+    "MemFree_kB": 34392,
+    "SwapFree_kB": 0,
+    "shm_free": 670228480,
+    "pids": [
+      "1562",
+      "1614",
+      "1638",
+      "1641",
+      "1650",
+      "1704",
+      "1726",
+      "1735",
+      "1782",
+      "2117"
+    ]
+  },
+  "scope": "memory pressure observations, not OOM-kill proof"
+}

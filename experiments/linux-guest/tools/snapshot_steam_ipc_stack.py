@@ -17,7 +17,7 @@ def proc_info(tid):
     p = Path('/proc') / str(tid)
     fields = (p/'stat').read_text().rsplit(') ', 1)[1].split()
     status = dict(x.split(':', 1) for x in (p/'status').read_text().splitlines() if ':' in x)
-    return {'tid':tid, 'tgid':int(status['Tgid']), 'starttime':int(fields[19]),
+    return {'tid':tid, 'tgid':int(status['Tgid']), 'ppid':int(status['PPid']), 'starttime':int(fields[19]),
             'uid':[int(x) for x in status['Uid'].split()], 'tracer':int(status['TracerPid']),
             'state':status['State'].strip()[0], 'exe':os.readlink(p/'exe')}
 
@@ -29,6 +29,14 @@ def validate(info, tgid, exe):
         raise Refusal('already_traced')
     if info['state'] in ('Z','X','x','t'):
         raise Refusal('unavailable_process')
+
+
+def is_browser_argv(info, argv, main_pid):
+    # Steam's forked assertion dumper inherits the browser's executable and
+    # argv. It is a child of the browser, not the native client's browser.
+    return (info.get('ppid') == main_pid and
+            ('-steampid='+str(main_pid)).encode() in argv and
+            not any(x.startswith(b'--type=') for x in argv))
 
 
 def parse_maps(text):
@@ -227,7 +235,7 @@ def main():
         validate(browser,args.browser_pid,ROOT+'steamwebhelper')
         # Read argv to identify the browser; never output it or environment.
         argv=(Path('/proc')/str(args.browser_pid)/'cmdline').read_bytes().split(b'\0')
-        if ('-steampid='+str(args.main_pid)).encode() not in argv or any(x.startswith(b'--type=') for x in argv):
+        if not is_browser_argv(browser, argv, args.main_pid):
             raise Refusal('unexpected_browser')
         selected=[]
         for tid in args.tid:

@@ -26,6 +26,12 @@ class Fake:
  def stop_group(self,pid):self.calls.append(('stopgroup',pid));self.group=True
 
 class Frames(unittest.TestCase):
+ def test_browser_parent_rejects_inherited_assertion_dumper_argv(self):
+  argv=[b'steamwebhelper',b'-steampid=123',b'-force-sandbox']
+  self.assertTrue(snap.is_browser_argv({'ppid':123},argv,123))
+  self.assertFalse(snap.is_browser_argv({'ppid':456},argv,123))
+  self.assertFalse(snap.is_browser_argv({},argv,123))
+  self.assertFalse(snap.is_browser_argv({'ppid':123},argv+[b'--type=renderer'],123))
  def setUp(self):
   self.maps=snap.parse_maps('1000-2000 rw-p 00000000 00:00 0 [stack]\n4000-5000 r-xp 00001000 00:00 1 /test/lib.so\n')
  def test_chain(self):

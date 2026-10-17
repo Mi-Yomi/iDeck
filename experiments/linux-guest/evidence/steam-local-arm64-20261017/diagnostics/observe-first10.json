@@ -1,0 +1,228 @@
+{
+  "source_log_sha256": "fcd99126f441093d15484bdc09c8c9e8278938c33479ac61295cdb9826f1d5f0",
+  "scope": "first 10 calls before any manual freeze, no ptrace; observe mode preserves original 500ms",
+  "events": [
+    {
+      "event": "probe_loaded",
+      "pid": 1176,
+      "mode": "observe",
+      "only_verified_connect_wait": true
+    },
+    {
+      "event": "before_connect_wait",
+      "pid": 1176,
+      "seq": 0,
+      "original_ms": 500,
+      "effective_ms": 500,
+      "caller_va": "0x60420",
+      "caller_chain": [
+        "0x63a98",
+        "0x5b368"
+      ],
+      "chromehtml_sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7"
+    },
+    {
+      "event": "after_connect_wait",
+      "pid": 1176,
+      "seq": 0,
+      "result": -1,
+      "errno": 110,
+      "elapsed_ns": 501708229
+    },
+    {
+      "event": "before_connect_wait",
+      "pid": 1176,
+      "seq": 1,
+      "original_ms": 500,
+      "effective_ms": 500,
+      "caller_va": "0x60420",
+      "caller_chain": [
+        "0x63a98",
+        "0x5b368"
+      ],
+      "chromehtml_sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7"
+    },
+    {
+      "event": "after_connect_wait",
+      "pid": 1176,
+      "seq": 1,
+      "result": -1,
+      "errno": 110,
+      "elapsed_ns": 503143600
+    },
+    {
+      "event": "before_connect_wait",
+      "pid": 1176,
+      "seq": 2,
+      "original_ms": 500,
+      "effective_ms": 500,
+      "caller_va": "0x60420",
+      "caller_chain": [
+        "0x63a98",
+        "0x5b368"
+      ],
+      "chromehtml_sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7"
+    },
+    {
+      "event": "after_connect_wait",
+      "pid": 1176,
+      "seq": 2,
+      "result": -1,
+      "errno": 110,
+      "elapsed_ns": 506604583
+    },
+    {
+      "event": "before_connect_wait",
+      "pid": 1176,
+      "seq": 3,
+      "original_ms": 500,
+      "effective_ms": 500,
+      "caller_va": "0x60420",
+      "caller_chain": [
+        "0x63a98",
+        "0x5b368"
+      ],
+      "chromehtml_sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7"
+    },
+    {
+      "event": "after_connect_wait",
+      "pid": 1176,
+      "seq": 3,
+      "result": -1,
+      "errno": 110,
+      "elapsed_ns": 501929082
+    },
+    {
+      "event": "before_connect_wait",
+      "pid": 1176,
+      "seq": 4,
+      "original_ms": 500,
+      "effective_ms": 500,
+      "caller_va": "0x60420",
+      "caller_chain": [
+        "0x63a98",
+        "0x5b368"
+      ],
+      "chromehtml_sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7"
+    },
+    {
+      "event": "after_connect_wait",
+      "pid": 1176,
+      "seq": 4,
+      "result": -1,
+      "errno": 110,
+      "elapsed_ns": 502152367
+    },
+    {
+      "event": "before_connect_wait",
+      "pid": 1176,
+      "seq": 5,
+      "original_ms": 500,
+      "effective_ms": 500,
+      "caller_va": "0x60420",
+      "caller_chain": [
+        "0x63a98",
+        "0x5b368"
+      ],
+      "chromehtml_sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7"
+    },
+    {
+      "event": "after_connect_wait",
+      "pid": 1176,
+      "seq": 5,
+      "result": -1,
+      "errno": 110,
+      "elapsed_ns": 507289272
+    },
+    {
+      "event": "before_connect_wait",
+      "pid": 1176,
+      "seq": 6,
+      "original_ms": 500,
+      "effective_ms": 500,
+      "caller_va": "0x60420",
+      "caller_chain": [
+        "0x63a98",
+        "0x5b368"
+      ],
+      "chromehtml_sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7"
+    },
+    {
+      "event": "after_connect_wait",
+      "pid": 1176,
+      "seq": 6,
+      "result": -1,
+      "errno": 110,
+      "elapsed_ns": 501825004
+    },
+    {
+      "event": "before_connect_wait",
+      "pid": 1176,
+      "seq": 7,
+      "original_ms": 500,
+      "effective_ms": 500,
+      "caller_va": "0x60420",
+      "caller_chain": [
+        "0x63a98",
+        "0x5b368"
+      ],
+      "chromehtml_sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7"
+    },
+    {
+      "event": "after_connect_wait",
+      "pid": 1176,
+      "seq": 7,
+      "result": -1,
+      "errno": 110,
+      "elapsed_ns": 503046594
+    },
+    {
+      "event": "before_connect_wait",
+      "pid": 1176,
+      "seq": 8,
+      "original_ms": 500,
+      "effective_ms": 500,
+      "caller_va": "0x60420",
+      "caller_chain": [
+        "0x63a98",
+        "0x5b368"
+      ],
+      "chromehtml_sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7"
+    },
+    {
+      "event": "after_connect_wait",
+      "pid": 1176,
+      "seq": 8,
+      "result": -1,
+      "errno": 110,
+      "elapsed_ns": 511785840
+    },
+    {
+      "event": "before_connect_wait",
+      "pid": 1176,
+      "seq": 9,
+      "original_ms": 500,
+      "effective_ms": 500,
+      "caller_va": "0x60420",
+      "caller_chain": [
+        "0x63a98",
+        "0x5b368"
+      ],
+      "chromehtml_sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7"
+    },
+    {
+      "event": "after_connect_wait",
+      "pid": 1176,
+      "seq": 9,
+      "result": -1,
+      "errno": 110,
+      "elapsed_ns": 500530697
+    },
+    {
+      "event": "probe_loaded",
+      "pid": 1178,
+      "mode": "observe",
+      "only_verified_connect_wait": true
+    }
+  ]
+}

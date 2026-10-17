@@ -1,0 +1,7 @@
+{
+  "software_assertion_comments": [
+    "Assert( CefCrashReportingEnabled() ):/data/src/webhelper/html_chrome.cpp:625\n"
+  ],
+  "full_dump_hashed_but_only_selected_metadata_and_frame_addresses_decoded": true,
+  "environment_stream_decoded": false
+}

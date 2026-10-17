@@ -1,0 +1,9 @@
+{
+  "comparison": "run16",
+  "single_change": "remove diagnostic LD_PRELOAD and use unchanged original helper; natural native deadline 500ms",
+  "launcher": "desktop",
+  "CPU_RAM_SHM_software_CEF_sandbox_NAT": "unchanged",
+  "monitor_functions_ast_identical": true,
+  "startup_observation": "no UI actions/guardian transfers for initial 20min unless safety guard trips",
+  "reason": "run16 native connect woke177ms below original500; remove remaining instrumentation to isolate persistent blank main content"
+}

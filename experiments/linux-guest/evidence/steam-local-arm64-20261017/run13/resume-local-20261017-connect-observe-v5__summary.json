@@ -1,0 +1,11 @@
+{
+  "reason": "observer_failed_display_query_timeout",
+  "manual_freeze": true,
+  "frozen": [
+    1176,
+    1946,
+    1958,
+    1961,
+    1967
+  ]
+}

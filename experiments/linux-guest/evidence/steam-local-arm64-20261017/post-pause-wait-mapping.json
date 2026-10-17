@@ -1,0 +1,47 @@
+{
+  "kind": "address/map metadata only; paused instrumented interval",
+  "mappings": [
+    {
+      "tid": 2192,
+      "phase": "before",
+      "address": "0xffff196937a8",
+      "mapping_line": "ffff19690000-ffff19890000 rw-s 00000000 00:1b 261                        /dev/shm/u1000-ValveIPCSharedObj-Steam",
+      "device": "00:1b",
+      "inode": 261,
+      "file_offset": "0x37a8",
+      "maps_sha256": "2d79c344ce470d5bffabcf3af8d3c9a0235b15b843b4afeb914cdf373651d23b"
+    },
+    {
+      "tid": 2192,
+      "phase": "after",
+      "address": "0xffff196937a8",
+      "mapping_line": "ffff19690000-ffff19890000 rw-s 00000000 00:1b 261                        /dev/shm/u1000-ValveIPCSharedObj-Steam",
+      "device": "00:1b",
+      "inode": 261,
+      "file_offset": "0x37a8",
+      "maps_sha256": "ca0551b990698475f5058d447bcd4f82da727f70196fba1276b5caafb1ffa116"
+    },
+    {
+      "tid": 2316,
+      "phase": "before",
+      "address": "0xffff7fc907a8",
+      "mapping_line": "ffff7fc8d000-ffff7fe8d000 rw-s 00000000 00:1b 261                        /dev/shm/u1000-ValveIPCSharedObj-Steam",
+      "device": "00:1b",
+      "inode": 261,
+      "file_offset": "0x37a8",
+      "maps_sha256": "fea288c920b6cb0c94392c66fb1e017f8a2c736876ecaaa870e0b832f31a7948"
+    },
+    {
+      "tid": 2316,
+      "phase": "after",
+      "address": "0xffff7fc907a8",
+      "mapping_line": "ffff7fc8d000-ffff7fe8d000 rw-s 00000000 00:1b 261                        /dev/shm/u1000-ValveIPCSharedObj-Steam",
+      "device": "00:1b",
+      "inode": 261,
+      "file_offset": "0x37a8",
+      "maps_sha256": "bbbd0a7e914dc1e5be4b10d96770ee1e66c2065288f5e57af2c60094da71b9db"
+    }
+  ],
+  "same_backing_and_offset": true,
+  "baseline_cause_proven": false
+}

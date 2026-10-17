@@ -1,0 +1,27 @@
+{
+  "source_sha256": "9a45229272c8832fc247414dc6cb3de39db2a4a76629664157deaa01b652d873",
+  "native_unit_and_preload_abi": "pass",
+  "arm64_runtime_tests": "not yet run",
+  "files": {
+    "arm64-abi": {
+      "size": 71184,
+      "sha256": "e7db059d45d833cadec52e62bddeb8f8000c17d01aa6e331ec4ec3fac322d436"
+    },
+    "arm64-unit": {
+      "size": 73160,
+      "sha256": "baaf8fb6d1afe5534535939130122105a8f537d44a4aacdedcbcf3f5d0e7dfda"
+    },
+    "libnative-probe.so": {
+      "size": 21400,
+      "sha256": "abca8f3b63db637f8e88e27bab5ed9bcf69fc5982f988d478c17b37fc013fdba"
+    },
+    "native-abi": {
+      "size": 16680,
+      "sha256": "a6f688cb493111521de03f8fadc36e64fba805ccc16706d982182cbc04a5874d"
+    },
+    "native-unit": {
+      "size": 26776,
+      "sha256": "45aeb43652b58fd6886818e7af042dc3b18a3ffa1f68d4090367b5216842cf9e"
+    }
+  }
+}

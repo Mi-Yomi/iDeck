@@ -1,0 +1,52 @@
+{
+  "before": {
+    "browser": {
+      "pid": 2295,
+      "starttime": "119356",
+      "state": "t",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 2479,
+      "ppid": 2192,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper"
+    },
+    "handler": {
+      "pid": 2479,
+      "starttime": "124528",
+      "state": "T",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 2295,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper"
+    }
+  },
+  "signalled_traced_target": false,
+  "handler_exited": true,
+  "browser_stopped_after_detach": true,
+  "after": {
+    "pid": 2295,
+    "starttime": "119356",
+    "state": "T",
+    "uid": [
+      "1000",
+      "1000",
+      "1000",
+      "1000"
+    ],
+    "tracer": 0,
+    "ppid": 2192,
+    "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper"
+  },
+  "header_hex": "4d444d5093a700000e0000002000000000000000d9bad36a0000000000000000",
+  "size": 625048,
+  "shm_free_bytes": 565260288
+}

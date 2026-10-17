@@ -1,0 +1,16 @@
+{
+  "sha256": "b93058d1f4aa210bee933e351b169376fe0f83d7aadb707e647606687557b06b",
+  "functions_from": "016-open-bigpicture.sh",
+  "functions_unchanged": [
+    "read",
+    "link",
+    "processes",
+    "identity",
+    "roles",
+    "pin_seen",
+    "freeze_pinned",
+    "watch"
+  ],
+  "operator_seconds": 165,
+  "no_new_native_process": true
+}

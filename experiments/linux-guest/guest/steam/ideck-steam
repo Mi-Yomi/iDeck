@@ -28,8 +28,11 @@ case "$1" in desktop|big-picture|stop) mode=$1;; *) fail unknown_mode 64;; esac
 [ "$(stat -c '%u' "$XAUTHORITY")" = 1000 ] || fail wrong_xauthority_owner
 [ -d "$steam_root" ] && [ ! -L "$steam_root" ] || fail client_not_installed
 [ "$(stat -c '%u' "$steam_root")" = 1000 ] || fail wrong_client_owner
-[ -f "$client" ] && [ -x "$client" ] && [ ! -L "$client" ] || fail client_not_executable
-[ "$(stat -c '%u' "$client")" = 1000 ] || fail wrong_binary_owner
+validate_client() {
+    [ -f "$client" ] && [ -x "$client" ] && [ ! -L "$client" ] || fail client_not_executable
+    [ "$(stat -c '%u' "$client")" = 1000 ] || fail wrong_binary_owner
+}
+validate_client
 for tool in flock pgrep dbus-send dbus-run-session; do
     command -v "$tool" >/dev/null 2>&1 || fail missing_session_dependency
 done
@@ -81,19 +84,28 @@ fi
 set -- -clientbeta steamdeck_publicbeta -cef-ozone-platform=x11 -cef-disable-gpu -cef-force-sandbox
 case "$mode" in
     desktop) set -- "$@" -nobigpicture;;
-    big-picture) set -- "$@" -gamepadui -steamdeck -steamos3;;
+    # This generic Linux guest has no SteamOS first-boot/update services.
+    big-picture) set -- "$@" -gamepadui;;
 esac
 printf 'IDECK_STEAM_STATUS=experimental_launch_requested\n'
 printf 'IDECK_STEAM_RENDERING=cef_software_ui_only\n'
-status=0
-if [ -n "${DBUS_SESSION_BUS_ADDRESS:-}" ] &&
-   dbus-send --session --type=method_call --print-reply \
-       --dest=org.freedesktop.DBus /org/freedesktop/DBus \
-       org.freedesktop.DBus.ListNames >/dev/null 2>&1; then
-    "$client" "$@" || status=$?
-else
-    unset DBUS_SESSION_BUS_ADDRESS DBUS_SESSION_BUS_PID
-    dbus-run-session -- "$client" "$@" || status=$?
-fi
+for attempt in 0 1 2; do
+    status=0
+    validate_client
+    if [ -n "${DBUS_SESSION_BUS_ADDRESS:-}" ] &&
+       dbus-send --session --type=method_call --print-reply \
+           --dest=org.freedesktop.DBus /org/freedesktop/DBus \
+           org.freedesktop.DBus.ListNames >/dev/null 2>&1; then
+        "$client" "$@" || status=$?
+    else
+        unset DBUS_SESSION_BUS_ADDRESS DBUS_SESSION_BUS_PID
+        dbus-run-session -- "$client" "$@" || status=$?
+    fi
+    # Steam's updater returns 42 to request a restart; retain our launch lock.
+    [ "$status" -eq 42 ] || break
+    [ "$attempt" -lt 2 ] || fail update_restart_limit 42
+    if client_running; then fail client_still_running_after_update; fi
+    printf 'IDECK_STEAM_STATUS=update_restart_requested\n'
+done
 [ "$status" -eq 0 ] || fail client_exit_nonzero "$status"
 printf 'IDECK_STEAM_STATUS=client_returned_window_not_asserted\n'

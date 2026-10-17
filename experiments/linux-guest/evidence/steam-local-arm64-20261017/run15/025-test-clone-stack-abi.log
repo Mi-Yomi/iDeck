@@ -1,0 +1,8 @@
+CLONE_STACK={"case": "baseline", "exit": 126, "stdout": "", "stderr": "env: '/run/ideck/arm64-clone-stack-test': Permission denied\n"}
+CLONE_STACK={"case": "old-v2-preload", "exit": 126, "stdout": "", "stderr": "env: '/run/ideck/arm64-clone-stack-test': Permission denied\n"}
+Traceback (most recent call last):
+  File "<stdin>", line 11, in <module>
+AssertionError: baseline itself failed; no inference about interposer
+
+STEAM_COMMAND_025_1
+debian# 

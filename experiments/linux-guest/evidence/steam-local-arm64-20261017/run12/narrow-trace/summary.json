@@ -1,0 +1,14 @@
+{
+  "reason": "shared_memory_reserve",
+  "seconds": 150.98659382,
+  "frozen": [
+    892,
+    1039,
+    1060,
+    1061,
+    1077,
+    1154
+  ],
+  "launcher_pid": 872,
+  "path": "/home/ideck/steam-experiment-logs/resume-local-20261017-big-picture-v4"
+}

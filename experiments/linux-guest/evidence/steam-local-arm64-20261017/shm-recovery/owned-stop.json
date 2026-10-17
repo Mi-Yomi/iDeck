@@ -1,0 +1,59 @@
+{
+  "captured": [
+    {
+      "pid": 924,
+      "starttime": "12617",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "state": "S"
+    },
+    {
+      "pid": 943,
+      "starttime": "13039",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "state": "S"
+    },
+    {
+      "pid": 945,
+      "starttime": "13060",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "state": "T"
+    }
+  ],
+  "signals": [
+    {
+      "pid": 924,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 943,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 945,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 945,
+      "signal": "SIGKILL"
+    }
+  ],
+  "remaining": [],
+  "application_stop": "unclean owned-process termination after failed initialization",
+  "ready_for_orphan_check": true,
+  "time_ns": 1792260228981127806
+}

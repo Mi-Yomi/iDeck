@@ -1,0 +1,18 @@
+{
+  "identity": {
+    "pid": 2569,
+    "starttime": "116924",
+    "exe": "/usr/games/xgalaga",
+    "uid": 1000,
+    "binary_sha256": "4328802a76b1ae5383a1d94309aeaedd84f950e76dc04e709ec0d66e2af8cadd"
+  },
+  "window_id": "12582988",
+  "title": "XGalaga",
+  "pid_window_property_unavailable": true,
+  "actions": [
+    "k",
+    "Right held 0.5s",
+    "space"
+  ],
+  "game_acceptance": "requires actual frame inspection"
+}

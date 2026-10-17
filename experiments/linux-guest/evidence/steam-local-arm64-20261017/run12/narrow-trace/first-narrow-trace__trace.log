@@ -1,0 +1,197 @@
+[pid  1056] 1792263816.126154 [0000ffff84aa9f00] mmap(NULL, 1052672, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff54301000 <0.005129>
+[pid  1056] 1792263816.182484 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAIT, 2147484540, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid   892] 1792263816.519076 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAKE, 1) = 1 <0.003157>
+[pid  1056] 1792263816.532112 [0000ffff84aabde8] <... futex resumed>) = 0 <0.342201>
+[pid  1056] 1792263816.548261 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAIT, 2147484540, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid   892] 1792263816.584019 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAKE, 1 <unfinished ...>
+[pid  1056] 1792263816.590736 [0000ffff84aabde8] <... futex resumed>) = -1 EAGAIN (Resource temporarily unavailable) <0.030200>
+[pid   892] 1792263816.608077 [0000ffffaee9bde8] <... futex resumed>) = 0 <0.018101>
+[pid   892] 1792263816.628860 [0000ffffaee3f22c] openat(AT_FDCWD, "/dev/null", O_RDONLY) = 99 <0.003339>
+[pid   892] 1792263816.678036 [0000ffffaee3f22c] openat(AT_FDCWD, "/dev/null", O_RDONLY) = 100 <0.004314>
+[pid   892] 1792263816.695099 [0000ffffaee3f22c] openat(AT_FDCWD, "/dev/null", O_RDONLY) = 102 <0.001921>
+[pid   892] 1792263816.716156 [0000ffffaee94c94] openat(AT_FDCWD, "/dev/shm/u1000-Shm_f9b5a0cd", O_RDWR|O_CREAT|O_EXCL|O_NOFOLLOW|O_CLOEXEC, 0777) = -1 EEXIST (File exists) <0.005061>
+[pid   892] 1792263816.737071 [0000ffffaee94c38] openat(AT_FDCWD, "/dev/shm/u1000-Shm_f9b5a0cd", O_RDWR|O_NOFOLLOW|O_CLOEXEC) = 96 <0.004409>
+[pid   892] 1792263816.779230 [0000ffffaee3f22c] close(99) = 0 <0.005782>
+[pid   892] 1792263816.819839 [0000ffffaee3f22c] close(100) = 0 <0.003989>
+[pid   892] 1792263816.827099 [0000ffffaee3f22c] close(102) = 0 <0.003215>
+[pid   892] 1792263816.839878 [0000ffffaee99f00] mmap(NULL, 8208, PROT_READ|PROT_WRITE, MAP_SHARED, 96, 0) = 0xffffae902000 <0.008920>
+[pid   892] 1792263816.881832 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAIT, 2147484704, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid  1056] 1792263817.299874 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAKE, 1) = 1 <0.000598>
+[pid   892] 1792263817.302943 [0000ffffaee9bde8] <... futex resumed>) = 0 <0.416763>
+[pid   892] 1792263817.316166 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAIT, 2147484704, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid  1056] 1792263817.352065 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAKE, 1) = 1 <0.011278>
+[pid   892] 1792263817.364949 [0000ffffaee9bde8] <... futex resumed>) = 0 <0.047148>
+[pid  1056] 1792263817.370603 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAIT, 2147484540, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid   892] 1792263817.876902 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAKE, 1) = 1 <0.004645>
+[pid  1056] 1792263817.887150 [0000ffff84aabde8] <... futex resumed>) = 0 <0.515014>
+[pid  1056] 1792263817.893695 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAIT, 2147484540, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid   892] 1792263817.924952 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAKE, 1) = 1 <0.001000>
+[pid  1056] 1792263817.936085 [0000ffff84aabde8] <... futex resumed>) = 0 <0.036702>
+[pid  1056] 1792263817.951908 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAIT, 2147484540, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid   892] 1792263818.256660 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAKE, 1 <unfinished ...>
+[pid  1056] 1792263818.259789 [0000ffff84aabde8] <... futex resumed>) = 0 <0.306727>
+[pid   892] 1792263818.260098 [0000ffffaee9bde8] <... futex resumed>) = 1 <0.003145>
+[pid   892] 1792263818.262935 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAIT, 2147484704, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid  1056] 1792263818.794783 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAKE, 1) = 1 <0.004901>
+[pid   892] 1792263818.803716 [0000ffffaee9bde8] <... futex resumed>) = 0 <0.539098>
+[pid   892] 1792263818.814869 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAIT, 2147484704, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid  1056] 1792263818.825883 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAKE, 1) = 1 <0.003072>
+[pid   892] 1792263818.830075 [0000ffffaee9bde8] <... futex resumed>) = 0 <0.014128>
+[pid   892] 1792263818.840958 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAKE, 1) = 0 <0.002085>
+[pid   892] 1792263818.853029 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAIT, 2147484704, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid  1056] 1792263819.460875 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAKE, 1) = 1 <0.003179>
+[pid   892] 1792263819.465759 [0000ffffaee9bde8] <... futex resumed>) = 0 <0.610496>
+[pid   892] 1792263819.467755 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAIT, 2147484704, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid  1056] 1792263819.486531 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAKE, 1) = 1 <0.000920>
+[pid   892] 1792263819.488893 [0000ffffaee9bde8] <... futex resumed>) = 0 <0.019386>
+[pid  1056] 1792263819.496728 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAIT, 2147484540, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid   892] 1792263819.680957 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAKE, 1 <unfinished ...>
+[pid  1056] 1792263819.682862 [0000ffff84aabde8] <... futex resumed>) = 0 <0.184625>
+[pid   892] 1792263819.683983 [0000ffffaee9bde8] <... futex resumed>) = 1 <0.001937>
+[pid   892] 1792263819.686161 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAIT, 2147484704, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid  1056] 1792263820.118199 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAKE, 1) = 1 <0.001003>
+[pid   892] 1792263820.122741 [0000ffffaee9bde8] <... futex resumed>) = 0 <0.434497>
+[pid   892] 1792263820.126873 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAIT, 2147484704, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid  1056] 1792263820.150111 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAKE, 1) = 1 <0.007052>
+[pid   892] 1792263820.165115 [0000ffffaee9bde8] <... futex resumed>) = 0 <0.037303>
+[pid  1056] 1792263820.181701 [0000ffff84a4f22c] openat(AT_FDCWD, "/dev/null", O_RDONLY) = 85 <0.006833>
+[pid  1056] 1792263820.197141 [0000ffff84a4f22c] openat(AT_FDCWD, "/dev/null", O_RDONLY <unfinished ...>
+[pid   892] 1792263820.200031 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAKE, 1 <unfinished ...>
+[pid  1056] 1792263820.214813 [0000ffff84a4f22c] <... openat resumed>) = 86 <0.016037>
+[pid   892] 1792263820.215829 [0000ffffaee9bde8] <... futex resumed>) = 0 <0.003647>
+[pid  1056] 1792263820.220875 [0000ffff84a4f22c] openat(AT_FDCWD, "/dev/null", O_RDONLY) = 87 <0.004917>
+[pid  1056] 1792263820.235233 [0000ffff84aa4c94] openat(AT_FDCWD, "/dev/shm/u1000-Shm_6bd32e91", O_RDWR|O_CREAT|O_EXCL|O_NOFOLLOW|O_CLOEXEC, 0777) = 88 <0.008793>
+[pid  1056] 1792263820.250747 [0000ffff84aa7430] ftruncate(88, 26214416) = 0 <0.003671>
+[pid  1056] 1792263820.259994 [0000ffff84a4f22c] close(85) = 0 <0.005528>
+[pid  1056] 1792263820.271948 [0000ffff84a4f22c] close(86) = 0 <0.004367>
+[pid  1056] 1792263820.283876 [0000ffff84a4f22c] close(87) = 0 <0.004336>
+[pid  1056] 1792263820.292025 [0000ffff84aa9f00] mmap(NULL, 26214416, PROT_READ|PROT_WRITE, MAP_SHARED, 88, 0) = 0xffff14dfe000 <0.001332>
+[pid   892] 1792263820.485070 [0000ffffaee3f22c] openat(AT_FDCWD, "/dev/null", O_RDONLY) = 99 <0.001028>
+[pid   892] 1792263820.492239 [0000ffffaee3f22c] openat(AT_FDCWD, "/dev/null", O_RDONLY) = 100 <0.001886>
+[pid   892] 1792263820.498132 [0000ffffaee3f22c] openat(AT_FDCWD, "/dev/null", O_RDONLY) = 102 <0.001934>
+[pid   892] 1792263820.506084 [0000ffffaee94c94] openat(AT_FDCWD, "/dev/shm/u1000-Shm_9c064991", O_RDWR|O_CREAT|O_EXCL|O_NOFOLLOW|O_CLOEXEC, 0777) = 103 <0.004795>
+[pid   892] 1792263820.513853 [0000ffffaee97430] ftruncate(103, 8208) = 0 <0.000852>
+[pid   892] 1792263820.516892 [0000ffffaee3f22c] close(99) = 0 <0.000985>
+[pid   892] 1792263820.520019 [0000ffffaee3f22c] close(100) = 0 <0.000895>
+[pid   892] 1792263820.522707 [0000ffffaee3f22c] close(102) = 0 <0.000880>
+[pid   892] 1792263820.525678 [0000ffffaee99f00] mmap(NULL, 8208, PROT_READ|PROT_WRITE, MAP_SHARED, 103, 0) = 0xffffae866000 <0.001632>
+[pid   892] 1792263820.720998 [0000ffffaee9bde8] futex(0xffff3cb801a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=500000000}) = -1 ETIMEDOUT (Connection timed out) <0.501964>
+[pid   892] 1792263821.240188 [0000ffffaee94778] unlinkat(AT_FDCWD, "/dev/shm/u1000-Shm_9c064991", 0) = 0 <0.002060>
+[pid   892] 1792263821.264142 [0000ffffaee9a88c] munmap(0xffffae866000, 8208) = 0 <0.007449>
+[pid   892] 1792263821.284835 [0000ffffaee3f22c] close(103) = 0 <0.009270>
+[pid   892] 1792263821.341809 [0000ffffaee9a88c] munmap(0xffffae902000, 8208) = 0 <0.002085>
+[pid   892] 1792263821.352215 [0000ffffaee3f22c] close(96) = 0 <0.002949>
+[pid   892] 1792263821.389737 [0000ffffaee94c38] openat(AT_FDCWD, "/dev/shm/u1000-Shm_f9b5a0cd", O_RDONLY|O_NOFOLLOW|O_CLOEXEC) = 96 <0.003066>
+[pid   892] 1792263821.395864 [0000ffffaee3f22c] close(96) = 0 <0.001982>
+[pid  1056] 1792263822.093630 [0000ffff84aabde8] futex(0xffff8236e7a8, FUTEX_WAKE, 1) = 0 <0.002044>
+[pid  1056] 1792263822.097970 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAIT, 2147484540, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid   892] 1792263822.236893 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAKE, 1 <unfinished ...>
+[pid  1056] 1792263822.242656 [0000ffff84aabde8] <... futex resumed>) = 0 <0.140249>
+[pid   892] 1792263822.244139 [0000ffffaee9bde8] <... futex resumed>) = 1 <0.006848>
+[pid   892] 1792263822.250059 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAIT, 2147484704, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid  1056] 1792263822.265596 [0000ffff84aa4778] unlinkat(AT_FDCWD, "/dev/shm/u1000-Shm_b3cb3ffd", 0) = 0 <0.005985>
+[pid  1056] 1792263822.279933 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAKE, 1) = 1 <0.002465>
+[pid   892] 1792263822.284013 [0000ffffaee9bde8] <... futex resumed>) = 0 <0.032073>
+[pid  1056] 1792263822.285124 [0000ffff84aaa88c] munmap(0xffff857a3000, 8208) = 0 <0.003143>
+[pid  1056] 1792263822.290680 [0000ffff84a4f22c] close(62) = 0 <0.001208>
+[pid  1056] 1792263822.294071 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAIT, 2147484540, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid   892] 1792263822.295089 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAKE, 1) = 0 <0.001509>
+[pid  1056] 1792263822.297067 [0000ffff84aabde8] <... futex resumed>) = -1 EAGAIN (Resource temporarily unavailable) <0.002101>
+[pid   892] 1792263822.299194 [0000ffffaee3f22c] openat(AT_FDCWD, "/dev/null", O_RDONLY <unfinished ...>
+[pid  1056] 1792263822.301798 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAKE, 1 <unfinished ...>
+[pid   892] 1792263822.304096 [0000ffffaee3f22c] <... openat resumed>) = 96 <0.003998>
+[pid  1056] 1792263822.306057 [0000ffff84aabde8] <... futex resumed>) = 0 <0.002163>
+[pid   892] 1792263822.318960 [0000ffffaee3f22c] openat(AT_FDCWD, "/dev/null", O_RDONLY) = 99 <0.003331>
+[pid   892] 1792263822.326137 [0000ffffaee3f22c] openat(AT_FDCWD, "/dev/null", O_RDONLY) = 100 <0.001414>
+[pid   892] 1792263822.330991 [0000ffffaee94c94] openat(AT_FDCWD, "/dev/shm/u1000-Shm_f9b5a0cd", O_RDWR|O_CREAT|O_EXCL|O_NOFOLLOW|O_CLOEXEC, 0777) = -1 EEXIST (File exists) <0.001130>
+[pid   892] 1792263822.339827 [0000ffffaee94c38] openat(AT_FDCWD, "/dev/shm/u1000-Shm_f9b5a0cd", O_RDWR|O_NOFOLLOW|O_CLOEXEC) = 102 <0.002950>
+[pid   892] 1792263822.345743 [0000ffffaee3f22c] close(96 <unfinished ...>
+[pid  1056] 1792263822.350088 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000} <unfinished ...>
+[pid   892] 1792263822.353161 [0000ffffaee3f22c] <... close resumed>) = 0 <0.006869>
+[pid   892] 1792263822.354925 [0000ffffaee3f22c] close(99) = 0 <0.003021>
+[pid   892] 1792263822.360996 [0000ffffaee3f22c] close(100) = 0 <0.001902>
+[pid   892] 1792263822.365170 [0000ffffaee99f00] mmap(NULL, 8208, PROT_READ|PROT_WRITE, MAP_SHARED, 102, 0) = 0xffffae902000 <0.002592>
+[pid  1056] 1792263822.375165 [0000ffff84aabde8] <... futex resumed>) = -1 ETIMEDOUT (Connection timed out) <0.022138>
+[pid  1056] 1792263822.390613 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.021843>
+[pid  1056] 1792263822.424167 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.021016>
+[pid  1056] 1792263822.455943 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.022001>
+[pid  1056] 1792263822.489984 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.027379>
+[pid  1056] 1792263822.524061 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.021605>
+[pid  1056] 1792263822.559135 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.021786>
+[pid  1056] 1792263822.590086 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.024949>
+[pid  1056] 1792263822.622054 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.021389>
+[pid  1056] 1792263822.656169 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.022045>
+[pid  1056] 1792263822.693219 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.023810>
+[pid  1056] 1792263822.726653 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.024242>
+[pid  1056] 1792263822.761018 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.022592>
+[pid  1056] 1792263822.788558 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.022711>
+[pid  1056] 1792263822.820912 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.020949>
+[pid  1056] 1792263822.849092 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.022644>
+[pid  1056] 1792263822.879860 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.021499>
+[pid  1056] 1792263822.912961 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.021949>
+[pid  1056] 1792263822.950079 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.022600>
+[pid  1056] 1792263822.985850 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.025002>
+[pid  1056] 1792263823.023841 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.021286>
+[pid  1056] 1792263823.058059 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.027857>
+[pid  1056] 1792263823.095608 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.023874>
+[pid  1056] 1792263823.128006 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.022787>
+[pid  1056] 1792263823.156840 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.021940>
+[pid  1056] 1792263823.189071 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.021344>
+[pid  1056] 1792263823.220784 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.021901>
+[pid  1056] 1792263823.253086 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.020906>
+[pid  1056] 1792263823.288830 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.021507>
+[pid  1056] 1792263823.319099 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.020916>
+[pid  1056] 1792263823.352931 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.021192>
+[pid  1056] 1792263823.378980 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000}) = -1 ETIMEDOUT (Connection timed out) <0.022000>
+[pid  1056] 1792263823.407929 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000} <unfinished ...>
+[pid   892] 1792263823.426448 [0000ffffaee3f22c] openat(AT_FDCWD, "/dev/null", O_RDONLY) = 96 <0.000828>
+[pid   892] 1792263823.429033 [0000ffffaee3f22c] openat(AT_FDCWD, "/dev/null", O_RDONLY) = 99 <0.000344>
+[pid  1056] 1792263823.431931 [0000ffff84aabde8] <... futex resumed>) = -1 ETIMEDOUT (Connection timed out) <0.022704>
+[pid   892] 1792263823.432806 [0000ffffaee3f22c] openat(AT_FDCWD, "/dev/null", O_RDONLY) = 100 <0.001018>
+[pid   892] 1792263823.437671 [0000ffffaee94c94] openat(AT_FDCWD, "/dev/shm/u1000-Shm_989d0572", O_RDWR|O_CREAT|O_EXCL|O_NOFOLLOW|O_CLOEXEC, 0777 <unfinished ...>
+[pid  1056] 1792263823.440268 [0000ffff84aabde8] futex(0xffff8236c4a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=20000000} <unfinished ...>
+[pid   892] 1792263823.441790 [0000ffffaee94c94] <... openat resumed>) = 103 <0.003547>
+[pid   892] 1792263823.444002 [0000ffffaee97430] ftruncate(103, 8208) = 0 <0.001045>
+[pid   892] 1792263823.447132 [0000ffffaee3f22c] close(96) = 0 <0.001927>
+[pid   892] 1792263823.453332 [0000ffffaee3f22c] close(99) = 0 <0.000792>
+[pid   892] 1792263823.455768 [0000ffffaee3f22c] close(100) = 0 <0.001666>
+[pid   892] 1792263823.458836 [0000ffffaee99f00] mmap(NULL, 8208, PROT_READ|PROT_WRITE, MAP_SHARED, 103, 0) = 0xffffae866000 <0.001095>
+[pid  1056] 1792263823.462739 [0000ffff84aabde8] <... futex resumed>) = -1 ETIMEDOUT (Connection timed out) <0.020613>
+[pid  1056] 1792263823.465816 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAIT, 2147484540, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid   892] 1792263823.578901 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAKE, 1 <unfinished ...>
+[pid  1056] 1792263823.583738 [0000ffff84aabde8] <... futex resumed>) = 0 <0.116548>
+[pid   892] 1792263823.584944 [0000ffffaee9bde8] <... futex resumed>) = 1 <0.004919>
+[pid   892] 1792263823.586037 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAIT, 2147484704, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid  1056] 1792263823.810163 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAKE, 1) = 1 <0.003554>
+[pid   892] 1792263823.817755 [0000ffffaee9bde8] <... futex resumed>) = 0 <0.230252>
+[pid  1056] 1792263823.819155 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAIT, 2147484540, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid   892] 1792263823.824033 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAKE, 1 <unfinished ...>
+[pid  1056] 1792263823.828665 [0000ffff84aabde8] <... futex resumed>) = 0 <0.008033>
+[pid   892] 1792263823.829213 [0000ffffaee9bde8] <... futex resumed>) = 1 <0.004524>
+[pid   892] 1792263823.832167 [0000ffffaee9bde8] futex(0xffff3cb7d4a8, FUTEX_WAKE, 1) = 0 <0.001815>
+[pid   892] 1792263823.836923 [0000ffffaee9bde8] futex(0xffff3cb7f7a8, FUTEX_WAIT, 0, {tv_sec=0, tv_nsec=500000000} <unfinished ...>
+[pid  1056] 1792263823.846258 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAKE, 1) = 0 <0.003649>
+[pid   892] 1792263824.341166 [0000ffffaee9bde8] <... futex resumed>) = -1 ETIMEDOUT (Connection timed out) <0.503129>
+[pid   892] 1792263824.352856 [0000ffffaee9bde8] futex(0xffff3cb7f6a8, FUTEX_WAIT, 2147484704, NULL <unfinished ...>
+[pid  1056] 1792263824.502812 [0000ffff84a4f22c] openat(AT_FDCWD, "/dev/null", O_RDONLY) = 87 <0.002093>
+[pid  1056] 1792263824.512015 [0000ffff84a4f22c] openat(AT_FDCWD, "/dev/null", O_RDONLY) = 89 <0.001033>
+[pid  1056] 1792263824.523046 [0000ffff84a4f22c] openat(AT_FDCWD, "/dev/null", O_RDONLY) = 90 <0.002967>
+[pid  1056] 1792263824.530956 [0000ffff84aa4c94] openat(AT_FDCWD, "/dev/shm/u1000-Shm_989d0572", O_RDWR|O_CREAT|O_EXCL|O_NOFOLLOW|O_CLOEXEC, 0777) = -1 EEXIST (File exists) <0.000980>
+[pid  1056] 1792263824.534968 [0000ffff84aa4c38] openat(AT_FDCWD, "/dev/shm/u1000-Shm_989d0572", O_RDWR|O_NOFOLLOW|O_CLOEXEC) = 91 <0.001281>
+[pid  1056] 1792263824.540946 [0000ffff84a4f22c] close(87) = 0 <0.001287>
+[pid  1056] 1792263824.544873 [0000ffff84a4f22c] close(89) = 0 <0.002380>
+[pid  1056] 1792263824.550193 [0000ffff84a4f22c] close(90) = 0 <0.000924>
+[pid  1056] 1792263824.553015 [0000ffff84aa9f00] mmap(NULL, 8208, PROT_READ|PROT_WRITE, MAP_SHARED, 91, 0) = 0xffff85728000 <0.001039>
+[pid  1056] 1792263824.557046 [0000ffff84aabde8] futex(0xffff8236e6a8, FUTEX_WAKE, 1) = 1 <0.000442>
+[pid   892] 1792263824.559827 [0000ffffaee9bde8] <... futex resumed>) = 0 <0.202927>
+[pid  1056] 1792263824.564061 [0000ffff84aa9f00] mmap(NULL, 1052672, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xffff541e0000 <0.002853>
+[pid   892] 1792263824.568218 [0000ffffaee9a88c] munmap(0xffffae866000, 8208) = 0 <0.001366>
+[pid   892] 1792263824.577203 [0000ffffaee3f22c] close(103) = 0 <0.001717>
+[pid   892] 1792263824.583966 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAIT, 2147484704, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid  1056] 1792263824.754046 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAKE, 1) = 1 <0.000714>
+[pid   892] 1792263824.756953 [0000ffffaee9bde8] <... futex resumed>) = 0 <0.171223>
+[pid   892] 1792263824.760084 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAIT, 2147484704, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid  1056] 1792263824.762755 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAKE, 1) = 1 <0.000914>
+[pid   892] 1792263824.765979 [0000ffffaee9bde8] <... futex resumed>) = 0 <0.004789>
+[pid   892] 1792263824.770137 [0000ffffaee9bde8] futex(0xffff3cb7d018, FUTEX_WAIT, 2147484704, {tv_sec=5, tv_nsec=0} <unfinished ...>
+[pid  1056] 1792263824.936892 [0000ffff84aabde8] futex(0xffff8236c018, FUTEX_WAKE, 1

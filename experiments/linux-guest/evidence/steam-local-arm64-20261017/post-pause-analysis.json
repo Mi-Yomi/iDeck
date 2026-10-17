@@ -1,0 +1,32 @@
+{
+  "scope": "separate post-pause instrumented interval only; not baseline startup or pure memset timing",
+  "trace_sha256": "ffa948c1da994d37c5ee2f5be82ff21d17818cd412d18ce9871dd2b9af4d6b70",
+  "receipt_status": "trace_incomplete",
+  "selected": {
+    "2192": {
+      "lines": 152,
+      "literal_500ms_wait_entries": 1,
+      "etimedout_returns": 1,
+      "five_second_wait_entries": 10,
+      "large_26214416_ftruncates": 0
+    },
+    "2295": {
+      "lines": 278,
+      "literal_500ms_wait_entries": 0,
+      "etimedout_returns": 0,
+      "five_second_wait_entries": 0,
+      "large_26214416_ftruncates": 0
+    },
+    "2296": {},
+    "2316": {
+      "lines": 358,
+      "literal_500ms_wait_entries": 0,
+      "etimedout_returns": 142,
+      "five_second_wait_entries": 3,
+      "large_26214416_ftruncates": 2
+    }
+  },
+  "other_threads_etimedout_returns": 624,
+  "all_literal_500ms_wait_entries": 1,
+  "root_cause_proven": false
+}

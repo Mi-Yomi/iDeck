@@ -1,0 +1,47 @@
+{
+  "kind": "separate_post_pause_instrumented_probe",
+  "baseline_timing": false,
+  "prior_long_group_pause": true,
+  "resumed": true,
+  "reason": "duration_limit",
+  "elapsed": 18.044057049000003,
+  "probe_exit": 1,
+  "stdout": "{\"status\": \"trace_incomplete\", \"output\": \"/home/ideck/steam-experiment-logs/resume-local-20261017-guarded-v2/post-pause-trace\", \"tracer_detached\": true, \"reason\": \"duration_limit\"}\n",
+  "stderr": "",
+  "groups": [
+    {
+      "pid": 2192,
+      "stopped": false,
+      "reason": "identity_or_tracer_changed"
+    },
+    {
+      "pid": 2323,
+      "stopped": true
+    },
+    {
+      "pid": 2324,
+      "stopped": true
+    },
+    {
+      "pid": 2355,
+      "stopped": true
+    },
+    {
+      "pid": 2431,
+      "stopped": true
+    },
+    {
+      "pid": 2434,
+      "exited": true
+    },
+    {
+      "pid": 2453,
+      "exited": true
+    },
+    {
+      "pid": 2295,
+      "stopped": true
+    }
+  ],
+  "free_shm": 500445184
+}

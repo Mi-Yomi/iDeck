@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "host_qemu_only": true,
+  "iphone_tested": false,
+  "real_sign_in_ui_visually_verified": true,
+  "big_picture_sign_in_ui_visually_verified": true,
+  "authenticated_main_or_library_verified": false,
+  "navigation_verified": false,
+  "real_x_test_input": "QR refresh click produced loading spinner and fresh QR in the active Steam Big Picture Mode window",
+  "virtio_input_verified": false,
+  "user_authenticated_on_phone": true,
+  "account_identifiers_included": false,
+  "screenshots": [
+    {
+      "file": "011-resume-progress.png",
+      "private_windows_path": "E:/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/resume-local-20261017/run14/011-resume-progress.png",
+      "size": 240045,
+      "sha256": "07d01eadac0ed46803e3b37e7ca6b49bb191d184204003e3a1633a2d35e29ade",
+      "stage": "Real Big Picture sign-in UI with QR; visually reviewed",
+      "public_pixels_included": false
+    },
+    {
+      "file": "012-login-frame.png",
+      "private_windows_path": "E:/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/resume-local-20261017/run14/012-login-frame.png",
+      "size": 268335,
+      "sha256": "318401f3f7ca0606153f373df2e18864d1fd1e602b6012ef33cab76508f18886",
+      "stage": "Expired QR, refresh button; visually reviewed",
+      "public_pixels_included": false
+    },
+    {
+      "file": "013-refresh-qr.png",
+      "private_windows_path": "E:/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/resume-local-20261017/run14/013-refresh-qr.png",
+      "size": 292453,
+      "sha256": "170f220a2e01366779a08e745aac1cd586d26f7771fe7b44a82a85f21ec66c47",
+      "stage": "Refresh clicked in active Big Picture window; visually reviewed",
+      "public_pixels_included": false
+    },
+    {
+      "file": "014-qr-progress.png",
+      "private_windows_path": "E:/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/resume-local-20261017/run14/014-qr-progress.png",
+      "size": 290107,
+      "sha256": "034568eeba29c2acf9347ced5c828140900d6ce76d65a6c113c7e3c263a5785d",
+      "stage": "QR refresh loading spinner; visually reviewed",
+      "public_pixels_included": false
+    },
+    {
+      "file": "015-fresh-qr-frame.png",
+      "private_windows_path": "E:/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/resume-local-20261017/run14/015-fresh-qr-frame.png",
+      "size": 230071,
+      "sha256": "583fb923aefceca2e4a2a1ca93b60c79c94750553d8471bbba5905d8e90ccde1",
+      "stage": "Fresh QR appeared after input; visually reviewed",
+      "public_pixels_included": false
+    },
+    {
+      "file": "016-login-state.png",
+      "private_windows_path": "E:/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/resume-local-20261017/run14/016-login-state.png",
+      "size": 292824,
+      "sha256": "f86ba81b8d5118a7ff3d735cb85750efaba042f0d7ac48dbcfb1260961e47fa3",
+      "stage": "QR scan accepted checkmark; visually reviewed",
+      "public_pixels_included": false
+    },
+    {
+      "file": "018-login-progress.png",
+      "private_windows_path": "E:/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/resume-local-20261017/run14/018-login-progress.png",
+      "size": 8407,
+      "sha256": "97e13bd1b6bb2a6031786dd7213e53c6442de4a27d4095862643e0b9d16375d8",
+      "stage": "Logging in; visually reviewed",
+      "public_pixels_included": false
+    },
+    {
+      "file": "019-after-qr-login.png",
+      "private_windows_path": "E:/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/resume-local-20261017/run14/019-after-qr-login.png",
+      "size": 13041,
+      "sha256": "d594de37fd3c30674e76adfac752832d417dd2aa36dff91edcbb357c6774baa7",
+      "stage": "Loading user data; visually reviewed",
+      "public_pixels_included": false
+    },
+    {
+      "file": "021-main-ui-frame.png",
+      "private_windows_path": "E:/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/resume-local-20261017/run14/021-main-ui-frame.png",
+      "size": 11322,
+      "sha256": "a60805b922f7c2e767922cddbb7220c485a209142f6a1019a5cdc1f9fc0b1858",
+      "stage": "Loading user data, no main/library yet; visually reviewed",
+      "public_pixels_included": false
+    },
+    {
+      "file": "028-menu-navigation.png",
+      "private_windows_path": "E:/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/resume-local-20261017/run14/028-menu-navigation.png",
+      "size": 96916,
+      "sha256": "54797e32ddc50fab815aa82f7e03388d3caadfc06f3bbc18916626242b125edf",
+      "stage": "After authentication: Steam Deck Welcome / Select a language wizard. Not the main library. The preceding menu click alone is not proof of navigation.",
+      "public_pixels_included": false
+    }
+  ],
+  "runner_flags_note": "Runner intentionally does not infer UI success; its steam_window_verified/big_picture_verified fields stay false. This separate visual receipt states only observed stages.",
+  "authenticated_stage": "Steam Deck Welcome language wizard"
+}

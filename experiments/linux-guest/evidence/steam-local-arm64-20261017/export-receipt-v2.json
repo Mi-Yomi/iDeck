@@ -1,0 +1,650 @@
+[
+  {
+    "file": "resume-local-20261017-preflight__audit.stderr",
+    "size": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-preflight__audit.stdout",
+    "size": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-preflight__dpkg.stderr",
+    "size": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-preflight__dpkg.stdout",
+    "size": 1179,
+    "sha256": "1e0bb3f3fd932b2276ecf8bab8490647309947b24f18f31562c7f03a2efe129c",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-preflight__result.json",
+    "size": 4058,
+    "sha256": "c0827aa4d0abec914c0f054c1eb65ddcd73144e730f42c29918c1c08c6d1bcfd",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-appinfo_log.txt",
+    "size": 388,
+    "sha256": "d216d86f09543dccfa2bb4a3c67e4138152a9a0f1a2457801db878449138b8b2",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-bootstrap_log.txt",
+    "size": 1114,
+    "sha256": "815ea130611c8d805ffee1c9c59aed0439252fa05c2ca3000e4efc10427810ea",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-cef_log.txt",
+    "size": 2334,
+    "sha256": "5ce70fcae97a581ce7402fb050eb08e8822002c86f55867ce4ce2565c7c090a8",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-client_networkmanager.txt",
+    "size": 233,
+    "sha256": "6269d24d0730f7a158ad1ab16d56b35420d3d7b804aa4286aaa8e59aa5bdfa0a",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-compat_log.txt",
+    "size": 140,
+    "sha256": "237c3efd75d2000c3449da375d0ec392ff814462d1cb4b41b09e9b6312339c1f",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-configstore_log.txt",
+    "size": 399,
+    "sha256": "99ecac5187a0577cb521372840a65e0fd6cc4ef15caaab75c1d1919f2a538ad4",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-connection_log.txt",
+    "size": 714,
+    "sha256": "4efbf883c9e7656c967f66397a7f4df2d93b7fcff7eeeb3b1d80f909a98555f8",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-shader_log.txt",
+    "size": 3105,
+    "sha256": "7f218cf2087670ff7021e9a20f5672a81b5f72e22215a75678fff5db9a5400cf",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-steamsysinfo.txt",
+    "size": 396,
+    "sha256": "1ade64b33057861d917a66a38cf71c8c4439c57e9c1c5f3da5976479e476fb99",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-steamui_audio.txt",
+    "size": 256,
+    "sha256": "1de2aae448f7cba7c9694358d4645d1991dbb08345aecea8a18d7c56d1708be8",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-steamui_html.txt",
+    "size": 108,
+    "sha256": "ed08bd7cc5a65ba0fe1c6c81d9fe044f37cc52f2a3f902ce61afd9a4288c260b",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-steamui_system.txt",
+    "size": 860,
+    "sha256": "3196f17b3ab6bb0d5c8649f3c6b1a5f964ef37bf6d3491b6f2b09c7c9bcffae8",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-steamui_update.txt",
+    "size": 114,
+    "sha256": "30897b03a7131175969f046d1588b9cc598dca27c118645a3f9590852ac7b1aa",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-systemaudiomanager.txt",
+    "size": 119,
+    "sha256": "9c2d10ede2b97bd5196fc528552c0a58657862f15a29606d2de37a84aeda6ed4",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-systemdisplaymanager.txt",
+    "size": 120,
+    "sha256": "7fabe86f3f9de65afc1cce348f2a6629b47dffb04e5760a3eb5aedf6d244962d",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-systemdockmanager.txt",
+    "size": 117,
+    "sha256": "58fb79d4404be047940cb8d6597ee1c371ccc595a55c929a62a3c5fcb745a3f4",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-systemmanager.txt",
+    "size": 686,
+    "sha256": "0ad725599702f77d8a23754f8e1cb5242f77316dd4ede9b8342b3f95096653ea",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-systemperfmanager.txt",
+    "size": 257,
+    "sha256": "4363a5a69c39e5900e7ae0c43678d436e708175e01f8034b223205f9fa1e101e",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-systemperfreporting.txt",
+    "size": 119,
+    "sha256": "6ef3c9fd3048e4dd4281e1aebecb1ddc2168f46177f7140f92a016ce163049a8",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-transport_steamui.txt",
+    "size": 115,
+    "sha256": "cfde9fe50bd14b31d55f4d4f7d5151979141637b79824b3c5b7422f4c0d023b7",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-updateui_child.txt",
+    "size": 674,
+    "sha256": "c4e69dcd75a997957e75380bd4f914f044f00b985abf258135f77b7a12976f99",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-webhelper.txt",
+    "size": 4380,
+    "sha256": "12beb59ec34918f7b96fc163d3004900e46bb03f9ba5d3a4a8caed19ffe4e949",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__delta-webhelper_gpu.txt",
+    "size": 196,
+    "sha256": "e7171865e52c763cbfce4527bd2d2feacaed1acd6f66438fadd8268aee52a785",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__freeze-identities.json",
+    "size": 446,
+    "sha256": "54f5d336db532ba7e039ba98b3a5544e21234dc27c876235b21ef19d1cb4b8b7",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__frozen-processes.json",
+    "size": 19813,
+    "sha256": "d4d8751e7281eabf8eacfb1179da6a5527920c17524477d4e8df3135193ad082",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__launcher.log",
+    "size": 11883,
+    "sha256": "42c7f8db505ff3fd1d267a4a91a58b99879c0fedb893afc1e65d701617970599",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__module-identities.json",
+    "size": 3262,
+    "sha256": "bae6fee83a150d02109933739f3ba1c93beb9be92753bbeb2238e078405a2d82",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__postfreeze-status.json",
+    "size": 15130,
+    "sha256": "f9e9fc5926b85d6637c67e91c5766c4c458edc055d87d86d17d5efb03adf7ea7",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__summary.json",
+    "size": 242,
+    "sha256": "5b396a839f70a15b7ebbc7953786a6edeb8e2be0b63c171ef44682243b667102",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__thread-inventory.json",
+    "size": 109724,
+    "sha256": "99f743e011df55d86225d4701b26d49d198bd76345161ea2ca44ff7d82f7cb43",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-first-attempt__timeline.jsonl",
+    "size": 998233,
+    "sha256": "5e795d4934cc4a2c897c1009f20142e2415c68a767e44a20ddf3cda6c6bcd8ef",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-appinfo_log.txt",
+    "size": 387,
+    "sha256": "d2ad2ab81903ca57bb96974e0bdac4bddde5e04e6d69af33c21c16b6606ac3d2",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-bootstrap_log.txt",
+    "size": 1742,
+    "sha256": "3cf8ee3669a95efe5bae02acdc42929edcc5f5ac05e18d2ee5537cae4e195c8c",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-cef_log.txt",
+    "size": 968,
+    "sha256": "93dd21a0b33d0c31a3a7f040e5928dc8bacc5d9704590bf47733d517f8fbe8f5",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-client_networkmanager.txt",
+    "size": 233,
+    "sha256": "9f1e54d147359cc3d2537d3bae358ba2309a74e586d0e9af4106e0ad106e35bc",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-compat_log.txt",
+    "size": 140,
+    "sha256": "a5aabeb57c51dd68ce11c219221b24f63c6cc45adf6266374017842759ec4afa",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-configstore_log.txt",
+    "size": 399,
+    "sha256": "7c6c2c48c609dea13dbb81f2b757ec12fb0ab88279f7a9de935fd9ebb8857854",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-connection_log.txt",
+    "size": 694,
+    "sha256": "8fe02f5e6e1c6e140fce183c739e351e932f0eceb23c398478d3b2dc0cd5f491",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-shader_log.txt",
+    "size": 3105,
+    "sha256": "e8e346012125ab6ba3447d1a30b2fb3c69861c9f16af26b45c36b704a804eeb7",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-steamsysinfo.txt",
+    "size": 396,
+    "sha256": "c2f79a66fcc66636746e29ad1136a970fc3affa7f825f3922ab83007a2876492",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-steamui_audio.txt",
+    "size": 256,
+    "sha256": "71040362da9fdda892f24c1c4035e877d4a0c597bbbc8674b3601bf2fa4bed41",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-steamui_html.txt",
+    "size": 108,
+    "sha256": "2b62fef4786b5bb9407f8c6d051d76f4104832affcaac0969711c30a7b92833d",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-steamui_system.txt",
+    "size": 860,
+    "sha256": "08dee22f0a55c70c4e8b0b261d3516c005a3b62480e38e307dd11766d1b19223",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-steamui_update.txt",
+    "size": 114,
+    "sha256": "a129df0306648f9210d1b5dcf26787be9b2688bb638a3bd7689356de5ae83de0",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-systemaudiomanager.txt",
+    "size": 119,
+    "sha256": "e415c222f2d04f9ca3a8ae47a5f80ed3ca4dd757476930e7b1850d89541d4358",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-systemdisplaymanager.txt",
+    "size": 120,
+    "sha256": "e6edc46576c00d9414d9026e222d88fa8a663cd3441c6764241cebe067be92b1",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-systemdockmanager.txt",
+    "size": 117,
+    "sha256": "4eb2c3804dca395b50092c382a55c5dcc2b66522bb562cfea53702f299c66704",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-systemmanager.txt",
+    "size": 686,
+    "sha256": "1bb22a10ed1a1d96055a963fe956ada8285dc90e8c684cf2189c67353d2e4a64",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-systemperfmanager.txt",
+    "size": 257,
+    "sha256": "4361398b39809049294898d9e38d686106dfd0bab279058e98712fecd7bef345",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-systemperfreporting.txt",
+    "size": 119,
+    "sha256": "98cb988199bd2c9b05fdabe0a30751e7659fb890200a466be79f359118bc79b1",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-transport_steamui.txt",
+    "size": 115,
+    "sha256": "add254b6a5af6b8790795d42f37d95b0face26b8b34bf4cedc8b7b47530ebed5",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-updateui_child.txt",
+    "size": 799,
+    "sha256": "c67da36a0103fdba7efdb2655a3682eab3d4f1d322505121017b812de9dd5e92",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-webhelper.txt",
+    "size": 3433,
+    "sha256": "f51691a01835a299f5ca3dbf8c23bc47bd4fcbd908d6e698f905aca49e82dfed",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__delta-webhelper_gpu.txt",
+    "size": 137,
+    "sha256": "36e36ce49b6533cd406ae0a27768714cf4ef76f621bd8a8e7f518362c0c62b6b",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__fast-guard.json",
+    "size": 147,
+    "sha256": "92e8ee26a654c3c0ee48b3c7d0a30183fdb638c06e0a57ba85e79c5aca2bdd92",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__freeze-identities.json",
+    "size": 117,
+    "sha256": "11b44a7bff933e209a00e44f1b765c34e0956c7d6c519f677301fc1d2f6b3d97",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__launcher.log",
+    "size": 14508,
+    "sha256": "53470a7fd2a6c6bb73cd7e98b2e83f6f59ea8cdf2b5120ba20b31fc1b524ee27",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__manual-current-freeze.json",
+    "size": 208,
+    "sha256": "0e1fd4dd3fd87bb59c4b8da92382a77f2eccc96a39ed8a7024b131ec8a114e04",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__module-identities.json",
+    "size": 5684,
+    "sha256": "8dfefd02df9a20057da4b68c1fc2d07fe2554ef47908573f9b2d7bbf9a0e3b55",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__orphan-manifest-v1.json",
+    "size": 6904,
+    "sha256": "3d965693a88eaf72c3e82bb8a87b96cdf5712b673df30dbd67448edb1579f7fc",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__owned-stop.json",
+    "size": 939,
+    "sha256": "54b93c35188c851720d69806c741e8399fc7675d8b44393933673e5e5c5f92e7",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__proc-readability-after-stop.json",
+    "size": 95,
+    "sha256": "edbd0e9fc34414dc42e7e4407e6ab8d42433277bcca6dd03f832582d79979ee5",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__shm-recovery-v1.json",
+    "size": 276,
+    "sha256": "400714ac9b75db4c0d7f4ef9d8851eb21749ba3444201e9db145ffc555288428",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__shm-recovery-v2.json",
+    "size": 6388,
+    "sha256": "ac1c899c3aa7707ca5cc36c81e07e44367f3dcb0c8067a76aaa5e1afb606892c",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__summary.json",
+    "size": 187,
+    "sha256": "bc1b1ee3dd1579e3415e49a07c126ab013aa150e648e505f9f7bf8553aa276e4",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__thread-inventory.json",
+    "size": 431530,
+    "sha256": "61e35b11f921e37613fda1cf5564301ea4de9d62dcda0013b40533156d60144a",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-attempt-11__timeline.jsonl",
+    "size": 929615,
+    "sha256": "f276c79dcdc911128c5f9dd8f385f30239a82c69d6416adaeb087fa16684139c",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__address-snapshot.json",
+    "size": 13474,
+    "sha256": "165557a320c3a8dc46c19f038170ae325f87bd51e0521e799a9086018d0852c7",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__assertion-comments.json",
+    "size": 250,
+    "sha256": "ab5e1e8f23406f774ecf5a8e7479299d35f0a7094c7bb2f018cfb311bed99e05",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__crash-handler-completion.json",
+    "size": 1105,
+    "sha256": "b1d02bc90c1aac6e92d5b5b57b81892aed690ac7d6a2df72ad761425e84b8fb3",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-appinfo_log.txt",
+    "size": 388,
+    "sha256": "f4037b74a7bab52340d4369bbed6613ca3c62e54ca772520119f69ebe593567d",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-bootstrap_log.txt",
+    "size": 1114,
+    "sha256": "5e94385e867f328d64d0a8ddea90e2bf25d85d8c4d4d18a11235483c37f152bd",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-cef_log.txt",
+    "size": 968,
+    "sha256": "c3f961cde7dd094b489eb728caf5f1d05f510c1b49f2e2db9a3ed15a6fefaf1b",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-client_networkmanager.txt",
+    "size": 233,
+    "sha256": "4e87c67ccf2368b7d9d6da660870393db823e1f4167b544051adfa977c0821fe",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-compat_log.txt",
+    "size": 140,
+    "sha256": "eda3ff14022077658632332545504a5d8eeccb9f1d86b72815977b625c5b4bf5",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-configstore_log.txt",
+    "size": 399,
+    "sha256": "8c2d2eda3ef687caf12b05b6b159f53265197aec17980465ab627294cd817cb5",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-connection_log.txt",
+    "size": 708,
+    "sha256": "449b748757101a6a58d0c4c62d409c3d7fa2c9bd8004ee63f48794d9b24af1ba",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-shader_log.txt",
+    "size": 3105,
+    "sha256": "4f69cc09569464b322c6c9ea2aa07afc88a8d9bb68cf2f4353e0be4dad70f67d",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-steamsysinfo.txt",
+    "size": 396,
+    "sha256": "4e8e87bfcdf980fa7fed43b51c7337b09c4bf8b78cfcdace6da62a83f509e7e2",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-steamui_audio.txt",
+    "size": 256,
+    "sha256": "0ba9108f0a2e5772668ecb173ef6e2c50ee5d8ecd7eac50a7c5bf0950ed8273c",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-steamui_html.txt",
+    "size": 108,
+    "sha256": "11ce705255dce426985a358cbf502aec7a1a0c169f9bde3b8c3f56139757c854",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-steamui_system.txt",
+    "size": 860,
+    "sha256": "63ce364ed385f5349e3d5ca6c27be26b0a62d15630c88a6e84cf54ca884477f7",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-steamui_update.txt",
+    "size": 114,
+    "sha256": "004c34f8eda9f10a95a347940c17ca5aa32e1f008c89745b52f73b0189f83039",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-systemaudiomanager.txt",
+    "size": 119,
+    "sha256": "823af33daf5c8375803f4c5bf6380109eadd346ea5f9282cf8304d5fea6176c4",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-systemdisplaymanager.txt",
+    "size": 120,
+    "sha256": "004057a1b0faa9cf9fd2962307a338f22f349a895d74a926adf351a0e910fbb6",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-systemdockmanager.txt",
+    "size": 117,
+    "sha256": "3c72f5496ff6c6e0f6212c4eb808eb1c1f1f2f90f6cbace172dee539ae145163",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-systemmanager.txt",
+    "size": 686,
+    "sha256": "aac8a30302676a007f92abbae6a1c5b0a0722f18addd011af35e3945c54260b0",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-systemperfmanager.txt",
+    "size": 257,
+    "sha256": "e8d8f2f9d362c51396725dbc6e3e3575b88baace829f96930f17b2216879d6e6",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-systemperfreporting.txt",
+    "size": 119,
+    "sha256": "e1c52f9bb5fb35433c31a1132bb7667852906a82aca9008cb7bda3cd26f84219",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-transport_steamui.txt",
+    "size": 115,
+    "sha256": "4ebc1009238221a52a835456f504121bd89cc9d17741b73d9f7c2c327642ca47",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-updateui_child.txt",
+    "size": 674,
+    "sha256": "8647694909588933896768cfb39a208dcc44d402b9544d12009c206486909e4f",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-webhelper.txt",
+    "size": 3346,
+    "sha256": "98bc047344c9542b14ff877aeba01238b791b8a12ce54f4f2f982fdb98d5e6b8",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__delta-webhelper_gpu.txt",
+    "size": 137,
+    "sha256": "d9ec47e7a7e9dd1849820257b1431af338ffbaac1cdbe08f3ebc3106ac5a16e7",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__dump-addresses.json",
+    "size": 3473,
+    "sha256": "f335bfc12b2b3d79301b3db74cb79b65faedd5bec2bef910682a37d6f2d3f501",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__fast-guard.json",
+    "size": 1440,
+    "sha256": "19db7c6f20219e1a3eec342fbd80572ca9143696a3bf153041cd4ae44c35fed6",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__first-browser-crash-state.json",
+    "size": 219794,
+    "sha256": "2d3aa65c0ce1590f1eeb901a6f78ec218879cbded59d4bc836c46b7e474b75a6",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__freeze-identities.json",
+    "size": 1119,
+    "sha256": "4f254ef7c9da0648c8c6639bfd2cecb22dc8c68b9e3fd27c9c6254d78a2fe298",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__launcher.log",
+    "size": 11891,
+    "sha256": "a74ae8fe321cba81c8bbf84625f4e33c36e75afd66d81e2666862d7ab1e918f1",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__module-identities.json",
+    "size": 5684,
+    "sha256": "8dfefd02df9a20057da4b68c1fc2d07fe2554ef47908573f9b2d7bbf9a0e3b55",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__summary.json",
+    "size": 285,
+    "sha256": "448f61fce97006333463f2f9a1d21d4d50b3443dd79eded52c2ec0a01ec362e3",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__thread-inventory.json",
+    "size": 533440,
+    "sha256": "88ac84b54a4d8b2b3a9767c0d842e4ea079539ae118e60a9c8af2aa29a5dff5c",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-guarded-v2__timeline.jsonl",
+    "size": 674474,
+    "sha256": "72d46814e27f7cfaea7e593393c4862a2872f7f5c3f9f410b8b9f1ef02c1306c",
+    "source_log": "021-export-v2.log"
+  },
+  {
+    "file": "resume-local-20261017-persistence.json",
+    "size": 1302,
+    "sha256": "4af99a46eed868803f9e38f140a5caa90b192cb5cae402e0dd760508bca4c7b2",
+    "source_log": "021-export-v2.log"
+  }
+]

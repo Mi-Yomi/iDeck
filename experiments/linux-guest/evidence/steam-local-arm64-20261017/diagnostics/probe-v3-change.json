@@ -1,0 +1,5 @@
+{
+  "old_source_sha256": "9a45229272c8832fc247414dc6cb3de39db2a4a76629664157deaa01b652d873",
+  "new_source_sha256": "dd7a19b8531294772b3b11e1742c12341d1df2bd77186fdbf042accdb9c9b4c6",
+  "change": "AArch64 stack-preserving tail trampoline for every non-futex syscall; same futex C gate/deadline/scope"
+}

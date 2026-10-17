@@ -1,0 +1,41 @@
+{
+  "time_ns": 1792265249439379253,
+  "source_sha256": "9a45229272c8832fc247414dc6cb3de39db2a4a76629664157deaa01b652d873",
+  "platform": "actual AArch64 guest",
+  "files": {
+    "libideck-ipc-connect.so": {
+      "sha256": "0bafcde8555281d433e9537e5bbdce669d932b9aa7e77323b924093f928f9339",
+      "size": 70232
+    },
+    "arm64-unit": {
+      "sha256": "baaf8fb6d1afe5534535939130122105a8f537d44a4aacdedcbcf3f5d0e7dfda",
+      "size": 73160
+    },
+    "arm64-abi": {
+      "sha256": "e7db059d45d833cadec52e62bddeb8f8000c17d01aa6e331ec4ec3fac322d436",
+      "size": 71184
+    }
+  },
+  "tests": [
+    {
+      "case": "unit",
+      "exit": 0,
+      "stdout": "{\"status\":\"pass\",\"test\":\"shape, owner/links/mode/filesystem, actual bounded frame walk, unrelated caller refusal, raw syscall fallback ABI\"}\n",
+      "stderr": ""
+    },
+    {
+      "case": "abi-baseline",
+      "exit": 0,
+      "stdout": "{\"status\":\"pass\",\"test\":\"external preload ABI: getpid, errno, invalid syscall, write, six-argument mmap, futex, fork\"}\n",
+      "stderr": ""
+    },
+    {
+      "case": "abi-preload",
+      "exit": 0,
+      "stdout": "{\"status\":\"pass\",\"test\":\"external preload ABI: getpid, errno, invalid syscall, write, six-argument mmap, futex, fork\"}\n",
+      "stderr": ""
+    }
+  ],
+  "passed": true,
+  "steam_started": false
+}

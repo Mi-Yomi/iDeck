@@ -1,0 +1,780 @@
+aaaace48d000-aaaacede3000 r-xp 00000000 fd:00 606419                     /home/ideck/.local/share/Steam/steamrtarm64/steam
+aaaacede3000-aaaacee2e000 r--p 00955000 fd:00 606419                     /home/ideck/.local/share/Steam/steamrtarm64/steam
+aaaacee2e000-aaaacee38000 rw-p 009a0000 fd:00 606419                     /home/ideck/.local/share/Steam/steamrtarm64/steam
+aaaacee38000-aaaacee5d000 rw-p 00000000 00:00 0 
+aaaad20fa000-aaaad4941000 rw-p 00000000 00:00 0                          [heap]
+fffef4000000-fffef40c3000 rw-p 00000000 00:00 0 
+fffef40c3000-fffef8000000 ---p 00000000 00:00 0 
+fffef8000000-fffefc000000 rw-s 00000000 00:01 36                         /memfd:pulseaudio (deleted)
+fffefc000000-fffefca69000 rw-p 00000000 00:00 0 
+fffefca69000-ffff00000000 ---p 00000000 00:00 0 
+ffff00000000-ffff00a6b000 rw-p 00000000 00:00 0 
+ffff00a6b000-ffff04000000 ---p 00000000 00:00 0 
+ffff04000000-ffff0406d000 rw-p 00000000 00:00 0 
+ffff0406d000-ffff08000000 ---p 00000000 00:00 0 
+ffff08000000-ffff08084000 rw-p 00000000 00:00 0 
+ffff08084000-ffff0c000000 ---p 00000000 00:00 0 
+ffff0c000000-ffff0c021000 rw-p 00000000 00:00 0 
+ffff0c021000-ffff10000000 ---p 00000000 00:00 0 
+ffff10000000-ffff1006a000 rw-p 00000000 00:00 0 
+ffff1006a000-ffff14000000 ---p 00000000 00:00 0 
+ffff14000000-ffff14021000 rw-p 00000000 00:00 0 
+ffff14021000-ffff18000000 ---p 00000000 00:00 0 
+ffff19690000-ffff19890000 rw-s 00000000 00:1b 261                        /dev/shm/u1000-ValveIPCSharedObj-Steam
+ffff19890000-ffff198a0000 ---p 00000000 00:00 0 
+ffff198a0000-ffff199a0000 rw-p 00000000 00:00 0 
+ffff199a0000-ffff199b0000 ---p 00000000 00:00 0 
+ffff199b0000-ffff1a1b0000 rw-p 00000000 00:00 0 
+ffff1a1b0000-ffff1a295000 r-xp 00000000 fd:00 606405                     /home/ideck/.local/share/Steam/steamrtarm64/libaudio.so
+ffff1a295000-ffff1a29d000 r--p 000e4000 fd:00 606405                     /home/ideck/.local/share/Steam/steamrtarm64/libaudio.so
+ffff1a29d000-ffff1a29e000 rw-p 000ec000 fd:00 606405                     /home/ideck/.local/share/Steam/steamrtarm64/libaudio.so
+ffff1a29e000-ffff1a2a3000 rw-p 00000000 00:00 0 
+ffff1a2a3000-ffff1a2b3000 ---p 00000000 00:00 0 
+ffff1a2b3000-ffff1a3b3000 rw-p 00000000 00:00 0 
+ffff1a3b3000-ffff1a3c3000 ---p 00000000 00:00 0 
+ffff1a3c3000-ffff1a4c3000 rw-p 00000000 00:00 0 
+ffff1a4c3000-ffff1a4d3000 ---p 00000000 00:00 0 
+ffff1a4d3000-ffff1a5d3000 rw-p 00000000 00:00 0 
+ffff1a5d3000-ffff1a651000 rw-s 00000000 00:1b 270                        /dev/shm/u1000-Shm_aff5a745
+ffff1a651000-ffff1a6cf000 rw-s 00000000 00:1b 269                        /dev/shm/u1000-Shm_160a4049
+ffff1a6cf000-ffff1a7d0000 rw-s 00000000 00:1b 267                        /dev/shm/u1000-Shm_3c3a3c3d
+ffff1a7d0000-ffff1a7e0000 ---p 00000000 00:00 0 
+ffff1a7e0000-ffff1afe0000 rw-p 00000000 00:00 0 
+ffff1afe0000-ffff1aff0000 ---p 00000000 00:00 0 
+ffff1aff0000-ffff1b7f0000 rw-p 00000000 00:00 0 
+ffff1b7f0000-ffff1b800000 ---p 00000000 00:00 0 
+ffff1b800000-ffff1c000000 rw-p 00000000 00:00 0 
+ffff1c000000-ffff1c073000 rw-p 00000000 00:00 0 
+ffff1c073000-ffff20000000 ---p 00000000 00:00 0 
+ffff20000000-ffff20022000 rw-p 00000000 00:00 0 
+ffff20022000-ffff24000000 ---p 00000000 00:00 0 
+ffff24000000-ffff24070000 rw-p 00000000 00:00 0 
+ffff24070000-ffff28000000 ---p 00000000 00:00 0 
+ffff28000000-ffff280ab000 rw-p 00000000 00:00 0 
+ffff280ab000-ffff2c000000 ---p 00000000 00:00 0 
+ffff2c000000-ffff2c022000 rw-p 00000000 00:00 0 
+ffff2c022000-ffff30000000 ---p 00000000 00:00 0 
+ffff30000000-ffff30022000 rw-p 00000000 00:00 0 
+ffff30022000-ffff34000000 ---p 00000000 00:00 0 
+ffff34000000-ffff3434a000 rw-p 00000000 00:00 0 
+ffff3434a000-ffff38000000 ---p 00000000 00:00 0 
+ffff38000000-ffff38074000 rw-p 00000000 00:00 0 
+ffff38074000-ffff3c000000 ---p 00000000 00:00 0 
+ffff3c000000-ffff3c06a000 rw-p 00000000 00:00 0 
+ffff3c06a000-ffff40000000 ---p 00000000 00:00 0 
+ffff40000000-ffff4006b000 rw-p 00000000 00:00 0 
+ffff4006b000-ffff44000000 ---p 00000000 00:00 0 
+ffff4400e000-ffff4408c000 rw-s 00000000 00:1b 268                        /dev/shm/u1000-Shm_75f76ab8
+ffff4408c000-ffff44130000 rw-s 00000000 00:1b 266                        /dev/shm/u1000-Shm_671c2a99
+ffff44130000-ffff441af000 rw-s 00000000 00:1b 265                        /dev/shm/u1000-Shm_fe20b6d7
+ffff441af000-ffff441bf000 ---p 00000000 00:00 0 
+ffff441bf000-ffff442bf000 rw-p 00000000 00:00 0 
+ffff442bf000-ffff442cf000 ---p 00000000 00:00 0 
+ffff442cf000-ffff443cf000 rw-p 00000000 00:00 0 
+ffff443cf000-ffff443df000 ---p 00000000 00:00 0 
+ffff443df000-ffff444df000 rw-p 00000000 00:00 0 
+ffff444df000-ffff444ef000 ---p 00000000 00:00 0 
+ffff444ef000-ffff445ef000 rw-p 00000000 00:00 0 
+ffff445ef000-ffff445ff000 ---p 00000000 00:00 0 
+ffff445ff000-ffff446ff000 rw-p 00000000 00:00 0 
+ffff446ff000-ffff4470f000 ---p 00000000 00:00 0 
+ffff4470f000-ffff4480f000 rw-p 00000000 00:00 0 
+ffff4480f000-ffff4481f000 ---p 00000000 00:00 0 
+ffff4481f000-ffff4491f000 rw-p 00000000 00:00 0 
+ffff4491f000-ffff4492f000 ---p 00000000 00:00 0 
+ffff4492f000-ffff44a2f000 rw-p 00000000 00:00 0 
+ffff44a2f000-ffff44a3f000 ---p 00000000 00:00 0 
+ffff44a3f000-ffff44b3f000 rw-p 00000000 00:00 0 
+ffff44b3f000-ffff44bbd000 rw-s 00000000 00:1b 270                        /dev/shm/u1000-Shm_aff5a745
+ffff44bbd000-ffff44c3b000 rw-s 00000000 00:1b 269                        /dev/shm/u1000-Shm_160a4049
+ffff44c3b000-ffff44d3c000 rw-s 00000000 00:1b 267                        /dev/shm/u1000-Shm_3c3a3c3d
+ffff44d3c000-ffff44de0000 rw-s 00000000 00:1b 266                        /dev/shm/u1000-Shm_671c2a99
+ffff44de0000-ffff44df0000 ---p 00000000 00:00 0 
+ffff44df0000-ffff44ef0000 rw-p 00000000 00:00 0 
+ffff44ef0000-ffff450f0000 rw-s 00000000 00:1b 261                        /dev/shm/u1000-ValveIPCSharedObj-Steam
+ffff450f0000-ffff45100000 ---p 00000000 00:00 0 
+ffff45100000-ffff45200000 rw-p 00000000 00:00 0 
+ffff45200000-ffff47dc9000 r-xp 00000000 fd:00 606421                     /home/ideck/.local/share/Steam/steamrtarm64/steamclient.so
+ffff47dc9000-ffff47f3a000 r--p 02bc8000 fd:00 606421                     /home/ideck/.local/share/Steam/steamrtarm64/steamclient.so
+ffff47f3a000-ffff47f6d000 rw-p 02d39000 fd:00 606421                     /home/ideck/.local/share/Steam/steamrtarm64/steamclient.so
+ffff47f6d000-ffff47fd4000 rw-p 00000000 00:00 0 
+ffff48000000-ffff48062000 rw-p 00000000 00:00 0 
+ffff48062000-ffff4c000000 ---p 00000000 00:00 0 
+ffff4c000000-ffff4c021000 rw-p 00000000 00:00 0 
+ffff4c021000-ffff50000000 ---p 00000000 00:00 0 
+ffff50000000-ffff50021000 rw-p 00000000 00:00 0 
+ffff50021000-ffff54000000 ---p 00000000 00:00 0 
+ffff54000000-ffff5402c000 rw-p 00000000 00:00 0 
+ffff5402c000-ffff58000000 ---p 00000000 00:00 0 
+ffff58000000-ffff58021000 rw-p 00000000 00:00 0 
+ffff58021000-ffff5c000000 ---p 00000000 00:00 0 
+ffff5c000000-ffff5c021000 rw-p 00000000 00:00 0 
+ffff5c021000-ffff60000000 ---p 00000000 00:00 0 
+ffff60000000-ffff60021000 rw-p 00000000 00:00 0 
+ffff60021000-ffff64000000 ---p 00000000 00:00 0 
+ffff64000000-ffff6402b000 rw-p 00000000 00:00 0 
+ffff6402b000-ffff68000000 ---p 00000000 00:00 0 
+ffff68017000-ffff68095000 rw-s 00000000 00:1b 268                        /dev/shm/u1000-Shm_75f76ab8
+ffff68095000-ffff680a5000 ---p 00000000 00:00 0 
+ffff680a5000-ffff681a5000 rw-p 00000000 00:00 0 
+ffff681a5000-ffff681b5000 ---p 00000000 00:00 0 
+ffff681b5000-ffff682b5000 rw-p 00000000 00:00 0 
+ffff682b5000-ffff683d0000 rw-p 00000000 00:00 0 
+ffff683d0000-ffff683e0000 ---p 00000000 00:00 0 
+ffff683e0000-ffff684e0000 rw-p 00000000 00:00 0 
+ffff684e0000-ffff684f0000 ---p 00000000 00:00 0 
+ffff684f0000-ffff685f0000 rw-p 00000000 00:00 0 
+ffff685f0000-ffff68600000 ---p 00000000 00:00 0 
+ffff68600000-ffff68e00000 rw-p 00000000 00:00 0 
+ffff68e00000-ffff69676000 r-xp 00000000 fd:00 606424                     /home/ideck/.local/share/Steam/steamrtarm64/steamservice.so
+ffff69676000-ffff69677000 ---p 00876000 fd:00 606424                     /home/ideck/.local/share/Steam/steamrtarm64/steamservice.so
+ffff69677000-ffff696c0000 r--p 00876000 fd:00 606424                     /home/ideck/.local/share/Steam/steamrtarm64/steamservice.so
+ffff696c0000-ffff696ca000 rw-p 008bf000 fd:00 606424                     /home/ideck/.local/share/Steam/steamrtarm64/steamservice.so
+ffff696ca000-ffff696eb000 rw-p 00000000 00:00 0 
+ffff69731000-ffff697b0000 rw-s 00000000 00:1b 265                        /dev/shm/u1000-Shm_fe20b6d7
+ffff697b0000-ffff697c0000 ---p 00000000 00:00 0 
+ffff697c0000-ffff69fc0000 rw-p 00000000 00:00 0 
+ffff69fc0000-ffff69fd0000 ---p 00000000 00:00 0 
+ffff69fd0000-ffff6a7d0000 rw-p 00000000 00:00 0 
+ffff6a7d0000-ffff6a7e0000 ---p 00000000 00:00 0 
+ffff6a7e0000-ffff6afe0000 rw-p 00000000 00:00 0 
+ffff6afe0000-ffff6aff0000 ---p 00000000 00:00 0 
+ffff6aff0000-ffff6b7f0000 rw-p 00000000 00:00 0 
+ffff6b7f0000-ffff6b800000 ---p 00000000 00:00 0 
+ffff6b800000-ffff6c000000 rw-p 00000000 00:00 0 
+ffff6c000000-ffff6c021000 rw-p 00000000 00:00 0 
+ffff6c021000-ffff70000000 ---p 00000000 00:00 0 
+ffff70000000-ffff70021000 rw-p 00000000 00:00 0 
+ffff70021000-ffff74000000 ---p 00000000 00:00 0 
+ffff74000000-ffff74021000 rw-p 00000000 00:00 0 
+ffff74021000-ffff78000000 ---p 00000000 00:00 0 
+ffff78010000-ffff7804e000 r-xp 00000000 fd:00 606409                     /home/ideck/.local/share/Steam/steamrtarm64/libopenvr_api.so
+ffff7804e000-ffff7805e000 ---p 0003e000 fd:00 606409                     /home/ideck/.local/share/Steam/steamrtarm64/libopenvr_api.so
+ffff7805e000-ffff7805f000 r--p 0003e000 fd:00 606409                     /home/ideck/.local/share/Steam/steamrtarm64/libopenvr_api.so
+ffff7805f000-ffff78060000 rw-p 0003f000 fd:00 606409                     /home/ideck/.local/share/Steam/steamrtarm64/libopenvr_api.so
+ffff78060000-ffff78061000 rw-p 00000000 00:00 0 
+ffff78070000-ffff78080000 ---p 00000000 00:00 0 
+ffff78080000-ffff78180000 rw-p 00000000 00:00 0 
+ffff78180000-ffff781fe000 r-xp 00000000 fd:00 837                        /usr/lib/aarch64-linux-gnu/libgmp.so.10.5.0
+ffff781fe000-ffff7820f000 ---p 0007e000 fd:00 837                        /usr/lib/aarch64-linux-gnu/libgmp.so.10.5.0
+ffff7820f000-ffff78210000 r--p 0007f000 fd:00 837                        /usr/lib/aarch64-linux-gnu/libgmp.so.10.5.0
+ffff78210000-ffff78211000 rw-p 00080000 fd:00 837                        /usr/lib/aarch64-linux-gnu/libgmp.so.10.5.0
+ffff78220000-ffff7826f000 r-xp 00000000 fd:00 1382                       /usr/lib/aarch64-linux-gnu/libnettle.so.8.10
+ffff7826f000-ffff7827e000 ---p 0004f000 fd:00 1382                       /usr/lib/aarch64-linux-gnu/libnettle.so.8.10
+ffff7827e000-ffff78280000 r--p 0004e000 fd:00 1382                       /usr/lib/aarch64-linux-gnu/libnettle.so.8.10
+ffff78280000-ffff78281000 rw-p 00050000 fd:00 1382                       /usr/lib/aarch64-linux-gnu/libnettle.so.8.10
+ffff78290000-ffff782d9000 r-xp 00000000 fd:00 1436                       /usr/lib/aarch64-linux-gnu/libhogweed.so.6.10
+ffff782d9000-ffff782ee000 ---p 00049000 fd:00 1436                       /usr/lib/aarch64-linux-gnu/libhogweed.so.6.10
+ffff782ee000-ffff782f0000 r--p 0004e000 fd:00 1436                       /usr/lib/aarch64-linux-gnu/libhogweed.so.6.10
+ffff782f0000-ffff782f1000 rw-p 00050000 fd:00 1436                       /usr/lib/aarch64-linux-gnu/libhogweed.so.6.10
+ffff78300000-ffff784de000 r-xp 00000000 fd:00 1613                       /usr/lib/aarch64-linux-gnu/libunistring.so.5.2.0
+ffff784de000-ffff784ec000 ---p 001de000 fd:00 1613                       /usr/lib/aarch64-linux-gnu/libunistring.so.5.2.0
+ffff784ec000-ffff784f0000 r--p 001ec000 fd:00 1613                       /usr/lib/aarch64-linux-gnu/libunistring.so.5.2.0
+ffff784f0000-ffff784f1000 rw-p 001f0000 fd:00 1613                       /usr/lib/aarch64-linux-gnu/libunistring.so.5.2.0
+ffff78500000-ffff78530000 r-xp 00000000 fd:00 1462                       /usr/lib/aarch64-linux-gnu/libidn2.so.0.4.0
+ffff78530000-ffff7853f000 ---p 00030000 fd:00 1462                       /usr/lib/aarch64-linux-gnu/libidn2.so.0.4.0
+ffff7853f000-ffff78540000 r--p 0002f000 fd:00 1462                       /usr/lib/aarch64-linux-gnu/libidn2.so.0.4.0
+ffff78540000-ffff78541000 rw-p 00030000 fd:00 1462                       /usr/lib/aarch64-linux-gnu/libidn2.so.0.4.0
+ffff78550000-ffff78778000 r-xp 00000000 fd:00 843                        /usr/lib/aarch64-linux-gnu/libgnutls.so.30.40.3
+ffff78778000-ffff7878e000 ---p 00228000 fd:00 843                        /usr/lib/aarch64-linux-gnu/libgnutls.so.30.40.3
+ffff7878e000-ffff787a0000 r--p 0022e000 fd:00 843                        /usr/lib/aarch64-linux-gnu/libgnutls.so.30.40.3
+ffff787a0000-ffff787a2000 rw-p 00240000 fd:00 843                        /usr/lib/aarch64-linux-gnu/libgnutls.so.30.40.3
+ffff787a2000-ffff787a6000 rw-p 00000000 00:00 0 
+ffff787b0000-ffff787c0000 ---p 00000000 00:00 0 
+ffff787c0000-ffff78fc0000 rw-p 00000000 00:00 0 
+ffff78fc0000-ffff78fd0000 ---p 00000000 00:00 0 
+ffff78fd0000-ffff797d0000 rw-p 00000000 00:00 0 
+ffff797d0000-ffff797e0000 ---p 00000000 00:00 0 
+ffff797e0000-ffff79fe0000 rw-p 00000000 00:00 0 
+ffff79fe0000-ffff79ff0000 ---p 00000000 00:00 0 
+ffff79ff0000-ffff7a7f0000 rw-p 00000000 00:00 0 
+ffff7a810000-ffff7a9b6000 r-xp 00000000 fd:00 1534                       /usr/lib/aarch64-linux-gnu/libp11-kit.so.0.4.1
+ffff7a9b6000-ffff7a9c3000 ---p 001a6000 fd:00 1534                       /usr/lib/aarch64-linux-gnu/libp11-kit.so.0.4.1
+ffff7a9c3000-ffff7a9d0000 r--p 001b3000 fd:00 1534                       /usr/lib/aarch64-linux-gnu/libp11-kit.so.0.4.1
+ffff7a9d0000-ffff7a9dd000 rw-p 001c0000 fd:00 1534                       /usr/lib/aarch64-linux-gnu/libp11-kit.so.0.4.1
+ffff7a9dd000-ffff7a9de000 rw-p 00000000 00:00 0 
+ffff7a9e0000-ffff7ab60000 r-xp 00000000 fd:00 14236                      /usr/lib/aarch64-linux-gnu/libnm.so.0.1.0
+ffff7ab60000-ffff7ab6d000 ---p 00180000 fd:00 14236                      /usr/lib/aarch64-linux-gnu/libnm.so.0.1.0
+ffff7ab6d000-ffff7ab80000 r--p 0018d000 fd:00 14236                      /usr/lib/aarch64-linux-gnu/libnm.so.0.1.0
+ffff7ab80000-ffff7ab81000 rw-p 001a0000 fd:00 14236                      /usr/lib/aarch64-linux-gnu/libnm.so.0.1.0
+ffff7ab81000-ffff7ab84000 rw-p 00000000 00:00 0 
+ffff7ab8f000-ffff7ab9f000 ---p 00000000 00:00 0 
+ffff7ab9f000-ffff7ac9f000 rw-p 00000000 00:00 0 
+ffff7ac9f000-ffff7ade0000 rw-s 00000000 fd:00 68119                      /home/ideck/.cache/mesa_shader_cache_db/index
+ffff7ade0000-ffff7adf0000 ---p 00000000 00:00 0 
+ffff7adf0000-ffff7aef0000 rw-p 00000000 00:00 0 
+ffff7aef0000-ffff7af00000 ---p 00000000 00:00 0 
+ffff7af00000-ffff7b000000 rw-p 00000000 00:00 0 
+ffff7b000000-ffff7c96c000 r-xp 00000000 fd:00 1687                       /usr/lib/aarch64-linux-gnu/libz3.so.4
+ffff7c96c000-ffff7c97e000 ---p 0196c000 fd:00 1687                       /usr/lib/aarch64-linux-gnu/libz3.so.4
+ffff7c97e000-ffff7c9b0000 r--p 0196e000 fd:00 1687                       /usr/lib/aarch64-linux-gnu/libz3.so.4
+ffff7c9b0000-ffff7c9b1000 rw-p 019a0000 fd:00 1687                       /usr/lib/aarch64-linux-gnu/libz3.so.4
+ffff7c9b1000-ffff7c9b2000 rw-p 00000000 00:00 0 
+ffff7c9c0000-ffff8398f000 r-xp 00000000 fd:00 1213                       /usr/lib/aarch64-linux-gnu/libLLVM.so.19.1
+ffff8398f000-ffff839a5000 ---p 06fcf000 fd:00 1213                       /usr/lib/aarch64-linux-gnu/libLLVM.so.19.1
+ffff839a5000-ffff83f10000 r--p 06fd5000 fd:00 1213                       /usr/lib/aarch64-linux-gnu/libLLVM.so.19.1
+ffff83f10000-ffff83f58000 rw-p 07540000 fd:00 1213                       /usr/lib/aarch64-linux-gnu/libLLVM.so.19.1
+ffff83f58000-ffff83ff7000 rw-p 00000000 00:00 0 
+ffff84000000-ffff84022000 rw-p 00000000 00:00 0 
+ffff84022000-ffff88000000 ---p 00000000 00:00 0 
+ffff88010000-ffff88023000 r-xp 00000000 fd:00 1600                       /usr/lib/aarch64-linux-gnu/libtasn1.so.6.6.4
+ffff88023000-ffff8803f000 ---p 00013000 fd:00 1600                       /usr/lib/aarch64-linux-gnu/libtasn1.so.6.6.4
+ffff8803f000-ffff88040000 r--p 0001f000 fd:00 1600                       /usr/lib/aarch64-linux-gnu/libtasn1.so.6.6.4
+ffff88040000-ffff88041000 rw-p 00020000 fd:00 1600                       /usr/lib/aarch64-linux-gnu/libtasn1.so.6.6.4
+ffff88050000-ffff8808f000 r-xp 00000000 fd:00 1607                       /usr/lib/aarch64-linux-gnu/libudev.so.1.7.10
+ffff8808f000-ffff8809b000 ---p 0003f000 fd:00 1607                       /usr/lib/aarch64-linux-gnu/libudev.so.1.7.10
+ffff8809b000-ffff880a0000 r--p 0004b000 fd:00 1607                       /usr/lib/aarch64-linux-gnu/libudev.so.1.7.10
+ffff880a0000-ffff880a1000 rw-p 00050000 fd:00 1607                       /usr/lib/aarch64-linux-gnu/libudev.so.1.7.10
+ffff880b0000-ffff880bd000 r-xp 00000000 fd:00 1500                       /usr/lib/aarch64-linux-gnu/libmd.so.0.1.0
+ffff880bd000-ffff880cf000 ---p 0000d000 fd:00 1500                       /usr/lib/aarch64-linux-gnu/libmd.so.0.1.0
+ffff880cf000-ffff880d0000 r--p 0000f000 fd:00 1500                       /usr/lib/aarch64-linux-gnu/libmd.so.0.1.0
+ffff880d0000-ffff880d1000 rw-p 00010000 fd:00 1500                       /usr/lib/aarch64-linux-gnu/libmd.so.0.1.0
+ffff880e0000-ffff8810c000 r-xp 00000000 fd:00 1498                       /usr/lib/aarch64-linux-gnu/liblzma.so.5.8.1
+ffff8810c000-ffff8811f000 ---p 0002c000 fd:00 1498                       /usr/lib/aarch64-linux-gnu/liblzma.so.5.8.1
+ffff8811f000-ffff88120000 r--p 0002f000 fd:00 1498                       /usr/lib/aarch64-linux-gnu/liblzma.so.5.8.1
+ffff88120000-ffff88121000 rw-p 00030000 fd:00 1498                       /usr/lib/aarch64-linux-gnu/liblzma.so.5.8.1
+ffff88130000-ffff88142000 r-xp 00000000 fd:00 1294                       /usr/lib/aarch64-linux-gnu/libbsd.so.0.12.2
+ffff88142000-ffff8815f000 ---p 00012000 fd:00 1294                       /usr/lib/aarch64-linux-gnu/libbsd.so.0.12.2
+ffff8815f000-ffff88160000 r--p 0001f000 fd:00 1294                       /usr/lib/aarch64-linux-gnu/libbsd.so.0.12.2
+ffff88160000-ffff88161000 rw-p 00020000 fd:00 1294                       /usr/lib/aarch64-linux-gnu/libbsd.so.0.12.2
+ffff88161000-ffff88162000 rw-p 00000000 00:00 0 
+ffff88170000-ffff881a0000 r-xp 00000000 fd:00 1610                       /usr/lib/aarch64-linux-gnu/libtinfo.so.6.5
+ffff881a0000-ffff881ac000 ---p 00030000 fd:00 1610                       /usr/lib/aarch64-linux-gnu/libtinfo.so.6.5
+ffff881ac000-ffff881b0000 r--p 0003c000 fd:00 1610                       /usr/lib/aarch64-linux-gnu/libtinfo.so.6.5
+ffff881b0000-ffff881b1000 rw-p 00040000 fd:00 1610                       /usr/lib/aarch64-linux-gnu/libtinfo.so.6.5
+ffff881c0000-ffff88365000 r-xp 00000000 fd:00 1681                       /usr/lib/aarch64-linux-gnu/libxml2.so.2.9.14
+ffff88365000-ffff88377000 ---p 001a5000 fd:00 1681                       /usr/lib/aarch64-linux-gnu/libxml2.so.2.9.14
+ffff88377000-ffff88380000 r--p 001a7000 fd:00 1681                       /usr/lib/aarch64-linux-gnu/libxml2.so.2.9.14
+ffff88380000-ffff88381000 rw-p 001b0000 fd:00 1681                       /usr/lib/aarch64-linux-gnu/libxml2.so.2.9.14
+ffff88381000-ffff88382000 rw-p 00000000 00:00 0 
+ffff88390000-ffff883c3000 r-xp 00000000 fd:00 974                        /usr/lib/aarch64-linux-gnu/libedit.so.2.0.75
+ffff883c3000-ffff883de000 ---p 00033000 fd:00 974                        /usr/lib/aarch64-linux-gnu/libedit.so.2.0.75
+ffff883de000-ffff883e0000 r--p 0003e000 fd:00 974                        /usr/lib/aarch64-linux-gnu/libedit.so.2.0.75
+ffff883e0000-ffff883e1000 rw-p 00040000 fd:00 974                        /usr/lib/aarch64-linux-gnu/libedit.so.2.0.75
+ffff883e1000-ffff883e5000 rw-p 00000000 00:00 0 
+ffff883f0000-ffff883fa000 r-xp 00000000 fd:00 963                        /usr/lib/aarch64-linux-gnu/libdrm_amdgpu.so.1.124.0
+ffff883fa000-ffff8840f000 ---p 0000a000 fd:00 963                        /usr/lib/aarch64-linux-gnu/libdrm_amdgpu.so.1.124.0
+ffff8840f000-ffff88410000 r--p 0000f000 fd:00 963                        /usr/lib/aarch64-linux-gnu/libdrm_amdgpu.so.1.124.0
+ffff88410000-ffff88411000 rw-p 00010000 fd:00 963                        /usr/lib/aarch64-linux-gnu/libdrm_amdgpu.so.1.124.0
+ffff88420000-ffff8843d000 r-xp 00000000 fd:00 997                        /usr/lib/aarch64-linux-gnu/libelf-0.192.so
+ffff8843d000-ffff8844f000 ---p 0001d000 fd:00 997                        /usr/lib/aarch64-linux-gnu/libelf-0.192.so
+ffff8844f000-ffff88450000 r--p 0001f000 fd:00 997                        /usr/lib/aarch64-linux-gnu/libelf-0.192.so
+ffff88450000-ffff88451000 rw-p 00020000 fd:00 997                        /usr/lib/aarch64-linux-gnu/libelf-0.192.so
+ffff88460000-ffff88462000 r-xp 00000000 fd:00 1253                       /usr/lib/aarch64-linux-gnu/libxshmfence.so.1.0.0
+ffff88462000-ffff8847f000 ---p 00002000 fd:00 1253                       /usr/lib/aarch64-linux-gnu/libxshmfence.so.1.0.0
+ffff8847f000-ffff88480000 r--p 0000f000 fd:00 1253                       /usr/lib/aarch64-linux-gnu/libxshmfence.so.1.0.0
+ffff88480000-ffff88481000 rw-p 00010000 fd:00 1253                       /usr/lib/aarch64-linux-gnu/libxshmfence.so.1.0.0
+ffff88490000-ffff88497000 r-xp 00000000 fd:00 1658                       /usr/lib/aarch64-linux-gnu/libxcb-sync.so.1.0.0
+ffff88497000-ffff884af000 ---p 00007000 fd:00 1658                       /usr/lib/aarch64-linux-gnu/libxcb-sync.so.1.0.0
+ffff884af000-ffff884b0000 r--p 0000f000 fd:00 1658                       /usr/lib/aarch64-linux-gnu/libxcb-sync.so.1.0.0
+ffff884b0000-ffff884b1000 rw-p 00010000 fd:00 1658                       /usr/lib/aarch64-linux-gnu/libxcb-sync.so.1.0.0
+ffff884c0000-ffff884cf000 r-xp 00000000 fd:00 1650                       /usr/lib/aarch64-linux-gnu/libxcb-randr.so.0.1.0
+ffff884cf000-ffff884df000 ---p 0000f000 fd:00 1650                       /usr/lib/aarch64-linux-gnu/libxcb-randr.so.0.1.0
+ffff884df000-ffff884e0000 r--p 0000f000 fd:00 1650                       /usr/lib/aarch64-linux-gnu/libxcb-randr.so.0.1.0
+ffff884e0000-ffff884e1000 rw-p 00010000 fd:00 1650                       /usr/lib/aarch64-linux-gnu/libxcb-randr.so.0.1.0
+ffff884f0000-ffff884ff000 r-xp 00000000 fd:00 2727                       /usr/lib/aarch64-linux-gnu/libsensors.so.5.0.0
+ffff884ff000-ffff8850f000 ---p 0000f000 fd:00 2727                       /usr/lib/aarch64-linux-gnu/libsensors.so.5.0.0
+ffff8850f000-ffff88510000 r--p 0000f000 fd:00 2727                       /usr/lib/aarch64-linux-gnu/libsensors.so.5.0.0
+ffff88510000-ffff88511000 rw-p 00010000 fd:00 2727                       /usr/lib/aarch64-linux-gnu/libsensors.so.5.0.0
+ffff88520000-ffff885ca000 r-xp 00000000 fd:00 1691                       /usr/lib/aarch64-linux-gnu/libzstd.so.1.5.7
+ffff885ca000-ffff885df000 ---p 000aa000 fd:00 1691                       /usr/lib/aarch64-linux-gnu/libzstd.so.1.5.7
+ffff885df000-ffff885e0000 r--p 000af000 fd:00 1691                       /usr/lib/aarch64-linux-gnu/libzstd.so.1.5.7
+ffff885e0000-ffff885e1000 rw-p 000b0000 fd:00 1691                       /usr/lib/aarch64-linux-gnu/libzstd.so.1.5.7
+ffff885f0000-ffff885f8000 r-xp 00000000 fd:00 1662                       /usr/lib/aarch64-linux-gnu/libxcb-xfixes.so.0.0.0
+ffff885f8000-ffff8860f000 ---p 00008000 fd:00 1662                       /usr/lib/aarch64-linux-gnu/libxcb-xfixes.so.0.0.0
+ffff8860f000-ffff88610000 r--p 0000f000 fd:00 1662                       /usr/lib/aarch64-linux-gnu/libxcb-xfixes.so.0.0.0
+ffff88610000-ffff88611000 rw-p 00010000 fd:00 1662                       /usr/lib/aarch64-linux-gnu/libxcb-xfixes.so.0.0.0
+ffff88620000-ffff88622000 r-xp 00000000 fd:00 1648                       /usr/lib/aarch64-linux-gnu/libxcb-present.so.0.0.0
+ffff88622000-ffff8863f000 ---p 00002000 fd:00 1648                       /usr/lib/aarch64-linux-gnu/libxcb-present.so.0.0.0
+ffff8863f000-ffff88640000 r--p 0000f000 fd:00 1648                       /usr/lib/aarch64-linux-gnu/libxcb-present.so.0.0.0
+ffff88640000-ffff88641000 rw-p 00010000 fd:00 1648                       /usr/lib/aarch64-linux-gnu/libxcb-present.so.0.0.0
+ffff88650000-ffff88654000 r-xp 00000000 fd:00 1222                       /usr/lib/aarch64-linux-gnu/libxcb-dri3.so.0.1.0
+ffff88654000-ffff8866f000 ---p 00004000 fd:00 1222                       /usr/lib/aarch64-linux-gnu/libxcb-dri3.so.0.1.0
+ffff8866f000-ffff88670000 r--p 0000f000 fd:00 1222                       /usr/lib/aarch64-linux-gnu/libxcb-dri3.so.0.1.0
+ffff88670000-ffff88671000 rw-p 00010000 fd:00 1222                       /usr/lib/aarch64-linux-gnu/libxcb-dri3.so.0.1.0
+ffff88680000-ffff8869b000 r-xp 00000000 fd:00 1646                       /usr/lib/aarch64-linux-gnu/libxcb-glx.so.0.0.0
+ffff8869b000-ffff886ae000 ---p 0001b000 fd:00 1646                       /usr/lib/aarch64-linux-gnu/libxcb-glx.so.0.0.0
+ffff886ae000-ffff886b0000 r--p 0001e000 fd:00 1646                       /usr/lib/aarch64-linux-gnu/libxcb-glx.so.0.0.0
+ffff886b0000-ffff886b1000 rw-p 00020000 fd:00 1646                       /usr/lib/aarch64-linux-gnu/libxcb-glx.so.0.0.0
+ffff886c0000-ffff8a6aa000 r-xp 00000000 fd:00 4439                       /usr/lib/aarch64-linux-gnu/libgallium-25.0.7-2+deb13u1.so
+ffff8a6aa000-ffff8a6ba000 ---p 01fea000 fd:00 4439                       /usr/lib/aarch64-linux-gnu/libgallium-25.0.7-2+deb13u1.so
+ffff8a6ba000-ffff8a810000 r--p 01fea000 fd:00 4439                       /usr/lib/aarch64-linux-gnu/libgallium-25.0.7-2+deb13u1.so
+ffff8a810000-ffff8a834000 rw-p 02140000 fd:00 4439                       /usr/lib/aarch64-linux-gnu/libgallium-25.0.7-2+deb13u1.so
+ffff8a834000-ffff8a9f6000 rw-p 00000000 00:00 0 
+ffff8aa00000-ffff8acaf000 r-xp 00000000 fd:00 606392                     /home/ideck/.local/share/Steam/steamrtarm64/chromehtml.so
+ffff8acaf000-ffff8acc4000 r--p 002ae000 fd:00 606392                     /home/ideck/.local/share/Steam/steamrtarm64/chromehtml.so
+ffff8acc4000-ffff8acc7000 rw-p 002c3000 fd:00 606392                     /home/ideck/.local/share/Steam/steamrtarm64/chromehtml.so
+ffff8acc7000-ffff8acce000 rw-p 00000000 00:00 0 
+ffff8acd0000-ffff8acd5000 r-xp 00000000 fd:00 1261                       /usr/lib/aarch64-linux-gnu/libXxf86vm.so.1.0.0
+ffff8acd5000-ffff8acef000 ---p 00005000 fd:00 1261                       /usr/lib/aarch64-linux-gnu/libXxf86vm.so.1.0.0
+ffff8acef000-ffff8acf0000 r--p 0000f000 fd:00 1261                       /usr/lib/aarch64-linux-gnu/libXxf86vm.so.1.0.0
+ffff8acf0000-ffff8acf1000 rw-p 00010000 fd:00 1261                       /usr/lib/aarch64-linux-gnu/libXxf86vm.so.1.0.0
+ffff8ad00000-ffff8ad73000 r-xp 00000000 fd:00 823                        /usr/lib/aarch64-linux-gnu/libGLX_mesa.so.0.0.0
+ffff8ad73000-ffff8ad8c000 ---p 00073000 fd:00 823                        /usr/lib/aarch64-linux-gnu/libGLX_mesa.so.0.0.0
+ffff8ad8c000-ffff8ad90000 r--p 0007c000 fd:00 823                        /usr/lib/aarch64-linux-gnu/libGLX_mesa.so.0.0.0
+ffff8ad90000-ffff8ad91000 rw-p 00080000 fd:00 823                        /usr/lib/aarch64-linux-gnu/libGLX_mesa.so.0.0.0
+ffff8ad91000-ffff8ad92000 rw-p 00000000 00:00 0 
+ffff8ada0000-ffff8afec000 r-xp 00000000 fd:00 1596                       /usr/lib/aarch64-linux-gnu/libstdc++.so.6.0.33
+ffff8afec000-ffff8aff5000 ---p 0024c000 fd:00 1596                       /usr/lib/aarch64-linux-gnu/libstdc++.so.6.0.33
+ffff8aff5000-ffff8b000000 r--p 00255000 fd:00 1596                       /usr/lib/aarch64-linux-gnu/libstdc++.so.6.0.33
+ffff8b000000-ffff8b003000 rw-p 00260000 fd:00 1596                       /usr/lib/aarch64-linux-gnu/libstdc++.so.6.0.33
+ffff8b003000-ffff8b007000 rw-p 00000000 00:00 0 
+ffff8b010000-ffff8b16e000 r-xp 00000000 fd:00 14269                      /usr/lib/aarch64-linux-gnu/libopenal.so.1.24.2
+ffff8b16e000-ffff8b179000 ---p 0015e000 fd:00 14269                      /usr/lib/aarch64-linux-gnu/libopenal.so.1.24.2
+ffff8b179000-ffff8b180000 r--p 00169000 fd:00 14269                      /usr/lib/aarch64-linux-gnu/libopenal.so.1.24.2
+ffff8b180000-ffff8b181000 rw-p 00170000 fd:00 14269                      /usr/lib/aarch64-linux-gnu/libopenal.so.1.24.2
+ffff8b181000-ffff8b1fc000 rw-p 00000000 00:00 0 
+ffff8b200000-ffff8b531000 r-xp 00000000 fd:00 606431                     /home/ideck/.local/share/Steam/steamrtarm64/vgui2_s.so
+ffff8b531000-ffff8b532000 ---p 00331000 fd:00 606431                     /home/ideck/.local/share/Steam/steamrtarm64/vgui2_s.so
+ffff8b532000-ffff8b542000 r--p 00331000 fd:00 606431                     /home/ideck/.local/share/Steam/steamrtarm64/vgui2_s.so
+ffff8b542000-ffff8b544000 rw-p 00341000 fd:00 606431                     /home/ideck/.local/share/Steam/steamrtarm64/vgui2_s.so
+ffff8b544000-ffff8b556000 rw-p 00000000 00:00 0 
+ffff8b570000-ffff8b577000 r-xp 00000000 fd:00 1623                       /usr/lib/aarch64-linux-gnu/libuuid.so.1.3.0
+ffff8b577000-ffff8b58f000 ---p 00007000 fd:00 1623                       /usr/lib/aarch64-linux-gnu/libuuid.so.1.3.0
+ffff8b58f000-ffff8b590000 r--p 0000f000 fd:00 1623                       /usr/lib/aarch64-linux-gnu/libuuid.so.1.3.0
+ffff8b590000-ffff8b591000 rw-p 00010000 fd:00 1623                       /usr/lib/aarch64-linux-gnu/libuuid.so.1.3.0
+ffff8b5a0000-ffff8b5bf000 r-xp 00000000 fd:00 855                        /usr/lib/aarch64-linux-gnu/libgcc_s.so.1
+ffff8b5bf000-ffff8b5cf000 ---p 0001f000 fd:00 855                        /usr/lib/aarch64-linux-gnu/libgcc_s.so.1
+ffff8b5cf000-ffff8b5d0000 r--p 0001f000 fd:00 855                        /usr/lib/aarch64-linux-gnu/libgcc_s.so.1
+ffff8b5d0000-ffff8b5d1000 rw-p 00020000 fd:00 855                        /usr/lib/aarch64-linux-gnu/libgcc_s.so.1
+ffff8b5e0000-ffff8b5f7000 r-xp 00000000 fd:00 1444                       /usr/lib/aarch64-linux-gnu/libICE.so.6.3.0
+ffff8b5f7000-ffff8b60f000 ---p 00017000 fd:00 1444                       /usr/lib/aarch64-linux-gnu/libICE.so.6.3.0
+ffff8b60f000-ffff8b610000 r--p 0001f000 fd:00 1444                       /usr/lib/aarch64-linux-gnu/libICE.so.6.3.0
+ffff8b610000-ffff8b611000 rw-p 00020000 fd:00 1444                       /usr/lib/aarch64-linux-gnu/libICE.so.6.3.0
+ffff8b611000-ffff8b615000 rw-p 00000000 00:00 0 
+ffff8b620000-ffff8b628000 r-xp 00000000 fd:00 1585                       /usr/lib/aarch64-linux-gnu/libSM.so.6.0.1
+ffff8b628000-ffff8b63f000 ---p 00008000 fd:00 1585                       /usr/lib/aarch64-linux-gnu/libSM.so.6.0.1
+ffff8b63f000-ffff8b640000 r--p 0000f000 fd:00 1585                       /usr/lib/aarch64-linux-gnu/libSM.so.6.0.1
+ffff8b640000-ffff8b641000 rw-p 00010000 fd:00 1585                       /usr/lib/aarch64-linux-gnu/libSM.so.6.0.1
+ffff8b64c000-ffff8b718000 r-xp 00000000 fd:00 606394                     /home/ideck/.local/share/Steam/steamrtarm64/filesystem_stdio.so
+ffff8b718000-ffff8b71f000 r--p 000cb000 fd:00 606394                     /home/ideck/.local/share/Steam/steamrtarm64/filesystem_stdio.so
+ffff8b71f000-ffff8b720000 rw-p 000d2000 fd:00 606394                     /home/ideck/.local/share/Steam/steamrtarm64/filesystem_stdio.so
+ffff8b720000-ffff8b726000 rw-p 00000000 00:00 0 
+ffff8b726000-ffff8b780000 r--p 00000000 fd:00 5003                       /usr/lib/locale/C.utf8/LC_CTYPE
+ffff8b780000-ffff8b783000 r-xp 00000000 fd:00 14308                      /usr/lib/aarch64-linux-gnu/libXss.so.1.0.0
+ffff8b783000-ffff8b79f000 ---p 00003000 fd:00 14308                      /usr/lib/aarch64-linux-gnu/libXss.so.1.0.0
+ffff8b79f000-ffff8b7a0000 r--p 0000f000 fd:00 14308                      /usr/lib/aarch64-linux-gnu/libXss.so.1.0.0
+ffff8b7a0000-ffff8b7a1000 rw-p 00010000 fd:00 14308                      /usr/lib/aarch64-linux-gnu/libXss.so.1.0.0
+ffff8b7b0000-ffff8b9b0000 rw-s 00000000 00:1b 261                        /dev/shm/u1000-ValveIPCSharedObj-Steam
+ffff8b9b0000-ffff8b9c0000 ---p 00000000 00:00 0 
+ffff8b9c0000-ffff8c1c0000 rw-p 00000000 00:00 0 
+ffff8c1c0000-ffff8c1e0000 r-xp 00000000 fd:00 1292                       /usr/lib/aarch64-linux-gnu/libbrotlicommon.so.1.1.0
+ffff8c1e0000-ffff8c1ef000 ---p 00020000 fd:00 1292                       /usr/lib/aarch64-linux-gnu/libbrotlicommon.so.1.1.0
+ffff8c1ef000-ffff8c1f0000 r--p 0002f000 fd:00 1292                       /usr/lib/aarch64-linux-gnu/libbrotlicommon.so.1.1.0
+ffff8c1f0000-ffff8c1f1000 rw-p 00030000 fd:00 1292                       /usr/lib/aarch64-linux-gnu/libbrotlicommon.so.1.1.0
+ffff8c200000-ffff8c20b000 r-xp 00000000 fd:00 878                        /usr/lib/aarch64-linux-gnu/libcap.so.2.75
+ffff8c20b000-ffff8c21f000 ---p 0000b000 fd:00 878                        /usr/lib/aarch64-linux-gnu/libcap.so.2.75
+ffff8c21f000-ffff8c220000 r--p 0000f000 fd:00 878                        /usr/lib/aarch64-linux-gnu/libcap.so.2.75
+ffff8c220000-ffff8c221000 rw-p 00010000 fd:00 878                        /usr/lib/aarch64-linux-gnu/libcap.so.2.75
+ffff8c230000-ffff8c275000 r-xp 00000000 fd:00 14227                      /usr/lib/aarch64-linux-gnu/libmp3lame.so.0.0.0
+ffff8c275000-ffff8c28e000 ---p 00045000 fd:00 14227                      /usr/lib/aarch64-linux-gnu/libmp3lame.so.0.0.0
+ffff8c28e000-ffff8c290000 r--p 0004e000 fd:00 14227                      /usr/lib/aarch64-linux-gnu/libmp3lame.so.0.0.0
+ffff8c290000-ffff8c291000 rw-p 00050000 fd:00 14227                      /usr/lib/aarch64-linux-gnu/libmp3lame.so.0.0.0
+ffff8c291000-ffff8c2bd000 rw-p 00000000 00:00 0 
+ffff8c2c0000-ffff8c30f000 r-xp 00000000 fd:00 14229                      /usr/lib/aarch64-linux-gnu/libmpg123.so.0.48.3
+ffff8c30f000-ffff8c31f000 ---p 0004f000 fd:00 14229                      /usr/lib/aarch64-linux-gnu/libmpg123.so.0.48.3
+ffff8c31f000-ffff8c320000 r--p 0004f000 fd:00 14229                      /usr/lib/aarch64-linux-gnu/libmpg123.so.0.48.3
+ffff8c320000-ffff8c321000 rw-p 00050000 fd:00 14229                      /usr/lib/aarch64-linux-gnu/libmpg123.so.0.48.3
+ffff8c330000-ffff8c67e000 r-xp 00000000 fd:00 14271                      /usr/lib/aarch64-linux-gnu/libopus.so.0.10.1
+ffff8c67e000-ffff8c68d000 ---p 0034e000 fd:00 14271                      /usr/lib/aarch64-linux-gnu/libopus.so.0.10.1
+ffff8c68d000-ffff8c690000 r--p 0034d000 fd:00 14271                      /usr/lib/aarch64-linux-gnu/libopus.so.0.10.1
+ffff8c690000-ffff8c691000 rw-p 00350000 fd:00 14271                      /usr/lib/aarch64-linux-gnu/libopus.so.0.10.1
+ffff8c6a0000-ffff8c728000 r-xp 00000000 fd:00 606384                     /home/ideck/.local/share/Steam/steamrtarm64/libvorbisenc.so.2
+ffff8c728000-ffff8c738000 ---p 00088000 fd:00 606384                     /home/ideck/.local/share/Steam/steamrtarm64/libvorbisenc.so.2
+ffff8c738000-ffff8c74f000 r--p 00088000 fd:00 606384                     /home/ideck/.local/share/Steam/steamrtarm64/libvorbisenc.so.2
+ffff8c74f000-ffff8c750000 rw-p 0009f000 fd:00 606384                     /home/ideck/.local/share/Steam/steamrtarm64/libvorbisenc.so.2
+ffff8c760000-ffff8c787000 r-xp 00000000 fd:00 606382                     /home/ideck/.local/share/Steam/steamrtarm64/libvorbis.so.0
+ffff8c787000-ffff8c796000 ---p 00027000 fd:00 606382                     /home/ideck/.local/share/Steam/steamrtarm64/libvorbis.so.0
+ffff8c796000-ffff8c797000 r--p 00026000 fd:00 606382                     /home/ideck/.local/share/Steam/steamrtarm64/libvorbis.so.0
+ffff8c797000-ffff8c798000 rw-p 00027000 fd:00 606382                     /home/ideck/.local/share/Steam/steamrtarm64/libvorbis.so.0
+ffff8c7a0000-ffff8c7f1000 r-xp 00000000 fd:00 13958                      /usr/lib/aarch64-linux-gnu/libFLAC.so.14.0.0
+ffff8c7f1000-ffff8c80e000 ---p 00051000 fd:00 13958                      /usr/lib/aarch64-linux-gnu/libFLAC.so.14.0.0
+ffff8c80e000-ffff8c810000 r--p 0005e000 fd:00 13958                      /usr/lib/aarch64-linux-gnu/libFLAC.so.14.0.0
+ffff8c810000-ffff8c811000 rw-p 00060000 fd:00 13958                      /usr/lib/aarch64-linux-gnu/libFLAC.so.14.0.0
+ffff8c820000-ffff8c828000 r-xp 00000000 fd:00 916                        /usr/lib/aarch64-linux-gnu/libdatrie.so.1.4.0
+ffff8c828000-ffff8c83f000 ---p 00008000 fd:00 916                        /usr/lib/aarch64-linux-gnu/libdatrie.so.1.4.0
+ffff8c83f000-ffff8c840000 r--p 0000f000 fd:00 916                        /usr/lib/aarch64-linux-gnu/libdatrie.so.1.4.0
+ffff8c840000-ffff8c841000 rw-p 00010000 fd:00 916                        /usr/lib/aarch64-linux-gnu/libdatrie.so.1.4.0
+ffff8c850000-ffff8c85a000 r-xp 00000000 fd:00 1293                       /usr/lib/aarch64-linux-gnu/libbrotlidec.so.1.1.0
+ffff8c85a000-ffff8c86f000 ---p 0000a000 fd:00 1293                       /usr/lib/aarch64-linux-gnu/libbrotlidec.so.1.1.0
+ffff8c86f000-ffff8c870000 r--p 0000f000 fd:00 1293                       /usr/lib/aarch64-linux-gnu/libbrotlidec.so.1.1.0
+ffff8c870000-ffff8c871000 rw-p 00010000 fd:00 1293                       /usr/lib/aarch64-linux-gnu/libbrotlidec.so.1.1.0
+ffff8c880000-ffff8c890000 r-xp 00000000 fd:00 1300                       /usr/lib/aarch64-linux-gnu/libbz2.so.1.0.4
+ffff8c890000-ffff8c89f000 ---p 00010000 fd:00 1300                       /usr/lib/aarch64-linux-gnu/libbz2.so.1.0.4
+ffff8c89f000-ffff8c8a0000 r--p 0000f000 fd:00 1300                       /usr/lib/aarch64-linux-gnu/libbz2.so.1.0.4
+ffff8c8a0000-ffff8c8a1000 rw-p 00010000 fd:00 1300                       /usr/lib/aarch64-linux-gnu/libbz2.so.1.0.4
+ffff8c8b0000-ffff8c8d0000 r-xp 00000000 fd:00 1406                       /usr/lib/aarch64-linux-gnu/libgraphite2.so.3.2.1
+ffff8c8d0000-ffff8c8de000 ---p 00020000 fd:00 1406                       /usr/lib/aarch64-linux-gnu/libgraphite2.so.3.2.1
+ffff8c8de000-ffff8c8e0000 r--p 0002e000 fd:00 1406                       /usr/lib/aarch64-linux-gnu/libgraphite2.so.3.2.1
+ffff8c8e0000-ffff8c8e1000 rw-p 00030000 fd:00 1406                       /usr/lib/aarch64-linux-gnu/libgraphite2.so.3.2.1
+ffff8c8f0000-ffff8c8f5000 r-xp 00000000 fd:00 13946                      /usr/lib/aarch64-linux-gnu/libasyncns.so.0.3.1
+ffff8c8f5000-ffff8c90f000 ---p 00005000 fd:00 13946                      /usr/lib/aarch64-linux-gnu/libasyncns.so.0.3.1
+ffff8c90f000-ffff8c910000 r--p 0000f000 fd:00 13946                      /usr/lib/aarch64-linux-gnu/libasyncns.so.0.3.1
+ffff8c910000-ffff8c911000 rw-p 00010000 fd:00 13946                      /usr/lib/aarch64-linux-gnu/libasyncns.so.0.3.1
+ffff8c920000-ffff8ca2e000 r-xp 00000000 fd:00 2484                       /usr/lib/aarch64-linux-gnu/libsystemd.so.0.40.0
+ffff8ca2e000-ffff8ca33000 ---p 0010e000 fd:00 2484                       /usr/lib/aarch64-linux-gnu/libsystemd.so.0.40.0
+ffff8ca33000-ffff8ca40000 r--p 00113000 fd:00 2484                       /usr/lib/aarch64-linux-gnu/libsystemd.so.0.40.0
+ffff8ca40000-ffff8ca42000 rw-p 00120000 fd:00 2484                       /usr/lib/aarch64-linux-gnu/libsystemd.so.0.40.0
+ffff8ca50000-ffff8ca51000 r-xp 00000000 fd:00 3718                       /usr/lib/aarch64-linux-gnu/libX11-xcb.so.1.0.0
+ffff8ca51000-ffff8ca6f000 ---p 00001000 fd:00 3718                       /usr/lib/aarch64-linux-gnu/libX11-xcb.so.1.0.0
+ffff8ca6f000-ffff8ca70000 r--p 0000f000 fd:00 3718                       /usr/lib/aarch64-linux-gnu/libX11-xcb.so.1.0.0
+ffff8ca70000-ffff8ca71000 rw-p 00010000 fd:00 3718                       /usr/lib/aarch64-linux-gnu/libX11-xcb.so.1.0.0
+ffff8ca80000-ffff8cb04000 r-xp 00000000 fd:00 14285                      /usr/lib/aarch64-linux-gnu/libsndfile.so.1.0.37
+ffff8cb04000-ffff8cb1d000 ---p 00084000 fd:00 14285                      /usr/lib/aarch64-linux-gnu/libsndfile.so.1.0.37
+ffff8cb1d000-ffff8cb20000 r--p 0008d000 fd:00 14285                      /usr/lib/aarch64-linux-gnu/libsndfile.so.1.0.37
+ffff8cb20000-ffff8cb21000 rw-p 00090000 fd:00 14285                      /usr/lib/aarch64-linux-gnu/libsndfile.so.1.0.37
+ffff8cb21000-ffff8cb24000 rw-p 00000000 00:00 0 
+ffff8cb30000-ffff8cb57000 r-xp 00000000 fd:00 1056                       /usr/lib/aarch64-linux-gnu/libexpat.so.1.12.3
+ffff8cb57000-ffff8cb6e000 ---p 00027000 fd:00 1056                       /usr/lib/aarch64-linux-gnu/libexpat.so.1.12.3
+ffff8cb6e000-ffff8cb70000 r--p 0002e000 fd:00 1056                       /usr/lib/aarch64-linux-gnu/libexpat.so.1.12.3
+ffff8cb70000-ffff8cb71000 rw-p 00030000 fd:00 1056                       /usr/lib/aarch64-linux-gnu/libexpat.so.1.12.3
+ffff8cb80000-ffff8cb89000 r-xp 00000000 fd:00 2823                       /usr/lib/aarch64-linux-gnu/libthai.so.0.3.1
+ffff8cb89000-ffff8cb9f000 ---p 00009000 fd:00 2823                       /usr/lib/aarch64-linux-gnu/libthai.so.0.3.1
+ffff8cb9f000-ffff8cba0000 r--p 0000f000 fd:00 2823                       /usr/lib/aarch64-linux-gnu/libthai.so.0.3.1
+ffff8cba0000-ffff8cba1000 rw-p 00010000 fd:00 2823                       /usr/lib/aarch64-linux-gnu/libthai.so.0.3.1
+ffff8cbb0000-ffff8cbcc000 r-xp 00000000 fd:00 1384                       /usr/lib/aarch64-linux-gnu/libfribidi.so.0.4.0
+ffff8cbcc000-ffff8cbdf000 ---p 0001c000 fd:00 1384                       /usr/lib/aarch64-linux-gnu/libfribidi.so.0.4.0
+ffff8cbdf000-ffff8cbe0000 r--p 0001f000 fd:00 1384                       /usr/lib/aarch64-linux-gnu/libfribidi.so.0.4.0
+ffff8cbe0000-ffff8cbe1000 rw-p 00020000 fd:00 1384                       /usr/lib/aarch64-linux-gnu/libfribidi.so.0.4.0
+ffff8cbf0000-ffff8cc80000 r-xp 00000000 fd:00 1559                       /usr/lib/aarch64-linux-gnu/libpixman-1.so.0.44.0
+ffff8cc80000-ffff8cc89000 ---p 00090000 fd:00 1559                       /usr/lib/aarch64-linux-gnu/libpixman-1.so.0.44.0
+ffff8cc89000-ffff8cc90000 r--p 00099000 fd:00 1559                       /usr/lib/aarch64-linux-gnu/libpixman-1.so.0.44.0
+ffff8cc90000-ffff8cc91000 rw-p 000a0000 fd:00 1559                       /usr/lib/aarch64-linux-gnu/libpixman-1.so.0.44.0
+ffff8cca0000-ffff8cca2000 r-xp 00000000 fd:00 1656                       /usr/lib/aarch64-linux-gnu/libxcb-shm.so.0.0.0
+ffff8cca2000-ffff8ccbf000 ---p 00002000 fd:00 1656                       /usr/lib/aarch64-linux-gnu/libxcb-shm.so.0.0.0
+ffff8ccbf000-ffff8ccc0000 r--p 0000f000 fd:00 1656                       /usr/lib/aarch64-linux-gnu/libxcb-shm.so.0.0.0
+ffff8ccc0000-ffff8ccc1000 rw-p 00010000 fd:00 1656                       /usr/lib/aarch64-linux-gnu/libxcb-shm.so.0.0.0
+ffff8ccd0000-ffff8ccdc000 r-xp 00000000 fd:00 1652                       /usr/lib/aarch64-linux-gnu/libxcb-render.so.0.0.0
+ffff8ccdc000-ffff8ccef000 ---p 0000c000 fd:00 1652                       /usr/lib/aarch64-linux-gnu/libxcb-render.so.0.0.0
+ffff8ccef000-ffff8ccf0000 r--p 0000f000 fd:00 1652                       /usr/lib/aarch64-linux-gnu/libxcb-render.so.0.0.0
+ffff8ccf0000-ffff8ccf1000 rw-p 00010000 fd:00 1652                       /usr/lib/aarch64-linux-gnu/libxcb-render.so.0.0.0
+ffff8cd00000-ffff8cdbb000 r-xp 00000000 fd:00 1376                       /usr/lib/aarch64-linux-gnu/libfreetype.so.6.20.2
+ffff8cdbb000-ffff8cdc9000 ---p 000bb000 fd:00 1376                       /usr/lib/aarch64-linux-gnu/libfreetype.so.6.20.2
+ffff8cdc9000-ffff8cdd0000 r--p 000c9000 fd:00 1376                       /usr/lib/aarch64-linux-gnu/libfreetype.so.6.20.2
+ffff8cdd0000-ffff8cdd1000 rw-p 000d0000 fd:00 1376                       /usr/lib/aarch64-linux-gnu/libfreetype.so.6.20.2
+ffff8cde0000-ffff8cf14000 r-xp 00000000 fd:00 1428                       /usr/lib/aarch64-linux-gnu/libharfbuzz.so.0.61020.0
+ffff8cf14000-ffff8cf2f000 ---p 00134000 fd:00 1428                       /usr/lib/aarch64-linux-gnu/libharfbuzz.so.0.61020.0
+ffff8cf2f000-ffff8cf30000 r--p 0013f000 fd:00 1428                       /usr/lib/aarch64-linux-gnu/libharfbuzz.so.0.61020.0
+ffff8cf30000-ffff8cf31000 rw-p 00140000 fd:00 1428                       /usr/lib/aarch64-linux-gnu/libharfbuzz.so.0.61020.0
+ffff8cf40000-ffff8cf42000 r-xp 00000000 fd:00 1668                       /usr/lib/aarch64-linux-gnu/libXdamage.so.1.1.0
+ffff8cf42000-ffff8cf5f000 ---p 00002000 fd:00 1668                       /usr/lib/aarch64-linux-gnu/libXdamage.so.1.1.0
+ffff8cf5f000-ffff8cf60000 r--p 0000f000 fd:00 1668                       /usr/lib/aarch64-linux-gnu/libXdamage.so.1.1.0
+ffff8cf60000-ffff8cf61000 rw-p 00010000 fd:00 1668                       /usr/lib/aarch64-linux-gnu/libXdamage.so.1.1.0
+ffff8cf70000-ffff8cf72000 r-xp 00000000 fd:00 1666                       /usr/lib/aarch64-linux-gnu/libXcomposite.so.1.0.0
+ffff8cf72000-ffff8cf8f000 ---p 00002000 fd:00 1666                       /usr/lib/aarch64-linux-gnu/libXcomposite.so.1.0.0
+ffff8cf8f000-ffff8cf90000 r--p 0000f000 fd:00 1666                       /usr/lib/aarch64-linux-gnu/libXcomposite.so.1.0.0
+ffff8cf90000-ffff8cf91000 rw-p 00010000 fd:00 1666                       /usr/lib/aarch64-linux-gnu/libXcomposite.so.1.0.0
+ffff8cfa0000-ffff8cfab000 r-xp 00000000 fd:00 1225                       /usr/lib/aarch64-linux-gnu/libXcursor.so.1.0.2
+ffff8cfab000-ffff8cfbf000 ---p 0000b000 fd:00 1225                       /usr/lib/aarch64-linux-gnu/libXcursor.so.1.0.2
+ffff8cfbf000-ffff8cfc0000 r--p 0000f000 fd:00 1225                       /usr/lib/aarch64-linux-gnu/libXcursor.so.1.0.2
+ffff8cfc0000-ffff8cfc1000 rw-p 00010000 fd:00 1225                       /usr/lib/aarch64-linux-gnu/libXcursor.so.1.0.2
+ffff8cfd0000-ffff8cfd2000 r-xp 00000000 fd:00 1241                       /usr/lib/aarch64-linux-gnu/libXinerama.so.1.0.0
+ffff8cfd2000-ffff8cfef000 ---p 00002000 fd:00 1241                       /usr/lib/aarch64-linux-gnu/libXinerama.so.1.0.0
+ffff8cfef000-ffff8cff0000 r--p 0000f000 fd:00 1241                       /usr/lib/aarch64-linux-gnu/libXinerama.so.1.0.0
+ffff8cff0000-ffff8cff1000 rw-p 00010000 fd:00 1241                       /usr/lib/aarch64-linux-gnu/libXinerama.so.1.0.0
+ffff8d000000-ffff8d060000 r-xp 00000000 fd:00 1290                       /usr/lib/aarch64-linux-gnu/libblkid.so.1.1.0
+ffff8d060000-ffff8d06a000 ---p 00060000 fd:00 1290                       /usr/lib/aarch64-linux-gnu/libblkid.so.1.1.0
+ffff8d06a000-ffff8d070000 r--p 0006a000 fd:00 1290                       /usr/lib/aarch64-linux-gnu/libblkid.so.1.1.0
+ffff8d070000-ffff8d071000 rw-p 00070000 fd:00 1290                       /usr/lib/aarch64-linux-gnu/libblkid.so.1.1.0
+ffff8d080000-ffff8d085000 r-xp 00000000 fd:00 1229                       /usr/lib/aarch64-linux-gnu/libXdmcp.so.6.0.0
+ffff8d085000-ffff8d09f000 ---p 00005000 fd:00 1229                       /usr/lib/aarch64-linux-gnu/libXdmcp.so.6.0.0
+ffff8d09f000-ffff8d0a0000 r--p 0000f000 fd:00 1229                       /usr/lib/aarch64-linux-gnu/libXdmcp.so.6.0.0
+ffff8d0a0000-ffff8d0a1000 rw-p 00010000 fd:00 1229                       /usr/lib/aarch64-linux-gnu/libXdmcp.so.6.0.0
+ffff8d0b0000-ffff8d0b3000 r-xp 00000000 fd:00 1216                       /usr/lib/aarch64-linux-gnu/libXau.so.6.0.0
+ffff8d0b3000-ffff8d0cf000 ---p 00003000 fd:00 1216                       /usr/lib/aarch64-linux-gnu/libXau.so.6.0.0
+ffff8d0cf000-ffff8d0d0000 r--p 0000f000 fd:00 1216                       /usr/lib/aarch64-linux-gnu/libXau.so.6.0.0
+ffff8d0d0000-ffff8d0d1000 rw-p 00010000 fd:00 1216                       /usr/lib/aarch64-linux-gnu/libXau.so.6.0.0
+ffff8d0e0000-ffff8d0f7000 r-xp 00000000 fd:00 970                        /usr/lib/aarch64-linux-gnu/libdrm.so.2.124.0
+ffff8d0f7000-ffff8d10f000 ---p 00017000 fd:00 970                        /usr/lib/aarch64-linux-gnu/libdrm.so.2.124.0
+ffff8d10f000-ffff8d110000 r--p 0001f000 fd:00 970                        /usr/lib/aarch64-linux-gnu/libdrm.so.2.124.0
+ffff8d110000-ffff8d111000 rw-p 00020000 fd:00 970                        /usr/lib/aarch64-linux-gnu/libdrm.so.2.124.0
+ffff8d120000-ffff8d154000 r-xp 00000000 fd:00 14293                      /usr/lib/aarch64-linux-gnu/libva.so.2.2200.0
+ffff8d154000-ffff8d16f000 ---p 00034000 fd:00 14293                      /usr/lib/aarch64-linux-gnu/libva.so.2.2200.0
+ffff8d16f000-ffff8d170000 r--p 0003f000 fd:00 14293                      /usr/lib/aarch64-linux-gnu/libva.so.2.2200.0
+ffff8d170000-ffff8d171000 rw-p 00040000 fd:00 14293                      /usr/lib/aarch64-linux-gnu/libva.so.2.2200.0
+ffff8d180000-ffff8d380000 r-xp 00000000 fd:00 606388                     /home/ideck/.local/share/Steam/steamrtarm64/libvpx.so.6
+ffff8d380000-ffff8d38f000 ---p 00200000 fd:00 606388                     /home/ideck/.local/share/Steam/steamrtarm64/libvpx.so.6
+ffff8d38f000-ffff8d393000 r--p 001ff000 fd:00 606388                     /home/ideck/.local/share/Steam/steamrtarm64/libvpx.so.6
+ffff8d393000-ffff8d394000 rw-p 00203000 fd:00 606388                     /home/ideck/.local/share/Steam/steamrtarm64/libvpx.so.6
+ffff8d394000-ffff8d39a000 rw-p 00000000 00:00 0 
+ffff8d3a0000-ffff8d3f2000 r-xp 00000000 fd:00 1474                       /usr/lib/aarch64-linux-gnu/libjpeg.so.62.3.0
+ffff8d3f2000-ffff8d40f000 ---p 00052000 fd:00 1474                       /usr/lib/aarch64-linux-gnu/libjpeg.so.62.3.0
+ffff8d40f000-ffff8d410000 r--p 0005f000 fd:00 1474                       /usr/lib/aarch64-linux-gnu/libjpeg.so.62.3.0
+ffff8d410000-ffff8d411000 rw-p 00060000 fd:00 1474                       /usr/lib/aarch64-linux-gnu/libjpeg.so.62.3.0
+ffff8d420000-ffff8d454000 r-xp 00000000 fd:00 1561                       /usr/lib/aarch64-linux-gnu/libpng16.so.16.48.0
+ffff8d454000-ffff8d46f000 ---p 00034000 fd:00 1561                       /usr/lib/aarch64-linux-gnu/libpng16.so.16.48.0
+ffff8d46f000-ffff8d470000 r--p 0003f000 fd:00 1561                       /usr/lib/aarch64-linux-gnu/libpng16.so.16.48.0
+ffff8d470000-ffff8d471000 rw-p 00040000 fd:00 1561                       /usr/lib/aarch64-linux-gnu/libpng16.so.16.48.0
+ffff8d480000-ffff8d4d8000 r-xp 00000000 fd:00 933                        /usr/lib/aarch64-linux-gnu/libdbus-1.so.3.38.3
+ffff8d4d8000-ffff8d4ee000 ---p 00058000 fd:00 933                        /usr/lib/aarch64-linux-gnu/libdbus-1.so.3.38.3
+ffff8d4ee000-ffff8d4f0000 r--p 0005e000 fd:00 933                        /usr/lib/aarch64-linux-gnu/libdbus-1.so.3.38.3
+ffff8d4f0000-ffff8d4f1000 rw-p 00060000 fd:00 933                        /usr/lib/aarch64-linux-gnu/libdbus-1.so.3.38.3
+ffff8d500000-ffff8d583000 r-xp 00000000 fd:00 50155                      /usr/lib/aarch64-linux-gnu/pulseaudio/libpulsecommon-17.0.so
+ffff8d583000-ffff8d59d000 ---p 00083000 fd:00 50155                      /usr/lib/aarch64-linux-gnu/pulseaudio/libpulsecommon-17.0.so
+ffff8d59d000-ffff8d5a0000 r--p 0008d000 fd:00 50155                      /usr/lib/aarch64-linux-gnu/pulseaudio/libpulsecommon-17.0.so
+ffff8d5a0000-ffff8d5a1000 rw-p 00090000 fd:00 50155                      /usr/lib/aarch64-linux-gnu/pulseaudio/libpulsecommon-17.0.so
+ffff8d5b0000-ffff8d5fd000 r-xp 00000000 fd:00 1365                       /usr/lib/aarch64-linux-gnu/libfontconfig.so.1.12.1
+ffff8d5fd000-ffff8d60e000 ---p 0004d000 fd:00 1365                       /usr/lib/aarch64-linux-gnu/libfontconfig.so.1.12.1
+ffff8d60e000-ffff8d610000 r--p 0004e000 fd:00 1365                       /usr/lib/aarch64-linux-gnu/libfontconfig.so.1.12.1
+ffff8d610000-ffff8d611000 rw-p 00050000 fd:00 1365                       /usr/lib/aarch64-linux-gnu/libfontconfig.so.1.12.1
+ffff8d620000-ffff8d68c000 r-xp 00000000 fd:00 1538                       /usr/lib/aarch64-linux-gnu/libpango-1.0.so.0.5600.3
+ffff8d68c000-ffff8d69c000 ---p 0006c000 fd:00 1538                       /usr/lib/aarch64-linux-gnu/libpango-1.0.so.0.5600.3
+ffff8d69c000-ffff8d6a0000 r--p 0006c000 fd:00 1538                       /usr/lib/aarch64-linux-gnu/libpango-1.0.so.0.5600.3
+ffff8d6a0000-ffff8d6a1000 rw-p 00070000 fd:00 1538                       /usr/lib/aarch64-linux-gnu/libpango-1.0.so.0.5600.3
+ffff8d6b0000-ffff8d6cc000 r-xp 00000000 fd:00 1548                       /usr/lib/aarch64-linux-gnu/libpangoft2-1.0.so.0.5600.3
+ffff8d6cc000-ffff8d6df000 ---p 0001c000 fd:00 1548                       /usr/lib/aarch64-linux-gnu/libpangoft2-1.0.so.0.5600.3
+ffff8d6df000-ffff8d6e0000 r--p 0001f000 fd:00 1548                       /usr/lib/aarch64-linux-gnu/libpangoft2-1.0.so.0.5600.3
+ffff8d6e0000-ffff8d6e1000 rw-p 00020000 fd:00 1548                       /usr/lib/aarch64-linux-gnu/libpangoft2-1.0.so.0.5600.3
+ffff8d6f0000-ffff8d828000 r-xp 00000000 fd:00 866                        /usr/lib/aarch64-linux-gnu/libcairo.so.2.11804.4
+ffff8d828000-ffff8d83c000 ---p 00138000 fd:00 866                        /usr/lib/aarch64-linux-gnu/libcairo.so.2.11804.4
+ffff8d83c000-ffff8d840000 r--p 0013c000 fd:00 866                        /usr/lib/aarch64-linux-gnu/libcairo.so.2.11804.4
+ffff8d840000-ffff8d842000 rw-p 00140000 fd:00 866                        /usr/lib/aarch64-linux-gnu/libcairo.so.2.11804.4
+ffff8d842000-ffff8d843000 rw-p 00000000 00:00 0 
+ffff8d850000-ffff8d879000 r-xp 00000000 fd:00 1278                       /usr/lib/aarch64-linux-gnu/libatk-1.0.so.0.25611.1
+ffff8d879000-ffff8d88d000 ---p 00029000 fd:00 1278                       /usr/lib/aarch64-linux-gnu/libatk-1.0.so.0.25611.1
+ffff8d88d000-ffff8d890000 r--p 0002d000 fd:00 1278                       /usr/lib/aarch64-linux-gnu/libatk-1.0.so.0.25611.1
+ffff8d890000-ffff8d891000 rw-p 00030000 fd:00 1278                       /usr/lib/aarch64-linux-gnu/libatk-1.0.so.0.25611.1
+ffff8d8a0000-ffff8d8ad000 r-xp 00000000 fd:00 1546                       /usr/lib/aarch64-linux-gnu/libpangocairo-1.0.so.0.5600.3
+ffff8d8ad000-ffff8d8bf000 ---p 0000d000 fd:00 1546                       /usr/lib/aarch64-linux-gnu/libpangocairo-1.0.so.0.5600.3
+ffff8d8bf000-ffff8d8c0000 r--p 0000f000 fd:00 1546                       /usr/lib/aarch64-linux-gnu/libpangocairo-1.0.so.0.5600.3
+ffff8d8c0000-ffff8d8c1000 rw-p 00010000 fd:00 1546                       /usr/lib/aarch64-linux-gnu/libpangocairo-1.0.so.0.5600.3
+ffff8d8d0000-ffff8d98b000 r-xp 00000000 fd:00 13966                      /usr/lib/aarch64-linux-gnu/libgdk-x11-2.0.so.0.2400.33
+ffff8d98b000-ffff8d99c000 ---p 000bb000 fd:00 13966                      /usr/lib/aarch64-linux-gnu/libgdk-x11-2.0.so.0.2400.33
+ffff8d99c000-ffff8d9a0000 r--p 000bc000 fd:00 13966                      /usr/lib/aarch64-linux-gnu/libgdk-x11-2.0.so.0.2400.33
+ffff8d9a0000-ffff8d9a2000 rw-p 000c0000 fd:00 13966                      /usr/lib/aarch64-linux-gnu/libgdk-x11-2.0.so.0.2400.33
+ffff8d9b0000-ffff8d9e1000 r-xp 00000000 fd:00 1578                       /usr/lib/aarch64-linux-gnu/libselinux.so.1
+ffff8d9e1000-ffff8d9ff000 ---p 00031000 fd:00 1578                       /usr/lib/aarch64-linux-gnu/libselinux.so.1
+ffff8d9ff000-ffff8da00000 r--p 0003f000 fd:00 1578                       /usr/lib/aarch64-linux-gnu/libselinux.so.1
+ffff8da00000-ffff8da01000 rw-p 00040000 fd:00 1578                       /usr/lib/aarch64-linux-gnu/libselinux.so.1
+ffff8da01000-ffff8da03000 rw-p 00000000 00:00 0 
+ffff8da10000-ffff8da90000 r-xp 00000000 fd:00 1506                       /usr/lib/aarch64-linux-gnu/libmount.so.1.1.0
+ffff8da90000-ffff8da9d000 ---p 00080000 fd:00 1506                       /usr/lib/aarch64-linux-gnu/libmount.so.1.1.0
+ffff8da9d000-ffff8daa0000 r--p 0008d000 fd:00 1506                       /usr/lib/aarch64-linux-gnu/libmount.so.1.1.0
+ffff8daa0000-ffff8daa1000 rw-p 00090000 fd:00 1506                       /usr/lib/aarch64-linux-gnu/libmount.so.1.1.0
+ffff8dab0000-ffff8dacc000 r-xp 00000000 fd:00 468                        /usr/lib/aarch64-linux-gnu/libz.so.1.3.1
+ffff8dacc000-ffff8dadf000 ---p 0001c000 fd:00 468                        /usr/lib/aarch64-linux-gnu/libz.so.1.3.1
+ffff8dadf000-ffff8dae0000 r--p 0001f000 fd:00 468                        /usr/lib/aarch64-linux-gnu/libz.so.1.3.1
+ffff8dae0000-ffff8dae1000 rw-p 00020000 fd:00 468                        /usr/lib/aarch64-linux-gnu/libz.so.1.3.1
+ffff8daf0000-ffff8daf3000 r-xp 00000000 fd:00 802                        /usr/lib/aarch64-linux-gnu/libgmodule-2.0.so.0.8400.4
+ffff8daf3000-ffff8db0f000 ---p 00003000 fd:00 802                        /usr/lib/aarch64-linux-gnu/libgmodule-2.0.so.0.8400.4
+ffff8db0f000-ffff8db10000 r--p 0000f000 fd:00 802                        /usr/lib/aarch64-linux-gnu/libgmodule-2.0.so.0.8400.4
+ffff8db10000-ffff8db11000 rw-p 00010000 fd:00 802                        /usr/lib/aarch64-linux-gnu/libgmodule-2.0.so.0.8400.4
+ffff8db20000-ffff8dbb8000 r-xp 00000000 fd:00 1556                       /usr/lib/aarch64-linux-gnu/libpcre2-8.so.0.14.0
+ffff8dbb8000-ffff8dbcf000 ---p 00098000 fd:00 1556                       /usr/lib/aarch64-linux-gnu/libpcre2-8.so.0.14.0
+ffff8dbcf000-ffff8dbd0000 r--p 0009f000 fd:00 1556                       /usr/lib/aarch64-linux-gnu/libpcre2-8.so.0.14.0
+ffff8dbd0000-ffff8dbd1000 rw-p 000a0000 fd:00 1556                       /usr/lib/aarch64-linux-gnu/libpcre2-8.so.0.14.0
+ffff8dbe0000-ffff8dbe9000 r-xp 00000000 fd:00 1276                       /usr/lib/aarch64-linux-gnu/libatomic.so.1.2.0
+ffff8dbe9000-ffff8dbff000 ---p 00009000 fd:00 1276                       /usr/lib/aarch64-linux-gnu/libatomic.so.1.2.0
+ffff8dbff000-ffff8dc00000 r--p 0000f000 fd:00 1276                       /usr/lib/aarch64-linux-gnu/libatomic.so.1.2.0
+ffff8dc00000-ffff8dc01000 rw-p 00010000 fd:00 1276                       /usr/lib/aarch64-linux-gnu/libatomic.so.1.2.0
+ffff8dc01000-ffff8dc02000 rw-p 00000000 00:00 0 
+ffff8dc10000-ffff8dc19000 r-xp 00000000 fd:00 1071                       /usr/lib/aarch64-linux-gnu/libffi.so.8.1.4
+ffff8dc19000-ffff8dc2f000 ---p 00009000 fd:00 1071                       /usr/lib/aarch64-linux-gnu/libffi.so.8.1.4
+ffff8dc2f000-ffff8dc30000 r--p 0000f000 fd:00 1071                       /usr/lib/aarch64-linux-gnu/libffi.so.8.1.4
+ffff8dc30000-ffff8dc31000 rw-p 00010000 fd:00 1071                       /usr/lib/aarch64-linux-gnu/libffi.so.8.1.4
+ffff8dc40000-ffff8dc69000 r-xp 00000000 fd:00 1664                       /usr/lib/aarch64-linux-gnu/libxcb.so.1.1.0
+ffff8dc69000-ffff8dc7f000 ---p 00029000 fd:00 1664                       /usr/lib/aarch64-linux-gnu/libxcb.so.1.1.0
+ffff8dc7f000-ffff8dc80000 r--p 0002f000 fd:00 1664                       /usr/lib/aarch64-linux-gnu/libxcb.so.1.1.0
+ffff8dc80000-ffff8dc81000 rw-p 00030000 fd:00 1664                       /usr/lib/aarch64-linux-gnu/libxcb.so.1.1.0
+ffff8dc90000-ffff8dcb1000 r-xp 00000000 fd:00 830                        /usr/lib/aarch64-linux-gnu/libGLX.so.0.0.0
+ffff8dcb1000-ffff8dccf000 ---p 00021000 fd:00 830                        /usr/lib/aarch64-linux-gnu/libGLX.so.0.0.0
+ffff8dccf000-ffff8dcd0000 r--p 0002f000 fd:00 830                        /usr/lib/aarch64-linux-gnu/libGLX.so.0.0.0
+ffff8dcd0000-ffff8dcd1000 rw-p 00030000 fd:00 830                        /usr/lib/aarch64-linux-gnu/libGLX.so.0.0.0
+ffff8dcd1000-ffff8dce1000 rw-p 00000000 00:00 0 
+ffff8dcf0000-ffff8de46000 r-xp 00000000 fd:00 812                        /usr/lib/aarch64-linux-gnu/libGLdispatch.so.0.0.0
+ffff8de46000-ffff8de54000 ---p 00156000 fd:00 812                        /usr/lib/aarch64-linux-gnu/libGLdispatch.so.0.0.0
+ffff8de54000-ffff8de70000 r--p 00164000 fd:00 812                        /usr/lib/aarch64-linux-gnu/libGLdispatch.so.0.0.0
+ffff8de70000-ffff8de71000 rw-p 00180000 fd:00 812                        /usr/lib/aarch64-linux-gnu/libGLdispatch.so.0.0.0
+ffff8de71000-ffff8de79000 rw-p 00000000 00:00 0 
+ffff8de80000-ffff8df35000 r-xp 00000000 fd:00 606380                     /home/ideck/.local/share/Steam/steamrtarm64/libswscale.so.9
+ffff8df35000-ffff8df45000 ---p 000b5000 fd:00 606380                     /home/ideck/.local/share/Steam/steamrtarm64/libswscale.so.9
+ffff8df45000-ffff8df4b000 r--p 000b5000 fd:00 606380                     /home/ideck/.local/share/Steam/steamrtarm64/libswscale.so.9
+ffff8df4b000-ffff8df4c000 rw-p 000bb000 fd:00 606380                     /home/ideck/.local/share/Steam/steamrtarm64/libswscale.so.9
+ffff8df4c000-ffff8df90000 rw-p 00000000 00:00 0 
+ffff8dfa0000-ffff8e073000 r-xp 00000000 fd:00 606371                     /home/ideck/.local/share/Steam/steamrtarm64/libavutil.so.60
+ffff8e073000-ffff8e083000 ---p 000d3000 fd:00 606371                     /home/ideck/.local/share/Steam/steamrtarm64/libavutil.so.60
+ffff8e083000-ffff8e096000 r--p 000d3000 fd:00 606371                     /home/ideck/.local/share/Steam/steamrtarm64/libavutil.so.60
+ffff8e096000-ffff8e097000 rw-p 000e6000 fd:00 606371                     /home/ideck/.local/share/Steam/steamrtarm64/libavutil.so.60
+ffff8e097000-ffff8e1a6000 rw-p 00000000 00:00 0 
+ffff8e1b0000-ffff8e2a2000 r-xp 00000000 fd:00 606365                     /home/ideck/.local/share/Steam/steamrtarm64/libavformat.so.62
+ffff8e2a2000-ffff8e2b2000 ---p 000f2000 fd:00 606365                     /home/ideck/.local/share/Steam/steamrtarm64/libavformat.so.62
+ffff8e2b2000-ffff8e2bd000 r--p 000f2000 fd:00 606365                     /home/ideck/.local/share/Steam/steamrtarm64/libavformat.so.62
+ffff8e2bd000-ffff8e2be000 rw-p 000fd000 fd:00 606365                     /home/ideck/.local/share/Steam/steamrtarm64/libavformat.so.62
+ffff8e2c0000-ffff8e5b4000 r-xp 00000000 fd:00 606359                     /home/ideck/.local/share/Steam/steamrtarm64/libavcodec.so.62
+ffff8e5b4000-ffff8e5c3000 ---p 002f4000 fd:00 606359                     /home/ideck/.local/share/Steam/steamrtarm64/libavcodec.so.62
+ffff8e5c3000-ffff8e5db000 r--p 002f3000 fd:00 606359                     /home/ideck/.local/share/Steam/steamrtarm64/libavcodec.so.62
+ffff8e5db000-ffff8e5dc000 rw-p 0030b000 fd:00 606359                     /home/ideck/.local/share/Steam/steamrtarm64/libavcodec.so.62
+ffff8e5dc000-ffff8e706000 rw-p 00000000 00:00 0 
+ffff8e710000-ffff8e7e3000 r-xp 00000000 fd:00 14273                      /usr/lib/aarch64-linux-gnu/libpipewire-0.3.so.0.1402.0
+ffff8e7e3000-ffff8e7fb000 ---p 000d3000 fd:00 14273                      /usr/lib/aarch64-linux-gnu/libpipewire-0.3.so.0.1402.0
+ffff8e7fb000-ffff8e810000 r--p 000db000 fd:00 14273                      /usr/lib/aarch64-linux-gnu/libpipewire-0.3.so.0.1402.0
+ffff8e810000-ffff8e811000 rw-p 000f0000 fd:00 14273                      /usr/lib/aarch64-linux-gnu/libpipewire-0.3.so.0.1402.0
+ffff8e811000-ffff8e812000 rw-p 00000000 00:00 0 
+ffff8e820000-ffff8ecab000 r-xp 00000000 fd:00 13967                      /usr/lib/aarch64-linux-gnu/libgtk-x11-2.0.so.0.2400.33
+ffff8ecab000-ffff8ecb9000 ---p 0048b000 fd:00 13967                      /usr/lib/aarch64-linux-gnu/libgtk-x11-2.0.so.0.2400.33
+ffff8ecb9000-ffff8ecc0000 r--p 00499000 fd:00 13967                      /usr/lib/aarch64-linux-gnu/libgtk-x11-2.0.so.0.2400.33
+ffff8ecc0000-ffff8ecc4000 rw-p 004a0000 fd:00 13967                      /usr/lib/aarch64-linux-gnu/libgtk-x11-2.0.so.0.2400.33
+ffff8ecc4000-ffff8ecc7000 rw-p 00000000 00:00 0 
+ffff8ecd0000-ffff8eedc000 r-xp 00000000 fd:00 800                        /usr/lib/aarch64-linux-gnu/libgio-2.0.so.0.8400.4
+ffff8eedc000-ffff8eee8000 ---p 0020c000 fd:00 800                        /usr/lib/aarch64-linux-gnu/libgio-2.0.so.0.8400.4
+ffff8eee8000-ffff8eef0000 r--p 00218000 fd:00 800                        /usr/lib/aarch64-linux-gnu/libgio-2.0.so.0.8400.4
+ffff8eef0000-ffff8eef1000 rw-p 00220000 fd:00 800                        /usr/lib/aarch64-linux-gnu/libgio-2.0.so.0.8400.4
+ffff8eef1000-ffff8eef3000 rw-p 00000000 00:00 0 
+ffff8ef00000-ffff8f062000 r-xp 00000000 fd:00 801                        /usr/lib/aarch64-linux-gnu/libglib-2.0.so.0.8400.4
+ffff8f062000-ffff8f07f000 ---p 00162000 fd:00 801                        /usr/lib/aarch64-linux-gnu/libglib-2.0.so.0.8400.4
+ffff8f07f000-ffff8f080000 r--p 0016f000 fd:00 801                        /usr/lib/aarch64-linux-gnu/libglib-2.0.so.0.8400.4
+ffff8f080000-ffff8f081000 rw-p 00170000 fd:00 801                        /usr/lib/aarch64-linux-gnu/libglib-2.0.so.0.8400.4
+ffff8f081000-ffff8f082000 rw-p 00000000 00:00 0 
+ffff8f090000-ffff8f1d2000 r-xp 00000000 fd:00 1644                       /usr/lib/aarch64-linux-gnu/libX11.so.6.4.0
+ffff8f1d2000-ffff8f1ef000 ---p 00142000 fd:00 1644                       /usr/lib/aarch64-linux-gnu/libX11.so.6.4.0
+ffff8f1ef000-ffff8f1f0000 r--p 0014f000 fd:00 1644                       /usr/lib/aarch64-linux-gnu/libX11.so.6.4.0
+ffff8f1f0000-ffff8f1f5000 rw-p 00150000 fd:00 1644                       /usr/lib/aarch64-linux-gnu/libX11.so.6.4.0
+ffff8f200000-ffff8faec000 r-xp 00000000 fd:00 606413                     /home/ideck/.local/share/Steam/steamrtarm64/libvideo.so
+ffff8faec000-ffff8faed000 ---p 008ec000 fd:00 606413                     /home/ideck/.local/share/Steam/steamrtarm64/libvideo.so
+ffff8faed000-ffff8fb39000 r--p 008ec000 fd:00 606413                     /home/ideck/.local/share/Steam/steamrtarm64/libvideo.so
+ffff8fb39000-ffff8fb43000 rw-p 00938000 fd:00 606413                     /home/ideck/.local/share/Steam/steamrtarm64/libvideo.so
+ffff8fb43000-ffff8fb60000 rw-p 00000000 00:00 0 
+ffff8fb78000-ffff8fb90000 rw-s 00000000 00:1b 264                        /dev/shm/u1000-Shm_c9edbd50
+ffff8fb90000-ffff8fbb6000 r-xp 00000000 fd:00 606361                     /home/ideck/.local/share/Steam/steamrtarm64/libavfilter.so.11
+ffff8fbb6000-ffff8fbc6000 ---p 00026000 fd:00 606361                     /home/ideck/.local/share/Steam/steamrtarm64/libavfilter.so.11
+ffff8fbc6000-ffff8fbca000 r--p 00026000 fd:00 606361                     /home/ideck/.local/share/Steam/steamrtarm64/libavfilter.so.11
+ffff8fbca000-ffff8fbcb000 rw-p 0002a000 fd:00 606361                     /home/ideck/.local/share/Steam/steamrtarm64/libavfilter.so.11
+ffff8fbd0000-ffff8fbe3000 r-xp 00000000 fd:00 606377                     /home/ideck/.local/share/Steam/steamrtarm64/libswresample.so.6
+ffff8fbe3000-ffff8fbf3000 ---p 00013000 fd:00 606377                     /home/ideck/.local/share/Steam/steamrtarm64/libswresample.so.6
+ffff8fbf3000-ffff8fbf5000 r--p 00013000 fd:00 606377                     /home/ideck/.local/share/Steam/steamrtarm64/libswresample.so.6
+ffff8fbf5000-ffff8fbf6000 rw-p 00015000 fd:00 606377                     /home/ideck/.local/share/Steam/steamrtarm64/libswresample.so.6
+ffff8fc00000-ffff8ff07000 r-xp 00000000 fd:00 606354                     /home/ideck/.local/share/Steam/steamrtarm64/libSDL3.so.0
+ffff8ff07000-ffff8ff08000 ---p 00307000 fd:00 606354                     /home/ideck/.local/share/Steam/steamrtarm64/libSDL3.so.0
+ffff8ff08000-ffff8ff12000 r--p 00307000 fd:00 606354                     /home/ideck/.local/share/Steam/steamrtarm64/libSDL3.so.0
+ffff8ff12000-ffff8ff1d000 rw-p 00311000 fd:00 606354                     /home/ideck/.local/share/Steam/steamrtarm64/libSDL3.so.0
+ffff8ff1d000-ffff8ff23000 rw-p 00000000 00:00 0 
+ffff8ff28000-ffff8ff40000 rw-s 00000000 00:1b 264                        /dev/shm/u1000-Shm_c9edbd50
+ffff8ff40000-ffff8ff55000 r-xp 00000000 fd:00 991                        /usr/lib/aarch64-linux-gnu/libEGL.so.1.1.0
+ffff8ff55000-ffff8ff6f000 ---p 00015000 fd:00 991                        /usr/lib/aarch64-linux-gnu/libEGL.so.1.1.0
+ffff8ff6f000-ffff8ff70000 r--p 0001f000 fd:00 991                        /usr/lib/aarch64-linux-gnu/libEGL.so.1.1.0
+ffff8ff70000-ffff8ff71000 rw-p 00020000 fd:00 991                        /usr/lib/aarch64-linux-gnu/libEGL.so.1.1.0
+ffff8ff80000-ffff8ffd1000 r-xp 00000000 fd:00 14276                      /usr/lib/aarch64-linux-gnu/libpulse.so.0.24.3
+ffff8ffd1000-ffff8ffee000 ---p 00051000 fd:00 14276                      /usr/lib/aarch64-linux-gnu/libpulse.so.0.24.3
+ffff8ffee000-ffff8fff0000 r--p 0005e000 fd:00 14276                      /usr/lib/aarch64-linux-gnu/libpulse.so.0.24.3
+ffff8fff0000-ffff8fff1000 rw-p 00060000 fd:00 14276                      /usr/lib/aarch64-linux-gnu/libpulse.so.0.24.3
+ffff90000000-ffff90186000 rw-p 00000000 00:00 0 
+ffff90186000-ffff94000000 ---p 00000000 00:00 0 
+ffff94010000-ffff94020000 r--s 00000000 fd:00 16727                      /var/cache/fontconfig/6cc790b63b123a6a96ee260fcdad32a9-le64.cache-9
+ffff94020000-ffff9404b000 r-xp 00000000 fd:00 5060                       /usr/lib/aarch64-linux-gnu/libgdk_pixbuf-2.0.so.0.4200.12
+ffff9404b000-ffff9405f000 ---p 0002b000 fd:00 5060                       /usr/lib/aarch64-linux-gnu/libgdk_pixbuf-2.0.so.0.4200.12
+ffff9405f000-ffff94060000 r--p 0002f000 fd:00 5060                       /usr/lib/aarch64-linux-gnu/libgdk_pixbuf-2.0.so.0.4200.12
+ffff94060000-ffff94061000 rw-p 00030000 fd:00 5060                       /usr/lib/aarch64-linux-gnu/libgdk_pixbuf-2.0.so.0.4200.12
+ffff94070000-ffff940d5000 r-xp 00000000 fd:00 803                        /usr/lib/aarch64-linux-gnu/libgobject-2.0.so.0.8400.4
+ffff940d5000-ffff940ed000 ---p 00065000 fd:00 803                        /usr/lib/aarch64-linux-gnu/libgobject-2.0.so.0.8400.4
+ffff940ed000-ffff940f0000 r--p 0006d000 fd:00 803                        /usr/lib/aarch64-linux-gnu/libgobject-2.0.so.0.8400.4
+ffff940f0000-ffff940f1000 rw-p 00070000 fd:00 803                        /usr/lib/aarch64-linux-gnu/libgobject-2.0.so.0.8400.4
+ffff940f1000-ffff940f2000 rw-p 00000000 00:00 0 
+ffff94100000-ffff94110000 r-xp 00000000 fd:00 1239                       /usr/lib/aarch64-linux-gnu/libXi.so.6.1.0
+ffff94110000-ffff9411f000 ---p 00010000 fd:00 1239                       /usr/lib/aarch64-linux-gnu/libXi.so.6.1.0
+ffff9411f000-ffff94120000 r--p 0000f000 fd:00 1239                       /usr/lib/aarch64-linux-gnu/libXi.so.6.1.0
+ffff94120000-ffff94121000 rw-p 00010000 fd:00 1239                       /usr/lib/aarch64-linux-gnu/libXi.so.6.1.0
+ffff94130000-ffff94142000 r-xp 00000000 fd:00 1670                       /usr/lib/aarch64-linux-gnu/libXext.so.6.4.0
+ffff94142000-ffff9415f000 ---p 00012000 fd:00 1670                       /usr/lib/aarch64-linux-gnu/libXext.so.6.4.0
+ffff9415f000-ffff94160000 r--p 0001f000 fd:00 1670                       /usr/lib/aarch64-linux-gnu/libXext.so.6.4.0
+ffff94160000-ffff94161000 rw-p 00020000 fd:00 1670                       /usr/lib/aarch64-linux-gnu/libXext.so.6.4.0
+ffff94170000-ffff9417a000 r-xp 00000000 fd:00 1251                       /usr/lib/aarch64-linux-gnu/libXrender.so.1.3.0
+ffff9417a000-ffff9418f000 ---p 0000a000 fd:00 1251                       /usr/lib/aarch64-linux-gnu/libXrender.so.1.3.0
+ffff9418f000-ffff94190000 r--p 0000f000 fd:00 1251                       /usr/lib/aarch64-linux-gnu/libXrender.so.1.3.0
+ffff94190000-ffff94191000 rw-p 00010000 fd:00 1251                       /usr/lib/aarch64-linux-gnu/libXrender.so.1.3.0
+ffff941a0000-ffff941aa000 r-xp 00000000 fd:00 1249                       /usr/lib/aarch64-linux-gnu/libXrandr.so.2.2.0
+ffff941aa000-ffff941bf000 ---p 0000a000 fd:00 1249                       /usr/lib/aarch64-linux-gnu/libXrandr.so.2.2.0
+ffff941bf000-ffff941c0000 r--p 0000f000 fd:00 1249                       /usr/lib/aarch64-linux-gnu/libXrandr.so.2.2.0
+ffff941c0000-ffff941c1000 rw-p 00010000 fd:00 1249                       /usr/lib/aarch64-linux-gnu/libXrandr.so.2.2.0
+ffff941d0000-ffff942a7000 r-xp 00000000 fd:00 791                        /usr/lib/aarch64-linux-gnu/libGL.so.1.7.0
+ffff942a7000-ffff942b2000 ---p 000d7000 fd:00 791                        /usr/lib/aarch64-linux-gnu/libGL.so.1.7.0
+ffff942b2000-ffff942c0000 r--p 000e2000 fd:00 791                        /usr/lib/aarch64-linux-gnu/libGL.so.1.7.0
+ffff942c0000-ffff942c1000 rw-p 000f0000 fd:00 791                        /usr/lib/aarch64-linux-gnu/libGL.so.1.7.0
+ffff942c1000-ffff942c2000 rw-p 00000000 00:00 0 
+ffff942cf000-ffff943ea000 r-xp 00000000 fd:00 606415                     /home/ideck/.local/share/Steam/steamrtarm64/libvstdlib_s.so
+ffff943ea000-ffff943f2000 r--p 0011a000 fd:00 606415                     /home/ideck/.local/share/Steam/steamrtarm64/libvstdlib_s.so
+ffff943f2000-ffff943f4000 rw-p 00122000 fd:00 606415                     /home/ideck/.local/share/Steam/steamrtarm64/libvstdlib_s.so
+ffff943f4000-ffff94400000 rw-p 00000000 00:00 0 
+ffff94400000-ffff96744000 r-xp 00000000 fd:00 606426                     /home/ideck/.local/share/Steam/steamrtarm64/steamui.so
+ffff96744000-ffff96745000 ---p 02344000 fd:00 606426                     /home/ideck/.local/share/Steam/steamrtarm64/steamui.so
+ffff96745000-ffff968f2000 r--p 02344000 fd:00 606426                     /home/ideck/.local/share/Steam/steamrtarm64/steamui.so
+ffff968f2000-ffff9692f000 rw-p 024f1000 fd:00 606426                     /home/ideck/.local/share/Steam/steamrtarm64/steamui.so
+ffff9692f000-ffff96981000 rw-p 00000000 00:00 0 
+ffff96990000-ffff96997000 r-xp 00000000 fd:00 606375                     /home/ideck/.local/share/Steam/steamrtarm64/libogg.so.0
+ffff96997000-ffff969a6000 ---p 00007000 fd:00 606375                     /home/ideck/.local/share/Steam/steamrtarm64/libogg.so.0
+ffff969a6000-ffff969a7000 r--p 00006000 fd:00 606375                     /home/ideck/.local/share/Steam/steamrtarm64/libogg.so.0
+ffff969a7000-ffff969a8000 rw-p 00007000 fd:00 606375                     /home/ideck/.local/share/Steam/steamrtarm64/libogg.so.0
+ffff969b0000-ffff969b6000 r-xp 00000000 fd:00 1677                       /usr/lib/aarch64-linux-gnu/libXfixes.so.3.1.0
+ffff969b6000-ffff969cf000 ---p 00006000 fd:00 1677                       /usr/lib/aarch64-linux-gnu/libXfixes.so.3.1.0
+ffff969cf000-ffff969d0000 r--p 0000f000 fd:00 1677                       /usr/lib/aarch64-linux-gnu/libXfixes.so.3.1.0
+ffff969d0000-ffff969d1000 rw-p 00010000 fd:00 1677                       /usr/lib/aarch64-linux-gnu/libXfixes.so.3.1.0
+ffff969d2000-ffff969e0000 r--s 00000000 fd:00 16743                      /var/cache/fontconfig/a4e60e8d1e10d2fdff3fe3037a1845fb-le64.cache-9
+ffff969e0000-ffff969e5000 r-xp 00000000 fd:00 1255                       /usr/lib/aarch64-linux-gnu/libXtst.so.6.1.0
+ffff969e5000-ffff969ff000 ---p 00005000 fd:00 1255                       /usr/lib/aarch64-linux-gnu/libXtst.so.6.1.0
+ffff969ff000-ffff96a00000 r--p 0000f000 fd:00 1255                       /usr/lib/aarch64-linux-gnu/libXtst.so.6.1.0
+ffff96a00000-ffff96a01000 rw-p 00010000 fd:00 1255                       /usr/lib/aarch64-linux-gnu/libXtst.so.6.1.0
+ffff96a07000-ffff96a56000 r-xp 00000000 fd:00 606412                     /home/ideck/.local/share/Steam/steamrtarm64/libtier0_s.so
+ffff96a56000-ffff96a59000 r--p 0004e000 fd:00 606412                     /home/ideck/.local/share/Steam/steamrtarm64/libtier0_s.so
+ffff96a59000-ffff96a5a000 rw-p 00051000 fd:00 606412                     /home/ideck/.local/share/Steam/steamrtarm64/libtier0_s.so
+ffff96a5a000-ffff96a60000 rw-p 00000000 00:00 0 
+ffff96a60000-ffff96a61000 r-xp 00000000 fd:00 9096                       /usr/lib/aarch64-linux-gnu/librt.so.1
+ffff96a61000-ffff96a7f000 ---p 00001000 fd:00 9096                       /usr/lib/aarch64-linux-gnu/librt.so.1
+ffff96a7f000-ffff96a80000 r--p 0000f000 fd:00 9096                       /usr/lib/aarch64-linux-gnu/librt.so.1
+ffff96a80000-ffff96a81000 rw-p 00010000 fd:00 9096                       /usr/lib/aarch64-linux-gnu/librt.so.1
+ffff96a81000-ffff96a84000 rw-s 00000000 00:1b 328                        /dev/shm/u1000-Shm_54c37b72
+ffff96a84000-ffff96a87000 rw-s 00000000 00:1b 262                        /dev/shm/u1000-Shm_318f03cf
+ffff96a87000-ffff96a88000 rw-s 00000000 00:1b 263                        /dev/shm/u1000-Shm_9b59e709
+ffff96a88000-ffff96a8c000 rw-s 00000000 00:01 25                         /SYSV00000000 (deleted)
+ffff96a8c000-ffff96a9c000 ---p 00000000 00:00 0 
+ffff96a9c000-ffff96b9c000 rw-p 00000000 00:00 0 
+ffff96b9c000-ffff96cbb000 r-xp 00000000 fd:00 606393                     /home/ideck/.local/share/Steam/steamrtarm64/crashhandler.so
+ffff96cbb000-ffff96cc3000 r--p 0011e000 fd:00 606393                     /home/ideck/.local/share/Steam/steamrtarm64/crashhandler.so
+ffff96cc3000-ffff96cc4000 rw-p 00126000 fd:00 606393                     /home/ideck/.local/share/Steam/steamrtarm64/crashhandler.so
+ffff96cc4000-ffff96d10000 rw-p 00000000 00:00 0 
+ffff96d10000-ffff96eac000 r-xp 00000000 fd:00 9082                       /usr/lib/aarch64-linux-gnu/libc.so.6
+ffff96eac000-ffff96ebd000 ---p 0019c000 fd:00 9082                       /usr/lib/aarch64-linux-gnu/libc.so.6
+ffff96ebd000-ffff96ec0000 r--p 0019d000 fd:00 9082                       /usr/lib/aarch64-linux-gnu/libc.so.6
+ffff96ec0000-ffff96ec2000 rw-p 001a0000 fd:00 9082                       /usr/lib/aarch64-linux-gnu/libc.so.6
+ffff96ec2000-ffff96ecf000 rw-p 00000000 00:00 0 
+ffff96ecf000-ffff96ed0000 r--p 00000000 00:00 0 
+ffff96ed0000-ffff96ed1000 r-xp 00000000 fd:00 9094                       /usr/lib/aarch64-linux-gnu/libpthread.so.0
+ffff96ed1000-ffff96eef000 ---p 00001000 fd:00 9094                       /usr/lib/aarch64-linux-gnu/libpthread.so.0
+ffff96eef000-ffff96ef0000 r--p 0000f000 fd:00 9094                       /usr/lib/aarch64-linux-gnu/libpthread.so.0
+ffff96ef0000-ffff96ef1000 rw-p 00010000 fd:00 9094                       /usr/lib/aarch64-linux-gnu/libpthread.so.0
+ffff96ef1000-ffff96ef2000 r-xp 00000000 00:00 0 
+ffff96ef2000-ffff96f00000 r--s 00000000 fd:00 16497                      /home/ideck/.cache/fontconfig/e13b20fdb08344e0e664864cc2ede53d-le64.cache-9
+ffff96f00000-ffff96f8e000 r-xp 00000000 fd:00 9085                       /usr/lib/aarch64-linux-gnu/libm.so.6
+ffff96f8e000-ffff96f9f000 ---p 0008e000 fd:00 9085                       /usr/lib/aarch64-linux-gnu/libm.so.6
+ffff96f9f000-ffff96fa0000 r--p 0008f000 fd:00 9085                       /usr/lib/aarch64-linux-gnu/libm.so.6
+ffff96fa0000-ffff96fa1000 rw-p 00090000 fd:00 9085                       /usr/lib/aarch64-linux-gnu/libm.so.6
+ffff96fa1000-ffff96fa2000 r--p 00000000 00:00 0 
+ffff96fa2000-ffff96fa3000 r-xp 00000000 00:00 0 
+ffff96fa3000-ffff96fa4000 r--p 00000000 00:00 0 
+ffff96fa4000-ffff96fa5000 r-xp 00000000 00:00 0 
+ffff96fa5000-ffff96fab000 r--s 00000000 fd:00 16735                      /var/cache/fontconfig/d589a48862398ed80a3d6066f4f56f4c-le64.cache-9
+ffff96fab000-ffff96fac000 rw-p 00000000 00:00 0 
+ffff96fac000-ffff96fad000 rw-p 00000000 00:00 0 
+ffff96fad000-ffff96fae000 r--p 00000000 fd:00 5012                       /usr/lib/locale/C.utf8/LC_NUMERIC
+ffff96fae000-ffff96faf000 r--p 00000000 fd:00 5016                       /usr/lib/locale/C.utf8/LC_TIME
+ffff96faf000-ffff96fb0000 r--p 00000000 fd:00 5001                       /usr/lib/locale/C.utf8/LC_COLLATE
+ffff96fb0000-ffff96fb1000 r-xp 00000000 fd:00 9084                       /usr/lib/aarch64-linux-gnu/libdl.so.2
+ffff96fb1000-ffff96fcf000 ---p 00001000 fd:00 9084                       /usr/lib/aarch64-linux-gnu/libdl.so.2
+ffff96fcf000-ffff96fd0000 r--p 0000f000 fd:00 9084                       /usr/lib/aarch64-linux-gnu/libdl.so.2
+ffff96fd0000-ffff96fd1000 rw-p 00010000 fd:00 9084                       /usr/lib/aarch64-linux-gnu/libdl.so.2
+ffff96fd1000-ffff96fd8000 r--s 00000000 fd:00 9071                       /usr/lib/aarch64-linux-gnu/gconv/gconv-modules.cache
+ffff96fd8000-ffff97000000 r-xp 00000000 fd:00 9079                       /usr/lib/aarch64-linux-gnu/ld-linux-aarch64.so.1
+ffff97000000-ffff97001000 r--p 00000000 fd:00 5010                       /usr/lib/locale/C.utf8/LC_MONETARY
+ffff97001000-ffff97007000 rw-p 00000000 00:00 0 
+ffff97007000-ffff97008000 r--p 00000000 fd:00 5008                       /usr/lib/locale/C.utf8/LC_MESSAGES/SYS_LC_MESSAGES
+ffff97008000-ffff97009000 r--p 00000000 fd:00 5014                       /usr/lib/locale/C.utf8/LC_PAPER
+ffff97009000-ffff9700a000 r--p 00000000 fd:00 5011                       /usr/lib/locale/C.utf8/LC_NAME
+ffff9700a000-ffff9700b000 r--p 00000000 fd:00 5000                       /usr/lib/locale/C.utf8/LC_ADDRESS
+ffff9700b000-ffff9700c000 r--p 00000000 fd:00 5015                       /usr/lib/locale/C.utf8/LC_TELEPHONE
+ffff9700c000-ffff9700d000 r--p 00000000 fd:00 5007                       /usr/lib/locale/C.utf8/LC_MEASUREMENT
+ffff9700d000-ffff9700e000 r--p 00000000 fd:00 5004                       /usr/lib/locale/C.utf8/LC_IDENTIFICATION
+ffff9700e000-ffff97010000 rw-p 00000000 00:00 0 
+ffff97010000-ffff97014000 r--p 00000000 00:00 0                          [vvar]
+ffff97014000-ffff97016000 r-xp 00000000 00:00 0                          [vdso]
+ffff97016000-ffff97018000 r--p 0002e000 fd:00 9079                       /usr/lib/aarch64-linux-gnu/ld-linux-aarch64.so.1
+ffff97018000-ffff97019000 rw-p 00030000 fd:00 9079                       /usr/lib/aarch64-linux-gnu/ld-linux-aarch64.so.1
+ffff97019000-ffff9701a000 rw-p 00000000 00:00 0 
+ffffee983000-ffffee9a4000 rw-p 00000000 00:00 0                          [stack]

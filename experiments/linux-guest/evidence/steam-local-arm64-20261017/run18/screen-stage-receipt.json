@@ -1,0 +1,38 @@
+[
+  {
+    "private_file": "run18/029-window-state.png",
+    "sha256": "b71ec9dcafd3087d79d1007f842759206387dd5dcf53bac8e00a3ba2f5dfb9ba",
+    "observed_stage": "Steam Big Picture Logging in",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run18/031-window-state.png",
+    "sha256": "c9176357369eacb337bd5572d6dc0efbe06c5e978d8d6adaa8509ec7ea083b46",
+    "observed_stage": "black Big Picture window",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run18/032-finish-monitor.png",
+    "sha256": "70610566bdb36e0e8351d629d5d21e42599664b4f0471618c478a7600304534e",
+    "observed_stage": "desktop after Steam window disappeared",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run18/037-native-game-window.png",
+    "sha256": "d96f26330d48f52a7c571c8d7ac9448a7ff8c48fed451db72265833a8145b72c",
+    "observed_stage": "native XGalaga start screen",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run18/040-native-game-input.png",
+    "sha256": "6f4d6b5cd036e23ae820fd8d495a2cc1bb168f7c8ffac68c7b8a20d6ceda2af3",
+    "observed_stage": "XGalaga gameplay after keyboard input",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run18/044-game-repeat-input.png",
+    "sha256": "9997c40245751836c03646057be306272cb823e39452d1cb9f1f1e1c7be11640",
+    "observed_stage": "repeated native game launch; score 100 after input",
+    "pixels_in_git": false
+  }
+]

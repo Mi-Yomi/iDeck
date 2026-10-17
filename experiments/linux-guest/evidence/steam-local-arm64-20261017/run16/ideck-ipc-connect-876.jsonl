@@ -1,0 +1,6 @@
+{"event":"probe_loaded","pid":876,"mode":"extend-5000","only_verified_connect_wait":true}
+{"event":"before_connect_wait","pid":876,"seq":0,"original_ms":500,"effective_ms":5000,"caller_va":"0x60420","caller_chain":["0x63a98","0x5b368"],"chromehtml_sha256":"753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7"}
+{"event":"after_connect_wait","pid":876,"seq":0,"result":0,"errno":0,"elapsed_ns":177170713}
+{"event":"before_connect_wait","pid":876,"seq":1,"original_ms":500,"effective_ms":5000,"caller_va":"0x60420","caller_chain":["0x63a98","0x5b368"],"chromehtml_sha256":"753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7"}
+{"event":"after_connect_wait","pid":876,"seq":1,"result":-1,"errno":4,"elapsed_ns":2722046037}
+{"event":"before_connect_wait","pid":876,"seq":2,"original_ms":500,"effective_ms":5000,"caller_va":"0x60420","caller_chain":["0x63a98","0x5b368"],"chromehtml_sha256":"753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7"}

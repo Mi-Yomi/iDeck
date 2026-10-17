@@ -1,0 +1,10 @@
+{
+  "tools": {
+    "/run/ideck/snapshot-ipc-parent.py": "da0a3dd140381c8bbaff3aca8cbfba7745f4ae256eff48bfffe25fec3ccb168b",
+    "/run/ideck/trace-ipc-parent.py": "18f278e95525122268dc5934f8548f041469d2b093bf19df35c60ac234fd672b"
+  },
+  "strace_exists": true,
+  "strace_sha256": "e4f0c42a07574df2fc6b353f5bc24423099d8c896cee72c605671d878fedeb5a",
+  "strace_version": "strace -- version 6.13\nCopyright (c) 1991-2025 The strace developers <https://strace.io>.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\nOptional features enabled: no-m32-mpers\n",
+  "strace_version_exit": 0
+}

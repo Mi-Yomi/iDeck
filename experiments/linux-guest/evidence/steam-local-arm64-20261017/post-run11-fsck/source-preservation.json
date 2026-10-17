@@ -1,0 +1,10 @@
+{
+  "source_sha256_before": "661d9da20e8a4dcd642970133bbaa47b2f654c54b42eb6d89f9934a397bcd75f",
+  "source_sha256_after": "661d9da20e8a4dcd642970133bbaa47b2f654c54b42eb6d89f9934a397bcd75f",
+  "original_unchanged": true,
+  "owner_lock_exclusive": true,
+  "clean_shutdown": false,
+  "dirty_marker_retained": true,
+  "repair_attempted": false,
+  "continuation_allowed": false
+}

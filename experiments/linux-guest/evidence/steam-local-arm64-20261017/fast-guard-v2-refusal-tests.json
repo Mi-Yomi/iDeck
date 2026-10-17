@@ -1,0 +1,19 @@
+{
+  "kind": "actual watcher functions, own harmless host children; tracer/starttime values injected only in fixtures",
+  "steam_guest_tested": false,
+  "script_sha256": "84f2f56a1b68c96908bced6defbdfe5411866e59dea0cd3199235c0ab1f70c76",
+  "results": [
+    {
+      "case": "existing_tracer",
+      "status": "pass",
+      "valid_target_stopped": true,
+      "refused_target_untouched": true
+    },
+    {
+      "case": "generation_changed",
+      "status": "pass",
+      "valid_target_stopped": true,
+      "refused_target_untouched": true
+    }
+  ]
+}

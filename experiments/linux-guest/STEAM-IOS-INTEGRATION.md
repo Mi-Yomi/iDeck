@@ -5,6 +5,52 @@ result. Keep the accepted Terminal, Debian console, Desktop, GUI payload/Release
 and existing user disks unchanged. Current runtime/UI outcomes belong in
 `HANDOFF.md`; this document does not promote a host result to iPhone success.
 
+## Requested game storage and optimization — 2026-10-18
+
+The owner now requests local game installation and use of available iPhone
+internal storage. This expands the earlier client-only experiment; it does not
+authorize purchases or acceptance of account/game agreements. Nothing below is
+an enabled phone feature or a measured game-performance result. Run18 separately
+verified two short native ARM64 XGalaga launches with keyboard gameplay and clean
+exit; Steam/Proton, audio, FPS and iPhone execution remain unverified.
+
+`LinuxDesktopDisk.Specification.validate()` currently caps a raw ext4 image at
+4 GiB. GUI and Debian profiles bind the image size, UUID and filesystem geometry
+to their seeds, and `LinuxTerminalSession` owns that disk through Stop. Merely
+raising the cap or truncating an existing image would leave the filesystem and
+profile contracts inconsistent. The Steam host's 12 GiB qcow2 is a different
+contract and cannot be copied into the accepted iOS raw-disk route.
+
+For the separate Steam route, keep the game library on a persistent app-owned
+disk in internal storage, outside temporary/cache directories. Choose its size
+from actual available storage, leaving an explicit reserve for iOS and updates;
+never allocate the phone's advertised total capacity or treat RAM as disk space.
+Use Apple's [important-usage capacity API](https://developer.apple.com/documentation/foundation/checking-volume-storage-capacity)
+for user-requested downloads, handle missing/error results, and recheck before
+allocation. A preflight number cannot reserve storage against other apps.
+The app must handle allocation/write failures without replacing an existing
+library, report remaining space, and preserve the same owner/clean-Stop contract.
+Sparse apparent size must not be reported as physically available storage.
+
+Implementation requires a separate persisted Steam disk specification and
+guest filesystem initialization/growth for that exact disk. New-disk creation
+must be atomic; existing disks must reopen with their saved size/UUID, never be
+silently shrunk, reformatted or resized at every boot. Test interrupted creation,
+low space, competing owners, clean Stop/reopen and game-file persistence before
+enabling the route. Existing GUI/Debian paths remain unchanged.
+
+For Windows games, inspect the actual ARM64 compatibility stack before choosing
+dependencies. [Valve Proton](https://github.com/ValveSoftware/Proton#arm64-builds)
+documents ARM64 builds; [FEX](https://github.com/FEX-Emu/FEX) supplies x86
+translation. Prefer the compatible Steam-delivered runtime over an unrelated
+system build. The read-only `tools/steam_game_preflight.py --steam-root PATH`
+inventories default-library Proton candidates, local FEX binaries, Vulkan ICD
+manifests and render nodes without reading account files or launching anything.
+Presence alone proves neither execution nor GPU acceleration. External Steam
+libraries need separate inspection. Verify an authorized game's actual renderer,
+input, frame timing, repeated launches and saved data on the physical iPhone;
+host QEMU software-rendered Steam UI does not satisfy these checks.
+
 ## Guest inputs and delivery
 
 - [ ] Start a separate Steam asset/profile contract and permanent disk identity.
@@ -61,7 +107,9 @@ user/mount and user/mount/PID/private-proc preflights; see
   Valve self-update is separate from that pin and needs its own runtime receipt.
   Keep Valve client bytes out of Git, app payloads and Releases until the owner
   has approved the distribution path and the applicable terms permit it. No
-  account, password, tokens, acceptance of agreements or game installation.
+  account/password/token publication or automated acceptance of agreements. The
+  owner's later game request permits local game checks; the two native XGalaga
+  runs do not establish Steam/Proton game compatibility.
 - [ ] Install the exact 45 additional ARM64 Debian packages in
   `ipa/steam-dependencies.lock.json` (18,238,048 download bytes), preserving all
   341 existing GUI package versions. `tools/steam_dependencies.py` records the
@@ -69,7 +117,7 @@ user/mount and user/mount/PID/private-proc preflights; see
   PipeWire, GTK2, IBus, SDL2, OpenAL, NetworkManager client library, VA/VDPAU,
   libssh2 and nghttp2. The new lsof/liblsof0/libtirpc3t64/libtirpc-common closure
   supplies a real client TCP peer-identity dependency; guest install and its
-  effect on the first timeout remain NOT RUN. A library's presence does not prove its service/device.
+  effect on the first timeout must be assessed from the current local receipts. A library's presence does not prove its service/device.
   Require both `dpkg --audit` exit 0 and empty output, plus actual loader checks.
 - [ ] Keep UID/GID1000, `HOME=/home/ideck`, `DISPLAY=:0`,
   `XAUTHORITY=/run/user/1000/Xauthority`, `XDG_RUNTIME_DIR=/run/user/1000`, working

@@ -1,0 +1,13 @@
+{
+  "time_ns": 1792268035417826866,
+  "active_window": "Steam Big Picture Mode",
+  "action": "click visible STEAM MENU bottom-left",
+  "coordinates": [
+    55,
+    587
+  ],
+  "backend": "XTest",
+  "exit": 0,
+  "requires_actual_after_frame_review": true,
+  "game_or_download_action": false
+}

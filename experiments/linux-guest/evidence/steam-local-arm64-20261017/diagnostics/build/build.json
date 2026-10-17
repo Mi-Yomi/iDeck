@@ -1,0 +1,8 @@
+{
+  "source_sha256": "9a45229272c8832fc247414dc6cb3de39db2a4a76629664157deaa01b652d873",
+  "library_sha256": "0bafcde8555281d433e9537e5bbdce669d932b9aa7e77323b924093f928f9339",
+  "library_bytes": 70232,
+  "target": "AArch64 Linux glibc",
+  "system_install": false,
+  "compiled_with_test_override": false
+}

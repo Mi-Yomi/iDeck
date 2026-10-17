@@ -1,0 +1,13 @@
+{
+  "mode": "extend-5000",
+  "original_deadline_ms": 500,
+  "effective_deadline_ms": 5000,
+  "library_sha256": "14ae446d263a783d341c0236b7fe9a710f4fe7946eb43afde435063473cabb1c",
+  "library_source_sha256": "dd7a19b8531294772b3b11e1742c12341d1df2bd77186fdbf042accdb9c9b4c6",
+  "original_helper_sha256": "96c929eafefb2f76aa7751fb1869baa6def54e5e31be2a0e6620a486bca64b0d",
+  "private_helper_sha256": "a1c1fa62293299dc40d854e204903347ec53d547014d34148d6688281829f9db",
+  "only_helper_change": "env arguments after setpriv UID1000 drop",
+  "original_helper_unchanged": true,
+  "sandbox_preserved": true,
+  "resource_profile_changed": false
+}

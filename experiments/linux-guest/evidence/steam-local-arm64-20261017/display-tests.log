@@ -1,0 +1,19 @@
+wsl: Failed to mount F:\, see dmesg for more details.
+test_changed_lock_inode_and_bad_content_refused (test_steam_display.DisplayRecovery.test_changed_lock_inode_and_bad_content_refused) ... ok
+test_complete_checks_run_twice_before_unlink (test_steam_display.DisplayRecovery.test_complete_checks_run_twice_before_unlink) ... ok
+test_guard_failure_never_reaches_recovery_or_writes_receipt (test_steam_display.DisplayRecovery.test_guard_failure_never_reaches_recovery_or_writes_receipt) ... ok
+test_kernel_socket_table_refuses_before_process_scan (test_steam_display.DisplayRecovery.test_kernel_socket_table_refuses_before_process_scan) ... ok
+test_live_listener_timeout_and_permission_error_refused (test_steam_display.DisplayRecovery.test_live_listener_timeout_and_permission_error_refused) ... ok
+test_live_reference_or_object_swap_never_unlinked (test_steam_display.DisplayRecovery.test_live_reference_or_object_swap_never_unlinked) ... ok
+test_missing_object_is_noop (test_steam_display.DisplayRecovery.test_missing_object_is_noop) ... ok
+test_only_absent_or_refused_listener_permitted (test_steam_display.DisplayRecovery.test_only_absent_or_refused_listener_permitted) ... ok
+test_real_guard_requires_pinned_boot_optins_and_original_root (test_steam_display.DisplayRecovery.test_real_guard_requires_pinned_boot_optins_and_original_root) ... ok
+test_reused_pid_live_x_and_fd_or_map_owners_distinguished (test_steam_display.DisplayRecovery.test_reused_pid_live_x_and_fd_or_map_owners_distinguished) ... ok
+test_untrusted_parent_refused_before_inspecting_candidates (test_steam_display.DisplayRecovery.test_untrusted_parent_refused_before_inspecting_candidates) ... ok
+test_valid_old_lock_retains_hash_pid_and_exact_inode (test_steam_display.DisplayRecovery.test_valid_old_lock_retains_hash_pid_and_exact_inode) ... ok
+test_wrong_kind_owner_links_time_size_or_write_permissions_refused (test_steam_display.DisplayRecovery.test_wrong_kind_owner_links_time_size_or_write_permissions_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 1.118s
+
+OK

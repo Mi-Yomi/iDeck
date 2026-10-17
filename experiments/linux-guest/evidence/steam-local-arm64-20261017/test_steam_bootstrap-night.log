@@ -1,0 +1,10 @@
+test_changed_or_ambiguous_insertion_point_rejected (test_steam_bootstrap.SteamBootstrap.test_changed_or_ambiguous_insertion_point_rejected) ... ok
+test_explicit_experiment_and_disposable_growth_optins_precede_mutation (test_steam_bootstrap.SteamBootstrap.test_explicit_experiment_and_disposable_growth_optins_precede_mutation) ... ok
+test_generated_shell_parses (test_steam_bootstrap.SteamBootstrap.test_generated_shell_parses) ... ok
+test_network_module_paths_preserve_merged_usr_and_reject_alias_escape (test_steam_bootstrap.SteamBootstrap.test_network_module_paths_preserve_merged_usr_and_reject_alias_escape) ... ok
+test_original_shutdown_and_every_original_byte_preserved (test_steam_bootstrap.SteamBootstrap.test_original_shutdown_and_every_original_byte_preserved) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.248s
+
+OK

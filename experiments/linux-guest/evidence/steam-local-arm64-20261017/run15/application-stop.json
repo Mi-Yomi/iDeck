@@ -1,0 +1,358 @@
+{
+  "shutdown_request": {
+    "attempted": true,
+    "pid": 3203,
+    "timeout": true,
+    "exit_code": -15
+  },
+  "verified_owned_assertion_tracers": [],
+  "application_stop": "unclean owned-process termination",
+  "owned_mount_namespaces": [
+    "mnt:[4026532196]"
+  ],
+  "signals": [
+    {
+      "pid": 879,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 938,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 962,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 965,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 979,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 1037,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 1039,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 1061,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 1596,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 2234,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 2491,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 2760,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 855,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 879,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 938,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 962,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 965,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 979,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 1037,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 1039,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 1061,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 1596,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 2234,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 2491,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 2760,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 877,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 878,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 879,
+      "signal": "SIGKILL"
+    }
+  ],
+  "terminated_identities": [
+    {
+      "pid": 855,
+      "starttime": "5066",
+      "state": "S",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 1,
+      "exe": "/usr/bin/dash",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 879,
+      "starttime": "5341",
+      "state": "R",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 877,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 938,
+      "starttime": "7192",
+      "state": "R",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 879,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 962,
+      "starttime": "7627",
+      "state": "S",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 938,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 965,
+      "starttime": "7642",
+      "state": "S",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 938,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 979,
+      "starttime": "7997",
+      "state": "S",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 965,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 1037,
+      "starttime": "8681",
+      "state": "S",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 962,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 1039,
+      "starttime": "8729",
+      "state": "S",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 938,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 1061,
+      "starttime": "9043",
+      "state": "S",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 979,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 1596,
+      "starttime": "48140",
+      "state": "S",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 979,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 2234,
+      "starttime": "103095",
+      "state": "S",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 979,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 2491,
+      "starttime": "126968",
+      "state": "S",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 979,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 2760,
+      "starttime": "151728",
+      "state": "R",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 979,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 877,
+      "starttime": "5327",
+      "state": "S",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 855,
+      "exe": "/usr/bin/dbus-run-session",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 878,
+      "starttime": "5330",
+      "state": "S",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 877,
+      "exe": "/usr/bin/dbus-daemon",
+      "mnt": "mnt:[4026532196]"
+    }
+  ],
+  "remaining": [],
+  "ready_for_original_vm_stop": true,
+  "original_pid1_shutdown_changed": false,
+  "time_ns": 1792270615584413855
+}

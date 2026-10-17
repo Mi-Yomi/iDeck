@@ -1,0 +1,39 @@
+{
+  "time_ns": 1792273641509543108,
+  "normal_original_helper": true,
+  "no_preload": true,
+  "processes": [
+    {
+      "pid": 876,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam",
+      "state": "R (running)",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "seccomp": "0",
+      "no_new_privs": "0",
+      "tracer": 0,
+      "diagnostic_mapping": false,
+      "diagnostic_environment": false
+    },
+    {
+      "pid": 939,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "state": "R (running)",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "seccomp": "0",
+      "no_new_privs": "0",
+      "tracer": 0,
+      "diagnostic_mapping": false,
+      "diagnostic_environment": false
+    }
+  ]
+}

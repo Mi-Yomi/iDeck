@@ -1,5 +1,105 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Night continuation — updater restart and native game checks (2026-10-18)
+
+Run18 observed a real Steam self-update finishing with exit code 42. The old
+launcher treated that restart request as failure. The source launcher now retries
+at most twice while holding its lock, revalidates the client and refuses a retry
+if an old client remains. Three focused tests cover these cases; 32 targeted
+launcher/namespace/bootstrap/game-inventory tests pass. The automatic retry path
+has not yet been triggered by another real updater run. Big Picture now requests
+`-gamepadui` without the SteamOS first-boot flags.
+
+The private V3 diagnostic run reached Big Picture's “Logging in” screen. Login
+completed successfully at 22:12:40 UTC; the earlier narrow auth probe missed that
+marker. The UI then remained black and its window disappeared. This is not a
+working Big Picture/navigation result. The renderer disappeared after sampled
+available memory fell to 162,564 KiB, but an OOM kill is not proven. Collect kernel
+and renderer-exit evidence before attributing the failure or changing resources.
+The stack-safe V3 probe remains diagnostic-only; never use rejected V2.
+
+A separate authenticated Debian ARM64 XGalaga package was installed after Steam
+cleanup, preserving all existing package versions. Two launches reached gameplay
+with keyboard input; the second actual frame shows score 100. Both exited through
+the game's quit key with code 0, without forced signals. These short 70/39-second
+checks establish native X11 game/input/relaunch behavior only: not Steam/Proton
+compatibility, audio, measured FPS, GPU acceleration or iPhone performance.
+
+Run18 completed the original guest unmount → QEMU0 → host fsync path. All four
+client ELFs remain unchanged, no private namespace/game owners remain, and dpkg
+audit is clean. Post18 full offline fsck passed all five phases plus summary with no errors;
+exclusive ownership and unchanged source SHA before/after were verified.
+Run18 preboot's full strict check of run17 passed all five phases and summary.
+Sanitized receipts and procedures: `experiments/linux-guest/evidence/steam-local-arm64-20261017/run18`.
+Account logs and screen pixels remain private outside Git. Available iPhone
+internal storage is still a separate implementation task, not an enabled feature;
+see `STEAM-IOS-INTEGRATION.md` for the existing fixed-size disk constraints.
+
+## Local ARM64 continuation — 2026-10-18 (latest)
+
+**V3 correction (latest): V2 is rejected for further Steam runs.** Its C
+syscall wrapper broke AArch64 custom-child-stack clone semantics. A real guest
+regression passes with libc, gives SIGSEGV in the controlled V2 test child, and
+passes with V3's stack-preserving non-futex tail entry; real/raw fallback and
+ordinary ABI cases also pass. Earlier narrow ABI tests missed this case. This
+is not evidence of a Steam crash, and V2's later UI hangs cannot be attributed
+to upstream Steam from these runs. Current source/library hashes and the
+rejected historical version are documented in `diagnostics/ipc-connect-wait`.
+
+Run15 restored the user's login automatically and reached native login/library
+readiness, but the desktop main window stayed on its loading screen. Closing
+Special Offers raised an unresponsive-window prompt; it was cancelled and the
+popup minimized, without End Process. A same-client Big Picture URI was
+forwarded successfully, but no Big Picture interface was observed. Kernel OOM
+count was zero; about600MiB was available and sampled reclaim counters did not
+advance. Run15 then completed original unmount/QEMU0/fsync after controlled app
+cleanup. Run16 changed only V2 to V3 forwarding, with desktop/resources preserved.
+The actual V3 frame gate passed and its first connect woke after177.170713ms.
+Saved login persisted. A real QMP frame shows the main Steam Store content
+and publisher artwork, after a long blank-content phase. Library navigation
+and Big Picture remain unverified: fixed native URI requests were forwarded,
+XTest clicks injected, but no visible Library/menu/BP response was confirmed.
+Later the main windows disappeared and X BadWindow was logged. Service Worker
+not responding is an observed earlier symptom, not a proven cause. No account
+pixels or raw post-login logs enter Git. Controlled app cleanup required
+native SIGKILL; original VM Stop then completed unmount/QEMU0/host fsync.
+All four client ELFs are unchanged, no private namespace holders remain and
+dpkg audit is empty. Full post-run15 fsck passed strictly (all five passes).
+Run17 tests removal of the diagnostic preload with the original helper,
+launcher, native500ms and unchanged resources; its preboot full fsck checks
+the clean run16 disk before any new writer. This is not yet a successful BP
+or navigation result. See run16/screen-stage-receipt.json in local evidence.
+
+The owner resumed local work. Run14 **reached the real Steam Big Picture
+sign-in screen**, verified from a QMP screenshot, then refreshed its QR through
+actual XTest mouse input. The user scanned/approved it; the final authenticated frame is Steam Deck's
+Welcome language wizard. Main/library UI and navigation remain pending.
+QR/account screenshots are private on E:, never public Git evidence. These are
+host QEMU/TCG results, not iPhone/Apple/GPU/game acceptance.
+
+The causal measurement advanced: unchanged observe-mode connect waits failed
+ten times at about500ms before any manual freeze or ptrace. An opt-in, digest/
+mapping/frame/UID/syscall-gated interposer changed only this native connect wait
+to5s; the same verified call returned0 after3.322421696s. One browser then reached
+BrowserReady, SharedJS paint and Big Picture login without SHM runaway. CPUmax,
+4vCPU,1536MiB,12GiB, software rendering and forced CEF sandbox are unchanged.
+The normal launcher/helper are unchanged; own source and tests are in
+`diagnostics/ipc-connect-wait`. This probe is not enabled by default.
+
+The Steam-only stale-X preflight repairs copied-disk Xorg prerequisites.
+Diagnostic browser recognition now requires direct native PPid; optional trace
+`--tid` selects only a verified existing subset.44 targeted source tests pass;
+the historical narrow ABI passes below are superseded by the V3 regression above. All45 locked
+dependencies and four installed client ELFs persisted through runs13/14 without
+reinstallation. Run11's busy-unmount/forced-stop disk remains rejected and
+preserved; runs12/13 stopped cleanly and following full offline fscks passed.
+Run14's original VM Stop completed unmount/QEMU0/fsync after controlled owned
+application termination (native Steam required SIGKILL). Run15 is a fresh copy
+with a full offline check and the same connect probe; only launcher mode changes
+to desktop, avoiding the SteamOS-specific startup flags. Main UI is not yet
+claimed. Its operator monitor budget is longer; no Steam timeout was changed.
+See [exact results, limits, private screenshot hashes and continuation gates](experiments/linux-guest/evidence/steam-local-arm64-20261017/README.md).
+
 ## Requested network revalidation: ZIP200, DNS still blocked — 2026-10-17
 
 One executor, selected cloud only, clean remote Steam `12074eaf24cd8c51cf74cd0f185a5454057aa9d9`

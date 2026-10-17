@@ -13,17 +13,31 @@ m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
 
 class TraceTests(unittest.TestCase):
     def info(self):
-        return {'exe':str(m.ROOT/'steamrtarm64/steamwebhelper'),'uid':[1000]*4,'argv':['steamwebhelper','-steampid=123','-force-sandbox']}
+        return {'exe':str(m.ROOT/'steamrtarm64/steamwebhelper'),'uid':[1000]*4,'ppid':123,'argv':['steamwebhelper','-steampid=123','-force-sandbox']}
     def test_browser_excludes_children_and_other_clients(self):
         x=self.info();self.assertTrue(m.is_browser(x,123));self.assertFalse(m.is_browser(x,456))
         x['argv'].append('--type=renderer');self.assertFalse(m.is_browser(x,123))
         x=self.info();x['uid']=[0]*4;self.assertFalse(m.is_browser(x,123))
+    def test_forked_assertion_dumper_with_identical_argv_is_not_browser(self):
+        x=self.info();x['ppid']=456
+        self.assertFalse(m.is_browser(x,123))
+        x.pop('ppid');self.assertFalse(m.is_browser(x,123))
     def test_explicit_syscall_allowlist_no_buffer_or_child_capture(self):
         c=m.trace_command('/strace',[8,7,8])
         self.assertEqual(c[-4:],['-p','7','-p','8']);self.assertNotIn('-f',c)
         allowed=c[c.index('trace='+','.join(m.SYSCALLS))][6:].split(',')
         self.assertTrue({'futex','ftruncate','mmap'}.issubset(allowed))
         self.assertFalse({'read','write','readv','writev','send','sendto','recv','execve','execveat'}.intersection(allowed))
+    def test_narrow_trace_only_reduces_existing_owned_threads(self):
+        self.assertEqual(m.select_tids([8,7,9],None),[7,8,9])
+        self.assertEqual(m.select_tids([8,7,9],[9,7]),[7,9])
+    def test_unknown_duplicate_invalid_or_overwide_selection_refused(self):
+        for requested in ([],[7,7],[1],[100],list(range(2,35))):
+            with self.subTest(requested=requested), self.assertRaisesRegex(RuntimeError,'invalid_selected_threads'):
+                m.select_tids(range(2,40),requested)
+        for available in ([],range(2,259)):
+            with self.assertRaisesRegex(RuntimeError,'invalid_thread_count'):
+                m.select_tids(available,None)
     def test_force_sandbox_required(self):
         x={'exe':str(m.ROOT/'steamrtarm64/steam'),'uid':[1000]*4,'argv':['steam','-cef-force-sandbox']}
         m.validate_main(x);x['argv'].append('-cef-disable-sandbox')

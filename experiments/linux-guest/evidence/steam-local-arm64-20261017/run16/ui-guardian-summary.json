@@ -1,0 +1,11 @@
+{
+  "seconds": 144.89552358599985,
+  "guard": {
+    "cause": "ui_guardian_operator_budget",
+    "seconds": 144.89438163599993,
+    "browser_pid": 933,
+    "free_bytes_after_freeze": 674758656
+  },
+  "same_client": true,
+  "no_URI_dispatch": true
+}

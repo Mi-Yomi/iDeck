@@ -1,0 +1,236 @@
+[
+  {
+    "file": "resume-local-20261017-connect-observe-v5__application-stop.json",
+    "size": 3624,
+    "sha256": "63a62e8ccadc3d3d99f3896612337a6d6f8b6feb50034960a412a4219fdbaab7",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-appinfo_log.txt",
+    "size": 388,
+    "sha256": "4170b11052eea72f2339d31b39e25f4fb4df9da4d5465a34413ea603831d164e",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-bootstrap_log.txt",
+    "size": 1764,
+    "sha256": "c5fcb3aa5080258d0f90db3d531dadaf7513cd5c0c4e8ee9b733432b790145c1",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-cef_log.txt",
+    "size": 968,
+    "sha256": "3542ba297442efad77f7ade134ff20d162ac1a9097da60f1dae2eb4f593dcaa9",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-client_networkmanager.txt",
+    "size": 949,
+    "sha256": "f88df2c01f04bd6e66d3854f424b64d83af399cca7a8fc65079443ba529bb06d",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-compat_log.txt",
+    "size": 134,
+    "sha256": "fa4f1c3c4fe92b8e0d3b95e1ff763f7e004ad757215fbf50d88ca17ab7f01151",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-configstore_log.txt",
+    "size": 399,
+    "sha256": "b2a947fd29b8c9cab085f31098ecf21045457a4e055ace987c5fb62503c0a7e5",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-connection_log.txt",
+    "size": 694,
+    "sha256": "21187b65d5d21b4227187d32398d79a92c05816ce52932d63f298810f4c5b364",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-shader_log.txt",
+    "size": 2164,
+    "sha256": "bc56708ff021b5247678ba205330a300beac86dd8713ede71d080a4bc8ceed1c",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-steamsysinfo.txt",
+    "size": 396,
+    "sha256": "30dc38cf9bb4c128df01f44aad58a99b02859669c522a862a6db8d0ceaea00a0",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-steamui_audio.txt",
+    "size": 256,
+    "sha256": "047ebaa426b27cbe74ea9436418bbfed0bc48b4fe3b3af5ebe17f61af91e29a4",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-steamui_html.txt",
+    "size": 108,
+    "sha256": "36ce6ccbdec1a3db33329c429e665c3adfdfa854f5181b26b42c333b8fa384a5",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-steamui_steamos.txt",
+    "size": 1830,
+    "sha256": "d3cb7a9084e362e13ed134ff5564262db34637c68fd1c5a3d30d647c4c1f8de8",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-steamui_system.txt",
+    "size": 920,
+    "sha256": "b667394a60706c264afc78510d95105c135740b36f6396de06203e2e6e90f4b1",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-steamui_update.txt",
+    "size": 114,
+    "sha256": "87db86e8f3f9f5c73fb30ce1595f641c638de7059ca8a9bd94b294d1be61217c",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-systemaudiomanager.txt",
+    "size": 119,
+    "sha256": "5125befe575bf702d1904e8891068dd474ccf68cee0865ee9d24a85cda849928",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-systemdisplaymanager.txt",
+    "size": 219,
+    "sha256": "9db3b5b5e9688cf2b87b8cc8c248715bc58cf0142f7dc981b75473a8dcb1e278",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-systemdockmanager.txt",
+    "size": 657,
+    "sha256": "e3662d286d0040aee4c182b5fe95d4e6104edf74b5abfcb4131dd978e39555aa",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-systemmanager.txt",
+    "size": 825,
+    "sha256": "9c4654deebead970eab58c4e3ae87610e6a698ac37ba8e7df2d74bfc1d3a6ef0",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-systemperfmanager.txt",
+    "size": 2647,
+    "sha256": "daed8d16a2937e962f05604476a67337a1a14540570ddf548ffccda2e0ed55b8",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-systemperfreporting.txt",
+    "size": 119,
+    "sha256": "ab1019e333a4c0f219804a4891f1682dcfd4341c2e89ef556c3c59b54f23b8f5",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-transport_steamui.txt",
+    "size": 115,
+    "sha256": "6e6c0d953ad4594ab768a06529b323006ed8ff174cd00b57489a428849cd5158",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-updateui_child.txt",
+    "size": 822,
+    "sha256": "2362e486a99fcba48d62baa5d88e7df4a8d6389a1fa5dceba8786c048169a3de",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-webhelper.txt",
+    "size": 3380,
+    "sha256": "fba33f7217b898e4c18d248073b91f03ef63bd49fc2d5c792e6f6e4b3b71a498",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__delta-webhelper_gpu.txt",
+    "size": 137,
+    "sha256": "3ad32916c29f3d9073e664df65d0e354ae49313b4eaea02322c3669315c42f4c",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__emergency-freeze.json",
+    "size": 1565,
+    "sha256": "4bcae697f7c0497e0298ac9024648a715ac33bab7838cff9a657aa92a31d58cd",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__ideck-ipc-connect-1176.jsonl",
+    "size": 21379,
+    "sha256": "a8c826ca2d19667ccda42c3c353ff822682b2e704e8731b3c8a73818117ed90a",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__ideck-ipc-connect-1178.jsonl",
+    "size": 87,
+    "sha256": "145fc729a7ddccb31d7ee1c0b43deda6d5ab037f8fd4bfac9e0e94c4083c2c9d",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__launch-profile.json",
+    "size": 632,
+    "sha256": "fcd9d25d0ebf9e7022558150aad9e4e33666a219806ad1021d885435ed085230",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__launcher.log",
+    "size": 15193,
+    "sha256": "99e57a5b20573bd6157e4814bac4e44e57614775bb4a52229541c348b813f7d0",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__post-application-check.json",
+    "size": 799,
+    "sha256": "d151f26c520d9eaa7c1cd72a8fd8411a314266edcd2f62307b3dd39fcaecadaf",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__post-stop-tail-cef_log.txt",
+    "size": 30901,
+    "sha256": "09e2781e3c6b1a756583a2e1e5698a89df4af5d5712d4c06bcc5dff34d14f810",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__post-stop-tail-steamui_html.txt",
+    "size": 4015,
+    "sha256": "ce0e433dffbc21f3c2c6d77760461d4be4eb813624a24ec2694a1b1773a97d89",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__post-stop-tail-webhelper.txt",
+    "size": 32768,
+    "sha256": "31a235200116ade1c120a66d4e816df1ffdc7b3e68c460be11794ab5d55cce72",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__shutdown-request.log",
+    "size": 294,
+    "sha256": "c088d46d519af536ae69e7557415a33d349b989f6d509d347f6980af702f49b7",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__summary.json",
+    "size": 149,
+    "sha256": "be074b2cda588487ff20cd552fe1bd828680e94b2d172045cd8878c65d6f9894",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-observe-v5__timeline.jsonl",
+    "size": 875421,
+    "sha256": "4baf71379c8e6ce923dcac9c775f0a5b71e222240a0173de020894d9ed17e951",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-preflight__runtime-tests.json",
+    "size": 1339,
+    "sha256": "f240b4124bde2d94933233586df49d78de0448f3795cd887670ccf7d0ff6b995",
+    "source_log": "010-export-observer.log"
+  },
+  {
+    "file": "observer-monitor.log",
+    "size": 1061,
+    "sha256": "20e7612fbebf60cdb86243494e05afe9be7777faf7bcce4056104f22c9e6abee",
+    "source_log": "010-export-observer.log"
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "status": "pass",
+  "source_sha256": "fc50a965131dfc5281d4477f9fde6c2ce2b9a6406e936d54c8f668e84a93ec23",
+  "display_timeout_nonfatal": true,
+  "display_oserror_nonfatal": true,
+  "display_success": true,
+  "unhandled_loop_exception_stops_owned_child": true,
+  "scope": "actual display/exception/cleanup functions with one own harmless UID1000 child; failure injected only in fixture"
+}

@@ -1,0 +1,12 @@
+{
+  "profile_mode": "desktop",
+  "comparison_run": "run14",
+  "only_new_steam_runtime_variable": "launcher mode big-picture to desktop; removes SteamOS/SteamDeck flags via existing supported launcher",
+  "connect_probe_unchanged": true,
+  "library_sha256": "0bafcde8555281d433e9537e5bbdce669d932b9aa7e77323b924093f928f9339",
+  "cpu_ram_shm_unchanged": true,
+  "monitor_functions_ast_identical": true,
+  "operator_monitor_budget_seconds": 1200,
+  "runner_budget_seconds": 2100,
+  "script_sha256": "da8280f6fbb4a1bfe6ad13cba93849e375b4ff86f8fce194c555281048cab268"
+}

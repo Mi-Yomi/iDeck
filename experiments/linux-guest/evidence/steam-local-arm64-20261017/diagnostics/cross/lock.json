@@ -1,0 +1,321 @@
+{
+  "purpose": "private host-only ARM64 compiler; no host or guest installation",
+  "selection_method": "explicit package names from partial APT plan, one candidate/version each in signed index; successful APT solve is NOT claimed; runtime/link closure must be independently validated",
+  "release_sha256": "0584fba32e13e0ab8285fb16c27adea1ec03a73669c18702821094fd6ca86675",
+  "keyring_sha256": "506b815cbb32d9b6066b4a2aa524071e071761e7e7f68c3ac74f3061ba852017",
+  "signatures": [
+    "04B54C3CDCA79751B16BC6B5225629DF75B188BD",
+    "41587F7DB8C774BCCF131416762F67A0B2C39DE4",
+    "B8B80B5B623EAB6AD8775C45B7C5D7D6350947F8"
+  ],
+  "index": {
+    "architecture": "amd64",
+    "size": 9678380,
+    "sha256": "7778d3e3f303b7ddb8ce0fe7c8d57473a076c6bf2e8f241f75421d2396352498",
+    "url": "https://deb.debian.org/debian/dists/trixie/main/binary-amd64/by-hash/SHA256/7778d3e3f303b7ddb8ce0fe7c8d57473a076c6bf2e8f241f75421d2396352498"
+  },
+  "seeds": [
+    "gcc-14-aarch64-linux-gnu",
+    "libc6-dev-arm64-cross"
+  ],
+  "packages": [
+    {
+      "name": "binutils-aarch64-linux-gnu",
+      "version": "2.44-3",
+      "architecture": "amd64",
+      "filename": "pool/main/b/binutils/binutils-aarch64-linux-gnu_2.44-3_amd64.deb",
+      "sha256": "6e5a9be38121213dda42189a525db01aad4dc52194b577d7d73d659a5843ce6c",
+      "size": 1686720,
+      "installed_size_kib": 13008
+    },
+    {
+      "name": "binutils-common",
+      "version": "2.44-3",
+      "architecture": "amd64",
+      "filename": "pool/main/b/binutils/binutils-common_2.44-3_amd64.deb",
+      "sha256": "002da5d23f8757dee97a2c0a40e0e1d4d85a43da094488ee2ee7068d4d3691f9",
+      "size": 2508768,
+      "installed_size_kib": 16098
+    },
+    {
+      "name": "cpp-14-aarch64-linux-gnu",
+      "version": "14.2.0-19cross1",
+      "architecture": "amd64",
+      "filename": "pool/main/g/gcc-14-cross/cpp-14-aarch64-linux-gnu_14.2.0-19cross1_amd64.deb",
+      "sha256": "6610dda7938376fefcbc3b49c81cd23c82e86411a488e4c9a69c082f2acd714e",
+      "size": 11203104,
+      "installed_size_kib": 37036
+    },
+    {
+      "name": "gcc-14-aarch64-linux-gnu",
+      "version": "14.2.0-19cross1",
+      "architecture": "amd64",
+      "filename": "pool/main/g/gcc-14-cross/gcc-14-aarch64-linux-gnu_14.2.0-19cross1_amd64.deb",
+      "sha256": "489acd3a7479d7e55c01e7f3af10176b70a99ec8c2230ba63cacdbcf2e6e0692",
+      "size": 21571468,
+      "installed_size_kib": 76190
+    },
+    {
+      "name": "gcc-14-aarch64-linux-gnu-base",
+      "version": "14.2.0-19cross1",
+      "architecture": "amd64",
+      "filename": "pool/main/g/gcc-14-cross/gcc-14-aarch64-linux-gnu-base_14.2.0-19cross1_amd64.deb",
+      "sha256": "4a40a7a5429a03f58bdb1f49df9b7aeecb86770f5585d88dcf6a27b5979a6d5d",
+      "size": 49664,
+      "installed_size_kib": 112
+    },
+    {
+      "name": "gcc-14-base",
+      "version": "14.2.0-19",
+      "architecture": "amd64",
+      "filename": "pool/main/g/gcc-14/gcc-14-base_14.2.0-19_amd64.deb",
+      "sha256": "5b6825de4263824b78c4c51f6476414f3b4e89c2ab63e81dc8b9b5501e867cf6",
+      "size": 49432,
+      "installed_size_kib": 112
+    },
+    {
+      "name": "gcc-14-cross-base",
+      "version": "14.2.0-19cross1",
+      "architecture": "all",
+      "filename": "pool/main/g/gcc-14-cross/gcc-14-cross-base_14.2.0-19cross1_all.deb",
+      "sha256": "a6c277ad0961c1e69bebd2509151733961ea49bb53ff64aa1dac72b5929babf0",
+      "size": 44884,
+      "installed_size_kib": 105
+    },
+    {
+      "name": "libasan8-arm64-cross",
+      "version": "14.2.0-19cross1",
+      "architecture": "all",
+      "filename": "pool/main/g/gcc-14-cross/libasan8-arm64-cross_14.2.0-19cross1_all.deb",
+      "sha256": "e223a6c4aa71aa8754abb845cba3de9ae175a213e36a98b67b1aad558ac818be",
+      "size": 435668,
+      "installed_size_kib": 2600
+    },
+    {
+      "name": "libatomic1-arm64-cross",
+      "version": "14.2.0-19cross1",
+      "architecture": "all",
+      "filename": "pool/main/g/gcc-14-cross/libatomic1-arm64-cross_14.2.0-19cross1_all.deb",
+      "sha256": "4a8636b3c0ab2b0a568d0b7fc6ab089d5b22f7a3e696fe8784acef594c88dc1c",
+      "size": 10340,
+      "installed_size_kib": 77
+    },
+    {
+      "name": "libc6",
+      "version": "2.41-12+deb13u4",
+      "architecture": "amd64",
+      "filename": "pool/main/g/glibc/libc6_2.41-12+deb13u4_amd64.deb",
+      "sha256": "967aa62605721081c3eb2a17650611a792aa802d76a6511d1840242623d204c9",
+      "size": 2846580,
+      "installed_size_kib": 13226
+    },
+    {
+      "name": "libc6-arm64-cross",
+      "version": "2.41-11cross1",
+      "architecture": "all",
+      "filename": "pool/main/c/cross-toolchain-base/libc6-arm64-cross_2.41-11cross1_all.deb",
+      "sha256": "82cd3a0c6754d36cb5a7acbd9fa64c38080a681608c41165736dc88438acfc71",
+      "size": 1168128,
+      "installed_size_kib": 0
+    },
+    {
+      "name": "libc6-dev-arm64-cross",
+      "version": "2.41-11cross1",
+      "architecture": "all",
+      "filename": "pool/main/c/cross-toolchain-base/libc6-dev-arm64-cross_2.41-11cross1_all.deb",
+      "sha256": "61e0b87dec4929abc9fb345ef324139498bf23ddbf0b10ca3a743b59c8ddf8bb",
+      "size": 1616752,
+      "installed_size_kib": 0
+    },
+    {
+      "name": "libcc1-0",
+      "version": "14.2.0-19",
+      "architecture": "amd64",
+      "filename": "pool/main/g/gcc-14/libcc1-0_14.2.0-19_amd64.deb",
+      "sha256": "2d587e3bfba4aec701946b7ba0c1640b97b6d8dd0a34ba1c70ae85261ecedefa",
+      "size": 42796,
+      "installed_size_kib": 140
+    },
+    {
+      "name": "libgcc-14-dev-arm64-cross",
+      "version": "14.2.0-19cross1",
+      "architecture": "all",
+      "filename": "pool/main/g/gcc-14-cross/libgcc-14-dev-arm64-cross_14.2.0-19cross1_all.deb",
+      "sha256": "44d31567993f2f138638e3088cc75240d13c7d8a2ebe69032aafd37bc35c7a6f",
+      "size": 2451584,
+      "installed_size_kib": 24185
+    },
+    {
+      "name": "libgcc-s1",
+      "version": "14.2.0-19",
+      "architecture": "amd64",
+      "filename": "pool/main/g/gcc-14/libgcc-s1_14.2.0-19_amd64.deb",
+      "sha256": "3c71917b490d1a17aed43196a2787a256ecf060526cdb20216a74bedc061b150",
+      "size": 72772,
+      "installed_size_kib": 197
+    },
+    {
+      "name": "libgcc-s1-arm64-cross",
+      "version": "14.2.0-19cross1",
+      "architecture": "all",
+      "filename": "pool/main/g/gcc-14-cross/libgcc-s1-arm64-cross_14.2.0-19cross1_all.deb",
+      "sha256": "272751f04dc1669c6368005ccea3496b28626c720c64c98980f705350f4c6b6b",
+      "size": 54056,
+      "installed_size_kib": 148
+    },
+    {
+      "name": "libgmp10",
+      "version": "2:6.3.0+dfsg-3",
+      "architecture": "amd64",
+      "filename": "pool/main/g/gmp/libgmp10_6.3.0+dfsg-3_amd64.deb",
+      "sha256": "d0d0265eb01770f17afd0f7c8c0622f80479dcfbbe13653a0debeec61464e622",
+      "size": 560220,
+      "installed_size_kib": 882
+    },
+    {
+      "name": "libgomp1-arm64-cross",
+      "version": "14.2.0-19cross1",
+      "architecture": "all",
+      "filename": "pool/main/g/gcc-14-cross/libgomp1-arm64-cross_14.2.0-19cross1_all.deb",
+      "sha256": "6ef2c0825f2edd319d333fe6db721e1efa79bd595a5149c9f5a17af04dd40978",
+      "size": 91696,
+      "installed_size_kib": 462
+    },
+    {
+      "name": "libhwasan0-arm64-cross",
+      "version": "14.2.0-19cross1",
+      "architecture": "all",
+      "filename": "pool/main/g/gcc-14-cross/libhwasan0-arm64-cross_14.2.0-19cross1_all.deb",
+      "sha256": "c0a783cec783df2ac0bae56887f3afd43f2f0047daf0aa8e51cb3147c2bcbbac",
+      "size": 255940,
+      "installed_size_kib": 1405
+    },
+    {
+      "name": "libisl23",
+      "version": "0.27-1",
+      "architecture": "amd64",
+      "filename": "pool/main/i/isl/libisl23_0.27-1_amd64.deb",
+      "sha256": "ac8518042e81c00de1effb72bba7e88ac4ecd488f7ea8b9e3ebc63159cb53b35",
+      "size": 659152,
+      "installed_size_kib": 2253
+    },
+    {
+      "name": "libitm1-arm64-cross",
+      "version": "14.2.0-19cross1",
+      "architecture": "all",
+      "filename": "pool/main/g/gcc-14-cross/libitm1-arm64-cross_14.2.0-19cross1_all.deb",
+      "sha256": "61e0bc450632165ef442d0db2902831c878fe24bb89f08e7257e02d4eff92b40",
+      "size": 26044,
+      "installed_size_kib": 205
+    },
+    {
+      "name": "libjansson4",
+      "version": "2.14-2+b3",
+      "architecture": "amd64",
+      "filename": "pool/main/j/jansson/libjansson4_2.14-2+b3_amd64.deb",
+      "sha256": "60707a62fe6c1228c3389b12a13ca4efd76defc5532473e547a29e99cf7d2a6e",
+      "size": 39792,
+      "installed_size_kib": 100
+    },
+    {
+      "name": "liblsan0-arm64-cross",
+      "version": "14.2.0-19cross1",
+      "architecture": "all",
+      "filename": "pool/main/g/gcc-14-cross/liblsan0-arm64-cross_14.2.0-19cross1_all.deb",
+      "sha256": "31cb9c474a78ea3233e4ea87badadc33f0c7e48934e39965437091f7f6d5ab78",
+      "size": 201368,
+      "installed_size_kib": 1003
+    },
+    {
+      "name": "libmpc3",
+      "version": "1.3.1-1+b3",
+      "architecture": "amd64",
+      "filename": "pool/main/m/mpclib3/libmpc3_1.3.1-1+b3_amd64.deb",
+      "sha256": "2af0a5c128e03694a41c0b011bd8a958b7297436cdb3a15ddad7866dae8c300b",
+      "size": 52244,
+      "installed_size_kib": 154
+    },
+    {
+      "name": "libmpfr6",
+      "version": "4.2.2-1",
+      "architecture": "amd64",
+      "filename": "pool/main/m/mpfr4/libmpfr6_4.2.2-1_amd64.deb",
+      "sha256": "75dddce11dabc7fc543712c33dc27b7f2ee66a111763eb5eac654d010b42cd92",
+      "size": 729320,
+      "installed_size_kib": 1225
+    },
+    {
+      "name": "libsframe1",
+      "version": "2.44-3",
+      "architecture": "amd64",
+      "filename": "pool/main/b/binutils/libsframe1_2.44-3_amd64.deb",
+      "sha256": "38f625dfdc582717029ac3a3e97c51d994ec2e7a0e9b230c6b44e40d1276311f",
+      "size": 78360,
+      "installed_size_kib": 110
+    },
+    {
+      "name": "libstdc++6",
+      "version": "14.2.0-19",
+      "architecture": "amd64",
+      "filename": "pool/main/g/gcc-14/libstdc++6_14.2.0-19_amd64.deb",
+      "sha256": "ab1fa05837aa7a92aae748fd07a18a35f7d18bb4a71c4724fe2bbf0e32089de0",
+      "size": 713628,
+      "installed_size_kib": 3019
+    },
+    {
+      "name": "libstdc++6-arm64-cross",
+      "version": "14.2.0-19cross1",
+      "architecture": "all",
+      "filename": "pool/main/g/gcc-14-cross/libstdc++6-arm64-cross_14.2.0-19cross1_all.deb",
+      "sha256": "81e667b7dad2d378defcc502e9772fe4f435a27e62b7a33a20576885b02e9693",
+      "size": 545968,
+      "installed_size_kib": 2984
+    },
+    {
+      "name": "libtsan2-arm64-cross",
+      "version": "14.2.0-19cross1",
+      "architecture": "all",
+      "filename": "pool/main/g/gcc-14-cross/libtsan2-arm64-cross_14.2.0-19cross1_all.deb",
+      "sha256": "a93d548f6a34d1afb6f1dda193fe841c0d6225363af55e6106f333986c906169",
+      "size": 415676,
+      "installed_size_kib": 2437
+    },
+    {
+      "name": "libubsan1-arm64-cross",
+      "version": "14.2.0-19cross1",
+      "architecture": "all",
+      "filename": "pool/main/g/gcc-14-cross/libubsan1-arm64-cross_14.2.0-19cross1_all.deb",
+      "sha256": "c9f76887373bf39380605cdbbbe2942f4a2ba434eb4aefdf3a573d9bed930ffb",
+      "size": 185724,
+      "installed_size_kib": 889
+    },
+    {
+      "name": "libzstd1",
+      "version": "1.5.7+dfsg-1",
+      "architecture": "amd64",
+      "filename": "pool/main/libz/libzstd/libzstd1_1.5.7+dfsg-1_amd64.deb",
+      "sha256": "2f6a2aeacfc925eba8b00ac9139bc4bfccf8cacb09eb93de067074b26948eef9",
+      "size": 303836,
+      "installed_size_kib": 847
+    },
+    {
+      "name": "linux-libc-dev-arm64-cross",
+      "version": "6.12.38-1cross1",
+      "architecture": "all",
+      "filename": "pool/main/c/cross-toolchain-base/linux-libc-dev-arm64-cross_6.12.38-1cross1_all.deb",
+      "sha256": "fd77c13fedf057038732ef1c4fc06edd753d08092fd5f92c4629551f1f69870f",
+      "size": 2445712,
+      "installed_size_kib": 8118
+    },
+    {
+      "name": "zlib1g",
+      "version": "1:1.3.dfsg+really1.3.1-1+b1",
+      "architecture": "amd64",
+      "filename": "pool/main/z/zlib/zlib1g_1.3.dfsg+really1.3.1-1+b1_amd64.deb",
+      "sha256": "015be740d6236ad114582dea500c1d907f29e16d6db00566ca32fb68d71ac90d",
+      "size": 88892,
+      "installed_size_kib": 173
+    }
+  ],
+  "download_bytes": 53206288
+}

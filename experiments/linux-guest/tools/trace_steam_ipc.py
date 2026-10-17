@@ -33,6 +33,7 @@ def proc_info(pid, proc=Path('/proc')):
 def is_browser(info, main_pid):
     return (info['exe'] == str(ROOT / 'steamrtarm64/steamwebhelper') and
             info['uid'] == [1000] * 4 and
+            info.get('ppid') == main_pid and
             f'-steampid={main_pid}' in info['argv'] and
             not any(x.startswith('--type=') for x in info['argv']))
 
@@ -70,6 +71,20 @@ def trace_command(strace, tids):
     for tid in sorted(set(tids)):
         argv.extend(['-p', str(tid)])
     return argv
+
+
+def select_tids(available, requested):
+    """An explicit narrow trace may only reduce the verified existing set."""
+    owned = set(available)
+    if not owned or len(owned) > 256:
+        raise RuntimeError('invalid_thread_count')
+    if requested is None:
+        return sorted(owned)
+    selected = set(requested)
+    if (not 1 <= len(requested) <= 32 or len(selected) != len(requested)
+            or any(tid <= 1 for tid in selected) or not selected <= owned):
+        raise RuntimeError('invalid_selected_threads')
+    return sorted(selected)
 
 
 def snapshot(pid, dest, phase):
@@ -154,6 +169,8 @@ def main():
     ap.add_argument('--max-bytes', type=int, default=8 * 1024 * 1024)
     ap.add_argument('--output', type=Path, required=True)
     ap.add_argument('--strace', default=DEFAULT_STRACE)
+    ap.add_argument('--tid', type=int, action='append',
+                    help='trace only these existing native/browser TIDs (at most32)')
     args = ap.parse_args()
     if not (0 < args.seconds <= 30 and 0 <= args.wait_browser <= 60 and
             1024 <= args.max_bytes <= 16 * 1024 * 1024 and args.main_pid > 1):
@@ -199,9 +216,9 @@ def main():
                 if info['tracer_pid']:
                     raise RuntimeError('already_traced')
                 tids.append(int(task.name))
-        if not tids or len(tids) > 256:
-            raise RuntimeError('invalid_thread_count')
-        result['tids'] = sorted(tids)
+        result['available_tids'] = sorted(tids)
+        tids = select_tids(tids, args.tid)
+        result['tids'] = tids
         command = trace_command(args.strace, tids)
         result['command'] = command
         for sig in (signal.SIGINT, signal.SIGTERM):

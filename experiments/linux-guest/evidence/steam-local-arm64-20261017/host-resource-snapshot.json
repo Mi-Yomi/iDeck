@@ -1,0 +1,14 @@
+{
+  "time": "2026-10-17T23:13:57.3951282+05:00",
+  "memory": {
+    "TotalVisibleMemorySize": 16555320,
+    "FreePhysicalMemory": 1039096,
+    "FreeVirtualMemory": 1365648
+  },
+  "cpu": {
+    "Name": "11th Gen Intel(R) Core(TM) i5-11300H @ 3.10GHz",
+    "NumberOfCores": 4,
+    "NumberOfLogicalProcessors": 8,
+    "LoadPercentage": null
+  }
+}

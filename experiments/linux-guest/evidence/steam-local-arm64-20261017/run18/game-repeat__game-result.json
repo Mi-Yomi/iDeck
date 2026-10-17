@@ -1,0 +1,15 @@
+{
+  "identity": {
+    "pid": 2693,
+    "starttime": "126101",
+    "exe": "/usr/games/xgalaga",
+    "uid": 1000,
+    "binary_sha256": "4328802a76b1ae5383a1d94309aeaedd84f950e76dc04e709ec0d66e2af8cadd"
+  },
+  "exit_code": 0,
+  "seconds": 39.093118612000126,
+  "signals": [],
+  "process_reaped": true,
+  "clean_application_exit": true,
+  "scope": "native ARM64 X11, no Steam/Proton/iPhone acceptance"
+}

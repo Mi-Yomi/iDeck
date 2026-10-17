@@ -1,0 +1,81 @@
+{
+  "time_ns": 1792271636905612271,
+  "processes": [
+    {
+      "pid": 876,
+      "exe_leaf": "steam",
+      "selected_graphics_flags": [
+        "-cef-ozone-platform=x11",
+        "-cef-disable-gpu",
+        "-cef-force-sandbox"
+      ],
+      "v3_interposer_mapped": true
+    },
+    {
+      "pid": 933,
+      "exe_leaf": "steamwebhelper",
+      "selected_graphics_flags": [
+        "--disable-gpu-compositing",
+        "--disable-gpu",
+        "--disable-gpu-early-init"
+      ],
+      "v3_interposer_mapped": true
+    },
+    {
+      "pid": 959,
+      "exe_leaf": "steamwebhelper",
+      "selected_graphics_flags": [
+        "--type=zygote"
+      ],
+      "v3_interposer_mapped": true
+    },
+    {
+      "pid": 960,
+      "exe_leaf": "steamwebhelper",
+      "selected_graphics_flags": [
+        "--type=zygote"
+      ],
+      "v3_interposer_mapped": true
+    },
+    {
+      "pid": 970,
+      "exe_leaf": "steamwebhelper",
+      "selected_graphics_flags": [
+        "--type=zygote"
+      ],
+      "v3_interposer_mapped": true
+    },
+    {
+      "pid": 1040,
+      "exe_leaf": "steamwebhelper",
+      "selected_graphics_flags": [
+        "--type=zygote"
+      ],
+      "v3_interposer_mapped": true
+    },
+    {
+      "pid": 1043,
+      "exe_leaf": "steamwebhelper",
+      "selected_graphics_flags": [
+        "--type=utility"
+      ],
+      "v3_interposer_mapped": true
+    },
+    {
+      "pid": 1049,
+      "exe_leaf": "steamwebhelper",
+      "selected_graphics_flags": [
+        "--type=zygote"
+      ],
+      "v3_interposer_mapped": true
+    },
+    {
+      "pid": 1093,
+      "exe_leaf": "steamwebhelper",
+      "selected_graphics_flags": [
+        "--type=zygote"
+      ],
+      "v3_interposer_mapped": true
+    }
+  ]
+}

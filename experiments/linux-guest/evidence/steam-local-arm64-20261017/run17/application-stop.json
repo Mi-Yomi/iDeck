@@ -1,0 +1,485 @@
+{
+  "shutdown_request": {
+    "attempted": true,
+    "pid": 1321,
+    "exit_code": 0
+  },
+  "verified_owned_assertion_tracers": [
+    {
+      "target_tgid": 876,
+      "tid": 876,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 883,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 909,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 926,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 940,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 944,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 945,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 946,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 947,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 948,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 949,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 950,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 951,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 952,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 965,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 966,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 967,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 969,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 973,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 977,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 978,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 980,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 981,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 983,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 984,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 985,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 987,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 988,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 997,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 999,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 1002,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 1011,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 1013,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    },
+    {
+      "target_tgid": 876,
+      "tid": 1018,
+      "tracer_pid": 1334,
+      "tracer_starttime": "32559",
+      "tracer_exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam"
+    }
+  ],
+  "application_stop": "unclean owned-process termination",
+  "owned_mount_namespaces": [
+    "mnt:[4026532196]"
+  ],
+  "signals": [
+    {
+      "pid": 876,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 939,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 961,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 964,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 975,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 1050,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 1054,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 1071,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 853,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 876,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 939,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 961,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 964,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 975,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 1050,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 874,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 875,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 1334,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 876,
+      "signal": "SIGKILL"
+    }
+  ],
+  "terminated_identities": [
+    {
+      "pid": 853,
+      "starttime": "4953",
+      "state": "S",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 1,
+      "exe": "/usr/bin/dash",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 876,
+      "starttime": "5280",
+      "state": "t",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 1334,
+      "ppid": 874,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 939,
+      "starttime": "7359",
+      "state": "R",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 876,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 961,
+      "starttime": "7747",
+      "state": "S",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 939,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 964,
+      "starttime": "7758",
+      "state": "S",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 939,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 975,
+      "starttime": "7995",
+      "state": "S",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 964,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 1050,
+      "starttime": "8760",
+      "state": "S",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 961,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 874,
+      "starttime": "5262",
+      "state": "S",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 853,
+      "exe": "/usr/bin/dbus-run-session",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 875,
+      "starttime": "5266",
+      "state": "S",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 874,
+      "exe": "/usr/bin/dbus-daemon",
+      "mnt": "mnt:[4026532196]"
+    },
+    {
+      "pid": 1334,
+      "starttime": "32559",
+      "state": "R",
+      "uid": [
+        "1000",
+        "1000",
+        "1000",
+        "1000"
+      ],
+      "tracer": 0,
+      "ppid": 876,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam",
+      "mnt": "mnt:[4026532196]"
+    }
+  ],
+  "remaining": [],
+  "ready_for_original_vm_stop": true,
+  "original_pid1_shutdown_changed": false,
+  "time_ns": 1792273901654931783
+}

@@ -1,0 +1,30 @@
+wsl: Failed to mount F:\, see dmesg for more details.
+test_changed_group_state_refuses_attach (test_steam_ipc_stack.Cleanup.test_changed_group_state_refuses_attach) ... ok
+test_detach_failure_is_not_success (test_steam_ipc_stack.Cleanup.test_detach_failure_is_not_success) ... ok
+test_exec_event_does_not_inject_synthetic_trap (test_steam_ipc_stack.Cleanup.test_exec_event_does_not_inject_synthetic_trap) ... ok
+test_first_wait_timeout_recovered_for_detach (test_steam_ipc_stack.Cleanup.test_first_wait_timeout_recovered_for_detach) ... ok
+test_identity_change_prevents_attach (test_steam_ipc_stack.Cleanup.test_identity_change_prevents_attach) ... ok
+test_preserves_group_stop (test_steam_ipc_stack.Cleanup.test_preserves_group_stop) ... ok
+test_real_signal_delivery_preserved (test_steam_ipc_stack.Cleanup.test_real_signal_delivery_preserved) ... ok
+test_rejects_foreign_uid_exe_tracer (test_steam_ipc_stack.Cleanup.test_rejects_foreign_uid_exe_tracer) ... ok
+test_running_no_stop_signals (test_steam_ipc_stack.Cleanup.test_running_no_stop_signals) ... ok
+test_seize_failure_never_detaches_other_tracer (test_steam_ipc_stack.Cleanup.test_seize_failure_never_detaches_other_tracer) ... ok
+test_snapshot_failure_always_detaches_no_error_text (test_steam_ipc_stack.Cleanup.test_snapshot_failure_always_detaches_no_error_text) ... ok
+test_alignment_bounds_and_cycle (test_steam_ipc_stack.Frames.test_alignment_bounds_and_cycle) ... ok
+test_bounded (test_steam_ipc_stack.Frames.test_bounded) ... ok
+test_browser_parent_rejects_inherited_assertion_dumper_argv (test_steam_ipc_stack.Frames.test_browser_parent_rejects_inherited_assertion_dumper_argv) ... ok
+test_chain (test_steam_ipc_stack.Frames.test_chain) ... ok
+test_cross_mapping_no_read (test_steam_ipc_stack.Frames.test_cross_mapping_no_read) ... ok
+test_short_read_and_pac (test_steam_ipc_stack.Frames.test_short_read_and_pac) ... ok
+test_browser_excludes_children_and_other_clients (test_steam_ipc_trace.TraceTests.test_browser_excludes_children_and_other_clients) ... ok
+test_byte_cap_then_detach_never_signals_other_processes (test_steam_ipc_trace.TraceTests.test_byte_cap_then_detach_never_signals_other_processes) ... ok
+test_existing_output_refused (test_steam_ipc_trace.TraceTests.test_existing_output_refused) ... ok
+test_explicit_syscall_allowlist_no_buffer_or_child_capture (test_steam_ipc_trace.TraceTests.test_explicit_syscall_allowlist_no_buffer_or_child_capture) ... ok
+test_force_sandbox_required (test_steam_ipc_trace.TraceTests.test_force_sandbox_required) ... ok
+test_forked_assertion_dumper_with_identical_argv_is_not_browser (test_steam_ipc_trace.TraceTests.test_forked_assertion_dumper_with_identical_argv_is_not_browser) ... ok
+test_interruption_detaches (test_steam_ipc_trace.TraceTests.test_interruption_detaches) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.063s
+
+OK

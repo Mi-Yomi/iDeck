@@ -1,0 +1,65 @@
+{
+  "requested_cause": "second_browser_before_diagnosis",
+  "refused_pins": [
+    {
+      "before": {
+        "pid": 2295,
+        "starttime": "119356",
+        "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+        "uid": [
+          "1000",
+          "1000",
+          "1000",
+          "1000"
+        ],
+        "state": "R",
+        "tracer": 0
+      },
+      "current": {
+        "pid": 2295,
+        "starttime": "119356",
+        "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+        "uid": [
+          "1000",
+          "1000",
+          "1000",
+          "1000"
+        ],
+        "state": "t",
+        "tracer": 2479
+      }
+    },
+    {
+      "before": {
+        "pid": 2295,
+        "starttime": "119356",
+        "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+        "uid": [
+          "1000",
+          "1000",
+          "1000",
+          "1000"
+        ],
+        "state": "R",
+        "tracer": 0
+      },
+      "current": {
+        "pid": 2295,
+        "starttime": "119356",
+        "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+        "uid": [
+          "1000",
+          "1000",
+          "1000",
+          "1000"
+        ],
+        "state": "t",
+        "tracer": 2479
+      }
+    }
+  ],
+  "cause": "second_browser_before_diagnosis",
+  "seconds": 131.261248647,
+  "browser_pid": 2295,
+  "free_bytes_after_freeze": 566374400
+}

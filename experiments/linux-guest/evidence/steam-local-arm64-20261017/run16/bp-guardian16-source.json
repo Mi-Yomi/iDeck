@@ -1,0 +1,9 @@
+{
+  "sha256": "6d4c0835af54ba79580029ac764ca1cb98626a2569284d10e961c19c1d5df1e4",
+  "derived_from": "013-open-games-library.sh",
+  "changes": [
+    "URI games to bigpicture",
+    "distinct prior summary and control paths"
+  ],
+  "guard_functions_unchanged": true
+}

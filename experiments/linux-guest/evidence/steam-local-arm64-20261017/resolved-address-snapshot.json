@@ -1,0 +1,606 @@
+{
+  "snapshot_status": "captured",
+  "method": "verified mapped dev/inode, actual ELF PT_LOAD VA translation; no guessed PAC stripping",
+  "threads": [
+    {
+      "tid": 2192,
+      "tgid": 2192,
+      "status": "captured",
+      "detached": true,
+      "state_after": "T",
+      "frames": [
+        {
+          "address": "0xffff8aa63a98",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/chromehtml.so",
+          "mapping_offset": "0x63a98",
+          "file_offset": "0x63a98",
+          "elf_va": "0x63a98",
+          "elf_sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 2809904,
+            "memsz": 2809904,
+            "flags": 5,
+            "align": 4096
+          }
+        },
+        {
+          "address": "0xffff8aa5b368",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/chromehtml.so",
+          "mapping_offset": "0x5b368",
+          "file_offset": "0x5b368",
+          "elf_va": "0x5b368",
+          "elf_sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 2809904,
+            "memsz": 2809904,
+            "flags": 5,
+            "align": 4096
+          },
+          "previously_verified_static_region": "Chrome IPC connect/response validation"
+        },
+        {
+          "address": "0xffff8aa5b810",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/chromehtml.so",
+          "mapping_offset": "0x5b810",
+          "file_offset": "0x5b810",
+          "elf_va": "0x5b810",
+          "elf_sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 2809904,
+            "memsz": 2809904,
+            "flags": 5,
+            "align": 4096
+          }
+        },
+        {
+          "address": "0xffff8aa4811c",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/chromehtml.so",
+          "mapping_offset": "0x4811c",
+          "file_offset": "0x4811c",
+          "elf_va": "0x4811c",
+          "elf_sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 2809904,
+            "memsz": 2809904,
+            "flags": 5,
+            "align": 4096
+          },
+          "previously_verified_static_region": "controller pump"
+        },
+        {
+          "address": "0xffff95400c0c",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/steamui.so",
+          "mapping_offset": "0x1000c0c",
+          "file_offset": "0x1000c0c",
+          "elf_va": "0x1000c0c",
+          "elf_sha256": "9a59e3bbbee2c6de7a2559986ae5407c01e7416ac5ac2d9e40f11c8aceffc1ee",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 36974976,
+            "memsz": 36974976,
+            "flags": 5,
+            "align": 4096
+          }
+        },
+        {
+          "address": "0xffff95400ec0",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/steamui.so",
+          "mapping_offset": "0x1000ec0",
+          "file_offset": "0x1000ec0",
+          "elf_va": "0x1000ec0",
+          "elf_sha256": "9a59e3bbbee2c6de7a2559986ae5407c01e7416ac5ac2d9e40f11c8aceffc1ee",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 36974976,
+            "memsz": 36974976,
+            "flags": 5,
+            "align": 4096
+          }
+        },
+        {
+          "address": "0xffff95341534",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/steamui.so",
+          "mapping_offset": "0xf41534",
+          "file_offset": "0xf41534",
+          "elf_va": "0xf41534",
+          "elf_sha256": "9a59e3bbbee2c6de7a2559986ae5407c01e7416ac5ac2d9e40f11c8aceffc1ee",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 36974976,
+            "memsz": 36974976,
+            "flags": 5,
+            "align": 4096
+          }
+        },
+        {
+          "address": "0xffff9526c9c8",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/steamui.so",
+          "mapping_offset": "0xe6c9c8",
+          "file_offset": "0xe6c9c8",
+          "elf_va": "0xe6c9c8",
+          "elf_sha256": "9a59e3bbbee2c6de7a2559986ae5407c01e7416ac5ac2d9e40f11c8aceffc1ee",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 36974976,
+            "memsz": 36974976,
+            "flags": 5,
+            "align": 4096
+          }
+        },
+        {
+          "address": "0xaaaace536af0",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/steam",
+          "mapping_offset": "0xa9af0",
+          "file_offset": "0xa9af0",
+          "elf_va": "0xa9af0",
+          "elf_sha256": "73da03ead208a74e14bee566869a4235063dc4a9e1063f29c4608de6d78bd4ea",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 9786136,
+            "memsz": 9786136,
+            "flags": 5,
+            "align": 4096
+          }
+        },
+        {
+          "address": "0xaaaace537a18",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/steam",
+          "mapping_offset": "0xaaa18",
+          "file_offset": "0xaaa18",
+          "elf_va": "0xaaa18",
+          "elf_sha256": "73da03ead208a74e14bee566869a4235063dc4a9e1063f29c4608de6d78bd4ea",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 9786136,
+            "memsz": 9786136,
+            "flags": 5,
+            "align": 4096
+          }
+        },
+        {
+          "address": "0xaaaace51acf0",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/steam",
+          "mapping_offset": "0x8dcf0",
+          "file_offset": "0x8dcf0",
+          "elf_va": "0x8dcf0",
+          "elf_sha256": "73da03ead208a74e14bee566869a4235063dc4a9e1063f29c4608de6d78bd4ea",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 9786136,
+            "memsz": 9786136,
+            "flags": 5,
+            "align": 4096
+          }
+        },
+        {
+          "address": "0xffff96d3225c",
+          "module": "/usr/lib/aarch64-linux-gnu/libc.so.6",
+          "mapping_offset": "0x2225c",
+          "file_offset": "0x2225c",
+          "elf_va": "0x2225c",
+          "elf_sha256": "70fa4c4cf57eabeb96097cce47582d02379c4cd1de3db3e98ade4dd7089a1b13",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 1685563,
+            "memsz": 1685563,
+            "flags": 5,
+            "align": 65536
+          }
+        }
+      ],
+      "registers": {
+        "pc": {
+          "address": "0xffff96dfbde4",
+          "module": "/usr/lib/aarch64-linux-gnu/libc.so.6",
+          "mapping_offset": "0xebde4",
+          "file_offset": "0xebde4",
+          "elf_va": "0xebde4",
+          "elf_sha256": "70fa4c4cf57eabeb96097cce47582d02379c4cd1de3db3e98ade4dd7089a1b13",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 1685563,
+            "memsz": 1685563,
+            "flags": 5,
+            "align": 65536
+          }
+        },
+        "sp": {
+          "address": "0xffffee99c170",
+          "module": "[stack]",
+          "mapping_offset": "0x19170",
+          "file_offset": "0x19170",
+          "resolution": "module metadata not captured"
+        },
+        "fp": {
+          "address": "0xffffee99c170",
+          "module": "[stack]",
+          "mapping_offset": "0x19170",
+          "file_offset": "0x19170",
+          "resolution": "module metadata not captured"
+        },
+        "lr": {
+          "address": "0xffff8aa60420",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/chromehtml.so",
+          "mapping_offset": "0x60420",
+          "file_offset": "0x60420",
+          "elf_va": "0x60420",
+          "elf_sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 2809904,
+            "memsz": 2809904,
+            "flags": 5,
+            "align": 4096
+          }
+        }
+      },
+      "unwind_stop": "return_not_executable_or_pac"
+    },
+    {
+      "tid": 2296,
+      "tgid": 2192,
+      "status": "captured",
+      "detached": true,
+      "state_after": "T",
+      "frames": [],
+      "registers": {
+        "pc": {
+          "address": "0xffff96d9f228",
+          "module": "/usr/lib/aarch64-linux-gnu/libc.so.6",
+          "mapping_offset": "0x8f228",
+          "file_offset": "0x8f228",
+          "elf_va": "0x8f228",
+          "elf_sha256": "70fa4c4cf57eabeb96097cce47582d02379c4cd1de3db3e98ade4dd7089a1b13",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 1685563,
+            "memsz": 1685563,
+            "flags": 5,
+            "align": 65536
+          }
+        },
+        "sp": {
+          "address": "0xffff7affcd60",
+          "module": "[anonymous]",
+          "mapping_offset": "0xfcd60",
+          "file_offset": "0xfcd60",
+          "resolution": "module metadata not captured"
+        },
+        "fp": {
+          "address": "0xffff7affcd60",
+          "module": "[anonymous]",
+          "mapping_offset": "0xfcd60",
+          "file_offset": "0xfcd60",
+          "resolution": "module metadata not captured"
+        },
+        "lr": {
+          "address": "0xffff96d928b8",
+          "module": "/usr/lib/aarch64-linux-gnu/libc.so.6",
+          "mapping_offset": "0x828b8",
+          "file_offset": "0x828b8",
+          "elf_va": "0x828b8",
+          "elf_sha256": "70fa4c4cf57eabeb96097cce47582d02379c4cd1de3db3e98ade4dd7089a1b13",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 1685563,
+            "memsz": 1685563,
+            "flags": 5,
+            "align": 65536
+          }
+        }
+      },
+      "unwind_stop": "return_not_executable_or_pac"
+    },
+    {
+      "tid": 2295,
+      "tgid": 2295,
+      "status": "captured",
+      "detached": true,
+      "state_after": "T",
+      "frames": [
+        {
+          "address": "0xffff8001958c",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/crashhandler.so",
+          "mapping_offset": "0x7c58c",
+          "file_offset": "0x7c58c",
+          "resolution": "module metadata not captured"
+        },
+        {
+          "address": "0xffff905002bc",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/libtier0_s.so",
+          "mapping_offset": "0x192bc",
+          "file_offset": "0x192bc",
+          "resolution": "module metadata not captured"
+        },
+        {
+          "address": "0xffff905018bc",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/libtier0_s.so",
+          "mapping_offset": "0x1a8bc",
+          "file_offset": "0x1a8bc",
+          "resolution": "module metadata not captured"
+        },
+        {
+          "address": "0xffff904f9e6c",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/libtier0_s.so",
+          "mapping_offset": "0x12e6c",
+          "file_offset": "0x12e6c",
+          "resolution": "module metadata not captured"
+        },
+        {
+          "address": "0xaaaaad3a3398",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+          "mapping_offset": "0x25a398",
+          "file_offset": "0x25a398",
+          "elf_va": "0x25a398",
+          "elf_sha256": "0a849676a3ba0cc51ca23cba79be3df0546744fd92c2e2d628a1f71707a70a56",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 9819904,
+            "memsz": 9819904,
+            "flags": 5,
+            "align": 4096
+          }
+        },
+        {
+          "address": "0xaaaaad21f5bc",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+          "mapping_offset": "0xd65bc",
+          "file_offset": "0xd65bc",
+          "elf_va": "0xd65bc",
+          "elf_sha256": "0a849676a3ba0cc51ca23cba79be3df0546744fd92c2e2d628a1f71707a70a56",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 9819904,
+            "memsz": 9819904,
+            "flags": 5,
+            "align": 4096
+          }
+        },
+        {
+          "address": "0xffff822e225c",
+          "module": "/usr/lib/aarch64-linux-gnu/libc.so.6",
+          "mapping_offset": "0x2225c",
+          "file_offset": "0x2225c",
+          "elf_va": "0x2225c",
+          "elf_sha256": "70fa4c4cf57eabeb96097cce47582d02379c4cd1de3db3e98ade4dd7089a1b13",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 1685563,
+            "memsz": 1685563,
+            "flags": 5,
+            "align": 65536
+          }
+        }
+      ],
+      "registers": {
+        "pc": {
+          "address": "0xffff80018ce8",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/crashhandler.so",
+          "mapping_offset": "0x7bce8",
+          "file_offset": "0x7bce8",
+          "resolution": "module metadata not captured"
+        },
+        "sp": {
+          "address": "0xffffd41c01f0",
+          "module": "[stack]",
+          "mapping_offset": "0x201f0",
+          "file_offset": "0x201f0",
+          "resolution": "module metadata not captured"
+        },
+        "fp": {
+          "address": "0xffffd41c01f0",
+          "module": "[stack]",
+          "mapping_offset": "0x201f0",
+          "file_offset": "0x201f0",
+          "resolution": "module metadata not captured"
+        },
+        "lr": {
+          "address": "0xffff80018cc4",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/crashhandler.so",
+          "mapping_offset": "0x7bcc4",
+          "file_offset": "0x7bcc4",
+          "resolution": "module metadata not captured"
+        }
+      },
+      "unwind_stop": "return_not_executable_or_pac"
+    },
+    {
+      "tid": 2316,
+      "tgid": 2295,
+      "status": "captured",
+      "detached": true,
+      "state_after": "T",
+      "frames": [
+        {
+          "address": "0xaaaaad225870",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+          "mapping_offset": "0xdc870",
+          "file_offset": "0xdc870",
+          "elf_va": "0xdc870",
+          "elf_sha256": "0a849676a3ba0cc51ca23cba79be3df0546744fd92c2e2d628a1f71707a70a56",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 9819904,
+            "memsz": 9819904,
+            "flags": 5,
+            "align": 4096
+          }
+        },
+        {
+          "address": "0xaaaaad223f44",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+          "mapping_offset": "0xdaf44",
+          "file_offset": "0xdaf44",
+          "elf_va": "0xdaf44",
+          "elf_sha256": "0a849676a3ba0cc51ca23cba79be3df0546744fd92c2e2d628a1f71707a70a56",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 9819904,
+            "memsz": 9819904,
+            "flags": 5,
+            "align": 4096
+          }
+        },
+        {
+          "address": "0xaaaaad392c08",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+          "mapping_offset": "0x249c08",
+          "file_offset": "0x249c08",
+          "elf_va": "0x249c08",
+          "elf_sha256": "0a849676a3ba0cc51ca23cba79be3df0546744fd92c2e2d628a1f71707a70a56",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 9819904,
+            "memsz": 9819904,
+            "flags": 5,
+            "align": 4096
+          }
+        },
+        {
+          "address": "0xffff90503d44",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/libtier0_s.so",
+          "mapping_offset": "0x1cd44",
+          "file_offset": "0x1cd44",
+          "resolution": "module metadata not captured"
+        },
+        {
+          "address": "0xffff90501c38",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/libtier0_s.so",
+          "mapping_offset": "0x1ac38",
+          "file_offset": "0x1ac38",
+          "resolution": "module metadata not captured"
+        },
+        {
+          "address": "0xffff905021d8",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/libtier0_s.so",
+          "mapping_offset": "0x1b1d8",
+          "file_offset": "0x1b1d8",
+          "resolution": "module metadata not captured"
+        },
+        {
+          "address": "0xffff90506b14",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/libtier0_s.so",
+          "mapping_offset": "0x1fb14",
+          "file_offset": "0x1fb14",
+          "resolution": "module metadata not captured"
+        },
+        {
+          "address": "0xffff823461d8",
+          "module": "/usr/lib/aarch64-linux-gnu/libc.so.6",
+          "mapping_offset": "0x861d8",
+          "file_offset": "0x861d8",
+          "elf_va": "0x861d8",
+          "elf_sha256": "70fa4c4cf57eabeb96097cce47582d02379c4cd1de3db3e98ade4dd7089a1b13",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 1685563,
+            "memsz": 1685563,
+            "flags": 5,
+            "align": 65536
+          }
+        }
+      ],
+      "registers": {
+        "pc": {
+          "address": "0xffff82363f8c",
+          "module": "/usr/lib/aarch64-linux-gnu/libc.so.6",
+          "mapping_offset": "0xa3f8c",
+          "file_offset": "0xa3f8c",
+          "elf_va": "0xa3f8c",
+          "elf_sha256": "70fa4c4cf57eabeb96097cce47582d02379c4cd1de3db3e98ade4dd7089a1b13",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 1685563,
+            "memsz": 1685563,
+            "flags": 5,
+            "align": 65536
+          }
+        },
+        "sp": {
+          "address": "0xffff7fc67020",
+          "module": "[anonymous]",
+          "mapping_offset": "0xfb020",
+          "file_offset": "0xfb020",
+          "resolution": "module metadata not captured"
+        },
+        "fp": {
+          "address": "0xffff7fc67020",
+          "module": "[anonymous]",
+          "mapping_offset": "0xfb020",
+          "file_offset": "0xfb020",
+          "resolution": "module metadata not captured"
+        },
+        "lr": {
+          "address": "0xaaaaad2897c0",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+          "mapping_offset": "0x1407c0",
+          "file_offset": "0x1407c0",
+          "elf_va": "0x1407c0",
+          "elf_sha256": "0a849676a3ba0cc51ca23cba79be3df0546744fd92c2e2d628a1f71707a70a56",
+          "inode_verified": true,
+          "pt_load": {
+            "offset": 0,
+            "vaddr": 0,
+            "filesz": 9819904,
+            "memsz": 9819904,
+            "flags": 5,
+            "align": 4096
+          }
+        }
+      },
+      "unwind_stop": "return_not_executable_or_pac"
+    }
+  ]
+}

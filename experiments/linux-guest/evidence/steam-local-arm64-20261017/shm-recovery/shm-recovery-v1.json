@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "status": "refused",
+  "manifest_sha256": "3d965693a88eaf72c3e82bb8a87b96cdf5712b673df30dbd67448edb1579f7fc",
+  "preflight_passed": true,
+  "removed": [],
+  "automatic": false,
+  "reason": "proc_unreadable_or_changed",
+  "errno": null,
+  "seconds": 6.293
+}

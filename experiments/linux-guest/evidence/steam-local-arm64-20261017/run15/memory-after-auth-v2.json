@@ -1,0 +1,108 @@
+{
+  "time_ns": 1792269515255685572,
+  "meminfo": "MemTotal:        1502832 kB\nMemFree:          202336 kB\nMemAvailable:     611108 kB\nBuffers:            3984 kB\nCached:           557376 kB\nSwapCached:            0 kB\nActive:           955844 kB\nInactive:         262044 kB\nActive(anon):     661120 kB\nInactive(anon):    92396 kB\nActive(file):     294724 kB\nInactive(file):   169648 kB\nUnevictable:        3768 kB\nMlocked:               0 kB\nSwapTotal:             0 kB\nSwapFree:              0 kB\nZswap:                 0 kB\nZswapped:              0 kB\nDirty:              1416 kB\nWriteback:             0 kB\nAnonPages:        658664 kB\nMapped:           250356 kB\nShmem:             97000 kB\nKReclaimable:      12960 kB\nSlab:              43112 kB\nSReclaimable:      12960 kB\nSUnreclaim:        30152 kB\nKernelStack:        4048 kB\nPageTables:        10260 kB\nSecPageTables:         0 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nWritebackTmp:          0 kB\nCommitLimit:      751416 kB\nCommitted_AS:    2644652 kB\nVmallocTotal:   135288315904 kB\nVmallocUsed:        9312 kB\nVmallocChunk:          0 kB\nPercpu:              592 kB\nAnonHugePages:    194560 kB\nShmemHugePages:        0 kB\nShmemPmdMapped:        0 kB\nFileHugePages:     14336 kB\nFilePmdMapped:      8192 kB\nBalloon:               0 kB\nHugePages_Total:       0\nHugePages_Free:        0\nHugePages_Rsvd:        0\nHugePages_Surp:        0\nHugepagesize:       2048 kB\nHugetlb:               0 kB\n",
+  "memory_pressure": "unavailable_errno=2",
+  "io_pressure": "unavailable_errno=2",
+  "processes": [
+    {
+      "pid": 879,
+      "exe_leaf": "steam",
+      "State": "S (sleeping)",
+      "VmRSS": "178396 kB",
+      "VmSwap": "0 kB",
+      "Threads": "54",
+      "TracerPid": "0",
+      "Seccomp": "0"
+    },
+    {
+      "pid": 938,
+      "exe_leaf": "steamwebhelper",
+      "State": "S (sleeping)",
+      "VmRSS": "295992 kB",
+      "VmSwap": "0 kB",
+      "Threads": "37",
+      "TracerPid": "0",
+      "Seccomp": "0"
+    },
+    {
+      "pid": 962,
+      "exe_leaf": "steamwebhelper",
+      "State": "S (sleeping)",
+      "VmRSS": "18600 kB",
+      "VmSwap": "0 kB",
+      "Threads": "1",
+      "TracerPid": "0",
+      "Seccomp": "0"
+    },
+    {
+      "pid": 965,
+      "exe_leaf": "steamwebhelper",
+      "State": "S (sleeping)",
+      "VmRSS": "18860 kB",
+      "VmSwap": "0 kB",
+      "Threads": "1",
+      "TracerPid": "0",
+      "Seccomp": "0"
+    },
+    {
+      "pid": 979,
+      "exe_leaf": "steamwebhelper",
+      "State": "S (sleeping)",
+      "VmRSS": "18044 kB",
+      "VmSwap": "0 kB",
+      "Threads": "1",
+      "TracerPid": "0",
+      "Seccomp": "0"
+    },
+    {
+      "pid": 1037,
+      "exe_leaf": "steamwebhelper",
+      "State": "S (sleeping)",
+      "VmRSS": "42548 kB",
+      "VmSwap": "0 kB",
+      "Threads": "13",
+      "TracerPid": "0",
+      "Seccomp": "0"
+    },
+    {
+      "pid": 1039,
+      "exe_leaf": "steamwebhelper",
+      "State": "S (sleeping)",
+      "VmRSS": "41916 kB",
+      "VmSwap": "0 kB",
+      "Threads": "8",
+      "TracerPid": "0",
+      "Seccomp": "0"
+    },
+    {
+      "pid": 1061,
+      "exe_leaf": "steamwebhelper",
+      "State": "S (sleeping)",
+      "VmRSS": "27776 kB",
+      "VmSwap": "0 kB",
+      "Threads": "6",
+      "TracerPid": "0",
+      "Seccomp": "2"
+    },
+    {
+      "pid": 1596,
+      "exe_leaf": "steamwebhelper",
+      "State": "S (sleeping)",
+      "VmRSS": "114900 kB",
+      "VmSwap": "0 kB",
+      "Threads": "11",
+      "TracerPid": "0",
+      "Seccomp": "2"
+    },
+    {
+      "pid": 1944,
+      "exe_leaf": "steamwebhelper",
+      "State": "S (sleeping)",
+      "VmRSS": "297948 kB",
+      "VmSwap": "0 kB",
+      "Threads": "13",
+      "TracerPid": "0",
+      "Seccomp": "2"
+    }
+  ]
+}

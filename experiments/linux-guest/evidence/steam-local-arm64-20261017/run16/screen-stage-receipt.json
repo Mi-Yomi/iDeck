@@ -1,0 +1,62 @@
+{
+  "run": 16,
+  "screenshots": [
+    {
+      "private_file": "run16/007-window-state.png",
+      "sha256": "a97119a34aad31fa95dac94d86a9df56993d72de576ce91a1d93fc5414dcf702",
+      "bytes": 212622,
+      "visually_verified_stage": "authenticated loading-user-data window; not main",
+      "pixels_in_git": false
+    },
+    {
+      "private_file": "run16/009-profile-and-windows.png",
+      "sha256": "81abe6034dc6825b1f4725bfecf4b3f958b18718d6e3489b9fb929951e793646",
+      "bytes": 107514,
+      "visually_verified_stage": "Friends & Chat with account/friends; private",
+      "pixels_in_git": false
+    },
+    {
+      "private_file": "run16/015-inspector-availability.png",
+      "sha256": "dd23e4ddc646bca4655fdc723da9cefbe4d758067b2c1880c76123cd781730e1",
+      "bytes": 10951,
+      "visually_verified_stage": "main Steam navigation header; content blank; no DevTools",
+      "pixels_in_git": false
+    },
+    {
+      "private_file": "run16/018-library-navigation.png",
+      "sha256": "c93d38672d862473ec156a6b2e8a253c8eb2d7ee5974ac74c5d643adf4d20ee4",
+      "bytes": 133672,
+      "visually_verified_stage": "XTest Library click injected; Store remains selected; navigation unverified",
+      "pixels_in_git": false
+    },
+    {
+      "private_file": "run16/020-steam-menu-input.png",
+      "sha256": "bf13a8a51ea7d2af03e18542f662545457df1cb631e6e83fb412add5ab0667c6",
+      "bytes": 459211,
+      "visually_verified_stage": "genuine main Steam Store content with publisher artwork; no visible menu reaction; BP unverified",
+      "pixels_in_git": false
+    },
+    {
+      "private_file": "run16/022-visible-ui-progress.png",
+      "sha256": "008d9304a3d5117cd9b3c6137d12caeeb2dcf606792826ab247365d9b21db87a",
+      "bytes": 36237,
+      "visually_verified_stage": "desktop after main windows disappeared; no BP; X BadWindow logged",
+      "pixels_in_git": false
+    }
+  ],
+  "actual_main_store_content_verified": true,
+  "library_navigation_verified": false,
+  "big_picture_verified": false,
+  "account_login_persisted": true,
+  "new_account_input": false,
+  "games_started_or_downloaded": false,
+  "first_v3_connect_elapsed_ns": 177170713,
+  "later_connect_events": "seq1 EINTR; seq2 has no completion before controlled stop; not counted as successful connects",
+  "first_UI_symptom": "blank main content and Service Worker not responding; not proven root cause",
+  "later_UI_symptom": "BadWindow X_UnmapWindow/X_ReparentWindow and main windows absent",
+  "client_ELFs_unchanged": true,
+  "application_exit": "bounded owned TERM/KILL after ordinary request; native required SIGKILL",
+  "original_VM_stop": "clean unmount/QEMU0/host fsync",
+  "post16_offline_fsck": "PASS: full strict run17 preboot e2fsck -f -n, all five passes and summary, no unexpected output",
+  "scope": "local host QEMU/TCG, CPUmax4vCPU1536MiB12GiBsoftwareCEF; no iPhone/GPU/game claim"
+}

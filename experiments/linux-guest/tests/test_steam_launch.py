@@ -51,6 +51,10 @@ printf '\\n' >> "$CALLS"
 printf '%s\\n' "$HOME" "$DISPLAY" "$XDG_RUNTIME_DIR" "$XAUTHORITY" "$STEAM_RUNTIME" "$LD_LIBRARY_PATH" > "$CLIENT_ENV"
 printf '%s\\n' "$GDK_BACKEND" "$QT_QPA_PLATFORM" "$SDL_VIDEODRIVER" "$SDL_VIDEO_X11_DGAMOUSE" >> "$CLIENT_ENV"
 if [ "$1" = -shutdown ]; then : > "$RELEASE"; exit "${FAKE_CLIENT_STATUS:-0}"; fi
+if [ "${FAKE_RESTART_ONCE:-0}" = 1 ] && [ ! -f "$RESTARTED" ]; then
+    : > "$RESTARTED"
+    exit 42
+fi
 : > "$READY"
 if [ "${FAKE_BLOCK:-0}" = 1 ]; then
     while [ ! -f "$RELEASE" ]; do sleep 0.05; done
@@ -60,7 +64,8 @@ exit "${FAKE_CLIENT_STATUS:-0}"
         self.env = dict(os.environ, PATH=str(self.bin) + os.pathsep + os.defpath,
                         HOME=str(self.home), DISPLAY=":0", XDG_RUNTIME_DIR=str(self.runtime),
                         XAUTHORITY=str(self.runtime / "Xauthority"), CALLS=str(self.calls),
-                        READY=str(self.ready), RELEASE=str(self.release), CLIENT_ENV=str(self.root / "client-env"))
+                        READY=str(self.ready), RELEASE=str(self.release), CLIENT_ENV=str(self.root / "client-env"),
+                        RESTARTED=str(self.root / "restarted"))
         self.env.pop("DBUS_SESSION_BUS_ADDRESS", None)
         self.env.pop("DBUS_SESSION_BUS_PID", None)
 
@@ -90,12 +95,14 @@ exit "${FAKE_CLIENT_STATUS:-0}"
         self.assertEqual(actual[6:], ["x11", "xcb", "x11", "0"])
         self.assertIn("client_returned_window_not_asserted", result.stdout)
 
-    def test_big_picture_current_upstream_flags_and_live_dbus(self):
+    def test_big_picture_without_steamos_device_mode_and_live_dbus(self):
         result = self.run_launcher("big-picture", DBUS_SESSION_BUS_ADDRESS="unix:path=/fixture")
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("bus-probe\nclient ", self.call_text())
         self.assertNotIn("new-bus", self.call_text())
-        self.assertIn("<-gamepadui> <-steamdeck> <-steamos3>", self.call_text())
+        self.assertIn("<-gamepadui>", self.call_text())
+        self.assertNotIn("<-steamdeck>", self.call_text())
+        self.assertNotIn("<-steamos3>", self.call_text())
         self.assertIn("<-cef-force-sandbox>", self.call_text())
         self.assertNotIn("nobigpicture", self.call_text())
 
@@ -103,6 +110,27 @@ exit "${FAKE_CLIENT_STATUS:-0}"
         result = self.run_launcher("desktop", DBUS_SESSION_BUS_ADDRESS="unix:path=/gone", FAKE_DBUS_STATUS="1")
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("bus-probe\nnew-bus\nclient", self.call_text())
+
+    def test_update_restart_keeps_mode_and_does_not_report_failure(self):
+        result = self.run_launcher("big-picture", FAKE_RESTART_ONCE="1")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.call_text().count("client <-clientbeta>"), 2)
+        self.assertEqual(self.call_text().count("<-gamepadui>"), 2)
+        self.assertIn("update_restart_requested", result.stdout)
+
+    def test_repeated_update_restart_is_bounded(self):
+        result = self.run_launcher("desktop", FAKE_CLIENT_STATUS="42")
+        self.assertEqual(result.returncode, 42)
+        self.assertEqual(self.call_text().count("client <-clientbeta>"), 3)
+        self.assertIn("update_restart_limit", result.stderr)
+        self.assertNotIn("client_returned", result.stdout)
+
+    def test_update_restart_refuses_a_remaining_native_client(self):
+        self.executable(self.bin / "pgrep", '[ -f "$RESTARTED" ]\n')
+        result = self.run_launcher("desktop", FAKE_RESTART_ONCE="1")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual(self.call_text().count("client <-clientbeta>"), 1)
+        self.assertIn("client_still_running_after_update", result.stderr)
 
     def test_wrong_identity_environment_or_permissions_never_launch(self):
         for changes, reason in (({"FAKE_UID": "0"}, "requires_ideck_uid1000"),

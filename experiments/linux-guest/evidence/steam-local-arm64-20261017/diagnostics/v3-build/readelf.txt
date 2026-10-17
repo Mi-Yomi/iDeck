@@ -1,0 +1,67 @@
+ELF Header:
+  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF64
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              DYN (Shared object file)
+  Machine:                           AArch64
+  Version:                           0x1
+  Entry point address:               0x0
+  Start of program headers:          64 (bytes into file)
+  Start of section headers:          68816 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               64 (bytes)
+  Size of program headers:           56 (bytes)
+  Number of program headers:         7
+  Size of section headers:           64 (bytes)
+  Number of section headers:         23
+  Section header string table index: 22
+
+Program Headers:
+  Type           Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   Flg Align
+  LOAD           0x000000 0x0000000000000000 0x0000000000000000 0x002414 0x002414 R E 0x10000
+  LOAD           0x00fd10 0x000000000001fd10 0x000000000001fd10 0x0002f4 0x000320 RW  0x10000
+  DYNAMIC        0x00fd18 0x000000000001fd18 0x000000000001fd18 0x0001c0 0x0001c0 RW  0x8
+  NOTE           0x0001c8 0x00000000000001c8 0x00000000000001c8 0x000024 0x000024 R   0x4
+  GNU_EH_FRAME   0x002218 0x0000000000002218 0x0000000000002218 0x00003c 0x00003c R   0x4
+  GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x10
+  GNU_RELRO      0x00fd10 0x000000000001fd10 0x000000000001fd10 0x0002f0 0x0002f0 R   0x1
+
+ Section to Segment mapping:
+  Segment Sections...
+   00     .note.gnu.build-id .gnu.hash .dynsym .dynstr .gnu.version .gnu.version_r .rela.dyn .rela.plt .plt .text .rodata .eh_frame_hdr .eh_frame 
+   01     .init_array .dynamic .got .data .bss 
+   02     .dynamic 
+   03     .note.gnu.build-id 
+   04     .eh_frame_hdr 
+   05     
+   06     .init_array .dynamic .got 
+
+Dynamic section at offset 0xfd18 contains 24 entries:
+  Tag        Type                         Name/Value
+ 0x0000000000000001 (NEEDED)             Shared library: [libc.so.6]
+ 0x0000000000000001 (NEEDED)             Shared library: [ld-linux-aarch64.so.1]
+ 0x000000000000000e (SONAME)             Library soname: [libideck-ipc-connect.so]
+ 0x0000000000000019 (INIT_ARRAY)         0x1fd10
+ 0x000000000000001b (INIT_ARRAYSZ)       8 (bytes)
+ 0x000000006ffffef5 (GNU_HASH)           0x1f0
+ 0x0000000000000005 (STRTAB)             0x590
+ 0x0000000000000006 (SYMTAB)             0x218
+ 0x000000000000000a (STRSZ)              383 (bytes)
+ 0x000000000000000b (SYMENT)             24 (bytes)
+ 0x0000000000000003 (PLTGOT)             0x1fed8
+ 0x0000000000000002 (PLTRELSZ)           768 (bytes)
+ 0x0000000000000014 (PLTREL)             RELA
+ 0x0000000000000017 (JMPREL)             0x800
+ 0x0000000000000007 (RELA)               0x7d0
+ 0x0000000000000008 (RELASZ)             48 (bytes)
+ 0x0000000000000009 (RELAENT)            24 (bytes)
+ 0x000000000000001e (FLAGS)              BIND_NOW
+ 0x000000006ffffffb (FLAGS_1)            Flags: NOW
+ 0x000000006ffffffe (VERNEED)            0x760
+ 0x000000006fffffff (VERNEEDNUM)         2
+ 0x000000006ffffff0 (VERSYM)             0x710
+ 0x000000006ffffff9 (RELACOUNT)          1
+ 0x0000000000000000 (NULL)               0x0

@@ -1,0 +1,16 @@
+{
+  "time_ns": 1792267606034686950,
+  "purpose": "user-requested QR refresh only",
+  "active_window": "Steam Big Picture Mode",
+  "input_backend": "XTest via xdotool",
+  "argv": [
+    "xdotool",
+    "mousemove",
+    "200",
+    "320",
+    "click",
+    "1"
+  ],
+  "exit": 0,
+  "virtio_or_iphone_input_tested": false
+}

@@ -1,0 +1,407 @@
+{
+  "schema": 1,
+  "status": "experiment_finished",
+  "host_only": true,
+  "iphone_tested": false,
+  "steam_window_verified": false,
+  "big_picture_verified": false,
+  "clean_shutdown": true,
+  "qemu_started": true,
+  "runner_sha256": "b431d6698590566802e649d5ae727a27bd3167142bfb7233a9754770f357e5ec",
+  "network": "explicit QEMU user NAT, no host forwarding",
+  "commands": [
+    {
+      "name": "001-persistence.sh",
+      "script_sha256": "da5fe6b1f510082890c61f0f0f21362165dc6eb5d4d1c16298a506dc4a5216cf",
+      "exit_code": 0
+    },
+    {
+      "name": "002-start-same-client-profile.sh",
+      "script_sha256": "da8280f6fbb4a1bfe6ad13cba93849e375b4ff86f8fce194c555281048cab268",
+      "exit_code": 0
+    },
+    {
+      "name": "003-first-progress.sh",
+      "script_sha256": "6784a0ee2e897c6d33eccc3c663ad819d502f69d68818c04a9ecc030251ed08d",
+      "exit_code": 0
+    },
+    {
+      "name": "004-connect-progress.sh",
+      "script_sha256": "6784a0ee2e897c6d33eccc3c663ad819d502f69d68818c04a9ecc030251ed08d",
+      "exit_code": 0
+    },
+    {
+      "name": "005-compact-progress.sh",
+      "script_sha256": "82feaef3a822135b0b3a5206bf6ffc590df6a6f302bb638c2c70bbd435c636a8",
+      "exit_code": 0
+    },
+    {
+      "name": "006-auth-and-ui-progress.sh",
+      "script_sha256": "957cdab8c90518807512752c17047f747029c909b51c4855e69b4f3d4603b852",
+      "exit_code": 0
+    },
+    {
+      "name": "007-ui-cpu-progress.sh",
+      "script_sha256": "a84740dd624d8af626859a370b7f81a398f03fb15db72d07130fca02382f3ff0",
+      "exit_code": 0
+    },
+    {
+      "name": "008-desktop-ui-progress.sh",
+      "script_sha256": "82feaef3a822135b0b3a5206bf6ffc590df6a6f302bb638c2c70bbd435c636a8",
+      "exit_code": 0
+    },
+    {
+      "name": "009-desktop-signin-state.sh",
+      "script_sha256": "957cdab8c90518807512752c17047f747029c909b51c4855e69b4f3d4603b852",
+      "exit_code": 0
+    },
+    {
+      "name": "010-main-window-check.sh",
+      "script_sha256": "ba970d38d8a2b1f728c961cce4d91a79d820f7d12ef547fcb5b653a302eb7e01",
+      "exit_code": 0
+    },
+    {
+      "name": "011-fit-main-window.sh",
+      "script_sha256": "c200a2502cc97948f6ddb9db0e2332cc11661573467def1311144f2910144e66",
+      "exit_code": 1
+    },
+    {
+      "name": "012-active-window-check.sh",
+      "script_sha256": "ba970d38d8a2b1f728c961cce4d91a79d820f7d12ef547fcb5b653a302eb7e01",
+      "exit_code": 0
+    },
+    {
+      "name": "013-client-ui-progress.sh",
+      "script_sha256": "82feaef3a822135b0b3a5206bf6ffc590df6a6f302bb638c2c70bbd435c636a8",
+      "exit_code": 0
+    },
+    {
+      "name": "014-close-offers-fit-main.sh",
+      "script_sha256": "808835adf324f88474cc8cea5b08cc53774c12d9a9f82fe5189cbde49e70a80b",
+      "exit_code": 0
+    },
+    {
+      "name": "015-main-after-offers.sh",
+      "script_sha256": "957cdab8c90518807512752c17047f747029c909b51c4855e69b4f3d4603b852",
+      "exit_code": 0
+    },
+    {
+      "name": "016-dismiss-offers-prompt.sh",
+      "script_sha256": "91c5e8de4408d86bd7a121b3b597e5df73df7d1e48547c9f303ca811c6d6b11b",
+      "exit_code": 0
+    },
+    {
+      "name": "017-memory-pressure.sh",
+      "script_sha256": "ffbab2498ca330f0e4df42dd27eaa93bfb3a58febc9f3bd8a839e25ee823e0c9",
+      "exit_code": 1
+    },
+    {
+      "name": "018-memory-supported-fields.sh",
+      "script_sha256": "283483d6a63f54c711a4d104d7b1493a78a4fa450e95e67a83b3f3e87a89a7cf",
+      "exit_code": 0
+    },
+    {
+      "name": "019-memory-and-startup-progress.sh",
+      "script_sha256": "9262f34fbef497240a7ffe876978836ef509edaf2fe0f6c383c7d801fc945416",
+      "exit_code": 0
+    },
+    {
+      "name": "020-before-bp-request.sh",
+      "script_sha256": "82feaef3a822135b0b3a5206bf6ffc590df6a6f302bb638c2c70bbd435c636a8",
+      "exit_code": 0
+    },
+    {
+      "name": "021-request-big-picture.sh",
+      "script_sha256": "3327e6867be039d1bef87123bbe6a91fe9f035d3e60f38e1f8f056a17776db2d",
+      "exit_code": 0
+    },
+    {
+      "name": "022-big-picture-request-progress.sh",
+      "script_sha256": "37a4c5fd67193963729570efdfb9bb6d7f2dbfe8baadd7b67ada4bbf29d5e2ba",
+      "exit_code": 0
+    },
+    {
+      "name": "023-big-picture-mode-progress.sh",
+      "script_sha256": "37a4c5fd67193963729570efdfb9bb6d7f2dbfe8baadd7b67ada4bbf29d5e2ba",
+      "exit_code": 0
+    },
+    {
+      "name": "024-kernel-renderer-check.sh",
+      "script_sha256": "ca5c0e1f01b82418416a121f9212d3afc13498f0e4df3d007b85587bb9ab7abe",
+      "exit_code": 0
+    },
+    {
+      "name": "025-test-clone-stack-abi.sh",
+      "script_sha256": "331b2fc6377d9daae2957109b181f4cba0d8e3701c19757d5266221b3ca0cfe1",
+      "exit_code": 1
+    },
+    {
+      "name": "026-validate-stack-safe-probe.sh",
+      "script_sha256": "d89ede4341e5255a89f1a2fb290fbe037904f34d3bf6dd7d555904fc7f6f154f",
+      "exit_code": 0
+    },
+    {
+      "name": "027-controlled-app-stop.sh",
+      "script_sha256": "db89d264a43c6f6ff3cdc53f685a059efac82ccd3528677596f28b84b2bbe382",
+      "exit_code": 0
+    },
+    {
+      "name": "028-post-app-check.sh",
+      "script_sha256": "f944d67241c57c4c29b788e909f056e61dd7bb776f69aa01d7af2dcae26446a8",
+      "exit_code": 0
+    },
+    {
+      "name": "029-private-export.sh",
+      "script_sha256": "6a98b2d4b433b96ab142cfc7cbe689480debad8d47be42411064676993b350fc",
+      "exit_code": 0
+    }
+  ],
+  "profile_sha256": "9b8e387773e61e82c183869db73877e3ca2fc4c0c673c2b858e61c933bf6e13f",
+  "bootstrap": {
+    "schema": 1,
+    "purpose": "private disposable Steam experiment; runtime unverified",
+    "base_initramfs": {
+      "size": 11319304,
+      "sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4"
+    },
+    "initramfs": {
+      "size": 11673081,
+      "sha256": "d4622a524cdd7f9a99111fff85a1e467e07d35660c63bc2124a6a4462c04e0fe"
+    },
+    "required_kernel_sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+    "modloop_sha256": "f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b",
+    "module_metadata": {
+      "modules.dep": {
+        "size": 79770,
+        "sha256": "8cd0e53b89ef000dd6270a91da70334f6696c7d089523da75746c08594e815c9"
+      },
+      "modules.softdep": {
+        "size": 818,
+        "sha256": "7d211e6d22125a59819964da6c98395da2f892cb2f88c738264466d1c6c500b5"
+      },
+      "modules.builtin": {
+        "size": 4315,
+        "sha256": "01969d14f424e6c02778adb9e4bb8b561f1cce085d1b23e62206f79bdda590c4"
+      }
+    },
+    "network_load_order": [
+      "kernel/net/core/failover.ko",
+      "kernel/drivers/net/net_failover.ko",
+      "kernel/drivers/net/virtio_net.ko"
+    ],
+    "network_modules": [
+      {
+        "path": "kernel/net/core/failover.ko",
+        "name": "failover",
+        "size": 29183,
+        "sha256": "f812cfef580eb24facf105b3bfef6af7a93cb9a9352244d5b5c2d048ad58d7aa",
+        "vermagic": "6.18.35-0-virt SMP preempt mod_unload modversions aarch64",
+        "depends": [],
+        "signature": {
+          "kind": "PKCS#7",
+          "size": 695,
+          "sha256": "25c9e144c80425d6a8e2ede17052b76457b3bb71e965873cd1a50047ef48c61b",
+          "algorithm_id": 0,
+          "hash_id": 0,
+          "public_key_verification": "not_performed; pinned modloop digest authenticates bytes"
+        }
+      },
+      {
+        "path": "kernel/drivers/net/net_failover.ko",
+        "name": "net_failover",
+        "size": 42223,
+        "sha256": "76644582666b394e3351dc7936f1c6684843d72fc7c323d607cb90ddd93e2d6e",
+        "vermagic": "6.18.35-0-virt SMP preempt mod_unload modversions aarch64",
+        "depends": [
+          "failover"
+        ],
+        "signature": {
+          "kind": "PKCS#7",
+          "size": 695,
+          "sha256": "5f05f9748be2c078d36482f2414455a162fb4dbc08d875f1f068f3b73bcc9263",
+          "algorithm_id": 0,
+          "hash_id": 0,
+          "public_key_verification": "not_performed; pinned modloop digest authenticates bytes"
+        }
+      },
+      {
+        "path": "kernel/drivers/net/virtio_net.ko",
+        "name": "virtio_net",
+        "size": 184671,
+        "sha256": "0b015f1d29694b99fe7aec058c0b0b3dc050c17b1c58cc47487a7677fc392d79",
+        "vermagic": "6.18.35-0-virt SMP preempt mod_unload modversions aarch64",
+        "depends": [
+          "net_failover"
+        ],
+        "signature": {
+          "kind": "PKCS#7",
+          "size": 695,
+          "sha256": "862bae7477cc9cc6f33ebda23c6441ca8e7946870b4fe66dd2028aecc8b29e57",
+          "algorithm_id": 0,
+          "hash_id": 0,
+          "public_key_verification": "not_performed; pinned modloop digest authenticates bytes"
+        }
+      }
+    ],
+    "inputs": {
+      "guest/steam/ideck-steam": {
+        "size": 4326,
+        "sha256": "11cc1c70d2960a745b0f2c31a989eedc3ed23a1f6a95d5be7e6094cd25a7f790"
+      },
+      "guest/steam/install-cached.py": {
+        "size": 12332,
+        "sha256": "81e39f6c23a7e5d0bfff8c133a550bd6a754d4f86c321bb14650c7a77874e909"
+      },
+      "guest/steam/namespace-check.py": {
+        "size": 15718,
+        "sha256": "96c929eafefb2f76aa7751fb1869baa6def54e5e31be2a0e6620a486bca64b0d"
+      },
+      "guest/steam/prepare-display.py": {
+        "size": 6969,
+        "sha256": "b932d9b11d89717e66c396f0302ed2500942505918ca629e75f5761d68fc06cc"
+      },
+      "guest/steam/shm-recovery.py": {
+        "size": 12909,
+        "sha256": "f90092f629593f6f653825e35359dd9f4a08a3ffef7a370d417719a1a9070b7e"
+      },
+      "tools/steam_client.py": {
+        "size": 12638,
+        "sha256": "f642b54ee73c777330be843ba4d38153fed0ab22259b8030ef9d205d70a554b1"
+      },
+      "ipa/steam-client.lock.json": {
+        "size": 4757,
+        "sha256": "9b8bc9fe5e8074ae4d798f645d259066e968b8bc5512183c0aca34e1f54a8bdd"
+      },
+      "ipa/steam-dependencies.lock.json": {
+        "size": 17731,
+        "sha256": "0d153bbb2a9a39c32fb650d189cc972355fc1d94da39297cf0b9830fdbd922f6"
+      }
+    },
+    "original_shutdown_function_preserved": true,
+    "required_cmdline": [
+      "rdinit=/ideck-steam-init",
+      "ideck.steam_experiment=1",
+      "ideck.steam_disk_grow=1"
+    ],
+    "guest_network": {
+      "device": "virtio-net-device",
+      "address": "10.0.2.15/24",
+      "gateway": "10.0.2.2",
+      "dns": "10.0.2.3"
+    },
+    "gui_payload_changed": false,
+    "valve_client_bundled": false,
+    "guest_boot_verified": false,
+    "iphone_verified": false
+  },
+  "initramfs_sha256": "d4622a524cdd7f9a99111fff85a1e467e07d35660c63bc2124a6a4462c04e0fe",
+  "kernel_sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+  "seed_sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791",
+  "storage_preflight": {
+    "filesystem_path": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/resume-local-20261017/run15",
+    "free_bytes": 119782617088,
+    "virtual_disk_bytes": 12884901888,
+    "reserve_bytes": 4294967296,
+    "required_before_image_write_bytes": 17179869184,
+    "shortfall_bytes": 0,
+    "allowed": true,
+    "policy": "full-offline-copy-plus-4GiB-before-image-write",
+    "sparse_allocation_discount": false
+  },
+  "image_tool": {
+    "schema": 1,
+    "package": {
+      "name": "qemu-utils",
+      "version": "1:10.0.13+ds-0+deb13u1",
+      "architecture": "amd64",
+      "filename": "pool/main/q/qemu/qemu-utils_10.0.13+ds-0+deb13u1_amd64.deb",
+      "sha256": "6d31339b1630153fe7c5f8a51426b8fa6ce35731aeb015a84f2d333c4e4dca30",
+      "size": 2024216,
+      "installed_size_kib": 12510
+    },
+    "release": {
+      "url": "https://deb.debian.org/debian/dists/trixie/InRelease",
+      "size": 140421,
+      "sha256": "0584fba32e13e0ab8285fb16c27adea1ec03a73669c18702821094fd6ca86675",
+      "indexes": [
+        {
+          "architecture": "arm64",
+          "size": 9614192,
+          "sha256": "be16b37b2f740f066ea93d35d56f04f94d63693e5a3eb421b052bf86fae75bcd",
+          "url": "https://deb.debian.org/debian/dists/trixie/main/binary-arm64/by-hash/SHA256/be16b37b2f740f066ea93d35d56f04f94d63693e5a3eb421b052bf86fae75bcd"
+        },
+        {
+          "architecture": "amd64",
+          "size": 9678380,
+          "sha256": "7778d3e3f303b7ddb8ce0fe7c8d57473a076c6bf2e8f241f75421d2396352498",
+          "url": "https://deb.debian.org/debian/dists/trixie/main/binary-amd64/by-hash/SHA256/7778d3e3f303b7ddb8ce0fe7c8d57473a076c6bf2e8f241f75421d2396352498"
+        }
+      ],
+      "signer_fingerprints": [
+        "04B54C3CDCA79751B16BC6B5225629DF75B188BD",
+        "41587F7DB8C774BCCF131416762F67A0B2C39DE4",
+        "B8B80B5B623EAB6AD8775C45B7C5D7D6350947F8"
+      ],
+      "date": "Sat, 12 Sep 2026 07:55:41 UTC",
+      "max_age_days": 90
+    },
+    "binary_sha256": "77a92b0ca43516403064a4d0939f91c38b9ab2447b32e8f66709dcf29432d626",
+    "binary_size": 2534080,
+    "version_check": "qemu-img version 10.0.13 (Debian 1:10.0.13+ds-0+deb13u1)",
+    "loader": "prior-build/production/vm/host/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+    "library_path": "prior-build/production/vm/host/usr/lib/x86_64-linux-gnu",
+    "additional_libraries_needed": false,
+    "system_install": false
+  },
+  "continuation": {
+    "source": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/resume-local-20261017/run14",
+    "source_sha256": "3d13395fd71ef3457d3c7105157bc617b67fd871d9aad16f2fde2c6ca874f866",
+    "original_preserved": true,
+    "method": "qemu-img convert; source read lock",
+    "copied_sha256": "8b061b381236a862f3d03e0efac80d81e5f6af21a011de36132f25b8b3d60eb8"
+  },
+  "offline_fsck": {
+    "exit_code": 0,
+    "read_only": true,
+    "writer_running": false,
+    "fsck_command": [
+      "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/prior-build/production/vm/host/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+      "--library-path",
+      "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/prior-build/production/vm/host/usr/lib/x86_64-linux-gnu",
+      "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/prior-build/production/vm/host/usr/sbin/e2fsck",
+      "-f",
+      "-n",
+      "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/resume-local-20261017/run15/offline-fsck.raw"
+    ],
+    "status": "pass",
+    "evaluation": {
+      "policy": "strict-e2fsck-fn-v1",
+      "accepted": true,
+      "reason_codes": [],
+      "unexpected_lines": [],
+      "passes_and_summary": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "summary"
+      ],
+      "version_count": 1
+    },
+    "free_bytes_before_copy": 115189448704,
+    "virtual_size": 12884901888,
+    "raw_sha256": "f6369bb9780d155b3fc39308e0353fc010a05f5b5b0dbade9435133e443a3619",
+    "raw_size": 12884901888,
+    "stdout_sha256": "d95cfe372349478056614d2e3675bfdd642081645e485dddf6c82473d4ccb481",
+    "stderr_sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948",
+    "log_sha256": "8105bc861db45402eba5d8bf654105483a9f9e21d06db421666e3d02d9f0eb0d",
+    "scope": "ext4 filesystem, flattened offline copy"
+  },
+  "cache_port": 38931,
+  "seed_read_only_qmp": true,
+  "gui_ready": true,
+  "elapsed_seconds": 1974.832,
+  "qemu_exit_code": 0,
+  "total_elapsed_seconds": 2524.113
+}

@@ -1,0 +1,16 @@
+test_arbitrary_launch_mode_refused_before_namespace_changes (test_steam_namespace.NamespaceHelper.test_arbitrary_launch_mode_refused_before_namespace_changes) ... ok
+test_exec_preflight_uses_normal_uid1000_exec_and_reports_exact_result (test_steam_namespace.NamespaceHelper.test_exec_preflight_uses_normal_uid1000_exec_and_reports_exact_result) ... ok
+test_failed_pid_proc_preflight_never_executes_client (test_steam_namespace.NamespaceHelper.test_failed_pid_proc_preflight_never_executes_client) ... ok
+test_failed_syscall_records_direct_errno_and_stops (test_steam_namespace.NamespaceHelper.test_failed_syscall_records_direct_errno_and_stops) ... ok
+test_failed_uid1000_preflight_never_executes_client (test_steam_namespace.NamespaceHelper.test_failed_uid1000_preflight_never_executes_client) ... ok
+test_guard_refuses_nonroot_wrong_kernel_missing_profile_or_wrong_root (test_steam_namespace.NamespaceHelper.test_guard_refuses_nonroot_wrong_kernel_missing_profile_or_wrong_root) ... ok
+test_outside_exec_uses_native_alpine_binary_after_numeric_uid_drop (test_steam_namespace.NamespaceHelper.test_outside_exec_uses_native_alpine_binary_after_numeric_uid_drop) ... ok
+test_pid_proc_preflight_is_child_exec_only_with_corrected_root (test_steam_namespace.NamespaceHelper.test_pid_proc_preflight_is_child_exec_only_with_corrected_root) ... ok
+test_private_propagation_precedes_move_then_adopts_real_root (test_steam_namespace.NamespaceHelper.test_private_propagation_precedes_move_then_adopts_real_root) ... ok
+test_successful_preflight_closes_fds_and_execs_unprivileged_launcher_only (test_steam_namespace.NamespaceHelper.test_successful_preflight_closes_fds_and_execs_unprivileged_launcher_only) ... ok
+test_uid_drop_removes_supplementary_groups_before_gid_uid (test_steam_namespace.NamespaceHelper.test_uid_drop_removes_supplementary_groups_before_gid_uid) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.007s
+
+OK

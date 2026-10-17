@@ -1,0 +1,470 @@
+[
+  {
+    "file": "resume-local-20261017-connect-5000-v9__application-stop.json",
+    "size": 6583,
+    "sha256": "f3e7b6b7cec5d3133ea7528c0d0ba1035234ee85181ec1147a188dd0c873b718",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__auth-state.json",
+    "size": 218,
+    "sha256": "d249ac9a5b5b36a93c2c65c267c841023e094aecf72773df0ea93922a4889022",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__bp-dispatch.log",
+    "size": 239,
+    "sha256": "0e172386cbc3d8cdb732dea9d80176494e3e862b80d7fabcd0ed7b10851f0f10",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__bp-guardian-summary.json",
+    "size": 278,
+    "sha256": "4c5ef7b55a736642b5ecdc0d620946c5b74ab535b19ab8eac25ac633ef414cff",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__bp-result.json",
+    "size": 169,
+    "sha256": "ed2342342a8f7b009729734375b657f7786b0ce74563f2b966c91b0a8e32d670",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__bp-timeline.jsonl",
+    "size": 1017518,
+    "sha256": "28b3c565a2c585e429ce4ef1bba6dde50da9a03d2e192e8047b3091f733c11bf",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-appinfo_log.txt",
+    "size": 1418,
+    "sha256": "3f8947766e2a4ff0ba12c1dbb0f9f19783e5abeff38e560d6045a56f35254ea1",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-bootstrap_log.txt",
+    "size": 2479,
+    "sha256": "293ccc54f7507526210d4a81fca85f1bf631f325895fad7f285c06a079cc5268",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-cef_log.txt",
+    "size": 3504,
+    "sha256": "c4d42df1a0714ca912bd701ed2b44c8bfd76faf2f7cb9657de4dd053e5666742",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-client_networkmanager.txt",
+    "size": 233,
+    "sha256": "7170c3000c63ca4abd8a0b574c4d665f72a1dd9d0754c8d5c44fe6065515e442",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-cloud_log.txt",
+    "size": 2917,
+    "sha256": "30948da3129c8ccc8bc6195b331520604be4407f32a8574ceb408060388e881e",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-compat_log.txt",
+    "size": 45949,
+    "sha256": "5d37def98570a6084d2f2e5513f29b65de5e1ed161dad2efb6100fe05ec6015b",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-configstore_log.txt",
+    "size": 2663,
+    "sha256": "74ee8d23b61bbec1ed95ec092fa404d6cdf8fa4a75b80bd4ad8e61bd89f558f2",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-connection_log.txt",
+    "size": 6429,
+    "sha256": "adaca308999916583f05c7a7acf76f4503f86e8b67c06710c8948ce18d51c9ec",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-console_log.txt",
+    "size": 8750,
+    "sha256": "48fd4a3dd08a01faa3707196316e0dd3daeeb3a607b07ad0ae3455035cf8bef8",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-content_log.txt",
+    "size": 399,
+    "sha256": "7781558af7dd849251ffe8db219b3e87db7eb76ab3e8d0a5c59fbcf6bafcb07f",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-controller.txt",
+    "size": 186,
+    "sha256": "50b858d1d70bd5ab493b77477d8bd288deb7981515a6e48eea4ebbbe63424630",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-gameprocess_log.txt",
+    "size": 98,
+    "sha256": "6e53d73c9d0d8849820127563baf0d1d266876bcf4efe7b464df38ffe6c3f23c",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-librarysharing_log.txt",
+    "size": 178,
+    "sha256": "bf13a8a7254b4e2ae55259e2dbf0c050f8094c8655f3123170da1ade8f940f59",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-parental_log.txt",
+    "size": 353,
+    "sha256": "8a940d3e2d53cff4e5a1e91668255e6e7f2e3831a3107c13ed579e259c885d0c",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-remote_connections.txt",
+    "size": 495,
+    "sha256": "5d53f0d1ac84e1265020ef864e78d99ef6e857596935330b2fd7c2b3cfd4a5ca",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-shader_log.txt",
+    "size": 3105,
+    "sha256": "a83c2181faeaf6feae454d2b3dd812ec6de3ff3470826d0337e965b18def62cf",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-steamsysinfo.txt",
+    "size": 396,
+    "sha256": "252f642ad7311af6c3c78fcdc002bed47e634647ad0af01d2b5b4e875017dad0",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-steamui_audio.txt",
+    "size": 552,
+    "sha256": "86e6990e8ae9263a8c28f89eda929ed55e2b621fa8f6e46517acceb02de7ac66",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-steamui_html.txt",
+    "size": 2979,
+    "sha256": "9e3dbb0687e5367675e72b1317e9e1a4bb6de0495d5af241fd9bf99b8e363ba8",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-steamui_librarycache.txt",
+    "size": 3043,
+    "sha256": "15769bb10e0f71bed9610c34f71f4d645b8e9bc06d9a3e7ec1eda322f5d03815",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-steamui_login.txt",
+    "size": 1263,
+    "sha256": "6703d18da09aed430b4c5c908f5e530f57cc8d08aad815c56ca950dbfdb8a647",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-steamui_system.txt",
+    "size": 1446,
+    "sha256": "40804e8d57256ce314f38978031a437d84e65c9a59a8fda19cae92c9f6bdf20a",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-steamui_update.txt",
+    "size": 114,
+    "sha256": "d0bda3bb9846e98ff102bfa44bf616a16c50f0df5d0f767dd52b998514c7b6d5",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-streaming_log.txt",
+    "size": 301,
+    "sha256": "273340fe5faaf28669d454ef007d73879a5622ce5097b8aff7eeb5127e0d823e",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-systemaudiomanager.txt",
+    "size": 119,
+    "sha256": "c12fff00329c0d3b1d861e1c228d299beab7ee1d3aa0e96ef3e30bfe42002f08",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-systemdisplaymanager.txt",
+    "size": 175,
+    "sha256": "9f2b5993fd141f3021553e48b1ed46aa781f46b4520be819e0f74f095aeb8d60",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-systemdockmanager.txt",
+    "size": 117,
+    "sha256": "c621906536209b707cf33cd6ed008c3ca560c7f14ad6242bb40f53b497ba97ac",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-systemmanager.txt",
+    "size": 1570,
+    "sha256": "dbac40440c28a15138c819d737dc9fafabad0041bca7814968ea7ef478cba5ff",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-systemperfmanager.txt",
+    "size": 257,
+    "sha256": "541af321f97244a8c635700765836226b90406fa838b0d34947853fadd1b7605",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-systemperfreporting.txt",
+    "size": 119,
+    "sha256": "6b2d6c8be6fcd48df314a8e6124d6623961b23a37394a446c5eabfe1b391768c",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-text_filter_log.txt",
+    "size": 1066,
+    "sha256": "b41eef31080282ca92c30d4c979c32db90acf2029331134f8c6f9b66152be7bb",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-transport_client.txt",
+    "size": 219,
+    "sha256": "4c67d6560c810627a27ddca2053cf87c38a20fff634c2b691a62c985ec82a89c",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-transport_steamui.txt",
+    "size": 280,
+    "sha256": "5191a7af6669aa5e92d5182c0827f544b4d6b74fb9b251da0c6ff0df1f822d96",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-updateui_child.txt",
+    "size": 675,
+    "sha256": "9766c655c2f0b933ad98583705600ce70bec03e9b39b71df8d9fb327e88c7415",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-webhelper.txt",
+    "size": 19630,
+    "sha256": "8e420ca5d40d7152c17ae6050a1f0e29e198f4a4d0752290d05c14efad967423",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-webhelper_gpu.txt",
+    "size": 36175,
+    "sha256": "6828bdf2e9e40434027ba41ccd42a567ffc10cdefc7b4aabf28b7bec309b3b0a",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-webhelper_js.txt",
+    "size": 13476,
+    "sha256": "2ef1f4c0f8e12f2cd3b9453fe3e67cdc46602b7f51263d27c416928d62f98c3a",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__delta-workshop_log.txt",
+    "size": 148,
+    "sha256": "19bfdb0ae96351cd256264cb478f8f28c10dd0d8312f14cc057601804c6b81aa",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__fast-guard.json",
+    "size": 131,
+    "sha256": "eb85bc02ddcb4b5842ccc123d7b3efaa12ebf31f4f007cdc5bbb7c36d3320946",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__finish-games-guardian",
+    "size": 5,
+    "sha256": "a11c3d917a2149a4b548217038bc8f2dd2130a1966e0c7af5c4225d81f25a8c3",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__finish-monitor",
+    "size": 5,
+    "sha256": "a11c3d917a2149a4b548217038bc8f2dd2130a1966e0c7af5c4225d81f25a8c3",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__finish-ui-guardian",
+    "size": 5,
+    "sha256": "a11c3d917a2149a4b548217038bc8f2dd2130a1966e0c7af5c4225d81f25a8c3",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__finish-uri-guardian",
+    "size": 5,
+    "sha256": "a11c3d917a2149a4b548217038bc8f2dd2130a1966e0c7af5c4225d81f25a8c3",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__freeze-identities.json",
+    "size": 1220,
+    "sha256": "5cb7ea43d29505ebff849baf8d91e60fbe9a5930ef280450eddbce4ed2216b1a",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__games-dispatch.log",
+    "size": 239,
+    "sha256": "0e172386cbc3d8cdb732dea9d80176494e3e862b80d7fabcd0ed7b10851f0f10",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__games-guardian-summary.json",
+    "size": 277,
+    "sha256": "22613a03f3f7c81b79132a71cbe7c24b765a52681b369d2efc2623e0b702000d",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__games-result.json",
+    "size": 164,
+    "sha256": "752d57f53bd32710078dae07793d6db546eee0c008da6d8d71c5a710e8264a77",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__games-timeline.jsonl",
+    "size": 2236713,
+    "sha256": "37b5566860e415b370ed9283f51c383c67f5f4ba7e4c67833682d20a8239d151",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__ideck-ipc-connect-876.jsonl",
+    "size": 980,
+    "sha256": "2df2a7d00fd79c20fc214a418a3d67cd0e4e0b5d1707ec39830724d80689e8c1",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__ideck-ipc-connect-877.jsonl",
+    "size": 90,
+    "sha256": "8e0474d5720faf119ca0519dca5b4c1ccdbd21c0ef3b3f29feffb0b69767e6c6",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__inspector-request.json",
+    "size": 181,
+    "sha256": "33ea536434ea24b5109f585e44b765abbfa499b9db5638751919b71cbbbdcb14",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__launch-profile.json",
+    "size": 637,
+    "sha256": "6bf1f9f27354e79b104bc250e43220a8327be4425c06b2ae09d35046aa3a4cf9",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__launcher.log",
+    "size": 14441,
+    "sha256": "4004ef2100bf4ae79e8ac46a6f01a53ece5f74fa3150f64b4aef9e58f3859fb0",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__library-input.json",
+    "size": 209,
+    "sha256": "2c79f968d8447a624fd37f1ddab426ebdeee89003fec8c8f40d1fd5314af4263",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__post-application-check.json",
+    "size": 799,
+    "sha256": "8b6e5c9b96a57c42688687b31cbeb2b5866121e07116f3619d0015c8f7c8d503",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__post-stop-tail-cef_log.txt",
+    "size": 32768,
+    "sha256": "0566c91291292cefd16bf4a09c33c40ca289be6a6440fb48e7ac76bc7a248733",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__post-stop-tail-steamui_html.txt",
+    "size": 13725,
+    "sha256": "097099eafd35941288560fe14c82a853a9356b619f43455aeaa90b905b9e8e0c",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__post-stop-tail-webhelper.txt",
+    "size": 32768,
+    "sha256": "ea6aab9282c6242858d6aebb651b74a681db4b784636b7d073e01c1a2a74699f",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__preload-and-graphics.json",
+    "size": 1725,
+    "sha256": "22e08fe68939873b1eb50518a2b750c130d7fa33dd77a86f5bca747a28a16fbf",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__shutdown-request.log",
+    "size": 294,
+    "sha256": "c088d46d519af536ae69e7557415a33d349b989f6d509d347f6980af702f49b7",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__steam-menu-input.json",
+    "size": 171,
+    "sha256": "eff28840007ee3b3bb51d5e22592638df37b8cd01f3279037e5fd3dcbc57ecb0",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__summary.json",
+    "size": 325,
+    "sha256": "a6b3eaf1fe8e9715ff1a0c212003d31d7f1b1e31e5f74628dbbe1c9ae0ef5b07",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__timeline.jsonl",
+    "size": 4341031,
+    "sha256": "3811b07d21b80549f12867bf187349c218e1002e98f85750adb1a2db50a0e684",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__ui-guardian-summary.json",
+    "size": 248,
+    "sha256": "1a2dacff29d2e534642957303f43a0a72c95af8239f3c98707fdca96fd6a67d8",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__ui-health.json",
+    "size": 6224,
+    "sha256": "0b444cc37538c204cb57caaf758d5ce0ef5e6a80ddb4cbe543914beb9f73aa9e",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__ui-timeline.jsonl",
+    "size": 652354,
+    "sha256": "3ec8516feccd35b4493a77efce83a435c868f9c7d8d70a75c890ad32bf4f5e83",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__uri-dispatch.log",
+    "size": 239,
+    "sha256": "0e172386cbc3d8cdb732dea9d80176494e3e862b80d7fabcd0ed7b10851f0f10",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__uri-guardian-summary.json",
+    "size": 273,
+    "sha256": "a674d33e94b8b69d79114ea0d3a1c5f4566d6bdd5caffed0ee9f88d1a25891af",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__uri-result.json",
+    "size": 166,
+    "sha256": "da60b6205bad8f64a16bebf2ca1ece4884e2ec0f88ebe50a18b723d9c518d474",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-v9__uri-timeline.jsonl",
+    "size": 2063648,
+    "sha256": "1e0a3fa9ac31ea3c0971eadb358326913b99a809a3ed49cb66fafcbe5a8c493e",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "resume-local-20261017-connect-5000-preflight__runtime-tests.json",
+    "size": 1339,
+    "sha256": "f240b4124bde2d94933233586df49d78de0448f3795cd887670ccf7d0ff6b995",
+    "source_log": "026-private-export.log"
+  },
+  {
+    "file": "connect-monitor.log",
+    "size": 10074,
+    "sha256": "1404adf7cf6c02157e329c555a2b7d678b880af976426691cbddcfb9e8590390",
+    "source_log": "026-private-export.log"
+  }
+]

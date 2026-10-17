@@ -1,0 +1,13 @@
+{
+  "time_ns": 1792269429581880271,
+  "before_active": "",
+  "after_active": "Steam",
+  "actions": [
+    "XTest Escape cancels observed unresponsive-window prompt",
+    "WM minimize Special Offers",
+    "activate observed Steam main window"
+  ],
+  "no_force_end_or_process_signal": true,
+  "main_window_geometry": "WINDOW=33554491\nX=0\nY=0\nWIDTH=800\nHEIGHT=566\nSCREEN=0",
+  "client_navigation_verified": false
+}

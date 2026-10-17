@@ -1,0 +1,30 @@
+[
+  {
+    "test": "test_steam_launch",
+    "exit": 0,
+    "seconds": 7.543,
+    "log": "test_steam_launch-night.log",
+    "sha256": "9d9e487470e417a1349c900328534cbccafd9347302485cc6e5010b3105acfae"
+  },
+  {
+    "test": "test_steam_namespace",
+    "exit": 0,
+    "seconds": 0.409,
+    "log": "test_steam_namespace-night.log",
+    "sha256": "c794048ad2c66719b5e9e91d0b4d0b10400ca6f72ceffec96aabc9fe43e73d9e"
+  },
+  {
+    "test": "test_steam_bootstrap",
+    "exit": 0,
+    "seconds": 0.853,
+    "log": "test_steam_bootstrap-night.log",
+    "sha256": "f28d6b68df7c547ac7a67814f62930ece6335f5c07f80697b43d06a5867b9f73"
+  },
+  {
+    "test": "test_steam_game_preflight",
+    "exit": 0,
+    "seconds": 1.032,
+    "log": "test_steam_game_preflight-night.log",
+    "sha256": "aef841c0a5dae16f828e44402167fb0a48ec740534caeb81d11a8fe4816313da"
+  }
+]

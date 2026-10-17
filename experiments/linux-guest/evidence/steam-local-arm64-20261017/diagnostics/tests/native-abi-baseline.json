@@ -1,0 +1,14 @@
+{
+  "arguments": [
+    "setpriv",
+    "--reuid=1000",
+    "--regid=1000",
+    "--clear-groups",
+    "env",
+    "IDECK_IPC_WAIT_MODE=extend-5000",
+    "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/resume-local-20261017/ipc-probe-tests-build-v2/native-abi"
+  ],
+  "exit": 0,
+  "stdout": "{\"status\":\"pass\",\"test\":\"external preload ABI: getpid, errno, invalid syscall, write, six-argument mmap, futex, fork\"}\n",
+  "stderr": ""
+}

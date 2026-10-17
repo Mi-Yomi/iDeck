@@ -1,0 +1,16 @@
+{
+  "reason": "second_browser_before_diagnosis",
+  "seconds": 131.97790102299996,
+  "frozen": [
+    2192,
+    2323,
+    2324,
+    2355,
+    2431,
+    2434,
+    2453,
+    2479
+  ],
+  "launcher_pid": 2163,
+  "path": "/home/ideck/steam-experiment-logs/resume-local-20261017-guarded-v2"
+}

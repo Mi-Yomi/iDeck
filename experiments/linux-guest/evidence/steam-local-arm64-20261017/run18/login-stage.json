@@ -1,0 +1,7 @@
+{
+  "login_success": true,
+  "observed_utc": "2026-10-17 22:12:40",
+  "source_log_sha256": "95cefb04c195fefe7d42a1d5cd64853120d05ae929709827e5f8c21a1884b9c6",
+  "earlier_probe_false_was_incomplete_marker_detection": true,
+  "account_details_published": false
+}

@@ -1,0 +1,11 @@
+{
+  "time_ns": 1792269317226557352,
+  "actions": [
+    "XTest Alt+F4 on observed Special Offers popup"
+  ],
+  "window": "0x200003b",
+  "before": "WINDOW=33554491\nX=0\nY=0\nWIDTH=1280\nHEIGHT=800\nSCREEN=0",
+  "after": "WINDOW=33554491\nX=0\nY=0\nWIDTH=800\nHEIGHT=566\nSCREEN=0",
+  "vm_display_or_resource_profile_changed": false,
+  "client_navigation_verified": false
+}

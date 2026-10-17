@@ -1,0 +1,252 @@
+{
+  "steam": {
+    "path": "/home/ideck/.local/share/Steam/steamrtarm64/steam",
+    "sha256": "73da03ead208a74e14bee566869a4235063dc4a9e1063f29c4608de6d78bd4ea",
+    "size": 10174384,
+    "uid": 1000,
+    "device": 64768,
+    "inode": 606419,
+    "pt_load": [
+      {
+        "offset": 0,
+        "vaddr": 0,
+        "filesz": 9786136,
+        "memsz": 9786136,
+        "flags": 5,
+        "align": 4096
+      },
+      {
+        "offset": 9789376,
+        "vaddr": 9793472,
+        "filesz": 342920,
+        "memsz": 494472,
+        "flags": 6,
+        "align": 4096
+      }
+    ]
+  },
+  "steamwebhelper": {
+    "path": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+    "sha256": "0a849676a3ba0cc51ca23cba79be3df0546744fd92c2e2d628a1f71707a70a56",
+    "size": 10326560,
+    "uid": 1000,
+    "device": 64768,
+    "inode": 606427,
+    "pt_load": [
+      {
+        "offset": 0,
+        "vaddr": 0,
+        "filesz": 9819904,
+        "memsz": 9819904,
+        "flags": 5,
+        "align": 4096
+      },
+      {
+        "offset": 9822208,
+        "vaddr": 9826304,
+        "filesz": 429584,
+        "memsz": 579816,
+        "flags": 6,
+        "align": 4096
+      }
+    ]
+  },
+  "steamclient.so": {
+    "path": "/home/ideck/.local/share/Steam/steamrtarm64/steamclient.so",
+    "sha256": "276f021548f9016de834274f4042b796604530d910d114b77ee170b46e409072",
+    "size": 47744848,
+    "uid": 1000,
+    "device": 64768,
+    "inode": 606421,
+    "pt_load": [
+      {
+        "offset": 0,
+        "vaddr": 0,
+        "filesz": 45910888,
+        "memsz": 45910888,
+        "flags": 5,
+        "align": 4096
+      },
+      {
+        "offset": 45911616,
+        "vaddr": 45915712,
+        "filesz": 1713720,
+        "memsz": 2137448,
+        "flags": 6,
+        "align": 4096
+      }
+    ]
+  },
+  "chromehtml.so": {
+    "path": "/home/ideck/.local/share/Steam/steamrtarm64/chromehtml.so",
+    "sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7",
+    "size": 2923856,
+    "uid": 1000,
+    "device": 64768,
+    "inode": 606392,
+    "pt_load": [
+      {
+        "offset": 0,
+        "vaddr": 0,
+        "filesz": 2809904,
+        "memsz": 2809904,
+        "flags": 5,
+        "align": 4096
+      },
+      {
+        "offset": 2812032,
+        "vaddr": 2816128,
+        "filesz": 92464,
+        "memsz": 120736,
+        "flags": 6,
+        "align": 4096
+      }
+    ]
+  },
+  "steamui.so": {
+    "path": "/home/ideck/.local/share/Steam/steamrtarm64/steamui.so",
+    "sha256": "9a59e3bbbee2c6de7a2559986ae5407c01e7416ac5ac2d9e40f11c8aceffc1ee",
+    "size": 39120760,
+    "uid": 1000,
+    "device": 64768,
+    "inode": 606426,
+    "pt_load": [
+      {
+        "offset": 0,
+        "vaddr": 0,
+        "filesz": 36974976,
+        "memsz": 36974976,
+        "flags": 5,
+        "align": 4096
+      },
+      {
+        "offset": 36978816,
+        "vaddr": 36982912,
+        "filesz": 2004944,
+        "memsz": 2341448,
+        "flags": 6,
+        "align": 4096
+      }
+    ]
+  },
+  "libcef.so": {
+    "path": "/home/ideck/.local/share/Steam/steamrtarm64/libcef.so",
+    "sha256": "891d85f97231fcafa5763b7140039c5d3cbbb99f2a42ede08de5991abcbc3cdb",
+    "size": 218132264,
+    "uid": 1000,
+    "device": 64768,
+    "inode": 606293,
+    "pt_load": [
+      {
+        "offset": 0,
+        "vaddr": 0,
+        "filesz": 37347680,
+        "memsz": 37347680,
+        "flags": 4,
+        "align": 65536
+      },
+      {
+        "offset": 37351424,
+        "vaddr": 37416960,
+        "filesz": 170540480,
+        "memsz": 170540480,
+        "flags": 5,
+        "align": 65536
+      },
+      {
+        "offset": 207891904,
+        "vaddr": 208022976,
+        "filesz": 9341232,
+        "memsz": 9343552,
+        "flags": 6,
+        "align": 65536
+      },
+      {
+        "offset": 217233136,
+        "vaddr": 217429744,
+        "filesz": 830293,
+        "memsz": 3063976,
+        "flags": 6,
+        "align": 65536
+      }
+    ]
+  },
+  "libc.so.6": {
+    "path": "/usr/lib/aarch64-linux-gnu/libc.so.6",
+    "sha256": "70fa4c4cf57eabeb96097cce47582d02379c4cd1de3db3e98ade4dd7089a1b13",
+    "size": 1716616,
+    "uid": 0,
+    "device": 64768,
+    "inode": 9082,
+    "pt_load": [
+      {
+        "offset": 0,
+        "vaddr": 0,
+        "filesz": 1685563,
+        "memsz": 1685563,
+        "flags": 5,
+        "align": 65536
+      },
+      {
+        "offset": 1691776,
+        "vaddr": 1757312,
+        "filesz": 17816,
+        "memsz": 69520,
+        "flags": 6,
+        "align": 65536
+      }
+    ]
+  },
+  "libstdc++.so.6.0.33": {
+    "path": "/usr/lib/aarch64-linux-gnu/libstdc++.so.6.0.33",
+    "sha256": "fff1f0050a33ddf29c44634c7639ac16e2573a61e3daab4fcc4c007b432ccf19",
+    "size": 2502136,
+    "uid": 0,
+    "device": 64768,
+    "inode": 1596,
+    "pt_load": [
+      {
+        "offset": 0,
+        "vaddr": 0,
+        "filesz": 2407957,
+        "memsz": 2407957,
+        "flags": 5,
+        "align": 65536
+      },
+      {
+        "offset": 2446024,
+        "vaddr": 2446024,
+        "filesz": 53392,
+        "memsz": 72128,
+        "flags": 6,
+        "align": 65536
+      }
+    ]
+  },
+  "ld-linux-aarch64.so.1": {
+    "path": "/usr/lib/aarch64-linux-gnu/ld-linux-aarch64.so.1",
+    "sha256": "1b882eddacd494b060413a8aa4f0a4754ee3f84775e68cecbf8a86092b59cca6",
+    "size": 201344,
+    "uid": 0,
+    "device": 64768,
+    "inode": 9079,
+    "pt_load": [
+      {
+        "offset": 0,
+        "vaddr": 0,
+        "filesz": 160864,
+        "memsz": 160864,
+        "flags": 5,
+        "align": 65536
+      },
+      {
+        "offset": 190616,
+        "vaddr": 256152,
+        "filesz": 9036,
+        "memsz": 11688,
+        "flags": 6,
+        "align": 65536
+      }
+    ]
+  }
+}

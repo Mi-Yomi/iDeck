@@ -48,6 +48,7 @@ mkdir -p /sysroot/opt/ideck-steam /sysroot/usr/local/bin || fail steam_tool_dire
 cp /ideck-steam/files/* /sysroot/opt/ideck-steam/ || fail steam_tool_install
 cp /ideck-steam/files/ideck-steam /sysroot/usr/local/bin/ideck-steam || fail steam_launcher_install
 chmod 0755 /sysroot/usr/local/bin/ideck-steam || fail steam_launcher_mode
+chroot /sysroot /usr/bin/python3 /opt/ideck-steam/prepare-display.py 3>&- || fail steam_display_preflight
 echo IDECK_STEAM_NETWORK_READY
 echo IDECK_STEAM_NETWORK_READY >&3
 '''

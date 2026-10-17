@@ -1,0 +1,17 @@
+{
+  "script_sha256": "d89ede4341e5255a89f1a2fb290fbe037904f34d3bf6dd7d555904fc7f6f154f",
+  "files": {
+    "libideck-ipc-connect.so": {
+      "sha256": "14ae446d263a783d341c0236b7fe9a710f4fe7946eb43afde435063473cabb1c"
+    },
+    "arm64-unit": {
+      "sha256": "7cd7f46428935c39d3710b72a7b002eff69a621a104c7f3e2c60507edf2d5824"
+    },
+    "arm64-abi": {
+      "sha256": "e7db059d45d833cadec52e62bddeb8f8000c17d01aa6e331ec4ec3fac322d436"
+    },
+    "arm64-clone": {
+      "sha256": "300ab5ae6c6e4127e0c88fd019a8fac96f5f7ec7216693e3445ac8843239d484"
+    }
+  }
+}

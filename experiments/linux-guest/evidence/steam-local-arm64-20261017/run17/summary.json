@@ -1,0 +1,17 @@
+{
+  "reason": "shared_memory_reserve",
+  "observer_failure_class": null,
+  "seconds": 53.062674656,
+  "frozen": [
+    876,
+    939,
+    961,
+    964,
+    975,
+    1050,
+    1054,
+    1071
+  ],
+  "launcher_pid": 853,
+  "path": "/home/ideck/steam-experiment-logs/resume-local-20261017-normal-no-preload-v10"
+}

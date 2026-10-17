@@ -1,0 +1,43 @@
+{
+  "run": 18,
+  "steam_ui": "Big Picture login succeeded in log; observed Logging in then black frame, later window disappeared",
+  "big_picture_navigation_verified": false,
+  "root_cause_of_renderer_loss_proven": false,
+  "diagnostic_preload": "stack-safe V3, first connect 447117328 ns; not production default",
+  "monitor_seconds": 562.337749982,
+  "stop_reason": "operator_requested_stop",
+  "memory_pressure": "minimum MemAvailable 162564 KiB; no OOM-kill proof",
+  "application_stop": "ordinary request then owned SIGTERM; no SIGKILL required",
+  "vm_stop": "original clean unmount, QEMU exit 0, host fsync",
+  "post_run18_fsck": "PASS: complete strict read-only e2fsck -f -n, all five passes plus summary, no errors; exclusive owner and unchanged source SHA before/after",
+  "native_game": {
+    "name": "XGalaga",
+    "architecture": "ARM64",
+    "runs": 2,
+    "exit_codes": [
+      0,
+      0
+    ],
+    "signals": [
+      [],
+      []
+    ],
+    "keyboard_gameplay_observed": true,
+    "second_run_score": 100,
+    "durations_seconds": [
+      70.15697523599988,
+      39.093118612000126
+    ],
+    "audio_tested": false,
+    "fps_measured": false
+  },
+  "steam_proton_games_verified": false,
+  "iphone_verified": false,
+  "harness_failures": {
+    "v11": "private launcher parent directory not traversable by UID1000; fixed private launcher location",
+    "006": "CRLF heredoc read-only probe error after output",
+    "037": "game has no PID window property",
+    "039": "game has two same-named parent/child windows; corrected using observed top-level window"
+  },
+  "updater_fix": "exit 42 bounded restart implemented and unit-tested; actual updater exit42 observed in v12, automatic retry path not triggered in v13"
+}

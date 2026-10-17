@@ -1,0 +1,122 @@
+{
+  "schema": 1,
+  "status": "pass",
+  "owner_image_accessed": false,
+  "host_only": true,
+  "base_profile": {
+    "control_port": "org.ideck.control",
+    "image": {
+      "block_size": 4096,
+      "features": {
+        "compat": 44,
+        "incompat": 194,
+        "ro_compat": 1091
+      },
+      "size_bytes": 1342177280,
+      "uuid": "b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7"
+    },
+    "initramfs": {
+      "file": "initramfs-desktop.gz",
+      "sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4",
+      "size": 11319304
+    },
+    "kernel": {
+      "file": "vmlinuz-virt",
+      "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+      "size": 10351104
+    },
+    "mode": "desktop",
+    "rootfs": {
+      "file": "gui-rootfs-v1.raw",
+      "sha256": "46fea0230963ca494a5adeef19f46668f559f77522e3b82215d5f543646b0791",
+      "size": 1342177280
+    },
+    "schema": 1
+  },
+  "cycles": [
+    {
+      "cycle": 1,
+      "forcekill_exit": -9,
+      "dirty_header": {
+        "uuid": "b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7",
+        "block_size": 4096,
+        "features": {
+          "compat": 44,
+          "incompat": 198,
+          "ro_compat": 1091
+        },
+        "inode_size": 256,
+        "descriptor_size": 64
+      },
+      "original_sha256": "1e769a8ebfae3728c8e05d7b5ec60e8b790b725418154f6dd067eb186ec4669b",
+      "original_preserved": true,
+      "recovery_exit": 0,
+      "post_fsck_exit": 0,
+      "prior_control_files_read_before_write": 0,
+      "strict_clean_header": {
+        "recover_bit": false,
+        "state": 1,
+        "last_orphan": 0,
+        "error_count": 0,
+        "checksum": "valid"
+      },
+      "control_markers": "IDECK_DESKTOP_RECOVERY_READY\nIDECK_RECOVERY_ASSESS:0\nIDECK_RECOVERY_REPLAY:0\nIDECK_RECOVERY_VERIFY:0\nIDECK_RECOVERY_DONE\nIDECK_DESKTOP_CLEAN_UNMOUNT\n",
+      "dirty_startup_metadata": {
+        "recover_bit": true,
+        "state": 1,
+        "last_orphan": 0,
+        "error_count": 0
+      }
+    },
+    {
+      "cycle": 2,
+      "forcekill_exit": -9,
+      "dirty_header": {
+        "uuid": "b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7",
+        "block_size": 4096,
+        "features": {
+          "compat": 44,
+          "incompat": 198,
+          "ro_compat": 1091
+        },
+        "inode_size": 256,
+        "descriptor_size": 64
+      },
+      "original_sha256": "1aeac794c4f8e59e20225fd6db50538f472305ad648ba1b2e8d96cc1298b3d4b",
+      "original_preserved": true,
+      "recovery_exit": 0,
+      "post_fsck_exit": 0,
+      "prior_control_files_read_before_write": 1,
+      "strict_clean_header": {
+        "recover_bit": false,
+        "state": 1,
+        "last_orphan": 0,
+        "error_count": 0,
+        "checksum": "valid"
+      },
+      "control_markers": "IDECK_DESKTOP_RECOVERY_READY\nIDECK_RECOVERY_ASSESS:0\nIDECK_RECOVERY_REPLAY:0\nIDECK_RECOVERY_VERIFY:0\nIDECK_RECOVERY_DONE\nIDECK_DESKTOP_CLEAN_UNMOUNT\n",
+      "dirty_startup_metadata": {
+        "recover_bit": true,
+        "state": 1,
+        "last_orphan": 0,
+        "error_count": 0
+      }
+    }
+  ],
+  "suffix_sha256": "875ab3a2ef68aabf3a1f0a0c6a371bb92538eeaa45fdefb3a183c55f130504bd",
+  "all_control_files_reopened": true,
+  "final_clean_stop": true,
+  "final_fsck_exit": 0,
+  "final_strict_header": {
+    "recover_bit": false,
+    "state": 1,
+    "last_orphan": 0,
+    "error_count": 0,
+    "checksum": "valid"
+  },
+  "evidence_scope": "Production Alpine6.18.35 + runtime cpio suffix on the previous verified cloud seed46fea; current published local seed9c4d is not present here. No owner image or iPhone test.",
+  "readonly_fsck_note": "Exit0 in both cycles with printed free-block/free-inode counter mismatches and Fix? no. No general repair applied. Exact strict clean superblock gate passed; GUI control files survived both relaunches.",
+  "runner_sha256": "5dec66c472ac0bd86d7008d3b06d169aff27b5f193e4bc73875a3ae6a50fb3e0",
+  "guest_script_sha256": "73e591dbac432f7971fafd9665e9dbd5fcef8313a360b1653fda4632bab64545",
+  "apple_native_tests": "NOT RUN"
+}

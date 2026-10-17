@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "source_tag": "v1.47.2",
+  "sources": [
+    {
+      "name": "problem.c",
+      "url": "https://raw.githubusercontent.com/tytso/e2fsprogs/v1.47.2/e2fsck/problem.c",
+      "sha256": "169335a934df2fa0e45b75cab24515a1e27c7c7834c14cb3f89951d074189532"
+    },
+    {
+      "name": "pass5.c",
+      "url": "https://raw.githubusercontent.com/tytso/e2fsprogs/v1.47.2/e2fsck/pass5.c",
+      "sha256": "5499660c0808c04dddd5f396162f638380275ee14f23b110b7f595f2ac17435b"
+    },
+    {
+      "name": "problemP.h",
+      "url": "https://raw.githubusercontent.com/tytso/e2fsprogs/v1.47.2/e2fsck/problemP.h",
+      "sha256": "4e1df41e8720967746babe3e23fa067815208281b4d24274ca144bff6c942cc5"
+    }
+  ],
+  "finding": "PR_5_FREE_BLOCK_COUNT and PR_5_FREE_INODE_COUNT carry PR_NO_OK. fix_problem does not unmark filesystem validity when an answer is no for those cases. Thus a readonly refusal can leave these mismatches printed while exit status remains0. pass5 corrects the respective superblock summary only when the fix is accepted.",
+  "limits": "Explains this exit-status behavior; does not prove the origin of a mismatch or the state of the unavailable owner/current local seed. No production general repair is authorized by this receipt.",
+  "gate": "The new output gate rejects every extra diagnostic line, including count mismatches/Fix? no, even with exit0. Native promotion additionally requires a fresh SCAN_CLEAN receipt bound to the new suffix."
+}

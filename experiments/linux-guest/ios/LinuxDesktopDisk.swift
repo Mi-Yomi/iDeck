@@ -264,6 +264,27 @@ final class LinuxDesktopDisk {
     }
 
     /// ext4 stores raw CRC32C(~0, superblock[0..<1020]), without a final XOR.
+    /// Recovery eligibility only: never used by the normal desktop boot gate.
+    /// All immutable checks still apply even when normal validation stops at dirty.
+    static func validateForJournalRecovery(fd: Int32, specification s: Specification,
+                                          observe: ((RecoveryObservation) -> Void)? = nil) throws {
+        var header = [UInt8](repeating: 0, count: 1024)
+        let count = header.withUnsafeMutableBytes { pread(fd, $0.baseAddress!, $0.count, 1024) }
+        guard count == 1024 else { throw Invalid.headerRead }
+        do { try validateHeader(header, specification: s, observe: observe); return }
+        catch Invalid.needsRecovery { }
+        func u16(_ n: Int) -> UInt32 { UInt32(header[n]) | UInt32(header[n+1]) << 8 }
+        func u32(_ n: Int) -> UInt32 { u16(n) | u16(n+2) << 16 }
+        let blocks = UInt64(u32(4)) | UInt64(u32(0x150)) << 32
+        let groups = (blocks + 32767) / 32768
+        let inodes = UInt64(u32(0x28))
+        guard u32(0x14) == 0, u32(0x18) == 2, u32(0x1c) == 2,
+              blocks == UInt64(s.sizeBytes / 4096), u32(0x20) == 32768, u32(0x24) == 32768,
+              inodes > 0, inodes <= 32768, UInt64(u32(0)) == groups * inodes,
+              u16(0x58) == 256, u16(0xfe) == 64 else { throw Invalid.geometry }
+        guard u32(0xe0) == 8, u32(0xe4) == 0, header[0xd0..<0xe0].allSatisfy({ $0 == 0 }) else { throw Invalid.journal }
+    }
+
     static func crc32c<C: Collection>(_ bytes: C) -> UInt32 where C.Element == UInt8 {
         var value: UInt32 = 0xffffffff
         for byte in bytes {

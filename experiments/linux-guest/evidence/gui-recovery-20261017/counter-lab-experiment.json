@@ -1,0 +1,130 @@
+{
+  "schema": 1,
+  "scope": "Disposable lab-only experiment on a copy AFTER journal replay; not enabled in native workflow; no owner image.",
+  "command": [
+    "e2fsck",
+    "-p",
+    "-f",
+    "-E",
+    "fixes_only"
+  ],
+  "repair_exit": 1,
+  "post_fsck_exit": 0,
+  "post_output_gate_exit": 1,
+  "control_file_unchanged": true,
+  "original_preserved": true,
+  "before_sha256": "f56522d300328300327e0bb012cc70cc466ada97ab9f79c8a591c716e42d2d4c",
+  "after_sha256": "88353178d9774fb28f333fa9b90466a504a4eb2ad0a75d698f30c0ec254a9aaf",
+  "native_general_repair_enabled": false,
+  "strict_clean_header": {
+    "recover_bit": false,
+    "state": 1,
+    "last_orphan": 0,
+    "error_count": 0,
+    "checksum": "valid"
+  },
+  "changed_range_count": 20707,
+  "changed_bytes_total": 209211,
+  "changed_bytes_outside_primary_superblock": 209199,
+  "first_changed_ranges_absolute_half_open": [
+    [
+      1036,
+      1038
+    ],
+    [
+      1040,
+      1041
+    ],
+    [
+      1076,
+      1077
+    ],
+    [
+      1088,
+      1090
+    ],
+    [
+      1400,
+      1402
+    ],
+    [
+      2044,
+      2048
+    ],
+    [
+      4108,
+      4109
+    ],
+    [
+      4120,
+      4122
+    ],
+    [
+      4124,
+      4125
+    ],
+    [
+      4126,
+      4128
+    ],
+    [
+      4152,
+      4154
+    ],
+    [
+      4188,
+      4189
+    ],
+    [
+      4190,
+      4192
+    ],
+    [
+      4236,
+      4237
+    ],
+    [
+      4248,
+      4250
+    ],
+    [
+      4254,
+      4256
+    ],
+    [
+      4280,
+      4282
+    ],
+    [
+      4300,
+      4301
+    ],
+    [
+      4312,
+      4314
+    ],
+    [
+      4318,
+      4320
+    ],
+    [
+      4344,
+      4346
+    ],
+    [
+      4364,
+      4365
+    ],
+    [
+      4376,
+      4378
+    ],
+    [
+      4382,
+      4384
+    ]
+  ],
+  "full_range_list_sha256": "193bf9fc212b8ffe0a353c957f5ba05cdf82c8fa7e6363ac23c3273f5010b36a",
+  "conclusion": "Not yet validated as an automatic counter-only solution. Changes outside the primary superblock require exact structural classification; this alone does not prove unsafe repair or data loss. Native app remains journal_only and refuses unresolved warnings. Only disposable lab copies were used.",
+  "environment_scope": "Exploratory pinned host-tool run with inherited/default host environment; not production env-i. Rejected as an automatic solution, not a proposed production operation."
+}

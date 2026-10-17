@@ -1,8 +1,9 @@
 # Desktop reports when startup is blocked
 
-The Desktop screen always has **Share report**, **Diagnostics** and **Stop Linux**
-in its top safe-area bar. Report actions are outside the guest input controls and
-their scrolling panel. Only Stop depends on VM state. The short status above the
+The Desktop screen always has **Share report** and **Diagnostics** in its top
+safe-area bar, alongside Recover disk before an attempt or Stop Linux afterwards.
+Report actions are outside the guest input controls and their scrolling panel.
+Only VM actions depend on runtime state. The short status above the
 display is limited to three lines; Diagnostics shows the full status and errors.
 Opening reports releases held guest input and dismisses the guest keyboard.
 
@@ -39,10 +40,12 @@ guest payload is needed. Keep the existing owner disk intact.
 1. Open Desktop before Start. In landscape and portrait, verify both report actions
    remain visible. Open Diagnostics, read full status, share an explicitly selected
    saved MD and dismiss the sheet. This must not start Linux/JIT.
-2. On the already refused disk, make one normal Start attempt. Confirm the existing
-   needsRecovery refusal remains. Share report must be accessible without scrolling
-   through F keys; its MD and the current startup MD should show the exact same
-   four observations. Export both for review. Do not infer their values in advance.
+2. On the already refused disk, make one normal Start desktop attempt. Its original
+   clean-validator must still refuse needsRecovery; the workflow then selects a
+   separate clone-only recovery VM before native entry. Confirm backup/work stages,
+   or an explicit low-space/ownership failure. Share report must remain accessible
+   without scrolling F keys; session and current startup MD should show the same
+   four original observations. Export both; do not infer values in advance.
 3. Verify saved older attempts are separately selectable and export failures/no
    report are visible. Reports must not include file contents, console commands,
    arbitrary native log text or arbitrary Error descriptions.
@@ -55,14 +58,19 @@ UIKit layout, system sharing, Apple compilation and this device checklist have
 not been run by the cloud executor. Python source guards and offline source staging
 are not substitutes for those checks. No CI is dispatched by this task.
 
-## Disk preservation/export remains separate
+## Disk recovery and export
 
-There is deliberately no disk backup, repair or reset button in this change.
-A future exporter must establish that QEMU cannot still write, validate the source
+The internal verified backup, recovery and fresh-process activation are described
+in [GUI-RECOVERY.md](GUI-RECOVERY.md). No owner disk was accessed by this executor.
+That workflow currently fails closed on unresolved fsck output; old acceptance is
+withdrawn and successful force-quit recovery is not established. A new suffix and
+SCAN_CLEAN receipt are required in addition to code0 and a clean superblock.
+There is no raw disk share/export, general repair or reset button. A future raw
+exporter must establish that QEMU cannot still write, validate the source
 identity and hold an exclusive lock for the entire bounded copy, check destination
 space, and verify/synchronize its output before offering a share. A disabled Stop
 button or ready=false alone proves none of this; a returned main loop also retains
 its owner thread and disk lock in the current lifecycle. It must preserve the
 source on every failure and must not introduce cleanup/unregister/unlock as a
-shortcut. Recovery should operate on a verified preserved copy in a separate,
-explicit workflow. No owner disk has been accessed or repaired in this task.
+shortcut. Recovery operates on an unmounted separate copy, with original/backup
+preserved; activation waits for a new app process and revalidated locks/hashes.

@@ -17,7 +17,7 @@ final class LinuxTerminalDiagnostics {
         case diskSize, diskHeaderRead, diskFormat, diskSeedSize, diskOwnership
         case specification, directory, inspection, open, locked, metadata, size, headerRead
         case checksum, filesystem, uuid, geometry, features, journal, needsRecovery, ownership
-        case alreadyExists, insufficientSpace, profile, assetMetadata
+        case alreadyExists, insufficientSpace, profile, assetMetadata, recoveryFailed
     }
     enum Stage: String, Codable, CaseIterable {
         case opened, jitEnableBegin, jitEnableDispatched, jitClaimBegin, jitClaimReturned, jitUnavailable
@@ -31,6 +31,7 @@ final class LinuxTerminalDiagnostics {
         case cleanStopped, stopFailed, uncleanStopped, preparationFailed, startupTimeout, stopTimeout
         case qemuOwnerThreadRetained, consoleLogCloseBegin, consoleLogCloseReturned
         case consolePeersCloseBegin, consolePeersCloseReturned
+        case recoveryBackup, recoveryWorkCopy, recoveryPrepared, recoveryAssessment, recoveryReplay, recoveryVerified, recoveryRelaunch
     }
     enum Problem: Error { case directory, open, metadata, read, write, synchronize, limit, invalid }
     struct Ext4State: Codable, Equatable {

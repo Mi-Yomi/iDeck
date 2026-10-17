@@ -1,6 +1,9 @@
 import Foundation
 import CryptoKit
 
+if CommandLine.arguments.count == 4, CommandLine.arguments[1] == "--gui-recovery-promote" {
+    try runRecoveryPromotionChild(directory: URL(fileURLWithPath: CommandLine.arguments[2]), interruption: CommandLine.arguments[3])
+}
 if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--qemu-owner-lifetime" {
     precondition(["retain", "exit-control"].contains(CommandLine.arguments[2]))
     runQEMUOwnerLifetimeChild(retain: CommandLine.arguments[2] == "retain")
@@ -126,3 +129,4 @@ runDisplayPointerChecks()
 runDesktopInputChecks()
 
 try runGUIProfileChecks(root: root)
+try runGUIRecoveryChecks(root: root, fixture: desktopGolden)

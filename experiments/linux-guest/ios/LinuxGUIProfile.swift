@@ -107,8 +107,11 @@ struct LinuxGUIProfile: Decodable {
         try checked(kernel, assets: assets); try checked(initramfs, assets: assets)
         let root = try LinuxDesktopDisk.trustedDirectory(assets)
         var args = try original.arguments(assets: probeAssets, session: session)
+        let runtimeInit = session.appendingPathComponent("desktop-runtime-initramfs")
+        try LinuxRecoveryGuest.append(to: root.appendingPathComponent(initramfs.file), expectedSHA256: initramfs.sha256,
+                                      expectedSize: initramfs.size, output: runtimeInit)
         for (option, value) in [("-kernel", root.appendingPathComponent(kernel.file).path),
-                                ("-initrd", root.appendingPathComponent(initramfs.file).path)] {
+                                ("-initrd", runtimeInit.path)] {
             guard let index = args.firstIndex(of: option), index + 1 < args.count else { throw Invalid.configuration }
             args[index + 1] = value
         }
@@ -120,6 +123,37 @@ struct LinuxGUIProfile: Decodable {
                  "-device", "virtserialport,chardev=control0,name=\(controlPort)",
                  "-drive", "if=none,id=desktop,format=raw,cache=writethrough,file.locking=off,file=\(path)",
                  "-device", "virtio-blk-device,drive=desktop"]
+        return args
+    }
+
+    func recoveryArguments(probeAssets: URL, assets: URL, session: URL, transaction: LinuxGUIRecovery,
+                           serialFD: Int32, controlFD: Int32) throws -> [String] {
+        try validate(); try transaction.validateOwnership()
+        guard serialFD >= 0, controlFD >= 0, serialFD != controlFD,
+              transaction.specification == image else { throw Invalid.configuration }
+        let original = try LinuxGuestProfile.load(from: probeAssets)
+        guard kernel.sha256 == original.kernel.sha256, kernel.size == Int64(original.kernel.size) else { throw Invalid.configuration }
+        // Full bounded hashes, including the pristine RO tool seed. Never use
+        // executable code or configuration from the mutable recovery target.
+        try checked(kernel, assets: assets); try checked(initramfs, assets: assets); try checked(rootfs, assets: assets)
+        let root = try LinuxDesktopDisk.trustedDirectory(assets)
+        var args = try original.arguments(assets: probeAssets, session: session)
+        let recoveryInit = session.appendingPathComponent("recovery-initramfs")
+        try LinuxRecoveryGuest.append(to: root.appendingPathComponent(initramfs.file), expectedSHA256: initramfs.sha256,
+                                      expectedSize: initramfs.size, output: recoveryInit)
+        for (option, value) in [("-kernel", root.appendingPathComponent(kernel.file).path), ("-initrd", recoveryInit.path),
+                                ("-append", "console=ttyAMA0 rdinit=/ideck-recovery-init panic=0 loglevel=6"),
+                                ("-chardev", "socket,id=linuxserial,fd=\(serialFD)")] {
+            guard let index = args.firstIndex(of: option), index + 1 < args.count else { throw Invalid.configuration }
+            args[index + 1] = value
+        }
+        func escaped(_ url: URL) -> String { url.path.replacingOccurrences(of: ",", with: ",,") }
+        args += ["-chardev", "socket,id=control0,fd=\(controlFD)", "-device", "virtio-serial-pci",
+                 "-device", "virtserialport,chardev=control0,name=\(controlPort)",
+                 "-drive", "if=none,id=recoverytools,format=raw,readonly=on,file=\(escaped(root.appendingPathComponent(rootfs.file)))",
+                 "-device", "virtio-blk-device,drive=recoverytools,serial=ideck-recovery-tools",
+                 "-drive", "if=none,id=recoverywork,format=raw,cache=writethrough,file.locking=off,file=\(escaped(transaction.url))",
+                 "-device", "virtio-blk-device,drive=recoverywork,serial=ideck-recovery-work"]
         return args
     }
 }

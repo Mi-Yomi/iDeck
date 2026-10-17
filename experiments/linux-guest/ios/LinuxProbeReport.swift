@@ -94,6 +94,16 @@ enum LinuxProbeReport {
                 row("Ext4 state (raw)", unsigned(report["ext4_state"], maximum: UInt32(UInt16.max)))
                 row("Ext4 last_orphan", unsigned(report["ext4_last_orphan"]))
                 row("Ext4 error_count", unsigned(report["ext4_error_count"]))
+                if desktop {
+                    row("Recovery phase", text(report["recovery_phase"], allowed: ["backup", "work_copy", "prepared", "assessed", "replayed", "verified", "awaiting_exit", "relaunch_required", "promoted", "manual_review"]))
+                    row("Recovery failure", text(report["recovery_failure"], allowed: ["metadata", "busy", "io", "space", "changed", "receipt", "manualReview", "relaunch"]))
+                    row("Recovery guest failure", text(report["recovery_guest_failure"], allowed: ["proc", "sys", "dev", "applets", "module", "ext4", "control", "control_open", "duplicate_tools", "duplicate_work", "disk_identity", "extra_disk", "readonly", "size", "uuid", "tools_mount", "bind_dev", "bind_proc", "target_mode", "assessment", "replay", "manual_review", "sync", "unmount_proc", "unmount_dev", "unmount_tools", "final_sync", "cancelled", "poweroff_returned", "control_receipt", "verification_output"]))
+                    row("Read-only output gate", flag(report["recovery_output_clean"], yes: "CLEAN OUTPUT", no: "NOT ESTABLISHED"))
+                    row("Recovery assessment exit", unsigned(report["recovery_assessment_exit"]))
+                    row("Journal-only replay exit", unsigned(report["recovery_replay_exit"]))
+                    row("Read-only verification exit", unsigned(report["recovery_verification_exit"]))
+                    row("Recovery init suffix SHA-256", hex(report["recovery_suffix_sha256"], count: 64))
+                }
                 lines += ["", "Ext4 fields are numeric startup observations from the locked superblock check. They do not diagnose why a state arose or replace offline filesystem review. No user-file contents are included."]
             }
             lines += ["", desktop ? "Local Debian graphical desktop. /home/ideck persists on the separate GUI ext4 disk. Metal presents software scanout; guest GPU acceleration is not established." : (debian ? "Debian runs through chroot from Alpine initramfs. Its ext4 root is persistent; /run is temporary. This is a line console."
@@ -177,6 +187,10 @@ enum LinuxProbeReport {
         return result
     }
 
+    private static func text(_ value: Any?, allowed: Set<String>) -> String {
+        guard let value = value as? String, allowed.contains(value) else { return "UNKNOWN" }
+        return escape(value)
+    }
     private static func text(_ value: Any?) -> String {
         guard let string = value as? String, !string.isEmpty else { return "UNKNOWN" }
         return escape(string)

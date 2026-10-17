@@ -64,10 +64,10 @@ mount -o bind /proc /tools/proc || fail bind_proc
 # No executable, library or configuration is read from the mutable target.
 check() {
     chroot /tools /usr/bin/env -i PATH=/usr/sbin:/usr/bin:/sbin:/bin LC_ALL=C E2FSCK_CONFIG=/dev/null \
-        /usr/sbin/e2fsck "$@" "/dev/$work"
+        /usr/sbin/e2fsck "$@" "/dev/$work" 3>&-
 }
 set_target_mode() {
-    chroot /tools /usr/sbin/blockdev "--set$1" "/dev/$work" || fail target_mode
+    chroot /tools /usr/sbin/blockdev "--set$1" "/dev/$work" 3>&- || fail target_mode
     [ "$(cat /sys/block/"$work"/ro)" = "$2" ] || fail target_mode
 }
 set_target_mode ro 1
@@ -81,10 +81,13 @@ replay=$?
 echo "IDECK_RECOVERY_REPLAY:$replay" >&3
 case "$replay" in 0|1) ;; *) fail replay;; esac
 set_target_mode ro 1
-check -f -n
+(ulimit -f 2048 || exit 8; check -f -n) >/run/verification.log 2>&1
 verified=$?
+cat /run/verification.log 3>&-
 echo "IDECK_RECOVERY_VERIFY:$verified" >&3
 [ "$verified" = 0 ] || fail manual_review
+awk -f /ideck-fsck-clean.awk /run/verification.log 3>&- || fail verification_output
+echo IDECK_RECOVERY_SCAN_CLEAN >&3
 sync || fail sync
 umount /tools/proc || fail unmount_proc
 umount /tools/dev || fail unmount_dev

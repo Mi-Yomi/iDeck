@@ -30,8 +30,8 @@ class DesktopDiagnosticsUI(unittest.TestCase):
             self.assertIn('prepareDiagnostics()', button)
             self.assertNotIn('session.ready', button)
             self.assertNotIn('disabled', button)
-        # Only Stop is disabled; diagnostics are outside either input grid.
-        self.assertEqual(actions.count('.disabled('), 1)
+        # VM actions have their own guards; MD actions are outside input grids.
+        self.assertEqual(actions.count('.disabled('), 2)
         self.assertIn('Button("Stop Linux") { session.stop() }.disabled(', actions)
         self.assertNotIn('if let', actions.split('Button("Share report")')[0])
         self.assertIn('ideck-desktop-startup-diagnostics', actions)

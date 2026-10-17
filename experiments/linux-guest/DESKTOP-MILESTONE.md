@@ -1,5 +1,15 @@
 # Следующий milestone: persistent POSIX Linux и минимальный desktop
 
+Recovery follow-up **2026-10-17**: [GUI-RECOVERY.md](GUI-RECOVERY.md) описывает
+проверенные backup/work copies, отдельную journal-only VM и activation только в
+свежем app process после новых locks/hashes/SCAN_CLEAN/clean-validator. Старый
+acceptance отозван из-за tty-echo и unresolved fsck output. Два повторных реальных
+host force-kill подтверждают sync/control files и корректно БЛОКИРУЮТ activation
+на counter mismatch. Это НЕ recovery/relaunch PASS; seed46fea, не текущий9c4d или
+iPhone. Безопасный counter repair и доступ к9c4d остаются blocker. Apple pending;
+новый большой payload не нужен, небольшой deterministic cpio suffix добавляет
+recovery PID1 и временный /tmp. CI executor не запускал.
+
 Обновление **2026-10-17, device follow-up**: owner сообщил реальный GUI/xterm/
 Mousepad/input в IPA от27e9736 на iPhone16ProMax/iOS27. После закрытия приложения
 свайпом следующий Start отказан с needsRecovery; причина ext4 ещё не установлена.

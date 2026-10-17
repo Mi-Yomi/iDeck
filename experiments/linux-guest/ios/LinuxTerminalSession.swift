@@ -11,6 +11,8 @@ final class LinuxTerminalSession: ObservableObject {
     static let desktop = LinuxTerminalSession(isDesktop: true)
     let isDebian: Bool
     let isDesktop: Bool
+    @Published fileprivate(set) var recoveryMode = false
+    private var recoveryRequested = false
     let desktopInput: LinuxDesktopInput?
     init(isDebian: Bool = false, isDesktop: Bool = false) {
         self.isDebian = isDebian || isDesktop
@@ -156,6 +158,16 @@ final class LinuxTerminalSession: ObservableObject {
             : "JIT execution has not been verified. Open JIT setup."
     }
 
+    func startDesktop() {
+        guard !attempted else { return }
+        recoveryRequested = false; start()
+    }
+    func startRecovery() {
+        guard isDesktop, !attempted else {
+            message = "Close and reopen the app, then choose Recover disk before starting a VM. Recovery uses a separate one-use VM."; return
+        }
+        recoveryRequested = true; start()
+    }
     func start() {
         precondition(Thread.isMainThread)
         guard !attempted else { return }
@@ -189,6 +201,7 @@ final class LinuxTerminalSession: ObservableObject {
             diagnosticFailure(); message = "Startup journal is unavailable. Export existing diagnostics before trying again."; return
         }
         attempted = true
+        recoveryMode = isDesktop && recoveryRequested
         let documents: URL
         do {
             // Resolve only the system-provided existing prefix. The userdata
@@ -382,11 +395,15 @@ private final class LinuxTerminalWorker {
     var logTruncated = false
     var transcriptPublishScheduled = false
     var transcriptRevision: UInt64 = 0
+    var recovery: LinuxGUIRecovery?
+    var recoveryProgress = LinuxRecoveryProgress()
+    var isRecovery: Bool
 
     init(owner: LinuxTerminalSession, bundle: URL, session: URL, dataDirectory: URL, metadata: [String: Any],
          diagnostic: LinuxTerminalDiagnostics.Journal) {
         self.owner = owner; self.bundle = bundle; self.session = session
         self.dataDirectory = dataDirectory; self.metadata = metadata; self.diagnostic = diagnostic
+        self.isRecovery = owner.recoveryMode
     }
 
     /// Called synchronously on the thread reaching the boundary, including the
@@ -458,14 +475,26 @@ private final class LinuxTerminalWorker {
                 try self.diagnostic.record(.assetsReturned)
                 try self.diagnostic.record(.diskBegin)
                 var preparedMetadata: [String: Any]
-                if let gui {
+                if let gui, self.isRecovery {
+                    try self.prepareRecovery(gui)
+                } else if let gui {
+                    if try LinuxGUIRecovery.promotePending(directory: self.dataDirectory, specification: gui.image, toolSeedSHA256: gui.rootfs.sha256) {
+                        self.report["recovery_phase"] = "promoted"
+                    }
                     self.report["debian_seed_sha256"] = gui.rootfs.sha256
                     self.report["terminal_initramfs_sha256"] = gui.initramfs.sha256
                     let path = self.dataDirectory.appendingPathComponent("rootfs-v1.raw")
                     var state = stat()
                     if lstat(path.path, &state) == 0 {
                         self.report["import_status"] = "existing_disk_preserved"; self.persist()
-                        self.disk = try gui.openExisting(in: self.dataDirectory, observe: self.observeSuperblock)
+                        do { self.disk = try gui.openExisting(in: self.dataDirectory, observe: self.observeSuperblock) }
+                        catch LinuxDesktopDisk.Invalid.needsRecovery {
+                            // Original boot gate refused BEFORE native entry.
+                            // Use this process's ONE VM for a clone-only repair;
+                            // desktop activation is deferred to a fresh process.
+                            self.report["storage_failure"] = "needsRecovery"
+                            try self.prepareRecovery(gui)
+                        }
                     } else {
                         guard errno == ENOENT else { throw LinuxDesktopDisk.Invalid.inspection }
                         self.report["import_status"] = "copying_seed"; self.persist()
@@ -515,6 +544,10 @@ private final class LinuxTerminalWorker {
                 if let profile = terminal, let terminalDisk = disk as? LinuxTerminalDisk {
                     args = try profile.arguments(probeAssets: probe, terminalAssets: assets, session: bootSession,
                         disk: terminalDisk, serialFD: serial.qemu, controlFD: control.qemu)
+                } else if let profile = gui, let recovery = self.recovery {
+                    args = try profile.recoveryArguments(probeAssets: probe, assets: assets, session: bootSession,
+                        transaction: recovery, serialFD: serial.qemu, controlFD: control.qemu)
+                    self.report["recovery_suffix_sha256"] = LinuxRecoveryGuest.sha256
                 } else if let profile = gui, let desktopDisk = disk as? LinuxDesktopDisk {
                     args = try profile.arguments(probeAssets: probe, assets: assets, session: bootSession,
                         disk: desktopDisk, serialFD: serial.qemu, controlFD: control.qemu)
@@ -596,6 +629,7 @@ private final class LinuxTerminalWorker {
                 thread.name = "ideck.linux.terminal.qemu"
                 thread.qualityOfService = .userInteractive
                 thread.stackSize = 16 * 1024 * 1024
+                if let recovery = self.recovery, let gui { try recovery.markRunning(toolSeedSHA256: gui.rootfs.sha256) }
                 thread.start()
             } catch {
                 self.checkpoint(.preparationFailed, failure: LinuxTerminalSession.failure(error))
@@ -607,13 +641,17 @@ private final class LinuxTerminalWorker {
                 self.report["status"] = "terminal_prepare_failed"
                 if let failure = error as? LinuxDesktopDisk.Invalid { self.report["storage_failure"] = String(describing: failure) }
                 if let failure = error as? LinuxDesktopProfile.Invalid { self.report["storage_failure"] = String(describing: failure) }
+                if let failure = error as? LinuxGUIRecovery.Invalid { self.report["recovery_failure"] = String(describing: failure) }
                 self.persist()
                 let needsRecovery = (error as? LinuxDesktopDisk.Invalid) == .needsRecovery
                 let noSpace = (error as? LinuxDesktopDisk.Invalid) == .insufficientSpace
                 let busy = (error as? LinuxDesktopDisk.Invalid) == .locked
                 let badSeed = (error as? LinuxDesktopProfile.Invalid) == .assetDigest
                 self.owner.publish {
-                    $0.message = needsRecovery ? "Ext4 safety checks blocked startup. The disk was not mounted or replaced. Share the report for the recorded metadata and preserve the disk before offline review."
+                    $0.message = error is LinuxGUIRecovery.Invalid ? "Recovery could not proceed safely (\(String(describing: error))). Original data was preserved. Share diagnostics; manual repair is not automatic. A new app process is required after any recovery VM."
+                        : needsRecovery ? (self.owner.isDesktop
+                            ? "Ext4 safety checks blocked startup. The disk was not mounted or replaced. Share diagnostics before further recovery."
+                            : "Ext4 safety checks blocked startup. The disk was not mounted or replaced. Share the recorded metadata and preserve the disk before offline review.")
                         : noSpace ? (self.owner.isDesktop ? "Not enough space for the GUI disk and 512 MiB reserve. Existing disks were preserved." : "Not enough free space to import Debian (512 MiB plus 32 MiB reserve). Existing disks were preserved. Free space and reopen the app to retry.")
                         : busy ? "The Debian disk or import is busy. It was not replaced. Close the owning session before retrying."
                         : badSeed ? "The Debian seed failed its SHA-256 check. No disk was published. Restore the correct app payload before retrying; existing disks were preserved."
@@ -700,6 +738,29 @@ private final class LinuxTerminalWorker {
             // Only this independent guest supervisor port can acknowledge
             // readiness/unmount. A shell echo in the serial transcript cannot.
             let prefix = owner.isDesktop ? "IDECK_DESKTOP_" : (owner.isDebian ? "IDECK_DEBIAN_" : "IDECK_TERMINAL_")
+            if isRecovery, let text = String(data: line, encoding: .utf8), text.hasPrefix("IDECK_RECOVERY_") {
+                do {
+                    try recoveryProgress.observe(text)
+                    report["recovery_assessment_exit"] = recoveryProgress.assessment
+                    report["recovery_replay_exit"] = recoveryProgress.replay
+                    report["recovery_verification_exit"] = recoveryProgress.verification
+                    report["recovery_output_clean"] = recoveryProgress.scanClean
+                    let stage = recoveryProgress.done ? "awaiting_exit" : (recoveryProgress.verification != nil ? "verified" : (recoveryProgress.replay != nil ? "replayed" : "assessed"))
+                    report["recovery_phase"] = stage
+                    checkpoint(recoveryProgress.done ? .recoveryRelaunch : (recoveryProgress.verification != nil ? .recoveryVerified : (recoveryProgress.replay != nil ? .recoveryReplay : .recoveryAssessment)))
+                    if recoveryProgress.done { lifecycle.record(.stop); stopRequested = true }
+                    owner.publish { $0.message = "Recovery: \(stage). The original remains preserved; activation requires closing and reopening the app." }
+                } catch {
+                    let reason = LinuxRecoveryProgress.failure(text) ?? "control_receipt"
+                    stopFailed = true; ready = false; report["recovery_phase"] = "manual_review"
+                    report["recovery_guest_failure"] = reason
+                    report["terminal_clean_stop"] = false; report["status"] = "terminal_stop_failed"
+                    checkpoint(.stopFailed, failure: .recoveryFailed)
+                    do { try recovery?.recordFailure(reason) } catch { owner.publish { $0.diagnosticFailure() } }
+                    owner.publish { $0.ready = false; $0.canStop = false; $0.message = "Recovery stopped (\(reason)). Original and backup are preserved; no replacement was activated. Share diagnostics. General or destructive repair requires a separate decision." }
+                }
+                persist(); continue
+            }
             if owner.isDesktop, line == Data("IDECK_DESKTOP_RECOVERY_READY".utf8), !guestWasReady, !loopReturned, !stopRequested {
                 checkpoint(.terminalReady)
                 lifecycle.record(.ready)
@@ -707,7 +768,11 @@ private final class LinuxTerminalWorker {
                 report["terminal_ready"] = true
                 report["desktop_gui_ready"] = false
                 persist()
-                owner.publish { $0.serialReady = true; $0.canStop = true; $0.message = "Recovery console is ready. Starting Xorg and the desktop…" }
+                owner.publish {
+                    $0.serialReady = !$0.recoveryMode; $0.canStop = true
+                    $0.message = $0.recoveryMode ? "Offline recovery is checking the unmounted work copy. Original data is preserved."
+                        : "Recovery console is ready. Starting Xorg and the desktop…"
+                }
                 continue
             }
             if owner.isDesktop, line == Data("IDECK_DESKTOP_GUI_FAILED".utf8), !stopRequested, !loopReturned {
@@ -808,6 +873,12 @@ private final class LinuxTerminalWorker {
             checkpoint(.hostSyncBegin)
             guard try lifecycle.synchronizeForCleanStop({ try disk.synchronize() }) else { return }
             checkpoint(.hostDiskSynced)
+            if let recovery {
+                guard recoveryProgress.done, let assessment = recoveryProgress.assessment,
+                      let replay = recoveryProgress.replay, let verification = recoveryProgress.verification else { throw LinuxGUIRecovery.Invalid.receipt }
+                try recovery.recordResult(assessment: assessment, replay: replay, verification: verification, scanClean: recoveryProgress.scanClean)
+                report["recovery_phase"] = "relaunch_required"
+            }
             finalized = true
             report["host_disk_fsync_passed"] = true
             report["terminal_clean_stop"] = true
@@ -825,7 +896,8 @@ private final class LinuxTerminalWorker {
             persist()
             owner.publish {
                 $0.cleanStopped = true; $0.running = false; $0.ready = false; $0.serialReady = false; $0.stopping = false; $0.canStop = false
-                $0.message = "Guest unmount and data sync were confirmed. Close and reopen the app for the next session; the disk stays locked until this app exits."
+                $0.message = $0.recoveryMode ? "The recovery VM finished checking its copy. Fully close and reopen iDeck, then choose Start desktop to validate and activate it. Original backup is preserved; no disk is promoted in this process."
+                    : "Guest unmount and data sync were confirmed. Close and reopen the app for the next session; the disk stays locked until this app exits."
             }
         } catch {
             // The lifecycle already latched failure before rethrowing. Keep
@@ -883,6 +955,18 @@ private final class LinuxTerminalWorker {
     private var resultURL: URL { session.appendingPathComponent("result.json") }
     private var serialURL: URL { session.appendingPathComponent("linux-serial.log") }
     private var markdownURL: URL { session.appendingPathComponent(owner.isDebian ? "result.md" : LinuxProbeReport.filename) }
+
+    private func prepareRecovery(_ profile: LinuxGUIProfile) throws {
+        guard !enteredQEMU else { throw LinuxGUIRecovery.Invalid.relaunch }
+        isRecovery = true; report["recovery_requested"] = true
+        owner.publish { $0.recoveryMode = true }
+        let transaction = try LinuxGUIRecovery.prepare(directory: dataDirectory, specification: profile.image, observe: observeSuperblock) { stage in
+            self.checkpoint(stage == "backup" ? .recoveryBackup : (stage == "work_copy" ? .recoveryWorkCopy : .recoveryPrepared))
+            self.report["recovery_phase"] = stage; self.persist()
+            self.owner.publish { $0.message = "Recovery: \(stage). Preserving the original and verifying a separate work copy…" }
+        }
+        recovery = transaction; disk = transaction
+    }
 
     /// Called synchronously by the existing locked preboot header validator.
     /// No second disk open, file-content read, mount or repair is performed.

@@ -1,6 +1,84 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Force-quit recovery implementation — 2026-10-17
+
+**BLOCKED, not recovery acceptance.** Reviewer found two flaws in db542ce: exit0
+with unresolved Fix?no output and an echoable serial substring token. That old
+receipt is WITHDRAWN. Corrected full-line nonce/status/failure framing and a strict
+full-output gate were run on two independent actual force-kills; both now reject
+the unresolved counter warnings without promotion. Pristine positive gate PASS.
+Native promotion additionally requires SCAN_CLEAN and the NEW suffix hash, so the
+withdrawn proof/control sequence cannot authorize it. See the strict receipt below.
+
+Diagnostic fix7a9225a and initial real host proofdb542ce are already pushed to the
+same GUI branch. Follow-up implements GUI-only recovery; **Apple/Swift native
+execution/new IPA/device recovery remain NOT RUN**. No CI dispatch/token access
+or Steam-branch work. Parent coordinates review and the single quota-checked CI.
+
+Normal GUI Start still calls the existing clean-validator. Its needsRecovery
+refusal BEFORE QEMU entry selects a separate recovery VM for this one invocation;
+the original is never attached. The top bar offers Recover disk before an attempt,
+with MD/Diagnostics always accessible. Internal verified independent backup/work
+copies have streaming hashes/fsync, source identity/uid/gid/mode manifest, GUI-only
+UUID/size guards and exclusive source/workspace/work locks. Low space fails closed;
+resume reclaims only uncommitted work after validating the preserved backup, then
+checks real free space again. New copy budget is two1.25GiB images+512MiB reserve.
+
+The existing immutable app seed is a RO/noload tool disk. Actual seed glibc e2fsck
+and blockdev run through chroot with env-i/config=/dev/null; interpreter/library
+paths were resolved in a real guest and recorded. Both -fn assessments enforce
+block-device RO; only -p -E journal_only may write the unmounted work target.
+Tools and work use unique serial identities plus exact RO/size checks, despite
+sharing one UUID. Tool children close the supervisor's control FD. Manual/error
+gates never run generic repair/-y or clear dirty bits. No owner image was available.
+
+After trusted ordered control receipts INCLUDING SCAN_CLEAN, guest shutdown and host fsync, this process
+records verified ONLY; all native ownership/locks remain until process exit. UI
+requires full close/reopen. A fresh process, before its VM, validates different
+process UUID, exclusive locks, tool/suffix receipts, original/backup hashes and
+strict clean header, records promoting durably, atomically activates work and fsyncs
+directories. Before/after-rename interruptions are idempotent; unknown hashes fail
+closed. Original snapshots and generation receipts stay preserved for review/
+rollback. Copy/running interruption retries from preserved data; manual-action or
+rejected clean gate requires separate review, with no destructive repair action.
+
+New production-Alpine6.18.35 tests confirmed completed sync BEFORE SIGKILL using
+non-echoable nonce/status output, preserved originals/backups, and read the control
+file from each replayed clone with readonly debugfs. Both recovery attempts were
+correctly refused at verification_output; no clone was activated or accepted as a
+successful recovery/relaunch. e2fsck1.47.2 PR_NO_OK explains exit0 for these refused
+free-summary-counter fixes. A disposable host preen experiment is NOT a production
+solution: it changed209199 bytes outside the primary superblock and -fn still
+proposed an extent optimization. No generic preen is enabled in the app.
+The previous cloud seed46fea was used; current local/published9c4d is absent from
+this environment (retained on parent's Windows/WSL workspace). No live token/API
+fetch or blocked artifact-transport retry was attempted. Exact current-assets
+acceptance and a validated safe counter-recovery method remain blockers.
+
+Force-kill exposed stale /tmp/.X0-lock. A10216-byte deterministic newc suffix
+overlays recovery PID1 and the accepted desktop PID1 with temporary64MiB /tmp plus
+reverse unmount; old on-disk /tmp files are hidden, not deleted. Normal/recovery
+boots use this suffix after verifying the accepted base initramfs; raw seed,
+kernel, base initramfs, gui.lock and gui-inputs.lock stay unchanged. No new large
+payload/export needed. Console/Probe/Debian-console routes retain their base boot.
+
+See [workflow](experiments/linux-guest/GUI-RECOVERY.md),
+[strict host receipt](experiments/linux-guest/evidence/gui-recovery-20261017/strict-gate-receipt.json)
+and its resolver/fsck/control logs. Mandatory Apple gate includes actual Swift
+partial-copy/space/lock/receipt and fresh-child before/after-rename tests; sparse
+unit bodies are explicitly separate from the real VM gate. Raw backup sharing and
+rollback UI remain unimplemented. No claim of restored owner image or intercepted
+SIGKILL; unsaved/uncommitted writes are not guaranteed.
+
+Local verification:309 tests /304 PASS /5 explicit SKIP /0 failures/errors;
+offline exact Husk restore/overlay PASS:81 members,44 locked inputs,28 copies,
+10 patched files,21 added Swift sources. See native-source-validation.json.
+Swift/Apple execution is still NOT RUN; source guards do not substitute for it.
+
 ## Desktop blocked-start diagnostics — 2026-10-17
+
+This diagnostic-only7a9225a record is historical; the internal backup/recovery
+implementation and its current BLOCKED acceptance are described above.
 
 Owner reports that the IPA built from `27e9736f35ffb7c572e2fa81c75458ee1d1b8ff9`
 showed the real Debian GUI/xterm/Mousepad and accepted input on iPhone16ProMax/iOS27.

@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "status": "pass",
+  "status": "withdrawn",
   "owner_image_accessed": false,
   "host_only": true,
   "base_profile": {
@@ -118,5 +118,11 @@
   "readonly_fsck_note": "Exit0 in both cycles with printed free-block/free-inode counter mismatches and Fix? no. No general repair applied. Exact strict clean superblock gate passed; GUI control files survived both relaunches.",
   "runner_sha256": "5dec66c472ac0bd86d7008d3b06d169aff27b5f193e4bc73875a3ae6a50fb3e0",
   "guest_script_sha256": "73e591dbac432f7971fafd9665e9dbd5fcef8313a360b1653fda4632bab64545",
-  "apple_native_tests": "NOT RUN"
+  "apple_native_tests": "NOT RUN",
+  "acceptance": false,
+  "withdrawal_reasons": [
+    "exit0 and clean superblock did not exclude unresolved Fix? no output",
+    "RECOVERY_LAB_OK could be matched by tty command echo before command execution"
+  ],
+  "superseded_by": "strict-gate-receipt.json"
 }

@@ -8,6 +8,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import select
 import shutil
@@ -15,10 +16,48 @@ import socket
 import subprocess
 import struct
 import time
+import uuid
 
 import debian_rootfs as base
 import gui_host_tools
 import recovery_guest
+
+
+def complete_lines(data):
+    text=data.decode('utf-8',errors='replace')
+    text=re.sub(r'\x1b\[[0-?]*[ -/]*[@-~]','',text).replace('\r\n','\n').replace('\r','\n')
+    return text.split('\n')[:-1]
+
+
+def serial_command(command, nonce):
+    marker='IDECK_LAB_'+nonce
+    failed='IDECK_FAIL_'+nonce
+    first,second=nonce[:16],nonce[16:]
+    wire=('\n{ '+command+'; }; ideck_lab_status=$?; '
+          'if [ "$ideck_lab_status" -ne 0 ]; then '
+          f"printf '\\n%s%s%s\\n' IDECK_FAIL_ {first} {second}; fi; "
+          f"printf '\\n%s%s%s:EXIT:%s\\n' IDECK_LAB_ {first} {second} \"$ideck_lab_status\"\n")
+    if marker in wire or failed in wire:raise ValueError('output token present in terminal input')
+    return wire,marker,failed
+
+
+def serial_result(data, marker, failed):
+    lines=complete_lines(data)
+    if failed in lines:raise RuntimeError('guest serial command reported failure')
+    for line in lines:
+        if re.fullmatch(re.escape(marker)+r':EXIT:[0-9]{1,3}',line):
+            code=int(line.rsplit(':',1)[1])
+            if code!=0:raise RuntimeError('guest serial command exit '+str(code))
+            return code
+    return None
+
+
+def output_gate(text, target):
+    # Same actual awk source as the recovery guest. Only normalize this known
+    # host fixture filename to a device name; retain every diagnostic line.
+    normalized='\n'.join('/dev/vda:'+line[len(str(target))+1:] if line.startswith(str(target)+':') else line
+                         for line in text.splitlines())+'\n'
+    return subprocess.run(['awk','-f',str(recovery_guest.SCAN)],input=normalized,text=True,capture_output=True).returncode
 
 
 def strict_header(path, image):
@@ -48,6 +87,7 @@ class VM:
     def __init__(self, assets, host, work, out, recovery):
         out.mkdir(parents=True, exist_ok=False)
         self.out, self.logs, self.peers = out, [bytearray(), bytearray()], []
+        self.serial_receipts=[]
         servers = []
         for _ in range(2):
             s = socket.socket(); s.bind(('127.0.0.1', 0)); s.listen(1); s.settimeout(30); servers.append(s)
@@ -92,11 +132,15 @@ class VM:
             if self.process.poll() is not None or time.monotonic()>deadline: raise RuntimeError('guest stopped/timed out before '+repr(marker))
 
     def serial(self, command):
-        self.peers[0].sendall(('\n'+command+' && echo RECOVERY_LAB_OK\n').encode())
+        nonce=uuid.uuid4().hex
+        wire,marker,failed=serial_command(command,nonce)
+        self.peers[0].sendall(wire.encode())
         deadline = time.monotonic()+30
-        while b'RECOVERY_LAB_OK' not in self.logs[0]:
+        while serial_result(self.logs[0],marker,failed) is None:
             self.pump()
             if time.monotonic()>deadline: raise RuntimeError('serial command failed')
+        self.serial_receipts.append({'nonce':nonce,'exit_status':0,'complete_output_line':True,
+                                     'marker_absent_from_input':True,'command_sha256':hashlib.sha256(command.encode()).hexdigest()})
         self.logs[0].clear()
 
     def close(self, kill=False):
@@ -145,7 +189,7 @@ def run(assets, host, output, cycles):
             # QEMU subprocess has completely exited before validation/promotion.
             fsck = subprocess.run(gui_host_tools.command(host,[host/'usr/sbin/e2fsck','-fn',work]),capture_output=True,text=True)
             (output/f'fsck-{index}.log').write_text(fsck.stdout+fsck.stderr)
-            if fsck.returncode != 0: raise RuntimeError('post-recovery readonly gate')
+            if fsck.returncode != 0 or output_gate(fsck.stdout+fsck.stderr,work)!=0: raise RuntimeError('post-recovery readonly/output gate')
             clean_header = strict_header(work, profile['image'])
             os.replace(work, active)
             result['cycles'].append({'cycle':index,'forcekill_exit':-9,'dirty_header':dirty,
@@ -171,7 +215,74 @@ def run(assets, host, output, cycles):
         (output/'receipt.json').write_text(json.dumps(result,indent=2)+'\n')
 
 
+def verify_blocker(assets, host, output, cycles=2):
+    """Negative gate evidence. Never promotes a rejected work image."""
+    if cycles!=2:raise ValueError('two independent blocked attempts required')
+    profile=json.loads((assets/'desktop-profile.json').read_text())
+    for key in ('kernel','initramfs','rootfs'):
+        item=profile[key];p=assets/item['file']
+        if p.stat().st_size!=item['size'] or base.sha256(p)!=item['sha256']:raise ValueError('immutable assets failed')
+    if shutil.disk_usage(output.parent).free<4*1_342_177_280+256*1024**2:raise ValueError('insufficient disposable lab space')
+    output.mkdir(parents=True,exist_ok=False)
+    result={'schema':2,'status':'failed','host_only':True,'owner_image_accessed':False,'base_profile':profile,
+            'acceptance':False,'cycles':[],'suffix_sha256':hashlib.sha256(recovery_guest.suffix(recovery_guest.SCRIPT.read_bytes())).hexdigest(),
+            'runner_sha256':base.sha256(Path(__file__)),'guest_script_sha256':base.sha256(recovery_guest.SCRIPT),
+            'scan_source_sha256':base.sha256(recovery_guest.SCAN)}
+    (output/'runner-source.py').write_bytes(Path(__file__).read_bytes())
+    active=output/'active.raw';work=output/'work.raw'
+    try:
+        for index in (1,2):
+            shutil.copyfile(assets/'gui-rootfs-v1.raw',active)
+            vm=VM(assets,host,active,output/f'gui-{index}',False)
+            try:
+                vm.until(b'IDECK_DESKTOP_READY')
+                vm.serial(f'printf cycle-{index} > /home/ideck/Documents/recovery-{index}.txt && sync')
+                serial_receipts=vm.serial_receipts
+            finally:status=vm.close(kill=True)
+            if status!=-9:raise RuntimeError('force-kill missing')
+            original_hash=base.sha256(active);backup=output/f'original-{index}.raw'
+            shutil.copyfile(active,backup);shutil.copyfile(backup,work)
+            if base.sha256(backup)!=original_hash or base.sha256(work)!=original_hash:raise RuntimeError('backup hash mismatch')
+            vm=VM(assets,host,work,output/f'recovery-{index}',True)
+            try:
+                vm.until(b'IDECK_RECOVERY_DONE')
+                raise RuntimeError('unresolved count warnings were unexpectedly accepted')
+            except RuntimeError:
+                if b'IDECK_RECOVERY_FAILED:verification_output\n' not in vm.logs[1]:raise
+                if b'IDECK_RECOVERY_DONE' in vm.logs[1] or b'IDECK_RECOVERY_SCAN_CLEAN' in vm.logs[1]:raise RuntimeError('false clean receipt')
+            finally:status=vm.close()
+            if status!=0 or base.sha256(active)!=original_hash or base.sha256(backup)!=original_hash:raise RuntimeError('source preservation failure')
+            before=base.sha256(work)
+            fsck=subprocess.run(gui_host_tools.command(host,[host/'usr/sbin/e2fsck','-fn',work]),capture_output=True,text=True)
+            text=fsck.stdout+fsck.stderr;(output/f'fsck-{index}.log').write_text(text)
+            gate=output_gate(text,work)
+            if gate==0:raise RuntimeError('host output gate accepted unresolved warnings')
+            read=subprocess.run(gui_host_tools.command(host,[host/'usr/sbin/debugfs','-R',f'cat /home/ideck/Documents/recovery-{index}.txt',work]),capture_output=True,text=True)
+            if read.returncode!=0 or read.stdout!=f'cycle-{index}':raise RuntimeError('synchronized control file not preserved')
+            if base.sha256(work)!=before:raise RuntimeError('read-only assessments changed work')
+            result['cycles'].append({'attempt':index,'forcekill_exit':-9,'gui_ready_observed':True,
+                'serial_receipts':serial_receipts,'sync_completed_before_kill':True,'original_sha256':original_hash,
+                'original_preserved':True,'backup_preserved':True,'recovery_exit':status,'post_fsck_exit':fsck.returncode,
+                'post_output_gate_exit':gate,'readonly_control_file_verified':True,'readonly_assessments_nonmutating':True,
+                'promoted':False,'relaunch_acceptance':False,'control_markers':vm.logs[1].decode()})
+        # Positive output-gate smoke on a pristine disposable target, without GUI
+        # writes/force-kill. This is not force-kill recovery acceptance.
+        shutil.copyfile(assets/'gui-rootfs-v1.raw',work)
+        vm=VM(assets,host,work,output/'pristine-positive',True)
+        try:
+            vm.until(b'IDECK_RECOVERY_SCAN_CLEAN');vm.until(b'IDECK_RECOVERY_DONE');vm.until(b'IDECK_DESKTOP_CLEAN_UNMOUNT')
+            if vm.close()!=0:raise RuntimeError('positive gate shutdown')
+        except BaseException:
+            vm.close(kill=True);raise
+        result['pristine_positive_gate']=True
+        result['status']='blocked_verified'
+        return result
+    finally:(output/'receipt.json').write_text(json.dumps(result,indent=2)+'\n')
+
+
 if __name__ == '__main__':
     p=argparse.ArgumentParser(); p.add_argument('--assets',type=Path,required=True); p.add_argument('--host',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True); p.add_argument('--cycles',type=int,default=2)
-    a=p.parse_args(); print(json.dumps(run(a.assets.resolve(),a.host.resolve(),a.output.resolve(),a.cycles),indent=2))
+    p.add_argument('--verify-output-blocker',action='store_true')
+    a=p.parse_args(); operation=verify_blocker if a.verify_output_blocker else run
+    print(json.dumps(operation(a.assets.resolve(),a.host.resolve(),a.output.resolve(),a.cycles),indent=2))

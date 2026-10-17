@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "status": "source_checks_pass_recovery_acceptance_blocked",
+  "python_tests": {
+    "total": 309,
+    "passed": 304,
+    "skipped": 5,
+    "failures": 0,
+    "errors": 0,
+    "log_sha256": "b3acfe1c322cce5d73dfc92b11fefdd68ae7c93495dd5bdf304c61449415ca86"
+  },
+  "offline_husk_overlay": {
+    "status": "pass",
+    "original_members": 81,
+    "locked_inputs": 44,
+    "copied_files": 28,
+    "patched_files": 10,
+    "added_swift_sources": 21
+  },
+  "not_run": [
+    "Swift runtime/IO tests",
+    "Apple/UIKit compiler/layout",
+    "native link/new IPA",
+    "iPhone recovery",
+    "current production seed9c4d VM acceptance"
+  ],
+  "forcekill_gate": "two actual nonce/status-verified force-kills correctly rejected unresolved fsck output; pristine positive scan gate passed; NOT successful recovery/relaunch acceptance",
+  "old_acceptance": "withdrawn",
+  "gui_lock_sha256": "fef0bf4c5b72cad5ee921616639f6e28bec73bce7b1e689c95c3734aed82c7eb",
+  "gui_inputs_lock_sha256": "8b3ee6d1f255c7486e7226c65ab304036363edccea4e145b472fe7df1cf6ed98",
+  "base_payload_unchanged": true,
+  "owner_image_accessed": false,
+  "ci_dispatched": false,
+  "native_general_preen_or_destructive_repair": false,
+  "remaining_blockers": [
+    "Validated safe recovery of unresolved metadata/counter issues",
+    "Exact current published9c4d seed absent in selected cloud filesystem",
+    "Apple compile/runtime/device gates"
+  ]
+}

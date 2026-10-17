@@ -122,7 +122,11 @@ struct LinuxDesktopView: View {
                 .accessibilityLabel("Saved startup diagnostics, Markdown")
                 .accessibilityIdentifier("ideck-desktop-startup-diagnostics")
             Spacer(minLength: 0)
-            Button("Stop Linux") { session.stop() }.disabled(!session.canStop || session.stopping)
+            if session.attempted {
+                Button("Stop Linux") { session.stop() }.disabled(!session.canStop || session.stopping)
+            } else {
+                Button("Recover disk") { session.startRecovery() }.disabled(jit.busy)
+            }
         }
         .buttonStyle(.bordered).font(.caption).lineLimit(1).minimumScaleFactor(0.8)
         .frame(minHeight: 44).padding(.horizontal, 8).padding(.vertical, 4)
@@ -145,7 +149,12 @@ struct LinuxDesktopView: View {
             if !session.attempted {
                 Button("JIT setup") { jit.refreshPairingStatus(); jit.showSetup = true }.disabled(jit.busy)
                 Button("Enable JIT") { enableJIT() }.disabled(jit.busy)
-                Button("Start desktop") { session.start() }.disabled(jit.busy)
+                Button("Start desktop") { session.startDesktop() }.disabled(jit.busy)
+            }
+            if session.recoveryMode {
+                Text("Separate recovery VM. Creates verified backup/work copies; preserves the original. After completion, close/reopen iDeck before Start desktop.").font(.caption2)
+            } else if !session.attempted {
+                Text("After a blocked unclean disk: Recover disk first. Requires space for two full copies plus 512 MiB reserve.").font(.caption2)
             }
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 5) {
                 Button("Keyboard") { keyboard.toggle() }

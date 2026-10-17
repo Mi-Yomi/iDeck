@@ -6,8 +6,16 @@ and input on iPhone16ProMax/iOS27 with the IPA built from27e9736. A later launch
 after app dismissal was refused with needsRecovery. This cloud executor has not
 tested that device; two clean device Stops are not established. The current native
 diagnostics fix still requires Apple compilation/new IPA/device verification:
-see [GUI-DIAGNOSTICS.md](GUI-DIAGNOSTICS.md). Host QEMU10.0.13 differs from iOS QEMU10.0.12-utm. Rendering is
+see [GUI-DIAGNOSTICS.md](GUI-DIAGNOSTICS.md) and the implemented
+[clone-only recovery](GUI-RECOVERY.md). Its tiny runtime initramfs suffix also makes
+/tmp temporary to prevent stale Xorg locks after force-quit; accepted base payload
+bytes stay unchanged. Host QEMU10.0.13 differs from iOS QEMU10.0.12-utm. Rendering is
 software Xorg modesetting; no Steam or guest GPU-acceleration readiness is claimed.
+
+Force-quit recovery acceptance is **BLOCKED**: the old pass receipt was withdrawn;
+corrected nonce/output gates reject unresolved e2fsck counter warnings. Current
+local seed9c4d and Apple/device recovery are not verified here. See the recovery
+guide before scheduling any build intended to restore the owner's disk.
 
 ## Current evidence and bytes
 

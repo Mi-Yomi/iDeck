@@ -1,0 +1,14 @@
+IDECK_TOOL_LOADER_BEGIN
+	linux-vdso.so.1 (0x0000ffffaaf8c000)
+	libext2fs.so.2 => /lib/aarch64-linux-gnu/libext2fs.so.2 (0x0000ffffaae40000)
+	libcom_err.so.2 => /lib/aarch64-linux-gnu/libcom_err.so.2 (0x0000ffffaae10000)
+	libblkid.so.1 => /lib/aarch64-linux-gnu/libblkid.so.1 (0x0000ffffaad90000)
+	libuuid.so.1 => /lib/aarch64-linux-gnu/libuuid.so.1 (0x0000ffffaad60000)
+	libe2p.so.2 => /lib/aarch64-linux-gnu/libe2p.so.2 (0x0000ffffaad30000)
+	libc.so.6 => /lib/aarch64-linux-gnu/libc.so.6 (0x0000ffffaab70000)
+	/lib/ld-linux-aarch64.so.1 (0x0000ffffaaf50000)
+	linux-vdso.so.1 (0x0000ffff9fc1c000)
+	libc.so.6 => /lib/aarch64-linux-gnu/libc.so.6 (0x0000ffff9f9e0000)
+	/lib/ld-linux-aarch64.so.1 (0x0000ffff9fbe0000)
+/etc/mtab
+IDECK_TOOL_LOADER_END

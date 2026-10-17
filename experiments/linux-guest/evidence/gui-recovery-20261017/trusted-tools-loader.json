@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "status": "pass",
+  "host_only": true,
+  "tool_seed_sha256": "46fea0230963ca494a5adeef19f46668f559f77522e3b82215d5f543646b0791",
+  "scope": "Actual production-kernel guest; separately instrumented recovery init adds only RO glibc-loader --list and readlink calls. Not an owner-image or Apple test.",
+  "interpreter": "/lib/ld-linux-aarch64.so.1",
+  "e2fsck_libraries": [
+    "libext2fs.so.2",
+    "libcom_err.so.2",
+    "libblkid.so.1",
+    "libuuid.so.1",
+    "libe2p.so.2",
+    "libc.so.6"
+  ],
+  "library_directory": "/lib/aarch64-linux-gnu",
+  "blockdev_libraries": [
+    "libc.so.6"
+  ],
+  "fsck_environment": "env -i PATH=/usr/sbin:/usr/bin:/sbin:/bin LC_ALL=C E2FSCK_CONFIG=/dev/null",
+  "target_unmounted": true,
+  "tool_seed_readonly_noload": true,
+  "instrumented_init_sha256": "ee4464abe2d2bf37635d0bb93902d35f7e751c2a660cbe5f0db53909f31473cd"
+}

@@ -15,7 +15,7 @@ enum LinuxProbeReport {
                                      "guest_frames_and_input_verified", "first_frame_not_observed",
                                      "terminal_prepared", "terminal_running", "terminal_stopping", "terminal_clean_stopped",
                                      "terminal_unclean_stopped", "terminal_prepare_failed", "terminal_stop_failed",
-                                     "terminal_startup_timeout", "terminal_stop_timeout", "terminal_recovery_timeout"]
+                                     "terminal_startup_timeout", "terminal_stop_timeout", "terminal_recovery_timeout", "terminal_prepare_cancelled"]
         let status = (report["status"] as? String).flatMap { statuses.contains($0) ? $0 : nil }
         let summary: String
         switch status {
@@ -23,6 +23,8 @@ enum LinuxProbeReport {
             summary = "Reported outcome: Linux framebuffer and input probe completed; stage evidence follows."
         case .some("terminal_clean_stopped"):
             summary = "Reported outcome: terminal stopped after guest unmount, QEMU loop return and host disk sync. Close and reopen the app before the next session."
+        case .some("terminal_prepare_cancelled"):
+            summary = "Reported outcome: startup was cancelled before native entry. Completed copies were preserved. Close and reopen the app before another attempt."
         case .some("terminal_prepared"), .some("terminal_running"), .some("terminal_stopping"):
             summary = "Reported outcome: terminal session is active or stopping; the disk is not yet declared safe to close."
         case .some(let value) where value.hasPrefix("terminal_"):
@@ -69,6 +71,16 @@ enum LinuxProbeReport {
 
         if console {
             lines += ["", "## Persistent terminal", "", "| Check | Result |", "| --- | --- |"]
+            row("Preparation phase", text(report["preparation_phase"], allowed: ["assets", "disk", "importing_seed", "recovery_copies", "arguments", "report", "native_entry"]))
+            row("Startup cancellation requested", flag(report["preparation_cancel_requested"], yes: "REQUESTED", no: "NOT REQUESTED"))
+            row("Startup cancelled before native entry", flag(report["preparation_cancelled_before_qemu"], yes: "CANCELLED BEFORE NATIVE ENTRY", no: "NOT CONFIRMED"))
+            for (label, key) in [("Startup readiness timeout", "terminal_startup_timed_out"),
+                                 ("Orderly Stop timeout", "terminal_stop_timed_out"),
+                                 ("Control channel failure", "terminal_control_channel_failed"),
+                                 ("Serial channel failure", "terminal_serial_channel_failed"),
+                                 ("Serial log write failure", "serial_log_write_failed")] {
+                row(label, flag(report[key], yes: "REPORTED", no: "NONE REPORTED"))
+            }
             row("Terminal ready", flag(report["terminal_ready"]))
             if desktop {
                 row("Guest X connection and mapped desktop windows", flag(report["desktop_gui_ready"]))

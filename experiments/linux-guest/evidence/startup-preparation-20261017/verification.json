@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "source_base": "dd00e9455d5d01b41690bc204b97120a86826f64",
+  "branch": "codex/linux-guest-feasibility-20261015",
+  "scope": "pre-entry cancellation, preparation status and allowlisted failure Markdown",
+  "host": "Linux",
+  "python_tests": {
+    "total": 323,
+    "passed": 318,
+    "skipped": 5,
+    "failures": 0,
+    "errors": 0,
+    "log_sha256": "e0ec09e2794d609284816972f09f749980b30e9b21ac30a01bdee6f38341233b"
+  },
+  "swift_compiler": null,
+  "apple_sdk": null,
+  "swift_apple_device": "NOT RUN",
+  "mandatory_new_apple_marker": "LINUX_STARTUP_PREPARATION_PASS",
+  "modified_source_sha256": {
+    "ci/check_linux_guest_profile.py": "da14b4d98e3125a1c51537a79cc8de6841c1fe328539529493b32e5ae4452bc7",
+    "experiments/linux-guest/husk/overlay.lock.json": "b740f15afc627a4185ba1a64c3eb8a5b5f606d4dbf86ceaa84473fbd0a4a41cf",
+    "experiments/linux-guest/ios/LinuxConsoleLifecycle.swift": "53e7051b6ecb6bcda5f0f6546977ea5c57bbe9f610e295c1e6ae38cc28567528",
+    "experiments/linux-guest/ios/LinuxDesktopView.swift": "81c5ac5d74329babb93cc0b739b800f3297aa66c1c0b5c8c48ba20d487118531",
+    "experiments/linux-guest/ios/LinuxProbeReport.swift": "2bbf255f5eab969413919ae585a6f566871935d53506ba436447d80cb3d5af3b",
+    "experiments/linux-guest/ios/LinuxTerminalDiagnostics.swift": "ae6cb79cce338be23eaea51a8893203c37c29bb33b4fd54035ea0ed9b62e318e",
+    "experiments/linux-guest/ios/LinuxTerminalSession.swift": "1231c181be933a61bc6e889d1f058f936dff2d2b78796d549411d7e439dea391",
+    "experiments/linux-guest/ios/LinuxTerminalView.swift": "2118418a97002bfc8aad5340b4f465ac919358ba15e4f578d88c02016062bae8",
+    "experiments/linux-guest/ios/tests/ConsoleLifecycleChecks.swift": "3c0bd233318badd55cace1e71aec7f4bc88bc0757b6a138a18c373de5a7077ab",
+    "experiments/linux-guest/ios/tests/DiagnosticsChecks.swift": "06779015f9d6f7163e4fc4ccaed6c5b789daa5c28eb12449b3643d6ab814ab33",
+    "experiments/linux-guest/ios/tests/MarkdownReportChecks.swift": "fd0e44edecbc0ba9524e5c187989ff6e51d8cfcd6ccd1c0c941088c54ce8e4c3",
+    "experiments/linux-guest/tests/test_desktop_diagnostics_ui.py": "14ed454e294ec297af70f895b9a059b958a7533efb070cecdfb78477fffe6095",
+    "experiments/linux-guest/tests/test_startup_preparation.py": "9b7454cf559a550fd4100dd90b64ed90868a44fdbd6933ec9fbb25a0544330c8"
+  },
+  "preserved_source_sha256": {
+    "experiments/linux-guest/ios/LinuxDesktopDisk.swift": "6688b4d8dd9b61a93a4a91b7fb839b5bc1dfd849f89348f3f593c4b221db493e",
+    "experiments/linux-guest/ios/LinuxGUIRecovery.swift": "259ffb5b152db34d9e99c01cf2e1db9850d11e4d36c84dcd31c327814b9d6bd9",
+    "experiments/linux-guest/ios/LinuxRecoveryGuest.swift": "f3052e0294239da5f3f851ed99b029739c4cb65b4f13342455570ca1000b7e79",
+    "experiments/linux-guest/guest/recovery/ideck-recovery-init": "d014ddd17798897f82a3528425e9318d1c74a812d2a0a53ff065af8672f3619f",
+    "experiments/linux-guest/guest/gui/ideck-desktop-init": "63c6b5c1cf55a7777fb6b05d9b24cae24e588668f659c7c5293b0715f01f990b",
+    "experiments/linux-guest/ipa/gui.lock.json": "fef0bf4c5b72cad5ee921616639f6e28bec73bce7b1e689c95c3734aed82c7eb",
+    "experiments/linux-guest/ipa/gui-inputs.lock.json": "8b3ee6d1f255c7486e7226c65ab304036363edccea4e145b472fe7df1cf6ed98"
+  },
+  "VM_started": false,
+  "existing_user_disks_or_production_seed_accessed": false,
+  "Steam_disk_or_cache_accessed": false,
+  "network_or_JIT_or_security_settings_changed": false,
+  "CI_dispatched": false,
+  "payload_or_release_changed": false
+}

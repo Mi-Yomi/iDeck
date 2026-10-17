@@ -29,6 +29,7 @@ final class LinuxTerminalSession: ObservableObject {
     @Published fileprivate(set) var stopping = false
     @Published fileprivate(set) var canStop = false
     @Published fileprivate(set) var cleanStopped = false
+    @Published fileprivate(set) var preparationState: LinuxStartupPreparation.Snapshot?
     @Published fileprivate(set) var transcript = ""
     @Published fileprivate(set) var shareFiles: [URL] = []
     @Published fileprivate(set) var markdownFile: URL?
@@ -231,9 +232,22 @@ final class LinuxTerminalSession: ObservableObject {
         let next = LinuxTerminalWorker(owner: self, bundle: Bundle.main.bundleURL, session: session,
                                        dataDirectory: root, metadata: metadata, diagnostic: diagnostic)
         worker = next
+        preparationState = next.preparation.snapshot
         message = isDebian ? "Checking Debian assets and importing or opening the separate ext4 disk…"
             : "Checking terminal assets and the persistent user-data disk…"
         next.start()
+    }
+
+    /// Safe on repeated taps, leaving the route or moving to the background.
+    /// It never sends Stop, closes a disk or resets the one-use attempt guard.
+    func cancelPreparation() {
+        precondition(Thread.isMainThread)
+        guard let worker, worker.requestPreparationCancellation() else { return }
+        let state = worker.preparation.snapshot
+        preparationState = state
+        message = state.message + " Keep iDeck open. Completed copies are preserved; reopen the app before retrying."
+        do { try diagnosticJournal?.record(.preparationCancelRequested) }
+        catch { diagnosticFailure() }
     }
 
     fileprivate static func failure(_ error: Error) -> LinuxTerminalDiagnostics.Failure {
@@ -370,6 +384,7 @@ private final class LinuxTerminalWorker {
     let metadata: [String: Any]
     let queue = DispatchQueue(label: "ideck.linux.terminal", qos: .userInitiated)
     let diagnostic: LinuxTerminalDiagnostics.Journal
+    let preparation = LinuxStartupPreparation()
     var disk: LinuxConsoleDisk?
     var lifecycle = LinuxConsoleLifecycle()
     var serial: LinuxTerminalSocket?
@@ -417,6 +432,15 @@ private final class LinuxTerminalWorker {
         catch { owner.publish { $0.diagnosticFailure() } }
     }
 
+    func requestPreparationCancellation() -> Bool {
+        guard preparation.requestCancellation() else { return false }
+        queue.async {
+            self.report["preparation_cancel_requested"] = true
+            self.persist()
+        }
+        return true
+    }
+
     /// Before C has adopted either socket or touched the disk, a journal
     /// synchronization failure can safely prevent entry. After entry the
     /// checkpoint helper preserves runtime ownership even if diagnostics fail.
@@ -427,27 +451,37 @@ private final class LinuxTerminalWorker {
                 try disk.validateOwnership()
             }
             try diagnostic.record(.qemuInitBegin)
+            guard preparation.enterNative() else { throw LinuxStartupPreparation.Cancelled.beforeNativeEntry }
         }
         catch {
             let failure = LinuxTerminalSession.failure(error)
             let journalFailed = error is LinuxTerminalDiagnostics.Problem
+            let cancelled = error is LinuxStartupPreparation.Cancelled
             queue.async {
-                self.checkpoint(.preparationFailed, failure: failure)
+                self.checkpoint(cancelled ? .preparationCancelled : .preparationFailed, failure: cancelled ? nil : failure)
                 self.startupAborted = true
+                self.preparation.finish()
                 serial.closeUnused(); control.closeUnused()
                 try? self.logHandle?.close(); self.logHandle = nil
                 self.disk?.closeUnused()
-                self.report["status"] = "terminal_prepare_failed"
+                self.report["status"] = cancelled ? "terminal_prepare_cancelled" : "terminal_prepare_failed"
+                if cancelled { self.report["preparation_cancelled_before_qemu"] = true }
                 self.persist()
                 self.owner.publish {
                     if journalFailed { $0.diagnosticFailure() }
-                    $0.message = "Startup disk ownership or journal check failed. Linux was not started. Existing user data was preserved; close and reopen the app."
+                    $0.preparationState = self.preparation.snapshot
+                    $0.message = cancelled ? "Startup cancelled before Linux started. Completed copies were preserved. Close and reopen iDeck before another attempt."
+                        : "Startup disk ownership or journal check failed. Linux was not started. Existing user data was preserved; close and reopen the app."
                 }
             }
             return false
         }
         queue.sync {
             self.enteredQEMU = true
+            self.owner.publish {
+                $0.preparationState = self.preparation.snapshot
+                $0.message = "Starting Linux. Keep iDeck open; Stop becomes available when the guest supervisor is ready."
+            }
             self.lifecycle.record(.entered)
             self.report["userdata_lock_retained_until_process_exit"] = true
             self.persist()
@@ -470,12 +504,14 @@ private final class LinuxTerminalWorker {
                 self.persist()
                 let assets = self.bundle.appendingPathComponent(self.owner.isDesktop ? "iDeckLinuxDesktop" : (self.owner.isDebian ? "iDeckDebian" : "iDeckLinuxTerminal"))
                 let probe = self.bundle.appendingPathComponent("iDeckLinuxProbe")
+                try self.preparationCheckpoint(.assets)
                 try self.diagnostic.record(.assetsBegin)
                 let terminal = self.owner.isDebian ? nil : (try LinuxTerminalProfile.load(from: assets))
                 let gui = self.owner.isDesktop ? (try LinuxGUIProfile.load(from: assets)) : nil
                 let debian = self.owner.isDebian && !self.owner.isDesktop ? (try LinuxDebianProfile.load(from: assets)) : nil
                 let desktop = self.owner.isDebian && !self.owner.isDesktop ? (try LinuxDesktopProfile.load(from: assets)) : nil
                 try self.diagnostic.record(.assetsReturned)
+                try self.preparationCheckpoint(.disk)
                 try self.diagnostic.record(.diskBegin)
                 // Each successful profile path supplies complete metadata.
                 // GUI recovery and desktop share the same validated contract.
@@ -504,6 +540,7 @@ private final class LinuxTerminalWorker {
                         } else {
                             guard errno == ENOENT else { throw LinuxDesktopDisk.Invalid.inspection }
                             self.report["import_status"] = "copying_seed"; self.persist()
+                            try self.preparationCheckpoint(.importingSeed)
                             self.disk = try gui.provision(in: self.dataDirectory, assets: assets)
                             self.report["import_status"] = "seed_hash_verified_and_published"; self.persist()
                         }
@@ -525,6 +562,7 @@ private final class LinuxTerminalWorker {
                     } else {
                         guard errno == ENOENT else { throw LinuxDesktopDisk.Invalid.inspection }
                         self.report["import_status"] = "copying_seed"; self.persist()
+                        try self.preparationCheckpoint(.importingSeed)
                         self.disk = try desktop.provision(in: self.dataDirectory, assets: assets)
                         self.report["import_status"] = "seed_hash_verified_and_published"; self.persist()
                     }
@@ -540,6 +578,7 @@ private final class LinuxTerminalWorker {
                         "terminal_initramfs_sha256": profile.initramfs.sha256]
                 } else { throw LinuxTerminalProfile.Invalid.configuration }
                 try self.diagnostic.record(.diskReturned)
+                try self.preparationCheckpoint(.arguments)
                 try self.diagnostic.record(.socketsBegin)
                 self.serial = try LinuxTerminalSocket(queue: self.queue)
                 self.control = try LinuxTerminalSocket(queue: self.queue)
@@ -567,6 +606,7 @@ private final class LinuxTerminalWorker {
                     self.report["desktop_runtime_suffix_sha256"] = LinuxRecoveryGuest.sha256
                 }
                 try self.diagnostic.record(.argumentsReturned)
+                try self.preparationCheckpoint(.report)
                 try self.diagnostic.record(.reportBegin)
                 guard FileManager.default.createFile(atPath: self.serialURL.path, contents: Data()) else { throw LinuxTerminalProfile.Invalid.io }
                 self.logHandle = try FileHandle(forWritingTo: self.serialURL)
@@ -587,6 +627,7 @@ private final class LinuxTerminalWorker {
                 serial.disconnected = { [weak self] in self?.channelDisconnected(control: false) }
                 control.disconnected = { [weak self] in self?.channelDisconnected(control: true) }
                 serial.beginReading(); control.beginReading()
+                try self.preparationCheckpoint(.nativeEntry)
                 try self.diagnostic.record(.argvBegin)
                 let pointers = UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>.allocate(capacity: args.count + 1)
                 pointers.initialize(repeating: nil, count: args.count + 1)
@@ -643,13 +684,17 @@ private final class LinuxTerminalWorker {
                 if let recovery = self.recovery, let gui { try recovery.markRunning(toolSeedSHA256: gui.rootfs.sha256) }
                 thread.start()
             } catch {
-                self.checkpoint(.preparationFailed, failure: LinuxTerminalSession.failure(error))
-                HuskLog.log("ideck-terminal", "terminal preparation failed: \(LinuxTerminalSession.failure(error).rawValue)")
+                let cancelled = error is LinuxStartupPreparation.Cancelled
+                self.checkpoint(cancelled ? .preparationCancelled : .preparationFailed,
+                                failure: cancelled ? nil : LinuxTerminalSession.failure(error))
+                self.preparation.finish()
+                if !cancelled { HuskLog.log("ideck-terminal", "terminal preparation failed: \(LinuxTerminalSession.failure(error).rawValue)") }
                 if error is LinuxTerminalDiagnostics.Problem { self.owner.publish { $0.diagnosticFailure() } }
                 self.serial?.closeUnused(); self.control?.closeUnused()
                 try? self.logHandle?.close(); self.logHandle = nil
                 if !self.enteredQEMU { self.disk?.closeUnused() }
-                self.report["status"] = "terminal_prepare_failed"
+                self.report["status"] = cancelled ? "terminal_prepare_cancelled" : "terminal_prepare_failed"
+                if cancelled { self.report["preparation_cancelled_before_qemu"] = true }
                 if let failure = error as? LinuxDesktopDisk.Invalid { self.report["storage_failure"] = String(describing: failure) }
                 if let failure = error as? LinuxDesktopProfile.Invalid { self.report["storage_failure"] = String(describing: failure) }
                 if let failure = error as? LinuxGUIRecovery.Invalid { self.report["recovery_failure"] = String(describing: failure) }
@@ -659,7 +704,9 @@ private final class LinuxTerminalWorker {
                 let busy = (error as? LinuxDesktopDisk.Invalid) == .locked
                 let badSeed = (error as? LinuxDesktopProfile.Invalid) == .assetDigest
                 self.owner.publish {
-                    $0.message = error is LinuxGUIRecovery.Invalid ? "Recovery could not proceed safely (\(String(describing: error))). Original data was preserved. Share diagnostics; manual repair is not automatic. A new app process is required after any recovery VM."
+                    $0.preparationState = self.preparation.snapshot
+                    $0.message = cancelled ? "Startup cancelled before Linux started. Completed copies were preserved. Close and reopen iDeck before another attempt."
+                        : error is LinuxGUIRecovery.Invalid ? "Recovery could not proceed safely (\(String(describing: error))). Original data was preserved. Share diagnostics; manual repair is not automatic. A new app process is required after any recovery VM."
                         : needsRecovery ? (self.owner.isDesktop
                             ? "Ext4 safety checks blocked startup. The disk was not mounted or replaced. Share diagnostics before further recovery."
                             : "Ext4 safety checks blocked startup. The disk was not mounted or replaced. Share the recorded metadata and preserve the disk before offline review.")
@@ -1034,14 +1081,29 @@ private final class LinuxTerminalWorker {
 
     private func prepareRecovery(_ profile: LinuxGUIProfile) throws {
         guard !enteredQEMU else { throw LinuxGUIRecovery.Invalid.relaunch }
+        try preparationCheckpoint(.recoveryCopies)
         isRecovery = true; report["recovery_requested"] = true
         owner.publish { $0.recoveryMode = true }
         let transaction = try LinuxGUIRecovery.prepare(directory: dataDirectory, specification: profile.image, observe: observeSuperblock) { stage in
             self.checkpoint(stage == "backup" ? .recoveryBackup : (stage == "work_copy" ? .recoveryWorkCopy : .recoveryPrepared))
             self.report["recovery_phase"] = stage; self.persist()
-            self.owner.publish { $0.message = "Recovery: \(stage). Preserving the original and verifying a separate work copy…" }
+            self.owner.publish {
+                $0.preparationState = self.preparation.snapshot
+                if self.preparation.snapshot.canCancel { $0.message = "Recovery: \(stage). Preserving the original and verifying a separate work copy…" }
+            }
         }
         recovery = transaction; disk = transaction
+    }
+
+    private func preparationCheckpoint(_ phase: LinuxStartupPreparation.Phase) throws {
+        try preparation.advance(phase)
+        report["preparation_phase"] = phase.rawValue
+        persist()
+        owner.publish {
+            let state = self.preparation.snapshot
+            $0.preparationState = state
+            if state.inProgress { $0.message = state.message + " Keep iDeck open; cancellation waits for the current file operation." }
+        }
     }
 
     /// Called synchronously by the existing locked preboot header validator.

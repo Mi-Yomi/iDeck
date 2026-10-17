@@ -135,6 +135,22 @@ func runTerminalDiagnosticsChecks() throws {
     try rejected.record(.startRequested); try rejected.record(.startRejected)
     check(try rejected.snapshot().markdown(previousProcess: true).contains("Start was rejected before VM entry"),
           "normal JIT rejection is not labeled an interrupted VM")
+    let cancelled = try cleanStore.begin(source: "UNKNOWN", build: "1")
+    try cancelled.record(.startRequested)
+    // The last ownership/journal checkpoint precedes the atomic cancellation
+    // gate; it alone does not prove C was entered.
+    try cancelled.record(.qemuInitBegin)
+    try cancelled.record(.preparationCancelled)
+    // Main-thread request journaling can finish after worker cancellation.
+    try cancelled.record(.preparationCancelRequested)
+    for previous in [true, false] {
+        check(try cancelled.snapshot().markdown(previousProcess: previous).contains("cancelled before native entry"),
+              "cancelled preparation is not labeled an interrupted running VM")
+        check(try !cancelled.snapshot().clean, "cancellation does not forge orderly Stop")
+    }
+    try cancelled.record(.qemuInitReturned)
+    check(try !cancelled.snapshot().markdown(previousProcess: true).contains("cancelled before native entry"),
+          "contradictory native-entry evidence prevents a cancellation claim")
     let preflight = try cleanStore.begin(source: "UNKNOWN", build: "1")
     try preflight.record(.jitClaimBegin)
     check(try preflight.snapshot().markdown(previousProcess: true).contains("no VM start request was recorded"),

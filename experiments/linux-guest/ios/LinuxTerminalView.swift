@@ -15,6 +15,12 @@ struct LinuxTerminalView: View {
             VStack(spacing: 12) {
                 Text(session.isDebian ? "iDeck · Debian ARM64" : "iDeck · Linux terminal").font(.headline)
                 Text(session.message).font(.callout).multilineTextAlignment(.center)
+                if let preparation = session.preparationState, preparation.inProgress {
+                    ProgressView(preparation.message)
+                    Text("Keep iDeck open. Cancel waits for the current file operation; leaving this screen cancels pending startup.").font(.footnote)
+                    Button(preparation.canCancel ? "Cancel start" : "Cancelling…") { session.cancelPreparation() }
+                        .disabled(!preparation.canCancel)
+                }
                 Text(session.jitExecutionMessage).font(.footnote)
                     .foregroundStyle(session.jitExecutionReady ? Color.green : Color.secondary)
                 if jit.busy { ProgressView(jit.status ?? "Enabling JIT…") }
@@ -81,7 +87,11 @@ struct LinuxTerminalView: View {
         .sheet(isPresented: $showShare) { ShareSheet(items: shareItems) }
         .onAppear { session.recoverDiagnostics() }
         .onChange(of: jit.attachGeneration) { _ in claimJIT() }
-        .onChange(of: scenePhase) { if $0 == .active { session.recoverDiagnostics() } }
+        .onDisappear { session.cancelPreparation() }
+        .onChange(of: scenePhase) {
+            if $0 == .active { session.recoverDiagnostics() }
+            if $0 == .background { session.cancelPreparation() }
+        }
     }
 
     private func submit() {

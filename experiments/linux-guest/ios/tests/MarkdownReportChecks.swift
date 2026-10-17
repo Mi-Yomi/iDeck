@@ -208,5 +208,33 @@ func runMarkdownReportChecks() throws {
     let unknownRecovery = LinuxProbeReport.render(report: ["mode": "desktop", "recovery_phase": secret, "recovery_failure": secret,
         "recovery_checked_image_sha256": secret, "recovery_watchdog_timeout": secret])
     expect(!unknownRecovery.contains(secret), "unknown recovery strings remain excluded")
+    let failures = [("terminal_startup_timed_out", "Startup readiness timeout"),
+                    ("terminal_stop_timed_out", "Orderly Stop timeout"),
+                    ("terminal_control_channel_failed", "Control channel failure"),
+                    ("terminal_serial_channel_failed", "Serial channel failure"),
+                    ("serial_log_write_failed", "Serial log write failure")]
+    let invalidFailureValues: [Any] = [NSNull(), NSNumber(value: 1), "true", secret]
+    for mode in ["terminal", "debian", "desktop"] {
+        for (key, label) in failures {
+            expect(cell(LinuxProbeReport.render(report: ["mode": mode, key: true]), label) == "REPORTED", "known failure survives MD export")
+            expect(cell(LinuxProbeReport.render(report: ["mode": mode, key: false]), label) == "NONE REPORTED", "explicit false remains separate")
+            for bad in invalidFailureValues {
+                expect(cell(LinuxProbeReport.render(report: ["mode": mode, key: bad]), label) == "UNKNOWN", "failure rejects non-boolean values")
+            }
+            expect(cell(LinuxProbeReport.render(report: ["mode": mode]), label) == "UNKNOWN", "legacy report never invents missing failure observations")
+        }
+    }
+    for phase in LinuxStartupPreparation.Phase.allCases {
+        let md = LinuxProbeReport.render(report: ["mode": "desktop", "preparation_phase": phase.rawValue])
+        expect(cell(md, "Preparation phase") != "UNKNOWN", "production phase is allowlisted")
+    }
+    let cancelled = LinuxProbeReport.render(report: ["mode": "desktop", "status": "terminal_prepare_cancelled",
+        "preparation_cancel_requested": true, "preparation_cancelled_before_qemu": true,
+        "terminal_clean_stop": false, "preparation_phase": secret])
+    expect(cancelled.contains("startup was cancelled before native entry"), "cancellation is distinct from an unclean VM exit")
+    expect(cell(cancelled, "Startup cancellation requested") == "REQUESTED", "request alone is not completion")
+    expect(cell(cancelled, "Startup cancelled before native entry") == "CANCELLED BEFORE NATIVE ENTRY", "completion has its own receipt")
+    expect(cell(cancelled, "Orderly stop") != "PASS", "cancel is never a clean-stop receipt")
+    expect(!cancelled.contains(secret), "preparation strings are allowlisted")
     print("LINUX_MARKDOWN_REPORT_CHECKS_PASS (\(assertions) assertions; actual Foundation renderer, no device/runtime execution)")
 }

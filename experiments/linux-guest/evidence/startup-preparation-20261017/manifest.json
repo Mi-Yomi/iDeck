@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "scope": "pre-entry cancellation, preparation status and allowlisted failure Markdown",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "size": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "python-tests.log",
+      "size": 54015,
+      "sha256": "e0ec09e2794d609284816972f09f749980b30e9b21ac30a01bdee6f38341233b"
+    },
+    {
+      "path": "verification.json",
+      "size": 3467,
+      "sha256": "c28902c83108e806f8af0fdb2373b5502953e3b1d1be8950549c1f2eda9c3946"
+    }
+  ]
+}

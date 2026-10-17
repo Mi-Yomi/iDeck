@@ -1,5 +1,63 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Cancellable preparation, visible phases and complete failure MD — 2026-10-17
+
+Source base and verified primary remote: `dd00e9455d5d01b41690bc204b97120a86826f64`,
+branch `codex/linux-guest-feasibility-20261015`, clean before this change, one
+cloud executor. Steam work/networking was deferred; its disks/caches were not
+accessed or changed by this task. No AGENTS.md or applicable local skill files
+were present. No CI, payload/Release, main, Steam-branch, JIT/security/network,
+guest/recovery algorithm, userdata or seed change was made.
+
+Confirmed defect: Start consumed the one-use attempt and performed lengthy asset
+hashing/import/recovery-copy checks with a generic message and no pre-entry
+cancel. Leaving the route could still allow the queued native startup. New
+Cancel start / Cancelling state, phase text and an indeterminate indicator now
+cover these operations. Route disappearance and background transition request
+the same cancellation. A file operation finishes before cancellation is handled;
+completed validated copies/promotion are not undone. No iOS background execution
+is promised. After native entry, leaving the view does not tear down the VM.
+
+The main UI and native thread use ONE locked preparation gate. Cancellation
+and native entry have exactly one winner. Existing ownership validation and
+durable qemuInitBegin precede that gate; socket/native handoff follows it.
+Accepted pre-entry cancellation closes only unused resources and records
+terminal_prepare_cancelled / preparationCancelled. It cannot send live Stop,
+reset attempted, initialize a second runtime, release a native owner, claim a
+clean stop, or bypass disk/recovery/fsync/digest/restart guards. Normal Stop and
+all post-entry lifecycle logic remain intact.
+
+Second confirmed defect: session MD omitted already recorded startup/Stop
+timeouts, serial/control disconnects and serial-log write errors. The allowlisted
+renderer now includes those explicit Boolean facts plus preparation phase and
+separate requested/completed cancellation observations. Missing or incorrectly
+typed values remain UNKNOWN; arbitrary error/log text stays excluded. Startup
+journal MD distinguishes completed pre-entry cancellation from an interrupted
+running VM, including reordered request journaling, and rejects that claim if
+native-return/readiness evidence contradicts it. The prior Share report fix is
+unchanged.
+
+Validation:323 Python checks /318PASS /5 explicit SKIP /0failures/errors;
+exact offline upstream slice/overlay staging passed. Six new source-wiring guards
+cover the real entry boundary, repeat/late cancellation, route/background hooks,
+slow phases and MD facts. Mandatory actual Swift regressions cover each phase,
+duplicate taps, cancellation-before-entry, entry-before-cancel,100 concurrent
+entry/cancel races, journal ordering/contradictions and strict MD values/privacy.
+Swift compiler, Apple SDK/app/device execution are **NOT RUN** on this Linux
+host. Python source checks do not establish Swift or UIKit behavior.
+
+Next Apple step, not dispatched: manual `ideck-linux-guest-profile-check` on this
+primary branch at the full final source SHA supplied in the completion response,
+with `expected_commit` exactly that SHA and the existing current free-quota /
+private-source attestations. Require `LINUX_STARTUP_PREPARATION_PASS` plus all
+previous mandatory markers and full patched Husk typecheck. Only after that
+gate should a new app build/device acceptance be considered. Existing IPA158be791
+does not contain these fixes. Device checks must include repeated Start/Cancel,
+leaving/backgrounding during each slow phase, late cancellation after entry,
+normal Stop, and both session/startup MD export; no running-in-background claim.
+
+Evidence: [test output and bounded source/scope receipt](experiments/linux-guest/evidence/startup-preparation-20261017/verification.json).
+
 ## Production9c4d recovery HOST gate PASS; existing IPA158be791 — 2026-10-17
 
 **Tested source SHA:** `158be7910d1c372cdddbf7cb87706ad2ce69042f`.

@@ -90,6 +90,7 @@ func runConsoleHostSyncFailureCheck(disk: LinuxConsoleDisk) throws {
 /// QEMU engine itself is not simulated here; full app sources use the real SDK.
 func runConsoleLifecycleChecks() throws {
     try runQEMUOwnerLifetimeChecks()
+    try runStartupPreparationChecks()
     func prepared() -> LinuxConsoleLifecycle {
         var state = LinuxConsoleLifecycle()
         precondition(state.canStart && !state.mustRetainDisk)
@@ -130,4 +131,46 @@ func runConsoleLifecycleChecks() throws {
     beforeReady.record(.hostSynced)
     precondition(!beforeReady.clean && beforeReady.mustRetainDisk)
     print("LINUX_CONSOLE_RUNTIME_REGRESSION_PASS (production lifecycle; backend cleanup NOT assumed)")
+}
+
+/// Exercise the production atomic gate, not a surrogate lifecycle model. The
+/// concurrent race must have exactly one winner, including a late UI cancel.
+func runStartupPreparationChecks() throws {
+    for phase in LinuxStartupPreparation.Phase.allCases {
+        let preparation = LinuxStartupPreparation()
+        try preparation.advance(phase)
+        precondition(preparation.snapshot.phase == phase && preparation.snapshot.canCancel)
+        precondition(!preparation.snapshot.message.isEmpty)
+        precondition(preparation.requestCancellation())
+        precondition(!preparation.requestCancellation(), "duplicate tap must not enqueue another cancellation")
+        precondition(preparation.snapshot.inProgress && !preparation.snapshot.canCancel)
+        precondition(!preparation.enterNative(), "cancel won before native entry")
+        do {
+            try preparation.advance(.nativeEntry)
+            preconditionFailure("cancelled startup advanced")
+        } catch LinuxStartupPreparation.Cancelled.beforeNativeEntry { }
+        preparation.finish()
+        precondition(!preparation.snapshot.inProgress && !preparation.enterNative())
+        precondition(!preparation.requestCancellation(), "finished preparation cannot reopen")
+    }
+    let native = LinuxStartupPreparation()
+    precondition(native.enterNative())
+    precondition(!native.requestCancellation(), "after entry only normal Stop may act")
+    native.finish()
+    precondition(native.snapshot.state == .entered && !native.enterNative())
+    for _ in 0..<100 {
+        let preparation = LinuxStartupPreparation()
+        let resultLock = NSLock()
+        var entered = false, cancelled = false
+        DispatchQueue.concurrentPerform(iterations: 2) { index in
+            let result = index == 0 ? preparation.enterNative() : preparation.requestCancellation()
+            resultLock.lock(); defer { resultLock.unlock() }
+            if index == 0 { entered = result } else { cancelled = result }
+        }
+        precondition(entered != cancelled, "entry and cancellation must never both succeed")
+        precondition(!preparation.enterNative() && !preparation.requestCancellation())
+        preparation.finish()
+        precondition(preparation.snapshot.state == (entered ? .entered : .finished))
+    }
+    print("LINUX_STARTUP_PREPARATION_PASS (production lock/gate, repeated taps and concurrent entry/cancel; no QEMU/device run)")
 }

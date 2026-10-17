@@ -28,7 +28,7 @@ final class LinuxTerminalDiagnostics {
         case qemuInitBegin, qemuInitReturned, nativeJITCheckBegin, nativeJITCheckReturned
         case displayInitBegin, displayInitReturned, mainLoopBegin, mainLoopReturned
         case terminalReady, stopRequested, guestCleanUnmount, hostSyncBegin, hostDiskSynced
-        case cleanStopped, stopFailed, uncleanStopped, preparationFailed, startupTimeout, stopTimeout
+        case cleanStopped, stopFailed, uncleanStopped, preparationFailed, preparationCancelRequested, preparationCancelled, startupTimeout, stopTimeout
         case qemuOwnerThreadRetained, consoleLogCloseBegin, consoleLogCloseReturned
         case consolePeersCloseBegin, consolePeersCloseReturned
         case recoveryBackup, recoveryWorkCopy, recoveryPrepared, recoveryAssessment, recoveryReplay, recoveryVerified, recoveryRelaunch, recoveryTimeout
@@ -99,6 +99,9 @@ final class LinuxTerminalDiagnostics {
                 outcome = "Start was rejected before VM entry; no successful terminal run was recorded."
             } else if !invalid && !tornTail && last?.stage == .preparationFailed {
                 outcome = "Preparation failed before QEMU entry; no successful terminal run was recorded."
+            } else if !invalid && !tornTail && records.contains(where: { $0.stage == .preparationCancelled })
+                        && !records.contains(where: { [Stage.qemuInitReturned, .mainLoopBegin, .terminalReady].contains($0.stage) }) {
+                outcome = "Startup was cancelled before native entry. Completed copies were preserved; reopen the app before another attempt."
             } else if previousProcess && attempted { outcome = "Previous process ended without a confirmed clean stop. Cause UNKNOWN." }
             else if previousProcess { outcome = "Previous diagnostic session ended; no VM start request was recorded. Cause UNKNOWN." }
             else { outcome = "Current diagnostic session; orderly stop is not established." }

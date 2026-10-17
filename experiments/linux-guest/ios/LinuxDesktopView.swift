@@ -73,6 +73,11 @@ struct LinuxDesktopView: View {
             VStack(spacing: 5) {
                 Text("Debian desktop").font(.headline).frame(maxWidth: .infinity, alignment: .leading)
                 Text(session.message).font(.caption).lineLimit(3).frame(maxWidth: .infinity, alignment: .leading)
+                if let preparation = session.preparationState, preparation.inProgress {
+                    ProgressView(preparation.message).font(.caption)
+                    Text("Keep iDeck open. Leaving this screen cancels pending startup after the current file operation; completed copies are preserved.")
+                        .font(.caption2).fixedSize(horizontal: false, vertical: true)
+                }
                 if jit.busy { ProgressView(jit.status ?? "Enabling JIT…") }
                 if let error = jit.error { Text(error).font(.caption).foregroundStyle(.orange) }
                 if geometry.size.width > geometry.size.height {
@@ -101,8 +106,12 @@ struct LinuxDesktopView: View {
         .onChange(of: showDiagnostics) { _ in refreshInputFocus() }
         .onChange(of: showShare) { _ in refreshInputFocus() }
         .onChange(of: jit.showSetup) { _ in refreshInputFocus() }
-        .onDisappear { input.setFocused(false) }
-        .onChange(of: phase) { value in if value == .active { session.recoverDiagnostics() }; refreshInputFocus() }
+        .onDisappear { input.setFocused(false); session.cancelPreparation() }
+        .onChange(of: phase) { value in
+            if value == .active { session.recoverDiagnostics() }
+            if value == .background { session.cancelPreparation() }
+            refreshInputFocus()
+        }
         .onChange(of: session.ready) { _ in refreshInputFocus() }
         .onChange(of: session.stopping) { _ in refreshInputFocus() }
         .onChange(of: jit.attachGeneration) { _ in jit.refreshPairingStatus(); session.claimJIT() }
@@ -122,7 +131,10 @@ struct LinuxDesktopView: View {
                 .accessibilityLabel("Saved startup diagnostics, Markdown")
                 .accessibilityIdentifier("ideck-desktop-startup-diagnostics")
             Spacer(minLength: 0)
-            if session.attempted {
+            if let preparation = session.preparationState, preparation.inProgress {
+                Button(preparation.canCancel ? "Cancel start" : "Cancelling…") { session.cancelPreparation() }
+                    .disabled(!preparation.canCancel).accessibilityIdentifier("ideck-desktop-cancel-start")
+            } else if session.attempted {
                 Button("Stop Linux") { session.stop() }.disabled(!session.canStop || session.stopping)
             } else {
                 Button("Recover disk") { session.startRecovery() }.disabled(jit.busy)

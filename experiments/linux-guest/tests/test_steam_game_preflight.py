@@ -38,6 +38,30 @@ class GamePreflightTests(unittest.TestCase):
             path.write_text('#!/bin/sh\nexit 0\n')
             self.assertIsNone(probe.elf_machine(path))
 
+    def test_launcher_symlink_keeps_architecture_and_does_not_follow_escape(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            steam = root / 'Steam'
+            directory = steam / 'steamrt64/pv-runtime/steam-runtime-steamrt/bin'
+            directory.mkdir(parents=True)
+            target = directory / 'srt-launcher-service'
+            elf = bytearray(20)
+            elf[:6] = b'\x7fELF\x02\x01'
+            elf[18:20] = (62).to_bytes(2, 'little')
+            target.write_bytes(elf)
+            target.chmod(0o755)
+            link = directory / 'steam-runtime-launcher-service'
+            link.symlink_to(target.name)
+            result = probe.inventory(steam, root)
+            self.assertEqual(result['runtime_launcher_candidates'][0]['elf_machine'], 62)
+            self.assertTrue(result['runtime_launcher_candidates'][0]['executable'])
+            self.assertFalse(result['game_launch_verified'])
+            link.unlink()
+            outside = root / 'private-account-file'
+            outside.write_text('DO_NOT_INSPECT')
+            link.symlink_to(outside)
+            self.assertEqual(probe.inventory(steam, root)['runtime_launcher_candidates'], [])
+
 
 if __name__ == '__main__':
     unittest.main()

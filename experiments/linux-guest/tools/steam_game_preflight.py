@@ -42,12 +42,31 @@ def inventory(steam, system=Path('/')):
         directory = system / prefix
         if directory.is_dir():
             icds.extend(prefix + '/' + p.name for p in sorted(directory.glob('*.json')))
+    launchers = []
+    for base, prefixes in (
+        (system, ('usr/bin', 'usr/local/bin')),
+        (steam, ('steamrtarm64/pv-runtime/steam-runtime-steamrt/bin',
+                 'steamrt64/pv-runtime/steam-runtime-steamrt/bin')),
+    ):
+        for prefix in prefixes:
+            candidate = base / prefix / 'steam-runtime-launcher-service'
+            if candidate.is_file():
+                # Runtime symlinks are normal, but never inspect outside this root.
+                if not candidate.resolve().is_relative_to(base.resolve()):
+                    continue
+                launchers.append({
+                    'origin': 'system' if base == system else 'steam',
+                    'path': prefix + '/steam-runtime-launcher-service',
+                    'elf_machine': elf_machine(candidate),
+                    'executable': os.access(candidate, os.X_OK),
+                })
     fs = os.statvfs(steam)
     return {
         'schema': 1, 'host_machine': platform.machine(),
         'native_steam_elf_machine': elf_machine(steam / 'steamrtarm64/steam'),
         'steam_filesystem_available_bytes': fs.f_bavail * fs.f_frsize,
         'proton_candidates': tools, 'system_fex_candidates': fex,
+        'runtime_launcher_candidates': launchers,
         'vulkan_icd_manifests': icds,
         'render_nodes': sorted(p.name for p in (system / 'dev/dri').glob('renderD*')),
         'scope': 'default Steam library and local compatibilitytools.d; external libraries not inspected',

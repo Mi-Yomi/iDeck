@@ -45,7 +45,14 @@ documents ARM64 builds; [FEX](https://github.com/FEX-Emu/FEX) supplies x86
 translation. Prefer the compatible Steam-delivered runtime over an unrelated
 system build. The read-only `tools/steam_game_preflight.py --steam-root PATH`
 inventories default-library Proton candidates, local FEX binaries, Vulkan ICD
-manifests and render nodes without reading account files or launching anything.
+manifests, render nodes and known Steam Runtime launcher-service locations without
+reading account files or launching anything. It follows runtime symlinks only
+within their installation root and reports the resolved ELF architecture.
+Run19's read-only inventory found only an x86-64 launcher service (ELF machine
+62) beside the ARM64 client (183), with no Proton/FEX candidates or Vulkan ICD.
+Adding that x86-64 service to PATH would not provide a native ARM64 runtime.
+This inventory does not establish why the client UI stalls. The matching game
+runtime still needs installation and execution checks before game acceptance.
 Presence alone proves neither execution nor GPU acceleration. External Steam
 libraries need separate inspection. Verify an authorized game's actual renderer,
 input, frame timing, repeated launches and saved data on the physical iPhone;

@@ -1,0 +1,944 @@
+Starting systemd-udevd version 257.13-1~deb13u1
+xauth:  file /run/ideck/Xauthority does not exist
+
+X.Org X Server 1.21.1.16
+X Protocol Version 11, Revision 0
+Current Operating System: Linux (none) 6.12.107+deb13-arm64 #1 SMP Debian 6.12.107-1 (2026-08-29) aarch64
+Kernel command line: console=ttyAMA0 rdinit=/ideck-gui-host-init panic=0 loglevel=4
+xorg-server 2:21.1.16-1.3+deb13u3 (https://www.debian.org/support) 
+Current version of pixman: 0.44.0
+	Before reporting problems, check http://wiki.x.org
+	to make sure that you have the latest version.
+Markers: (--) probed, (**) from config file, (==) default setting,
+	(++) from command line, (!!) notice, (II) informational,
+	(WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+(++) Log file: "/var/log/Xorg.0.log", Time: Sat Oct 17 05:28:20 2026
+(++) Using config file: "/etc/X11/ideck.conf"
+(==) Using system config directory "/usr/share/X11/xorg.conf.d"
+Openbox-Message: Unable to find a valid menu file "/var/lib/openbox/debian-menu.xml"
+tint2: Using glib slice allocator (default). Run tint2 with environment variable G_SLICE=always-malloc in case of strange behavior or crashes
+tint2: xRandr: Found crtc's: 1
+[1;34mtint2: xRandr: Linking output Virtual-1 with crtc 0, resolution 800x600, DPI 100[0m
+tint2: No XSETTINGS manager, tint2 uses config option 'launcher_icon_theme'.
+tint2: Loading config file: /usr/local/share/ideck/tint2rc
+tint2: real transparency off.... depth: 24
+tint2: panel items: LTSC
+tint2: Systray composited rendering on
+tint2: nb monitors 1, nb monitors used 1, nb desktops 4
+[1;34mtint2: panel 1 uses scale 1 [0m
+[1;32mtint2: Loading icon theme cache...[0m
+tint2: pixmap background detection failed
+tint2: Kernel uevent interface initialized...
+tint2: systray window 6291468
+[1;32mtint2: systray started[0m
+tint2: pixmap background detection failed
+
+(pcmanfm:250): dbind-[1;33mWARNING[0m **: [34m05:28:27.225[0m: AT-SPI: Error retrieving accessibility bus address: org.freedesktop.DBus.Error.ServiceUnknown: The name org.a11y.Bus was not provided by any .service files
+** [1;32mMessage[0m: [34m05:28:27.292[0m: x-terminal-emulator has very limited support, consider choosing another terminal
+
+** (pcmanfm:250): [1;33mWARNING[0m **: [34m05:28:27.297[0m: The directory '~/Templates' doesn't exist, ignoring it
+
+(mousepad:251): dbind-[1;33mWARNING[0m **: [34m05:28:27.345[0m: AT-SPI: Error retrieving accessibility bus address: org.freedesktop.DBus.Error.ServiceUnknown: The name org.a11y.Bus was not provided by any .service files
+
+** (pcmanfm:250): [1;33mWARNING[0m **: [34m05:28:28.837[0m: modules directory is not accessible
+
+(pcmanfm:250): Gtk-[1;33mWARNING[0m **: [34m05:28:29.814[0m: Theme parsing error: <data>:2:27: The style property GtkWidget:focus-padding is deprecated and shouldn't be used anymore. It will be removed in a future version
+
+(pcmanfm:250): Gtk-[1;33mWARNING[0m **: [34m05:28:29.815[0m: Theme parsing error: <data>:3:30: The style property GtkWidget:focus-line-width is deprecated and shouldn't be used anymore. It will be removed in a future version
+dbus-daemon[234]: [session uid=1000 pid=234 pidfd=5] Activating service name='ca.desrt.dconf' requested by ':1.0' (uid=1000 pid=251 comm="mousepad")
+dbus-daemon[234]: [session uid=1000 pid=234 pidfd=5] Successfully activated service 'ca.desrt.dconf'
+IDECK_GUI_WINDOWS_MAPPED
+IDECK_GUI_HOST_READY
+
+
+Debian GUI recovery console. Files in /home/ideck are persistent.
+Use exit or Stop Linux before closing iDeck.
+
+debian# 
+RECOVERY_ready
+debian# 
+xwininfo: Window id: 0x21d (the root window) (has no name)
+
+  Root window id: 0x21d (the root window) (has no name)
+  Parent window id: 0x0 (none)
+     23 children:
+     0xa00009 (has no name): ()  1x1+-1+-1  +-1+-1
+     0x800110 "pcmanfm": ("pcmanfm" "Pcmanfm")  2x2+0+0  +0+0
+        1 child:
+        0x800111 (has no name): ()  1x1+-1+-1  +-1+-1
+     0x800003 (has no name): ()  1x1+-1+-1  +-1+-1
+     0xa00001 "Mousepad": ("mousepad" "Mousepad")  10x10+10+10  +10+10
+     0x800001 "pcmanfm": ("pcmanfm" "Pcmanfm")  10x10+10+10  +10+10
+     0x60000c (has no name): ()  1x1+-1+-1  +-1+-1
+     0x600005 (has no name): ()  1x1+-1+-1  +-1+-1
+     0x600002 (has no name): ()  100x20+0+0  +0+0
+     0x20011f "Openbox": ("" (none))  1x1+-100+-100  +-100+-100
+     0x200173 (has no name): ()  1x1+0+0  +0+0
+        1 child:
+        0x200174 (has no name): ()  1x1+0+0  +1+1
+     0x200171 (has no name): ()  1x1+0+0  +0+0
+        1 child:
+        0x200172 (has no name): ()  1x1+0+0  +1+1
+     0x20016e (has no name): ()  1x1+0+0  +0+0
+        1 child:
+        0x20016f (has no name): ()  1x1+0+0  +1+1
+     0x20016a (has no name): ("OPENBOX_FOCUS_CYCLE_POPUP" "OPENBOX_FOCUS_CYCLE_POPUP")  1x1+0+0  +0+0
+        3 children:
+        0x20016d (has no name): ()  1x1+0+0  +1+1
+        0x20016c (has no name): ()  1x1+0+0  +1+1
+        0x20016b (has no name): ()  1x1+0+0  +1+1
+     0x200167 (has no name): ()  1x1+0+0  +0+0
+        2 children:
+        0x200169 (has no name): ()  1x1+0+0  +1+1
+        0x200168 (has no name): ()  1x1+0+0  +1+1
+     0x200166 (has no name): ()  1x1+0+0  +0+0
+     0x200165 (has no name): ()  1x1+0+0  +0+0
+     0x200164 (has no name): ()  1x1+0+0  +0+0
+     0x200163 (has no name): ()  1x1+0+0  +0+0
+     0x200170 (has no name): ()  1x1+0+0  +0+0
+     0x2002cd (has no name): ()  642x505+0+0  +0+0
+        56 children:
+        0xa00003 "Untitled 1 - Mousepad": ("mousepad" "Mousepad")  640x480+1+20  +1+20
+           1 child:
+           0xa00004 (has no name): ()  1x1+-1+-1  +0+19
+        0x200319 (has no name): ()  1x1+0+0  +0+0
+        0x200318 (has no name): ()  1x1+0+0  +0+0
+        0x200317 (has no name): ()  1x1+0+0  +0+0
+        0x200316 (has no name): ()  1x1+0+0  +0+0
+        0x200315 (has no name): ()  1x1+0+0  +0+0
+        0x200314 (has no name): ()  1x1+0+0  +0+0
+        0x200313 (has no name): ()  1x1+0+0  +0+0
+        0x200312 (has no name): ()  1x1+0+0  +0+0
+        0x200311 (has no name): ()  1x1+0+0  +0+0
+        0x200310 (has no name): ()  1x1+0+0  +0+0
+        0x20030f (has no name): ()  1x1+0+0  +0+0
+        0x20030e (has no name): ()  1x1+0+0  +0+0
+        0x20030d (has no name): ()  1x1+0+0  +0+0
+        0x20030c (has no name): ()  1x1+0+0  +0+0
+        0x20030b (has no name): ()  1x1+0+0  +0+0
+        0x20030a (has no name): ()  1x1+0+0  +0+0
+        0x200309 (has no name): ()  1x1+0+0  +0+0
+        0x200308 (has no name): ()  1x1+0+0  +0+0
+        0x200307 (has no name): ()  1x1+0+0  +0+0
+        0x200306 (has no name): ()  1x1+0+0  +0+0
+        0x200305 (has no name): ()  1x1+0+0  +0+0
+        0x200304 (has no name): ()  1x1+0+0  +0+0
+        0x200303 (has no name): ()  1x1+0+0  +0+0
+        0x200302 (has no name): ()  1x1+0+0  +0+0
+        0x200301 (has no name): ()  1x1+0+0  +0+0
+        0x200300 (has no name): ()  1x1+0+0  +0+0
+        0x2002ff (has no name): ()  1x1+0+0  +0+0
+        0x2002fe (has no name): ()  1x1+0+0  +0+0
+        0x2002fd (has no name): ()  1x1+0+0  +0+0
+        0x2002fc (has no name): ()  1x1+0+0  +0+0
+        0x2002fb (has no name): ()  1x1+0+0  +0+0
+        0x2002fa (has no name): ()  1x1+0+0  +0+0
+        0x2002f9 (has no name): ()  26x1+615+504  +615+504
+        0x2002f8 (has no name): ()  26x1+615+500  +615+500
+        0x2002f7 (has no name): ()  1x25+641+480  +641+480
+        0x2002f6 (has no name): ()  26x1+1+504  +1+504
+        0x2002f5 (has no name): ()  26x1+1+500  +1+500
+        0x2002f4 (has no name): ()  1x25+0+480  +0+480
+        0x2002f3 (has no name): ()  588x1+27+504  +27+504
+        0x2002f2 (has no name): ()  588x1+27+500  +27+500
+        0x2002ed (has no name): ()  640x3+1+501  +1+501
+           4 children:
+           0x2002f1 (has no name): ()  1x3+614+0  +615+501
+           0x2002f0 (has no name): ()  1x3+25+0  +26+501
+           0x2002ef (has no name): ()  25x3+615+0  +616+501
+           0x2002ee (has no name): ()  25x3+0+0  +1+501
+        0x2002e5 (has no name): ()  1x455+641+26  +641+26
+        0x2002e4 (has no name): ()  1x455+0+26  +0+26
+        0x2002de (has no name): ()  640x1+1+19  +1+19
+        0x2002dd (has no name): ()  1x25+641+1  +641+1
+        0x2002dc (has no name): ()  26x1+616+0  +616+0
+        0x2002db (has no name): ()  26x1+0+0  +0+0
+        0x2002da (has no name): ()  590x1+26+0  +26+0
+        0x2002d9 (has no name): ()  1x25+0+1  +0+1
+        0x2002d8 (has no name): ()  640x18+1+1  +1+1
+           12 children:
+           0x2002ec (has no name): ()  12x12+592+3  +593+4
+           0x2002eb (has no name): ()  14x14+4+2  +5+3
+           0x2002ea (has no name): ()  12x12+0+0  +1+1
+           0x2002e9 (has no name): ()  12x12+0+0  +1+1
+           0x2002e8 (has no name): ()  12x12+624+3  +625+4
+           0x2002e7 (has no name): ()  12x12+608+3  +609+4
+           0x2002e6 (has no name): ()  536x14+52+2  +53+3
+           0x2002e3 (has no name): ()  4x18+636+0  +637+1
+           0x2002e2 (has no name): ()  25x3+615+0  +616+1
+           0x2002e1 (has no name): ()  4x18+0+0  +1+1
+           0x2002e0 (has no name): ()  25x3+0+0  +1+1
+           0x2002df (has no name): ()  590x3+25+0  +26+1
+        0x2002d3 (has no name): ()  1x1+0+0  +0+0
+           2 children:
+           0x2002d5 (has no name): ()  1x1+0+0  +0+0
+           0x2002d4 (has no name): ()  1x1+0+0  +0+0
+        0x2002d2 (has no name): ()  1x1+0+0  +0+0
+           1 child:
+           0x2002d7 (has no name): ()  1x1+0+0  +0+0
+        0x2002d1 (has no name): ()  1x1+0+0  +0+0
+        0x2002d0 (has no name): ()  1x1+0+0  +0+0
+           1 child:
+           0x2002d6 (has no name): ()  1x1+0+0  +0+0
+        0x2002ce (has no name): ()  640x480+1+20  +1+20
+           1 child:
+           0x2002cf (has no name): ()  640x480+0+0  +1+20
+     0x200244 (has no name): ()  642x505+158+61  +158+61
+        56 children:
+        0x800007 "ideck": ("pcmanfm" "Pcmanfm")  640x480+1+20  +159+81
+           1 child:
+           0x800008 (has no name): ()  1x1+-1+-1  +158+80
+        0x200290 (has no name): ()  1x1+0+0  +158+61
+        0x20028f (has no name): ()  1x1+0+0  +158+61
+        0x20028e (has no name): ()  1x1+0+0  +158+61
+        0x20028d (has no name): ()  1x1+0+0  +158+61
+        0x20028c (has no name): ()  1x1+0+0  +158+61
+        0x20028b (has no name): ()  1x1+0+0  +158+61
+        0x20028a (has no name): ()  1x1+0+0  +158+61
+        0x200289 (has no name): ()  1x1+0+0  +158+61
+        0x200288 (has no name): ()  1x1+0+0  +158+61
+        0x200287 (has no name): ()  1x1+0+0  +158+61
+        0x200286 (has no name): ()  1x1+0+0  +158+61
+        0x200285 (has no name): ()  1x1+0+0  +158+61
+        0x200284 (has no name): ()  1x1+0+0  +158+61
+        0x200283 (has no name): ()  1x1+0+0  +158+61
+        0x200282 (has no name): ()  1x1+0+0  +158+61
+        0x200281 (has no name): ()  1x1+0+0  +158+61
+        0x200280 (has no name): ()  1x1+0+0  +158+61
+        0x20027f (has no name): ()  1x1+0+0  +158+61
+        0x20027e (has no name): ()  1x1+0+0  +158+61
+        0x20027d (has no name): ()  1x1+0+0  +158+61
+        0x20027c (has no name): ()  1x1+0+0  +158+61
+        0x20027b (has no name): ()  1x1+0+0  +158+61
+        0x20027a (has no name): ()  1x1+0+0  +158+61
+        0x200279 (has no name): ()  1x1+0+0  +158+61
+        0x200278 (has no name): ()  1x1+0+0  +158+61
+        0x200277 (has no name): ()  1x1+0+0  +158+61
+        0x200276 (has no name): ()  1x1+0+0  +158+61
+        0x200275 (has no name): ()  1x1+0+0  +158+61
+        0x200274 (has no name): ()  1x1+0+0  +158+61
+        0x200273 (has no name): ()  1x1+0+0  +158+61
+        0x200272 (has no name): ()  1x1+0+0  +158+61
+        0x200271 (has no name): ()  1x1+0+0  +158+61
+        0x200270 (has no name): ()  26x1+615+504  +773+565
+        0x20026f (has no name): ()  26x1+615+500  +773+561
+        0x20026e (has no name): ()  1x25+641+480  +799+541
+        0x20026d (has no name): ()  26x1+1+504  +159+565
+        0x20026c (has no name): ()  26x1+1+500  +159+561
+        0x20026b (has no name): ()  1x25+0+480  +158+541
+        0x20026a (has no name): ()  588x1+27+504  +185+565
+        0x200269 (has no name): ()  588x1+27+500  +185+561
+        0x200264 (has no name): ()  640x3+1+501  +159+562
+           4 children:
+           0x200268 (has no name): ()  1x3+614+0  +773+562
+           0x200267 (has no name): ()  1x3+25+0  +184+562
+           0x200266 (has no name): ()  25x3+615+0  +774+562
+           0x200265 (has no name): ()  25x3+0+0  +159+562
+        0x20025c (has no name): ()  1x455+641+26  +799+87
+        0x20025b (has no name): ()  1x455+0+26  +158+87
+        0x200255 (has no name): ()  640x1+1+19  +159+80
+        0x200254 (has no name): ()  1x25+641+1  +799+62
+        0x200253 (has no name): ()  26x1+616+0  +774+61
+        0x200252 (has no name): ()  26x1+0+0  +158+61
+        0x200251 (has no name): ()  590x1+26+0  +184+61
+        0x200250 (has no name): ()  1x25+0+1  +158+62
+        0x20024f (has no name): ()  640x18+1+1  +159+62
+           12 children:
+           0x200263 (has no name): ()  12x12+592+3  +751+65
+           0x200262 (has no name): ()  14x14+4+2  +163+64
+           0x200261 (has no name): ()  12x12+0+0  +159+62
+           0x200260 (has no name): ()  12x12+0+0  +159+62
+           0x20025f (has no name): ()  12x12+624+3  +783+65
+           0x20025e (has no name): ()  12x12+608+3  +767+65
+           0x20025d (has no name): ()  536x14+52+2  +211+64
+           0x20025a (has no name): ()  4x18+636+0  +795+62
+           0x200259 (has no name): ()  25x3+615+0  +774+62
+           0x200258 (has no name): ()  4x18+0+0  +159+62
+           0x200257 (has no name): ()  25x3+0+0  +159+62
+           0x200256 (has no name): ()  590x3+25+0  +184+62
+        0x20024a (has no name): ()  1x1+0+0  +158+61
+           2 children:
+           0x20024c (has no name): ()  1x1+0+0  +158+61
+           0x20024b (has no name): ()  1x1+0+0  +158+61
+        0x200249 (has no name): ()  1x1+0+0  +158+61
+           1 child:
+           0x20024e (has no name): ()  1x1+0+0  +158+61
+        0x200248 (has no name): ()  1x1+0+0  +158+61
+        0x200247 (has no name): ()  1x1+0+0  +158+61
+           1 child:
+           0x20024d (has no name): ()  1x1+0+0  +158+61
+        0x200245 (has no name): ()  640x480+1+20  +159+81
+           1 child:
+           0x200246 (has no name): ()  640x480+0+0  +159+81
+     0x2001d6 (has no name): ()  800x34+0+566  +0+566
+        56 children:
+        0x600008 "tint2": ("tint2" "Tint2")  800x34+0+0  +0+566
+        0x200222 (has no name): ()  1x1+0+0  +0+566
+        0x200221 (has no name): ()  1x1+0+0  +0+566
+        0x200220 (has no name): ()  1x1+0+0  +0+566
+        0x20021f (has no name): ()  1x1+0+0  +0+566
+        0x20021e (has no name): ()  1x1+0+0  +0+566
+        0x20021d (has no name): ()  1x1+0+0  +0+566
+        0x20021c (has no name): ()  1x1+0+0  +0+566
+        0x20021b (has no name): ()  1x1+0+0  +0+566
+        0x20021a (has no name): ()  1x1+0+0  +0+566
+        0x200219 (has no name): ()  1x1+0+0  +0+566
+        0x200218 (has no name): ()  1x1+0+0  +0+566
+        0x200217 (has no name): ()  1x1+0+0  +0+566
+        0x200216 (has no name): ()  1x1+0+0  +0+566
+        0x200215 (has no name): ()  1x1+0+0  +0+566
+        0x200214 (has no name): ()  1x1+0+0  +0+566
+        0x200213 (has no name): ()  1x1+0+0  +0+566
+        0x200212 (has no name): ()  1x1+0+0  +0+566
+        0x200211 (has no name): ()  1x1+0+0  +0+566
+        0x200210 (has no name): ()  1x1+0+0  +0+566
+        0x20020f (has no name): ()  1x1+0+0  +0+566
+        0x20020e (has no name): ()  1x1+0+0  +0+566
+        0x20020d (has no name): ()  1x1+0+0  +0+566
+        0x20020c (has no name): ()  1x1+0+0  +0+566
+        0x20020b (has no name): ()  1x1+0+0  +0+566
+        0x20020a (has no name): ()  1x1+0+0  +0+566
+        0x200209 (has no name): ()  1x1+0+0  +0+566
+        0x200208 (has no name): ()  1x1+0+0  +0+566
+        0x200207 (has no name): ()  1x1+0+0  +0+566
+        0x200206 (has no name): ()  1x1+0+0  +0+566
+        0x200205 (has no name): ()  1x1+0+0  +0+566
+        0x200204 (has no name): ()  1x1+0+0  +0+566
+        0x200203 (has no name): ()  1x1+0+0  +0+566
+        0x200202 (has no name): ()  1x1+0+0  +0+566
+        0x200201 (has no name): ()  1x1+0+0  +0+566
+        0x200200 (has no name): ()  1x1+0+0  +0+566
+        0x2001ff (has no name): ()  1x1+0+0  +0+566
+        0x2001fe (has no name): ()  1x1+0+0  +0+566
+        0x2001fd (has no name): ()  1x1+0+0  +0+566
+        0x2001fc (has no name): ()  1x1+0+0  +0+566
+        0x2001fb (has no name): ()  1x1+0+0  +0+566
+        0x2001f6 (has no name): ()  1x1+0+0  +0+566
+           4 children:
+           0x2001fa (has no name): ()  1x1+0+0  +0+566
+           0x2001f9 (has no name): ()  1x1+0+0  +0+566
+           0x2001f8 (has no name): ()  1x1+0+0  +0+566
+           0x2001f7 (has no name): ()  1x1+0+0  +0+566
+        0x2001ee (has no name): ()  1x1+0+0  +0+566
+        0x2001ed (has no name): ()  1x1+0+0  +0+566
+        0x2001e7 (has no name): ()  1x1+0+0  +0+566
+        0x2001e6 (has no name): ()  1x1+0+0  +0+566
+        0x2001e5 (has no name): ()  1x1+0+0  +0+566
+        0x2001e4 (has no name): ()  1x1+0+0  +0+566
+        0x2001e3 (has no name): ()  1x1+0+0  +0+566
+        0x2001e2 (has no name): ()  1x1+0+0  +0+566
+        0x2001e1 (has no name): ()  1x1+0+0  +0+566
+           12 children:
+           0x2001f5 (has no name): ()  12x12+0+0  +0+566
+           0x2001f4 (has no name): ()  14x14+0+0  +0+566
+           0x2001f3 (has no name): ()  12x12+0+0  +0+566
+           0x2001f2 (has no name): ()  12x12+0+0  +0+566
+           0x2001f1 (has no name): ()  12x12+0+0  +0+566
+           0x2001f0 (has no name): ()  12x12+0+0  +0+566
+           0x2001ef (has no name): ()  1x1+0+0  +0+566
+           0x2001ec (has no name): ()  4x18+0+0  +0+566
+           0x2001eb (has no name): ()  25x3+0+0  +0+566
+           0x2001ea (has no name): ()  4x18+0+0  +0+566
+           0x2001e9 (has no name): ()  25x3+0+0  +0+566
+           0x2001e8 (has no name): ()  1x1+0+0  +0+566
+        0x2001dc (has no name): ()  1x1+0+0  +0+566
+           2 children:
+           0x2001de (has no name): ()  1x1+0+0  +0+566
+           0x2001dd (has no name): ()  1x1+0+0  +0+566
+        0x2001db (has no name): ()  1x1+0+0  +0+566
+           1 child:
+           0x2001e0 (has no name): ()  1x1+0+0  +0+566
+        0x2001da (has no name): ()  1x1+0+0  +0+566
+        0x2001d9 (has no name): ()  1x1+0+0  +0+566
+           1 child:
+           0x2001df (has no name): ()  1x1+0+0  +0+566
+        0x2001d7 (has no name): ()  800x34+0+0  +0+566
+           1 child:
+           0x2001d8 (has no name): ()  800x34+0+0  +0+566
+     0x200175 (has no name): ()  474x263+30+40  +30+40
+        56 children:
+        0x40000c "ideck@(none): /": ("xterm" "XTerm")  472x238+1+20  +31+60
+           1 child:
+           0x400011 (has no name): ()  472x238+0+0  +31+60
+        0x2001c1 (has no name): ()  1x1+0+0  +30+40
+        0x2001c0 (has no name): ()  1x1+0+0  +30+40
+        0x2001bf (has no name): ()  1x1+0+0  +30+40
+        0x2001be (has no name): ()  1x1+0+0  +30+40
+        0x2001bd (has no name): ()  1x1+0+0  +30+40
+        0x2001bc (has no name): ()  1x1+0+0  +30+40
+        0x2001bb (has no name): ()  1x1+0+0  +30+40
+        0x2001ba (has no name): ()  1x1+0+0  +30+40
+        0x2001b9 (has no name): ()  1x1+0+0  +30+40
+        0x2001b8 (has no name): ()  1x1+0+0  +30+40
+        0x2001b7 (has no name): ()  1x1+0+0  +30+40
+        0x2001b6 (has no name): ()  1x1+0+0  +30+40
+        0x2001b5 (has no name): ()  1x1+0+0  +30+40
+        0x2001b4 (has no name): ()  1x1+0+0  +30+40
+        0x2001b3 (has no name): ()  1x1+0+0  +30+40
+        0x2001b2 (has no name): ()  1x1+0+0  +30+40
+        0x2001b1 (has no name): ()  1x1+0+0  +30+40
+        0x2001b0 (has no name): ()  1x1+0+0  +30+40
+        0x2001af (has no name): ()  1x1+0+0  +30+40
+        0x2001ae (has no name): ()  1x1+0+0  +30+40
+        0x2001ad (has no name): ()  1x1+0+0  +30+40
+        0x2001ac (has no name): ()  1x1+0+0  +30+40
+        0x2001ab (has no name): ()  1x1+0+0  +30+40
+        0x2001aa (has no name): ()  1x1+0+0  +30+40
+        0x2001a9 (has no name): ()  1x1+0+0  +30+40
+        0x2001a8 (has no name): ()  1x1+0+0  +30+40
+        0x2001a7 (has no name): ()  1x1+0+0  +30+40
+        0x2001a6 (has no name): ()  1x1+0+0  +30+40
+        0x2001a5 (has no name): ()  1x1+0+0  +30+40
+        0x2001a4 (has no name): ()  1x1+0+0  +30+40
+        0x2001a3 (has no name): ()  1x1+0+0  +30+40
+        0x2001a2 (has no name): ()  1x1+0+0  +30+40
+        0x2001a1 (has no name): ()  26x1+447+262  +477+302
+        0x2001a0 (has no name): ()  26x1+447+258  +477+298
+        0x20019f (has no name): ()  1x25+473+238  +503+278
+        0x20019e (has no name): ()  26x1+1+262  +31+302
+        0x20019d (has no name): ()  26x1+1+258  +31+298
+        0x20019c (has no name): ()  1x25+0+238  +30+278
+        0x20019b (has no name): ()  420x1+27+262  +57+302
+        0x20019a (has no name): ()  420x1+27+258  +57+298
+        0x200195 (has no name): ()  472x3+1+259  +31+299
+           4 children:
+           0x200199 (has no name): ()  1x3+446+0  +477+299
+           0x200198 (has no name): ()  1x3+25+0  +56+299
+           0x200197 (has no name): ()  25x3+447+0  +478+299
+           0x200196 (has no name): ()  25x3+0+0  +31+299
+        0x20018d (has no name): ()  1x213+473+26  +503+66
+        0x20018c (has no name): ()  1x213+0+26  +30+66
+        0x200186 (has no name): ()  472x1+1+19  +31+59
+        0x200185 (has no name): ()  1x25+473+1  +503+41
+        0x200184 (has no name): ()  26x1+448+0  +478+40
+        0x200183 (has no name): ()  26x1+0+0  +30+40
+        0x200182 (has no name): ()  422x1+26+0  +56+40
+        0x200181 (has no name): ()  1x25+0+1  +30+41
+        0x200180 (has no name): ()  472x18+1+1  +31+41
+           12 children:
+           0x200194 (has no name): ()  12x12+424+3  +455+44
+           0x200193 (has no name): ()  14x14+4+2  +35+43
+           0x200192 (has no name): ()  12x12+0+0  +31+41
+           0x200191 (has no name): ()  12x12+0+0  +31+41
+           0x200190 (has no name): ()  12x12+456+3  +487+44
+           0x20018f (has no name): ()  12x12+440+3  +471+44
+           0x20018e (has no name): ()  368x14+52+2  +83+43
+           0x20018b (has no name): ()  4x18+468+0  +499+41
+           0x20018a (has no name): ()  25x3+447+0  +478+41
+           0x200189 (has no name): ()  4x18+0+0  +31+41
+           0x200188 (has no name): ()  25x3+0+0  +31+41
+           0x200187 (has no name): ()  422x3+25+0  +56+41
+        0x20017b (has no name): ()  1x1+0+0  +30+40
+           2 children:
+           0x20017d (has no name): ()  1x1+0+0  +30+40
+           0x20017c (has no name): ()  1x1+0+0  +30+40
+        0x20017a (has no name): ()  1x1+0+0  +30+40
+           1 child:
+           0x20017f (has no name): ()  1x1+0+0  +30+40
+        0x200179 (has no name): ()  1x1+0+0  +30+40
+        0x200178 (has no name): ()  1x1+0+0  +30+40
+           1 child:
+           0x20017e (has no name): ()  1x1+0+0  +30+40
+        0x200176 (has no name): ()  472x238+1+20  +31+60
+           1 child:
+           0x200177 (has no name): ()  472x238+0+0  +31+60
+
+Screen 0: minimum 320 x 200, current 800 x 600, maximum 8192 x 8192
+Virtual-1 connected primary 800x600+0+0 (normal left inverted right x axis y axis) 203mm x 152mm
+   800x600       75.00*+  60.32  
+   5120x2160     50.00  
+   4096x2160     50.00  
+   3840x2160     60.00    50.00    59.94  
+   1920x1440     60.00  
+   2560x1080     50.00  
+   1856x1392     60.00  
+   1792x1344     60.00  
+   2048x1152     60.00  
+   1920x1200     59.88  
+   1920x1080     60.00    50.00  
+   1600x1200     60.00  
+   1680x1050     59.95  
+   1400x1050     59.98  
+   1280x1024     60.02  
+   1440x900      59.89  
+   1280x960      60.00  
+   1360x768      60.02  
+   1280x768      59.87  
+   1024x768      60.00  
+   640x480       60.00    59.94  
+  UID   PID COMMAND
+    0     1 ideck-gui-host-
+    0     2 kthreadd
+    0     3 pool_workqueue_release
+    0     4 kworker/R-kvfree_rcu_reclaim
+    0     5 kworker/R-rcu_gp
+    0     6 kworker/R-sync_wq
+    0     7 kworker/R-slub_flushwq
+    0     8 kworker/R-netns
+    0     9 kworker/0:0-events
+    0    10 kworker/0:0H-events_highpri
+    0    11 kworker/0:1
+    0    12 kworker/u16:0-events_unbound
+    0    13 kworker/R-mm_percpu_wq
+    0    14 rcu_tasks_rude_kthread
+    0    15 rcu_tasks_trace_kthread
+    0    16 ksoftirqd/0
+    0    17 rcu_sched
+    0    18 rcu_exp_par_gp_kthread_worker/0
+    0    19 rcu_exp_gp_kthread_worker
+    0    20 migration/0
+    0    21 cpuhp/0
+    0    22 cpuhp/1
+    0    23 migration/1
+    0    24 ksoftirqd/1
+    0    25 kworker/1:0-pm
+    0    26 kworker/1:0H-kblockd
+    0    27 cpuhp/2
+    0    28 migration/2
+    0    29 ksoftirqd/2
+    0    30 kworker/2:0-events_power_efficient
+    0    31 kworker/2:0H-events_highpri
+    0    32 cpuhp/3
+    0    33 migration/3
+    0    34 ksoftirqd/3
+    0    35 kworker/3:0-events
+    0    36 kworker/3:0H-events_highpri
+    0    38 kworker/u16:1-ext4-rsv-conversion
+    0    39 kworker/u16:2-events_unbound
+    0    40 kdevtmpfs
+    0    41 kworker/R-inet_frag_wq
+    0    42 kauditd
+    0    43 kworker/1:1-events
+    0    44 khungtaskd
+    0    45 oom_reaper
+    0    46 kworker/R-writeback
+    0    47 kcompactd0
+    0    48 ksmd
+    0    49 khugepaged
+    0    50 kworker/R-kintegrityd
+    0    51 kworker/R-kblockd
+    0    52 kworker/R-blkcg_punt_bio
+    0    53 kworker/R-tpm_dev_wq
+    0    54 kworker/R-edac-poller
+    0    55 kworker/R-devfreq_wq
+    0    56 watchdogd
+    0    57 kworker/R-quota_events_unbound
+    0    58 kworker/0:1H-kblockd
+    0    59 kswapd0
+    0    61 kworker/3:1-mm_percpu_wq
+    0    67 kworker/R-kthrotld
+    0    72 kworker/2:1-mm_percpu_wq
+    0    73 kworker/R-mld
+    0    74 kworker/2:1H-kblockd
+    0    75 kworker/R-ipv6_addrconf
+    0    80 kworker/R-kstrp
+    0    82 kworker/u17:0
+    0   118 kworker/u16:3-kvfree_rcu_reclaim
+    0   120 kworker/u16:4-events_unbound
+    0   126 kworker/u16:5
+    0   150 kworker/1:1H
+    0   160 kworker/0:2-events
+    0   167 kworker/2:2-events
+    0   177 jbd2/vdb-8
+    0   178 kworker/R-ext4-rsv-conversion
+    0   189 jbd2/vda-8
+    0   190 kworker/R-ext4-rsv-conversion
+    0   193 ideck-gui-host-
+    0   196 systemd-udevd
+    0   198 kworker/3:1H-kblockd
+    0   212 start
+    0   221 Xorg
+ 1000   232 dbus-run-sessio
+ 1000   234 dbus-daemon
+ 1000   236 session
+ 1000   237 openbox
+ 1000   249 tint2
+ 1000   250 pcmanfm
+ 1000   251 mousepad
+ 1000   252 xterm
+ 1000   260 bash
+ 1000   281 dconf-service
+    0   291 sh
+    0   298 ps
+
+GUI_CHECK_audit
+debian# [     6.359] 
+X.Org X Server 1.21.1.16
+X Protocol Version 11, Revision 0
+[     6.361] Current Operating System: Linux (none) 6.12.107+deb13-arm64 #1 SMP Debian 6.12.107-1 (2026-08-29) aarch64
+[     6.361] Kernel command line: console=ttyAMA0 rdinit=/ideck-gui-host-init panic=0 loglevel=4
+[     6.362] xorg-server 2:21.1.16-1.3+deb13u3 (https://www.debian.org/support) 
+[     6.363] Current version of pixman: 0.44.0
+[     6.363] 	Before reporting problems, check http://wiki.x.org
+	to make sure that you have the latest version.
+[     6.363] Markers: (--) probed, (**) from config file, (==) default setting,
+	(++) from command line, (!!) notice, (II) informational,
+	(WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+[     6.372] (++) Log file: "/var/log/Xorg.0.log", Time: Sat Oct 17 05:28:20 2026
+[     6.378] (++) Using config file: "/etc/X11/ideck.conf"
+[     6.379] (==) Using system config directory "/usr/share/X11/xorg.conf.d"
+[     6.385] (==) No Layout section.  Using the first Screen section.
+[     6.385] (**) |-->Screen "iDeck Screen" (0)
+[     6.385] (**) |   |-->Monitor "<default monitor>"
+[     6.389] (**) |   |-->Device "iDeck virtio KMS"
+[     6.390] (==) No monitor specified for screen "iDeck Screen".
+	Using a default monitor configuration.
+[     6.390] (**) Option "AutoAddGPU" "false"
+[     6.391] (**) Allowing byte-swapped clients
+[     6.391] (==) Automatically adding devices
+[     6.391] (==) Automatically enabling devices
+[     6.391] (**) Not automatically adding GPU devices
+[     6.391] (==) Automatically binding GPU devices
+[     6.392] (==) Max clients allowed: 256, resource mask: 0x1fffff
+[     6.394] (WW) The directory "/usr/share/fonts/X11/cyrillic" does not exist.
+[     6.395] 	Entry deleted from font path.
+[     6.395] (WW) The directory "/usr/share/fonts/X11/100dpi/" does not exist.
+[     6.395] 	Entry deleted from font path.
+[     6.395] (WW) The directory "/usr/share/fonts/X11/75dpi/" does not exist.
+[     6.395] 	Entry deleted from font path.
+[     6.396] (WW) The directory "/usr/share/fonts/X11/100dpi" does not exist.
+[     6.396] 	Entry deleted from font path.
+[     6.396] (WW) The directory "/usr/share/fonts/X11/75dpi" does not exist.
+[     6.396] 	Entry deleted from font path.
+[     6.397] (==) FontPath set to:
+	/usr/share/fonts/X11/misc,
+	/usr/share/fonts/X11/Type1,
+	built-ins
+[     6.397] (==) ModulePath set to "/usr/lib/xorg/modules"
+[     6.397] (II) The server relies on udev to provide the list of input devices.
+	If no devices become available, reconfigure udev or disable AutoAddDevices.
+[     6.397] (II) Loader magic: 0xaaaabd7f0ef0
+[     6.397] (II) Module ABI versions:
+[     6.398] 	X.Org ANSI C Emulation: 0.4
+[     6.398] 	X.Org Video Driver: 25.2
+[     6.398] 	X.Org XInput driver : 24.4
+[     6.398] 	X.Org Server Extension : 10.0
+[     6.404] (EE) dbus-core: error connecting to system bus: org.freedesktop.DBus.Error.FileNotFound (Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory)
+[     6.405] (++) using VT number 1
+
+[     6.405] (II) systemd-logind: logind integration requires -keeptty and -keeptty was not provided, disabling logind integration
+[     6.430] (II) xfree86: Adding drm device (/dev/dri/card0)
+[     6.430] (II) Platform probe for /sys/devices/platform/4010000000.pcie/pci0000:00/0000:00:01.0/drm/card0
+[     6.462] (--) PCI:*(0@0:1:0) 1af4:1050:1af4:1100 rev 1, Mem @ 0x10000000/4096, 0x8000000000/16384
+[     6.463] (II) LoadModule: "glx"
+[     6.474] (II) Loading /usr/lib/xorg/modules/extensions/libglx.so
+[     6.511] (II) Module glx: vendor="X.Org Foundation"
+[     6.511] 	compiled for 1.21.1.16, module version = 1.0.0
+[     6.511] 	ABI class: X.Org Server Extension, version 10.0
+[     6.512] (II) LoadModule: "modesetting"
+[     6.514] (II) Loading /usr/lib/xorg/modules/drivers/modesetting_drv.so
+[     6.517] (II) Module modesetting: vendor="X.Org Foundation"
+[     6.517] 	compiled for 1.21.1.16, module version = 1.21.1
+[     6.518] 	Module class: X.Org Video Driver
+[     6.518] 	ABI class: X.Org Video Driver, version 25.2
+[     6.518] (II) modesetting: Driver for Modesetting Kernel Drivers: kms
+[     6.519] (WW) xf86OpenConsole: setsid failed: Operation not permitted
+[     6.527] (II) modeset(0): using drv /dev/dri/card0
+[     6.534] (**) modeset(0): Depth 24, (--) framebuffer bpp 32
+[     6.534] (**) modeset(0): Option "SWcursor" "true"
+[     6.534] (**) modeset(0): Option "kmsdev" "/dev/dri/card0"
+[     6.535] (**) modeset(0): Option "ShadowFB" "true"
+[     6.535] (**) modeset(0): Option "AccelMethod" "none"
+[     6.535] (==) modeset(0): RGB weight 888
+[     6.535] (==) modeset(0): Default visual is TrueColor
+[     6.536] (**) modeset(0): glamor disabled
+[     6.537] (II) modeset(0): ShadowFB: preferred NO, enabled YES
+[     6.537] (II) modeset(0): Double-buffered shadow updates: off
+[     6.543] (II) modeset(0): Output Virtual-1 has no monitor section
+[     6.552] (II) modeset(0): EDID for output Virtual-1
+[     6.552] (II) modeset(0): Manufacturer: RHT  Model: 1234  Serial#: 0
+[     6.552] (II) modeset(0): Year: 2014  Week: 42
+[     6.553] (II) modeset(0): EDID Version: 1.4
+[     6.553] (II) modeset(0): Digital Display Input
+[     6.553] (II) modeset(0): 8 bits per channel
+[     6.553] (II) modeset(0): Digital interface is DisplayPort
+[     6.553] (II) modeset(0): Max Image Size [cm]: horiz.: 20  vert.: 15
+[     6.553] (II) modeset(0): Gamma: 2.20
+[     6.553] (II) modeset(0): No DPMS capabilities specified
+[     6.554] (II) modeset(0): Supported color encodings: RGB 4:4:4 
+[     6.554] (II) modeset(0): Default color space is primary color space
+[     6.554] (II) modeset(0): First detailed timing is preferred mode
+[     6.554] (II) modeset(0): Preferred mode is native pixel format and refresh rate
+[     6.554] (II) modeset(0): redX: 0.640 redY: 0.330   greenX: 0.300 greenY: 0.600
+[     6.555] (II) modeset(0): blueX: 0.150 blueY: 0.060   whiteX: 0.312 whiteY: 0.329
+[     6.555] (II) modeset(0): Supported established timings:
+[     6.555] (II) modeset(0): 640x480@60Hz
+[     6.555] (II) modeset(0): 800x600@60Hz
+[     6.555] (II) modeset(0): 1024x768@60Hz
+[     6.555] (II) modeset(0): Manufacturer's mask: 0
+[     6.555] (II) modeset(0): Supported standard timings:
+[     6.556] (II) modeset(0): #0: hsize: 2048  vsize 1152  refresh: 60  vid: 49377
+[     6.556] (II) modeset(0): #1: hsize: 1920  vsize 1080  refresh: 60  vid: 49361
+[     6.556] (II) modeset(0): #2: hsize: 1920  vsize 1200  refresh: 60  vid: 209
+[     6.556] (II) modeset(0): #3: hsize: 1600  vsize 1200  refresh: 60  vid: 16553
+[     6.556] (II) modeset(0): #4: hsize: 1680  vsize 1050  refresh: 60  vid: 179
+[     6.556] (II) modeset(0): #5: hsize: 1440  vsize 900  refresh: 60  vid: 149
+[     6.557] (II) modeset(0): #6: hsize: 1280  vsize 1024  refresh: 60  vid: 32897
+[     6.557] (II) modeset(0): #7: hsize: 1280  vsize 960  refresh: 60  vid: 16513
+[     6.557] (II) modeset(0): Supported detailed timing:
+[     6.558] (II) modeset(0): clock: 50.3 MHz   Image Size:  203 x 152 mm
+[     6.558] (II) modeset(0): h_active: 800  h_sync: 1000  h_sync_end 1024 h_blank_end 1080 h_border: 0
+[     6.558] (II) modeset(0): v_active: 600  v_sync: 603  v_sync_end 606 v_blanking: 621 v_border: 0
+[     6.558] (II) modeset(0): Established timings III: (not decoded)
+[     6.558] (II) modeset(0): Ranges: V min: 50 V max: 125 Hz, H min: 30 H max: 160 kHz,
+[     6.558] (II) modeset(0): Monitor name: QEMU Monitor
+[     6.559] (II) modeset(0): Number of EDID sections to follow: 1
+[     6.559] (II) modeset(0): EDID (in hex):
+[     6.559] (II) modeset(0): 	00ffffffffffff004914341200000000
+[     6.559] (II) modeset(0): 	2a180104a5140f7806ee91a3544c9926
+[     6.559] (II) modeset(0): 	0f5054210800e1c0d1c0d100a940b300
+[     6.559] (II) modeset(0): 	950081808140a613201831581520c818
+[     6.559] (II) modeset(0): 	3300cb9800000018000000f7000a0040
+[     6.559] (II) modeset(0): 	82002820000000000000000000fd0032
+[     6.559] (II) modeset(0): 	7d1ea0ff010a202020202020000000fc
+[     6.560] (II) modeset(0): 	0051454d55204d6f6e69746f720a01c0
+[     6.560] (II) modeset(0): 	02030b00467d6560591f610000001000
+[     6.560] (II) modeset(0): 	00000000000000000000000000000000
+[     6.560] (II) modeset(0): 	10000000000000000000000000000000
+[     6.560] (II) modeset(0): 	00001000000000000000000000000000
+[     6.561] (II) modeset(0): 	00000000100000000000000000000000
+[     6.561] (II) modeset(0): 	00000000000010000000000000000000
+[     6.561] (II) modeset(0): 	00000000000000001000000000000000
+[     6.561] (II) modeset(0): 	0000000000000000000000000000002f
+[     6.563] (II) modeset(0): Printing probed modes for output Virtual-1
+[     6.564] (II) modeset(0): Modeline "800x600"x75.0   50.30  800 1000 1024 1080  600 603 606 621 -hsync -vsync (46.6 kHz UeP)
+[     6.564] (II) modeset(0): Modeline "5120x2160"x50.0  742.50  5120 6216 6304 6600  2160 2168 2178 2250 +hsync +vsync (112.5 kHz e)
+[     6.564] (II) modeset(0): Modeline "4096x2160"x50.0  594.00  4096 5064 5152 5280  2160 2168 2178 2250 +hsync +vsync (112.5 kHz e)
+[     6.565] (II) modeset(0): Modeline "3840x2160"x60.0  594.00  3840 4016 4104 4400  2160 2168 2178 2250 +hsync +vsync (135.0 kHz e)
+[     6.565] (II) modeset(0): Modeline "3840x2160"x50.0  594.00  3840 4896 4984 5280  2160 2168 2178 2250 +hsync +vsync (112.5 kHz e)
+[     6.565] (II) modeset(0): Modeline "3840x2160"x59.9  593.41  3840 4016 4104 4400  2160 2168 2178 2250 +hsync +vsync (134.9 kHz e)
+[     6.565] (II) modeset(0): Modeline "1920x1440"x60.0  234.00  1920 2048 2256 2600  1440 1441 1444 1500 -hsync +vsync (90.0 kHz e)
+[     6.565] (II) modeset(0): Modeline "2560x1080"x50.0  185.62  2560 3108 3152 3300  1080 1084 1089 1125 +hsync +vsync (56.2 kHz e)
+[     6.565] (II) modeset(0): Modeline "1856x1392"x60.0  218.25  1856 1952 2176 2528  1392 1393 1396 1439 -hsync +vsync (86.3 kHz e)
+[     6.565] (II) modeset(0): Modeline "1792x1344"x60.0  204.75  1792 1920 2120 2448  1344 1345 1348 1394 -hsync +vsync (83.6 kHz e)
+[     6.565] (II) modeset(0): Modeline "2048x1152"x60.0  162.00  2048 2074 2154 2250  1152 1153 1156 1200 +hsync +vsync (72.0 kHz e)
+[     6.565] (II) modeset(0): Modeline "1920x1200"x59.9  193.25  1920 2056 2256 2592  1200 1203 1209 1245 -hsync +vsync (74.6 kHz e)
+[     6.566] (II) modeset(0): Modeline "1920x1080"x60.0  148.50  1920 2008 2052 2200  1080 1084 1089 1125 -hsync -vsync (67.5 kHz e)
+[     6.566] (II) modeset(0): Modeline "1920x1080"x50.0  148.50  1920 2448 2492 2640  1080 1084 1089 1125 +hsync +vsync (56.2 kHz e)
+[     6.566] (II) modeset(0): Modeline "1600x1200"x60.0  162.00  1600 1664 1856 2160  1200 1201 1204 1250 +hsync +vsync (75.0 kHz e)
+[     6.566] (II) modeset(0): Modeline "1680x1050"x60.0  146.25  1680 1784 1960 2240  1050 1053 1059 1089 -hsync +vsync (65.3 kHz e)
+[     6.566] (II) modeset(0): Modeline "1400x1050"x60.0  121.75  1400 1488 1632 1864  1050 1053 1057 1089 -hsync +vsync (65.3 kHz e)
+[     6.566] (II) modeset(0): Modeline "1280x1024"x60.0  108.00  1280 1328 1440 1688  1024 1025 1028 1066 +hsync +vsync (64.0 kHz e)
+[     6.566] (II) modeset(0): Modeline "1440x900"x59.9  106.50  1440 1520 1672 1904  900 903 909 934 -hsync +vsync (55.9 kHz e)
+[     6.566] (II) modeset(0): Modeline "1280x960"x60.0  108.00  1280 1376 1488 1800  960 961 964 1000 +hsync +vsync (60.0 kHz e)
+[     6.566] (II) modeset(0): Modeline "1360x768"x60.0   85.50  1360 1424 1536 1792  768 771 777 795 +hsync +vsync (47.7 kHz e)
+[     6.567] (II) modeset(0): Modeline "1280x768"x59.9   79.50  1280 1344 1472 1664  768 771 778 798 -hsync +vsync (47.8 kHz e)
+[     6.567] (II) modeset(0): Modeline "1024x768"x60.0   65.00  1024 1048 1184 1344  768 771 777 806 -hsync -vsync (48.4 kHz e)
+[     6.567] (II) modeset(0): Modeline "800x600"x60.3   40.00  800 840 968 1056  600 601 605 628 +hsync +vsync (37.9 kHz e)
+[     6.567] (II) modeset(0): Modeline "640x480"x60.0   25.20  640 656 752 800  480 490 492 525 -hsync -vsync (31.5 kHz e)
+[     6.567] (II) modeset(0): Modeline "640x480"x59.9   25.18  640 656 752 800  480 490 492 525 -hsync -vsync (31.5 kHz e)
+[     6.567] (II) modeset(0): Output Virtual-1 connected
+[     6.568] (II) modeset(0): Using user preference for initial modes
+[     6.568] (II) modeset(0): Output Virtual-1 using initial mode 800x600 +0+0
+[     6.569] (==) modeset(0): Using gamma correction (1.0, 1.0, 1.0)
+[     6.570] (==) modeset(0): DPI set to (96, 96)
+[     6.570] (II) Loading sub module "fb"
+[     6.570] (II) LoadModule: "fb"
+[     6.570] (II) Module "fb" already built-in
+[     6.570] (II) Loading sub module "shadow"
+[     6.570] (II) LoadModule: "shadow"
+[     6.574] (II) Loading /usr/lib/xorg/modules/libshadow.so
+[     6.577] (II) Module shadow: vendor="X.Org Foundation"
+[     6.577] 	compiled for 1.21.1.16, module version = 1.1.0
+[     6.577] 	ABI class: X.Org ANSI C Emulation, version 0.4
+[     6.594] (==) modeset(0): Backing store enabled
+[     6.594] (==) modeset(0): Silken mouse enabled
+[     6.601] (II) modeset(0): Initializing kms color map for depth 24, 8 bpc.
+[     6.605] (==) modeset(0): DPMS enabled
+[     6.606] (II) Initializing extension Generic Event Extension
+[     6.608] (II) Initializing extension SHAPE
+[     6.610] (II) Initializing extension MIT-SHM
+[     6.611] (II) Initializing extension XInputExtension
+[     6.614] (II) Initializing extension XTEST
+[     6.616] (II) Initializing extension BIG-REQUESTS
+[     6.617] (II) Initializing extension SYNC
+[     6.619] (II) Initializing extension XKEYBOARD
+[     6.621] (II) Initializing extension XC-MISC
+[     6.622] (II) Initializing extension SECURITY
+[     6.624] (II) Initializing extension XFIXES
+[     6.626] (II) Initializing extension RENDER
+[     6.628] (II) Initializing extension RANDR
+[     6.630] (II) Initializing extension COMPOSITE
+[     6.633] (II) Initializing extension DAMAGE
+[     6.634] (II) Initializing extension MIT-SCREEN-SAVER
+[     6.635] (II) Initializing extension DOUBLE-BUFFER
+[     6.637] (II) Initializing extension RECORD
+[     6.638] (II) Initializing extension DPMS
+[     6.640] (II) Initializing extension Present
+[     6.641] (II) Initializing extension DRI3
+[     6.641] (II) Initializing extension X-Resource
+[     6.643] (II) Initializing extension XVideo
+[     6.645] (II) Initializing extension XVideo-MotionCompensation
+[     6.645] (II) Initializing extension SELinux
+[     6.645] (II) SELinux: Disabled on system
+[     6.645] (II) Initializing extension GLX
+[     6.648] (II) AIGLX: Screen 0 is not DRI2 capable
+[     7.962] (II) IGLX: Loaded and initialized swrast
+[     7.962] (II) GLX: Initialized DRISWRAST GL provider for screen 0
+[     7.963] (II) Initializing extension XFree86-VidModeExtension
+[     7.964] (II) Initializing extension XFree86-DGA
+[     7.966] (II) Initializing extension XFree86-DRI
+[     7.966] (II) Initializing extension DRI2
+[     7.973] (II) modeset(0): Damage tracking initialized
+[     7.973] (II) modeset(0): Setting screen physical size to 211 x 158
+[     8.853] (II) config/udev: Adding input device QEMU Virtio Tablet (/dev/input/event0)
+[     8.854] (**) QEMU Virtio Tablet: Applying InputClass "libinput pointer catchall"
+[     8.855] (II) LoadModule: "libinput"
+[     8.858] (II) Loading /usr/lib/xorg/modules/input/libinput_drv.so
+[     8.895] (II) Module libinput: vendor="X.Org Foundation"
+[     8.896] 	compiled for 1.21.1.15, module version = 1.5.0
+[     8.896] 	Module class: X.Org XInput Driver
+[     8.896] 	ABI class: X.Org XInput driver, version 24.4
+[     8.896] (II) Using input driver 'libinput' for 'QEMU Virtio Tablet'
+[     8.897] (**) QEMU Virtio Tablet: always reports core events
+[     8.897] (**) Option "Device" "/dev/input/event0"
+[     8.999] (II) event0  - QEMU Virtio Tablet: is tagged by udev as: Mouse
+[     9.004] (II) event0  - QEMU Virtio Tablet: device is a pointer
+[     9.008] (II) event0  - QEMU Virtio Tablet: device removed
+[     9.068] (**) Option "config_info" "udev:/sys/devices/platform/4010000000.pcie/pci0000:00/0000:00:02.0/virtio1/input/input0/event0"
+[     9.069] (II) XINPUT: Adding extended input device "QEMU Virtio Tablet" (type: MOUSE, id 6)
+[     9.074] (**) Option "AccelerationScheme" "none"
+[     9.075] (**) QEMU Virtio Tablet: (accel) selected scheme none/0
+[     9.075] (**) QEMU Virtio Tablet: (accel) acceleration factor: 2.000
+[     9.075] (**) QEMU Virtio Tablet: (accel) acceleration threshold: 4
+[     9.101] (II) event0  - QEMU Virtio Tablet: is tagged by udev as: Mouse
+[     9.105] (II) event0  - QEMU Virtio Tablet: device is a pointer
+[     9.124] (II) config/udev: Adding input device QEMU Virtio Tablet (/dev/input/mouse0)
+[     9.125] (II) No input driver specified, ignoring this device.
+[     9.125] (II) This device may have been added with another device file.
+[     9.145] (II) config/udev: Adding input device QEMU Virtio Keyboard (/dev/input/event1)
+[     9.145] (**) QEMU Virtio Keyboard: Applying InputClass "libinput keyboard catchall"
+[     9.145] (II) Using input driver 'libinput' for 'QEMU Virtio Keyboard'
+[     9.145] (**) QEMU Virtio Keyboard: always reports core events
+[     9.145] (**) Option "Device" "/dev/input/event1"
+[     9.172] (II) event1  - QEMU Virtio Keyboard: is tagged by udev as: Keyboard
+[     9.173] (II) event1  - QEMU Virtio Keyboard: device is a keyboard
+[     9.176] (II) event1  - QEMU Virtio Keyboard: device removed
+[     9.232] (**) Option "config_info" "udev:/sys/devices/platform/4010000000.pcie/pci0000:00/0000:00:03.0/virtio2/input/input1/event1"
+[     9.233] (II) XINPUT: Adding extended input device "QEMU Virtio Keyboard" (type: KEYBOARD, id 7)
+[     9.233] (**) Option "xkb_model" "pc105"
+[     9.233] (**) Option "xkb_layout" "us"
+[     9.263] (II) event1  - QEMU Virtio Keyboard: is tagged by udev as: Keyboard
+[     9.264] (II) event1  - QEMU Virtio Keyboard: device is a keyboard
+[     9.445] (EE) dbus-core: error connecting to system bus: org.freedesktop.DBus.Error.FileNotFound (Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory)
+[    19.449] (EE) dbus-core: error connecting to system bus: org.freedesktop.DBus.Error.FileNotFound (Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory)
+I: Bus=0006 Vendor=0627 Product=0003 Version=0002
+N: Name="QEMU Virtio Tablet"
+P: Phys=virtio1/input0
+S: Sysfs=/devices/platform/4010000000.pcie/pci0000:00/0000:00:02.0/virtio1/input/input0
+U: Uniq=
+H: Handlers=mouse0 event0 
+B: PROP=0
+B: EV=f
+B: KEY=30400 1f0000 0 0 0 0
+B: REL=100
+B: ABS=3
+
+I: Bus=0006 Vendor=0627 Product=0001 Version=0001
+N: Name="QEMU Virtio Keyboard"
+P: Phys=virtio2/input0
+S: Sysfs=/devices/platform/4010000000.pcie/pci0000:00/0000:00:03.0/virtio2/input/input1
+U: Uniq=
+H: Handlers=sysrq kbd leds event1 
+B: PROP=0
+B: EV=120003
+B: KEY=400000007 ff803078f800dfff febeffff7bcfffff fffffffffffffffe
+B: LED=7
+
+DEVPATH=/devices/platform/4010000000.pcie/pci0000:00/0000:00:02.0/virtio1/input/input0/event0
+DEVNAME=/dev/input/event0
+MAJOR=13
+MINOR=64
+SUBSYSTEM=input
+USEC_INITIALIZED=5185174
+ID_INPUT=1
+ID_INPUT_MOUSE=1
+ID_SERIAL=noserial
+ID_PATH=platform-4010000000.pcie-pci-0000:00:02.0
+ID_PATH_TAG=platform-4010000000_pcie-pci-0000_00_02_0
+LIBINPUT_DEVICE_GROUP=6/627/3:virtio1
+DEVLINKS=/dev/input/by-path/platform-4010000000.pcie-pci-0000:00:02.0-event-mouse
+               total        used        free      shared  buff/cache   available
+Mem:      1014939648   264060928   656289792    34299904   196255744   750878720
+Swap:              0           0           0
+
+GUI_CHECK_display_input_evidence
+debian# 
+GUI_CHECK_client_uid
+debian# 
+GUI_CHECK_focus
+debian# 
+GUI_CHECK_persisted_before_write
+debian# 
+GUI_CHECK_typed_saved
+debian# 
+GUI_CHECK_file_owner
+debian# 
+xwininfo: Window id: 0x40000c "ideck@(none): /"
+
+  Absolute upper-left X:  81
+  Absolute upper-left Y:  85
+  Relative upper-left X:  1
+  Relative upper-left Y:  20
+  Width: 556
+  Height: 316
+  Depth: 24
+  Visual: 0x21
+  Visual Class: TrueColor
+  Border width: 0
+  Class: InputOutput
+  Colormap: 0x20 (installed)
+  Bit Gravity State: NorthWestGravity
+  Window Gravity State: NorthWestGravity
+  Backing Store State: NotUseful
+  Save Under State: no
+  Map State: IsViewable
+  Override Redirect State: no
+  Corners:  +81+85  -163+85  -163-199  +81-199
+  -geometry 92x24+80+65
+
+
+GUI_CHECK_moved_resized
+debian# 
+GUI_CHECK_pointer_focus
+debian# WINDOW=4194316
+X=82
+Y=105
+WIDTH=556
+HEIGHT=316
+SCREEN=0
+
+GUI_CHECK_geometry_0
+debian# WINDOW=4194316
+X=122
+Y=129
+WIDTH=556
+HEIGHT=316
+SCREEN=0
+
+GUI_CHECK_geometry_1
+debian# WINDOW=4194316
+X=122
+Y=129
+WIDTH=598
+HEIGHT=342
+SCREEN=0
+
+GUI_CHECK_geometry_2
+debian# 
+GUI_CHECK_editor_launch_terminal
+debian# 
+GUI_CHECK_editor_file_loaded
+debian# 10485763
+
+GUI_CHECK_editor_reopened
+debian# 
+GUI_CHECK_client_layout
+debian# X connection to :0 broken (explicit kill or server shutdown).
+
+(mousepad:251): dconf-[1;33mWARNING[0m **: [34m05:28:43.772[0m: failed to commit changes to dconf: The connection is closed
+
+(mousepad:251): dconf-[1;33mWARNING[0m **: [34m05:28:43.786[0m: failed to commit changes to dconf: The connection is closed
+(II) Server terminated successfully (0). Closing log file.
+IDECK_GUI_HOST_CLEAN_UNMOUNT
+[   31.711931] reboot: Power down

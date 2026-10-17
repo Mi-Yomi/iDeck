@@ -1,5 +1,88 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Настоящий GUI на host; production Alpine transfer заблокирован — 2026-10-17
+
+Продолжение от **b8a943f063302883e87d7deac0cb9abec0e37172** в сохранённом
+cloud workspace `/workspace/iDeck`, только
+`codex/linux-guest-feasibility-20261015`. Начальное дерево было чистым,
+origin проверен, выполнен явный switch с `work`; новых чужих коммитов нет.
+Применимых AGENTS.md в repo/родителях нет. Main/work, credentials и CI не менялись.
+
+**Сделан реальный host desktop:** Xorg modesetting/KMS/VT1 с software rendering,
+Openbox, tint2 с launchers, PCManFM, Mousepad, xterm; root Xorg, session UID1000,
+local X socket/Xauthority, отдельные devpts/shm/run mounts, udev, no guest network.
+Это полноценные Linux процессы внутри system-QEMU, не mock/framebuffer-test,
+не remote streaming. Debian — не SteamOS. По parent upstream audit для Steam
+существует ARM64 client; обязательная x86 эмуляция клиента не утверждается.
+Steam, GPU acceleration и iPhone GUI этим этапом не проверены.
+
+Отдельный authenticated `ipa/gui-inputs.lock.json`: **341 пакет ARM64/all**,
+**175210844bytes .debs**, **736205824bytes declared installed**; один trixie/main
+InRelease, принятые GPG signers, by-hash arm64/amd64 indexes, точные versions /
+architectures /sizes /SHA, full solver replay. Security metadata не смешивалась.
+Официальные QEMU/e2fsprogs/kmod извлечены локально из94 pinned host packages;
+установки в host OS нет. Отдельный pinned Debian kernel6.12.107 — только
+provision instrument, не замена production Alpine6.18.35.
+
+Настоящая ARM64 VM успешно исполнила все package maintainer scripts, включая
+systemd-sysusers/udev; normal `dpkg --configure -a`, пустой successful audit и
+точный persisted341-package manifest PASS. Предварительный `--force-depends
+--unpack` только bootstrap cycles; scripts не подменялись/не пропускались.
+Два final GUI boot **38.882/34.546s**: mapped real clients, UID1000, фактический
+ввод клавиатуры, move/resize виртуальной мышью, typing/Ctrl-S в Mousepad,
+второй boot читает оба файла до записи и открывает сохранённый файл в редакторе.
+Два control Stop, clean unmount и `e2fsck -fn` PASS. Дополнительный loader boot
+**43.466s** повторил GUI/Stop/fsck и проверил **423 PT_INTERP executables** через
+настоящий glibc loader `--list`. Inventory: 1133 ELF /3791 DT_NEEDED; один отдельный
+private-DSO static residual сохранён, all-standalone-DSO PASS не заявлен.
+
+Измеренный **host-only snapshot**: raw1342177280bytes (1.25GiB),
+used884133888 /free458043392bytes; gzip400617549bytes. Raw SHA
+`a32f7b9c0c59e651492811458e3a46667010eb4be54d07a79487e94c5e43ed06`, gzip SHA
+`c1476f9e179b3dc5f6c8c3bbfce3e7e6e38351e4d914bc49aaa01b677a76b078`;
+stream count/hash match. Это lab disk с acceptance files, не готовый app seed.
+Будущий GUI UUID b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7 /gui-rootfs-v1.raw;
+production profile/size/disk path ещё не выпущены. Никакого auto resize/reseed.
+Builder peak810754048bytes; host-QEMU provisioning peak sampled VmHWM1415208960,
+GUI826548224/811683840, loader828547072bytes. Это не iOS memory evidence.
+1GiB guest/4vCPU/256MiB TCG/no swap сохранены. Все 341 copyright files проверены.
+
+**Native pointer fix:** release/cancel больше не требуют финального hit test,
+stray move не создаёт down, duplicate/repeated releases idempotent; release при
+app focus/background, removal/size change и перед Stop. Production Swift state
+имеет mandatory 10000-cycle Apple test. Локально исходный pinned Husk restored,
+patches/hashes/copies PASS; Swift/Apple/UIKit execution NOT RUN. Полный Desktop
+input (keyboard/special/modifiers/right-click/scroll) и route остаются pending.
+Owner-thread retention, single VM/process, lifecycle failure latch и disk locks
+до app exit сохранены; qemu_cleanup/unregister/unlock не вводились. Accepted
+console payload/seed/guest scripts и storage/lifecycle implementations неизменны;
+в TerminalSession добавлена только pre-Stop input-release notification.
+
+**Реальный production blocker:** прежних .work/rootfs/module artifacts в
+восстановленном cloud workspace не было. Точный Alpine CDN archive HEAD дал
+`403 CONNECT tunnel failed`; Library нашла приложенный modloop-virt17670144bytes,
+но текущий штатный helper дал `hosted apps tools/list request failed: network`.
+Обходных proxy/token channels нет. Нужен точный modloop SHA
+`f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b`
+либо уже принятые4 ext4 modules+metadata из прежнего build (total1908556bytes
+module content; pins в local-debian-ext4-modules.json). Далее matching-kernel GUI
+boot, final GUI seed/lock/stage/IPA integration и native Desktop route/input.
+Не считать host Debian-kernel PASS доказательством production Alpine/iPhone GUI.
+
+**Финальная offline suite:** 253 tests, 249 PASS, 4 SKIP, 0 failures/errors,
+7.178 s. Четыре skips — отсутствуют
+Swift, user-QEMU, original RCU archive и Swift pointer runtime. Native Apple gate
+обязателен. Overlay: 30 inputs /78 originals /6 patched /19 copies PASS.
+
+Сводка/команды/ограничения: [GUI-DESKTOP.md](experiments/linux-guest/GUI-DESKTOP.md).
+Полные receipts, serial/package/fsck/loader/notices и настоящий scanout:
+[evidence/gui-host-20261017](experiments/linux-guest/evidence/gui-host-20261017/receipt.json).
+Большие raw/gzip/cache остались в `.work/gui-20261017/`; не загружены/не в git.
+Нет Codemagic/иной CI, Apple build/typecheck/IPA/install/device runs, Steam или
+новых live credential requests. Parent координирует transfer/review и будущую CI
+после fresh quota/paidOFF checks; никаких самостоятельных запусков здесь.
+
+
 ## Debian device gate принят: две сессии, persistence и Stop — 2026-10-17
 
 **Принято в ограниченном объёме:** две Debian console сессии на runtime source

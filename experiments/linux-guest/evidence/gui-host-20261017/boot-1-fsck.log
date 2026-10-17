@@ -1,0 +1,7 @@
+Pass 1: Checking inodes, blocks, and sizes
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+/workspace/iDeck/.work/gui-20261017/vm-final/scratch-gui.raw: 21241/163840 files (0.3% non-contiguous), 215848/327680 blocks
+e2fsck 1.47.2 (1-Jan-2025)

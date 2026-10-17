@@ -1,0 +1,3076 @@
+{
+  "schema": 1,
+  "copyright_files": [
+    {
+      "package": "adwaita-icon-theme",
+      "version": "48.1-1",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/adwaita-icon-theme/copyright",
+      "resolved_path": "/usr/share/doc/adwaita-icon-theme/copyright",
+      "size": 110653,
+      "sha256": "b8058c6a4e62094c4c4a081b9681b3e67e2ffed995d6b8b5fe43a536745f04ba"
+    },
+    {
+      "package": "adwaita-icon-theme-legacy",
+      "version": "46.2-2",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/adwaita-icon-theme-legacy/copyright",
+      "resolved_path": "/usr/share/doc/adwaita-icon-theme-legacy/copyright",
+      "size": 53389,
+      "sha256": "6c5dadef2ed02fac6f3515df5db913132bdc3425433e0377b53d475d75828a01"
+    },
+    {
+      "package": "apt",
+      "version": "3.0.3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/apt/copyright",
+      "resolved_path": "/usr/share/doc/apt/copyright",
+      "size": 8011,
+      "sha256": "77ab918ade9bce20b07524572fc8eab3f8c0cab4d246f282043892aaa9538803"
+    },
+    {
+      "package": "at-spi2-common",
+      "version": "2.56.2-1+deb13u2",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/at-spi2-common/copyright",
+      "resolved_path": "/usr/share/doc/at-spi2-common/copyright",
+      "size": 11841,
+      "sha256": "72fbc9d2c44016dd061f3f63f75253e57089bcd23a4f9023039de4631e7cf918"
+    },
+    {
+      "package": "base-files",
+      "version": "13.8+deb13u7",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/base-files/copyright",
+      "resolved_path": "/usr/share/doc/base-files/copyright",
+      "size": 1696,
+      "sha256": "c84c664bce3a83eaa327bb9e354c0df588bc535b5e95474aab7ca3cce74937cd"
+    },
+    {
+      "package": "base-passwd",
+      "version": "3.6.7",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/base-passwd/copyright",
+      "resolved_path": "/usr/share/doc/base-passwd/copyright",
+      "size": 798,
+      "sha256": "0f1cde79bd80a75f9029ae9a8c252b642223027ef36f6989c63a8230aae576a7"
+    },
+    {
+      "package": "bash",
+      "version": "5.2.37-2+b10",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/bash/copyright",
+      "resolved_path": "/usr/share/doc/bash/copyright",
+      "size": 9764,
+      "sha256": "06319d84c3e5ed096036f6a9310a030c7e84e50dff2b8a6792285c83ec0ada73"
+    },
+    {
+      "package": "bsdutils",
+      "version": "1:2.41.5-0+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/bsdutils/copyright",
+      "resolved_path": "/usr/share/doc/bsdutils/copyright",
+      "size": 30341,
+      "sha256": "56b67e2eb8bac5a15d91e261d558d73f1f029113cced229753138194997366b6"
+    },
+    {
+      "package": "ca-certificates",
+      "version": "20250419",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/ca-certificates/copyright",
+      "resolved_path": "/usr/share/doc/ca-certificates/copyright",
+      "size": 18940,
+      "sha256": "e85e1bcad3a915dc7e6f41412bc5bdeba275cadd817896ea0451f2140a93967c"
+    },
+    {
+      "package": "coreutils",
+      "version": "9.7-3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/coreutils/copyright",
+      "resolved_path": "/usr/share/doc/coreutils/copyright",
+      "size": 5572,
+      "sha256": "3a63d4b11a7ba4c1c17175072ea28e07b0f80c7bc1ca042b27431fe65a14755b"
+    },
+    {
+      "package": "cpp",
+      "version": "4:14.2.0-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/cpp/copyright",
+      "resolved_path": "/usr/share/doc/cpp-aarch64-linux-gnu/copyright",
+      "size": 2196,
+      "sha256": "156004744edbf17a975f0004ac4a9295b160ab403d646c445235711255ca9ff8"
+    },
+    {
+      "package": "cpp-14",
+      "version": "14.2.0-19",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/cpp-14/copyright",
+      "resolved_path": "/usr/share/doc/gcc-14-base/copyright",
+      "size": 69004,
+      "sha256": "20390f8a6f3b1e4d7cb45dd8652dabb259bbef688cbad839bcdb0b9ba7252f79"
+    },
+    {
+      "package": "cpp-14-aarch64-linux-gnu",
+      "version": "14.2.0-19",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/cpp-14-aarch64-linux-gnu/copyright",
+      "resolved_path": "/usr/share/doc/gcc-14-base/copyright",
+      "size": 69004,
+      "sha256": "20390f8a6f3b1e4d7cb45dd8652dabb259bbef688cbad839bcdb0b9ba7252f79"
+    },
+    {
+      "package": "cpp-aarch64-linux-gnu",
+      "version": "4:14.2.0-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/cpp-aarch64-linux-gnu/copyright",
+      "resolved_path": "/usr/share/doc/cpp-aarch64-linux-gnu/copyright",
+      "size": 2196,
+      "sha256": "156004744edbf17a975f0004ac4a9295b160ab403d646c445235711255ca9ff8"
+    },
+    {
+      "package": "dash",
+      "version": "0.5.12-12",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/dash/copyright",
+      "resolved_path": "/usr/share/doc/dash/copyright",
+      "size": 3878,
+      "sha256": "d98c53f281321baad38164aa9ae6e368a9253be6ec51bd26a759b5e72b326f4a"
+    },
+    {
+      "package": "dbus",
+      "version": "1.16.2-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/dbus/copyright",
+      "resolved_path": "/usr/share/doc/dbus/copyright",
+      "size": 20076,
+      "sha256": "f5fd0bfcceb21f4c23a517368abcbfe8a4c1cfb3b521757b50fae4898840fe35"
+    },
+    {
+      "package": "dbus-bin",
+      "version": "1.16.2-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/dbus-bin/copyright",
+      "resolved_path": "/usr/share/doc/dbus-bin/copyright",
+      "size": 20076,
+      "sha256": "f5fd0bfcceb21f4c23a517368abcbfe8a4c1cfb3b521757b50fae4898840fe35"
+    },
+    {
+      "package": "dbus-daemon",
+      "version": "1.16.2-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/dbus-daemon/copyright",
+      "resolved_path": "/usr/share/doc/dbus-daemon/copyright",
+      "size": 20076,
+      "sha256": "f5fd0bfcceb21f4c23a517368abcbfe8a4c1cfb3b521757b50fae4898840fe35"
+    },
+    {
+      "package": "dbus-session-bus-common",
+      "version": "1.16.2-2",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/dbus-session-bus-common/copyright",
+      "resolved_path": "/usr/share/doc/dbus-session-bus-common/copyright",
+      "size": 20076,
+      "sha256": "f5fd0bfcceb21f4c23a517368abcbfe8a4c1cfb3b521757b50fae4898840fe35"
+    },
+    {
+      "package": "dbus-system-bus-common",
+      "version": "1.16.2-2",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/dbus-system-bus-common/copyright",
+      "resolved_path": "/usr/share/doc/dbus-system-bus-common/copyright",
+      "size": 20076,
+      "sha256": "f5fd0bfcceb21f4c23a517368abcbfe8a4c1cfb3b521757b50fae4898840fe35"
+    },
+    {
+      "package": "dbus-x11",
+      "version": "1.16.2-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/dbus-x11/copyright",
+      "resolved_path": "/usr/share/doc/dbus-x11/copyright",
+      "size": 20076,
+      "sha256": "f5fd0bfcceb21f4c23a517368abcbfe8a4c1cfb3b521757b50fae4898840fe35"
+    },
+    {
+      "package": "dconf-gsettings-backend",
+      "version": "0.40.0-5",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/dconf-gsettings-backend/copyright",
+      "resolved_path": "/usr/share/doc/dconf-gsettings-backend/copyright",
+      "size": 1912,
+      "sha256": "a9d427b6a6e5cb665da3b4115039750c9d1092f558d6dee391d20800fb5c850e"
+    },
+    {
+      "package": "dconf-service",
+      "version": "0.40.0-5",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/dconf-service/copyright",
+      "resolved_path": "/usr/share/doc/dconf-service/copyright",
+      "size": 1912,
+      "sha256": "a9d427b6a6e5cb665da3b4115039750c9d1092f558d6dee391d20800fb5c850e"
+    },
+    {
+      "package": "debconf",
+      "version": "1.5.91",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/debconf/copyright",
+      "resolved_path": "/usr/share/doc/debconf/copyright",
+      "size": 2764,
+      "sha256": "57163c71bd8a5289660892827dd0dfaa7fef47f89deedc9dc6711ced7d0a28d7"
+    },
+    {
+      "package": "debian-archive-keyring",
+      "version": "2025.1",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/debian-archive-keyring/copyright",
+      "resolved_path": "/usr/share/doc/debian-archive-keyring/copyright",
+      "size": 1243,
+      "sha256": "8f918c0bebd1454a084698a95c09d9a03cec8453dad1fc6eab9e6427da9d33a9"
+    },
+    {
+      "package": "debianutils",
+      "version": "5.23.2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/debianutils/copyright",
+      "resolved_path": "/usr/share/doc/debianutils/copyright",
+      "size": 9062,
+      "sha256": "aeb68ea374f488431b8963df24f05482692edfa70d7556d7e528dd06d255461c"
+    },
+    {
+      "package": "dictionaries-common",
+      "version": "1.30.10",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/dictionaries-common/copyright",
+      "resolved_path": "/usr/share/doc/dictionaries-common/copyright",
+      "size": 1099,
+      "sha256": "4d29b4f5fbf93eae51bbc60289a8af549e8ffd3b05f83868403195fd620c7f60"
+    },
+    {
+      "package": "diffutils",
+      "version": "1:3.10-4",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/diffutils/copyright",
+      "resolved_path": "/usr/share/doc/diffutils/copyright",
+      "size": 16445,
+      "sha256": "ac6fcf18142bab7569188ae75b204a9e1c73c050c0f9467adaf080759e516123"
+    },
+    {
+      "package": "dpkg",
+      "version": "1.22.22",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/dpkg/copyright",
+      "resolved_path": "/usr/share/doc/dpkg/copyright",
+      "size": 5661,
+      "sha256": "3376ec6f7bebf6b1e55da9d5dc591c73e752b45dccb0488e8365d2cf216a1746"
+    },
+    {
+      "package": "e2fsprogs",
+      "version": "1.47.2-3+b12",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/e2fsprogs/copyright",
+      "resolved_path": "/usr/share/doc/e2fsprogs/copyright",
+      "size": 20459,
+      "sha256": "2041b5febdc110151ca3372d01b16b85dda1888e33f3f60fce0f59940eed7d19"
+    },
+    {
+      "package": "emacsen-common",
+      "version": "3.0.8",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/emacsen-common/copyright",
+      "resolved_path": "/usr/share/doc/emacsen-common/copyright",
+      "size": 472,
+      "sha256": "d5f85dfc38bddebec54c2970ffbbd0d6e4b0022a3b783c5974ec8d36f34b8d98"
+    },
+    {
+      "package": "findutils",
+      "version": "4.10.0-3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/findutils/copyright",
+      "resolved_path": "/usr/share/doc/findutils/copyright",
+      "size": 24411,
+      "sha256": "f51541fbdfe15c01cd3fd3a06ad3b74478902d36a958d95b1756434979d97ed5"
+    },
+    {
+      "package": "fontconfig",
+      "version": "2.15.0-2.3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/fontconfig/copyright",
+      "resolved_path": "/usr/share/doc/fontconfig/copyright",
+      "size": 1301,
+      "sha256": "b215a61cdd3e62b5b17cc28b1852c78acb3dd38be0fb30706f7efc050dba91db"
+    },
+    {
+      "package": "fontconfig-config",
+      "version": "2.15.0-2.3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/fontconfig-config/copyright",
+      "resolved_path": "/usr/share/doc/fontconfig-config/copyright",
+      "size": 1301,
+      "sha256": "b215a61cdd3e62b5b17cc28b1852c78acb3dd38be0fb30706f7efc050dba91db"
+    },
+    {
+      "package": "fonts-dejavu-core",
+      "version": "2.37-8",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/fonts-dejavu-core/copyright",
+      "resolved_path": "/usr/share/doc/fonts-dejavu-core/copyright",
+      "size": 3859,
+      "sha256": "63d3ba759d12804c5b31a9d5940d855c1820d1f5999e6b0872eb1c7ff045fbc9"
+    },
+    {
+      "package": "fonts-dejavu-mono",
+      "version": "2.37-8",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/fonts-dejavu-mono/copyright",
+      "resolved_path": "/usr/share/doc/fonts-dejavu-mono/copyright",
+      "size": 3859,
+      "sha256": "63d3ba759d12804c5b31a9d5940d855c1820d1f5999e6b0872eb1c7ff045fbc9"
+    },
+    {
+      "package": "fonts-urw-base35",
+      "version": "20200910-8",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/fonts-urw-base35/copyright",
+      "resolved_path": "/usr/share/doc/fonts-urw-base35/copyright",
+      "size": 52517,
+      "sha256": "1315a62758a603a3e6e87a79b8389563789c59c1740b9db8bc2b20e2e2145458"
+    },
+    {
+      "package": "gcc-14-base",
+      "version": "14.2.0-19",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/gcc-14-base/copyright",
+      "resolved_path": "/usr/share/doc/gcc-14-base/copyright",
+      "size": 69004,
+      "sha256": "20390f8a6f3b1e4d7cb45dd8652dabb259bbef688cbad839bcdb0b9ba7252f79"
+    },
+    {
+      "package": "grep",
+      "version": "3.11-4+b1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/grep/copyright",
+      "resolved_path": "/usr/share/doc/grep/copyright",
+      "size": 1807,
+      "sha256": "42d9b4d610396b1e8d1303dcb9487af3f5a2d2709623cf03a04cf76acdf6c5e3"
+    },
+    {
+      "package": "gtk-update-icon-cache",
+      "version": "4.18.6+ds-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/gtk-update-icon-cache/copyright",
+      "resolved_path": "/usr/share/doc/gtk-update-icon-cache/copyright",
+      "size": 24897,
+      "sha256": "298a832781c85409ba3f2876f85606e12b993603cd9963cd7ae7512eacce251e"
+    },
+    {
+      "package": "gzip",
+      "version": "1.13-1+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/gzip/copyright",
+      "resolved_path": "/usr/share/doc/gzip/copyright",
+      "size": 2895,
+      "sha256": "02c197fa26ad056ed2382bb8c3e6323d47edfda4539f727b4ab3f4dbf64ac413"
+    },
+    {
+      "package": "hicolor-icon-theme",
+      "version": "0.18-2",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/hicolor-icon-theme/copyright",
+      "resolved_path": "/usr/share/doc/hicolor-icon-theme/copyright",
+      "size": 1007,
+      "sha256": "10ada3d2584fa46af4edf92b47ebbe94ca0367e124aad8d39ff624c5364c4d58"
+    },
+    {
+      "package": "hostname",
+      "version": "3.25",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/hostname/copyright",
+      "resolved_path": "/usr/share/doc/hostname/copyright",
+      "size": 1273,
+      "sha256": "94189fc5a9a7b7224d96e1a0cfdfe9be0df2018b04bf21d591627ab96b30cad1"
+    },
+    {
+      "package": "hunspell-en-us",
+      "version": "1:2020.12.07-4",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/hunspell-en-us/copyright",
+      "resolved_path": "/usr/share/doc/hunspell-en-us/copyright",
+      "size": 11135,
+      "sha256": "1d7c0128f6c72d2270bf1b271b37a3a21267f759161b68c4dc6c501574c0892e"
+    },
+    {
+      "package": "init-system-helpers",
+      "version": "1.69~deb13u1",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/init-system-helpers/copyright",
+      "resolved_path": "/usr/share/doc/init-system-helpers/copyright",
+      "size": 3133,
+      "sha256": "7534601cc4fa513804d16490359f5831e7b6a1212da3bbf948bebdd4c8799783"
+    },
+    {
+      "package": "keyboard-configuration",
+      "version": "1.242~deb13u1",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/keyboard-configuration/copyright",
+      "resolved_path": "/usr/share/doc/keyboard-configuration/copyright",
+      "size": 3958,
+      "sha256": "9aed29abee9d52d714b393c54a3394dba936694091a984b6d367fbb68cc5547c"
+    },
+    {
+      "package": "kmod",
+      "version": "34.2-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/kmod/copyright",
+      "resolved_path": "/usr/share/doc/libkmod2/copyright",
+      "size": 2412,
+      "sha256": "86ed604b818ec1e47ad0e364b6261b8a11e2544af6f833c625dcf2311c1c8f13"
+    },
+    {
+      "package": "libacl1",
+      "version": "2.3.2-2+b1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libacl1/copyright",
+      "resolved_path": "/usr/share/doc/libacl1/copyright",
+      "size": 2048,
+      "sha256": "9a2dfb4a5abc7e84be2cc41f1089be665519c9409549296f6c19de57ab1d37c2"
+    },
+    {
+      "package": "libapparmor1",
+      "version": "4.1.0-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libapparmor1/copyright",
+      "resolved_path": "/usr/share/doc/libapparmor1/copyright",
+      "size": 6065,
+      "sha256": "52b7cf37d674ca47296cf6270a95ecda0ecbef976cc090d702acbd741e36b3b4"
+    },
+    {
+      "package": "libapt-pkg7.0",
+      "version": "3.0.3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libapt-pkg7.0/copyright",
+      "resolved_path": "/usr/share/doc/libapt-pkg7.0/copyright",
+      "size": 8011,
+      "sha256": "77ab918ade9bce20b07524572fc8eab3f8c0cab4d246f282043892aaa9538803"
+    },
+    {
+      "package": "libaspell15",
+      "version": "0.60.8.1-4",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libaspell15/copyright",
+      "resolved_path": "/usr/share/doc/libaspell15/copyright",
+      "size": 1910,
+      "sha256": "3b61fe76d8a7beb9e3e2d1797318011942e13972f0d59015ca6bc5539719c902"
+    },
+    {
+      "package": "libatk-bridge2.0-0t64",
+      "version": "2.56.2-1+deb13u2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libatk-bridge2.0-0t64/copyright",
+      "resolved_path": "/usr/share/doc/libatk-bridge2.0-0t64/copyright",
+      "size": 11841,
+      "sha256": "72fbc9d2c44016dd061f3f63f75253e57089bcd23a4f9023039de4631e7cf918"
+    },
+    {
+      "package": "libatk1.0-0t64",
+      "version": "2.56.2-1+deb13u2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libatk1.0-0t64/copyright",
+      "resolved_path": "/usr/share/doc/libatk1.0-0t64/copyright",
+      "size": 11841,
+      "sha256": "72fbc9d2c44016dd061f3f63f75253e57089bcd23a4f9023039de4631e7cf918"
+    },
+    {
+      "package": "libatomic1",
+      "version": "14.2.0-19",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libatomic1/copyright",
+      "resolved_path": "/usr/share/doc/gcc-14-base/copyright",
+      "size": 69004,
+      "sha256": "20390f8a6f3b1e4d7cb45dd8652dabb259bbef688cbad839bcdb0b9ba7252f79"
+    },
+    {
+      "package": "libatspi2.0-0t64",
+      "version": "2.56.2-1+deb13u2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libatspi2.0-0t64/copyright",
+      "resolved_path": "/usr/share/doc/libatspi2.0-0t64/copyright",
+      "size": 11841,
+      "sha256": "72fbc9d2c44016dd061f3f63f75253e57089bcd23a4f9023039de4631e7cf918"
+    },
+    {
+      "package": "libattr1",
+      "version": "1:2.5.2-3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libattr1/copyright",
+      "resolved_path": "/usr/share/doc/libattr1/copyright",
+      "size": 1947,
+      "sha256": "0cbec745d85ea775450b2d54fac55277197f429e52d611f72852ed420450620e"
+    },
+    {
+      "package": "libaudit-common",
+      "version": "1:4.0.2-2+deb13u1",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/libaudit-common/copyright",
+      "resolved_path": "/usr/share/doc/libaudit-common/copyright",
+      "size": 1596,
+      "sha256": "6c7011e93f643b112c4cc3622131e28a30477afad6c4f5efe466b13aa7f603cc"
+    },
+    {
+      "package": "libaudit1",
+      "version": "1:4.0.2-2+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libaudit1/copyright",
+      "resolved_path": "/usr/share/doc/libaudit1/copyright",
+      "size": 1596,
+      "sha256": "6c7011e93f643b112c4cc3622131e28a30477afad6c4f5efe466b13aa7f603cc"
+    },
+    {
+      "package": "libavahi-client3",
+      "version": "0.8-16",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libavahi-client3/copyright",
+      "resolved_path": "/usr/share/doc/libavahi-client3/copyright",
+      "size": 5487,
+      "sha256": "66849d0ab7cbf0d770e40e00276ed8d264ed8974c0e064fb12814c0f80430c5d"
+    },
+    {
+      "package": "libavahi-common-data",
+      "version": "0.8-16",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libavahi-common-data/copyright",
+      "resolved_path": "/usr/share/doc/libavahi-common-data/copyright",
+      "size": 5487,
+      "sha256": "66849d0ab7cbf0d770e40e00276ed8d264ed8974c0e064fb12814c0f80430c5d"
+    },
+    {
+      "package": "libavahi-common3",
+      "version": "0.8-16",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libavahi-common3/copyright",
+      "resolved_path": "/usr/share/doc/libavahi-common3/copyright",
+      "size": 5487,
+      "sha256": "66849d0ab7cbf0d770e40e00276ed8d264ed8974c0e064fb12814c0f80430c5d"
+    },
+    {
+      "package": "libblkid1",
+      "version": "2.41.5-0+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libblkid1/copyright",
+      "resolved_path": "/usr/share/doc/libblkid1/copyright",
+      "size": 30341,
+      "sha256": "56b67e2eb8bac5a15d91e261d558d73f1f029113cced229753138194997366b6"
+    },
+    {
+      "package": "libbrotli1",
+      "version": "1.1.0-2+b7",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libbrotli1/copyright",
+      "resolved_path": "/usr/share/doc/libbrotli1/copyright",
+      "size": 1354,
+      "sha256": "24a64e5bb83d0960d1835696a1e23c0896ad6055b0ca47c66ab0eb9a766324b1"
+    },
+    {
+      "package": "libbsd0",
+      "version": "0.12.2-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libbsd0/copyright",
+      "resolved_path": "/usr/share/doc/libbsd0/copyright",
+      "size": 22378,
+      "sha256": "47eaa031b1741a33a93e7cc8909bfe153acaec7ddff12e4dc7377d0e2ec10e91"
+    },
+    {
+      "package": "libbz2-1.0",
+      "version": "1.0.8-6",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libbz2-1.0/copyright",
+      "resolved_path": "/usr/share/doc/libbz2-1.0/copyright",
+      "size": 2228,
+      "sha256": "832ed535ff3c3d025a8d2348eb1b697b89addcf2eaadbc17650262040b9145e2"
+    },
+    {
+      "package": "libc-bin",
+      "version": "2.41-12+deb13u4",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libc-bin/copyright",
+      "resolved_path": "/usr/share/doc/libc-bin/copyright",
+      "size": 51200,
+      "sha256": "f5788886720a2605a946e81d571e6c8162b09f58d2e2ceb8d36e5768fccd850d"
+    },
+    {
+      "package": "libc6",
+      "version": "2.41-12+deb13u4",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libc6/copyright",
+      "resolved_path": "/usr/share/doc/libc6/copyright",
+      "size": 51200,
+      "sha256": "f5788886720a2605a946e81d571e6c8162b09f58d2e2ceb8d36e5768fccd850d"
+    },
+    {
+      "package": "libcairo-gobject2",
+      "version": "1.18.4-1+b1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libcairo-gobject2/copyright",
+      "resolved_path": "/usr/share/doc/libcairo-gobject2/copyright",
+      "size": 28461,
+      "sha256": "408fb9e704e875cd42d432e7c9b3b378f568e3c89db2b5c5ef3d11c025319574"
+    },
+    {
+      "package": "libcairo2",
+      "version": "1.18.4-1+b1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libcairo2/copyright",
+      "resolved_path": "/usr/share/doc/libcairo2/copyright",
+      "size": 28461,
+      "sha256": "408fb9e704e875cd42d432e7c9b3b378f568e3c89db2b5c5ef3d11c025319574"
+    },
+    {
+      "package": "libcap-ng0",
+      "version": "0.8.5-4+b1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libcap-ng0/copyright",
+      "resolved_path": "/usr/share/doc/libcap-ng0/copyright",
+      "size": 1621,
+      "sha256": "567997de097e3738564c90e6fe13343b2daae21a7926d6fb161df41322c1840b"
+    },
+    {
+      "package": "libcap2",
+      "version": "1:2.75-10+deb13u1+b3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libcap2/copyright",
+      "resolved_path": "/usr/share/doc/libcap2/copyright",
+      "size": 4496,
+      "sha256": "04f9fb974e10f6ca0cd226811f72b3855f8383daad0e5de7adac8d5b0b7796c3"
+    },
+    {
+      "package": "libcloudproviders0",
+      "version": "0.3.6-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libcloudproviders0/copyright",
+      "resolved_path": "/usr/share/doc/libcloudproviders0/copyright",
+      "size": 1090,
+      "sha256": "950a9f9c5d081d138f29643696619b9a8d2134386555e244774faa2d9a464e00"
+    },
+    {
+      "package": "libcolord2",
+      "version": "1.4.7-3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libcolord2/copyright",
+      "resolved_path": "/usr/share/doc/libcolord2/copyright",
+      "size": 22086,
+      "sha256": "ef303b9a14eccf720e0f1b422776fc0548c374191f88e78e92fe5b66c00b85de"
+    },
+    {
+      "package": "libcom-err2",
+      "version": "1.47.2-3+b12",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libcom-err2/copyright",
+      "resolved_path": "/usr/share/doc/libcom-err2/copyright",
+      "size": 20459,
+      "sha256": "2041b5febdc110151ca3372d01b16b85dda1888e33f3f60fce0f59940eed7d19"
+    },
+    {
+      "package": "libcrypt1",
+      "version": "1:4.4.38-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libcrypt1/copyright",
+      "resolved_path": "/usr/share/doc/libcrypt1/copyright",
+      "size": 6010,
+      "sha256": "5a5e7ca0e9f3f9679977e3a3e9ede45ad92885a3297ea78e766979f9866c5a16"
+    },
+    {
+      "package": "libcups2t64",
+      "version": "2.4.10-3+deb13u2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libcups2t64/copyright",
+      "resolved_path": "/usr/share/doc/libcups2t64/copyright",
+      "size": 6757,
+      "sha256": "82dabde9d9e18c5929f320e274095627f2ed1c45153fd4744ab884adac65c425"
+    },
+    {
+      "package": "libdatrie1",
+      "version": "0.2.13-3+b1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libdatrie1/copyright",
+      "resolved_path": "/usr/share/doc/libdatrie1/copyright",
+      "size": 2129,
+      "sha256": "7c994f175cb0da0bbe158f729ca43bc6193bb99d3c8bc82b41c46d93904b584d"
+    },
+    {
+      "package": "libdav1d7",
+      "version": "1.5.1-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libdav1d7/copyright",
+      "resolved_path": "/usr/share/doc/libdav1d7/copyright",
+      "size": 9722,
+      "sha256": "38aaebbbf5ab0c19a5d4029acb5ce6566f8bd95e07eff6f6472753f5bea83d97"
+    },
+    {
+      "package": "libdb5.3t64",
+      "version": "5.3.28+dfsg2-9",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libdb5.3t64/copyright",
+      "resolved_path": "/usr/share/doc/libdb5.3t64/copyright",
+      "size": 17177,
+      "sha256": "8b53da37d73289d9df7317b3a2dbe16491f1fa9fec8b77b86d69704b40ce2c26"
+    },
+    {
+      "package": "libdbus-1-3",
+      "version": "1.16.2-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libdbus-1-3/copyright",
+      "resolved_path": "/usr/share/doc/libdbus-1-3/copyright",
+      "size": 20076,
+      "sha256": "f5fd0bfcceb21f4c23a517368abcbfe8a4c1cfb3b521757b50fae4898840fe35"
+    },
+    {
+      "package": "libdbus-glib-1-2",
+      "version": "0.114-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libdbus-glib-1-2/copyright",
+      "resolved_path": "/usr/share/doc/libdbus-glib-1-2/copyright",
+      "size": 11993,
+      "sha256": "66cc45e0351ad9d98e5326246a4855eb0d66fd966b03e82f51c4b9527b49e0cb"
+    },
+    {
+      "package": "libdconf1",
+      "version": "0.40.0-5",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libdconf1/copyright",
+      "resolved_path": "/usr/share/doc/libdconf1/copyright",
+      "size": 1912,
+      "sha256": "a9d427b6a6e5cb665da3b4115039750c9d1092f558d6dee391d20800fb5c850e"
+    },
+    {
+      "package": "libde265-0",
+      "version": "1.0.15-1+deb13u2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libde265-0/copyright",
+      "resolved_path": "/usr/share/doc/libde265-0/copyright",
+      "size": 7228,
+      "sha256": "2dd8bb1cac96311447eeb3b66570ef262437fa7f47b1be667a4f82f3f22ab8be"
+    },
+    {
+      "package": "libdebconfclient0",
+      "version": "0.280",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libdebconfclient0/copyright",
+      "resolved_path": "/usr/share/doc/libdebconfclient0/copyright",
+      "size": 5856,
+      "sha256": "cf63099896d1c0f6529c41b8d95738e6fea342ffba609187d339c4f38ce36ecc"
+    },
+    {
+      "package": "libdeflate0",
+      "version": "1.23-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libdeflate0/copyright",
+      "resolved_path": "/usr/share/doc/libdeflate0/copyright",
+      "size": 1666,
+      "sha256": "b08d3438a0eadaee3103fba087a3e0f639506388ed71e7e2dfbb3e3484e9742c"
+    },
+    {
+      "package": "libdrm-amdgpu1",
+      "version": "2.4.124-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libdrm-amdgpu1/copyright",
+      "resolved_path": "/usr/share/doc/libdrm-amdgpu1/copyright",
+      "size": 15612,
+      "sha256": "512c9a57fd8b449aa157351da9df07bf8e19f767e496a72205a4020268ddb2e0"
+    },
+    {
+      "package": "libdrm-common",
+      "version": "2.4.124-2",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/libdrm-common/copyright",
+      "resolved_path": "/usr/share/doc/libdrm-common/copyright",
+      "size": 15612,
+      "sha256": "512c9a57fd8b449aa157351da9df07bf8e19f767e496a72205a4020268ddb2e0"
+    },
+    {
+      "package": "libdrm2",
+      "version": "2.4.124-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libdrm2/copyright",
+      "resolved_path": "/usr/share/doc/libdrm2/copyright",
+      "size": 15612,
+      "sha256": "512c9a57fd8b449aa157351da9df07bf8e19f767e496a72205a4020268ddb2e0"
+    },
+    {
+      "package": "libedit2",
+      "version": "3.1-20250104-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libedit2/copyright",
+      "resolved_path": "/usr/share/doc/libedit2/copyright",
+      "size": 1840,
+      "sha256": "2b53671050f6319be6fcdcafa434e8ccb8af629359b4afc83185867204f3927d"
+    },
+    {
+      "package": "libegl-mesa0",
+      "version": "25.0.7-2+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libegl-mesa0/copyright",
+      "resolved_path": "/usr/share/doc/libegl-mesa0/copyright",
+      "size": 14847,
+      "sha256": "55268f06fbc193ee1a4fe694045a9cec58ba727d74bb17b5b1d54de36873a038"
+    },
+    {
+      "package": "libegl1",
+      "version": "1.7.0-1+b2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libegl1/copyright",
+      "resolved_path": "/usr/share/doc/libegl1/copyright",
+      "size": 4422,
+      "sha256": "37920f219f60efa2fde5d003c51be0608b2159cc74c5eb6d70d630907db2d9a3"
+    },
+    {
+      "package": "libelf1t64",
+      "version": "0.192-4",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libelf1t64/copyright",
+      "resolved_path": "/usr/share/doc/libelf1t64/copyright",
+      "size": 8725,
+      "sha256": "657e078ed1e718b57ca839cdc38bb93196a0009488bea43cd0f429e7531530fa"
+    },
+    {
+      "package": "libenchant-2-2",
+      "version": "2.8.2+dfsg1-3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libenchant-2-2/copyright",
+      "resolved_path": "/usr/share/doc/libenchant-2-2/copyright",
+      "size": 7589,
+      "sha256": "1152f367c859e70ece08ab39169b2b2e599490d7e047e12ef1ca60af3457f919"
+    },
+    {
+      "package": "libepoxy0",
+      "version": "1.5.10-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libepoxy0/copyright",
+      "resolved_path": "/usr/share/doc/libepoxy0/copyright",
+      "size": 1352,
+      "sha256": "a8be83fe8a66a6ecc1a9fbcec9cf1b43aacca69d38220a94fb37632f090b611e"
+    },
+    {
+      "package": "libevdev2",
+      "version": "1.13.4+dfsg-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libevdev2/copyright",
+      "resolved_path": "/usr/share/doc/libevdev2/copyright",
+      "size": 5459,
+      "sha256": "588d64c855381c4f1638f91840c5cbf0a7e771cab4e6298e5b4cf6a909ea1ac7"
+    },
+    {
+      "package": "libexif12",
+      "version": "0.6.25-1+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libexif12/copyright",
+      "resolved_path": "/usr/share/doc/libexif12/copyright",
+      "size": 14596,
+      "sha256": "4d4961164534832b5ace0076a478c41e5d31fed969ca2985e48e8a38c570d878"
+    },
+    {
+      "package": "libexpat1",
+      "version": "2.8.3-1~deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libexpat1/copyright",
+      "resolved_path": "/usr/share/doc/libexpat1/copyright",
+      "size": 1756,
+      "sha256": "60919fe1a156395ff14511bb6ff79756c50ade2fff59ac60c9bae1d8a7fe6292"
+    },
+    {
+      "package": "libext2fs2t64",
+      "version": "1.47.2-3+b12",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libext2fs2t64/copyright",
+      "resolved_path": "/usr/share/doc/libext2fs2t64/copyright",
+      "size": 20459,
+      "sha256": "2041b5febdc110151ca3372d01b16b85dda1888e33f3f60fce0f59940eed7d19"
+    },
+    {
+      "package": "libffi8",
+      "version": "3.4.8-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libffi8/copyright",
+      "resolved_path": "/usr/share/doc/libffi8/copyright",
+      "size": 10164,
+      "sha256": "25ee86cfccc2b7eb9a156a127f1e1b38c46c231f516ff201912223eaf62ee186"
+    },
+    {
+      "package": "libfm-data",
+      "version": "1.4.0-2",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/libfm-data/copyright",
+      "resolved_path": "/usr/share/doc/libfm-data/copyright",
+      "size": 5430,
+      "sha256": "4867a77c902a29c7c7117dbd9e4a81815bb6f25f1e8daab75d240b7824fd861b"
+    },
+    {
+      "package": "libfm-extra4t64",
+      "version": "1.4.0-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libfm-extra4t64/copyright",
+      "resolved_path": "/usr/share/doc/libfm-extra4t64/copyright",
+      "size": 5430,
+      "sha256": "4867a77c902a29c7c7117dbd9e4a81815bb6f25f1e8daab75d240b7824fd861b"
+    },
+    {
+      "package": "libfm-gtk-data",
+      "version": "1.4.0-2",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/libfm-gtk-data/copyright",
+      "resolved_path": "/usr/share/doc/libfm-gtk-data/copyright",
+      "size": 5430,
+      "sha256": "4867a77c902a29c7c7117dbd9e4a81815bb6f25f1e8daab75d240b7824fd861b"
+    },
+    {
+      "package": "libfm-gtk3-4t64",
+      "version": "1.4.0-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libfm-gtk3-4t64/copyright",
+      "resolved_path": "/usr/share/doc/libfm-gtk3-4t64/copyright",
+      "size": 5430,
+      "sha256": "4867a77c902a29c7c7117dbd9e4a81815bb6f25f1e8daab75d240b7824fd861b"
+    },
+    {
+      "package": "libfm4t64",
+      "version": "1.4.0-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libfm4t64/copyright",
+      "resolved_path": "/usr/share/doc/libfm4t64/copyright",
+      "size": 5430,
+      "sha256": "4867a77c902a29c7c7117dbd9e4a81815bb6f25f1e8daab75d240b7824fd861b"
+    },
+    {
+      "package": "libfontconfig1",
+      "version": "2.15.0-2.3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libfontconfig1/copyright",
+      "resolved_path": "/usr/share/doc/libfontconfig1/copyright",
+      "size": 1301,
+      "sha256": "b215a61cdd3e62b5b17cc28b1852c78acb3dd38be0fb30706f7efc050dba91db"
+    },
+    {
+      "package": "libfontenc1",
+      "version": "1:1.1.8-1+b2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libfontenc1/copyright",
+      "resolved_path": "/usr/share/doc/libfontenc1/copyright",
+      "size": 1158,
+      "sha256": "a7cb43c56c51407bc6539032a47c5351cd03962ed6a30b4f52dec6ed7db54383"
+    },
+    {
+      "package": "libfreetype6",
+      "version": "2.13.3+dfsg-1+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libfreetype6/copyright",
+      "resolved_path": "/usr/share/doc/libfreetype6/copyright",
+      "size": 31206,
+      "sha256": "acdab1506824347784d2cc0a634cfa17dbf525c0d5b4902b4ac9d0d4e1fed6c7"
+    },
+    {
+      "package": "libfribidi0",
+      "version": "1.0.16-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libfribidi0/copyright",
+      "resolved_path": "/usr/share/doc/libfribidi0/copyright",
+      "size": 1460,
+      "sha256": "a9b76593ba12d42b47000f8779d0b631432147980e71464e8ba88238becbc038"
+    },
+    {
+      "package": "libgbm1",
+      "version": "25.0.7-2+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libgbm1/copyright",
+      "resolved_path": "/usr/share/doc/libgbm1/copyright",
+      "size": 14847,
+      "sha256": "55268f06fbc193ee1a4fe694045a9cec58ba727d74bb17b5b1d54de36873a038"
+    },
+    {
+      "package": "libgcc-s1",
+      "version": "14.2.0-19",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libgcc-s1/copyright",
+      "resolved_path": "/usr/share/doc/gcc-14-base/copyright",
+      "size": 69004,
+      "sha256": "20390f8a6f3b1e4d7cb45dd8652dabb259bbef688cbad839bcdb0b9ba7252f79"
+    },
+    {
+      "package": "libgdk-pixbuf-2.0-0",
+      "version": "2.42.12+dfsg-4+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libgdk-pixbuf-2.0-0/copyright",
+      "resolved_path": "/usr/share/doc/libgdk-pixbuf-2.0-0/copyright",
+      "size": 5415,
+      "sha256": "2b914b2304e7474aaa8108307b9e95c3f8345e0a4153c7bfa0ca9c48813cb406"
+    },
+    {
+      "package": "libgdk-pixbuf2.0-common",
+      "version": "2.42.12+dfsg-4+deb13u1",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/libgdk-pixbuf2.0-common/copyright",
+      "resolved_path": "/usr/share/doc/libgdk-pixbuf2.0-common/copyright",
+      "size": 5415,
+      "sha256": "2b914b2304e7474aaa8108307b9e95c3f8345e0a4153c7bfa0ca9c48813cb406"
+    },
+    {
+      "package": "libgif7",
+      "version": "5.2.2-1+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libgif7/copyright",
+      "resolved_path": "/usr/share/doc/libgif7/copyright",
+      "size": 2371,
+      "sha256": "479e834b17e61f0afe5f4a62e1794a4543208dea955820399e2d9589a1938fb0"
+    },
+    {
+      "package": "libgl1",
+      "version": "1.7.0-1+b2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libgl1/copyright",
+      "resolved_path": "/usr/share/doc/libgl1/copyright",
+      "size": 4422,
+      "sha256": "37920f219f60efa2fde5d003c51be0608b2159cc74c5eb6d70d630907db2d9a3"
+    },
+    {
+      "package": "libgl1-mesa-dri",
+      "version": "25.0.7-2+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libgl1-mesa-dri/copyright",
+      "resolved_path": "/usr/share/doc/libgl1-mesa-dri/copyright",
+      "size": 14847,
+      "sha256": "55268f06fbc193ee1a4fe694045a9cec58ba727d74bb17b5b1d54de36873a038"
+    },
+    {
+      "package": "libglib2.0-0t64",
+      "version": "2.84.4-3~deb13u5",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libglib2.0-0t64/copyright",
+      "resolved_path": "/usr/share/doc/libglib2.0-0t64/copyright",
+      "size": 55072,
+      "sha256": "b9fe78c8a0720c051c9ac8e8c6f25663b54f228e501d24fc0ba89c66cec7f7c1"
+    },
+    {
+      "package": "libglvnd0",
+      "version": "1.7.0-1+b2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libglvnd0/copyright",
+      "resolved_path": "/usr/share/doc/libglvnd0/copyright",
+      "size": 4422,
+      "sha256": "37920f219f60efa2fde5d003c51be0608b2159cc74c5eb6d70d630907db2d9a3"
+    },
+    {
+      "package": "libglx-mesa0",
+      "version": "25.0.7-2+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libglx-mesa0/copyright",
+      "resolved_path": "/usr/share/doc/libglx-mesa0/copyright",
+      "size": 14847,
+      "sha256": "55268f06fbc193ee1a4fe694045a9cec58ba727d74bb17b5b1d54de36873a038"
+    },
+    {
+      "package": "libglx0",
+      "version": "1.7.0-1+b2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libglx0/copyright",
+      "resolved_path": "/usr/share/doc/libglx0/copyright",
+      "size": 4422,
+      "sha256": "37920f219f60efa2fde5d003c51be0608b2159cc74c5eb6d70d630907db2d9a3"
+    },
+    {
+      "package": "libgmp10",
+      "version": "2:6.3.0+dfsg-3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libgmp10/copyright",
+      "resolved_path": "/usr/share/doc/libgmp10/copyright",
+      "size": 4153,
+      "sha256": "7d366aef5ba325150246de1d7820c4c9926cd27ca61a69948492b26cd3b61601"
+    },
+    {
+      "package": "libgnutls30t64",
+      "version": "3.8.9-3+deb13u4",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libgnutls30t64/copyright",
+      "resolved_path": "/usr/share/doc/libgnutls30t64/copyright",
+      "size": 57443,
+      "sha256": "a07e99815cf1998f1dabbc21fe199460bfa09b85ead0d56b49a32cac3d1791b5"
+    },
+    {
+      "package": "libgraphite2-3",
+      "version": "1.3.14-2+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libgraphite2-3/copyright",
+      "resolved_path": "/usr/share/doc/libgraphite2-3/copyright",
+      "size": 9348,
+      "sha256": "a33017ba0308c41bdbde4751bff349ab7b26af45fadbb1e3e7ac67c372985572"
+    },
+    {
+      "package": "libgs-common",
+      "version": "10.05.1~dfsg-1+deb13u1",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/libgs-common/copyright",
+      "resolved_path": "/usr/share/doc/libgs-common/copyright",
+      "size": 73314,
+      "sha256": "943b6fd172abef23f686b7b9f22e49f1882493abdeda3267eb896d79c73ed054"
+    },
+    {
+      "package": "libgs10",
+      "version": "10.05.1~dfsg-1+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libgs10/copyright",
+      "resolved_path": "/usr/share/doc/libgs10/copyright",
+      "size": 73314,
+      "sha256": "943b6fd172abef23f686b7b9f22e49f1882493abdeda3267eb896d79c73ed054"
+    },
+    {
+      "package": "libgs10-common",
+      "version": "10.05.1~dfsg-1+deb13u1",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/libgs10-common/copyright",
+      "resolved_path": "/usr/share/doc/libgs10-common/copyright",
+      "size": 73314,
+      "sha256": "943b6fd172abef23f686b7b9f22e49f1882493abdeda3267eb896d79c73ed054"
+    },
+    {
+      "package": "libgspell-1-3",
+      "version": "1.14.0-2+b1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libgspell-1-3/copyright",
+      "resolved_path": "/usr/share/doc/libgspell-1-3/copyright",
+      "size": 8509,
+      "sha256": "a9871a175777638a587adb1f88a073d35a38df16ca2c4ffa69b94d164df48c61"
+    },
+    {
+      "package": "libgspell-1-common",
+      "version": "1.14.0-2",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/libgspell-1-common/copyright",
+      "resolved_path": "/usr/share/doc/libgspell-1-common/copyright",
+      "size": 8509,
+      "sha256": "a9871a175777638a587adb1f88a073d35a38df16ca2c4ffa69b94d164df48c61"
+    },
+    {
+      "package": "libgssapi-krb5-2",
+      "version": "1.21.3-5+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libgssapi-krb5-2/copyright",
+      "resolved_path": "/usr/share/doc/libgssapi-krb5-2/copyright",
+      "size": 63047,
+      "sha256": "936728f4181718f42951b881c1e8f1386bf6b2723c4fbc533c374d6f42c71816"
+    },
+    {
+      "package": "libgtk-3-0t64",
+      "version": "3.24.49-3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libgtk-3-0t64/copyright",
+      "resolved_path": "/usr/share/doc/libgtk-3-0t64/copyright",
+      "size": 60524,
+      "sha256": "ededd0b07c091f82888eacad33ecd01018d0ccdf85e91f0f5d85de58529f6842"
+    },
+    {
+      "package": "libgtk-3-common",
+      "version": "3.24.49-3",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/libgtk-3-common/copyright",
+      "resolved_path": "/usr/share/doc/libgtk-3-common/copyright",
+      "size": 60524,
+      "sha256": "ededd0b07c091f82888eacad33ecd01018d0ccdf85e91f0f5d85de58529f6842"
+    },
+    {
+      "package": "libgtksourceview-4-0",
+      "version": "4.8.4-6",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libgtksourceview-4-0/copyright",
+      "resolved_path": "/usr/share/doc/libgtksourceview-4-0/copyright",
+      "size": 3658,
+      "sha256": "c2598c02c750dafcb89324336222022e6522757dcae30932ac4e3c8f137c0123"
+    },
+    {
+      "package": "libgtksourceview-4-common",
+      "version": "4.8.4-6",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/libgtksourceview-4-common/copyright",
+      "resolved_path": "/usr/share/doc/libgtksourceview-4-common/copyright",
+      "size": 3658,
+      "sha256": "c2598c02c750dafcb89324336222022e6522757dcae30932ac4e3c8f137c0123"
+    },
+    {
+      "package": "libgudev-1.0-0",
+      "version": "238-6",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libgudev-1.0-0/copyright",
+      "resolved_path": "/usr/share/doc/libgudev-1.0-0/copyright",
+      "size": 1056,
+      "sha256": "e8208610819fd05fca6ea4776156858bb934e29c408ae9bdac4a8266a53178e3"
+    },
+    {
+      "package": "libharfbuzz0b",
+      "version": "10.2.0-1+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libharfbuzz0b/copyright",
+      "resolved_path": "/usr/share/doc/libharfbuzz0b/copyright",
+      "size": 31772,
+      "sha256": "9295e101a07824e8ae77c448884bd357a64b831cd4c47f125bf4ac7ea0d8f911"
+    },
+    {
+      "package": "libheif-plugin-dav1d",
+      "version": "1.19.8-1+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libheif-plugin-dav1d/copyright",
+      "resolved_path": "/usr/share/doc/libheif-plugin-dav1d/copyright",
+      "size": 11165,
+      "sha256": "c98ad382697d5b6a6b3166b593d3ca4028361f5df0ccffdc2638b87aedb606ad"
+    },
+    {
+      "package": "libheif-plugin-libde265",
+      "version": "1.19.8-1+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libheif-plugin-libde265/copyright",
+      "resolved_path": "/usr/share/doc/libheif-plugin-libde265/copyright",
+      "size": 11165,
+      "sha256": "c98ad382697d5b6a6b3166b593d3ca4028361f5df0ccffdc2638b87aedb606ad"
+    },
+    {
+      "package": "libheif1",
+      "version": "1.19.8-1+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libheif1/copyright",
+      "resolved_path": "/usr/share/doc/libheif1/copyright",
+      "size": 11165,
+      "sha256": "c98ad382697d5b6a6b3166b593d3ca4028361f5df0ccffdc2638b87aedb606ad"
+    },
+    {
+      "package": "libhogweed6t64",
+      "version": "3.10.1-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libhogweed6t64/copyright",
+      "resolved_path": "/usr/share/doc/libhogweed6t64/copyright",
+      "size": 24407,
+      "sha256": "344396197142cd506468b20029ea5722d507c980129bb3db4af02424ed6f39c6"
+    },
+    {
+      "package": "libhunspell-1.7-0",
+      "version": "1.7.2+really1.7.2-10+b4",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libhunspell-1.7-0/copyright",
+      "resolved_path": "/usr/share/doc/libhunspell-1.7-0/copyright",
+      "size": 31357,
+      "sha256": "8f5b0b3dbf9cbe743d3156b59a43ade68e80f4ac33bdfc0119581c1a1c28049b"
+    },
+    {
+      "package": "libhwy1t64",
+      "version": "1.2.0-2+b2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libhwy1t64/copyright",
+      "resolved_path": "/usr/share/doc/libhwy1t64/copyright",
+      "size": 982,
+      "sha256": "fd82ff294401d62244717374587aa9daa62934600096460a8565d215ff902f8c"
+    },
+    {
+      "package": "libice6",
+      "version": "2:1.1.1-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libice6/copyright",
+      "resolved_path": "/usr/share/doc/libice6/copyright",
+      "size": 1256,
+      "sha256": "fc16500a74acc2d0a7bb2fa1005956a52551abdce2afe0642a9a8dc2b6af53c6"
+    },
+    {
+      "package": "libicu76",
+      "version": "76.1-4",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libicu76/copyright",
+      "resolved_path": "/usr/share/doc/libicu76/copyright",
+      "size": 2214,
+      "sha256": "5bbff5f646ce750ac0a347e7f91793279b7422a1119820b5f75d98879c201c68"
+    },
+    {
+      "package": "libid3tag0",
+      "version": "0.16.3-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libid3tag0/copyright",
+      "resolved_path": "/usr/share/doc/libid3tag0/copyright",
+      "size": 1050,
+      "sha256": "9a61e7023b20ecaa318f2929274b0dfe5430bf3a63f4af3a85c58af33eab376a"
+    },
+    {
+      "package": "libidn12",
+      "version": "1.43-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libidn12/copyright",
+      "resolved_path": "/usr/share/doc/libidn12/copyright",
+      "size": 8674,
+      "sha256": "edaa24899efbbb5054dd5d1f838860cbff0efecc144210c4b6920fae6e3e80d7"
+    },
+    {
+      "package": "libidn2-0",
+      "version": "2.3.8-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libidn2-0/copyright",
+      "resolved_path": "/usr/share/doc/libidn2-0/copyright",
+      "size": 6566,
+      "sha256": "32df8170a3c5e55c553f684576a2911e6a0611320ccd7fd65f7dceae26be61ee"
+    },
+    {
+      "package": "libijs-0.35",
+      "version": "0.35-15.2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libijs-0.35/copyright",
+      "resolved_path": "/usr/share/doc/libijs-0.35/copyright",
+      "size": 5333,
+      "sha256": "b1b69dbec5522a5ae71bb6831a9658168232915e851db8a13753457ca5a3ff33"
+    },
+    {
+      "package": "libimlib2t64",
+      "version": "1.12.4-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libimlib2t64/copyright",
+      "resolved_path": "/usr/share/doc/libimlib2t64/copyright",
+      "size": 2638,
+      "sha256": "b32fe662d834b1dc66b384bc889a380e0b038ea9d88848b7b5363ce7f97e6033"
+    },
+    {
+      "package": "libinput-bin",
+      "version": "1.28.1-1+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libinput-bin/copyright",
+      "resolved_path": "/usr/share/doc/libinput-bin/copyright",
+      "size": 2292,
+      "sha256": "f075af6e7319a471289bc1908aae04e44ba954ea53b11fcf42ee8d5422f40363"
+    },
+    {
+      "package": "libinput10",
+      "version": "1.28.1-1+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libinput10/copyright",
+      "resolved_path": "/usr/share/doc/libinput10/copyright",
+      "size": 2292,
+      "sha256": "f075af6e7319a471289bc1908aae04e44ba954ea53b11fcf42ee8d5422f40363"
+    },
+    {
+      "package": "libisl23",
+      "version": "0.27-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libisl23/copyright",
+      "resolved_path": "/usr/share/doc/libisl23/copyright",
+      "size": 7035,
+      "sha256": "fb1ea085945df53c756939eecf5d9bf4072316538bc3b314a5408350b679a637"
+    },
+    {
+      "package": "libjbig0",
+      "version": "2.1-6.1+b2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libjbig0/copyright",
+      "resolved_path": "/usr/share/doc/libjbig0/copyright",
+      "size": 1849,
+      "sha256": "89ab20c324a191652e94598f2144a65442faed4f14f77bbd10516130ee20f05a"
+    },
+    {
+      "package": "libjbig2dec0",
+      "version": "0.20-1+b3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libjbig2dec0/copyright",
+      "resolved_path": "/usr/share/doc/libjbig2dec0/copyright",
+      "size": 37712,
+      "sha256": "71560ad54f2095bbdc0de4beaedf3a8d3cf156346524fabfc31686189e52a917"
+    },
+    {
+      "package": "libjpeg62-turbo",
+      "version": "1:2.1.5-4",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libjpeg62-turbo/copyright",
+      "resolved_path": "/usr/share/doc/libjpeg62-turbo/copyright",
+      "size": 38846,
+      "sha256": "3821184e23385bf2cdc01f56bd999b34036fc3aa03d5135d41680374eb81bf8a"
+    },
+    {
+      "package": "libjxl0.11",
+      "version": "0.11.2-0.1~deb13u2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libjxl0.11/copyright",
+      "resolved_path": "/usr/share/doc/libjxl0.11/copyright",
+      "size": 2662,
+      "sha256": "cf449aae49be7e62803ac2ee7f4bd63d1156c1ace680908d24a3856215cd3329"
+    },
+    {
+      "package": "libk5crypto3",
+      "version": "1.21.3-5+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libk5crypto3/copyright",
+      "resolved_path": "/usr/share/doc/libk5crypto3/copyright",
+      "size": 63047,
+      "sha256": "936728f4181718f42951b881c1e8f1386bf6b2723c4fbc533c374d6f42c71816"
+    },
+    {
+      "package": "libkeyutils1",
+      "version": "1.6.3-6",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libkeyutils1/copyright",
+      "resolved_path": "/usr/share/doc/libkeyutils1/copyright",
+      "size": 2148,
+      "sha256": "73f5682b0466f41cea2b9b7f1ff8a8052464f6c09fb29eeac4490512af09bd50"
+    },
+    {
+      "package": "libkmod2",
+      "version": "34.2-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libkmod2/copyright",
+      "resolved_path": "/usr/share/doc/libkmod2/copyright",
+      "size": 2412,
+      "sha256": "86ed604b818ec1e47ad0e364b6261b8a11e2544af6f833c625dcf2311c1c8f13"
+    },
+    {
+      "package": "libkrb5-3",
+      "version": "1.21.3-5+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libkrb5-3/copyright",
+      "resolved_path": "/usr/share/doc/libkrb5-3/copyright",
+      "size": 63047,
+      "sha256": "936728f4181718f42951b881c1e8f1386bf6b2723c4fbc533c374d6f42c71816"
+    },
+    {
+      "package": "libkrb5support0",
+      "version": "1.21.3-5+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libkrb5support0/copyright",
+      "resolved_path": "/usr/share/doc/libkrb5support0/copyright",
+      "size": 63047,
+      "sha256": "936728f4181718f42951b881c1e8f1386bf6b2723c4fbc533c374d6f42c71816"
+    },
+    {
+      "package": "liblastlog2-2",
+      "version": "2.41.5-0+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/liblastlog2-2/copyright",
+      "resolved_path": "/usr/share/doc/liblastlog2-2/copyright",
+      "size": 30341,
+      "sha256": "56b67e2eb8bac5a15d91e261d558d73f1f029113cced229753138194997366b6"
+    },
+    {
+      "package": "liblcms2-2",
+      "version": "2.16-2+deb13u2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/liblcms2-2/copyright",
+      "resolved_path": "/usr/share/doc/liblcms2-2/copyright",
+      "size": 5362,
+      "sha256": "420fd2c72204652c08a48548a0d1002edab3d9b180d3c416578c61f74092f460"
+    },
+    {
+      "package": "liblerc4",
+      "version": "4.0.0+ds-5",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/liblerc4/copyright",
+      "resolved_path": "/usr/share/doc/liblerc4/copyright",
+      "size": 1242,
+      "sha256": "6e694f6e6063e7b1ffb5f723ce4e696aa015944cf1b4d15e8f3ea7e90417a71d"
+    },
+    {
+      "package": "libllvm19",
+      "version": "1:19.1.7-3+b1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libllvm19/copyright",
+      "resolved_path": "/usr/share/doc/libllvm19/copyright",
+      "size": 6967,
+      "sha256": "4c22cf66ddd6dfae2ac4e034342f93a9c96581d5e88c7bb700a125a71cf66cd7"
+    },
+    {
+      "package": "liblocale-gettext-perl",
+      "version": "1.07-7+b1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/liblocale-gettext-perl/copyright",
+      "resolved_path": "/usr/share/doc/liblocale-gettext-perl/copyright",
+      "size": 1157,
+      "sha256": "50e5a70dc8c77272c16b26f5e3104bb0bfa0f98bd956913662ec5e31470d43c0"
+    },
+    {
+      "package": "liblz4-1",
+      "version": "1.10.0-4",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/liblz4-1/copyright",
+      "resolved_path": "/usr/share/doc/liblz4-1/copyright",
+      "size": 3737,
+      "sha256": "8dce0cb8c5a4486e4aac00466e4dd4b0b5b28d70efe3b3256ea4594099a8509c"
+    },
+    {
+      "package": "liblzma5",
+      "version": "5.8.1-1+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/liblzma5/copyright",
+      "resolved_path": "/usr/share/doc/liblzma5/copyright",
+      "size": 11875,
+      "sha256": "d755588e2d89d7845d0d4e718ac45d49ae9fc53cec4540af105963c20598f9d7"
+    },
+    {
+      "package": "libmd0",
+      "version": "1.1.0-2+b1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libmd0/copyright",
+      "resolved_path": "/usr/share/doc/libmd0/copyright",
+      "size": 8018,
+      "sha256": "4365ef6255ad553fce69dd4bc0e093472c5d0e41b8ea493a545cc926ce171aa6"
+    },
+    {
+      "package": "libmenu-cache-bin",
+      "version": "1.1.1-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libmenu-cache-bin/copyright",
+      "resolved_path": "/usr/share/doc/libmenu-cache-bin/copyright",
+      "size": 2285,
+      "sha256": "58d8e1b750fb669c7a48dcc9234eaf852b8f0b0b42e02ec4eb20d396444c7d4a"
+    },
+    {
+      "package": "libmenu-cache3",
+      "version": "1.1.1-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libmenu-cache3/copyright",
+      "resolved_path": "/usr/share/doc/libmenu-cache3/copyright",
+      "size": 2285,
+      "sha256": "58d8e1b750fb669c7a48dcc9234eaf852b8f0b0b42e02ec4eb20d396444c7d4a"
+    },
+    {
+      "package": "libmount1",
+      "version": "2.41.5-0+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libmount1/copyright",
+      "resolved_path": "/usr/share/doc/libmount1/copyright",
+      "size": 30341,
+      "sha256": "56b67e2eb8bac5a15d91e261d558d73f1f029113cced229753138194997366b6"
+    },
+    {
+      "package": "libmousepad0",
+      "version": "0.6.3-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libmousepad0/copyright",
+      "resolved_path": "/usr/share/doc/libmousepad0/copyright",
+      "size": 1385,
+      "sha256": "026d2237c9b625a5de60dcc5f794c8b760788df4137d731a4aa391068a4dd30c"
+    },
+    {
+      "package": "libmpc3",
+      "version": "1.3.1-1+b3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libmpc3/copyright",
+      "resolved_path": "/usr/share/doc/libmpc3/copyright",
+      "size": 743,
+      "sha256": "80763e4cca3963670637b98abff467ee09b83d1737d683ad5ccfb1e919bea94b"
+    },
+    {
+      "package": "libmpfr6",
+      "version": "4.2.2-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libmpfr6/copyright",
+      "resolved_path": "/usr/share/doc/libmpfr6/copyright",
+      "size": 953,
+      "sha256": "c434a44e656a89e72b5cee13bba6719011e0899bfc626ab9c08205010ab2dbbe"
+    },
+    {
+      "package": "libmtdev1t64",
+      "version": "1.1.7-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libmtdev1t64/copyright",
+      "resolved_path": "/usr/share/doc/libmtdev1t64/copyright",
+      "size": 1632,
+      "sha256": "b502da9f272701b04af7f80670e381193e5fd86134d73f7a4c67b6375e43d355"
+    },
+    {
+      "package": "libncursesw6",
+      "version": "6.5+20250216-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libncursesw6/copyright",
+      "resolved_path": "/usr/share/doc/libtinfo6/copyright",
+      "size": 4670,
+      "sha256": "f838d6048fbc59356b7e56c207a7cb32dc6bf4adea95514a002596bde8f6e1e7"
+    },
+    {
+      "package": "libnettle8t64",
+      "version": "3.10.1-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libnettle8t64/copyright",
+      "resolved_path": "/usr/share/doc/libnettle8t64/copyright",
+      "size": 24407,
+      "sha256": "344396197142cd506468b20029ea5722d507c980129bb3db4af02424ed6f39c6"
+    },
+    {
+      "package": "libobrender32v5",
+      "version": "3.6.1-12+b2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libobrender32v5/copyright",
+      "resolved_path": "/usr/share/doc/libobrender32v5/copyright",
+      "size": 4264,
+      "sha256": "bdc94599bb9ca141a0bad6b2c6733d1e5b6ef2d73e6616b878c63945dfe1ec39"
+    },
+    {
+      "package": "libobt2v5",
+      "version": "3.6.1-12+b2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libobt2v5/copyright",
+      "resolved_path": "/usr/share/doc/libobt2v5/copyright",
+      "size": 4264,
+      "sha256": "bdc94599bb9ca141a0bad6b2c6733d1e5b6ef2d73e6616b878c63945dfe1ec39"
+    },
+    {
+      "package": "libopenjp2-7",
+      "version": "2.5.3-2.1~deb13u2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libopenjp2-7/copyright",
+      "resolved_path": "/usr/share/doc/libopenjp2-7/copyright",
+      "size": 34923,
+      "sha256": "ba3ae385ad2337d6cfc862e280a9f155bb421b43f6ee47e77ebcaaf24e992151"
+    },
+    {
+      "package": "libp11-kit0",
+      "version": "0.25.5-3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libp11-kit0/copyright",
+      "resolved_path": "/usr/share/doc/libp11-kit0/copyright",
+      "size": 15605,
+      "sha256": "008107de203c9f89a6c71b625fb47e10074c6b7ccb0e310694014d4551f67b2b"
+    },
+    {
+      "package": "libpam-modules",
+      "version": "1.7.0-5",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libpam-modules/copyright",
+      "resolved_path": "/usr/share/doc/libpam-modules/copyright",
+      "size": 9727,
+      "sha256": "6b11ef9ab5429d9618cc72e8dfd4efefde363165ef174be0549918e0c44f5dcb"
+    },
+    {
+      "package": "libpam-modules-bin",
+      "version": "1.7.0-5",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libpam-modules-bin/copyright",
+      "resolved_path": "/usr/share/doc/libpam-modules-bin/copyright",
+      "size": 9727,
+      "sha256": "6b11ef9ab5429d9618cc72e8dfd4efefde363165ef174be0549918e0c44f5dcb"
+    },
+    {
+      "package": "libpam-runtime",
+      "version": "1.7.0-5",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/libpam-runtime/copyright",
+      "resolved_path": "/usr/share/doc/libpam-runtime/copyright",
+      "size": 9727,
+      "sha256": "6b11ef9ab5429d9618cc72e8dfd4efefde363165ef174be0549918e0c44f5dcb"
+    },
+    {
+      "package": "libpam0g",
+      "version": "1.7.0-5",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libpam0g/copyright",
+      "resolved_path": "/usr/share/doc/libpam0g/copyright",
+      "size": 9727,
+      "sha256": "6b11ef9ab5429d9618cc72e8dfd4efefde363165ef174be0549918e0c44f5dcb"
+    },
+    {
+      "package": "libpango-1.0-0",
+      "version": "1.56.3-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libpango-1.0-0/copyright",
+      "resolved_path": "/usr/share/doc/libpango-1.0-0/copyright",
+      "size": 20017,
+      "sha256": "8d9dd932bc836ab2ea02e0b13c7cc1e9e5472a71008f0caa2a8793eb5780ee94"
+    },
+    {
+      "package": "libpangocairo-1.0-0",
+      "version": "1.56.3-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libpangocairo-1.0-0/copyright",
+      "resolved_path": "/usr/share/doc/libpangocairo-1.0-0/copyright",
+      "size": 20017,
+      "sha256": "8d9dd932bc836ab2ea02e0b13c7cc1e9e5472a71008f0caa2a8793eb5780ee94"
+    },
+    {
+      "package": "libpangoft2-1.0-0",
+      "version": "1.56.3-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libpangoft2-1.0-0/copyright",
+      "resolved_path": "/usr/share/doc/libpangoft2-1.0-0/copyright",
+      "size": 20017,
+      "sha256": "8d9dd932bc836ab2ea02e0b13c7cc1e9e5472a71008f0caa2a8793eb5780ee94"
+    },
+    {
+      "package": "libpangoxft-1.0-0",
+      "version": "1.56.3-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libpangoxft-1.0-0/copyright",
+      "resolved_path": "/usr/share/doc/libpangoxft-1.0-0/copyright",
+      "size": 20017,
+      "sha256": "8d9dd932bc836ab2ea02e0b13c7cc1e9e5472a71008f0caa2a8793eb5780ee94"
+    },
+    {
+      "package": "libpaper2",
+      "version": "2.2.5-0.3+b2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libpaper2/copyright",
+      "resolved_path": "/usr/share/doc/libpaper2/copyright",
+      "size": 6504,
+      "sha256": "8449e5160fae12e550a75140b88bf0f405b60bf78001cc2df8e1f7f542817968"
+    },
+    {
+      "package": "libpciaccess0",
+      "version": "0.17-3+b3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libpciaccess0/copyright",
+      "resolved_path": "/usr/share/doc/libpciaccess0/copyright",
+      "size": 5421,
+      "sha256": "59f90c1ad1face5bd0a516feb8a71e005075d532c522b64ff06b2bfeebde8fe8"
+    },
+    {
+      "package": "libpcre2-8-0",
+      "version": "10.46-1~deb13u2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libpcre2-8-0/copyright",
+      "resolved_path": "/usr/share/doc/libpcre2-8-0/copyright",
+      "size": 6627,
+      "sha256": "e915cde4251f96ec6af107ecd2e194440a4e69440893b0c982802f8a1e4ae40a"
+    },
+    {
+      "package": "libpixman-1-0",
+      "version": "0.44.0-3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libpixman-1-0/copyright",
+      "resolved_path": "/usr/share/doc/libpixman-1-0/copyright",
+      "size": 2247,
+      "sha256": "1b3fb5690861e15ca4fd6640fd4def4b2576617942eec04b6fcb7d8bc6c4c9da"
+    },
+    {
+      "package": "libpng16-16t64",
+      "version": "1.6.48-1+deb13u5",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libpng16-16t64/copyright",
+      "resolved_path": "/usr/share/doc/libpng16-16t64/copyright",
+      "size": 13217,
+      "sha256": "7e729164c60950b2b57f1712d82a051c9ba54f421c9b69815d9e4686ddc5709b"
+    },
+    {
+      "package": "libproc2-0",
+      "version": "2:4.0.4-9",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libproc2-0/copyright",
+      "resolved_path": "/usr/share/doc/libproc2-0/copyright",
+      "size": 3974,
+      "sha256": "90a66617c36d83068b52bbb77cbfef1234f526bfa287156d9d05f7df4d339539"
+    },
+    {
+      "package": "libpython3-stdlib",
+      "version": "3.13.5-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libpython3-stdlib/copyright",
+      "resolved_path": "/usr/share/doc/libpython3-stdlib/copyright",
+      "size": 16122,
+      "sha256": "5b274dbb44b28a54b795b9471c07ab045054d6b8a86273cb9feb632b6fd2760d"
+    },
+    {
+      "package": "libpython3.13-minimal",
+      "version": "3.13.5-2+deb13u5",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libpython3.13-minimal/copyright",
+      "resolved_path": "/usr/share/doc/libpython3.13-minimal/copyright",
+      "size": 49855,
+      "sha256": "f1cbf908e1daa8789b389fdcf17811ed36b675d736b39a103591399861350382"
+    },
+    {
+      "package": "libpython3.13-stdlib",
+      "version": "3.13.5-2+deb13u5",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libpython3.13-stdlib/copyright",
+      "resolved_path": "/usr/share/doc/libpython3.13-minimal/copyright",
+      "size": 49855,
+      "sha256": "f1cbf908e1daa8789b389fdcf17811ed36b675d736b39a103591399861350382"
+    },
+    {
+      "package": "libreadline8t64",
+      "version": "8.2-6",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libreadline8t64/copyright",
+      "resolved_path": "/usr/share/doc/libreadline8t64/copyright",
+      "size": 4314,
+      "sha256": "854c6f5f249a109a913e1e58528445c4fec96f063ae8ba496bfb2b460bcc6866"
+    },
+    {
+      "package": "librsvg2-2",
+      "version": "2.60.0+dfsg-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/librsvg2-2/copyright",
+      "resolved_path": "/usr/share/doc/librsvg2-2/copyright",
+      "size": 20481,
+      "sha256": "2777f2b3753caf1e049a866d79a500467f2d0f066b576c1c754dd55cb38bb73b"
+    },
+    {
+      "package": "librsvg2-common",
+      "version": "2.60.0+dfsg-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/librsvg2-common/copyright",
+      "resolved_path": "/usr/share/doc/librsvg2-common/copyright",
+      "size": 20481,
+      "sha256": "2777f2b3753caf1e049a866d79a500467f2d0f066b576c1c754dd55cb38bb73b"
+    },
+    {
+      "package": "libseccomp2",
+      "version": "2.6.0-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libseccomp2/copyright",
+      "resolved_path": "/usr/share/doc/libseccomp2/copyright",
+      "size": 1429,
+      "sha256": "6da0653a365b80ab31478dbfe9e7c358e80d58b6d2b52b4e16b4dbb42d7d9f5c"
+    },
+    {
+      "package": "libselinux1",
+      "version": "3.8.1-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libselinux1/copyright",
+      "resolved_path": "/usr/share/doc/libselinux1/copyright",
+      "size": 1957,
+      "sha256": "864f1bb189f609075d580b8c4aada16d85a44546884f1687989e1cacc8c56751"
+    },
+    {
+      "package": "libsemanage-common",
+      "version": "3.8.1-1",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/libsemanage-common/copyright",
+      "resolved_path": "/usr/share/doc/libsemanage-common/copyright",
+      "size": 1921,
+      "sha256": "fe5876a94047cafbeb8b164fd98304912d94b6028e19415f08b7a8a2f90645fe"
+    },
+    {
+      "package": "libsemanage2",
+      "version": "3.8.1-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libsemanage2/copyright",
+      "resolved_path": "/usr/share/doc/libsemanage2/copyright",
+      "size": 1921,
+      "sha256": "fe5876a94047cafbeb8b164fd98304912d94b6028e19415f08b7a8a2f90645fe"
+    },
+    {
+      "package": "libsensors-config",
+      "version": "1:3.6.2-2",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/libsensors-config/copyright",
+      "resolved_path": "/usr/share/doc/libsensors-config/copyright",
+      "size": 4706,
+      "sha256": "0b08081a35b0c3324b1729c68ee3de1808350a120d99dee4b2fa7dc2f43ee58d"
+    },
+    {
+      "package": "libsensors5",
+      "version": "1:3.6.2-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libsensors5/copyright",
+      "resolved_path": "/usr/share/doc/libsensors5/copyright",
+      "size": 4706,
+      "sha256": "0b08081a35b0c3324b1729c68ee3de1808350a120d99dee4b2fa7dc2f43ee58d"
+    },
+    {
+      "package": "libsepol2",
+      "version": "3.8.1-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libsepol2/copyright",
+      "resolved_path": "/usr/share/doc/libsepol2/copyright",
+      "size": 3750,
+      "sha256": "78d2a34606a0302057ec499a3b3c07bcbc43ca334064ce4c80891a0f69c8f6c6"
+    },
+    {
+      "package": "libsharpyuv0",
+      "version": "1.5.0-0.1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libsharpyuv0/copyright",
+      "resolved_path": "/usr/share/doc/libsharpyuv0/copyright",
+      "size": 6490,
+      "sha256": "725344c9200f6e6dad88d1ea88add2d673cdf1d8fbc3961bcd2693ab0c26d30d"
+    },
+    {
+      "package": "libsm6",
+      "version": "2:1.2.6-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libsm6/copyright",
+      "resolved_path": "/usr/share/doc/libsm6/copyright",
+      "size": 1224,
+      "sha256": "333d829128c80619625f7e43a0ff0e79f36812b2b7ba12696eec9b4b42ce729b"
+    },
+    {
+      "package": "libsmartcols1",
+      "version": "2.41.5-0+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libsmartcols1/copyright",
+      "resolved_path": "/usr/share/doc/libsmartcols1/copyright",
+      "size": 30341,
+      "sha256": "56b67e2eb8bac5a15d91e261d558d73f1f029113cced229753138194997366b6"
+    },
+    {
+      "package": "libspectre1",
+      "version": "0.2.12-1+b2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libspectre1/copyright",
+      "resolved_path": "/usr/share/doc/libspectre1/copyright",
+      "size": 1576,
+      "sha256": "9a2d45eb941e6828ee4731999461ee1c47ee40c9ceaff72779e0413292471669"
+    },
+    {
+      "package": "libsqlite3-0",
+      "version": "3.46.1-7+deb13u2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libsqlite3-0/copyright",
+      "resolved_path": "/usr/share/doc/libsqlite3-0/copyright",
+      "size": 1770,
+      "sha256": "7b1679aaa97e6e49ec12460eefa85a82b432053bc468dd89dbdb50f2326589f3"
+    },
+    {
+      "package": "libss2",
+      "version": "1.47.2-3+b12",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libss2/copyright",
+      "resolved_path": "/usr/share/doc/libss2/copyright",
+      "size": 20459,
+      "sha256": "2041b5febdc110151ca3372d01b16b85dda1888e33f3f60fce0f59940eed7d19"
+    },
+    {
+      "package": "libssl3t64",
+      "version": "3.5.7-1~deb13u2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libssl3t64/copyright",
+      "resolved_path": "/usr/share/doc/libssl3t64/copyright",
+      "size": 2543,
+      "sha256": "6a7da622fe0637a334d2a8fc470852d2ffb77d9a2b2f930f854e32a41ad6ef35"
+    },
+    {
+      "package": "libstartup-notification0",
+      "version": "0.12-8",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libstartup-notification0/copyright",
+      "resolved_path": "/usr/share/doc/libstartup-notification0/copyright",
+      "size": 2453,
+      "sha256": "cff295fc181b4594e41e1c59df0285273a40888d24cef017d17f90720d358fd5"
+    },
+    {
+      "package": "libstdc++6",
+      "version": "14.2.0-19",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libstdc++6/copyright",
+      "resolved_path": "/usr/share/doc/gcc-14-base/copyright",
+      "size": 69004,
+      "sha256": "20390f8a6f3b1e4d7cb45dd8652dabb259bbef688cbad839bcdb0b9ba7252f79"
+    },
+    {
+      "package": "libsystemd-shared",
+      "version": "257.13-1~deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libsystemd-shared/copyright",
+      "resolved_path": "/usr/share/doc/libsystemd-shared/copyright",
+      "size": 12521,
+      "sha256": "a79e4b379cabbd960bb44f6cc1a069081a3778c59a25ee529b68df5a2cb7d27d"
+    },
+    {
+      "package": "libsystemd0",
+      "version": "257.13-1~deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libsystemd0/copyright",
+      "resolved_path": "/usr/share/doc/libsystemd0/copyright",
+      "size": 12521,
+      "sha256": "a79e4b379cabbd960bb44f6cc1a069081a3778c59a25ee529b68df5a2cb7d27d"
+    },
+    {
+      "package": "libtasn1-6",
+      "version": "4.20.0-2+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libtasn1-6/copyright",
+      "resolved_path": "/usr/share/doc/libtasn1-6/copyright",
+      "size": 3359,
+      "sha256": "5f9f7b538d221104bdb561ae80fd794ec5f813eb8fd04650293bddcc0f856e7d"
+    },
+    {
+      "package": "libtext-iconv-perl",
+      "version": "1.7-8+b4",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libtext-iconv-perl/copyright",
+      "resolved_path": "/usr/share/doc/libtext-iconv-perl/copyright",
+      "size": 1271,
+      "sha256": "b905ff9bd77556cec248d936a8532bc2c8f245d538c75d4b410a94da6f87a31d"
+    },
+    {
+      "package": "libthai-data",
+      "version": "0.1.29-2",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/libthai-data/copyright",
+      "resolved_path": "/usr/share/doc/libthai-data/copyright",
+      "size": 2458,
+      "sha256": "62d2835587b92a6abdbe62fe4524a7b6a59ac478df2c591eb98c3fbce6c3fa08"
+    },
+    {
+      "package": "libthai0",
+      "version": "0.1.29-2+b1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libthai0/copyright",
+      "resolved_path": "/usr/share/doc/libthai0/copyright",
+      "size": 2458,
+      "sha256": "62d2835587b92a6abdbe62fe4524a7b6a59ac478df2c591eb98c3fbce6c3fa08"
+    },
+    {
+      "package": "libtiff6",
+      "version": "4.7.0-3+deb13u3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libtiff6/copyright",
+      "resolved_path": "/usr/share/doc/libtiff6/copyright",
+      "size": 1935,
+      "sha256": "d73e31b03a0d7a515851601c19fee5792c7db03a312efacae146ddf9c91f86f1"
+    },
+    {
+      "package": "libtinfo6",
+      "version": "6.5+20250216-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libtinfo6/copyright",
+      "resolved_path": "/usr/share/doc/libtinfo6/copyright",
+      "size": 4670,
+      "sha256": "f838d6048fbc59356b7e56c207a7cb32dc6bf4adea95514a002596bde8f6e1e7"
+    },
+    {
+      "package": "libudev1",
+      "version": "257.13-1~deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libudev1/copyright",
+      "resolved_path": "/usr/share/doc/libudev1/copyright",
+      "size": 12521,
+      "sha256": "a79e4b379cabbd960bb44f6cc1a069081a3778c59a25ee529b68df5a2cb7d27d"
+    },
+    {
+      "package": "libunistring5",
+      "version": "1.3-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libunistring5/copyright",
+      "resolved_path": "/usr/share/doc/libunistring5/copyright",
+      "size": 103761,
+      "sha256": "a585cd2cc2a5fcb8e58f12c7a710a35e06e5b897c59cd5ae4a7d835f0b49eae3"
+    },
+    {
+      "package": "libunwind8",
+      "version": "1.8.1-0.1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libunwind8/copyright",
+      "resolved_path": "/usr/share/doc/libunwind8/copyright",
+      "size": 3613,
+      "sha256": "977d981f5677652884b09cccef6b62f992aa9c74b7a748bfe9863a703f5aed58"
+    },
+    {
+      "package": "libutempter0",
+      "version": "1.2.1-4",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libutempter0/copyright",
+      "resolved_path": "/usr/share/doc/libutempter0/copyright",
+      "size": 2819,
+      "sha256": "2be5e31d760608782257672d3e04b880d45facc3ea810a68c04213c7529fcf5e"
+    },
+    {
+      "package": "libuuid1",
+      "version": "2.41.5-0+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libuuid1/copyright",
+      "resolved_path": "/usr/share/doc/libuuid1/copyright",
+      "size": 30341,
+      "sha256": "56b67e2eb8bac5a15d91e261d558d73f1f029113cced229753138194997366b6"
+    },
+    {
+      "package": "libvulkan1",
+      "version": "1.4.309.0-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libvulkan1/copyright",
+      "resolved_path": "/usr/share/doc/libvulkan1/copyright",
+      "size": 1964,
+      "sha256": "c579213e28f67944a7e407816b8a8e1d2d2406b3d820e420aa923807c450dc07"
+    },
+    {
+      "package": "libwacom-common",
+      "version": "2.14.0-1",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/libwacom-common/copyright",
+      "resolved_path": "/usr/share/doc/libwacom-common/copyright",
+      "size": 1624,
+      "sha256": "5026eb61394922e821cfea069fe9740141b1d6abd3ea900e79655ad45ea1cb8a"
+    },
+    {
+      "package": "libwacom9",
+      "version": "2.14.0-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libwacom9/copyright",
+      "resolved_path": "/usr/share/doc/libwacom9/copyright",
+      "size": 1624,
+      "sha256": "5026eb61394922e821cfea069fe9740141b1d6abd3ea900e79655ad45ea1cb8a"
+    },
+    {
+      "package": "libwayland-client0",
+      "version": "1.23.1-3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libwayland-client0/copyright",
+      "resolved_path": "/usr/share/doc/libwayland-client0/copyright",
+      "size": 2008,
+      "sha256": "99ade79b69c41bfb14b8a0567e9c0acdd858d6d8ad7d3ca4f9da1cfd000954b1"
+    },
+    {
+      "package": "libwayland-cursor0",
+      "version": "1.23.1-3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libwayland-cursor0/copyright",
+      "resolved_path": "/usr/share/doc/libwayland-cursor0/copyright",
+      "size": 2008,
+      "sha256": "99ade79b69c41bfb14b8a0567e9c0acdd858d6d8ad7d3ca4f9da1cfd000954b1"
+    },
+    {
+      "package": "libwayland-egl1",
+      "version": "1.23.1-3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libwayland-egl1/copyright",
+      "resolved_path": "/usr/share/doc/libwayland-egl1/copyright",
+      "size": 2008,
+      "sha256": "99ade79b69c41bfb14b8a0567e9c0acdd858d6d8ad7d3ca4f9da1cfd000954b1"
+    },
+    {
+      "package": "libwayland-server0",
+      "version": "1.23.1-3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libwayland-server0/copyright",
+      "resolved_path": "/usr/share/doc/libwayland-server0/copyright",
+      "size": 2008,
+      "sha256": "99ade79b69c41bfb14b8a0567e9c0acdd858d6d8ad7d3ca4f9da1cfd000954b1"
+    },
+    {
+      "package": "libwebp7",
+      "version": "1.5.0-0.1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libwebp7/copyright",
+      "resolved_path": "/usr/share/doc/libwebp7/copyright",
+      "size": 6490,
+      "sha256": "725344c9200f6e6dad88d1ea88add2d673cdf1d8fbc3961bcd2693ab0c26d30d"
+    },
+    {
+      "package": "libwebpdemux2",
+      "version": "1.5.0-0.1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libwebpdemux2/copyright",
+      "resolved_path": "/usr/share/doc/libwebpdemux2/copyright",
+      "size": 6490,
+      "sha256": "725344c9200f6e6dad88d1ea88add2d673cdf1d8fbc3961bcd2693ab0c26d30d"
+    },
+    {
+      "package": "libx11-6",
+      "version": "2:1.8.12-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libx11-6/copyright",
+      "resolved_path": "/usr/share/doc/libx11-6/copyright",
+      "size": 47102,
+      "sha256": "0b380a7fd5b2228f26e9585e56f14812efd3350f3df307507d2bc055dfd8de3e"
+    },
+    {
+      "package": "libx11-data",
+      "version": "2:1.8.12-1",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/libx11-data/copyright",
+      "resolved_path": "/usr/share/doc/libx11-data/copyright",
+      "size": 47102,
+      "sha256": "0b380a7fd5b2228f26e9585e56f14812efd3350f3df307507d2bc055dfd8de3e"
+    },
+    {
+      "package": "libx11-xcb1",
+      "version": "2:1.8.12-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libx11-xcb1/copyright",
+      "resolved_path": "/usr/share/doc/libx11-xcb1/copyright",
+      "size": 47102,
+      "sha256": "0b380a7fd5b2228f26e9585e56f14812efd3350f3df307507d2bc055dfd8de3e"
+    },
+    {
+      "package": "libxau6",
+      "version": "1:1.0.11-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxau6/copyright",
+      "resolved_path": "/usr/share/doc/libxau6/copyright",
+      "size": 1224,
+      "sha256": "118dd263a7b91c8f21c489f949bf13281dff9e766deea92b829dac4dce66601a"
+    },
+    {
+      "package": "libxaw7",
+      "version": "2:1.0.16-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxaw7/copyright",
+      "resolved_path": "/usr/share/doc/libxaw7/copyright",
+      "size": 8843,
+      "sha256": "b04f7dd56d0e88bf2dd5aafd138bb4b3631401898480c46c94ee7fbf865ffde5"
+    },
+    {
+      "package": "libxcb-dri3-0",
+      "version": "1.17.0-2+b1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxcb-dri3-0/copyright",
+      "resolved_path": "/usr/share/doc/libxcb-dri3-0/copyright",
+      "size": 1781,
+      "sha256": "4f7cb9db6bf6542f5417e3d674c780d3a5fd12291a54d63054fb576ee0cfae80"
+    },
+    {
+      "package": "libxcb-glx0",
+      "version": "1.17.0-2+b1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxcb-glx0/copyright",
+      "resolved_path": "/usr/share/doc/libxcb-glx0/copyright",
+      "size": 1781,
+      "sha256": "4f7cb9db6bf6542f5417e3d674c780d3a5fd12291a54d63054fb576ee0cfae80"
+    },
+    {
+      "package": "libxcb-present0",
+      "version": "1.17.0-2+b1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxcb-present0/copyright",
+      "resolved_path": "/usr/share/doc/libxcb-present0/copyright",
+      "size": 1781,
+      "sha256": "4f7cb9db6bf6542f5417e3d674c780d3a5fd12291a54d63054fb576ee0cfae80"
+    },
+    {
+      "package": "libxcb-randr0",
+      "version": "1.17.0-2+b1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxcb-randr0/copyright",
+      "resolved_path": "/usr/share/doc/libxcb-randr0/copyright",
+      "size": 1781,
+      "sha256": "4f7cb9db6bf6542f5417e3d674c780d3a5fd12291a54d63054fb576ee0cfae80"
+    },
+    {
+      "package": "libxcb-render0",
+      "version": "1.17.0-2+b1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxcb-render0/copyright",
+      "resolved_path": "/usr/share/doc/libxcb-render0/copyright",
+      "size": 1781,
+      "sha256": "4f7cb9db6bf6542f5417e3d674c780d3a5fd12291a54d63054fb576ee0cfae80"
+    },
+    {
+      "package": "libxcb-shape0",
+      "version": "1.17.0-2+b1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxcb-shape0/copyright",
+      "resolved_path": "/usr/share/doc/libxcb-shape0/copyright",
+      "size": 1781,
+      "sha256": "4f7cb9db6bf6542f5417e3d674c780d3a5fd12291a54d63054fb576ee0cfae80"
+    },
+    {
+      "package": "libxcb-shm0",
+      "version": "1.17.0-2+b1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxcb-shm0/copyright",
+      "resolved_path": "/usr/share/doc/libxcb-shm0/copyright",
+      "size": 1781,
+      "sha256": "4f7cb9db6bf6542f5417e3d674c780d3a5fd12291a54d63054fb576ee0cfae80"
+    },
+    {
+      "package": "libxcb-sync1",
+      "version": "1.17.0-2+b1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxcb-sync1/copyright",
+      "resolved_path": "/usr/share/doc/libxcb-sync1/copyright",
+      "size": 1781,
+      "sha256": "4f7cb9db6bf6542f5417e3d674c780d3a5fd12291a54d63054fb576ee0cfae80"
+    },
+    {
+      "package": "libxcb-util1",
+      "version": "0.4.1-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxcb-util1/copyright",
+      "resolved_path": "/usr/share/doc/libxcb-util1/copyright",
+      "size": 2741,
+      "sha256": "1142dc404c2f6845a5e9a39ee569e670fd629b3a974a03bcd64f84e57e5acd90"
+    },
+    {
+      "package": "libxcb-xfixes0",
+      "version": "1.17.0-2+b1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxcb-xfixes0/copyright",
+      "resolved_path": "/usr/share/doc/libxcb-xfixes0/copyright",
+      "size": 1781,
+      "sha256": "4f7cb9db6bf6542f5417e3d674c780d3a5fd12291a54d63054fb576ee0cfae80"
+    },
+    {
+      "package": "libxcb1",
+      "version": "1.17.0-2+b1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxcb1/copyright",
+      "resolved_path": "/usr/share/doc/libxcb1/copyright",
+      "size": 1781,
+      "sha256": "4f7cb9db6bf6542f5417e3d674c780d3a5fd12291a54d63054fb576ee0cfae80"
+    },
+    {
+      "package": "libxcomposite1",
+      "version": "1:0.4.6-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxcomposite1/copyright",
+      "resolved_path": "/usr/share/doc/libxcomposite1/copyright",
+      "size": 2324,
+      "sha256": "e37c7a7e4026343c3e5c13990a6d9a8879194ae3ab26bfe420b34f6f206bf35f"
+    },
+    {
+      "package": "libxcursor1",
+      "version": "1:1.2.3-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxcursor1/copyright",
+      "resolved_path": "/usr/share/doc/libxcursor1/copyright",
+      "size": 2774,
+      "sha256": "817abc0ccc9e2591057be256b0f6d80edb134221ced29dd545a9eafaf40b423c"
+    },
+    {
+      "package": "libxcvt0",
+      "version": "0.1.3-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxcvt0/copyright",
+      "resolved_path": "/usr/share/doc/libxcvt0/copyright",
+      "size": 2846,
+      "sha256": "af38db3fc4ba36cd46b77937e3dfcf1a53eebc0562b651c4462042e1e5a42347"
+    },
+    {
+      "package": "libxdamage1",
+      "version": "1:1.1.6-1+b2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxdamage1/copyright",
+      "resolved_path": "/usr/share/doc/libxdamage1/copyright",
+      "size": 1221,
+      "sha256": "09182bc7805ff77a41251e450cebd0d33c48a74ba8ec4b734855a22c86f50417"
+    },
+    {
+      "package": "libxdmcp6",
+      "version": "1:1.1.5-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxdmcp6/copyright",
+      "resolved_path": "/usr/share/doc/libxdmcp6/copyright",
+      "size": 1265,
+      "sha256": "1bcbb50f8603fe8b86d330bfa460b772ea04fbd3c70e4499f0768b5340b9fd6e"
+    },
+    {
+      "package": "libxdo3",
+      "version": "1:3.20160805.1-5.1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxdo3/copyright",
+      "resolved_path": "/usr/share/doc/libxdo3/copyright",
+      "size": 1965,
+      "sha256": "7022c27d07a4777ff1e23a83274f6351d634d83053b46a7f5582a2c988ab4572"
+    },
+    {
+      "package": "libxext6",
+      "version": "2:1.3.4-1+b3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxext6/copyright",
+      "resolved_path": "/usr/share/doc/libxext6/copyright",
+      "size": 10421,
+      "sha256": "bc57e445ca1d9fe082c8d54189dd411ff26caa8552c9c63d44ea06a982f32124"
+    },
+    {
+      "package": "libxfce4ui-2-0",
+      "version": "4.20.1-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxfce4ui-2-0/copyright",
+      "resolved_path": "/usr/share/doc/libxfce4ui-2-0/copyright",
+      "size": 3043,
+      "sha256": "0a846c24fcb0d94f2136a9563386e7fe5deb425a1782afaca250f9e2627d53c4"
+    },
+    {
+      "package": "libxfce4ui-common",
+      "version": "4.20.1-1",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/libxfce4ui-common/copyright",
+      "resolved_path": "/usr/share/doc/libxfce4ui-common/copyright",
+      "size": 3043,
+      "sha256": "0a846c24fcb0d94f2136a9563386e7fe5deb425a1782afaca250f9e2627d53c4"
+    },
+    {
+      "package": "libxfce4util-common",
+      "version": "4.20.1-1",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/libxfce4util-common/copyright",
+      "resolved_path": "/usr/share/doc/libxfce4util-common/copyright",
+      "size": 3216,
+      "sha256": "223d9f5ca610622c745e5eb0a09871791c5ba78dec7baa04b41941ba6a1bb295"
+    },
+    {
+      "package": "libxfce4util7",
+      "version": "4.20.1-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxfce4util7/copyright",
+      "resolved_path": "/usr/share/doc/libxfce4util7/copyright",
+      "size": 3216,
+      "sha256": "223d9f5ca610622c745e5eb0a09871791c5ba78dec7baa04b41941ba6a1bb295"
+    },
+    {
+      "package": "libxfconf-0-3",
+      "version": "4.20.0-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxfconf-0-3/copyright",
+      "resolved_path": "/usr/share/doc/libxfconf-0-3/copyright",
+      "size": 3478,
+      "sha256": "62f4848ee63d7abd6fe22abc03157de278c5a14125fd22cc159bee567746b582"
+    },
+    {
+      "package": "libxfixes3",
+      "version": "1:6.0.0-2+b4",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxfixes3/copyright",
+      "resolved_path": "/usr/share/doc/libxfixes3/copyright",
+      "size": 2320,
+      "sha256": "051ffe073ab38244c504bb379903b4ecda6081fb3d97d0d3dce44bc11712eef2"
+    },
+    {
+      "package": "libxfont2",
+      "version": "1:2.0.6-1+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxfont2/copyright",
+      "resolved_path": "/usr/share/doc/libxfont2/copyright",
+      "size": 13512,
+      "sha256": "c0ec1767e5a927bdf17f8ca2af231263f973c06e5f30efa1b4867e93614dd061"
+    },
+    {
+      "package": "libxft2",
+      "version": "2.3.6-1+b4",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxft2/copyright",
+      "resolved_path": "/usr/share/doc/libxft2/copyright",
+      "size": 1438,
+      "sha256": "5960983c962c864d7d73eae6bb9b3b06c1940a23fc6d22ce10ef0f0cde8fd48d"
+    },
+    {
+      "package": "libxi6",
+      "version": "2:1.8.2-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxi6/copyright",
+      "resolved_path": "/usr/share/doc/libxi6/copyright",
+      "size": 4435,
+      "sha256": "c812f9c54513ae593aab9580b54a4b18219648df7068d49ca1daa47f522ba3fa"
+    },
+    {
+      "package": "libxinerama1",
+      "version": "2:1.1.4-3+b4",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxinerama1/copyright",
+      "resolved_path": "/usr/share/doc/libxinerama1/copyright",
+      "size": 3670,
+      "sha256": "e49d9732f261b3ffcb50c40914bd9d144de5557dad9b2ae20dbe8e3c5b3d17fb"
+    },
+    {
+      "package": "libxkbcommon0",
+      "version": "1.7.0-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxkbcommon0/copyright",
+      "resolved_path": "/usr/share/doc/libxkbcommon0/copyright",
+      "size": 3566,
+      "sha256": "5eeaeb1b6e029a0274e1573765bb0bae2926ef96a3679203faa4fd00fdaeaa88"
+    },
+    {
+      "package": "libxkbfile1",
+      "version": "1:1.1.0-1+b4",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxkbfile1/copyright",
+      "resolved_path": "/usr/share/doc/libxkbfile1/copyright",
+      "size": 3404,
+      "sha256": "41044d815bd99a5d1267fdabc79b5041fa83c7134639bb81e84f367cefe68316"
+    },
+    {
+      "package": "libxml2",
+      "version": "2.12.7+dfsg+really2.9.14-2.1+deb13u3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxml2/copyright",
+      "resolved_path": "/usr/share/doc/libxml2/copyright",
+      "size": 3067,
+      "sha256": "ee746b96cfa5be73c3ea3e4cfb1285e9b315d4c9267f99b2ee9c5d911d9fe3f4"
+    },
+    {
+      "package": "libxmu6",
+      "version": "2:1.1.3-3+b4",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxmu6/copyright",
+      "resolved_path": "/usr/share/doc/libxmu6/copyright",
+      "size": 3636,
+      "sha256": "15a3a4d6627af76c0649067260debca0eb66248b96e5fda4f564aac38593e06f"
+    },
+    {
+      "package": "libxmuu1",
+      "version": "2:1.1.3-3+b4",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxmuu1/copyright",
+      "resolved_path": "/usr/share/doc/libxmuu1/copyright",
+      "size": 3636,
+      "sha256": "15a3a4d6627af76c0649067260debca0eb66248b96e5fda4f564aac38593e06f"
+    },
+    {
+      "package": "libxpm4",
+      "version": "1:3.5.17-1+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxpm4/copyright",
+      "resolved_path": "/usr/share/doc/libxpm4/copyright",
+      "size": 3879,
+      "sha256": "60ff44bf6ae8fdc03aa67f4ebbc6e4bba30ac96938e55bc84b1777387a58992c"
+    },
+    {
+      "package": "libxrandr2",
+      "version": "2:1.5.4-1+b3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxrandr2/copyright",
+      "resolved_path": "/usr/share/doc/libxrandr2/copyright",
+      "size": 3733,
+      "sha256": "6d8e6239cfe9dd25bbeef06dcf0610d802ebbdc8968db87cf5adf00ff98927d4"
+    },
+    {
+      "package": "libxrender1",
+      "version": "1:0.9.12-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxrender1/copyright",
+      "resolved_path": "/usr/share/doc/libxrender1/copyright",
+      "size": 2252,
+      "sha256": "ed2a78123a5076b4f11da38cb1ffb85b5cb9fdc26b5746c517b1d7e7a9029704"
+    },
+    {
+      "package": "libxshmfence1",
+      "version": "1.3.3-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxshmfence1/copyright",
+      "resolved_path": "/usr/share/doc/libxshmfence1/copyright",
+      "size": 1215,
+      "sha256": "6a76b32c9174c0cb9e3d94c323a14d33d6a42bd2a61579b189cbc5addeb94abe"
+    },
+    {
+      "package": "libxt6t64",
+      "version": "1:1.2.1-1.2+b2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxt6t64/copyright",
+      "resolved_path": "/usr/share/doc/libxt6t64/copyright",
+      "size": 6829,
+      "sha256": "294382fd73d07b7b086c4829366bad834fc25cdf094400ec6ca4ff3b9ab73665"
+    },
+    {
+      "package": "libxtst6",
+      "version": "2:1.2.5-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxtst6/copyright",
+      "resolved_path": "/usr/share/doc/libxtst6/copyright",
+      "size": 5914,
+      "sha256": "304f78731e1e0e78132fbba4e1909c8642878a3b8c4837b36cb2d38891bf2204"
+    },
+    {
+      "package": "libxv1",
+      "version": "2:1.0.11-1.1+b3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxv1/copyright",
+      "resolved_path": "/usr/share/doc/libxv1/copyright",
+      "size": 2668,
+      "sha256": "2fe7ac649db26ec17460897402d2d54b25c6bb5dd8be7c2f58a80ae4658385ad"
+    },
+    {
+      "package": "libxxf86dga1",
+      "version": "2:1.1.5-1+b3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxxf86dga1/copyright",
+      "resolved_path": "/usr/share/doc/libxxf86dga1/copyright",
+      "size": 1448,
+      "sha256": "e7b0d587d76faa7e1f8827334421457cad9d8616813c35e97a4dd97616bcc95a"
+    },
+    {
+      "package": "libxxf86vm1",
+      "version": "1:1.1.4-1+b4",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxxf86vm1/copyright",
+      "resolved_path": "/usr/share/doc/libxxf86vm1/copyright",
+      "size": 1370,
+      "sha256": "8a18884e1be08a37bf1b8fc9a14eba800e65a98d6ea19bb5d8b0ccf35f9bbcc4"
+    },
+    {
+      "package": "libxxhash0",
+      "version": "0.8.3-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libxxhash0/copyright",
+      "resolved_path": "/usr/share/doc/libxxhash0/copyright",
+      "size": 3213,
+      "sha256": "81affefe3047c8a88a9e4c94c8c698f51a7e0787e75b58e901bf1f8fcd433f58"
+    },
+    {
+      "package": "libz3-4",
+      "version": "4.13.3-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libz3-4/copyright",
+      "resolved_path": "/usr/share/doc/libz3-4/copyright",
+      "size": 2283,
+      "sha256": "807f874c81a0dbce7d4e32b1a4e1ef1e094b9a3fe8579f34e60fda4f2077289c"
+    },
+    {
+      "package": "libzstd1",
+      "version": "1.5.7+dfsg-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/libzstd1/copyright",
+      "resolved_path": "/usr/share/doc/libzstd1/copyright",
+      "size": 5332,
+      "sha256": "5cec9fef4d3fa7e0371fbef4ec3fc416e0105dc2a9922117f84e825cb11f50f8"
+    },
+    {
+      "package": "login",
+      "version": "1:4.16.0-2+really2.41.5-0+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/login/copyright",
+      "resolved_path": "/usr/share/doc/login/copyright",
+      "size": 30341,
+      "sha256": "56b67e2eb8bac5a15d91e261d558d73f1f029113cced229753138194997366b6"
+    },
+    {
+      "package": "login.defs",
+      "version": "1:4.17.4-2",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/login.defs/copyright",
+      "resolved_path": "/usr/share/doc/login.defs/copyright",
+      "size": 5869,
+      "sha256": "305494b6f5f6bb65ead9160077d4fdf45ccdf06de7c958ff96f27a632b8729a3"
+    },
+    {
+      "package": "logsave",
+      "version": "1.47.2-3+b12",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/logsave/copyright",
+      "resolved_path": "/usr/share/doc/logsave/copyright",
+      "size": 20459,
+      "sha256": "2041b5febdc110151ca3372d01b16b85dda1888e33f3f60fce0f59940eed7d19"
+    },
+    {
+      "package": "lxmenu-data",
+      "version": "0.1.6-3",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/lxmenu-data/copyright",
+      "resolved_path": "/usr/share/doc/lxmenu-data/copyright",
+      "size": 1995,
+      "sha256": "4ec97a930a5033ae1f17bc57dad1f08a11ed69bd803c98245badfc2b1089e815"
+    },
+    {
+      "package": "mawk",
+      "version": "1.3.4.20250131-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/mawk/copyright",
+      "resolved_path": "/usr/share/doc/mawk/copyright",
+      "size": 22806,
+      "sha256": "f6b94f461b09398ef192207356d89d7bf59833fe03082a14b910b3c740f2a318"
+    },
+    {
+      "package": "media-types",
+      "version": "13.0.0",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/media-types/copyright",
+      "resolved_path": "/usr/share/doc/media-types/copyright",
+      "size": 268,
+      "sha256": "5ded7c53199b6a1d089b0b7e231d77e5c84081c7156b372b3f11ad9c1c2c5cc7"
+    },
+    {
+      "package": "mesa-libgallium",
+      "version": "25.0.7-2+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/mesa-libgallium/copyright",
+      "resolved_path": "/usr/share/doc/mesa-libgallium/copyright",
+      "size": 14847,
+      "sha256": "55268f06fbc193ee1a4fe694045a9cec58ba727d74bb17b5b1d54de36873a038"
+    },
+    {
+      "package": "mount",
+      "version": "2.41.5-0+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/mount/copyright",
+      "resolved_path": "/usr/share/doc/mount/copyright",
+      "size": 30341,
+      "sha256": "56b67e2eb8bac5a15d91e261d558d73f1f029113cced229753138194997366b6"
+    },
+    {
+      "package": "mousepad",
+      "version": "0.6.3-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/mousepad/copyright",
+      "resolved_path": "/usr/share/doc/mousepad/copyright",
+      "size": 1385,
+      "sha256": "026d2237c9b625a5de60dcc5f794c8b760788df4137d731a4aa391068a4dd30c"
+    },
+    {
+      "package": "ncurses-base",
+      "version": "6.5+20250216-2",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/ncurses-base/copyright",
+      "resolved_path": "/usr/share/doc/ncurses-base/copyright",
+      "size": 4670,
+      "sha256": "f838d6048fbc59356b7e56c207a7cb32dc6bf4adea95514a002596bde8f6e1e7"
+    },
+    {
+      "package": "ncurses-bin",
+      "version": "6.5+20250216-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/ncurses-bin/copyright",
+      "resolved_path": "/usr/share/doc/ncurses-bin/copyright",
+      "size": 4670,
+      "sha256": "f838d6048fbc59356b7e56c207a7cb32dc6bf4adea95514a002596bde8f6e1e7"
+    },
+    {
+      "package": "netbase",
+      "version": "6.5",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/netbase/copyright",
+      "resolved_path": "/usr/share/doc/netbase/copyright",
+      "size": 1234,
+      "sha256": "795b66147ea5ad692991caa7008ece551fb0fa88b9c53656223bd1518dc58ab2"
+    },
+    {
+      "package": "openbox",
+      "version": "3.6.1-12+b2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/openbox/copyright",
+      "resolved_path": "/usr/share/doc/openbox/copyright",
+      "size": 4264,
+      "sha256": "bdc94599bb9ca141a0bad6b2c6733d1e5b6ef2d73e6616b878c63945dfe1ec39"
+    },
+    {
+      "package": "openssl",
+      "version": "3.5.7-1~deb13u2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/openssl/copyright",
+      "resolved_path": "/usr/share/doc/openssl/copyright",
+      "size": 2543,
+      "sha256": "6a7da622fe0637a334d2a8fc470852d2ffb77d9a2b2f930f854e32a41ad6ef35"
+    },
+    {
+      "package": "openssl-provider-legacy",
+      "version": "3.5.7-1~deb13u2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/openssl-provider-legacy/copyright",
+      "resolved_path": "/usr/share/doc/openssl-provider-legacy/copyright",
+      "size": 2543,
+      "sha256": "6a7da622fe0637a334d2a8fc470852d2ffb77d9a2b2f930f854e32a41ad6ef35"
+    },
+    {
+      "package": "passwd",
+      "version": "1:4.17.4-2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/passwd/copyright",
+      "resolved_path": "/usr/share/doc/passwd/copyright",
+      "size": 5869,
+      "sha256": "305494b6f5f6bb65ead9160077d4fdf45ccdf06de7c958ff96f27a632b8729a3"
+    },
+    {
+      "package": "pcmanfm",
+      "version": "1.4.0-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/pcmanfm/copyright",
+      "resolved_path": "/usr/share/doc/pcmanfm/copyright",
+      "size": 2623,
+      "sha256": "704047f63d8eb3a186088b126f1b9d6dbb62e46919713dfbba4145d4123897e1"
+    },
+    {
+      "package": "perl-base",
+      "version": "5.40.1-6+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/perl-base/copyright",
+      "resolved_path": "/usr/share/doc/perl-base/copyright",
+      "size": 109644,
+      "sha256": "8adf04cb72ca0719dee8fdb8d711768548d10373905eac21e8a640881c230257"
+    },
+    {
+      "package": "poppler-data",
+      "version": "0.4.12-1",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/poppler-data/copyright",
+      "resolved_path": "/usr/share/doc/poppler-data/copyright",
+      "size": 39160,
+      "sha256": "b6641f2e367897bef0bcc438146cad733bc0dfe0166e2f105d44c5eff72a731e"
+    },
+    {
+      "package": "procps",
+      "version": "2:4.0.4-9",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/procps/copyright",
+      "resolved_path": "/usr/share/doc/procps/copyright",
+      "size": 3974,
+      "sha256": "90a66617c36d83068b52bbb77cbfef1234f526bfa287156d9d05f7df4d339539"
+    },
+    {
+      "package": "python3",
+      "version": "3.13.5-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/python3/copyright",
+      "resolved_path": "/usr/share/doc/python3/copyright",
+      "size": 16122,
+      "sha256": "5b274dbb44b28a54b795b9471c07ab045054d6b8a86273cb9feb632b6fd2760d"
+    },
+    {
+      "package": "python3-minimal",
+      "version": "3.13.5-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/python3-minimal/copyright",
+      "resolved_path": "/usr/share/doc/python3-minimal/copyright",
+      "size": 16122,
+      "sha256": "5b274dbb44b28a54b795b9471c07ab045054d6b8a86273cb9feb632b6fd2760d"
+    },
+    {
+      "package": "python3.13",
+      "version": "3.13.5-2+deb13u5",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/python3.13/copyright",
+      "resolved_path": "/usr/share/doc/python3.13/copyright",
+      "size": 49855,
+      "sha256": "f1cbf908e1daa8789b389fdcf17811ed36b675d736b39a103591399861350382"
+    },
+    {
+      "package": "python3.13-minimal",
+      "version": "3.13.5-2+deb13u5",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/python3.13-minimal/copyright",
+      "resolved_path": "/usr/share/doc/python3.13-minimal/copyright",
+      "size": 49855,
+      "sha256": "f1cbf908e1daa8789b389fdcf17811ed36b675d736b39a103591399861350382"
+    },
+    {
+      "package": "readline-common",
+      "version": "8.2-6",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/readline-common/copyright",
+      "resolved_path": "/usr/share/doc/readline-common/copyright",
+      "size": 4314,
+      "sha256": "854c6f5f249a109a913e1e58528445c4fec96f063ae8ba496bfb2b460bcc6866"
+    },
+    {
+      "package": "sed",
+      "version": "4.9-2+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/sed/copyright",
+      "resolved_path": "/usr/share/doc/sed/copyright",
+      "size": 8618,
+      "sha256": "719320e425e8e6da53a55e0fcfa2f2ed9b1332cea16abd65321bd651b2a88568"
+    },
+    {
+      "package": "shared-mime-info",
+      "version": "2.4-5+b2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/shared-mime-info/copyright",
+      "resolved_path": "/usr/share/doc/shared-mime-info/copyright",
+      "size": 1088,
+      "sha256": "5145b47d997486e5327091374e807046a32216168b6f2bbf6d1816f60927686c"
+    },
+    {
+      "package": "sqv",
+      "version": "1.3.0-3+b2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/sqv/copyright",
+      "resolved_path": "/usr/share/doc/sqv/copyright",
+      "size": 957,
+      "sha256": "b7ae2cde83ad585eae83cded853d125b034fcef480f6c4cee6d9ddd63327181a"
+    },
+    {
+      "package": "systemd-standalone-sysusers",
+      "version": "257.13-1~deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/systemd-standalone-sysusers/copyright",
+      "resolved_path": "/usr/share/doc/systemd-standalone-sysusers/copyright",
+      "size": 12521,
+      "sha256": "a79e4b379cabbd960bb44f6cc1a069081a3778c59a25ee529b68df5a2cb7d27d"
+    },
+    {
+      "package": "sysvinit-utils",
+      "version": "3.14-4",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/sysvinit-utils/copyright",
+      "resolved_path": "/usr/share/doc/sysvinit-utils/copyright",
+      "size": 5881,
+      "sha256": "53c7ef3839f64b24cc25a0937d11ce228517a48be0cc794f0d67b7e209b2a9ba"
+    },
+    {
+      "package": "tar",
+      "version": "1.35+dfsg-3.1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/tar/copyright",
+      "resolved_path": "/usr/share/doc/tar/copyright",
+      "size": 6560,
+      "sha256": "a0a44d41b2a045eb5946a8952487151cfa6ff0cd080bbf4b2eec220751d23024"
+    },
+    {
+      "package": "tint2",
+      "version": "17.0.1-1.2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/tint2/copyright",
+      "resolved_path": "/usr/share/doc/tint2/copyright",
+      "size": 2947,
+      "sha256": "2772c3e87e1c1f5c765e741c094971af691ba8cedabde4bfa32ed359a28994be"
+    },
+    {
+      "package": "tzdata",
+      "version": "2026c-0+deb13u1",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/tzdata/copyright",
+      "resolved_path": "/usr/share/doc/tzdata/copyright",
+      "size": 375,
+      "sha256": "cb61132bc0fc7b26ef5a82ee18b2fb644a1362f4f286ed980ff22e408471f59a"
+    },
+    {
+      "package": "udev",
+      "version": "257.13-1~deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/udev/copyright",
+      "resolved_path": "/usr/share/doc/udev/copyright",
+      "size": 12521,
+      "sha256": "a79e4b379cabbd960bb44f6cc1a069081a3778c59a25ee529b68df5a2cb7d27d"
+    },
+    {
+      "package": "util-linux",
+      "version": "2.41.5-0+deb13u1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/util-linux/copyright",
+      "resolved_path": "/usr/share/doc/util-linux/copyright",
+      "size": 30341,
+      "sha256": "56b67e2eb8bac5a15d91e261d558d73f1f029113cced229753138194997366b6"
+    },
+    {
+      "package": "x11-common",
+      "version": "1:7.7+24+deb13u1",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/x11-common/copyright",
+      "resolved_path": "/usr/share/doc/x11-common/copyright",
+      "size": 5004,
+      "sha256": "2badb73e6e70d0bd2e0b85d39ce18d3c66cfebc3e301720374fa20e6539c947d"
+    },
+    {
+      "package": "x11-utils",
+      "version": "7.7+7",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/x11-utils/copyright",
+      "resolved_path": "/usr/share/doc/x11-utils/copyright",
+      "size": 28759,
+      "sha256": "24250c1504fb6cc9e46e8ce3be8b4660d0d74efe1b3ae8d770109224b3e2952a"
+    },
+    {
+      "package": "x11-xkb-utils",
+      "version": "7.7+9",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/x11-xkb-utils/copyright",
+      "resolved_path": "/usr/share/doc/x11-xkb-utils/copyright",
+      "size": 12121,
+      "sha256": "bf23f1dfd52e0f7526b83496effacba1e3f29a38adaf119091efad060f8836b1"
+    },
+    {
+      "package": "x11-xserver-utils",
+      "version": "7.7+11",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/x11-xserver-utils/copyright",
+      "resolved_path": "/usr/share/doc/x11-xserver-utils/copyright",
+      "size": 29544,
+      "sha256": "ff5553fb8d1ddd92ebfdb89286a41fc8dce7db2c661a89d815333ee6ae02cf30"
+    },
+    {
+      "package": "xauth",
+      "version": "1:1.1.2-1.1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/xauth/copyright",
+      "resolved_path": "/usr/share/doc/xauth/copyright",
+      "size": 1273,
+      "sha256": "35f7f9792a4d64ef293878893d5cf07e09d2e5eb87fd17a4c0f47d66d4735c0c"
+    },
+    {
+      "package": "xbitmaps",
+      "version": "1.1.1-2.2",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/xbitmaps/copyright",
+      "resolved_path": "/usr/share/doc/xbitmaps/copyright",
+      "size": 1135,
+      "sha256": "13306c3890e4c8710bc468dee0eba7f9677cd94c7a67d2d81fa932d4f635b21f"
+    },
+    {
+      "package": "xdotool",
+      "version": "1:3.20160805.1-5.1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/xdotool/copyright",
+      "resolved_path": "/usr/share/doc/xdotool/copyright",
+      "size": 1965,
+      "sha256": "7022c27d07a4777ff1e23a83274f6351d634d83053b46a7f5582a2c988ab4572"
+    },
+    {
+      "package": "xfconf",
+      "version": "4.20.0-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/xfconf/copyright",
+      "resolved_path": "/usr/share/doc/xfconf/copyright",
+      "size": 3478,
+      "sha256": "62f4848ee63d7abd6fe22abc03157de278c5a14125fd22cc159bee567746b582"
+    },
+    {
+      "package": "xfonts-base",
+      "version": "1:1.0.5+nmu1",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/xfonts-base/copyright",
+      "resolved_path": "/usr/share/doc/xfonts-base/copyright",
+      "size": 10833,
+      "sha256": "051e52a2b0ee12d118c3bea65d6e79c0b2e64a973d77541d8f9843ff7bdd5be8"
+    },
+    {
+      "package": "xfonts-encodings",
+      "version": "1:1.0.4-2.2",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/xfonts-encodings/copyright",
+      "resolved_path": "/usr/share/doc/xfonts-encodings/copyright",
+      "size": 641,
+      "sha256": "7eb990b2914b0e2c2c9493c2511bff3d0b20ced9fb7416d6e74bf79876484811"
+    },
+    {
+      "package": "xfonts-utils",
+      "version": "1:7.7+7",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/xfonts-utils/copyright",
+      "resolved_path": "/usr/share/doc/xfonts-utils/copyright",
+      "size": 13386,
+      "sha256": "4d404116525a133581918c1ad7d32456b49b599f501f1f4ff12d8202e6694a59"
+    },
+    {
+      "package": "xinit",
+      "version": "1.4.2-1+b2",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/xinit/copyright",
+      "resolved_path": "/usr/share/doc/xinit/copyright",
+      "size": 1224,
+      "sha256": "6fb4372709be81a44cbe50edea57aa287b8db12a678a429b260d02332c6ce0fc"
+    },
+    {
+      "package": "xkb-data",
+      "version": "2.42-1",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/xkb-data/copyright",
+      "resolved_path": "/usr/share/doc/xkb-data/copyright",
+      "size": 9933,
+      "sha256": "648621d1a2180678818eb393565849bbc8b332cc521c21e009d948ea5541b3c3"
+    },
+    {
+      "package": "xserver-common",
+      "version": "2:21.1.16-1.3+deb13u3",
+      "architecture": "all",
+      "guest_path": "/usr/share/doc/xserver-common/copyright",
+      "resolved_path": "/usr/share/doc/xserver-common/copyright",
+      "size": 94783,
+      "sha256": "4cc0447a22635c7b2f1a93fec4aa94f1970fadeb72a063de006b51cf4963a06f"
+    },
+    {
+      "package": "xserver-xorg-core",
+      "version": "2:21.1.16-1.3+deb13u3",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/xserver-xorg-core/copyright",
+      "resolved_path": "/usr/share/doc/xserver-xorg-core/copyright",
+      "size": 94783,
+      "sha256": "4cc0447a22635c7b2f1a93fec4aa94f1970fadeb72a063de006b51cf4963a06f"
+    },
+    {
+      "package": "xserver-xorg-input-libinput",
+      "version": "1.5.0-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/xserver-xorg-input-libinput/copyright",
+      "resolved_path": "/usr/share/doc/xserver-xorg-input-libinput/copyright",
+      "size": 2526,
+      "sha256": "c90edd059556ed1e96aa4a3fffcb8edc1c4348d6d78568c3f3edc32581ea46b2"
+    },
+    {
+      "package": "xterm",
+      "version": "398-1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/xterm/copyright",
+      "resolved_path": "/usr/share/doc/xterm/copyright",
+      "size": 8459,
+      "sha256": "dfd1f834a3a769e846903201c97b3a1c22ed6ee34d64051ee840e5cabd6a78b4"
+    },
+    {
+      "package": "zlib1g",
+      "version": "1:1.3.dfsg+really1.3.1-1+b1",
+      "architecture": "arm64",
+      "guest_path": "/usr/share/doc/zlib1g/copyright",
+      "resolved_path": "/usr/share/doc/zlib1g/copyright",
+      "size": 2927,
+      "sha256": "9e5b96d63773a5d177ba264254390f792be07e41748ebd94730981c6cac31cc6"
+    }
+  ],
+  "missing": [],
+  "scope": "actual configured two-boot snapshot; file bytes only, rdump ownership not claimed"
+}

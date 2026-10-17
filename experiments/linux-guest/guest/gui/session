@@ -1,0 +1,16 @@
+#!/bin/sh
+set -eu
+export LC_ALL=C
+# A real WM and clients, all owned by UID1000, on the local authenticated X socket.
+openbox &
+wm=$!
+n=0
+until xprop -root _NET_SUPPORTING_WM_CHECK | grep -q 'window id # 0x'; do
+    kill -0 "$wm"; n=$((n+1)); [ "$n" -lt 30 ]; sleep 1
+done
+xsetroot -solid '#1b2430'
+tint2 -c /usr/local/share/ideck/tint2rc &
+pcmanfm /home/ideck &
+mousepad &
+xterm -title 'iDeck Terminal' -geometry 78x18+30+40 &
+wait "$wm"

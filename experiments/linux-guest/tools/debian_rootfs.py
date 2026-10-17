@@ -173,27 +173,30 @@ def package_pin(record):
             "installed_size_kib": int(record.get("Installed-Size", "0"))}
 
 
-def resolve(records, plain, seeds, cache):
+def resolve(records, plain, seeds, cache, architecture="arm64"):
     """APT solver only. It cannot install/download; all trust is verified above."""
+    if architecture not in {"arm64", "amd64"}:
+        raise ValueError("unsupported resolver architecture")
+    plain = Path(plain).resolve()
     with tempfile.TemporaryDirectory(prefix="resolver-", dir=cache) as temporary:
         p = Path(temporary)
         (p / "lists/partial").mkdir(parents=True)
         (p / "archives/partial").mkdir(parents=True)
         (p / "status").touch()
-        (p / "sources").write_text("deb [arch=arm64] https://deb.debian.org/debian trixie main\n")
-        (p / "lists/deb.debian.org_debian_dists_trixie_main_binary-arm64_Packages").symlink_to(plain)
+        (p / "sources").write_text(f"deb [arch={architecture}] https://deb.debian.org/debian trixie main\n")
+        (p / f"lists/deb.debian.org_debian_dists_trixie_main_binary-{architecture}_Packages").symlink_to(plain)
         (p / "apt.conf").write_text('Dir::Etc::parts "-"; Dir::Etc::main "-";\n')
         options = {"Dir::State::status": p / "status", "Dir::State::lists": p / "lists",
                    "Dir::Cache::archives": p / "archives", "Dir::Etc::sourcelist": p / "sources",
-                   "Dir::Etc::sourceparts": "-", "APT::Architecture": "arm64",
-                   "APT::Architectures": "arm64", "APT::Install-Recommends": "false",
+                   "Dir::Etc::sourceparts": "-", "APT::Architecture": architecture,
+                   "APT::Architectures": architecture, "APT::Install-Recommends": "false",
                    "Debug::NoLocking": "true"}
         args = ["apt-get"]
         for key, value in options.items():
             args += ["-o", f"{key}={value}"]
         result = run(args + ["--simulate", "install", *sorted(seeds)],
                      env={**os.environ, "APT_CONFIG": str(p / "apt.conf"), "LC_ALL": "C"})
-        selected = re.findall(r"^Inst ([^ :]+)(?::arm64)? \((\S+) ", result.stdout, re.M)
+        selected = re.findall(r"^Inst ([^ :]+)(?::" + architecture + r")? \((\S+) ", result.stdout, re.M)
     by_identity = {(r["Package"], r["Version"]): r for r in records if "Package" in r}
     if not selected or len({n for n, _ in selected}) != len(selected):
         raise ValueError("APT resolver returned empty/ambiguous closure")

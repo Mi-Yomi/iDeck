@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "status": "prepared_not_booted",
+  "host_only": true,
+  "production_kernel_changed": false,
+  "lock_sha256": "8b3ee6d1f255c7486e7226c65ab304036363edccea4e145b472fe7df1cf6ed98",
+  "tree_logical_bytes": 714733572,
+  "scratch_size_bytes": 1342177280,
+  "kernel_release": "6.12.107+deb13-arm64",
+  "kernel_sha256": "9c37ace54ef7e1919411fd912e9f34d6982ddd7f4c8ef3c8aee56f4c4d70db67",
+  "module_load_order": [
+    "kernel/drivers/virtio/virtio_mmio.ko",
+    "kernel/drivers/block/virtio_blk.ko",
+    "kernel/drivers/gpu/drm/drm.ko",
+    "kernel/drivers/gpu/drm/drm_kms_helper.ko",
+    "kernel/drivers/gpu/drm/drm_shmem_helper.ko",
+    "kernel/drivers/virtio/virtio_dma_buf.ko",
+    "kernel/drivers/gpu/drm/virtio/virtio-gpu.ko",
+    "kernel/drivers/virtio/virtio_input.ko",
+    "kernel/drivers/input/evdev.ko",
+    "kernel/crypto/crc32c_generic.ko",
+    "kernel/fs/jbd2/jbd2.ko",
+    "kernel/fs/mbcache.ko",
+    "kernel/lib/crc16.ko",
+    "kernel/fs/ext4/ext4.ko"
+  ],
+  "initramfs_sha256": "10703a368ad779b27219d8aac1847aa3d1cdf59f8015fe35ac9578fc54197899",
+  "qemu_version": "QEMU emulator version 10.0.13 (Debian 1:10.0.13+ds-0+deb13u1)",
+  "builder_peak_rss_bytes": 810754048,
+  "sources": {
+    "tools/gui_vm.py": "5cdf4a16946a892d26ea23abc40f0d773b76156bcce1e6d64e9486ff82b334c9",
+    "tools/gui_rootfs.py": "44464d61c485d4e23857e6e4bae9bcc0265435cb622f6576df2a3ca71ad37e38",
+    "tools/debian_rootfs.py": "8b68c689e034fb09c39ef58c3a4ee01da3255579972f7a9ae31dbcf203581c0b",
+    "guest/gui/ideck-gui-host-init": "516625c2a81bccb75f076a237a0e9d722d330310c4554d7362fab2e3051deb38",
+    "guest/gui/ideck-gui-host-login": "2e1545d23b537be207c09d56cfae4eda9abb16227e4cf3754ec2686f481426a8",
+    "guest/gui/provision": "e0f2be1532b6343d719b84b530abcce3edb462c8222efda9590202712ea2c6ad",
+    "guest/gui/session": "738b311cd9747177045a0363e3ed4dd67a201ed45200c2adffbe86b0849dca48",
+    "guest/gui/start": "1cb3ba8e158927d236b5979ca25e82fa8a1c420b2c690e0052096f9ac3194e45",
+    "guest/gui/tint2rc": "24d67733846c50b0ed1a8ef3acf061e7120ab7dbf5c53c3e4061d75c03d0b22b",
+    "guest/gui/xorg.conf": "c69b52c296a910995425efbe3abc509714f1608ae69fb9ff70f7484af125dc43"
+  },
+  "notice_policy": "All authenticated package /usr/share/doc files retained; no stripping"
+}

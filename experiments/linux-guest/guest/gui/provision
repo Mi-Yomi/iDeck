@@ -1,0 +1,25 @@
+#!/bin/sh
+# Runs as root INSIDE a disposable system VM, from authenticated offline .debs.
+set -eu
+export DEBIAN_FRONTEND=noninteractive LC_ALL=C PATH=/usr/sbin:/usr/bin:/sbin:/bin
+cd /packages
+sha256sum -c SHA256SUMS
+# Pre-extraction bootstraps dependency cycles. No scripts are suppressed in dpkg.
+dpkg --force-depends --unpack ./*.deb
+dpkg --configure -a
+audit=$(dpkg --audit)
+test -z "$audit"
+dpkg-query -W '-f=${Package}\t${Version}\t${Architecture}\t${Status}\n' | sort > /var/lib/ideck/package-manifest.tsv
+cmp /var/lib/ideck/package-manifest.tsv /packages/expected-packages.tsv
+useradd --uid 1000 --user-group --create-home --shell /bin/bash ideck
+chmod 0700 /home/ideck
+passwd --lock root
+passwd --lock ideck
+install -d -o 1000 -g 1000 -m 0700 /home/ideck/.config /home/ideck/Documents
+printf '127.0.0.1 localhost ideck\n::1 localhost\n' > /etc/hosts
+printf 'ideck\n' > /etc/hostname
+printf '# Offline iDeck GUI; no network source configured.\n' > /etc/apt/sources.list
+printf '# Mounted by iDeck bootstrap.\n' > /etc/fstab
+: > /etc/machine-id
+rm /usr/sbin/policy-rc.d
+printf 'IDECK_GUI_PACKAGES_CONFIGURED\n'

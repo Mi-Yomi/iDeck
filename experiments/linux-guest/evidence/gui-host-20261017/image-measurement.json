@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "scope": "host-only two-boot acceptance snapshot, not app seed/payload",
+  "raw": {
+    "file": "host-gui-acceptance-2boots.raw",
+    "size": 1342177280,
+    "sha256": "a32f7b9c0c59e651492811458e3a46667010eb4be54d07a79487e94c5e43ed06"
+  },
+  "gzip": {
+    "file": "host-gui-acceptance.raw.gz",
+    "size": 400617549,
+    "sha256": "c1476f9e179b3dc5f6c8c3bbfce3e7e6e38351e4d914bc49aaa01b677a76b078"
+  },
+  "gzip_stream_matches_raw": true,
+  "raw_plus_gzip_plus_512MiB_bytes": 2279665741
+}

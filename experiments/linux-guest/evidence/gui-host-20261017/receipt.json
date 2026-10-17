@@ -1,0 +1,137 @@
+{
+  "schema": 1,
+  "base_commit": "b8a943f063302883e87d7deac0cb9abec0e37172",
+  "branch": "codex/linux-guest-feasibility-20261015",
+  "scope": "real GUI host preparation on Debian provision kernel; not production Alpine/iPhone acceptance",
+  "result": "host_gui_two_boots_and_actual_glibc_loader_pass",
+  "records": {
+    "boot-1-filesystem.log": {
+      "size": 2056,
+      "sha256": "399680da85338b49f1fd24e0e03b52bdcd4a86cb38b6554f0c5910b6ee759c64"
+    },
+    "boot-1-fsck.log": {
+      "size": 349,
+      "sha256": "b2f7c637c8c8079b0f4cc2e1c1f39c27ef2197f3f0fe471bf785826b5b066206"
+    },
+    "boot-1-serial.log": {
+      "size": 49709,
+      "sha256": "0104990d50357906efd029cde8a8beb8e479e7a73ec6f3ae5cd3389469d8d673"
+    },
+    "boot-1.json": {
+      "size": 5139,
+      "sha256": "246fc2bd98109af30d941a3c7aeaf838c95c90d92825fe227112f7784b5e5f09"
+    },
+    "boot-2-filesystem.log": {
+      "size": 2056,
+      "sha256": "b5998ae055922a5cadaa91f879a42a3d7334254d4bb115f3eab0f7ed89fc00d1"
+    },
+    "boot-2-fsck.log": {
+      "size": 349,
+      "sha256": "9dae8d2a23918f69618cae6447e68c1239df32e9f9b60c04ee45eff7024d3eb5"
+    },
+    "boot-2-serial.log": {
+      "size": 48731,
+      "sha256": "0779406d4d25bffad0cf776b022cf03731b85704a8d0ca8e66875c4d56f7e8d3"
+    },
+    "boot-2.json": {
+      "size": 5138,
+      "sha256": "84e4b7153e2c762dd775e01ea4996a1f0a6de64639806b98b7e6529b7f7cc652"
+    },
+    "desktop-after-reopen.png": {
+      "size": 31329,
+      "sha256": "e5cc3f024020b874f8c9fa37939b53a6f3b17cac0f504fa539f5ff9ec0fef80c"
+    },
+    "elf-inventory.json": {
+      "size": 11233,
+      "sha256": "c8a2928d14bc97f99d593ce328bacbb0b9c819dd894c35dec440ef806e63247d"
+    },
+    "image-measurement.json": {
+      "size": 507,
+      "sha256": "c284c05ed2d055cdfeb1dbd2ee3db13258dec5bf4b7172623c520db69d405f97"
+    },
+    "loader-boot.json": {
+      "size": 5289,
+      "sha256": "036021572322a2e44d325ea586eadd21882fd238066b64985ffb56baeb4932e9"
+    },
+    "loader-filesystem.log": {
+      "size": 2056,
+      "sha256": "933b28bcecf0ac68a855ece6061aa47ef5623f91894c304062d89ad11c8edd0a"
+    },
+    "loader-fsck.log": {
+      "size": 349,
+      "sha256": "9dae8d2a23918f69618cae6447e68c1239df32e9f9b60c04ee45eff7024d3eb5"
+    },
+    "loader-runner.py": {
+      "size": 17344,
+      "sha256": "29009390f4d93ef0848e86cdd95cbbb05e32bc10a709527a7a09061e67191d55"
+    },
+    "loader-serial.log": {
+      "size": 63409,
+      "sha256": "e83539ccd1b8e9decfe1366600afcb934341d20b565330cacc1d549f89c61e65"
+    },
+    "notices-manifest.json": {
+      "size": 114684,
+      "sha256": "13401c89bd45d4c4acb2b9809830b1c364da1937770ed6f419fa4d7d89c609f4"
+    },
+    "package-manifest.tsv": {
+      "size": 17465,
+      "sha256": "7cac249c6410e6b3ef6fa9d28adc1652d5ec627e7aeb37508597d2110a7e4b3b"
+    },
+    "preparation.json": {
+      "size": 2268,
+      "sha256": "42ebc7107a8d8755986853f84c70171caeb3c2ad451cb39dcf5c2f79b3e522d2"
+    },
+    "provision-filesystem.log": {
+      "size": 2056,
+      "sha256": "0daa4d3346a4fbdf1567b6b6a9428144d2ab38f69482e28cf90981878b1e76e9"
+    },
+    "provision-fsck.log": {
+      "size": 349,
+      "sha256": "af98d90e2eb35d2c51a4a05af038e41d67538e64325f5ed42dfbc4bb624a8676"
+    },
+    "provision-serial.log": {
+      "size": 117577,
+      "sha256": "a15278f709d6511f9701e56b437547b513c16c555f7d37cc9929cf0845f5f027"
+    },
+    "provision.json": {
+      "size": 4549,
+      "sha256": "8c1d89bbc222175cec2a7416d06edc6892ed897e0eafd85ea7e5f9320058bea4"
+    },
+    "two-boot-runner.py": {
+      "size": 16162,
+      "sha256": "efb741115b203934f947bc9b229de4f09b985f6f6f37b9d7e5a6b0ee4e8e7a49"
+    }
+  },
+  "blockers": [
+    "matching production Alpine modloop missing: official CDN403; supported Library helper tools/list network failure",
+    "native Desktop route/full keyboard/right-click/scroll and GUI payload integration pending"
+  ],
+  "not_run": [
+    "Apple SDK/Swift execution",
+    "IPA/device GUI",
+    "guest GPU acceleration",
+    "Steam",
+    "Codemagic/other CI"
+  ],
+  "boundaries": {
+    "app_seed_or_payload_published": false,
+    "existing_console_disks_changed": false,
+    "original_kernel_changed": false
+  },
+  "unit_tests": {
+    "total": 253,
+    "pass": 249,
+    "skip": 4,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 7.178,
+    "status": "pass_with_explicit_toolchain_skips"
+  },
+  "elf_scope": {
+    "arm64_elf_files": 1133,
+    "dt_needed_edges": 3791,
+    "actual_glibc_loader_executables_passed": 423,
+    "standalone_dso_static_residuals": 1,
+    "all_standalone_dso_contexts_claimed": false
+  }
+}

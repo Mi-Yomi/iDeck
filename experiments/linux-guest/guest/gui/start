@@ -1,0 +1,40 @@
+#!/bin/sh
+set -eu
+export PATH=/usr/sbin:/usr/bin:/sbin:/bin LC_ALL=C
+[ -c /dev/dri/card0 ] && [ -c /dev/tty0 ] && [ -c /dev/tty1 ]
+install -d -m 0700 /run/ideck
+install -d -o 1000 -g 1000 -m 0700 /run/user/1000
+cookie=$(mcookie)
+xauth -f /run/ideck/Xauthority add :0 . "$cookie"
+cp /run/ideck/Xauthority /run/user/1000/Xauthority
+chown 1000:1000 /run/user/1000/Xauthority
+chmod 0600 /run/ideck/Xauthority /run/user/1000/Xauthority
+# Xorg owns a VT and DRM master as root; clients drop to the desktop user.
+# -keeptty is deliberately absent: Xorg opens its selected VT itself.
+/usr/lib/xorg/Xorg :0 vt1 -config /etc/X11/ideck.conf -auth /run/ideck/Xauthority -nolisten tcp -noreset -logfile /var/log/Xorg.0.log &
+xpid=$!
+export DISPLAY=:0 XAUTHORITY=/run/ideck/Xauthority
+n=0
+until xdpyinfo >/run/ideck/xdpyinfo 2>/dev/null; do
+    kill -0 "$xpid"
+    n=$((n+1)); [ "$n" -lt 60 ]; sleep 1
+done
+xrandr --output Virtual-1 --mode 800x600
+setpriv --reuid=1000 --regid=1000 --init-groups /usr/bin/env -i \
+    PATH=/usr/sbin:/usr/bin:/sbin:/bin HOME=/home/ideck USER=ideck LOGNAME=ideck \
+    LANG=C.UTF-8 DISPLAY=:0 XAUTHORITY=/run/user/1000/Xauthority \
+    XDG_RUNTIME_DIR=/run/user/1000 dbus-run-session /usr/local/lib/ideck/session &
+spid=$!
+n=0
+until xdotool search --onlyvisible --class XTerm >/dev/null 2>&1 && \
+      xdotool search --onlyvisible --class Pcmanfm >/dev/null 2>&1 && \
+      xdotool search --onlyvisible --class Mousepad >/dev/null 2>&1; do
+    kill -0 "$xpid"; kill -0 "$spid"
+    n=$((n+1)); [ "$n" -lt 60 ]; sleep 1
+done
+xwininfo -root -tree > /run/ideck/windows
+printf 'IDECK_GUI_WINDOWS_MAPPED\n'
+# PID1 owns the readiness channel; a fork alone cannot declare GUI ready.
+: > /run/ideck/gui-ready
+wait "$spid"
+exit 1

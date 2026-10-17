@@ -1,5 +1,58 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Private cloud Steam continuation: input transfer blocker — 2026-10-17
+
+Started from the verified remote Steam branch at
+`b493a4909f81a5df0c226d9562a049e59e191039`, with no foreign changes. All work
+is confined to this private cloud. No laptop/Windows/WSL, subagent, CI, token,
+Release mutation, main/GUI branch change or security change was used.
+Evidence: [cloud continuation](experiments/linux-guest/evidence/steam-cloud-20261017/README.md).
+
+The exact official Steam installer cannot obtain its first pinned ZIP:
+`URLError: <urlopen error Tunnel connection failed: 403 Forbidden>` from the
+official Fastly Steam CDN. The private client cache remains empty. No alternate
+host/proxy or policy bypass was attempted. This prevents a Steam runtime test;
+it does not diagnose or resolve the historical first webhelper-init timeout.
+
+Existing shell Release access also returns `Forbidden`. The authorized GitHub
+connector separately confirms asset 650023557 is uploaded with 292065280 bytes
+and the expected `112bdba6…dedd` digest, but that tool supports metadata/text
+only and rejects binary downloads. No evidence of invalid GitHub credentials
+was obtained. Library search found no suitable seed/client. The owner's local
+installed disk remains unavailable and was never accessed.
+
+The reproducible path made concrete progress using existing pinned builders:
+the signed Debian indexes and 432 unique GUI inputs were downloaded and verified;
+a new disposable GUI provisioning image was prepared. The original production
+GUI kernel/initramfs and the current Steam bootstrap reproduced exactly.
+Steam bootstrap: 11665437 bytes, SHA-256
+`6a0081d76fedbb38b72e705334513313093b46e701907ed8b6d516640978df7f`.
+The original Stop and namespace helper are unchanged. All 45 additional Steam
+packages / 18238048 bytes were authenticated and cached, **not installed in a
+Steam guest**. The existing 129 offline Steam tests passed in this cloud.
+
+The standard GUI provisioning subsequently completed in 623.065 seconds,
+verified its 341-package manifest, cleanly unmounted and exited QEMU with 0.
+After that sole writer exited, host fsync passed and a separate read-only fsck
+passed the strict Steam full-output policy (all five passes, no extra output).
+The scratch image's SHA-256 stayed
+`425893ed8c04270e293f7b5ed8b4db5cf94d3c98db17f66f0666de515f821f22`.
+Sampled QEMU peak RSS was 1407672320 bytes with 1024 MiB guest RAM/four vCPUs,
+using the unchanged GUI host-only provisioning profile. Steam RAM/SHM were not
+measured. No task QEMU remains and no host disk mount was created. This is not
+GUI seed acceptance or boot acceptance of the exact current Steam archive.
+The 45-package Steam guest install and byte-empty successful Steam dpkg audit
+are still NOT RUN; no Steam disk was created from an unaccepted seed.
+
+Working inputs remain private under `/workspace/steam-cloud-20261017`.
+The new GUI scratch image is not the accepted seed and must not bypass
+`ipa/gui.lock.json`. No client/disk is committed or published. Steam main UI,
+Big Picture, their input/restart/screenshots, Steam RAM/SHM, ARM64 stack capture,
+IPC tracing, Apple/iPhone and GPU acceleration remain **NOT RUN** here.
+Continue only after a supported permitted transfer of the locked official
+client inputs and a verified cloud seed contract; keep all runtime/security,
+disk ownership and Stop/lifetime gates.
+
 ## Steam IPC continuation paused for cloud handoff — 2026-10-17
 
 The owner requested an immediate end to local experiments so the laptop can be

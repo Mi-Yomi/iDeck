@@ -1,0 +1,3 @@
+* -text
+# Preserve the original guest CR/CRLF and terminal output bytes.
+gui-provision/serial.log whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof

@@ -1,0 +1,565 @@
+{
+  "schema": 1,
+  "gui_inputs_sha256": "8b3ee6d1f255c7486e7226c65ab304036363edccea4e145b472fe7df1cf6ed98",
+  "steam_dependencies_sha256": "0d153bbb2a9a39c32fb650d189cc972355fc1d94da39297cf0b9830fdbd922f6",
+  "module_tools_lock_sha256": "8d67b0438016aeb0dc048c7c224cb54496f6bbdf912d3a0820bfd4f61b4ff317",
+  "release_signature_verified": true,
+  "system_install": false,
+  "guest_install": false,
+  "packages": [
+    {
+      "group": "steam",
+      "name": "libabsl20240722",
+      "version": "20240722.0-4",
+      "architecture": "arm64",
+      "filename": "pool/main/a/abseil/libabsl20240722_20240722.0-4_arm64.deb",
+      "sha256": "eb6648c73cd69c577a2bc18c8d66d44de897c0207a734ffdb55f91945404d0ac",
+      "size": 452500,
+      "installed_size_kib": 6512
+    },
+    {
+      "group": "steam",
+      "name": "libasound2-data",
+      "version": "1.2.14-1+deb13u1",
+      "architecture": "all",
+      "filename": "pool/main/a/alsa-lib/libasound2-data_1.2.14-1+deb13u1_all.deb",
+      "sha256": "04688afdff3769c0f685541daed7b2f6f0cb946799ddf1d5847ddf11fe245559",
+      "size": 21188,
+      "installed_size_kib": 197
+    },
+    {
+      "group": "steam",
+      "name": "libasound2t64",
+      "version": "1.2.14-1+deb13u1",
+      "architecture": "arm64",
+      "filename": "pool/main/a/alsa-lib/libasound2t64_1.2.14-1+deb13u1_arm64.deb",
+      "sha256": "9c808d819ccddc37c793dd3186c2ecd858b2feb2474cebb883f70386e7890d39",
+      "size": 341632,
+      "installed_size_kib": 1269
+    },
+    {
+      "group": "steam",
+      "name": "libasyncns0",
+      "version": "0.8-6+b5",
+      "architecture": "arm64",
+      "filename": "pool/main/liba/libasyncns/libasyncns0_0.8-6+b5_arm64.deb",
+      "sha256": "818bbcaa7ada536a1bdd5b1c26b77608606403f5c15557691e83d0b4433b89ef",
+      "size": 11672,
+      "installed_size_kib": 83
+    },
+    {
+      "group": "steam",
+      "name": "libdecor-0-0",
+      "version": "0.2.2-2",
+      "architecture": "arm64",
+      "filename": "pool/main/libd/libdecor-0/libdecor-0-0_0.2.2-2_arm64.deb",
+      "sha256": "34c0db59390767ef7b1cb5594f78f142b0673a5e7788e068cdd323f9c16f9207",
+      "size": 15204,
+      "installed_size_kib": 86
+    },
+    {
+      "group": "steam",
+      "name": "libebur128-1",
+      "version": "1.2.6-1+b2",
+      "architecture": "arm64",
+      "filename": "pool/main/libe/libebur128/libebur128-1_1.2.6-1+b2_arm64.deb",
+      "sha256": "3b7ac8f30620590a710e6c8877bb28aad295e253a87a173f05f852a953be3326",
+      "size": 14636,
+      "installed_size_kib": 84
+    },
+    {
+      "group": "steam",
+      "name": "libfftw3-single3",
+      "version": "3.3.10-2+b1",
+      "architecture": "arm64",
+      "filename": "pool/main/f/fftw3/libfftw3-single3_3.3.10-2+b1_arm64.deb",
+      "sha256": "874b10ccab6219bcae210cc9ff9298389e266ad7308be086956c859ae1aa8ba5",
+      "size": 516600,
+      "installed_size_kib": 1384
+    },
+    {
+      "group": "steam",
+      "name": "libflac14",
+      "version": "1.5.0+ds-2",
+      "architecture": "arm64",
+      "filename": "pool/main/f/flac/libflac14_1.5.0+ds-2_arm64.deb",
+      "sha256": "11800827306e56fcbd1a65ea67d9d13126fc02bf87fdfecd35e0f48a145b3c59",
+      "size": 179768,
+      "installed_size_kib": 447
+    },
+    {
+      "group": "steam",
+      "name": "libgomp1",
+      "version": "14.2.0-19",
+      "architecture": "arm64",
+      "filename": "pool/main/g/gcc-14/libgomp1_14.2.0-19_arm64.deb",
+      "sha256": "43e84cb7971d8a4d8870cab6204e998ea4f23ee1339bb0ff556dd881bac82d25",
+      "size": 123520,
+      "installed_size_kib": 352
+    },
+    {
+      "group": "steam",
+      "name": "libgtk2.0-0t64",
+      "version": "2.24.33-7",
+      "architecture": "arm64",
+      "filename": "pool/main/g/gtk+2.0/libgtk2.0-0t64_2.24.33-7_arm64.deb",
+      "sha256": "28b2f1622197443f07f25a93e03db1a964184946ac12f501b8221c895026d0ca",
+      "size": 1674412,
+      "installed_size_kib": 6947
+    },
+    {
+      "group": "steam",
+      "name": "libgtk2.0-common",
+      "version": "2.24.33-7",
+      "architecture": "all",
+      "filename": "pool/main/g/gtk+2.0/libgtk2.0-common_2.24.33-7_all.deb",
+      "sha256": "f874797252735a9d0d14e6e6baf93e7c1ea7b2bc7ee44ef7ec09fb715bfbc9e6",
+      "size": 2661068,
+      "installed_size_kib": 19885
+    },
+    {
+      "group": "steam",
+      "name": "libibus-1.0-5",
+      "version": "1.5.32-2",
+      "architecture": "arm64",
+      "filename": "pool/main/i/ibus/libibus-1.0-5_1.5.32-2_arm64.deb",
+      "sha256": "70ca5d33241c0b34b3ef617c3f87572810aeec8b10e002dc5660f7e86dc082d6",
+      "size": 452584,
+      "installed_size_kib": 923
+    },
+    {
+      "group": "steam",
+      "name": "liblilv-0-0",
+      "version": "0.24.26-1",
+      "architecture": "arm64",
+      "filename": "pool/main/l/lilv/liblilv-0-0_0.24.26-1_arm64.deb",
+      "sha256": "eb14f680a7c639a9dce34928a2a560468baa25f03a79cb76b6acc9b35226b54e",
+      "size": 41672,
+      "installed_size_kib": 158
+    },
+    {
+      "group": "steam",
+      "name": "liblsof0",
+      "version": "4.99.4+dfsg-2",
+      "architecture": "arm64",
+      "filename": "pool/main/l/lsof/liblsof0_4.99.4+dfsg-2_arm64.deb",
+      "sha256": "a1ab035a948e010207680635ad7fedfb27cd69a43ab53bd5a4d647775bdf3020",
+      "size": 127540,
+      "installed_size_kib": 221
+    },
+    {
+      "group": "steam",
+      "name": "libmp3lame0",
+      "version": "3.100-6+b3",
+      "architecture": "arm64",
+      "filename": "pool/main/l/lame/libmp3lame0_3.100-6+b3_arm64.deb",
+      "sha256": "ed3563722129ffa4def03b7af0b589fa20eef972bdcc4599202ddb1ac654c58e",
+      "size": 354760,
+      "installed_size_kib": 572
+    },
+    {
+      "group": "steam",
+      "name": "libmpg123-0t64",
+      "version": "1.32.10-1+deb13u1",
+      "architecture": "arm64",
+      "filename": "pool/main/m/mpg123/libmpg123-0t64_1.32.10-1+deb13u1_arm64.deb",
+      "sha256": "d284df39ff3b64f1cdf274352613c52534c55eed82c3a2ff0fc7ba154acd7bf0",
+      "size": 143208,
+      "installed_size_kib": 349
+    },
+    {
+      "group": "steam",
+      "name": "libmysofa1",
+      "version": "1.3.3+dfsg-1",
+      "architecture": "arm64",
+      "filename": "pool/main/libm/libmysofa/libmysofa1_1.3.3+dfsg-1_arm64.deb",
+      "sha256": "691ae51a7b5643fb9f7c81c917d12c1dc71c74eb1cf2073f0d3f71141fbffa8a",
+      "size": 1156924,
+      "installed_size_kib": 1271
+    },
+    {
+      "group": "steam",
+      "name": "libnghttp2-14",
+      "version": "1.64.0-1.1+deb13u1",
+      "architecture": "arm64",
+      "filename": "pool/main/n/nghttp2/libnghttp2-14_1.64.0-1.1+deb13u1_arm64.deb",
+      "sha256": "ca222b98d5bef2193c05a1e736d0619798ba7a8f8e92526f3e1d06edcd0bf751",
+      "size": 71604,
+      "installed_size_kib": 229
+    },
+    {
+      "group": "steam",
+      "name": "libnm0",
+      "version": "1.52.1-1",
+      "architecture": "arm64",
+      "filename": "pool/main/n/network-manager/libnm0_1.52.1-1_arm64.deb",
+      "sha256": "084202c4c7b53f30352bc2ad5048479a246198e1a1ef205763a18cb5e907b861",
+      "size": 426116,
+      "installed_size_kib": 1789
+    },
+    {
+      "group": "steam",
+      "name": "libnspr4",
+      "version": "2:4.36-1",
+      "architecture": "arm64",
+      "filename": "pool/main/n/nspr/libnspr4_4.36-1_arm64.deb",
+      "sha256": "b8cd0221e4c35a77ec6e3b89959ca96deb75919a3c55b6735ca0288a1b61bdbb",
+      "size": 102088,
+      "installed_size_kib": 425
+    },
+    {
+      "group": "steam",
+      "name": "libnss3",
+      "version": "2:3.110-1+deb13u4",
+      "architecture": "arm64",
+      "filename": "pool/main/n/nss/libnss3_3.110-1+deb13u4_arm64.deb",
+      "sha256": "1a9f35c238e8bbb570fbdae88ffe43a3cf3462e1582cbe0903a9aa949e61f3e8",
+      "size": 1292972,
+      "installed_size_kib": 4588
+    },
+    {
+      "group": "steam",
+      "name": "libogg0",
+      "version": "1.3.5-3+b2",
+      "architecture": "arm64",
+      "filename": "pool/main/libo/libogg/libogg0_1.3.5-3+b2_arm64.deb",
+      "sha256": "d59a83ab352bf0c16ce9513fdf264f87214813ca8c628c652801ef476ece8286",
+      "size": 23580,
+      "installed_size_kib": 90
+    },
+    {
+      "group": "steam",
+      "name": "libopenal-data",
+      "version": "1:1.24.2-1",
+      "architecture": "all",
+      "filename": "pool/main/o/openal-soft/libopenal-data_1.24.2-1_all.deb",
+      "sha256": "003fb223f6ccd387adc28357021c243c604591806afb84dc46e906b911d8de38",
+      "size": 167780,
+      "installed_size_kib": 260
+    },
+    {
+      "group": "steam",
+      "name": "libopenal1",
+      "version": "1:1.24.2-1",
+      "architecture": "arm64",
+      "filename": "pool/main/o/openal-soft/libopenal1_1.24.2-1_arm64.deb",
+      "sha256": "2431891da0bce880529768817087a7789000f07d24e201f13ff07a1ace9b40b5",
+      "size": 577344,
+      "installed_size_kib": 1539
+    },
+    {
+      "group": "steam",
+      "name": "libopus0",
+      "version": "1.5.2-2",
+      "architecture": "arm64",
+      "filename": "pool/main/o/opus/libopus0_1.5.2-2_arm64.deb",
+      "sha256": "1d980e8a4717074805a98dbe07671cb3bee068c25709315f3de836980c629836",
+      "size": 2812952,
+      "installed_size_kib": 3422
+    },
+    {
+      "group": "steam",
+      "name": "libpipewire-0.3-0t64",
+      "version": "1.4.2-1",
+      "architecture": "arm64",
+      "filename": "pool/main/p/pipewire/libpipewire-0.3-0t64_1.4.2-1_arm64.deb",
+      "sha256": "f25ab475f09ab5ec952f13a2d6b7a870dd5eb8c7806664baf8be9bdee3ae995b",
+      "size": 260312,
+      "installed_size_kib": 1017
+    },
+    {
+      "group": "steam",
+      "name": "libpulse0",
+      "version": "17.0+dfsg1-2+b1",
+      "architecture": "arm64",
+      "filename": "pool/main/p/pulseaudio/libpulse0_17.0+dfsg1-2+b1_arm64.deb",
+      "sha256": "2de5610e3affe69cfb11110f890375261b47c9e0fc1a81eef7ecc4d6d2dc9a6d",
+      "size": 236376,
+      "installed_size_kib": 1109
+    },
+    {
+      "group": "steam",
+      "name": "libsamplerate0",
+      "version": "0.2.2-4+b2",
+      "architecture": "arm64",
+      "filename": "pool/main/libs/libsamplerate/libsamplerate0_0.2.2-4+b2_arm64.deb",
+      "sha256": "5d9fad694b249d48d8457e1242ab60e04db6a30d7d56f80c6ae463ff122147ec",
+      "size": 944716,
+      "installed_size_kib": 1506
+    },
+    {
+      "group": "steam",
+      "name": "libsdl2-2.0-0",
+      "version": "2.32.4+dfsg-1",
+      "architecture": "arm64",
+      "filename": "pool/main/libs/libsdl2/libsdl2-2.0-0_2.32.4+dfsg-1_arm64.deb",
+      "sha256": "6312ccbc29645ac5cc9dde9f9ed8bd5c85a0233690c270c83c963b49f8cd49d5",
+      "size": 602568,
+      "installed_size_kib": 2054
+    },
+    {
+      "group": "steam",
+      "name": "libserd-0-0",
+      "version": "0.32.4-1",
+      "architecture": "arm64",
+      "filename": "pool/main/s/serd/libserd-0-0_0.32.4-1_arm64.deb",
+      "sha256": "01205ff5c346ae395ec3066034e151e8100e46f596afc65d9bba7a80cce129ae",
+      "size": 45596,
+      "installed_size_kib": 155
+    },
+    {
+      "group": "steam",
+      "name": "libsndfile1",
+      "version": "1.2.2-2+deb13u1",
+      "architecture": "arm64",
+      "filename": "pool/main/libs/libsndfile/libsndfile1_1.2.2-2+deb13u1_arm64.deb",
+      "sha256": "6c94f17e1f02778f98b96bb9ae19ff30085662e96685898a018c26bfd4bfc3f2",
+      "size": 185528,
+      "installed_size_kib": 615
+    },
+    {
+      "group": "steam",
+      "name": "libsord-0-0",
+      "version": "0.16.18-1",
+      "architecture": "arm64",
+      "filename": "pool/main/s/sord/libsord-0-0_0.16.18-1_arm64.deb",
+      "sha256": "d2a648495869e680c7ecd107dad0c716590fec427817db703f3bebf719b37f59",
+      "size": 17284,
+      "installed_size_kib": 86
+    },
+    {
+      "group": "steam",
+      "name": "libspa-0.2-modules",
+      "version": "1.4.2-1",
+      "architecture": "arm64",
+      "filename": "pool/main/p/pipewire/libspa-0.2-modules_1.4.2-1_arm64.deb",
+      "sha256": "b13c1955882ea689f9135bf45c020a364d3cba2d2ed69251827b5c6abd41d4b7",
+      "size": 895964,
+      "installed_size_kib": 4671
+    },
+    {
+      "group": "steam",
+      "name": "libsratom-0-0",
+      "version": "0.6.18-1",
+      "architecture": "arm64",
+      "filename": "pool/main/s/sratom/libsratom-0-0_0.6.18-1_arm64.deb",
+      "sha256": "5ebc866e3632741477cc225a3a927ddacae432238494e73c50b07c00420d2406",
+      "size": 16040,
+      "installed_size_kib": 85
+    },
+    {
+      "group": "steam",
+      "name": "libssh2-1t64",
+      "version": "1.11.1-1+deb13u2",
+      "architecture": "arm64",
+      "filename": "pool/main/libs/libssh2/libssh2-1t64_1.11.1-1+deb13u2_arm64.deb",
+      "sha256": "245565f4ce5493d67a3c54e26bc3d9cf28b1b70eeb912de7cda61af52268017d",
+      "size": 236268,
+      "installed_size_kib": 473
+    },
+    {
+      "group": "steam",
+      "name": "libtirpc-common",
+      "version": "1.3.6+ds-1",
+      "architecture": "all",
+      "filename": "pool/main/libt/libtirpc/libtirpc-common_1.3.6+ds-1_all.deb",
+      "sha256": "300f582e2c9151a8d329568c705cadc76252c417147312fe331c4560d2c7a6c3",
+      "size": 11004,
+      "installed_size_kib": 32
+    },
+    {
+      "group": "steam",
+      "name": "libtirpc3t64",
+      "version": "1.3.6+ds-1",
+      "architecture": "arm64",
+      "filename": "pool/main/libt/libtirpc/libtirpc3t64_1.3.6+ds-1_arm64.deb",
+      "sha256": "ae390ce96435829f0d5252305fb9b22001f5bcc85477e452373ddb2a4fa4dbc1",
+      "size": 79084,
+      "installed_size_kib": 304
+    },
+    {
+      "group": "steam",
+      "name": "libva2",
+      "version": "2.22.0-3",
+      "architecture": "arm64",
+      "filename": "pool/main/libv/libva/libva2_2.22.0-3_arm64.deb",
+      "sha256": "7a5e7cbaaddf1f39973c10f9daae6769b704e0d6d72fe752d64003929272cbcf",
+      "size": 74212,
+      "installed_size_kib": 290
+    },
+    {
+      "group": "steam",
+      "name": "libvdpau1",
+      "version": "1.5-3+b1",
+      "architecture": "arm64",
+      "filename": "pool/main/libv/libvdpau/libvdpau1_1.5-3+b1_arm64.deb",
+      "sha256": "2ec2bf9930e402330e6b165645cdcb1e5b8528ac9782651d0217e4f827bf1451",
+      "size": 24356,
+      "installed_size_kib": 160
+    },
+    {
+      "group": "steam",
+      "name": "libvorbis0a",
+      "version": "1.3.7-3",
+      "architecture": "arm64",
+      "filename": "pool/main/libv/libvorbis/libvorbis0a_1.3.7-3_arm64.deb",
+      "sha256": "6e8e64ebe692dd2d019af7f914f2e3b81bf13d4b1ce2516fb4248a0310ef7cf6",
+      "size": 83772,
+      "installed_size_kib": 220
+    },
+    {
+      "group": "steam",
+      "name": "libvorbisenc2",
+      "version": "1.3.7-3",
+      "architecture": "arm64",
+      "filename": "pool/main/libv/libvorbis/libvorbisenc2_1.3.7-3_arm64.deb",
+      "sha256": "4a477b3ae19ba50a288f036c8176d61cd9f3836ba65472f88b95e3f6b3bf2dd3",
+      "size": 75532,
+      "installed_size_kib": 726
+    },
+    {
+      "group": "steam",
+      "name": "libwebrtc-audio-processing-1-3",
+      "version": "1.3-3+b1",
+      "architecture": "arm64",
+      "filename": "pool/main/w/webrtc-audio-processing/libwebrtc-audio-processing-1-3_1.3-3+b1_arm64.deb",
+      "sha256": "b3222b13cac750380a6f6800aace801fbc0587ab1fa23a4aa2ce307ed0391ae2",
+      "size": 340320,
+      "installed_size_kib": 1048
+    },
+    {
+      "group": "steam",
+      "name": "libxss1",
+      "version": "1:1.2.3-1+b3",
+      "architecture": "arm64",
+      "filename": "pool/main/libx/libxss/libxss1_1.2.3-1+b3_arm64.deb",
+      "sha256": "ffbdfe7ee0644984dfe7577a22edee74f1e3b2dd76721417c8e45aed9388a220",
+      "size": 17088,
+      "installed_size_kib": 94
+    },
+    {
+      "group": "steam",
+      "name": "libzix-0-0",
+      "version": "0.6.2-1",
+      "architecture": "arm64",
+      "filename": "pool/main/z/zix/libzix-0-0_0.6.2-1_arm64.deb",
+      "sha256": "6848ea4b2911b670c8b7bf106c932eabd715c56819af4998f77a09a6be69a479",
+      "size": 22532,
+      "installed_size_kib": 87
+    },
+    {
+      "group": "steam",
+      "name": "lsof",
+      "version": "4.99.4+dfsg-2",
+      "architecture": "arm64",
+      "filename": "pool/main/l/lsof/lsof_4.99.4+dfsg-2_arm64.deb",
+      "sha256": "c15929d5a0263ca10659f6549d9f1037e2d62871837a1819b0d26db0e6807706",
+      "size": 306172,
+      "installed_size_kib": 484
+    },
+    {
+      "group": "module-tools",
+      "name": "gcc-14-base",
+      "version": "14.2.0-19",
+      "architecture": "amd64",
+      "filename": "pool/main/g/gcc-14/gcc-14-base_14.2.0-19_amd64.deb",
+      "sha256": "5b6825de4263824b78c4c51f6476414f3b4e89c2ab63e81dc8b9b5501e867cf6",
+      "size": 49432,
+      "installed_size_kib": 112
+    },
+    {
+      "group": "module-tools",
+      "name": "libc6",
+      "version": "2.41-12+deb13u4",
+      "architecture": "amd64",
+      "filename": "pool/main/g/glibc/libc6_2.41-12+deb13u4_amd64.deb",
+      "sha256": "967aa62605721081c3eb2a17650611a792aa802d76a6511d1840242623d204c9",
+      "size": 2846580,
+      "installed_size_kib": 13226
+    },
+    {
+      "group": "module-tools",
+      "name": "libgcc-s1",
+      "version": "14.2.0-19",
+      "architecture": "amd64",
+      "filename": "pool/main/g/gcc-14/libgcc-s1_14.2.0-19_amd64.deb",
+      "sha256": "3c71917b490d1a17aed43196a2787a256ecf060526cdb20216a74bedc061b150",
+      "size": 72772,
+      "installed_size_kib": 197
+    },
+    {
+      "group": "module-tools",
+      "name": "liblz4-1",
+      "version": "1.10.0-4",
+      "architecture": "amd64",
+      "filename": "pool/main/l/lz4/liblz4-1_1.10.0-4_amd64.deb",
+      "sha256": "c31ec4c7c82755a38b2f3fe066fc0c5518cc91a601a268fbcd19bdacb1f22e1e",
+      "size": 63900,
+      "installed_size_kib": 173
+    },
+    {
+      "group": "module-tools",
+      "name": "liblzma5",
+      "version": "5.8.1-1+deb13u1",
+      "architecture": "amd64",
+      "filename": "pool/main/x/xz-utils/liblzma5_5.8.1-1+deb13u1_amd64.deb",
+      "sha256": "1cfcc6e0dc36f438a79b6e2189facdb9d150b08f57d190a60e01c98075c7f896",
+      "size": 309492,
+      "installed_size_kib": 435
+    },
+    {
+      "group": "module-tools",
+      "name": "liblzo2-2",
+      "version": "2.10-3+b1",
+      "architecture": "amd64",
+      "filename": "pool/main/l/lzo2/liblzo2-2_2.10-3+b1_amd64.deb",
+      "sha256": "f3032201fe2928a87e13f05ce256ff3ac2a7860c7e594dc51ae6d7348a4466ce",
+      "size": 55100,
+      "installed_size_kib": 173
+    },
+    {
+      "group": "module-tools",
+      "name": "libxxhash0",
+      "version": "0.8.3-2",
+      "architecture": "amd64",
+      "filename": "pool/main/x/xxhash/libxxhash0_0.8.3-2_amd64.deb",
+      "sha256": "81da7064d56fc044f5db4bb3c1e80ff50a4986dcbbf80d958eeca565b44c157f",
+      "size": 27096,
+      "installed_size_kib": 92
+    },
+    {
+      "group": "module-tools",
+      "name": "libzstd1",
+      "version": "1.5.7+dfsg-1",
+      "architecture": "amd64",
+      "filename": "pool/main/libz/libzstd/libzstd1_1.5.7+dfsg-1_amd64.deb",
+      "sha256": "2f6a2aeacfc925eba8b00ac9139bc4bfccf8cacb09eb93de067074b26948eef9",
+      "size": 303836,
+      "installed_size_kib": 847
+    },
+    {
+      "group": "module-tools",
+      "name": "squashfs-tools",
+      "version": "1:4.6.1-1",
+      "architecture": "amd64",
+      "filename": "pool/main/s/squashfs-tools/squashfs-tools_4.6.1-1_amd64.deb",
+      "sha256": "0e185122f5858132bbc709e26228ba28cf7f0c41f6ed26e3f55f518f2a53b59d",
+      "size": 193888,
+      "installed_size_kib": 494
+    },
+    {
+      "group": "module-tools",
+      "name": "zlib1g",
+      "version": "1:1.3.dfsg+really1.3.1-1+b1",
+      "architecture": "amd64",
+      "filename": "pool/main/z/zlib/zlib1g_1.3.dfsg+really1.3.1-1+b1_amd64.deb",
+      "sha256": "015be740d6236ad114582dea500c1d907f29e16d6db00566ca32fb68d71ac90d",
+      "size": 88892,
+      "installed_size_kib": 173
+    }
+  ],
+  "unsquashfs_sha256": "1ecc68e64fbc975c0b1959cbf21cefb4c2376b0bcc5cec695f757b60165aae1e",
+  "wrapper_sha256": "4aedc9921e7e278a6f82c61b3d8dd5af3441dff2c46f8a6a149772eef3685f84",
+  "steam_packages_verified": 45,
+  "steam_download_bytes": 18238048
+}

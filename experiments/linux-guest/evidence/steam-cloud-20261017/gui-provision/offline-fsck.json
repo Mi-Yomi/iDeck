@@ -1,0 +1,35 @@
+{
+  "command": [
+    "/workspace/steam-cloud-20261017/gui-lab/host/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+    "--library-path",
+    "/workspace/steam-cloud-20261017/gui-lab/host/usr/lib/x86_64-linux-gnu",
+    "/workspace/steam-cloud-20261017/gui-lab/host/usr/sbin/e2fsck",
+    "-f",
+    "-n",
+    "/workspace/steam-cloud-20261017/gui-lab/scratch-gui.raw"
+  ],
+  "exit_code": 0,
+  "evaluation": {
+    "policy": "strict-e2fsck-fn-v1",
+    "accepted": true,
+    "reason_codes": [],
+    "unexpected_lines": [],
+    "passes_and_summary": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      "summary"
+    ],
+    "version_count": 1
+  },
+  "read_only": true,
+  "task_qemu_pids": [],
+  "writer_running": false,
+  "raw_size": 1342177280,
+  "raw_sha256_before": "425893ed8c04270e293f7b5ed8b4db5cf94d3c98db17f66f0666de515f821f22",
+  "raw_sha256_after": "425893ed8c04270e293f7b5ed8b4db5cf94d3c98db17f66f0666de515f821f22",
+  "host_fsync": "pass",
+  "scope": "new disposable GUI provisioning image; not accepted seed/Steam runtime"
+}

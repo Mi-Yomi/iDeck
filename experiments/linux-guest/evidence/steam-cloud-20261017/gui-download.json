@@ -1,0 +1,20 @@
+{
+  "verified_files": 432,
+  "totals": {
+    "guest": {
+      "package_count": 341,
+      "download_bytes": 175210844,
+      "installed_size_bytes": 736205824
+    },
+    "host": {
+      "package_count": 94,
+      "download_bytes": 36998708,
+      "installed_size_bytes": 172119040
+    },
+    "provision_kernel": {
+      "package_count": 1,
+      "download_bytes": 92902468,
+      "installed_size_bytes": 177777664
+    }
+  }
+}

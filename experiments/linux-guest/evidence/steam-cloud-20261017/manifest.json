@@ -1,0 +1,121 @@
+{
+  "schema": 1,
+  "scope": "cloud input preparation and infrastructure blocker; no Steam UI acceptance",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "size": 147,
+      "sha256": "d6a29c125f27b0a96972d693d136ca4b52bdcc7bdb660514bb01bed2d51f38de"
+    },
+    {
+      "path": "README.md",
+      "size": 4587,
+      "sha256": "8f92f5f6527e587be23afeae1170504da3a717f07f0773c8bb08877405627505"
+    },
+    {
+      "path": "finalize_evidence.py",
+      "size": 7538,
+      "sha256": "377f52ff34684ad55c920f4ed5fc2b6d62477c9f688efe55d00b850c0c4fc02b"
+    },
+    {
+      "path": "gui-bootstrap.json",
+      "size": 696,
+      "sha256": "fdb76b504e392d866d58b4cc4711ecfddf705e9637be7305bbd660172ff1db85"
+    },
+    {
+      "path": "gui-download.json",
+      "size": 426,
+      "sha256": "d17168360242cb26b387fe961fe1a2ed0837e56b628c1f86c64dc126d29eacdb"
+    },
+    {
+      "path": "gui-preparation.json",
+      "size": 2682,
+      "sha256": "73e68468fc4dbf4c5e407d78769d387b40d575dfe906ac1fbad0cb75f84d0f0d"
+    },
+    {
+      "path": "gui-provision/control.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "gui-provision/offline-fsck.json",
+      "size": 1029,
+      "sha256": "088919e0b0468609fab647cee97d9cfad02e9282d6cfe85e8f7657b72ee54977"
+    },
+    {
+      "path": "gui-provision/offline-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "path": "gui-provision/offline-fsck.stdout.log",
+      "size": 317,
+      "sha256": "5ad995d1462601af5b3835f64913074a4f9dde0bb907c9f5ecac8fb6757d5ca5"
+    },
+    {
+      "path": "gui-provision/package-manifest.tsv",
+      "size": 17465,
+      "sha256": "7cac249c6410e6b3ef6fa9d28adc1652d5ec627e7aeb37508597d2110a7e4b3b"
+    },
+    {
+      "path": "gui-provision/result.json",
+      "size": 5407,
+      "sha256": "09606e53c7a6c81aeb4cc432c1271ecf4c4cc8a9c50ce2855d7bc3f5060e4d3f"
+    },
+    {
+      "path": "gui-provision/runner-source.py",
+      "size": 21517,
+      "sha256": "c0a06b5639a2f997cb7ab0686bd71ce7370046ef7740e6a75287940ff72844c5"
+    },
+    {
+      "path": "gui-provision/serial.log",
+      "size": 117577,
+      "sha256": "d1919f6a44fb5e894418196c1f180d156238dd6770ddc2ce6d7401413507d734"
+    },
+    {
+      "path": "preflight.json",
+      "size": 2867,
+      "sha256": "ee32e17d4df9fc38cd9e596571ba7a60e2276dec674b27a4aa03a31cc5ef541e"
+    },
+    {
+      "path": "prepare_support.py",
+      "size": 2836,
+      "sha256": "eda5992e6fa643cd8b2ac6088bc7de0d3fc9f8765fb9ea8161e74c10009e3025"
+    },
+    {
+      "path": "release-metadata.stderr.log",
+      "size": 86,
+      "sha256": "d9ecf69c4c0d6f85b70f3dd7ba9031b9a3fa410dae439a39e43e9d179834be7d"
+    },
+    {
+      "path": "source-check.json",
+      "size": 924,
+      "sha256": "28dc24c99ec00484a6bc8db6553e22a71fc7d4a1e6953c88c9adc75b77f3563c"
+    },
+    {
+      "path": "steam-bootstrap.json",
+      "size": 4476,
+      "sha256": "d6533c920dd548c61ac560d77e0d4d561eb3594e7e9519ae7998dd67da01f913"
+    },
+    {
+      "path": "steam-download.stderr.log",
+      "size": 3430,
+      "sha256": "e3e8f3961fa5616f61fe539e767793f5b40dacde43426fbe706b1b2cd71433db"
+    },
+    {
+      "path": "steam-download.stdout.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "steam-tests.log",
+      "size": 19426,
+      "sha256": "e51f911ac42b87a482121c809045f480ff53bf1022c4ffc39d275b657beca11e"
+    },
+    {
+      "path": "support-receipt.json",
+      "size": 19568,
+      "sha256": "d33028ed2d2e494faba97b54fefa2d9f08dba0b260dceab0fdb937437b03a4f2"
+    }
+  ]
+}

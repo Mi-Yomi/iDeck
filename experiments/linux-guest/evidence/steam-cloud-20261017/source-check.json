@@ -1,0 +1,27 @@
+{
+  "release": {
+    "id": 650023557,
+    "name": "ideck-debian-gui-v1.tar",
+    "size": 292065280,
+    "digest": "sha256:112bdba6e12ae182fb347e52e7368e26f748bb3dc2bcd77dbd3122fb14dcdedd",
+    "state": "uploaded",
+    "updated_at": "2026-10-17T09:00:05Z",
+    "browser_download_url": "https://github.com/Mi-Yomi/iDeck/releases/download/ideck-debian-gui-v1-local-20261017/ideck-debian-gui-v1.tar",
+    "source": "existing authorized GitHub connector; metadata only; tool rejects binary downloads"
+  },
+  "library": {
+    "searches": [
+      "\"ideck-debian-gui-v1.tar\"",
+      "\"Steam\" \"ARM64\"",
+      "\"gui-rootfs-v1\""
+    ],
+    "exact_results": 0,
+    "next_cursor": null,
+    "materialization_attempted": false,
+    "note": "Fuzzy candidates are reports, not binary seed/client inputs. No suitable inputs resolved.",
+    "fuzzy_candidate_count": 4,
+    "fuzzy_candidate_types": [
+      "text/markdown"
+    ]
+  }
+}

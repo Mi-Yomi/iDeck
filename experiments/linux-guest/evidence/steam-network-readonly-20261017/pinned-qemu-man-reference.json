@@ -1,0 +1,23 @@
+{
+  "package": {
+    "name": "qemu-system-common",
+    "version": "1:10.0.13+ds-0+deb13u1",
+    "architecture": "amd64",
+    "filename": "pool/main/q/qemu/qemu-system-common_10.0.13+ds-0+deb13u1_amd64.deb",
+    "sha256": "3a99dc23c42c66bb7e96dc1f2ba12b1797d154a472fbdb1cfcd822d9fb69e85b",
+    "size": 1000628,
+    "installed_size_kib": 4170
+  },
+  "gui_host_lock_sha256": "8b3ee6d1f255c7486e7226c65ab304036363edccea4e145b472fe7df1cf6ed98",
+  "manual_path_in_package": "usr/share/man/man1/qemu-system.1.gz",
+  "compressed_manual_sha256": "ea506523f4532c84af08e70b904333af191e8f4f0d99baf17d11fce5e79ee045",
+  "decompressed_manual_sha256": "dd6086ebfc357f7995a35d852bd76e47d892e5af2066a670793a61f909ae4b93",
+  "reviewed_sections": [
+    "-netdev user",
+    "dns=addr",
+    "host=addr",
+    "HTTP proxy is not a user backend option"
+  ],
+  "upstream_reference": "https://www.qemu.org/docs/master/system/invocation.html#network-options",
+  "reference_scope": "exact local QEMU10.0.13 package manual; web master docs supplementary"
+}

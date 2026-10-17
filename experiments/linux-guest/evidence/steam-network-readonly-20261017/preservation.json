@@ -1,0 +1,31 @@
+{
+  "disk_preservation": {
+    "run1": {
+      "sha256_before_from_committed_receipt": "1f6816b06b927423b7545a90a6c81cdb08e1a319ebdef7c011f758e8e6253415",
+      "sha256_now": "1f6816b06b927423b7545a90a6c81cdb08e1a319ebdef7c011f758e8e6253415",
+      "unchanged": true
+    },
+    "run2": {
+      "sha256_before_from_committed_receipt": "462a5804f296ec1333196fce0ad1a893204e841611c76f5f31e608a7b99a11e3",
+      "sha256_now": "462a5804f296ec1333196fce0ad1a893204e841611c76f5f31e608a7b99a11e3",
+      "unchanged": true
+    }
+  },
+  "vm_started_in_this_step": false,
+  "guest_network_or_security_settings_changed": false,
+  "forbidden_hostname_requested": false,
+  "current_branch": "codex/steam-arm64-experiment-20261017",
+  "source_sha": "170c0e0c928a41b2af5ededeb774ee19f886bb88",
+  "client_cache": {
+    "verified_files": 17,
+    "verified_bytes": 360938891,
+    "input_lock_sha256": "9b8bc9fe5e8074ae4d798f645d259066e968b8bc5512183c0aca34e1f54a8bdd",
+    "unchanged": true
+  },
+  "guest_dependencies_cache": {
+    "verified_files": 45,
+    "verified_bytes": 18238048,
+    "input_lock_sha256": "0d153bbb2a9a39c32fb650d189cc972355fc1d94da39297cf0b9830fdbd922f6",
+    "unchanged": true
+  }
+}

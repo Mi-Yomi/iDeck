@@ -1,0 +1,23 @@
+{
+  "source_api_url": "https://api.github.com/repos/Mi-Yomi/iDeck/releases/assets/650023557",
+  "release_tag": "ideck-debian-gui-v1-local-20261017",
+  "asset_id": 650023557,
+  "transport": "existing authorized gh api GET with Accept: application/octet-stream",
+  "new_token_created": false,
+  "binary_download_receipt_sha256": "07a80bf9c56931c42908ede579b1ba24769cd907a9d7cbad5af3050900e8c622",
+  "restore_receipt_sha256": "9df4183e7cab6c154ead7ef60511749911cc3cbdc9d69223e2285a9959cd9d47",
+  "gui_lock_sha256": "fef0bf4c5b72cad5ee921616639f6e28bec73bce7b1e689c95c3734aed82c7eb",
+  "archive_rehashed": {
+    "path": "/workspace/steam-fresh-20261017/release/ideck-debian-gui-v1.tar",
+    "size": 292065280,
+    "sha256": "112bdba6e12ae182fb347e52e7368e26f748bb3dc2bcd77dbd3122fb14dcdedd"
+  },
+  "raw_seed_rehashed": {
+    "path": "/workspace/steam-fresh-20261017/gui/gui-rootfs-v1.raw",
+    "size": 1342177280,
+    "sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791"
+  },
+  "restore_tool": "experiments/linux-guest/tools/gui_bundle.py restore",
+  "experimental_seed_substituted": false,
+  "pending_gui_recovery_validation_in_this_step": "NOT RUN"
+}

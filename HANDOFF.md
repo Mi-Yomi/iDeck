@@ -1,5 +1,41 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Read-only follow-up: host DNS refusal and missing QEMU proxy path — 2026-10-17
+
+At verified remote Steam SHA `170c0e0c928a41b2af5ededeb774ee19f886bb88`, the owner
+requested network diagnosis while arranging the new updater hostname. No request
+to that refused domain was repeated, no VM/Steam writer started and no network,
+proxy, DNS or security setting changed. Both installed disks and17 client ZIPs /
+45 dependency cache packages rehashed unchanged.
+See [read-only network proof, supported-path limits and seed provenance](experiments/linux-guest/evidence/steam-network-readonly-20261017/README.md).
+
+Host DNS for permitted Fastly/Debian also returns EAI_AGAIN(-3). One UDP query
+only to the existing172.31.1.221:53 resolver returned ECONNREFUSED(111); existing
+managed proxy HTTPS to permitted Fastly returned200. Authenticated exact
+libslirp4.8.0-1+deb13u1 source confirms virtual10.0.2.3 DNS forwards to the host
+resolver, and UDP/TCP use ordinary host sockets. The unchanged runner/launcher
+do not pass proxy env; the user backend has no automatic HTTP CONNECT adapter.
+This gives an upstream explanation for guest EAI_AGAIN. Whether DNS refusal is
+intentional platform policy or a service/configuration fault remains unknown.
+
+For the unchanged QEMU profile, the concrete required operator review is working
+private configured DNS53 plus platform-supported policy-enforced native TLS443
+for the approved exact updater host. The current interfaces do not establish
+that this capability exists; if the platform is HTTP-proxy-only, an explicitly
+supported Steam application proxy path needs separate approval/validation.
+No direct-egress bypass, external DNS, proxy relay/tunnel, hostname substitution
+or speculative env-forwarding fix was attempted. Network remediation is stopped
+at that approval boundary; one more allowed hostname alone is insufficient proof.
+
+Production input was rehashed again: private Release asset650023557 via existing
+`gh` binary access, tar292065280 bytes / full SHA-256
+`112bdba6e12ae182fb347e52e7368e26f748bb3dc2bcd77dbd3122fb14dcdedd`;
+standard locked restore produced raw1342177280 bytes / full SHA-256
+`9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791`.
+The production seed is actually present here; it is not the experimental seed.
+This closes input availability/provenance only; pending GUI recovery on this seed
+was NOT RUN in this diagnostic step. No GUI branch/CI change was made.
+
 ## Fresh cloud: production client installed; new updater network blocker — 2026-10-17
 
 Started at verified remote Steam SHA `bfcb3a8bb2a719240daf04ed9023d8a425444e7a`,

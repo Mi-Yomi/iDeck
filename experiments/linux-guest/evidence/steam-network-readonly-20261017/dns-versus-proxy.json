@@ -1,0 +1,23 @@
+{
+  "forbidden_host_requested": false,
+  "network_settings_changed": false,
+  "configured_dns_udp": {
+    "server": "172.31.1.221",
+    "query": "client-update.fastly.steamstatic.com",
+    "error_class": "ConnectionRefusedError",
+    "errno": 111,
+    "reason": "[Errno 111] Connection refused",
+    "elapsed_seconds": 0.001
+  },
+  "existing_proxy_https": {
+    "url": "https://client-update.fastly.steamstatic.com/bins_hardware_all.zip.58d828f4b4d9969be201b7731579a74bae0c3ea8",
+    "http_status": 200,
+    "bounded_read_bytes": 1
+  },
+  "existing_proxy_hosts_entries": [
+    {
+      "address": "172.31.1.221",
+      "alias": "proxy"
+    }
+  ]
+}

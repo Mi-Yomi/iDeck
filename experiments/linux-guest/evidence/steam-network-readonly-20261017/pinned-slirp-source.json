@@ -1,0 +1,84 @@
+{
+  "authenticated_release_sha256": "0584fba32e13e0ab8285fb16c27adea1ec03a73669c18702821094fd6ca86675",
+  "signers": [
+    "04B54C3CDCA79751B16BC6B5225629DF75B188BD",
+    "41587F7DB8C774BCCF131416762F67A0B2C39DE4",
+    "B8B80B5B623EAB6AD8775C45B7C5D7D6350947F8"
+  ],
+  "source_index": {
+    "size": 10540436,
+    "sha256": "6002f81f463a2d976d84b34170367cc16da2d60bd0ba9ab9d868d6e1c1a935d9",
+    "url": "https://deb.debian.org/debian/dists/trixie/main/source/by-hash/SHA256/6002f81f463a2d976d84b34170367cc16da2d60bd0ba9ab9d868d6e1c1a935d9"
+  },
+  "package": "libslirp",
+  "version": "4.8.0-1+deb13u1",
+  "binary_packages": "libslirp0, libslirp-dev",
+  "files": [
+    {
+      "file": "libslirp_4.8.0-1+deb13u1.dsc",
+      "size": 2136,
+      "sha256": "a4f7a61fe8f0a85e1340ee8e55a115d7cc5c3b9f5b6f6b5219e1e9aa2c0fc549",
+      "url": "https://deb.debian.org/debian/pool/main/libs/libslirp/libslirp_4.8.0-1+deb13u1.dsc"
+    },
+    {
+      "file": "libslirp_4.8.0.orig.tar.bz2",
+      "size": 128898,
+      "sha256": "1c2e3d30e41a055ed41f9d0b3234d0d143bc28f5ad84bb101413f830844df757",
+      "url": "https://deb.debian.org/debian/pool/main/libs/libslirp/libslirp_4.8.0.orig.tar.bz2"
+    },
+    {
+      "file": "libslirp_4.8.0-1+deb13u1.debian.tar.xz",
+      "size": 6116,
+      "sha256": "16e68a7297ba8867ee694db31c38b4444515f31f552408f110897bf3731ce201",
+      "url": "https://deb.debian.org/debian/pool/main/libs/libslirp/libslirp_4.8.0-1+deb13u1.debian.tar.xz"
+    }
+  ],
+  "read_source_files": [
+    {
+      "file": "ip_input.c",
+      "size": 12650,
+      "sha256": "2a9fb34cbf68acb21cdf442c1f020d1dec16b1ed22d812be371bf54839d1d4c8"
+    },
+    {
+      "file": "libslirp.h",
+      "size": 12866,
+      "sha256": "f0f1b0abca877b9bcf8908c0dda9cb699a41af6543f5da3d070778e6b2c9d80c"
+    },
+    {
+      "file": "oob-cap-urgent-data-to-what-is-available-CVE-2026-9539.patch",
+      "size": 3924,
+      "sha256": "b5dfe6cf998a8e4e9173e2a7652e024baeebc84d4a9ee63b5a6abc87fe4a4630"
+    },
+    {
+      "file": "series",
+      "size": 61,
+      "sha256": "294408d1d7159337076e0e78cb7d2ecaea2c9c39ca85c1b7181cf3909cb9e0aa"
+    },
+    {
+      "file": "slirp.c",
+      "size": 49417,
+      "sha256": "7f5efbfc6b38b47a96d3d3018b4121850063262295dccc44ac84ea0702b8f036"
+    },
+    {
+      "file": "slirp.h",
+      "size": 10890,
+      "sha256": "8d0884f488d3999ec6879952c9cb83c5cbdf3779c735bbf4dbb7821008abf2f7"
+    },
+    {
+      "file": "socket.c",
+      "size": 37485,
+      "sha256": "d486b14c2ea1d499fd2a97816e9fb23acd288f6b42e081935c0e50a56f524034"
+    },
+    {
+      "file": "tcp_subr.c",
+      "size": 32120,
+      "sha256": "a582d77c2de9ed17699d090137002ada4f0d5fbbebbc811c230ca2a3d91d6c7e"
+    },
+    {
+      "file": "udp.c",
+      "size": 12014,
+      "sha256": "fc44658ef521c325a01b9fbe9220ea134d53601096d0ebca6ee934fc7fcd64b7"
+    }
+  ],
+  "settings_changed": false
+}

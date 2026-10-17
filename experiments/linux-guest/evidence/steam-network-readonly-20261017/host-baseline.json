@@ -1,0 +1,44 @@
+{
+  "utc": "2026-10-17T13:55:34.651699+00:00",
+  "proxies": {
+    "https": {
+      "scheme": "http",
+      "hostname": "proxy",
+      "port": 8080,
+      "credentials_present": false
+    },
+    "http": {
+      "scheme": "http",
+      "hostname": "proxy",
+      "port": 8080,
+      "credentials_present": false
+    }
+  },
+  "host_dns": {
+    "client-update.fastly.steamstatic.com": {
+      "error_class": "gaierror",
+      "errno": -3,
+      "reason": "Temporary failure in name resolution"
+    },
+    "deb.debian.org": {
+      "error_class": "gaierror",
+      "errno": -3,
+      "reason": "Temporary failure in name resolution"
+    }
+  },
+  "network_settings_changed": false,
+  "no_proxy_present": true,
+  "resolv.conf": "nameserver 172.31.1.221\n",
+  "nsswitch.conf": "# /etc/nsswitch.conf\n#\n# Example configuration of GNU Name Service Switch functionality.\n# If you have the `glibc-doc-reference' and `info' packages installed, try:\n# `info libc \"Name Service Switch\"' for information about this file.\n\npasswd:         files\ngroup:          files\nshadow:         files\ngshadow:        files\n\nhosts:          files dns\nnetworks:       files\n\nprotocols:      db files\nservices:       db files\nethers:         db files\nrpc:            db files\n\nnetgroup:       nis\n",
+  "ideck-debian-gui-v1.tar": {
+    "path": "/workspace/steam-fresh-20261017/release/ideck-debian-gui-v1.tar",
+    "size": 292065280,
+    "sha256": "112bdba6e12ae182fb347e52e7368e26f748bb3dc2bcd77dbd3122fb14dcdedd"
+  },
+  "gui-rootfs-v1.raw": {
+    "path": "/workspace/steam-fresh-20261017/gui/gui-rootfs-v1.raw",
+    "size": 1342177280,
+    "sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791"
+  },
+  "qemu_pids": []
+}

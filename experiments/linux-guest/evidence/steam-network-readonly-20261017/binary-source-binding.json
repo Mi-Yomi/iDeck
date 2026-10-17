@@ -1,0 +1,5 @@
+{
+  "dpkg_control": "Source: libslirp\nVersion: 4.8.0-1+deb13u1\nPackage: libslirp0\n",
+  "deb_sha256": "6125698173f8be0d0de01ff897a0df3c5e50fb09f70238b26dd6574aaa0934e1",
+  "library_sha256": "12ee83fb069a5be30b9e450f69a5e07eec4861f2e9b574c46a4052f086c341f3"
+}

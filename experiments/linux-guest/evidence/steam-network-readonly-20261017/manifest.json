@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "scope": "read-only DNS/proxy diagnosis and production seed provenance; no VM or networking changes",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "size": 63,
+      "sha256": "9ad0be5e9ac2efa47ef9cccb38e39e9127c8923243368ac0ef0d89de7b221d25"
+    },
+    {
+      "path": "README.md",
+      "size": 9174,
+      "sha256": "f2fd1616eec148d6b9db5c969bdfc505eed5da3e11291f162619ac729bc70e07"
+    },
+    {
+      "path": "binary-source-binding.json",
+      "size": 261,
+      "sha256": "204b36b52e5609fe1cf3cabda5d13f9d9702ae9eb7bf78e31d931072030bddce"
+    },
+    {
+      "path": "dns-versus-proxy.json",
+      "size": 647,
+      "sha256": "eb6f01637ee0c81b73707af377418dc42a6f6263bed9c3c2b8705dd7345b8013"
+    },
+    {
+      "path": "host-baseline.json",
+      "size": 1732,
+      "sha256": "becfd020fa327df3a78fbf6a9d917bef2ebc180fd1b42baf54a0cbd711485b23"
+    },
+    {
+      "path": "pinned-qemu-man-reference.json",
+      "size": 1028,
+      "sha256": "c3598e319d54028accdff9164083beface2f080efd2097e7d6309cbc06ee6b4e"
+    },
+    {
+      "path": "pinned-slirp-source.json",
+      "size": 2862,
+      "sha256": "45d7f440a39e6bd3fe31cd653a8c892b8e666a2ba34dee6d86ad604b76df0cb3"
+    },
+    {
+      "path": "preservation.json",
+      "size": 1188,
+      "sha256": "59c8247f228b4422560c444d50b782938f682bb932a3552852cf51377135cbee"
+    },
+    {
+      "path": "read_pinned_slirp.py",
+      "size": 2552,
+      "sha256": "cdc4598cda5d6731135f93c6591006856db3db3f8b1c5699b5b1679afae060f1"
+    },
+    {
+      "path": "seed-provenance.json",
+      "size": 1173,
+      "sha256": "e6519444504178ea84b1a1a5cc4440290f2e2eaa6d96dfb86e09af57d21cb1a1"
+    },
+    {
+      "path": "slirp-source-offline-replay.log",
+      "size": 2862,
+      "sha256": "45d7f440a39e6bd3fe31cd653a8c892b8e666a2ba34dee6d86ad604b76df0cb3"
+    },
+    {
+      "path": "source-conclusions.json",
+      "size": 1167,
+      "sha256": "0a039a965cb651e1ba4187ab9add84eafd4d79193c28db4f5d3efd5e423d8ed5"
+    }
+  ]
+}

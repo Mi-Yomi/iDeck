@@ -1,0 +1,34 @@
+{
+  "actual_source_package": "libslirp",
+  "version": "4.8.0-1+deb13u1",
+  "source_receipt_sha256": "45d7f440a39e6bd3fe31cd653a8c892b8e666a2ba34dee6d86ad604b76df0cb3",
+  "reviewed_orig_source_functions": {
+    "socket.c": [
+      "sotranslate_out4:968-972",
+      "sosendto:762-781"
+    ],
+    "slirp.c": [
+      "get_dns_addr_resolv_conf:434-484",
+      "get_dns_addr:487-502"
+    ],
+    "tcp_subr.c": [
+      "tcp_fconnect:377-415"
+    ]
+  },
+  "debian_patch_changes_reviewed_routines": false,
+  "runner_environment_keys": [
+    "PATH",
+    "LC_ALL",
+    "QEMU_MODULE_DIR"
+  ],
+  "runner_sha256": "b431d6698590566802e649d5ae727a27bd3167142bfb7233a9754770f357e5ec",
+  "namespace_helper_sha256": "96c929eafefb2f76aa7751fb1869baa6def54e5e31be2a0e6620a486bca64b0d",
+  "new_runtime_or_network_configuration_created": false,
+  "uncertainties": [
+    "reason the configured host DNS endpoint refuses UDP53",
+    "whether platform supports policy-controlled native socket egress for QEMU",
+    "native Steam explicit application proxy support and guest trust/reachability"
+  ],
+  "direct_origin_socket_probe_performed": false,
+  "forbidden_updater_domain_retried": false
+}

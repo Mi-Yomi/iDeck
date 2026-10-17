@@ -46,9 +46,24 @@ and metadata remain available. A new-directory replay reproduced the exact seale
 tar, and seal/replay/restore/staged assets passed again after sync. No hash was
 relaxed and no damaged output was published.
 
-Private Release upload follows this source/evidence commit. See
-[delivery](experiments/linux-guest/GUI-PAYLOAD-DELIVERY.md) for the current publication
-state and the separate `IDECK_GUI_PAYLOAD_URL`; existing console URL/token stay unchanged.
+**Published and downloaded back:** [private prerelease](https://github.com/Mi-Yomi/iDeck/releases/tag/ideck-debian-gui-v1-local-20261017),
+asset API `https://api.github.com/repos/Mi-Yomi/iDeck/releases/assets/650023557`. Server digest, downloaded size/SHA-256 and checksum all
+match the locked payload. Private status verified before and after; no existing
+asset or token changed. Release tag points exactly to source/evidence commit
+`65cf483580ff27db57a33c2c53dcf67448861b0b`. This follow-up changes documentation/receipts only; Apple CI must use
+the actual final pushed branch HEAD, including this delivery record.
+See [delivery](experiments/linux-guest/GUI-PAYLOAD-DELIVERY.md) for the separate
+`IDECK_GUI_PAYLOAD_URL` and one-run Apple preflight. CI remains NOT RUN.
+
+Storage follow-up localized the first replay failure: the WSL kernel recorded
+loop0 allocation failure in p9 writes and ext4 writeback errors; inode numbers map
+to the rejected replay files. Final syncfs surfaced prior ENOMEM; its next call
+passed. The task volume was unmounted, read-only fsck passed, then a read-only/noload
+remount verified the accepted seed, frozen lab snapshot, kernel/initramfs, exact
+replay tar, restored and staged assets from storage again. No repair was performed.
+`build.raw` is retained unmounted; the staged Husk worktree is locked against pruning
+until remount. The uploaded tar/checksum are ordinary Windows-visible files outside
+that volume. See the five new publication/storage records in current evidence.
 
 ## Limited GUI credential fallback; Library producer attempt failed — 2026-10-17
 

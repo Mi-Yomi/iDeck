@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "status": "published_and_download_verified",
+  "repository": "Mi-Yomi/iDeck",
+  "private_before": true,
+  "private_after": true,
+  "source_commit": "65cf483580ff27db57a33c2c53dcf67448861b0b",
+  "release": {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/Mi-Yomi/iDeck/releases/download/ideck-debian-gui-v1-local-20261017/ideck-debian-gui-v1.tar",
+        "digest": "sha256:112bdba6e12ae182fb347e52e7368e26f748bb3dc2bcd77dbd3122fb14dcdedd",
+        "id": 650023557,
+        "name": "ideck-debian-gui-v1.tar",
+        "size": 292065280,
+        "url": "https://api.github.com/repos/Mi-Yomi/iDeck/releases/assets/650023557"
+      },
+      {
+        "browser_download_url": "https://github.com/Mi-Yomi/iDeck/releases/download/ideck-debian-gui-v1-local-20261017/SHA256SUMS",
+        "digest": "sha256:a3847b814264feaa05cfce3961f959fa2ee47c83fe813b74d40acd51f704afe3",
+        "id": 650023558,
+        "name": "SHA256SUMS",
+        "size": 90,
+        "url": "https://api.github.com/repos/Mi-Yomi/iDeck/releases/assets/650023558"
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/Mi-Yomi/iDeck/releases/tag/ideck-debian-gui-v1-local-20261017",
+    "id": 415689469,
+    "prerelease": true,
+    "tag_name": "ideck-debian-gui-v1-local-20261017",
+    "target_commitish": "65cf483580ff27db57a33c2c53dcf67448861b0b"
+  },
+  "download": {
+    "path": "E:\\Freddy Fazbear\\iDeck.work\\gui-local-20261017\\release-roundtrip\\ideck-debian-gui-v1.tar",
+    "size": 292065280,
+    "sha256": "112bdba6e12ae182fb347e52e7368e26f748bb3dc2bcd77dbd3122fb14dcdedd",
+    "checksum_verified": true
+  },
+  "ci_dispatched": false,
+  "apple_compiled": false,
+  "device_gui_verified": false
+}

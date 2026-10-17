@@ -93,12 +93,22 @@ branch to be identical. Modified imports/top-level code/provisioning/Stop/fsck f
 closed. Both GUI boots require the exact current runner hash. Archived code is never
 executed for provenance validation.
 
-The first offline replay failed its kernel-copy hash check. The isolated four-method
-copy experiment did not reproduce the corruption; its root cause remains UNKNOWN.
-See `rejected-replay.json` and `copy-investigation.json` in the current evidence.
-A new-directory replay reproduces the exact sealed tar; all five sealed, replayed,
-restored and staged assets pass after sync. Failed copies were never accepted and
-the payload contract was not changed to fit them.
+The first offline replay failed its kernel-copy hash check; the isolated four-method
+copy experiment did not reproduce it. Final storage diagnostics subsequently found
+WSL loop0 allocation failure in p9 writes and ext4 writeback errors whose inode numbers
+match the rejected replay files. The first syncfs reported prior ENOMEM, the next passed.
+See `rejected-replay.json`, `copy-investigation.json`, `build-volume-writeback.log`
+and `build-volume-retention.json` in the current evidence. No security setting or
+memory configuration was changed and no filesystem repair was run.
+A new-directory replay reproduces the exact sealed tar. After unmount and successful
+read-only fsck, a read-only/noload remount again verified the accepted seed, frozen lab
+snapshot, bootstrap, exact replay tar, restored and staged assets. This storage check
+is recorded in `retained-volume-verification.json`; failed copies were never accepted.
+The final archive also passed independent Windows hashing and GitHub download-back.
+The retained build volume is now unmounted and its staged Husk worktree locked against
+pruning. Use the existing `mount-resident.sh` in a separate WSL session to remount it
+before accessing `posix/`; that session keeps WSL alive. Do not recreate the volume.
+The final tar/checksum remain outside the mount and accessible directly from Windows.
 
 ## App lifecycle and Apple gate
 

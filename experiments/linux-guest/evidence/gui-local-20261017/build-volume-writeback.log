@@ -1,0 +1,98 @@
+[ 3381.406199] kworker/u32:0: page allocation failure: order:4, mode:0x40c00(GFP_NOIO|__GFP_COMP), nodemask=(null),cpuset=/,mems_allowed=0
+[ 3381.411053] CPU: 1 UID: 0 PID: 20081 Comm: kworker/u32:0 Not tainted 6.18.33.2-microsoft-standard-WSL2 #1 PREEMPT(none) 
+[ 3381.411449] Workqueue: loop0 loop_rootcg_workfn
+[ 3381.471798] Call Trace:
+[ 3381.555579]  <TASK>
+[ 3381.661176]  dump_stack_lvl+0x70/0x90
+[ 3381.680059]  dump_stack+0x14/0x20
+[ 3381.680061]  warn_alloc+0x10a/0x180
+[ 3381.685481]  ? __alloc_pages_direct_compact+0xa0/0x250
+[ 3381.685485]  __alloc_pages_slowpath.constprop.0+0x2a3/0xe30
+[ 3381.685488]  __alloc_frozen_pages_noprof+0x31c/0x330
+[ 3381.686872]  alloc_pages_mpol+0x7e/0x170
+[ 3381.686958]  ? p9_fcall_init+0x33/0x80
+[ 3381.687240]  alloc_frozen_pages_noprof+0x54/0x90
+[ 3381.687243]  ___kmalloc_large_node+0xab/0xd0
+[ 3381.687263]  __kmalloc_large_node_noprof+0x22/0xb0
+[ 3381.687266]  __kmalloc_noprof+0x3dc/0x610
+[ 3381.687301]  ? split_large_buddy+0xe8/0x120
+[ 3381.687306]  p9_fcall_init+0x33/0x80
+[ 3381.687307]  ? p9_fcall_init+0x33/0x80
+[ 3381.687309]  p9_tag_alloc+0x9f/0x280
+[ 3381.687312]  p9_client_prepare_req+0x79/0x160
+[ 3381.687314]  ? __free_frozen_pages+0x3d/0x690
+[ 3381.687316]  p9_client_rpc+0x7f/0x390
+[ 3381.687318]  ? kmem_cache_alloc_noprof+0x420/0x540
+[ 3381.687320]  ? mempool_alloc_slab+0x19/0x20
+[ 3381.688120]  p9_client_write+0x75/0x290
+[ 3381.688145]  v9fs_issue_write+0x3e/0x80
+[ 3381.688624]  netfs_unbuffered_write+0xe1/0x890
+[ 3381.694400]  ? rolling_buffer_init+0x4a/0x60
+[ 3381.694425]  netfs_unbuffered_write_iter_locked+0x1cd/0x230
+[ 3381.694428]  netfs_unbuffered_write_iter+0x12c/0x1f0
+[ 3381.694430]  v9fs_file_write_iter+0x2d/0x40
+[ 3381.694435]  lo_rw_aio.isra.0+0x2df/0x320
+[ 3381.694439]  loop_process_work+0x87/0x410
+[ 3381.694441]  loop_rootcg_workfn+0x1f/0x30
+[ 3381.694443]  process_one_work+0x19b/0x3c0
+[ 3381.697309]  worker_thread+0x1a3/0x320
+[ 3381.697312]  ? __pfx_worker_thread+0x10/0x10
+[ 3381.697315]  kthread+0x111/0x240
+[ 3381.697333]  ? _raw_spin_unlock_irq+0x12/0x40
+[ 3381.697435]  ? __pfx_kthread+0x10/0x10
+[ 3381.697439]  ret_from_fork+0x13c/0x1a0
+[ 3381.699181]  ? __pfx_kthread+0x10/0x10
+[ 3381.699189]  ret_from_fork_asm+0x1a/0x30
+[ 3381.699920]  </TASK>
+[ 3381.748076] Mem-Info:
+[ 3381.780086] active_anon:944 inactive_anon:16063 isolated_anon:0
+                active_file:1405476 inactive_file:411214 isolated_file:0
+                unevictable:0 dirty:171857 writeback:32826
+                slab_reclaimable:59406 slab_unreclaimable:19777
+                mapped:19099 shmem:854 pagetables:1208
+                sec_pagetables:0 bounce:0
+                kernel_misc_reclaimable:0
+                free:39111 free_pcp:1323 free_cma:0
+[ 3381.794192] Node 0 active_anon:3776kB inactive_anon:64252kB active_file:5621904kB inactive_file:1646392kB unevictable:0kB isolated(anon):0kB isolated(file):0kB mapped:76396kB dirty:689160kB writeback:131304kB shmem:3416kB shmem_thp:0kB shmem_pmdmapped:0kB anon_thp:0kB kernel_stack:3472kB pagetables:4636kB sec_pagetables:0kB all_unreclaimable? no Balloon:0kB
+[ 3381.796281] Node 0 DMA32 free:38008kB boost:0kB min:22176kB low:27720kB high:33264kB reserved_highatomic:0KB free_highatomic:0KB active_anon:0kB inactive_anon:512kB active_file:3198464kB inactive_file:646448kB unevictable:0kB writepending:488576kB zspages:0kB present:4061820kB managed:3953180kB mlocked:0kB bounce:0kB free_pcp:60kB local_pcp:0kB free_cma:0kB
+[ 3381.798012] lowmem_reserve[]: 0 3971 3971 3971
+[ 3381.798692] Node 0 Normal free:112868kB boost:6144kB min:29020kB low:34736kB high:40452kB reserved_highatomic:0KB free_highatomic:0KB active_anon:3580kB inactive_anon:63772kB active_file:2423660kB inactive_file:1004600kB unevictable:0kB writepending:336468kB zspages:0kB present:4212736kB managed:4066400kB mlocked:0kB bounce:0kB free_pcp:5104kB local_pcp:0kB free_cma:0kB
+[ 3381.800198] lowmem_reserve[]: 0 0 0 0
+[ 3381.800375] Node 0 DMA32: 1052*4kB (UME) 580*8kB (UM) 343*16kB (UME) 222*32kB (UME) 87*64kB (UME) 13*128kB (UE) 4*256kB (UE) 3*512kB (U) 1*1024kB (U) 1*2048kB (M) 1*4096kB (E) = 38400kB
+[ 3381.801291] Node 0 Normal: 5201*4kB (UME) 3610*8kB (UME) 1508*16kB (UME) 740*32kB (UME) 55*64kB (UM) 44*128kB (UME) 16*256kB (UME) 0*512kB 0*1024kB 0*2048kB 0*4096kB = 110740kB
+[ 3381.802417] Node 0 hugepages_total=0 hugepages_free=0 hugepages_surp=0 hugepages_size=1048576kB
+[ 3381.802990] Node 0 hugepages_total=0 hugepages_free=0 hugepages_surp=0 hugepages_size=2048kB
+[ 3381.803554] 1820316 total pagecache pages
+[ 3381.803781] 6 pages in swap cache
+[ 3381.804013] Free swap  = 2096516kB
+[ 3381.804345] Total swap = 2097152kB
+[ 3381.805113] 2068639 pages RAM
+[ 3381.805433] 0 pages HighMem/MovableOnly
+[ 3381.805714] 63744 pages reserved
+[ 3381.805924] 0 pages hwpoisoned
+[ 3381.806981] kernel resource error, dev loop0, sector 7064064 op 0x1:(WRITE) flags 0x4000 phys_seg 20 prio class 2
+[ 3381.835826] EXT4-fs warning (device loop0): ext4_end_bio:368: I/O error 9 writing to inode 524803 starting block 883648)
+[ 3381.837470] Buffer I/O error on device loop0, logical block 882688
+[ 3381.837701] Buffer I/O error on device loop0, logical block 882689
+[ 3381.838017] Buffer I/O error on device loop0, logical block 882690
+[ 3381.838358] Buffer I/O error on device loop0, logical block 882691
+[ 3381.838651] Buffer I/O error on device loop0, logical block 882692
+[ 3381.838961] Buffer I/O error on device loop0, logical block 882693
+[ 3381.839194] Buffer I/O error on device loop0, logical block 882694
+[ 3381.839518] Buffer I/O error on device loop0, logical block 882695
+[ 3381.839973] Buffer I/O error on device loop0, logical block 882696
+[ 3381.840442] Buffer I/O error on device loop0, logical block 882697
+[ 3382.541033] kernel resource error, dev loop0, sector 21348272 op 0x1:(WRITE) flags 0x4000 phys_seg 20 prio class 2
+[ 3382.544740] kernel resource error, dev loop0, sector 21350832 op 0x1:(WRITE) flags 0x0 phys_seg 13 prio class 2
+[ 3382.545448] EXT4-fs warning (device loop0): ext4_end_bio:368: I/O error 9 writing to inode 524802 starting block 2668854)
+[ 3382.548026] kernel resource error, dev loop0, sector 22411168 op 0x1:(WRITE) flags 0x0 phys_seg 18 prio class 2
+[ 3382.549012] EXT4-fs warning (device loop0): ext4_end_bio:368: I/O error 9 writing to inode 524803 starting block 2801396)
+[ 3382.550139] kernel resource error, dev loop0, sector 21307000 op 0x1:(WRITE) flags 0x4000 phys_seg 20 prio class 2
+[ 3382.551837] kernel resource error, dev loop0, sector 21309560 op 0x1:(WRITE) flags 0x4000 phys_seg 20 prio class 2
+[ 3382.553713] kernel resource error, dev loop0, sector 21312120 op 0x1:(WRITE) flags 0x0 phys_seg 8 prio class 2
+[ 3382.554269] EXT4-fs warning (device loop0): ext4_end_bio:368: I/O error 9 writing to inode 524804 starting block 2664015)
+[ 3382.556263] kernel resource error, dev loop0, sector 21352112 op 0x1:(WRITE) flags 0x4000 phys_seg 20 prio class 2
+[ 3382.560270] kernel resource error, dev loop0, sector 21354672 op 0x1:(WRITE) flags 0x0 phys_seg 14 prio class 2
+[ 3382.561522] EXT4-fs warning (device loop0): ext4_end_bio:368: I/O error 9 writing to inode 524805 starting block 2669334)
+[ 3382.562146] kernel resource error, dev loop0, sector 21254472 op 0x1:(WRITE) flags 0x4000 phys_seg 20 prio class 2
+[ 3382.566069] EXT4-fs warning (device loop0): ext4_end_bio:368: I/O error 9 writing to inode 524808 starting block 2657129)

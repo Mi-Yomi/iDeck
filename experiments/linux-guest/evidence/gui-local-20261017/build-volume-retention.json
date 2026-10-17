@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "path": "E:\\Freddy Fazbear\\iDeck.work\\gui-local-20261017\\build.raw",
+  "unmounted": true,
+  "read_only_fsck_exit": 0,
+  "staged_worktree_locked_for_retention": true,
+  "user_debian_disk_touched": false,
+  "no_repair": true,
+  "initial_syncfs_exit": 1,
+  "initial_syncfs_error": "Cannot allocate memory",
+  "subsequent_syncfs_exit": 0,
+  "kernel_diagnostic": "loop0 worker allocation failure in p9_client_write, followed by ext4 write I/O errors",
+  "failed_replay_inode_mapping": [
+    {
+      "path": "replay/bootstrap/initramfs-desktop.gz",
+      "inode": 524804
+    },
+    {
+      "path": "replay/bootstrap/vmlinuz-virt",
+      "inode": 524805
+    },
+    {
+      "path": "replay/bundle/vmlinuz-virt",
+      "inode": 524808
+    },
+    {
+      "path": "replay/bootstrap/probe/initramfs-ideck.gz",
+      "inode": 524803
+    },
+    {
+      "path": "replay/bootstrap/probe/vmlinuz-virt",
+      "inode": 524802
+    }
+  ]
+}

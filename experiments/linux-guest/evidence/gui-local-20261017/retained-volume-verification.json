@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "mount": "read-only,noload",
+  "verified": {
+    "replay-verified/bundle": "PASS",
+    "restored": "PASS",
+    "husk-staged/guests/ideck-desktop": "PASS",
+    "seed-final/seed/gui-rootfs-v1.raw": "PASS",
+    "seed-final/seed/gui-rootfs-v1.raw.gz": "PASS",
+    "bootstrap/vmlinuz-virt": "PASS",
+    "bootstrap/initramfs-desktop.gz": "PASS",
+    "exact_replay_tar": "PASS",
+    "frozen_lab_snapshot": "PASS"
+  },
+  "writes": false,
+  "repairs": false,
+  "status": "PASS",
+  "unmounted_after_check": true
+}

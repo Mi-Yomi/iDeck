@@ -367,6 +367,34 @@
     ".gitattributes": {
       "size": 105,
       "sha256": "86e9ecc2e2281be4951545eef0cbea17eb462012a665f4653bd51c0ec5e77506"
+    },
+    "github-publication.json": {
+      "size": 1730,
+      "sha256": "300d24f7662411f2754012b913bbea7f2231b7c1aab56e831ca6face06c0db68"
+    },
+    "build-volume-retention.json": {
+      "size": 943,
+      "sha256": "6c9f8de98b22049aaa8fe39bc5ccb344c3651dbb2439263ba6ccc09c548e3277"
+    },
+    "build-volume-fsck.log": {
+      "size": 424,
+      "sha256": "7e58dcc28e553d5f5bfe24b9b8e79cacda1d26a8e4680197af4475b4c368a492"
+    },
+    "build-volume-writeback.log": {
+      "size": 7406,
+      "sha256": "cd5fe9315e36be84771080165804b5f7f6f3dd30f6f7655b0f4166719b8254ed"
+    },
+    "retained-volume-verification.json": {
+      "size": 523,
+      "sha256": "f88cae0777c4dc03b74a8539e92cca7a7e75f977f66f879c1763ac3efe588642"
     }
-  }
+  },
+  "publication": {
+    "release_url": "https://github.com/Mi-Yomi/iDeck/releases/tag/ideck-debian-gui-v1-local-20261017",
+    "asset_api_url": "https://api.github.com/repos/Mi-Yomi/iDeck/releases/assets/650023557",
+    "source_commit": "65cf483580ff27db57a33c2c53dcf67448861b0b",
+    "roundtrip": "PASS",
+    "private_before_and_after": true
+  },
+  "storage_followup": "Final syncfs reported prior ENOMEM. Kernel loop0/p9 writeback errors map to rejected first-replay inodes. Subsequent syncfs and unmounted read-only fsck pass; read-only remount revalidated accepted seed, frozen lab snapshot, bootstrap, replay tar, restored and staged assets. No repair or system/security change. Build volume now unmounted."
 }

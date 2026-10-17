@@ -1,5 +1,19 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Safe stop for new network environment / fresh task — 2026-10-17
+
+The owner published a new network configuration and requested this old task end
+before starting the sole replacement executor. No QEMU process or task image
+mount remains. No new run/download or policy change was made. Implementation
+checkpoint `26daced6d5ba1578998ff1f293ec3547e8d4f226` is pushed; this following
+documentation checkpoint is identified by the final response SHA.
+Read [the exact fresh-task handoff](experiments/linux-guest/STEAM-CLOUD-RESTART-HANDOFF.md)
+for the owner-reported environment version, contract/configuration hashes,
+available old-workspace inputs and missing fresh-task delivery assumptions.
+Private disk/cache paths are not Git artifacts or guaranteed transfer. Preserve
+all originals; use verified actual inputs or the authorized production GUI Release
+route without substituting a different seed into the experimental contract.
+
 ## Explicit Steam experimental-seed contract; install blocked before image write — 2026-10-17
 
 Started clean at verified remote Steam commit

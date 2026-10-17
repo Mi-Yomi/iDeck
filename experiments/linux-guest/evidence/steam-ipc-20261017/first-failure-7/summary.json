@@ -1,0 +1,15 @@
+{
+  "reason": "shared_memory_reserve",
+  "seconds": 85.093929798,
+  "frozen": [
+    910,
+    972,
+    996,
+    997,
+    1084,
+    1088,
+    1100
+  ],
+  "launcher_pid": 894,
+  "path": "/home/ideck/steam-experiment-logs/first-failure-7"
+}

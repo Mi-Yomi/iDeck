@@ -34,20 +34,22 @@ and existing user disks unchanged. Current runtime/UI outcomes belong in
   only in the future Steam change. Existing GUI checks remain required. Pin an
   accessible private asset URL/size/digest for CI; a local E: path is not delivery.
 
-Current separately built namespace bootstrap, not an accepted iOS payload:
+Current separately built IPC bootstrap, not an accepted iOS payload:
 
 | Item | Identity |
 | --- | --- |
-| Local file | `E:\Freddy Fazbear\iDeck.work\steam-arm64-experiment-20261017\bootstrap-namespace\initramfs-steam.gz` |
-| Size | `11650349` bytes |
-| SHA-256 | `573ed99583fa2b40a51f7ad0e3c825d28a0b226a06ada517243d0468b686b170` |
+| Local file | `E:\Freddy Fazbear\iDeck.work\steam-arm64-experiment-20261017\bootstrap-ipc-20261017\initramfs-steam.gz` |
+| Size | `11665437` bytes |
+| SHA-256 | `6a0081d76fedbb38b72e705334513313093b46e701907ed8b6d516640978df7f` |
 | Namespace helper SHA-256 | `96c929eafefb2f76aa7751fb1869baa6def54e5e31be2a0e6620a486bca64b0d` |
-| Receipts | Same directory: `bootstrap.json`, `verification.json` |
+| Receipts | Same directory: `bootstrap.json`; committed copy in `evidence/steam-ipc-20261017/bootstrap.json` |
 
 The archive preserves the accepted GUI initramfs prefix and original Stop bytes;
-its actual CPIO helper matches source. Its build-time receipt predates runtime
-testing; the exact archive was subsequently **booted in host run6**, whose guest
-verified the exact helper hash. This remains an iOS **NOT RUN** result.
+its input receipt includes unchanged namespace-helper bytes. Run8 began booting
+this new archive but was deliberately stopped before GUI readiness or commands.
+Full boot/dependency installation/Steam validation of this archive is **NOT RUN**.
+The previous namespace archive was booted in run6; do not transfer that acceptance
+to this new archive. See `STEAM-IPC-HANDOFF.md` for current host limitations.
 The helper itself passed actual host-guest UID1000
 user/mount and user/mount/PID/private-proc preflights; see
 [STEAM-NAMESPACES.md](STEAM-NAMESPACES.md). These are separate assertions.
@@ -60,17 +62,28 @@ user/mount and user/mount/PID/private-proc preflights; see
   Keep Valve client bytes out of Git, app payloads and Releases until the owner
   has approved the distribution path and the applicable terms permit it. No
   account, password, tokens, acceptance of agreements or game installation.
-- [ ] Install the exact 41 additional ARM64 Debian packages in
-  `ipa/steam-dependencies.lock.json` (17,714,248 download bytes), preserving all
+- [ ] Install the exact 45 additional ARM64 Debian packages in
+  `ipa/steam-dependencies.lock.json` (18,238,048 download bytes), preserving all
   341 existing GUI package versions. `tools/steam_dependencies.py` records the
   authenticated index and ELF-derived closure, including NSS/NSPR, ALSA/Pulse,
   PipeWire, GTK2, IBus, SDL2, OpenAL, NetworkManager client library, VA/VDPAU,
-  libssh2 and nghttp2. A library's presence does not prove its service/device.
+  libssh2 and nghttp2. The new lsof/liblsof0/libtirpc3t64/libtirpc-common closure
+  supplies a real client TCP peer-identity dependency; guest install and its
+  effect on the first timeout remain NOT RUN. A library's presence does not prove its service/device.
   Require both `dpkg --audit` exit 0 and empty output, plus actual loader checks.
 - [ ] Keep UID/GID1000, `HOME=/home/ideck`, `DISPLAY=:0`,
   `XAUTHORITY=/run/user/1000/Xauthority`, `XDG_RUNTIME_DIR=/run/user/1000`, working
   X11 and a session D-Bus. Launch only through the namespace correction and
   ordinary-user launcher. Both preflights must pass; keep CEF sandbox enabled.
+- [ ] Preserve the supported `-cef-force-sandbox`: Valve's interrupted-init
+  sentinel otherwise silently enables sandbox fallback. Verify actual helper
+  arguments and sandboxed child state, not just launcher intent. Do not remove
+  the sentinel/cache or use sandbox bypass flags.
+- [ ] Review `guest/steam/shm-recovery.py` separately before any device feature.
+  It is an explicit host diagnostic recovery with same-boot manifest/hash,
+  process/fd/map and exclusive-launcher checks, never automatic live-memory
+  cleanup. Repeated stream allocation/initial IPC failure remains unresolved;
+  recovery alone is not its fix. Host tracing/ptrace tools are not app dependencies.
 - [ ] Replace the host cache delivery assumption with an explicit phone path.
   `install-cached.py --private-qemu-cache` depends on the host runner's loopback
   HTTP cache at guest address `10.0.2.2`; that server does not exist automatically

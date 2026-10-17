@@ -1,5 +1,86 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Steam IPC continuation paused for cloud handoff — 2026-10-17
+
+The owner requested an immediate end to local experiments so the laptop can be
+taken away. **Continue online only; do not connect to this laptop.** Work started
+clean at `5176baecd08455cae90403e2a7a32bb4e5d8fcdc`, matching the remote Steam
+branch. The records below supersede earlier continuation recommendations.
+
+Current result: updater complete; **main Steam UI, Big Picture and their input
+NOT REACHED**. The first Chrome-init timeout's root cause remains unresolved.
+See [current diagnosis](experiments/linux-guest/STEAM-IPC-HANDOFF.md) and
+`experiments/linux-guest/evidence/steam-ipc-20261017` for committed runtime logs,
+timelines, bounded traces, fsck output and test receipts available to cloud work.
+
+Changes saved:
+
+- The launcher now uses Valve's supported `-cef-force-sandbox`. An interrupted
+  initialization leaves a sentinel which otherwise makes Valve silently add
+  `--no-sandbox`. That fallback was actually observed and stopped. The subsequent
+  attempt logged `Force enabling sandbox`; a child had NoNewPrivs=1/Seccomp=2.
+  No sentinel/cache removal or sandbox bypass is used. Namespace helper unchanged.
+- Pin the real missing `lsof` program and its three-library/data closure: **45
+  additional packages**, 18,238,048 download bytes, preserving all previous pins.
+  The exact client invokes lsof for TCP peer ownership admission. Guest install
+  of the new packages and any effect on the timeout are **NOT RUN**.
+- Add explicit, manifest-bound orphan SHM recovery with full fd/map checks and
+  launcher ownership. It is never automatic. Actual run7 removed 38 proven
+  unreferenced objects only after the relevant processes died; tmpfs use fell to
+  zero. The underlying repeated stream allocation is **not fixed** by recovery.
+- Add bounded read-only IPC syscall tracing and an AArch64 stack/register sampler
+  which does not collect argument/message buffers. The latter has offline tests
+  and host attach/detach checks, but actual ARM64 Steam sampling is **NOT RUN**.
+- Read-only fsck now requires all five passes, the target summary, version and
+  no additional warnings/questions; exit0 alone is insufficient. Runner receipts
+  and saved source use the same immutable startup snapshot.
+
+Stop and persistence:
+
+- Run7 reused the installed client, preserved the document/machine-id, and had
+  empty successful dpkg audit. Individual Steam shutdown needed forced termination
+  after its bounded wait: **not clean application shutdown**. The independent VM
+  Stop subsequently achieved guest unmount, QEMU exit0 and host fsync.
+- Before run8, a full offline read-only ext4 check of the copied run7 disk passed
+  the stricter policy. Raw12GiB SHA-256:
+  `49d3a42cf993bbd84b7552f72143044df6b1e9dfd6e7d2107ee1f2a3dbb573e4`.
+- Run8 was interrupted deliberately at the owner's request, during early boot,
+  before GUI readiness or any queued command. Its result says `failed` /
+  `KeyboardInterrupt`, **clean_shutdown=true**, QEMU exit0, clean unmount. This is
+  cancellation, not a successful Steam test. No post-run8 fsck is claimed.
+- No task QEMU remains; run5–run8 exclusive owners are free. The owned read-only
+  input mount and test mounts were detached, and its keepalive process stopped.
+  Existing disks and client installation remain on E, unchanged by handoff.
+
+Latest local-only inputs (unavailable to cloud):
+
+- `E:\Freddy Fazbear\iDeck.work\steam-arm64-experiment-20261017\run7` is the
+  last diagnostic run; `run8` is its preserved, cleanly stopped copy. Keep all
+  earlier disks. Re-establish the read-only backing path before a future local
+  continuation; never overwrite/reuse an existing output or resume its command
+  queue blindly. `commands-ipc8/STOP` is intentionally present.
+- New bootstrap: `bootstrap-ipc-20261017/initramfs-steam.gz`, **11665437 bytes**,
+  SHA-256 `6a0081d76fedbb38b72e705334513313093b46e701907ed8b6d516640978df7f`.
+  Its build receipt is committed; run8 only began booting it. Full guest boot,
+  new dependency install and Steam startup with this exact archive remain untested.
+- Host CPU max, 4vCPU,1536MiB, QEMU10.0.13/TCG; unchanged production kernel,
+  software display and explicit IPv4 NAT/no forwarding. SHM769449984 bytes was
+  deliberately not enlarged. Production iOS CPU/RAM/network settings unchanged.
+
+Validation: **129 PASS** (`test_steam*.py`) on a task-owned 1GiB ext4 fixture,
+subsequently unmounted. Earlier DrvFS attempts hit unsupported
+renameat2(RENAME_NOREPLACE); an initial64MiB fixture failed the real256MiB reserve
+checks. The filesystem/fixture was corrected, not the safety contract. See saved
+test log. Swift/Apple runtime, Steam on iPhone, GPU acceleration: **NOT RUN**.
+
+Cloud continuation must inspect its own actual files. Git contains neither the
+Windows-installed Steam disk nor GUI seed bytes. Use a verified existing cloud
+seed/cache or authorized private GUI asset; otherwise rebuild through the pinned
+scripts and revalidate. A new independent Steam disk is legitimate when the
+local disk is inaccessible, but must not be described as continuity of that disk.
+No main/GUI branch, GUI payload/Release, Codemagic or Windows security changes.
+
+
 ## Steam continuation: namespace fix and completed update — 2026-10-17
 
 Work started clean at `661fbf19b5074b00ca64b48dac11e8e3654e348c` on

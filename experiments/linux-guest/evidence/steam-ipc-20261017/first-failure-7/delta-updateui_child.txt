@@ -1,0 +1,12 @@
+
+
+[2026-10-17 11:43:31] Client version: 0
+[2026-10-17 11:43:31] Process started with command-line: '/home/ideck/.local/share/Steam/steamrtarm64/steam' '-child-update-ui' '-child-update-ui-socket' '8' '-clientbeta' 'steamdeck_publicbeta' '-cef-ozone-platform=x11' '-cef-disable-gpu' '-nobigpicture'
+[2026-10-17 11:43:31] Using update UI: xwin
+[2026-10-17 11:43:31] Create window
+[2026-10-17 11:43:35] Set percent complete: 0
+[2026-10-17 11:43:35] Set percent complete: -1
+[2026-10-17 11:43:35] Set status message: Verifying installation...
+[2026-10-17 11:43:35] Show window
+[2026-10-17 11:43:46] Destroy window
+[2026-10-17 11:43:49] Shutdown

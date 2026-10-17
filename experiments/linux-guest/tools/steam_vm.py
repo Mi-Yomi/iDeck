@@ -27,6 +27,9 @@ import urllib.parse
 import gui_host_tools
 
 ROOT = Path(__file__).resolve().parents[1]
+# Capture once on import: preparation can outlive edits to this source file.
+# The receipt and saved evidence must describe the same startup snapshot.
+RUNNER_SOURCE = Path(__file__).read_bytes()
 
 
 def sha(path):
@@ -112,6 +115,53 @@ def continuation_copy(source, disk, seed, seed_hash, image_command, env):
                 'copied_sha256': sha(disk)}
 
 
+def evaluate_offline_fsck(exit_code, stdout, stderr, target):
+    """Accept only a complete, uneventful forced read-only C-locale check.
+
+    e2fsck may exit 0 after declining an extent-tree optimization with -n.
+    Its exit code alone therefore cannot establish our no-proposed-change
+    contract. Unknown output also requires review rather than an automatic PASS.
+    Full streams are retained by offline_fsck, including rejected diagnostics.
+    """
+    passes = [
+        'Pass 1: Checking inodes, blocks, and sizes',
+        'Pass 2: Checking directory structure',
+        'Pass 3: Checking directory connectivity',
+        'Pass 4: Checking reference counts',
+        'Pass 5: Checking group summary information',
+    ]
+    # e2fsprogs e2fsck/unix.c renders C-locale whitespace and ':' as '_'
+    # in device_name; the actual task path contains a space on E:.
+    printed_target = re.sub(r'[ \t\n\r\v\f:]', '_', str(target))
+    summary = re.compile(re.escape(printed_target) +
+        r': [0-9]+/[1-9][0-9]* files \([0-9]+(?:\.[0-9]+)?% non-contiguous\), '
+        r'[0-9]+/[1-9][0-9]* blocks')
+    version = re.compile(r'e2fsck [0-9]+(?:\.[0-9]+)+ \([0-9]{1,2}-[A-Za-z]{3}-[0-9]{4}\)')
+    phases = []; summaries = 0; versions = 0; unexpected = []
+    for stream, output in (('stdout', stdout), ('stderr', stderr)):
+        for number, raw_line in enumerate(output.splitlines(), 1):
+            line = raw_line.strip()
+            if not line: continue
+            if line in passes:
+                phases.append(passes.index(line) + 1)
+            elif summary.fullmatch(line):
+                summaries += 1
+                phases.append('summary')
+            elif version.fullmatch(line):
+                versions += 1
+            else:
+                unexpected.append({'stream': stream, 'line': number})
+    reasons = []
+    if type(exit_code) is not int or exit_code != 0: reasons.append('nonzero_or_invalid_exit')
+    if phases != [1, 2, 3, 4, 5, 'summary']: reasons.append('incomplete_or_out_of_order_check')
+    if summaries != 1: reasons.append('missing_or_duplicate_target_summary')
+    if versions != 1: reasons.append('missing_or_duplicate_version')
+    if unexpected: reasons.append('unapproved_output')
+    return {'policy': 'strict-e2fsck-fn-v1', 'accepted': not reasons,
+            'reason_codes': reasons, 'unexpected_lines': unexpected,
+            'passes_and_summary': phases, 'version_count': versions}
+
+
 def offline_fsck(disk, out, image_command, env):
     """Check a flattened point-in-time copy, only before this runner starts QEMU."""
     raw = out/'offline-fsck.raw'
@@ -128,15 +178,21 @@ def offline_fsck(disk, out, image_command, env):
         raise ValueError('insufficient space for offline filesystem copy and reserve')
     exclusive_image_output(image_command, ['convert', '-f', 'qcow2', '-O', 'raw', disk], raw, env)
     result = subprocess.run(['/usr/sbin/e2fsck', '-f', '-n', str(raw)],
-                            env=env, capture_output=True, text=True)
+                            env={**env, 'LC_ALL': 'C', 'LANG': 'C'}, capture_output=True, text=True)
     log = result.stdout+result.stderr
-    (out/'offline-fsck.log').write_text(log)
+    (out/'offline-fsck.log').write_text(log, encoding='utf-8')
+    (out/'offline-fsck.stdout.log').write_text(result.stdout, encoding='utf-8')
+    (out/'offline-fsck.stderr.log').write_text(result.stderr, encoding='utf-8')
+    evaluation = evaluate_offline_fsck(result.returncode, result.stdout, result.stderr, raw)
     receipt = {'exit_code': result.returncode, 'read_only': True, 'writer_running': False,
+               'status': 'pass' if evaluation['accepted'] else 'failed', 'evaluation': evaluation,
                'free_bytes_before_copy': free_before, 'virtual_size': virtual_size,
                'raw_sha256': sha(raw), 'raw_size': raw.stat().st_size,
+               'stdout_sha256': sha(out/'offline-fsck.stdout.log'),
+               'stderr_sha256': sha(out/'offline-fsck.stderr.log'),
                'log_sha256': sha(out/'offline-fsck.log'), 'scope': 'ext4 filesystem, flattened offline copy'}
     (out/'offline-fsck.json').write_text(json.dumps(receipt, indent=2)+'\n')
-    if result.returncode != 0:
+    if not evaluation['accepted']:
         raise RuntimeError('offline ext4 check failed; no repair or boot')
     # The exact successful check is recorded; remove only our own disposable raw copy.
     raw.unlink()
@@ -156,11 +212,13 @@ def boot(args):
               'iphone_tested': False, 'steam_window_verified': False,
               'big_picture_verified': False, 'clean_shutdown': False,
               'qemu_started': False,
+              'runner_sha256': hashlib.sha256(RUNNER_SOURCE).hexdigest(),
               'network': 'explicit QEMU user NAT, no host forwarding', 'commands': []}
     total_started = time.monotonic()
     with (out/'owner.lock').open('xb') as lockfile:
         fcntl.flock(lockfile, fcntl.LOCK_EX | fcntl.LOCK_NB)
         try:
+            (out/'runner-source.py').write_bytes(RUNNER_SOURCE)
             with ExitStack() as cleanup:
                 return _boot(args, profile_path, profile, out, report, cleanup)
         except BaseException as error:
@@ -188,7 +246,6 @@ def _boot(args, profile_path, profile, out, report, cleanup):
     report['initramfs_sha256'] = sha(initrd)
     report['kernel_sha256'] = sha(args.kernel)
     report['seed_sha256'] = expected['gui-rootfs-v1.raw']['sha256']
-    report['runner_sha256'] = sha(Path(__file__))
     disk = out/'steam-experiment.qcow2'
     env = {'PATH': os.defpath, 'LC_ALL': 'C', 'QEMU_MODULE_DIR': str(args.host/'usr/lib/x86_64-linux-gnu/qemu')}
     def host(argv):
@@ -301,7 +358,6 @@ def _boot(args, profile_path, profile, out, report, cleanup):
             raise RuntimeError('QEMU did not confirm read-only seed backing')
         report['seed_read_only_qmp'] = True
         (out/'block-nodes.json').write_text(json.dumps(nodes, indent=2)+'\n')
-        (out/'runner-source.py').write_bytes(Path(__file__).read_bytes())
         until(lambda: b'IDECK_DESKTOP_READY\r\n' in logs[0], 240)
         report['gui_ready'] = True; save()
         until(lambda: b'debian# ' in logs[0], 20)

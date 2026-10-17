@@ -1,0 +1,29 @@
+{
+  "exit_code": 0,
+  "read_only": true,
+  "writer_running": false,
+  "status": "pass",
+  "evaluation": {
+    "policy": "strict-e2fsck-fn-v1",
+    "accepted": true,
+    "reason_codes": [],
+    "unexpected_lines": [],
+    "passes_and_summary": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      "summary"
+    ],
+    "version_count": 1
+  },
+  "free_bytes_before_copy": 140546682880,
+  "virtual_size": 12884901888,
+  "raw_sha256": "49d3a42cf993bbd84b7552f72143044df6b1e9dfd6e7d2107ee1f2a3dbb573e4",
+  "raw_size": 12884901888,
+  "stdout_sha256": "e8c28b78edc1892308791a66107d2c1b09fdf8ff86f65b22253dc8575c04222b",
+  "stderr_sha256": "0d30ef8b61adccd6edcab489d389083f63e22e590d9dbe95de3d301009896a01",
+  "log_sha256": "e74412b7a7cf8bf24b62d11d5f261a0cca6160520e920bf66171cd3abd86ed34",
+  "scope": "ext4 filesystem, flattened offline copy"
+}

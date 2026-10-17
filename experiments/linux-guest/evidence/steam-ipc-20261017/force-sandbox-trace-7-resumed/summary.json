@@ -1,0 +1,16 @@
+{
+  "reason": "shared_memory_reserve",
+  "seconds": 176.4606393240001,
+  "frozen": [
+    2243,
+    2527,
+    2552,
+    2557,
+    2576,
+    2620,
+    2625,
+    2688
+  ],
+  "launcher_pid": 2220,
+  "path": "/home/ideck/steam-experiment-logs/force-sandbox-resume-7"
+}

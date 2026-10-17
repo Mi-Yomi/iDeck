@@ -50,6 +50,16 @@
     "libva.so.2": "libva2",
     "libvdpau.so.1": "libvdpau1"
   },
+  "observed_program_dependencies": {
+    "lsof": {
+      "package": "lsof",
+      "required_by": "GetIPCConnectionDetails",
+      "binary": "steamrtarm64/steamclient.so",
+      "binary_sha256": "276f021548f9016de834274f4042b796604530d910d114b77ee170b46e409072",
+      "function_offset": "0xeceb70",
+      "purpose": "Resolve local TCP peer UID/PID/PPID for IPC admission; no bypass."
+    }
+  },
   "selection": {
     "direct": [
       "libasound2t64",
@@ -67,7 +77,8 @@
       "libsndfile1",
       "libssh2-1t64",
       "libva2",
-      "libvdpau1"
+      "libvdpau1",
+      "lsof"
     ],
     "install_recommends": false
   },
@@ -188,6 +199,15 @@
       "sha256": "eb14f680a7c639a9dce34928a2a560468baa25f03a79cb76b6acc9b35226b54e",
       "size": 41672,
       "installed_size_kib": 158
+    },
+    {
+      "name": "liblsof0",
+      "version": "4.99.4+dfsg-2",
+      "architecture": "arm64",
+      "filename": "pool/main/l/lsof/liblsof0_4.99.4+dfsg-2_arm64.deb",
+      "sha256": "a1ab035a948e010207680635ad7fedfb27cd69a43ab53bd5a4d647775bdf3020",
+      "size": 127540,
+      "installed_size_kib": 221
     },
     {
       "name": "libmp3lame0",
@@ -379,6 +399,24 @@
       "installed_size_kib": 473
     },
     {
+      "name": "libtirpc-common",
+      "version": "1.3.6+ds-1",
+      "architecture": "all",
+      "filename": "pool/main/libt/libtirpc/libtirpc-common_1.3.6+ds-1_all.deb",
+      "sha256": "300f582e2c9151a8d329568c705cadc76252c417147312fe331c4560d2c7a6c3",
+      "size": 11004,
+      "installed_size_kib": 32
+    },
+    {
+      "name": "libtirpc3t64",
+      "version": "1.3.6+ds-1",
+      "architecture": "arm64",
+      "filename": "pool/main/libt/libtirpc/libtirpc3t64_1.3.6+ds-1_arm64.deb",
+      "sha256": "ae390ce96435829f0d5252305fb9b22001f5bcc85477e452373ddb2a4fa4dbc1",
+      "size": 79084,
+      "installed_size_kib": 304
+    },
+    {
       "name": "libva2",
       "version": "2.22.0-3",
       "architecture": "arm64",
@@ -440,14 +478,23 @@
       "sha256": "6848ea4b2911b670c8b7bf106c932eabd715c56819af4998f77a09a6be69a479",
       "size": 22532,
       "installed_size_kib": 87
+    },
+    {
+      "name": "lsof",
+      "version": "4.99.4+dfsg-2",
+      "architecture": "arm64",
+      "filename": "pool/main/l/lsof/lsof_4.99.4+dfsg-2_arm64.deb",
+      "sha256": "c15929d5a0263ca10659f6549d9f1037e2d62871837a1819b0d26db0e6807706",
+      "size": 306172,
+      "installed_size_kib": 484
     }
   ],
-  "combined_closure_count": 382,
+  "combined_closure_count": 386,
   "boundaries": {
     "client_executed": false,
     "package_configuration_verified": false,
     "steam_window_verified": false,
     "iphone_verified": false
   },
-  "scope": "Active client UI/driver-query dependencies; unrelated legacy bundled FFmpeg aliases are not claimed independently loadable."
+  "scope": "Active client UI/driver-query ELF dependencies and observed IPC helper programs; unrelated legacy bundled FFmpeg aliases are not claimed independently loadable. Adding lsof does not establish resolution of the Chrome-init timeout."
 }

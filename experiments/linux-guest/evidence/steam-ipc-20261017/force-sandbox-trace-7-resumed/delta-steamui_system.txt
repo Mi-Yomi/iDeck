@@ -1,0 +1,14 @@
+
+
+[2026-10-17 12:07:28] Client version: 1792192922
+[2026-10-17 12:07:28] Error: CX11WindowProperty: failed to read window property: GAMESCOPE_VIEWPORT_SUPPORTED
+[2026-10-17 12:07:28] Error: CX11WindowProperty: failed to read window property: GAMESCOPE_VROVERLAY_FORWARDING
+[2026-10-17 12:07:28] CGamescopeController: set HDR Enabled: 1
+[2026-10-17 12:07:28] CGamescopeController: initalized implementation: linux
+[2026-10-17 12:07:28] Initialized CSystemDockManagerController: 1
+[2026-10-17 12:07:28] Initialized CSystemAudioDeviceController: 0
+[2026-10-17 12:07:28] Initialized CSystemDisplayController: 0
+[2026-10-17 12:07:28] Initializing bluetooth manager: stub
+[2026-10-17 12:07:28] Initialized CSystemPerfController: 0
+[2026-10-17 12:07:28] Initialized CSteamUINetworkController: 0
+[2026-10-17 12:07:28] Initialized CSystemReportController

@@ -1,0 +1,36 @@
+[
+  {
+    "tid": 4096,
+    "tgid": 4096,
+    "prior_group_stopped": false,
+    "status": "captured",
+    "detached": true,
+    "group_stop_restored": null,
+    "stop_event": 128,
+    "stop_signal": 5,
+    "snapshot": {
+      "test_fixture_only": true
+    },
+    "tracer_after": 0,
+    "state_after": "S",
+    "fixture": "own_sleep_child",
+    "expected_stopped": false
+  },
+  {
+    "tid": 4097,
+    "tgid": 4097,
+    "prior_group_stopped": true,
+    "status": "captured",
+    "detached": true,
+    "group_stop_restored": true,
+    "stop_event": 128,
+    "stop_signal": 19,
+    "snapshot": {
+      "test_fixture_only": true
+    },
+    "tracer_after": 0,
+    "state_after": "T",
+    "fixture": "own_sleep_child",
+    "expected_stopped": true
+  }
+]

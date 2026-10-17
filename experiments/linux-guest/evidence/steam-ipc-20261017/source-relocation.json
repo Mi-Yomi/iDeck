@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "snapshot_tool": {
+    "original_private_name": "snapshot-ipc-stack.py",
+    "repository_path": "experiments/linux-guest/tools/snapshot_steam_ipc_stack.py",
+    "original_sha256": "5aef2f1f820f7a8a04f87f347b8ecc89ae07238ab908834f8a34e034fe340fa4",
+    "repository_sha256": "a035488db748b80fbbccaa182fe09e761985029c00bd8830e174b1eb79bd7eef",
+    "only_transformation": "CRLF to LF per repository gitattributes; source logic unchanged"
+  },
+  "trace_tool": {
+    "original_private_name": "trace-first-ipc.py",
+    "repository_path": "experiments/linux-guest/tools/trace_steam_ipc.py"
+  },
+  "test_imports": "Private diagnostic test paths relocated to repository tools; all 129 repo tests ran before line-ending normalization."
+}

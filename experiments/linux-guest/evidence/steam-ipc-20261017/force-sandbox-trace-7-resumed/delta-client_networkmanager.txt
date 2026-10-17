@@ -1,0 +1,5 @@
+
+
+[2026-10-17 12:09:20] Client version: 1792192922
+[2026-10-17 12:09:20] operator(): failed to create a NMClient: Could not connect: No such file or directory
+[2026-10-17 12:09:20] Init: failed to create a NetworkManager client

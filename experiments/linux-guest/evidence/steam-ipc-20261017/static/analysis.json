@@ -1,0 +1,133 @@
+{
+  "schema": 1,
+  "kind": "read-only exact ARM64 binary and previous host log inspection",
+  "client_version": "1792192922",
+  "guest_or_disk_access": false,
+  "binaries_added_to_git": false,
+  "binaries": {
+    "steamui.so": {
+      "sha256": "9a59e3bbbee2c6de7a2559986ae5407c01e7416ac5ac2d9e40f11c8aceffc1ee",
+      "size": 39120760
+    },
+    "steamclient.so": {
+      "sha256": "276f021548f9016de834274f4042b796604530d910d114b77ee170b46e409072",
+      "size": 47744848
+    },
+    "libcef.so": {
+      "entry": "steamrtarm64/libcef.so",
+      "archive_sha256": "b8687e0f20668d24055d8f2e9f6c4fbcbe84fbb99a7bc9de4595530be7029990",
+      "size": 218132264,
+      "sha256": "891d85f97231fcafa5763b7140039c5d3cbbb99f2a42ede08de5991abcbc3cdb"
+    }
+  },
+  "logs": {
+    "run5/015-window-state.log": {
+      "sha256": "07a15e7e18c22459c9aa901e2333e40df2946eced01ba8b2744057c1dd182a26",
+      "size": 8055
+    },
+    "run5/016-cef-state.log": {
+      "sha256": "98f75f9cc72944f9656671eb87b28386f85075bcdf30174a37c4b506acdd553d",
+      "size": 22406
+    },
+    "run5/017-cef-failure.log": {
+      "sha256": "f86300a42feb8c8fe140a2a7ca8a4229adfba4cff4d94f409453b642f852340d",
+      "size": 11127
+    },
+    "run5/018-final-current-state.log": {
+      "sha256": "69a5ac32e6c5946cf0b04e69a9b34b25fc0f628fa27fa9e7369f0f97ec3bbc25",
+      "size": 5374
+    },
+    "run5/024-shm-capacity.log": {
+      "sha256": "96f68ee88f5dadab290e05dc78483ca01c7512b58f1b827729ae3301cc4b764f",
+      "size": 2246
+    },
+    "run6/004-affinity-probe.log": {
+      "sha256": "e30c031c162ede1af824791f5cabff634e01fc8fa721464309e4e5b17931b82a",
+      "size": 5216
+    },
+    "run6/006-restore-diagnostics.log": {
+      "sha256": "c1f8d697668660d1a08545a06578727b0062396aa2a3af9aa6c44a2965d7f0c7",
+      "size": 1153
+    }
+  },
+  "findings": {
+    "chrome_init_timeout": {
+      "method": "CreateSharedJSContext:BWaitForChromeInit",
+      "call": "steamui.so:0x1000ebc",
+      "timeout_ms": 120000,
+      "wait_function": "steamui.so:0x1000b88",
+      "clock": "Plat_MSTime64",
+      "sleep_ms": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        50
+      ],
+      "object": "m_pChromeController at this+216",
+      "pump_virtual_offset": 64,
+      "readiness_virtual_offset": 72,
+      "log_call": "steamui.so:0x1001778",
+      "after_timeout": "Logs false readiness, continues CreateSharedJSContext after 0x1000ec8; not immediate fatal abort here.",
+      "not_proven": "Why readiness stays false; virtual implementation has not been resolved from a live process."
+    },
+    "lsof_prerequisite": {
+      "function": "steamclient.so:0xeceb70 GetIPCConnectionDetails",
+      "command": "lsof -P -F upnR -i TCP@<peer-address:port>",
+      "paths": [
+        "/usr/sbin/lsof",
+        "/usr/bin/lsof",
+        "/sbin/lsof",
+        "/bin/lsof"
+      ],
+      "fallback": "which lsof >/dev/null 2>&1",
+      "exec": "popen at 0xececf8",
+      "checks": "Parses UID, PID, PPID and socket source port from lsof output; compares UID and peer port, returns peer PID.",
+      "caller": "steamclient.so:0x5815a0; false -> 0x5815e0 logs Connection rejected, increments rejection counter, returns false.",
+      "not_proven": "Actual guest absence and invocation; HTTP 403 response path; causality of the earlier Chrome initialization timeout."
+    },
+    "shared_memory": {
+      "run5_later_used_percent": 100,
+      "run5_later_capacity_bytes": 769449984,
+      "classification": "Secondary exhaustion after multiple CEF restarts, not proof of the first failure cause."
+    },
+    "cef_child_connection": {
+      "log_site": "libcef.so:0x99a59a4",
+      "source_line_in_exact_binary": 942,
+      "failure_behavior": "Logs ChildThreadImpl::EnsureConnected(), calls _exit(0) through 0x6329a94.",
+      "default_timeout_microseconds": 15000000,
+      "switch": "ipc-connection-timeout",
+      "switch_pointer": "0xcf179b0",
+      "switch_parse": "0x99a5368",
+      "duration_in_seconds_to_microseconds": "0x99a5370-0x99a5380",
+      "callback_registration": "0x99a545c-0x99a5490",
+      "steam_forwarding_verified": false,
+      "probe_run": false,
+      "initial_observation": "run5 PID2357 at10:54:03 before browser restart at10:54:19; process role not recorded in the old snapshot."
+    }
+  },
+  "external_sources": [
+    {
+      "url": "https://raw.githubusercontent.com/LukeOkk/SteamARM/main/docs/STEAMWEBHELPER_BRINGUP.md",
+      "read_date": "2026-10-17",
+      "applicability": "Different lxrun/macOS runtime. W^X, rewritten x18, 16K mmap and 2400-loop EINTR bugs are not evidence of QEMU/Linux faults."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/LukeOkk/SteamARM/main/benchmarks/stage22-native-arm64-bringup.txt",
+      "read_date": "2026-10-17",
+      "applicability": "E5 reached BrowserReady before lsof addition; E12b/E13 later transport connections rejected, E14 adds lsof. This identifies a concrete dependency but does not explain our first Chrome init failure."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/chromium/chromium/126.0.6478.183/content/child/child_thread_impl.cc",
+      "read_date": "2026-10-17",
+      "applicability": "Matching Chromium source explains15s timer, cancellation on channel connection, and immediate exit on failed connection; exact Valve binary independently verifies the timer and exit."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/chromium/chromium/126.0.6478.183/content/browser/browser_child_process_host_impl.cc",
+      "read_date": "2026-10-17",
+      "applicability": "Chromium forwards ipc-connection-timeout browser-to-child. Steam-to-webhelper forwarding remains unverified."
+    }
+  ]
+}

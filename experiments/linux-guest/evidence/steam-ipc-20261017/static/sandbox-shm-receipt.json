@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "client_version": "1792192922",
+  "read_only_analysis": true,
+  "guest_changes": false,
+  "binaries": {
+    "steamwebhelper": {
+      "size": 10326560,
+      "sha256": "0a849676a3ba0cc51ca23cba79be3df0546744fd92c2e2d628a1f71707a70a56"
+    },
+    "steamclient.so": {
+      "size": 47744848,
+      "sha256": "276f021548f9016de834274f4042b796604530d910d114b77ee170b46e409072"
+    }
+  },
+  "source_logs": {
+    "review/first-failure-7/timeline.jsonl": {
+      "size": 567833,
+      "sha256": "38235921e831f3e78b714b537312335b2db6bf9bf359e174b3b403c082af43d6"
+    },
+    "review/first-failure-7/delta-webhelper.txt": {
+      "size": 3481,
+      "sha256": "0b1f7818ca573c8e9b0d8ff9ed73e037994b9bf13140126de4d116a9a90d78d8"
+    },
+    "review/first-failure-7/delta-cef_log.txt": {
+      "size": 1297,
+      "sha256": "00fb81903a560f8b40ffae98204d1993fe62c8a2668474ab051138ffe369d0b7"
+    },
+    "review/first-failure-7/summary.json": {
+      "size": 237,
+      "sha256": "76222ae104a929f838d43cebd0ba9beba9a342b97fa2e9106fca490386c8c21a"
+    }
+  },
+  "artifacts": {
+    "steamwebhelper.sandbox-shm.disassembly.txt": {
+      "size": 25956,
+      "sha256": "213d7014cf32193c1f0369686af888108f97c93495f387be614c632d2719d57a"
+    },
+    "steamclient.so.sandbox-shm.disassembly.txt": {
+      "size": 16393,
+      "sha256": "07e167d2623ca23feca6444370323f2d09dfafded032685d85a0a8b525ef309b"
+    },
+    "SANDBOX-SHM.md": {
+      "size": 7913,
+      "sha256": "8e8ca8b5e942e4dfe25a03bacac3329b46fedd83b51727ffe534742aa157d82f"
+    },
+    "record-sandbox-shm.py": {
+      "size": 2354,
+      "sha256": "7dee52599dcf130cdf140b0ee64024fa5307ce9dfaf7b034b1ee067457dc6571"
+    },
+    "native-event-reloc.py": {
+      "size": 442,
+      "sha256": "004fc2a439c68ee7f71d6c2d56ab2867951f36266e540de339e78d43dee5d4b0"
+    },
+    "event-reloc.py": {
+      "size": 448,
+      "sha256": "08b9b2237cd830802edd3882b2d55a0d3c0a9f1e2c066e0a2f526ff0109a32e0"
+    }
+  },
+  "verification": {
+    "binary_hashes": "PASS",
+    "gdb_capture": "PASS",
+    "analysis_scripts_syntax": "PASS",
+    "guest_runtime_probe": "NOT RUN by this agent"
+  }
+}

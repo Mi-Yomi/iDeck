@@ -1,0 +1,63 @@
+{
+  "trace_sha256": "4ad43114f7f6cda6f4727aa31aadf7feb25ef626f9fd7fcb089f7f92e3325f6b",
+  "trace_bytes": 321607,
+  "record_count": 1593,
+  "first_timestamp": 1792238896.652865,
+  "last_timestamp": 1792238921.046838,
+  "stop_reason": "duration_limit",
+  "tracer_exit": -2,
+  "tracer_detached": true,
+  "remaining_traced_tids": [],
+  "non_record_lines": [
+    {
+      "line": 1,
+      "text": "/opt/ideck-diagnostic-strace/usr/bin/strace: attach: ptrace(PTRACE_SEIZE, 2572): No such process"
+    }
+  ],
+  "500ms_waits": [],
+  "large_ftruncates": [],
+  "large_shm_samples": [
+    {
+      "seconds": 161.357,
+      "wall_ns": 1792238964446080359,
+      "count": 1,
+      "shm_used": 24039424
+    },
+    {
+      "seconds": 164.884,
+      "wall_ns": 1792238967972745456,
+      "count": 3,
+      "shm_used": 63868928
+    },
+    {
+      "seconds": 168.55,
+      "wall_ns": 1792238971639300902,
+      "count": 3,
+      "shm_used": 69742592
+    },
+    {
+      "seconds": 171.446,
+      "wall_ns": 1792238974535215216,
+      "count": 11,
+      "shm_used": 274350080
+    },
+    {
+      "seconds": 174.741,
+      "wall_ns": 1792238977830856315,
+      "count": 19,
+      "shm_used": 489529344
+    },
+    {
+      "seconds": 176.452,
+      "wall_ns": 1792238979541222660,
+      "count": 21,
+      "shm_used": 532443136
+    }
+  ],
+  "limitations": [
+    "Separate instrumented probe; ptrace overhead changes timings",
+    "Instruction pointer identifies syscall instruction, not originating caller stack",
+    "Only existing TIDs attached, no new children followed",
+    "ftruncate/mmap timing does not establish exact memset duration"
+  ]
+}

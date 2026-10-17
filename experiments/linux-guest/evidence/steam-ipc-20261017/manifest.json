@@ -1,0 +1,476 @@
+{
+  "schema": 1,
+  "scope": "selected local Steam IPC host evidence; no UI acceptance",
+  "files": [
+    {
+      "path": "bootstrap.json",
+      "size": 4476,
+      "sha256": "d6533c920dd548c61ac560d77e0d4d561eb3594e7e9519ae7998dd67da01f913"
+    },
+    {
+      "path": "first-failure-7/delta-bootstrap_log.txt",
+      "size": 1093,
+      "sha256": "8883175cd26b90343b42bae4f464d2f9484bb78467df5014e1c603e81b03aaad"
+    },
+    {
+      "path": "first-failure-7/delta-cef_log.txt",
+      "size": 1297,
+      "sha256": "00fb81903a560f8b40ffae98204d1993fe62c8a2668474ab051138ffe369d0b7"
+    },
+    {
+      "path": "first-failure-7/delta-client_networkmanager.txt",
+      "size": 233,
+      "sha256": "149581a71b6cc78342a5adfc7343c657c4e96dd84ba8f39fb1d402295c07e496"
+    },
+    {
+      "path": "first-failure-7/delta-compat_log.txt",
+      "size": 140,
+      "sha256": "fb75687790ebe6f18eadcd3c5124b53330f5b6b25bd1f4dfb9196642245f3067"
+    },
+    {
+      "path": "first-failure-7/delta-shader_log.txt",
+      "size": 3105,
+      "sha256": "15d6721fce7f436073f127b6100f7c671db31041ed155d2330d8bd67c5d0a4b5"
+    },
+    {
+      "path": "first-failure-7/delta-steamsysinfo.txt",
+      "size": 396,
+      "sha256": "41515c7ce0498d20174362d23d3d9623b66e6c4f1c58f59008cfda61061a8c46"
+    },
+    {
+      "path": "first-failure-7/delta-steamui_audio.txt",
+      "size": 256,
+      "sha256": "8bc2645527102661cc29e2d40c0cffe97e4f7d6007c8f72886a629ea6e6f13fa"
+    },
+    {
+      "path": "first-failure-7/delta-steamui_html.txt",
+      "size": 107,
+      "sha256": "6fb7db1ca61810871f65396ecf72a0db83f9d06ded06cfd31b51a97573a78096"
+    },
+    {
+      "path": "first-failure-7/delta-steamui_system.txt",
+      "size": 860,
+      "sha256": "cd34305cf68d807d555dd00693efbe93fe8e2df0a223c24fab51114954217719"
+    },
+    {
+      "path": "first-failure-7/delta-steamui_update.txt",
+      "size": 114,
+      "sha256": "fb53cc2c19ff0bb5aa2fa3750d28d386b5a02fdad50aeff4ffde0957fdf3ab1e"
+    },
+    {
+      "path": "first-failure-7/delta-systemaudiomanager.txt",
+      "size": 119,
+      "sha256": "a3827ca893620a74ace4a49bdf815cda6110d7561cfc7cb38a7670f0a4f02344"
+    },
+    {
+      "path": "first-failure-7/delta-systemdisplaymanager.txt",
+      "size": 120,
+      "sha256": "5bececae223ca281285c58fb0b9179f4abe03f60de2f2e203d8e0e5e6657ab3e"
+    },
+    {
+      "path": "first-failure-7/delta-systemdockmanager.txt",
+      "size": 117,
+      "sha256": "8b6bf6a508a6f82c4b3b42e84462694f73fc7a057056c7ae8834be80543d3696"
+    },
+    {
+      "path": "first-failure-7/delta-systemmanager.txt",
+      "size": 686,
+      "sha256": "00d0eb30616d3cdf51e0e4e3969b4f758a689525588cf6cdb95fce0311371ced"
+    },
+    {
+      "path": "first-failure-7/delta-systemperfmanager.txt",
+      "size": 257,
+      "sha256": "a6f8ca2f4dcb1c4ec102915004f1b23f8b888a06b21e6afc3797efeb5309b161"
+    },
+    {
+      "path": "first-failure-7/delta-systemperfreporting.txt",
+      "size": 119,
+      "sha256": "3dfcf2be2bf032dc178393325e0c6db3c7e4e71500411403ff316b2aa1dc1950"
+    },
+    {
+      "path": "first-failure-7/delta-transport_steamui.txt",
+      "size": 115,
+      "sha256": "6fc08824160a9292b9abc6ef08249abd14ffb9718cfcce7d7404a9545bd227a1"
+    },
+    {
+      "path": "first-failure-7/delta-updateui_child.txt",
+      "size": 653,
+      "sha256": "161b127f46e9dff77bb8a5b4ebb0bced8ad94b5b54b1105f544f37f8c74c47cb"
+    },
+    {
+      "path": "first-failure-7/delta-webhelper.txt",
+      "size": 3481,
+      "sha256": "0b1f7818ca573c8e9b0d8ff9ed73e037994b9bf13140126de4d116a9a90d78d8"
+    },
+    {
+      "path": "first-failure-7/delta-webhelper_gpu.txt",
+      "size": 196,
+      "sha256": "8489f54265a56632aa32d3a45a40d7bca1f8bc5238f8ba2487d0f99f84302506"
+    },
+    {
+      "path": "first-failure-7/launcher.log",
+      "size": 11838,
+      "sha256": "566a09b49775e8d75940b8606368c7da38c22afd515d59c60cccc1f6464f4a11"
+    },
+    {
+      "path": "first-failure-7/summary.json",
+      "size": 237,
+      "sha256": "76222ae104a929f838d43cebd0ba9beba9a342b97fa2e9106fca490386c8c21a"
+    },
+    {
+      "path": "first-failure-7/timeline.jsonl",
+      "size": 567833,
+      "sha256": "38235921e831f3e78b714b537312335b2db6bf9bf359e174b3b403c082af43d6"
+    },
+    {
+      "path": "force-sandbox-trace-7-live-pairs/extraction-receipt.json",
+      "size": 1385,
+      "sha256": "365ba73456188781ffb27bb5d7e9ecbd04454d529825858a421467598a91bd7d"
+    },
+    {
+      "path": "force-sandbox-trace-7-live-pairs/measurements.json",
+      "size": 48052,
+      "sha256": "9331c4d4839de6517aa71ffe93a13684e55a5018fac6134118f5e41bbc481028"
+    },
+    {
+      "path": "force-sandbox-trace-7-live-pairs/mutex-allocation-analysis.json",
+      "size": 7658,
+      "sha256": "aa369d65625378174ed16cd6f639a1f6959357754271e7ce4e96234b6dafd3c1"
+    },
+    {
+      "path": "force-sandbox-trace-7-live-pairs/trace-analysis.json",
+      "size": 1078,
+      "sha256": "3060f3639f831a7cdb3488e0c48495ee0d6136c356219c2d6f8703e09bf5bee7"
+    },
+    {
+      "path": "force-sandbox-trace-7-live-pairs/trace-tool.log",
+      "size": 154,
+      "sha256": "0ad6d500bde50b0f0877c29ccc6f65f029b535b53222a678a22ec727d004a1e3"
+    },
+    {
+      "path": "force-sandbox-trace-7-live-pairs/trace__after-2243.maps",
+      "size": 80113,
+      "sha256": "56c82294c7bca0fde6bf3f63035efbc409bb4b7cd2dd773c1ecc4e47c89bb004"
+    },
+    {
+      "path": "force-sandbox-trace-7-live-pairs/trace__after-2527.maps",
+      "size": 70009,
+      "sha256": "309fb6eef6c6e5fbb42716ecc7cd7c76997d136d1eb7f8a76f0aadd779875a8d"
+    },
+    {
+      "path": "force-sandbox-trace-7-live-pairs/trace__before-2243.maps",
+      "size": 80214,
+      "sha256": "8c59fc84b64387542c3fc69050424566cc73fd148616bb2723ccbd50449747df"
+    },
+    {
+      "path": "force-sandbox-trace-7-live-pairs/trace__before-2527.maps",
+      "size": 66623,
+      "sha256": "c59cf402aca8577ba816d471325c195e09c8c4f7c0de8b2e0170ad7d9118b59b"
+    },
+    {
+      "path": "force-sandbox-trace-7-live-pairs/trace__result.json",
+      "size": 5552,
+      "sha256": "65c05712c645b9ba82ccca2d23fd6500f2c90c87b70b1120ec44fc83c7e93535"
+    },
+    {
+      "path": "force-sandbox-trace-7-live-pairs/trace__trace.log",
+      "size": 454589,
+      "sha256": "d90cc5a1b0181595ee23345d1ac5d22e495297de5858c6fc7952f2313549fe7e"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/ANALYSIS.md",
+      "size": 1913,
+      "sha256": "35969027df93172e3c3183fe959c3e213e6fd7d5a2541cdfd994583d3a251a00"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/delta-bootstrap_log.txt",
+      "size": 45,
+      "sha256": "6e4f96d6f3cf109642a32d3038ebe53ff513a6988d215413a0253295a8900ffe"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/delta-cef_log.txt",
+      "size": 1089,
+      "sha256": "776bc74af3911bd80bb7748424348bc98d2891052b7ae51fdf3a6cc40b523606"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/delta-client_networkmanager.txt",
+      "size": 233,
+      "sha256": "403ec93ad68fcbba60455487a07efbbf68c8cadd8634c1c970bcf92042e7dc45"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/delta-compat_log.txt",
+      "size": 140,
+      "sha256": "52820adca2e854877abe6ff82b283d005e52a4814a594157de30e6e8e340291c"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/delta-shader_log.txt",
+      "size": 3105,
+      "sha256": "3478625deb3907ecb31e26c8f8e23962e8a0aace2a72bf409a1ccbbafe8b757a"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/delta-steamsysinfo.txt",
+      "size": 396,
+      "sha256": "f7cac12d3279ea4c7b8e2958d323ce58a5eb14e4ca2a96ca6e89fd56a7d4b2c6"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/delta-steamui_audio.txt",
+      "size": 256,
+      "sha256": "e61cfc4eb395570db01db76a9669012a61c2b0b41d29219fb2d25d831399118a"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/delta-steamui_html.txt",
+      "size": 108,
+      "sha256": "3ecdd0cef8400062f3002982a33b6e50637efebf9de928727098feec6c4c10d6"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/delta-steamui_system.txt",
+      "size": 860,
+      "sha256": "31fe6834abcd4c94f87d1e9f55794586c23b1eda586d478612c099be14ce1b95"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/delta-steamui_update.txt",
+      "size": 114,
+      "sha256": "5f1997c95525ba2ff5cea627a74f1c739b22b0d3d4dcc3eb54cb7d75a4961971"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/delta-systemaudiomanager.txt",
+      "size": 119,
+      "sha256": "6a32bee88943458789ba6a5eaa0c83f56515631e3592786348cbb3074063845e"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/delta-systemdisplaymanager.txt",
+      "size": 120,
+      "sha256": "933011a7b73b0fbca25fdf8b6baec0bdb7a78dc8b36737784146aaf8a9f97b3f"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/delta-systemdockmanager.txt",
+      "size": 117,
+      "sha256": "8ae3887ed25ac613be9dd87545b36cabe3c65c147693508e94b8b76897947bfe"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/delta-systemmanager.txt",
+      "size": 686,
+      "sha256": "f74b52c307346e4c0d8af5e071286592ab8a43f73d185076ada66c72ffac6b4b"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/delta-systemperfmanager.txt",
+      "size": 257,
+      "sha256": "aa7fbf21db72311f0c2a6e5e47074667dff943a91aa5ae48a2ddd958f16eda3e"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/delta-systemperfreporting.txt",
+      "size": 119,
+      "sha256": "0b9570f1adb37da70b11cbca3170cfbc64ce468a0c122704321b38576fb235ac"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/delta-transport_steamui.txt",
+      "size": 115,
+      "sha256": "dc95b3a940dc93f1135a93dac93fd699b69b9f19d13e9a5d2933860d5469e2bd"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/delta-updateui_child.txt",
+      "size": 70,
+      "sha256": "388eb09be5914d8849f64530f67ef7c17bda5d1f79abe30a2fb400ff2da0bd72"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/delta-webhelper.txt",
+      "size": 3434,
+      "sha256": "ec9b8622e0f4c842039c86f48b5cca46f27670180fa3afc4f3de657735089556"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/delta-webhelper_gpu.txt",
+      "size": 137,
+      "sha256": "357b6bc71cb4d76ee341f76b61c06dbf4e458862b5db54bd85ee2a6577b30e90"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/extraction-receipt.json",
+      "size": 5261,
+      "sha256": "558e1e6484fec5f9d652b13c4c4406fdf5a396eb4e6f099c8e23416e971d40f2"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/summary.json",
+      "size": 264,
+      "sha256": "317708f2b5952202c6532cd5a936f1a37c2bc55e24acd3e2145e34ccc618c73a"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/timeline.jsonl",
+      "size": 746383,
+      "sha256": "96fd1f4c75ffc2636fff1090147eda3fa98f12bfbd45706d8f15a32e67a807ad"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/trace-analysis.json",
+      "size": 1688,
+      "sha256": "d7c3a8dd03f91beaa255d94ed33e8399160930067b80cc73e82c47a681e44023"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/trace-tool.log",
+      "size": 160,
+      "sha256": "49056f3063df2136f9c69f8bdd84a7db3aa6594f32202b3fbb590aa76227f262"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/trace__after-2243.maps",
+      "size": 75621,
+      "sha256": "31e9aafde529c78f440e005e6a2e07492361efa2cd1e0daeb865cf0c1efbc3f4"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/trace__after-2527.maps",
+      "size": 61804,
+      "sha256": "3962e9db9c44024fb94e5e7ecb28cb334e65920db003b41fd799755157a87ba7"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/trace__before-2243.maps",
+      "size": 74407,
+      "sha256": "7517565da7fd44e567831148a47f7b1977a6ed9e5954a5ae9a2e17981d81d75f"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/trace__before-2527.maps",
+      "size": 48323,
+      "sha256": "8eae359404c2acb24ee62d9488e154c3a064ed9cd65b8b8b6eefb0423a1d010e"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/trace__result.json",
+      "size": 4434,
+      "sha256": "a4feb9840bbc5acb19b9a512291a5957fff4dea0c601392e341567cb3833e9ee"
+    },
+    {
+      "path": "force-sandbox-trace-7-resumed/trace__trace.log",
+      "size": 321607,
+      "sha256": "4ad43114f7f6cda6f4727aa31aadf7feb25ef626f9fd7fcb089f7f92e3325f6b"
+    },
+    {
+      "path": "README.md",
+      "size": 1767,
+      "sha256": "78d1c6a28a6b70d1e1f67379670d5c3cc062836d29fc33e234c4e0efca473bb5"
+    },
+    {
+      "path": "run7/010-memset-bench.log",
+      "size": 5670,
+      "sha256": "688aad48573c81772bbb28f1450042b2ef43166407056dd0a52797d73602176b"
+    },
+    {
+      "path": "run7/012-reclaim-orphans-final.log",
+      "size": 4287,
+      "sha256": "b474accf21ad78a98424ce5525bda8cb480f68b5985d2e0fdedc687dbc5eb9d6"
+    },
+    {
+      "path": "run7/017-memset-implementations.log",
+      "size": 1285,
+      "sha256": "97aba742b3271a1aecac60e1079acdf30bcc9e410e099d00a90ab2d2c1ea8d4e"
+    },
+    {
+      "path": "run7/020-bounded-client-stop.log",
+      "size": 12369,
+      "sha256": "506dbbc198663143cd08e2d6c327b0887cd02196620433c5f698f159eb82021a"
+    },
+    {
+      "path": "run7/control.log",
+      "size": 103,
+      "sha256": "454a40c873bc46e48adfa8c51fe87c6d8d0b0410be2a278d6878532d82fbe07f"
+    },
+    {
+      "path": "run7/result.json",
+      "size": 11620,
+      "sha256": "af84b9fd17e937875afada8490e443cf516ae23c10e30e5ee65c93d5698c5fd4"
+    },
+    {
+      "path": "run8/control.log",
+      "size": 28,
+      "sha256": "182de490ca25b6d4f4ce2dcddfd47e006d9da66e90c2ab06a70fac1a7dd04670"
+    },
+    {
+      "path": "run8/offline-fsck.json",
+      "size": 838,
+      "sha256": "e33cf03879033b1647ee9c8dfeb8306a4c63f4a1f7ad2ac35a38307e1ac65470"
+    },
+    {
+      "path": "run8/offline-fsck.log",
+      "size": 378,
+      "sha256": "e74412b7a7cf8bf24b62d11d5f261a0cca6160520e920bf66171cd3abd86ed34"
+    },
+    {
+      "path": "run8/offline-fsck.stderr.log",
+      "size": 27,
+      "sha256": "0d30ef8b61adccd6edcab489d389083f63e22e590d9dbe95de3d301009896a01"
+    },
+    {
+      "path": "run8/offline-fsck.stdout.log",
+      "size": 351,
+      "sha256": "e8c28b78edc1892308791a66107d2c1b09fdf8ff86f65b22253dc8575c04222b"
+    },
+    {
+      "path": "run8/result.json",
+      "size": 8987,
+      "sha256": "c81feb2fe0ae27f12722d7df8085752b1c2e76f7a5fbe19d2c8516c187c6e05b"
+    },
+    {
+      "path": "source-relocation.json",
+      "size": 746,
+      "sha256": "a509223fc3bcb2a937a1208c58498c533373392afc755600b203d8867959aa63"
+    },
+    {
+      "path": "static/analysis.json",
+      "size": 5681,
+      "sha256": "6652890c6707a21c4f26ab5c56b0cf6398cfb5bd2f02dff7ce42aaa7ee853b52"
+    },
+    {
+      "path": "static/NOTES.md",
+      "size": 6725,
+      "sha256": "1f4316faece30565a7cac05fc1b26c45797b4eb06e5e1d1df2886ef1147d2f1e"
+    },
+    {
+      "path": "static/sandbox-shm-receipt.json",
+      "size": 2128,
+      "sha256": "440de2a79ec17b78e1fce52a3f37cdb97e72b57db4d8924c6706b0cb234acaa9"
+    },
+    {
+      "path": "static/SANDBOX-SHM.md",
+      "size": 7913,
+      "sha256": "8e8ca8b5e942e4dfe25a03bacac3329b46fedd83b51727ffe534742aa157d82f"
+    },
+    {
+      "path": "static/snapshot-own-child-integration.json",
+      "size": 746,
+      "sha256": "530452633112aaea380a5f7319595f8decca5889da89729f31b8ba816588ec06"
+    },
+    {
+      "path": "static/snapshot-tool-receipt.json",
+      "size": 1517,
+      "sha256": "31bc1a67337ac2f5dc056c463fe2a034428ddf2c202e98539abfe60e2b73c0fd"
+    },
+    {
+      "path": "static/SNAPSHOT-USAGE.md",
+      "size": 4069,
+      "sha256": "d0d7eafab43ce9bd56ef74189d1d0b8a12dbc3fa7cce4b2718921b06924aa1c4"
+    },
+    {
+      "path": "static/TRACE-USAGE.md",
+      "size": 4461,
+      "sha256": "0ab08908f6473aa3219504d74aa464619ed157b56f97c9c4daf290dd9e29ddfa"
+    },
+    {
+      "path": "validation/lsof-dependency-receipt.json",
+      "size": 2957,
+      "sha256": "73142b9493f49131695a782c26bf1539eef9711230446599b07f9e9ff1b4d931"
+    },
+    {
+      "path": "validation/lsof-dependency-regeneration.log",
+      "size": 51,
+      "sha256": "9a91dc5915f0f577905d13904ed611af8aa631181ae564db2d357c9e2820370c"
+    },
+    {
+      "path": "validation/lsof-dependency-tests.log",
+      "size": 2647,
+      "sha256": "1feb18fb4bf397dc025bcfda057e2a152ef58a41f223978487c99b5b4091f1ac"
+    },
+    {
+      "path": "validation/steam-ipc-ext4-tests-v2.json",
+      "size": 359,
+      "sha256": "3dc469df8917b0a0e37c08e79cb6f16d1fb1c3a717fdf88c0001b3fa1b9d4325"
+    },
+    {
+      "path": "validation/steam-ipc-ext4-tests-v2.log",
+      "size": 19426,
+      "sha256": "99fdb2d6d11b97b4eaa47c3d715534116077c3616a3ca57d21f4fe07ec900408"
+    }
+  ]
+}

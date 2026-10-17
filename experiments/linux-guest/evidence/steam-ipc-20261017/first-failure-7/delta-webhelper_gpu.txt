@@ -1,0 +1,5 @@
+
+
+[2026-10-17 11:43:59] Client version: no bootstrapper found
+[2026-10-17 11:43:59] Disabling GPU acceleration: Disabled/CommandLine
+[2026-10-17 11:43:59] GPU process started: start count: 0

@@ -1,0 +1,32 @@
+{
+  "trace_sha256": "d90cc5a1b0181595ee23345d1ac5d22e495297de5858c6fc7952f2313549fe7e",
+  "trace_bytes": 454589,
+  "record_count": 2105,
+  "first_timestamp": 1792239086.293305,
+  "last_timestamp": 1792239099.154713,
+  "stop_reason": "duration_limit",
+  "tracer_exit": -2,
+  "tracer_detached": true,
+  "remaining_traced_tids": [],
+  "non_record_lines": [],
+  "500ms_waits": [],
+  "large_ftruncates": [
+    {
+      "pid": 2547,
+      "timestamp": 1792239091.342693,
+      "line": 1774,
+      "ip": "0000ffff9cc07430",
+      "call": "ftruncate(60, 26214416 <unfinished ...>",
+      "end_timestamp": 1792239091.344683,
+      "end_line": 1776,
+      "result": "<... ftruncate resumed>) = 0 <0.001070>"
+    }
+  ],
+  "large_shm_samples": [],
+  "limitations": [
+    "Separate instrumented probe; ptrace overhead changes timings",
+    "Instruction pointer identifies syscall instruction, not originating caller stack",
+    "Only existing TIDs attached, no new children followed",
+    "ftruncate/mmap timing does not establish exact memset duration"
+  ]
+}

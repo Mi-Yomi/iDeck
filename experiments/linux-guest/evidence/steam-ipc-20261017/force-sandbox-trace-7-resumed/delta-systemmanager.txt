@@ -1,0 +1,12 @@
+
+
+[2026-10-17 12:08:43] Client version: 1792192922
+[2026-10-17 12:08:43] udev: context initialized
+[2026-10-17 12:08:43] Initializing System Manager
+[2026-10-17 12:08:43] Error: CSystemManager: failed to connect to login1: Could not connect: No such file or directory
+[2026-10-17 12:08:43] Warning: wayland init failed, some functionality may be unavailable
+[2026-10-17 12:08:43] [display] ALS: 0, brightness: 0
+[2026-10-17 12:08:43] [display] adaptive brightness available: 0
+[2026-10-17 12:08:43] Night mode active on resume 0
+[2026-10-17 12:08:43] Initialized battery manager with query mode: 1 interval: 2000000
+[2026-10-17 12:08:43] Fan control available: 0 current: 0

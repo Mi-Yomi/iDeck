@@ -1,0 +1,9 @@
+
+
+[2026-10-17 12:07:45] Client version: no bootstrapper found
+[2026-10-17 12:07:45] Running query: 1 - GpuTopology
+[2026-10-17 12:07:45] CVulkanTopology: failed create vulkan instance: -9
+[2026-10-17 12:07:45] CVulkanTopology: failed to create vulkan instance
+[2026-10-17 12:07:45] Failed to query vulkan gpu topology
+[2026-10-17 12:07:45] Response: 
+[2026-10-17 12:07:45] Exit code: -2

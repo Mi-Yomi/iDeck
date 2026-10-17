@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pin Steam's observed external ELF dependencies against the accepted GUI index.
+"""Pin Steam's observed ELF and program dependencies against the accepted GUI index.
 
 APT is simulation-only. Package configuration belongs only in the separate guest.
 This records static input requirements, not successful client or CEF execution.
@@ -22,6 +22,17 @@ OBSERVED = {
     'libnghttp2.so.14': 'libnghttp2-14', 'libva.so.2': 'libva2', 'libvdpau.so.1': 'libvdpau1',
 }
 
+# Programs invoked by the exact client are not represented in DT_NEEDED.
+# This preserves GetIPCConnectionDetails' peer ownership admission check; it is
+# not evidence that supplying lsof resolves the separate Chrome-init timeout.
+PROGRAMS = {
+    'lsof': {'package': 'lsof', 'required_by': 'GetIPCConnectionDetails',
+             'binary': 'steamrtarm64/steamclient.so',
+             'binary_sha256': '276f021548f9016de834274f4042b796604530d910d114b77ee170b46e409072',
+             'function_offset': '0xeceb70',
+             'purpose': 'Resolve local TCP peer UID/PID/PPID for IPC admission; no bypass.'},
+}
+
 
 def create(gui_path, inventory_path, metadata, keyring):
     gui = json.loads(gui_path.read_text())
@@ -41,7 +52,7 @@ def create(gui_path, inventory_path, metadata, keyring):
     authentic = {r['Filename']: base.package_pin(r) for r in records if 'Filename' in r}
     if any(authentic.get(p['filename']) != p for p in gui['packages']):
         raise ValueError('GUI package pin differs from authenticated index')
-    direct = sorted(set(OBSERVED.values()))
+    direct = sorted(set(OBSERVED.values()) | {item['package'] for item in PROGRAMS.values()})
     closure = base.resolve(records, plain, sorted(set(gui['selection']['direct'] + direct)), metadata)
     existing = {p['name']: p for p in gui['packages']}
     if not set(existing).issubset({p['name'] for p in closure}):
@@ -52,11 +63,12 @@ def create(gui_path, inventory_path, metadata, keyring):
     return {'schema': 1, 'kind': 'ideck-experimental-steam-dependencies', 'architecture': 'arm64',
             'gui_inputs_sha256': base.sha256(gui_path), 'elf_inventory_sha256': base.sha256(inventory_path),
             'release': release, 'observed_soname_packages': OBSERVED,
+            'observed_program_dependencies': PROGRAMS,
             'selection': {'direct': direct, 'install_recommends': False}, 'extra_packages': extras,
             'combined_closure_count': len(closure),
             'boundaries': {'client_executed': False, 'package_configuration_verified': False,
                            'steam_window_verified': False, 'iphone_verified': False},
-            'scope': 'Active client UI/driver-query dependencies; unrelated legacy bundled FFmpeg aliases are not claimed independently loadable.'}
+            'scope': 'Active client UI/driver-query ELF dependencies and observed IPC helper programs; unrelated legacy bundled FFmpeg aliases are not claimed independently loadable. Adding lsof does not establish resolution of the Chrome-init timeout.'}
 
 
 if __name__ == '__main__':

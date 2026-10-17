@@ -15,3 +15,4 @@
 /experiments/linux-guest/evidence/steam-continuation-20261017/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
 /experiments/linux-guest/evidence/steam-cpu-20261017/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
 /experiments/linux-guest/evidence/steam-cef-static-20261017/** -text
+/experiments/linux-guest/evidence/steam-ipc-20261017/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof

@@ -1,0 +1,8 @@
+[2527:2527:1017/120756.228283:WARNING:chrome_main_delegate.cc(748)] This is Chrome version 126.0.6478.183 (not a warning)
+[2527:2527:1017/120757.208292:WARNING:task_impl.cc(31)] No task runner for threadId 0
+[2527:2527:1017/120757.447056:WARNING:task_impl.cc(31)] No task runner for threadId 0
+[2527:2589:1017/120818.567194:ERROR:bus.cc(407)] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[2527:2606:1017/120833.031841:ERROR:bus.cc(407)] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[2527:2606:1017/120833.048063:ERROR:bus.cc(407)] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[2527:2527:1017/120914.185255:WARNING:account_consistency_mode_manager.cc(77)] Desktop Identity Consistency cannot be enabled as no OAuth client ID and client secret have been configured.
+[2527:2527:1017/120931.079192:WARNING:crash_reporting.cc(271)] Failed to set crash key: SteamUniverse with value: Public

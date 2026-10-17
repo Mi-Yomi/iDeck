@@ -1,0 +1,28 @@
+
+
+[2026-10-17 12:08:56] Client version: 1792192922
+[2026-10-17 12:08:56] Attempting to find current bucket; temporary dir: /home/ideck/.local/share/Steam/shader_cache_temp_dir_gl_64
+[2026-10-17 12:08:56] Creating shader cache directory: /home/ideck/.local/share/Steam/shader_cache_temp_dir_gl_64
+[2026-10-17 12:08:57] Setting MESA_GLSL_CACHE_DIR=/home/ideck/.local/share/Steam/shader_cache_temp_dir_gl_64 MESA_DISK_CACHE_READ_ONLY_FOZ_DBS=steam_cache,steam_precompiled
+[2026-10-17 12:08:57] Attempting to find current bucket; temporary dir: /home/ideck/.local/share/Steam/shader_cache_temp_dir_gl_32
+[2026-10-17 12:08:57] Creating shader cache directory: /home/ideck/.local/share/Steam/shader_cache_temp_dir_gl_32
+[2026-10-17 12:09:03] Attempting to find current bucket; temporary dir: /home/ideck/.local/share/Steam/shader_cache_temp_dir_vk_64
+[2026-10-17 12:09:05] Creating shader cache directory: /home/ideck/.local/share/Steam/shader_cache_temp_dir_vk_64
+[2026-10-17 12:09:05] Setting MESA_GLSL_CACHE_DIR=/home/ideck/.local/share/Steam/shader_cache_temp_dir_gl_32 MESA_DISK_CACHE_READ_ONLY_FOZ_DBS=steam_cache,steam_precompiled
+[2026-10-17 12:09:05] Attempting to find current bucket; temporary dir: /home/ideck/.local/share/Steam/shader_cache_temp_dir_vk_32
+[2026-10-17 12:09:05] Creating shader cache directory: /home/ideck/.local/share/Steam/shader_cache_temp_dir_vk_32
+[2026-10-17 12:09:08] Setting MESA_GLSL_CACHE_DIR=/home/ideck/.local/share/Steam/shader_cache_temp_dir_vk_64 MESA_DISK_CACHE_READ_ONLY_FOZ_DBS=steam_cache,steam_precompiled
+[2026-10-17 12:09:12] Setting MESA_GLSL_CACHE_DIR=/home/ideck/.local/share/Steam/shader_cache_temp_dir_vk_32 MESA_DISK_CACHE_READ_ONLY_FOZ_DBS=steam_cache,steam_precompiled
+[2026-10-17 12:09:14] Error: YieldingRunTestProgram: process exit code 1: /home/ideck/.local/share/Steam/steamrtarm64/../steamrtarm64/vulkandriverquery
+[2026-10-17 12:09:15] Error: YieldingRunTestProgram: process exit code 1: /home/ideck/.local/share/Steam/steamrtarm64/../steamrtarm32/vulkandriverquery
+[2026-10-17 12:09:15] Unknown shader cache type, ignoring.
+[2026-10-17 12:09:16] Unknown shader cache type, ignoring.
+[2026-10-17 12:09:30] Finding Mesa SF caches, base directory: /home/ideck/.local/share/Steam/shader_cache_temp_dir_gl_64.
+[2026-10-17 12:09:30] Processing FOZ cache file at /home/ideck/.local/share/Steam/shader_cache_temp_dir_gl_64/mesa_shader_cache_sf/420208e7557f182a4f77b568bd57ba09af85dcc1/llvmpipe/foz_cache.foz
+[2026-10-17 12:09:30] Finding Mesa SF caches, base directory: /home/ideck/.local/share/Steam/shader_cache_temp_dir_gl_32.
+[2026-10-17 12:09:30] Processing FOZ cache file at /home/ideck/.local/share/Steam/shader_cache_temp_dir_gl_32/mesa_shader_cache_sf/420208e7557f182a4f77b568bd57ba09af85dcc1/llvmpipe/foz_cache.foz
+[2026-10-17 12:09:30] Found 4 current buckets:
+[2026-10-17 12:09:30] llvmpipe / L7:420208e7557f182a4f77b568bd57ba09af85dcc1
+[2026-10-17 12:09:30] SteamSwarm / G7:VulkanPipelinesV6
+[2026-10-17 12:09:30] SteamSwarm / G7:CompatAudioTCMediaV1
+[2026-10-17 12:09:30] SteamSwarm / G7:CompatVideoTCMediaV1

@@ -85,7 +85,18 @@ class CachedSteamInstall(unittest.TestCase):
 
     def test_exact_dependency_lock_and_invalid_inputs(self):
         lock = json.loads((ROOT / 'ipa/steam-dependencies.lock.json').read_text())
-        self.assertEqual(len(guest.dependencies(lock)), 41)
+        packages = guest.dependencies(lock)
+        self.assertEqual(len(packages), 45)
+        self.assertTrue({'lsof', 'liblsof0', 'libtirpc3t64', 'libtirpc-common'}.issubset({p['name'] for p in packages}))
+        self.assertEqual(next(pin for pin in packages if pin['name'] == 'lsof'), {
+            'name': 'lsof', 'version': '4.99.4+dfsg-2', 'architecture': 'arm64',
+            'filename': 'pool/main/l/lsof/lsof_4.99.4+dfsg-2_arm64.deb',
+            'sha256': 'c15929d5a0263ca10659f6549d9f1037e2d62871837a1819b0d26db0e6807706',
+            'size': 306172, 'installed_size_kib': 484})
+        old = copy.deepcopy(lock)
+        old['extra_packages'] = [pin for pin in packages if pin['name'] != 'lsof']
+        with self.assertRaisesRegex(guest.Failure, 'unexpected_dependency_count'):
+            guest.dependencies(old)
         for field, value in (('name', '-bad'), ('architecture', 'amd64'), ('filename', 'pool/../escape.deb'),
                              ('sha256', 'bad'), ('size', True)):
             changed = copy.deepcopy(lock)

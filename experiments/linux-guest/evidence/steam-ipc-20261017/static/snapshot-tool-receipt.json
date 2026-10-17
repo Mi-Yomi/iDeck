@@ -1,0 +1,43 @@
+{
+  "kind": "readonly_guest_diagnostic",
+  "offline_tests": {
+    "result": "PASS",
+    "count": 16,
+    "runtime": "existing WSL archlinux Python3",
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 test_snapshot_ipc_stack.py"
+  },
+  "owned_process_tests": {
+    "result": "PASS",
+    "count": 2,
+    "targets": "only two own harmless WSL sleep subprocesses; no Steam or VM",
+    "running_restored": "S,TracerPid0",
+    "group_stopped_restored": "T,TracerPid0"
+  },
+  "aarch64_guest_getregset_and_memory_capture": "NOT RUN by reviewing agent",
+  "files": {
+    "snapshot-ipc-stack.py": {
+      "size": 13431,
+      "sha256": "5aef2f1f820f7a8a04f87f347b8ecc89ae07238ab908834f8a34e034fe340fa4"
+    },
+    "test_snapshot_ipc_stack.py": {
+      "size": 6125,
+      "sha256": "19cc5cbb09ecb33aab79e7af7328c808d88739ea888d28782fc9bebe06ee48f7"
+    },
+    "test_snapshot_owned_children.py": {
+      "size": 1399,
+      "sha256": "a9a548feb0c2f920b921f889ed44c12c7139523f3c3c0388be4941d87949b195"
+    },
+    "snapshot-own-child-integration.json": {
+      "size": 746,
+      "sha256": "530452633112aaea380a5f7319595f8decca5889da89729f31b8ba816588ec06"
+    },
+    "SNAPSHOT-USAGE.md": {
+      "size": 4069,
+      "sha256": "d0d7eafab43ce9bd56ef74189d1d0b8a12dbc3fa7cce4b2718921b06924aa1c4"
+    }
+  },
+  "references": [
+    "https://man7.org/linux/man-pages/man2/ptrace.2.html",
+    "https://raw.githubusercontent.com/torvalds/linux/master/arch/arm64/include/uapi/asm/ptrace.h"
+  ]
+}

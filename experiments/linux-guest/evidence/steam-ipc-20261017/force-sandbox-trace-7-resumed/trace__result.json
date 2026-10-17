@@ -1,0 +1,230 @@
+{
+  "schema": 1,
+  "kind": "separate_instrumented_probe",
+  "status": "trace_incomplete",
+  "baseline_timing": false,
+  "capture": "existing native/browser TIDs only",
+  "read_write_buffers_captured": false,
+  "new_sandbox_children_traced": false,
+  "requested_seconds": 25.0,
+  "max_bytes": 8388608,
+  "started_wall_ns": 1792238885234325375,
+  "before": [
+    {
+      "pid": 2243,
+      "starttime": "124868",
+      "ppid": 2241,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam",
+      "uid": [
+        1000,
+        1000,
+        1000,
+        1000
+      ],
+      "tracer_pid": 0,
+      "state": "S (sleeping)",
+      "seccomp": 0,
+      "force_sandbox_arg": true,
+      "cwd": "/home/ideck/.local/share/Steam",
+      "sentinel": {
+        "exists": false
+      }
+    },
+    {
+      "pid": 2527,
+      "starttime": "155637",
+      "ppid": 2243,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "uid": [
+        1000,
+        1000,
+        1000,
+        1000
+      ],
+      "tracer_pid": 0,
+      "state": "R (running)",
+      "seccomp": 0,
+      "force_sandbox_arg": true,
+      "cwd": "/home/ideck/.local/share/Steam/steamrtarm64",
+      "sentinel": {
+        "exists": true,
+        "size": 0,
+        "uid": 1000,
+        "mode": 33152,
+        "mtime_ns": 1792234840780000000
+      }
+    }
+  ],
+  "after": [
+    {
+      "pid": 2243,
+      "starttime": "124868",
+      "ppid": 2241,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam",
+      "uid": [
+        1000,
+        1000,
+        1000,
+        1000
+      ],
+      "tracer_pid": 0,
+      "state": "S (sleeping)",
+      "seccomp": 0,
+      "force_sandbox_arg": true,
+      "cwd": "/home/ideck/.local/share/Steam",
+      "sentinel": {
+        "exists": false
+      }
+    },
+    {
+      "pid": 2527,
+      "starttime": "155637",
+      "ppid": 2243,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "uid": [
+        1000,
+        1000,
+        1000,
+        1000
+      ],
+      "tracer_pid": 0,
+      "state": "R (running)",
+      "seccomp": 0,
+      "force_sandbox_arg": true,
+      "cwd": "/home/ideck/.local/share/Steam/steamrtarm64",
+      "sentinel": {
+        "exists": true,
+        "size": 0,
+        "uid": 1000,
+        "mode": 33152,
+        "mtime_ns": 1792234840780000000
+      }
+    }
+  ],
+  "tids": [
+    2243,
+    2251,
+    2252,
+    2254,
+    2319,
+    2485,
+    2510,
+    2527,
+    2528,
+    2533,
+    2534,
+    2535,
+    2536,
+    2537,
+    2538,
+    2539,
+    2540,
+    2541,
+    2546,
+    2547,
+    2550,
+    2566,
+    2568,
+    2569,
+    2571,
+    2572,
+    2577
+  ],
+  "command": [
+    "/opt/ideck-diagnostic-strace/usr/bin/strace",
+    "-qq",
+    "-ttt",
+    "-T",
+    "-i",
+    "-s",
+    "128",
+    "-e",
+    "signal=none",
+    "-e",
+    "trace=futex,openat,ftruncate,mmap,munmap,close,unlink,unlinkat,connect,clone,clone3,exit,exit_group",
+    "-p",
+    "2243",
+    "-p",
+    "2251",
+    "-p",
+    "2252",
+    "-p",
+    "2254",
+    "-p",
+    "2319",
+    "-p",
+    "2485",
+    "-p",
+    "2510",
+    "-p",
+    "2527",
+    "-p",
+    "2528",
+    "-p",
+    "2533",
+    "-p",
+    "2534",
+    "-p",
+    "2535",
+    "-p",
+    "2536",
+    "-p",
+    "2537",
+    "-p",
+    "2538",
+    "-p",
+    "2539",
+    "-p",
+    "2540",
+    "-p",
+    "2541",
+    "-p",
+    "2546",
+    "-p",
+    "2547",
+    "-p",
+    "2550",
+    "-p",
+    "2566",
+    "-p",
+    "2568",
+    "-p",
+    "2569",
+    "-p",
+    "2571",
+    "-p",
+    "2572",
+    "-p",
+    "2577"
+  ],
+  "tracer_pid": 2580,
+  "bytes": 321607,
+  "stop_reason": "duration_limit",
+  "trace_seconds": 25.019,
+  "tracer_detached": true,
+  "tracer_exit": -2,
+  "remaining_traced_tids": [],
+  "files": {
+    "after-2527.maps": {
+      "size": 61804,
+      "sha256": "3962e9db9c44024fb94e5e7ecb28cb334e65920db003b41fd799755157a87ba7"
+    },
+    "before-2527.maps": {
+      "size": 48323,
+      "sha256": "8eae359404c2acb24ee62d9488e154c3a064ed9cd65b8b8b6eefb0423a1d010e"
+    },
+    "after-2243.maps": {
+      "size": 75621,
+      "sha256": "31e9aafde529c78f440e005e6a2e07492361efa2cd1e0daeb865cf0c1efbc3f4"
+    },
+    "before-2243.maps": {
+      "size": 74407,
+      "sha256": "7517565da7fd44e567831148a47f7b1977a6ed9e5954a5ae9a2e17981d81d75f"
+    },
+    "trace.log": {
+      "size": 321607,
+      "sha256": "4ad43114f7f6cda6f4727aa31aadf7feb25ef626f9fd7fcb089f7f92e3325f6b"
+    }
+  },
+  "finished_wall_ns": 1792238927327175995
+}

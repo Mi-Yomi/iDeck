@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "kind": "authenticated-lsof-program-dependency-closure",
+  "before_count": 41,
+  "after_count": 45,
+  "combined_closure_count": 386,
+  "existing_packages_changed": [],
+  "existing_packages_removed": [],
+  "gui_inputs_sha256": "8b3ee6d1f255c7486e7226c65ab304036363edccea4e145b472fe7df1cf6ed98",
+  "release_sha256": "0584fba32e13e0ab8285fb16c27adea1ec03a73669c18702821094fd6ca86675",
+  "index_sha256": "be16b37b2f740f066ea93d35d56f04f94d63693e5a3eb421b052bf86fae75bcd",
+  "extra_packages": [
+    {
+      "name": "liblsof0",
+      "version": "4.99.4+dfsg-2",
+      "architecture": "arm64",
+      "filename": "pool/main/l/lsof/liblsof0_4.99.4+dfsg-2_arm64.deb",
+      "sha256": "a1ab035a948e010207680635ad7fedfb27cd69a43ab53bd5a4d647775bdf3020",
+      "size": 127540,
+      "installed_size_kib": 221
+    },
+    {
+      "name": "libtirpc-common",
+      "version": "1.3.6+ds-1",
+      "architecture": "all",
+      "filename": "pool/main/libt/libtirpc/libtirpc-common_1.3.6+ds-1_all.deb",
+      "sha256": "300f582e2c9151a8d329568c705cadc76252c417147312fe331c4560d2c7a6c3",
+      "size": 11004,
+      "installed_size_kib": 32
+    },
+    {
+      "name": "libtirpc3t64",
+      "version": "1.3.6+ds-1",
+      "architecture": "arm64",
+      "filename": "pool/main/libt/libtirpc/libtirpc3t64_1.3.6+ds-1_arm64.deb",
+      "sha256": "ae390ce96435829f0d5252305fb9b22001f5bcc85477e452373ddb2a4fa4dbc1",
+      "size": 79084,
+      "installed_size_kib": 304
+    },
+    {
+      "name": "lsof",
+      "version": "4.99.4+dfsg-2",
+      "architecture": "arm64",
+      "filename": "pool/main/l/lsof/lsof_4.99.4+dfsg-2_arm64.deb",
+      "sha256": "c15929d5a0263ca10659f6549d9f1037e2d62871837a1819b0d26db0e6807706",
+      "size": 306172,
+      "installed_size_kib": 484
+    }
+  ],
+  "scope": "Guest Steam IPC admission dependency, not a Chrome-init timeout fix",
+  "downloaded": [
+    {
+      "path": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/deps-cache/debs/liblsof0_4.99.4+dfsg-2_arm64.deb",
+      "size": 127540,
+      "sha256": "a1ab035a948e010207680635ad7fedfb27cd69a43ab53bd5a4d647775bdf3020"
+    },
+    {
+      "path": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/deps-cache/debs/libtirpc-common_1.3.6+ds-1_all.deb",
+      "size": 11004,
+      "sha256": "300f582e2c9151a8d329568c705cadc76252c417147312fe331c4560d2c7a6c3"
+    },
+    {
+      "path": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/deps-cache/debs/libtirpc3t64_1.3.6+ds-1_arm64.deb",
+      "size": 79084,
+      "sha256": "ae390ce96435829f0d5252305fb9b22001f5bcc85477e452373ddb2a4fa4dbc1"
+    },
+    {
+      "path": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/deps-cache/debs/lsof_4.99.4+dfsg-2_arm64.deb",
+      "size": 306172,
+      "sha256": "c15929d5a0263ca10659f6549d9f1037e2d62871837a1819b0d26db0e6807706"
+    }
+  ],
+  "lock_sha256": "0d153bbb2a9a39c32fb650d189cc972355fc1d94da39297cf0b9830fdbd922f6"
+}

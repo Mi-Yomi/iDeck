@@ -1,0 +1,6 @@
+
+
+[2026-10-17 11:43:49] Client version: 1792192922
+[2026-10-17 11:43:49] Initialized CSystemAudioController: 1
+[2026-10-17 11:43:49] CSystemAudioController handle volume keys: 0
+[2026-10-17 11:43:49] CSystemAudioController handle echo cancel load: 0

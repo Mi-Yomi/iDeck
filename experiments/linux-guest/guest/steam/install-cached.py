@@ -134,7 +134,7 @@ def dependencies(lock):
     if lock.get('schema') != 1 or lock.get('kind') != 'ideck-experimental-steam-dependencies' or lock.get('architecture') != 'arm64':
         raise Failure('invalid_dependency_lock')
     packages = lock.get('extra_packages', [])
-    if len(packages) != 41:
+    if len(packages) != 45:
         raise Failure('unexpected_dependency_count')
     names, files = set(), set()
     for p in packages:

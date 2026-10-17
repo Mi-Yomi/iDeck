@@ -1,0 +1,961 @@
+[
+  {
+    "phase": "before_resume",
+    "shm": {
+      "used": 532443136,
+      "free": 237006848,
+      "objects": 32
+    },
+    "processes": {
+      "2243": {
+        "comm": "steam",
+        "status": "Name:\tsteam\nUmask:\t0077\nState:\tT (stopped)\nTgid:\t2243\nNgid:\t0\nPid:\t2243\nPPid:\t2241\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t128\nGroups:\t1000 \nNStgid:\t2243\nNSpid:\t2243\nNSpgid:\t2220\nNSsid:\t2220\nKthread:\t0\nVmPeak:\t 2694852 kB\nVmSize:\t 2694852 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  206516 kB\nVmRSS:\t  201040 kB\nRssAnon:\t   66552 kB\nRssFile:\t  125516 kB\nRssShmem:\t    8972 kB\nVmData:\t  227368 kB\nVmStk:\t     132 kB\nVmExe:\t    9560 kB\nVmLib:\t  343768 kB\nVmPTE:\t    1008 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffff\nThreads:\t38\nSigQ:\t3/6004\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000010000\nSigBlk:\t0000000000010000\nSigIgn:\t0000000001001000\nSigCgt:\t00000001000044e8\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tf\nCpus_allowed_list:\t0-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t53889\nnonvoluntary_ctxt_switches:\t5343\n",
+        "argv": "/home/ideck/.local/share/Steam/steamrtarm64/steam -clientbeta steamdeck_publicbeta -cef-ozone-platform=x11 -cef-disable-gpu -cef-force-sandbox -nobigpicture ",
+        "stat": "2243 (steam) T 2241 2220 2220 0 -1 4194304 22476 25047 111 86 15736 21200 6067 6428 20 0 38 0 124868 2759528448 50222 18446744073709551615 187650766618624 187650776404760 281474839014832 0 0 0 65536 16781312 17640 0 0 0 17 1 0 0 0 0 0 187650776412096 187650776755016 187651330416640 281474839018789 281474839018946 281474839018946 281474839019462 19\n"
+      },
+      "2527": {
+        "comm": "steamwebhelper",
+        "status": "Name:\tsteamwebhelper\nUmask:\t0077\nState:\tT (stopped)\nTgid:\t2527\nNgid:\t0\nPid:\t2527\nPPid:\t2243\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t256\nGroups:\t1000 \nNStgid:\t2527\nNSpid:\t2527\nNSpgid:\t2527\nNSsid:\t2527\nKthread:\t0\nVmPeak:\t 2567716 kB\nVmSize:\t 2567716 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  667952 kB\nVmRSS:\t  667924 kB\nRssAnon:\t   26828 kB\nRssFile:\t  125204 kB\nRssShmem:\t  515892 kB\nVmData:\t  211304 kB\nVmStk:\t     140 kB\nVmExe:\t    9592 kB\nVmLib:\t  217700 kB\nVmPTE:\t    1848 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffff\nThreads:\t24\nSigQ:\t3/6004\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000010000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000001001000\nSigCgt:\t0000000100014003\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tc\nCpus_allowed_list:\t2-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t3402\nnonvoluntary_ctxt_switches:\t3592\n",
+        "argv": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper -nocrashdialog -lang=en_US -cachedir=/home/ideck/.local/share/Steam/config/htmlcache -steampid=2243 -buildid=1792192922 -steamid=0 -logdir=/home/ideck/.local/share/Steam/logs -uimode=7 -startcount=0 -steamuniverse=Public -realm=Global -clientui=/home/ideck/.local/share/Steam/clientui -steampath=/home/ideck/.local/share/Steam/steamrtarm64/steam -launcher=0 -force-sandbox --valve-enable-site-isolation --enable-smooth-scrolling --disable-gpu-compositing --disable-gpu --ignore-gpu-blocklist --password-store=basic --disable-gpu-early-init --log-file=/home/ideck/.local/share/Steam/logs/cef_log.txt --disable-quick-menu --disable-component-update --gaia-url=http://disabled.invalid --enable-features=V4L2VideoDecode --disable-features=WinRetrieveSuggestionsOnlyOnDemand,SpareRendererForSitePerProcess,BlockPromptsIfIgnoredOften,WebUsbDeviceDetection,ValveFFmpegAllowLowDelayHEVC ",
+        "stat": "2527 (steamwebhelper) T 2243 2527 2527 0 -1 4194560 138370 758 99 2 3701 3395 272 207 20 0 24 0 155637 2629341184 166988 18446744073709551615 187650146299904 187650156119808 281474174172176 0 0 0 0 16781312 81923 0 0 0 17 2 0 0 0 0 0 187650156126208 187650156555792 187650320437248 281474174175454 281474174176392 281474174176392 281474174177213 19\n"
+      },
+      "2552": {
+        "comm": "steamwebhelper",
+        "status": "Name:\tsteamwebhelper\nUmask:\t0077\nState:\tT (stopped)\nTgid:\t2552\nNgid:\t0\nPid:\t2552\nPPid:\t2527\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t1000 \nNStgid:\t2552\nNSpid:\t2552\nNSpgid:\t2527\nNSsid:\t2527\nKthread:\t0\nVmPeak:\t  296828 kB\nVmSize:\t  296828 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   67504 kB\nVmRSS:\t   64280 kB\nRssAnon:\t   12976 kB\nRssFile:\t   51304 kB\nRssShmem:\t       0 kB\nVmData:\t    5020 kB\nVmStk:\t     140 kB\nVmExe:\t    9592 kB\nVmLib:\t  205756 kB\nVmPTE:\t     428 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffff\nThreads:\t1\nSigQ:\t3/6004\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000010000\nSigIgn:\t0000000001001002\nSigCgt:\t0000000000010000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tc\nCpus_allowed_list:\t2-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t6\nnonvoluntary_ctxt_switches:\t944\n",
+        "argv": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper --type=zygote --no-zygote-sandbox --enable-crash-reporter=, --change-stack-guard-on-fork=enable --enable-chrome-runtime --user-data-dir=/home/ideck/.local/share/Steam/config/htmlcache --user-agent-product=Valve Steam Client --buildid=1792192922 --steamid=0 ",
+        "stat": "2552 (steamwebhelper) T 2527 2527 2527 0 -1 4194304 4347 0 0 0 356 444 0 0 20 0 1 0 156428 303951872 16108 18446744073709551615 187650437193728 187650447013632 281474721406208 0 0 0 65536 16781314 65536 1 0 0 17 2 0 0 0 0 0 187650447020032 187650447449616 187651461455872 281474721409868 281474721410184 281474721410184 281474721411005 19\n"
+      },
+      "2557": {
+        "comm": "steamwebhelper",
+        "status": "Name:\tsteamwebhelper\nUmask:\t0077\nState:\tT (stopped)\nTgid:\t2557\nNgid:\t0\nPid:\t2557\nPPid:\t2527\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t1000 \nNStgid:\t2557\t1\nNSpid:\t2557\t1\nNSpgid:\t2527\t0\nNSsid:\t2527\t0\nKthread:\t0\nVmPeak:\t  296952 kB\nVmSize:\t  296952 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   67632 kB\nVmRSS:\t   64300 kB\nRssAnon:\t   13104 kB\nRssFile:\t   51196 kB\nRssShmem:\t       0 kB\nVmData:\t    5020 kB\nVmStk:\t     264 kB\nVmExe:\t    9592 kB\nVmLib:\t  205756 kB\nVmPTE:\t     416 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffff\nThreads:\t1\nSigQ:\t1/6004\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000010000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000001001002\nSigCgt:\t0000000000010000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tc\nCpus_allowed_list:\t2-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t6\nnonvoluntary_ctxt_switches:\t865\n",
+        "argv": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper --type=zygote --enable-crash-reporter=, --change-stack-guard-on-fork=enable --enable-chrome-runtime --user-data-dir=/home/ideck/.local/share/Steam/config/htmlcache --user-agent-product=Valve Steam Client --buildid=1792192922 --steamid=0 ",
+        "stat": "2557 (steamwebhelper) T 2527 2527 2527 0 -1 4194560 4357 0 0 0 384 480 0 2 20 0 1 0 156470 304078848 16140 18446744073709551615 187650325458944 187650335278848 281474369191808 0 0 0 0 16781314 65536 1 0 0 17 2 0 0 0 0 0 187650335285248 187650335714832 187650917916672 281474369194808 281474369195104 281474369195104 281474369195965 19\n"
+      },
+      "2576": {
+        "comm": "steamwebhelper",
+        "status": "Name:\tsteamwebhelper\nUmask:\t0077\nState:\tT (stopped)\nTgid:\t2576\nNgid:\t0\nPid:\t2576\nPPid:\t2557\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t1000 \nNStgid:\t2576\t3\nNSpid:\t2576\t3\nNSpgid:\t2527\t0\nNSsid:\t2527\t0\nKthread:\t0\nVmPeak:\t  296956 kB\nVmSize:\t  296956 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   18952 kB\nVmRSS:\t   18936 kB\nRssAnon:\t   13100 kB\nRssFile:\t    5836 kB\nRssShmem:\t       0 kB\nVmData:\t    5020 kB\nVmStk:\t     268 kB\nVmExe:\t    9592 kB\nVmLib:\t  205756 kB\nVmPTE:\t     244 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffff\nThreads:\t1\nSigQ:\t1/6004\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000001001002\nSigCgt:\t0000000000010000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000200000\nCapEff:\t0000000000200000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tc\nCpus_allowed_list:\t2-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t6\nnonvoluntary_ctxt_switches:\t69\n",
+        "argv": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper --type=zygote --enable-crash-reporter=, --change-stack-guard-on-fork=enable --enable-chrome-runtime --user-data-dir=/home/ideck/.local/share/Steam/config/htmlcache --user-agent-product=Valve Steam Client --buildid=1792192922 --steamid=0 ",
+        "stat": "2576 (steamwebhelper) T 2557 2527 2527 0 -1 4194624 177 0 0 0 2 36 0 0 20 0 1 0 157987 304082944 4738 18446744073709551615 187650325458944 187650335278848 281474369191808 0 0 0 0 16781314 65536 1 0 0 17 2 0 0 0 0 0 187650335285248 187650335714832 187650917916672 281474369194808 281474369195104 281474369195104 281474369195965 19\n"
+      },
+      "2620": {
+        "comm": "steamwebhelper",
+        "status": "Name:\tsteamwebhelper\nUmask:\t0077\nState:\tT (stopped)\nTgid:\t2620\nNgid:\t0\nPid:\t2620\nPPid:\t2552\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t1000 \nNStgid:\t2620\nNSpid:\t2620\nNSpgid:\t2527\nNSsid:\t2527\nKthread:\t0\nVmPeak:\t 1209436 kB\nVmSize:\t 1209312 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   63720 kB\nVmRSS:\t   63176 kB\nRssAnon:\t   16868 kB\nRssFile:\t   46232 kB\nRssShmem:\t      76 kB\nVmData:\t  107000 kB\nVmStk:\t     140 kB\nVmExe:\t    9592 kB\nVmLib:\t  222016 kB\nVmPTE:\t     568 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffff\nThreads:\t13\nSigQ:\t3/6004\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000001001002\nSigCgt:\t0000000100010000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tc\nCpus_allowed_list:\t2-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t30\nnonvoluntary_ctxt_switches:\t2126\n",
+        "argv": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper --type=zygote --no-zygote-sandbox --enable-crash-reporter=, --change-stack-guard-on-fork=enable --enable-chrome-runtime --user-data-dir=/home/ideck/.local/share/Steam/config/htmlcache --user-agent-product=Valve Steam Client --buildid=1792192922 --steamid=0 ",
+        "stat": "2620 (steamwebhelper) T 2552 2527 2527 0 -1 4194368 1987 0 7 0 1034 740 0 0 20 0 13 0 160441 1238335488 15770 18446744073709551615 187650437193728 187650447013632 281474721406208 0 0 0 0 16781314 65536 0 0 0 17 3 0 0 0 0 0 187650447020032 187650447449616 187651461455872 281474721409868 281474721410184 281474721410184 281474721411005 19\n"
+      },
+      "2625": {
+        "comm": "steamwebhelper",
+        "status": "Name:\tsteamwebhelper\nUmask:\t0077\nState:\tT (stopped)\nTgid:\t2625\nNgid:\t0\nPid:\t2625\nPPid:\t2527\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t128\nGroups:\t1000 \nNStgid:\t2625\nNSpid:\t2625\nNSpgid:\t2527\nNSsid:\t2527\nKthread:\t0\nVmPeak:\t  879948 kB\nVmSize:\t  814412 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   77160 kB\nVmRSS:\t   76172 kB\nRssAnon:\t   13432 kB\nRssFile:\t   62676 kB\nRssShmem:\t      64 kB\nVmData:\t   63440 kB\nVmStk:\t     132 kB\nVmExe:\t    9592 kB\nVmLib:\t  205756 kB\nVmPTE:\t     512 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffff\nThreads:\t8\nSigQ:\t3/6004\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000001001002\nSigCgt:\t0000000100000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tc\nCpus_allowed_list:\t2-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t10\nnonvoluntary_ctxt_switches:\t2130\n",
+        "argv": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper --type=utility --utility-sub-type=network.mojom.NetworkService --lang=en-US --service-sandbox-type=none --enable-crash-reporter=, --change-stack-guard-on-fork=enable --enable-chrome-runtime --user-data-dir=/home/ideck/.local/share/Steam/config/htmlcache --user-agent-product=Valve Steam Client --buildid=1792192922 --steamid=0 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,8173630043647000204,15109166218384361913,262144 --enable-features=V4L2VideoDecode --disable-features=BlockPromptsIfIgnoredOften,SpareRendererForSitePerProcess,ValveFFmpegAllowLowDelayHEVC,WebUsbDeviceDetection,WinRetrieveSuggestionsOnlyOnDemand --variations-seed-version --log-file=/home/ideck/.local/share/Steam/logs/cef_log.txt ",
+        "stat": "2625 (steamwebhelper) T 2527 2527 2527 0 -1 4194304 4643 0 4 0 620 702 0 0 20 0 8 0 160757 833957888 19034 18446744073709551615 187651011936256 187651021756160 281474663277680 0 0 0 0 16781314 0 0 0 0 17 3 0 0 0 0 0 187651021762560 187651022192144 187651403161600 281474663278952 281474663279737 281474663279737 281474663280573 19\n"
+      },
+      "2688": {
+        "comm": "steamwebhelper",
+        "status": "Name:\tsteamwebhelper\nState:\tZ (zombie)\nTgid:\t2688\nNgid:\t0\nPid:\t2688\nPPid:\t2576\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t1000 \nNStgid:\t2688\t4\t1\nNSpid:\t2688\t4\t1\nNSpgid:\t2527\t0\t0\nNSsid:\t2527\t0\t0\nKthread:\t0\nThreads:\t1\nSigQ:\t1/6004\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000001011002\nSigCgt:\t0000000140004a25\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tc\nCpus_allowed_list:\t2-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t12\nnonvoluntary_ctxt_switches:\t294\n",
+        "argv": "",
+        "stat": "2688 (steamwebhelper) Z 2576 2527 2527 0 -1 4227148 1082 0 0 0 119 72 0 0 20 0 1 0 164320 0 0 18446744073709551615 0 0 0 0 0 0 0 16846850 1073760805 1 0 0 17 2 0 0 0 0 0 0 0 0 0 0 0 0 0\n"
+      }
+    },
+    "wall_ns": 1792239086276759140
+  },
+  {
+    "phase": "sample",
+    "seconds": 4.5360000058281e-05,
+    "wall_ns": 1792239086293247784,
+    "shm": {
+      "used": 532443136,
+      "free": 237006848,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 0.11502627400000165,
+    "wall_ns": 1792239086408236684,
+    "shm": {
+      "used": 534360064,
+      "free": 235089920,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 0.22677092200001425,
+    "wall_ns": 1792239086519972065,
+    "shm": {
+      "used": 537333760,
+      "free": 232116224,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 0.3570558339999934,
+    "wall_ns": 1792239086650257485,
+    "shm": {
+      "used": 543211520,
+      "free": 226238464,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 0.47259014299993396,
+    "wall_ns": 1792239086765790884,
+    "shm": {
+      "used": 548732928,
+      "free": 220717056,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 0.5876128390000304,
+    "wall_ns": 1792239086880814007,
+    "shm": {
+      "used": 554975232,
+      "free": 214474752,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 0.6936526239999239,
+    "wall_ns": 1792239086986854092,
+    "shm": {
+      "used": 555909120,
+      "free": 213540864,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 0.8010858499999358,
+    "wall_ns": 1792239087094291020,
+    "shm": {
+      "used": 556027904,
+      "free": 213422080,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 0.9217734829999245,
+    "wall_ns": 1792239087214978644,
+    "shm": {
+      "used": 556122112,
+      "free": 213327872,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 1.1088756050000939,
+    "wall_ns": 1792239087402080203,
+    "shm": {
+      "used": 556208128,
+      "free": 213241856,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 1.2488666290000765,
+    "wall_ns": 1792239087542068525,
+    "shm": {
+      "used": 556318720,
+      "free": 213131264,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 1.3577436450000278,
+    "wall_ns": 1792239087650947350,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 1.4720718630001102,
+    "wall_ns": 1792239087765272760,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 1.5769837099999222,
+    "wall_ns": 1792239087870184806,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 1.6877473389999977,
+    "wall_ns": 1792239087980951522,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 1.7946123040001112,
+    "wall_ns": 1792239088087816260,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 1.9098809879999408,
+    "wall_ns": 1792239088203086781,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 2.0250439650001226,
+    "wall_ns": 1792239088318248830,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 2.142797913000095,
+    "wall_ns": 1792239088436002565,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 2.2587355539999407,
+    "wall_ns": 1792239088551939127,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 2.3697826530001294,
+    "wall_ns": 1792239088662987429,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 2.477112226000145,
+    "wall_ns": 1792239088770367845,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 2.588818250000031,
+    "wall_ns": 1792239088882069156,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 2.7000087589999566,
+    "wall_ns": 1792239088993213618,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 2.810716339999999,
+    "wall_ns": 1792239089103918723,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 2.9224505439999575,
+    "wall_ns": 1792239089215664245,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 3.0320263450000766,
+    "wall_ns": 1792239089325231666,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 3.1439840990001358,
+    "wall_ns": 1792239089437190569,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 3.263594952999938,
+    "wall_ns": 1792239089556796487,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 3.3749980669999786,
+    "wall_ns": 1792239089668199010,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 3.485048379000091,
+    "wall_ns": 1792239089778252464,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 3.593538856000123,
+    "wall_ns": 1792239089886739460,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 3.7007455600000867,
+    "wall_ns": 1792239089993950312,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 3.8108075370000734,
+    "wall_ns": 1792239090104010570,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 3.9160451360000934,
+    "wall_ns": 1792239090209246371,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 4.024797702000114,
+    "wall_ns": 1792239090317998261,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 4.138868270000103,
+    "wall_ns": 1792239090432072012,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 4.246778838999944,
+    "wall_ns": 1792239090539979688,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 4.36686779799993,
+    "wall_ns": 1792239090660081461,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 4.476866854000036,
+    "wall_ns": 1792239090770069116,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 4.592405403999919,
+    "wall_ns": 1792239090885605951,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 4.697532605000106,
+    "wall_ns": 1792239090990733197,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 4.803652192000072,
+    "wall_ns": 1792239091096853280,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 4.9086959139999635,
+    "wall_ns": 1792239091201898304,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 5.015097873000059,
+    "wall_ns": 1792239091308778044,
+    "shm": {
+      "used": 557551616,
+      "free": 211898368,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 5.1260349520000545,
+    "wall_ns": 1792239091419238829,
+    "shm": {
+      "used": 560148480,
+      "free": 209301504,
+      "objects": 33
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 5.2479298299999755,
+    "wall_ns": 1792239091541224770,
+    "shm": {
+      "used": 565182464,
+      "free": 204267520,
+      "objects": 33
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 5.381404087999954,
+    "wall_ns": 1792239091674604851,
+    "shm": {
+      "used": 569344000,
+      "free": 200105984,
+      "objects": 33
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 5.500691767000035,
+    "wall_ns": 1792239091793895009,
+    "shm": {
+      "used": 574631936,
+      "free": 194818048,
+      "objects": 33
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 5.6119414710001365,
+    "wall_ns": 1792239091905145745,
+    "shm": {
+      "used": 578048000,
+      "free": 191401984,
+      "objects": 33
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 5.762870221999947,
+    "wall_ns": 1792239092056074576,
+    "shm": {
+      "used": 582012928,
+      "free": 187437056,
+      "objects": 33
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 5.879767410000113,
+    "wall_ns": 1792239092172968508,
+    "shm": {
+      "used": 583770112,
+      "free": 185679872,
+      "objects": 33
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 5.9890464000000065,
+    "wall_ns": 1792239092282250247,
+    "shm": {
+      "used": 583770112,
+      "free": 185679872,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 6.102999469999986,
+    "wall_ns": 1792239092396789478,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 6.226013994000141,
+    "wall_ns": 1792239092519214554,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 6.3467324360001385,
+    "wall_ns": 1792239092639933513,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 6.465995207000105,
+    "wall_ns": 1792239092759197941,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 6.594168148000108,
+    "wall_ns": 1792239092892638051,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 6.771968776999984,
+    "wall_ns": 1792239093065173384,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 6.915495092000128,
+    "wall_ns": 1792239093208703177,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 7.043826761999981,
+    "wall_ns": 1792239093337033092,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 7.203912443000036,
+    "wall_ns": 1792239093497117002,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 7.407724708999922,
+    "wall_ns": 1792239093700932429,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 7.522469192000017,
+    "wall_ns": 1792239093815674139,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 7.651695791000066,
+    "wall_ns": 1792239093944897278,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 7.780051629000127,
+    "wall_ns": 1792239094073256198,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 7.896094216999927,
+    "wall_ns": 1792239094189300487,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 8.007045006999988,
+    "wall_ns": 1792239094300250987,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 8.155475670999977,
+    "wall_ns": 1792239094448681263,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 8.276959284999975,
+    "wall_ns": 1792239094570163034,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 8.401937498000052,
+    "wall_ns": 1792239094695141091,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 8.514768818999983,
+    "wall_ns": 1792239094807969681,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 8.622623318000024,
+    "wall_ns": 1792239094915834224,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 8.737964446999968,
+    "wall_ns": 1792239095031165199,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 8.851657929000112,
+    "wall_ns": 1792239095145073046,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 8.96869294499993,
+    "wall_ns": 1792239095261899076,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 9.089084741000079,
+    "wall_ns": 1792239095382292441,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 9.216076351000083,
+    "wall_ns": 1792239095509281428,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 9.360976730999937,
+    "wall_ns": 1792239095654189759,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 9.494819163000102,
+    "wall_ns": 1792239095788024933,
+    "shm": {
+      "used": 583757824,
+      "free": 185692160,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 9.636071569000023,
+    "wall_ns": 1792239095929275275,
+    "shm": {
+      "used": 583626752,
+      "free": 185823232,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 9.769899230999954,
+    "wall_ns": 1792239096063103595,
+    "shm": {
+      "used": 583626752,
+      "free": 185823232,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 9.882120805000113,
+    "wall_ns": 1792239096175325356,
+    "shm": {
+      "used": 583626752,
+      "free": 185823232,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "sample",
+    "seconds": 9.999197608000031,
+    "wall_ns": 1792239096292811748,
+    "shm": {
+      "used": 583626752,
+      "free": 185823232,
+      "objects": 32
+    }
+  },
+  {
+    "phase": "frozen",
+    "reason": "ten_second_budget",
+    "shm": {
+      "used": 583626752,
+      "free": 185823232,
+      "objects": 32
+    },
+    "processes": {
+      "2243": {
+        "comm": "steam",
+        "status": "Name:\tsteam\nUmask:\t0077\nState:\tT (stopped)\nTgid:\t2243\nNgid:\t0\nPid:\t2243\nPPid:\t2241\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t128\nGroups:\t1000 \nNStgid:\t2243\nNSpid:\t2243\nNSpgid:\t2220\nNSsid:\t2220\nKthread:\t0\nVmPeak:\t 2694852 kB\nVmSize:\t 2694840 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  206516 kB\nVmRSS:\t  198528 kB\nRssAnon:\t   67088 kB\nRssFile:\t  122480 kB\nRssShmem:\t    8960 kB\nVmData:\t  227400 kB\nVmStk:\t     132 kB\nVmExe:\t    9560 kB\nVmLib:\t  343768 kB\nVmPTE:\t    1008 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffff\nThreads:\t38\nSigQ:\t8/6004\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000050000\nSigBlk:\t0000000000010000\nSigIgn:\t0000000001001000\nSigCgt:\t00000001000044e8\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tf\nCpus_allowed_list:\t0-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t56335\nnonvoluntary_ctxt_switches:\t5375\n",
+        "argv": "/home/ideck/.local/share/Steam/steamrtarm64/steam -clientbeta steamdeck_publicbeta -cef-ozone-platform=x11 -cef-disable-gpu -cef-force-sandbox -nobigpicture ",
+        "stat": "2243 (steam) T 2241 2220 2220 0 -1 4194304 22549 25047 111 86 15794 21757 6067 6428 20 0 38 0 124868 2759516160 49614 18446744073709551615 187650766618624 187650776404760 281474839014832 0 0 0 65536 16781312 17640 0 0 0 17 1 0 0 0 0 0 187650776412096 187650776755016 187651330416640 281474839018789 281474839018946 281474839018946 281474839019462 19\n"
+      },
+      "2527": {
+        "comm": "steamwebhelper",
+        "status": "Name:\tsteamwebhelper\nUmask:\t0077\nState:\tT (stopped)\nTgid:\t2527\nNgid:\t0\nPid:\t2527\nPPid:\t2243\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t256\nGroups:\t1000 \nNStgid:\t2527\nNSpid:\t2527\nNSpgid:\t2527\nNSsid:\t2527\nKthread:\t0\nVmPeak:\t 2848120 kB\nVmSize:\t 2786112 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  735988 kB\nVmRSS:\t  735988 kB\nRssAnon:\t   30856 kB\nRssFile:\t  137208 kB\nRssShmem:\t  567924 kB\nVmData:\t  225436 kB\nVmStk:\t     140 kB\nVmExe:\t    9592 kB\nVmLib:\t  262008 kB\nVmPTE:\t    2044 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffff\nThreads:\t26\nSigQ:\t8/6004\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000040000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000001001000\nSigCgt:\t0000000100014003\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tc\nCpus_allowed_list:\t2-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t4226\nnonvoluntary_ctxt_switches:\t3775\n",
+        "argv": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper -nocrashdialog -lang=en_US -cachedir=/home/ideck/.local/share/Steam/config/htmlcache -steampid=2243 -buildid=1792192922 -steamid=0 -logdir=/home/ideck/.local/share/Steam/logs -uimode=7 -startcount=0 -steamuniverse=Public -realm=Global -clientui=/home/ideck/.local/share/Steam/clientui -steampath=/home/ideck/.local/share/Steam/steamrtarm64/steam -launcher=0 -force-sandbox --valve-enable-site-isolation --enable-smooth-scrolling --disable-gpu-compositing --disable-gpu --ignore-gpu-blocklist --password-store=basic --disable-gpu-early-init --log-file=/home/ideck/.local/share/Steam/logs/cef_log.txt --disable-quick-menu --disable-component-update --gaia-url=http://disabled.invalid --enable-features=V4L2VideoDecode --disable-features=WinRetrieveSuggestionsOnlyOnDemand,SpareRendererForSitePerProcess,BlockPromptsIfIgnoredOften,WebUsbDeviceDetection,ValveFFmpegAllowLowDelayHEVC ",
+        "stat": "2527 (steamwebhelper) T 2243 2527 2527 0 -1 4194560 152539 758 102 2 4025 3762 272 207 20 0 26 0 155637 2852978688 183947 18446744073709551615 187650146299904 187650156119808 281474174172176 0 0 0 0 16781312 81923 0 0 0 17 2 0 0 0 0 0 187650156126208 187650156555792 187650320437248 281474174175454 281474174176392 281474174176392 281474174177213 19\n"
+      },
+      "2552": {
+        "comm": "steamwebhelper",
+        "status": "Name:\tsteamwebhelper\nUmask:\t0077\nState:\tT (stopped)\nTgid:\t2552\nNgid:\t0\nPid:\t2552\nPPid:\t2527\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t1000 \nNStgid:\t2552\nNSpid:\t2552\nNSpgid:\t2527\nNSsid:\t2527\nKthread:\t0\nVmPeak:\t  296828 kB\nVmSize:\t  296828 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   67504 kB\nVmRSS:\t   63560 kB\nRssAnon:\t   12976 kB\nRssFile:\t   50584 kB\nRssShmem:\t       0 kB\nVmData:\t    5020 kB\nVmStk:\t     140 kB\nVmExe:\t    9592 kB\nVmLib:\t  205756 kB\nVmPTE:\t     428 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffff\nThreads:\t1\nSigQ:\t8/6004\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000050000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000001001002\nSigCgt:\t0000000000010000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tc\nCpus_allowed_list:\t2-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t8\nnonvoluntary_ctxt_switches:\t944\n",
+        "argv": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper --type=zygote --no-zygote-sandbox --enable-crash-reporter=, --change-stack-guard-on-fork=enable --enable-chrome-runtime --user-data-dir=/home/ideck/.local/share/Steam/config/htmlcache --user-agent-product=Valve Steam Client --buildid=1792192922 --steamid=0 ",
+        "stat": "2552 (steamwebhelper) T 2527 2527 2527 0 -1 4194304 4347 0 0 0 356 444 0 0 20 0 1 0 156428 303951872 15916 18446744073709551615 187650437193728 187650447013632 281474721406208 0 0 0 0 16781314 65536 1 0 0 17 2 0 0 0 0 0 187650447020032 187650447449616 187651461455872 281474721409868 281474721410184 281474721410184 281474721411005 19\n"
+      },
+      "2557": {
+        "comm": "steamwebhelper",
+        "status": "Name:\tsteamwebhelper\nUmask:\t0077\nState:\tT (stopped)\nTgid:\t2557\nNgid:\t0\nPid:\t2557\nPPid:\t2527\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t1000 \nNStgid:\t2557\t1\nNSpid:\t2557\t1\nNSpgid:\t2527\t0\nNSsid:\t2527\t0\nKthread:\t0\nVmPeak:\t  296952 kB\nVmSize:\t  296952 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   67632 kB\nVmRSS:\t   63580 kB\nRssAnon:\t   13104 kB\nRssFile:\t   50476 kB\nRssShmem:\t       0 kB\nVmData:\t    5020 kB\nVmStk:\t     264 kB\nVmExe:\t    9592 kB\nVmLib:\t  205756 kB\nVmPTE:\t     416 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffff\nThreads:\t1\nSigQ:\t2/6004\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000040000\nSigBlk:\t0000000000010000\nSigIgn:\t0000000001001002\nSigCgt:\t0000000000010000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tc\nCpus_allowed_list:\t2-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t8\nnonvoluntary_ctxt_switches:\t866\n",
+        "argv": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper --type=zygote --enable-crash-reporter=, --change-stack-guard-on-fork=enable --enable-chrome-runtime --user-data-dir=/home/ideck/.local/share/Steam/config/htmlcache --user-agent-product=Valve Steam Client --buildid=1792192922 --steamid=0 ",
+        "stat": "2557 (steamwebhelper) T 2527 2527 2527 0 -1 4194560 4358 0 0 0 384 480 0 2 20 0 1 0 156470 304078848 15980 18446744073709551615 187650325458944 187650335278848 281474369191808 0 0 0 65536 16781314 65536 1 0 0 17 2 0 0 0 0 0 187650335285248 187650335714832 187650917916672 281474369194808 281474369195104 281474369195104 281474369195965 19\n"
+      },
+      "2576": {
+        "comm": "steamwebhelper",
+        "status": "Name:\tsteamwebhelper\nUmask:\t0077\nState:\tT (stopped)\nTgid:\t2576\nNgid:\t0\nPid:\t2576\nPPid:\t2557\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t1000 \nNStgid:\t2576\t3\nNSpid:\t2576\t3\nNSpgid:\t2527\t0\nNSsid:\t2527\t0\nKthread:\t0\nVmPeak:\t  296956 kB\nVmSize:\t  296956 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   18952 kB\nVmRSS:\t   18864 kB\nRssAnon:\t   13100 kB\nRssFile:\t    5764 kB\nRssShmem:\t       0 kB\nVmData:\t    5020 kB\nVmStk:\t     268 kB\nVmExe:\t    9592 kB\nVmLib:\t  205756 kB\nVmPTE:\t     244 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffff\nThreads:\t1\nSigQ:\t2/6004\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000040000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000001001002\nSigCgt:\t0000000000010000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000200000\nCapEff:\t0000000000200000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tc\nCpus_allowed_list:\t2-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t8\nnonvoluntary_ctxt_switches:\t69\n",
+        "argv": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper --type=zygote --enable-crash-reporter=, --change-stack-guard-on-fork=enable --enable-chrome-runtime --user-data-dir=/home/ideck/.local/share/Steam/config/htmlcache --user-agent-product=Valve Steam Client --buildid=1792192922 --steamid=0 ",
+        "stat": "2576 (steamwebhelper) T 2557 2527 2527 0 -1 4194624 177 0 0 0 2 36 0 0 20 0 1 0 157987 304082944 4738 18446744073709551615 187650325458944 187650335278848 281474369191808 0 0 0 0 16781314 65536 1 0 0 17 3 0 0 0 0 0 187650335285248 187650335714832 187650917916672 281474369194808 281474369195104 281474369195104 281474369195965 19\n"
+      },
+      "2620": {
+        "comm": "steamwebhelper",
+        "status": "Name:\tsteamwebhelper\nUmask:\t0077\nState:\tT (stopped)\nTgid:\t2620\nNgid:\t0\nPid:\t2620\nPPid:\t2552\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t1000 \nNStgid:\t2620\nNSpid:\t2620\nNSpgid:\t2527\nNSsid:\t2527\nKthread:\t0\nVmPeak:\t 1209436 kB\nVmSize:\t 1209312 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   63720 kB\nVmRSS:\t   63116 kB\nRssAnon:\t   16872 kB\nRssFile:\t   46168 kB\nRssShmem:\t      76 kB\nVmData:\t  107000 kB\nVmStk:\t     140 kB\nVmExe:\t    9592 kB\nVmLib:\t  222016 kB\nVmPTE:\t     568 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffff\nThreads:\t13\nSigQ:\t8/6004\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000040000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000001001002\nSigCgt:\t0000000100010000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tc\nCpus_allowed_list:\t2-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t38\nnonvoluntary_ctxt_switches:\t2139\n",
+        "argv": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper --type=zygote --no-zygote-sandbox --enable-crash-reporter=, --change-stack-guard-on-fork=enable --enable-chrome-runtime --user-data-dir=/home/ideck/.local/share/Steam/config/htmlcache --user-agent-product=Valve Steam Client --buildid=1792192922 --steamid=0 ",
+        "stat": "2620 (steamwebhelper) T 2552 2527 2527 0 -1 4194368 1996 0 7 0 1042 743 0 0 20 0 13 0 160441 1238335488 15772 18446744073709551615 187650437193728 187650447013632 281474721406208 0 0 0 0 16781314 65536 0 0 0 17 2 0 0 0 0 0 187650447020032 187650447449616 187651461455872 281474721409868 281474721410184 281474721410184 281474721411005 19\n"
+      },
+      "2625": {
+        "comm": "steamwebhelper",
+        "status": "Name:\tsteamwebhelper\nState:\tZ (zombie)\nTgid:\t2625\nNgid:\t0\nPid:\t2625\nPPid:\t2527\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t1000 \nNStgid:\t2625\nNSpid:\t2625\nNSpgid:\t2527\nNSsid:\t2527\nKthread:\t0\nThreads:\t1\nSigQ:\t8/6004\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000001001002\nSigCgt:\t0000000100000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tc\nCpus_allowed_list:\t2-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t12\nnonvoluntary_ctxt_switches:\t2134\n",
+        "argv": "",
+        "stat": "2625 (steamwebhelper) Z 2527 2527 2527 0 -1 4227084 4643 0 4 0 620 709 0 0 20 0 1 0 160757 0 0 18446744073709551615 0 0 0 0 0 0 0 16781314 0 1 0 0 17 3 0 0 0 0 0 0 0 0 0 0 0 0 0\n"
+      },
+      "2688": {
+        "comm": "steamwebhelper",
+        "status": "Name:\tsteamwebhelper\nState:\tZ (zombie)\nTgid:\t2688\nNgid:\t0\nPid:\t2688\nPPid:\t2576\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t1000 \nNStgid:\t2688\t4\t1\nNSpid:\t2688\t4\t1\nNSpgid:\t2527\t0\t0\nNSsid:\t2527\t0\t0\nKthread:\t0\nThreads:\t1\nSigQ:\t2/6004\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000001011002\nSigCgt:\t0000000140004a25\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tc\nCpus_allowed_list:\t2-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t12\nnonvoluntary_ctxt_switches:\t294\n",
+        "argv": "",
+        "stat": "2688 (steamwebhelper) Z 2576 2527 2527 0 -1 4227148 1082 0 0 0 119 72 0 0 20 0 1 0 164320 0 0 18446744073709551615 0 0 0 0 0 0 0 16846850 1073760805 1 0 0 17 2 0 0 0 0 0 0 0 0 0 0 0 0 0\n"
+      }
+    },
+    "wall_ns": 1792239103074254297
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "scope": "offline Steam regressions on task-owned ext4 image on E, not guest acceptance",
+  "image": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/review/steam-tests-ext4-v2.img",
+  "size": 1073741824,
+  "system_install": false,
+  "mkfs_exit": 0,
+  "tests_exit": 0,
+  "unmounted": true,
+  "seconds": 17.93632955799967
+}

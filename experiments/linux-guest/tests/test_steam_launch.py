@@ -82,7 +82,7 @@ exit "${FAKE_CLIENT_STATUS:-0}"
     def test_desktop_fixed_arguments_runtime_and_new_dbus(self):
         result = self.run_launcher("desktop")
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn("new-bus\nclient <-clientbeta> <steamdeck_publicbeta> <-cef-ozone-platform=x11> <-cef-disable-gpu> <-nobigpicture>\n", self.call_text())
+        self.assertIn("new-bus\nclient <-clientbeta> <steamdeck_publicbeta> <-cef-ozone-platform=x11> <-cef-disable-gpu> <-cef-force-sandbox> <-nobigpicture>\n", self.call_text())
         self.assertNotIn("-no-cef-sandbox", self.call_text())
         actual = (self.root / "client-env").read_text().splitlines()
         self.assertEqual(actual[:5], [str(self.home), ":0", str(self.runtime), str(self.runtime / "Xauthority"), "1"])
@@ -96,6 +96,7 @@ exit "${FAKE_CLIENT_STATUS:-0}"
         self.assertIn("bus-probe\nclient ", self.call_text())
         self.assertNotIn("new-bus", self.call_text())
         self.assertIn("<-gamepadui> <-steamdeck> <-steamos3>", self.call_text())
+        self.assertIn("<-cef-force-sandbox>", self.call_text())
         self.assertNotIn("nobigpicture", self.call_text())
 
     def test_broken_existing_dbus_gets_new_session(self):

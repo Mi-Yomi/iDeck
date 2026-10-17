@@ -1,0 +1,4 @@
+
+
+[2026-10-17 12:08:43] Client version: 1792192922
+[2026-10-17 12:08:43] Mapping AppID 0 to tool "proton_experimental" with priority 75

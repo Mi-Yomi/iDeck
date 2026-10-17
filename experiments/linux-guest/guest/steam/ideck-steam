@@ -75,7 +75,10 @@ fi
 
 # Match the current upstream X11/runtime route; keep Chromium's sandbox enabled.
 # CEF software UI rendering is a diagnostic choice, not game-performance evidence.
-set -- -clientbeta steamdeck_publicbeta -cef-ozone-platform=x11 -cef-disable-gpu
+# Valve's persistent .cef-initialize-sentinel otherwise silently disables the
+# sandbox after an interrupted initialization. This supported native argument
+# overrides that fallback; never remove user cache or enable a bypass instead.
+set -- -clientbeta steamdeck_publicbeta -cef-ozone-platform=x11 -cef-disable-gpu -cef-force-sandbox
 case "$mode" in
     desktop) set -- "$@" -nobigpicture;;
     big-picture) set -- "$@" -gamepadui -steamdeck -steamos3;;

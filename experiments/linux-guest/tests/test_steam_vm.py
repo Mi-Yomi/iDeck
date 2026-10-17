@@ -1,6 +1,8 @@
 """POSIX offline host-runner guards; fixtures never claim an actual VM boot."""
 import os
 import json
+import hashlib
+import importlib.util
 from pathlib import Path
 import sys
 import tempfile
@@ -18,6 +20,156 @@ else:
 
 @unittest.skipUnless(os.name == 'posix', 'POSIX host-runner guard; fcntl unavailable')
 class SteamHostGuards(unittest.TestCase):
+    def test_runner_source_and_hash_share_import_snapshot_after_source_edits(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root/'steam_vm_fixture.py'
+            original = Path(steam_vm.__file__).read_bytes()
+            source.write_bytes(original)
+            spec = importlib.util.spec_from_file_location('steam_vm_snapshot_fixture', source)
+            loaded = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(loaded)
+            source.write_bytes(b'# edited after import, before preparation\n')
+            output = root/'new-run'
+            def prepare(args, profile_path, profile, out, report, cleanup):
+                self.assertEqual(report['runner_sha256'], hashlib.sha256(original).hexdigest())
+                self.assertEqual((out/'runner-source.py').read_bytes(), original)
+                source.write_bytes(b'# edited again during long preparation\n')
+            with patch.object(loaded, 'ROOT', ROOT), \
+                 patch.object(loaded, '_boot', side_effect=prepare) as boot, \
+                 patch.object(loaded.subprocess, 'Popen', side_effect=AssertionError('no VM')):
+                loaded.boot(SimpleNamespace(output=output))
+            boot.assert_called_once()
+            saved = (output/'runner-source.py').read_bytes()
+            receipt = json.loads((output/'result.json').read_text())
+            self.assertEqual(saved, original)
+            self.assertNotEqual(saved, source.read_bytes())
+            self.assertEqual(receipt['runner_sha256'], hashlib.sha256(saved).hexdigest())
+
+    def clean_fsck_output(self, target):
+        # e2fsck prints this sanitized device name, not the original path.
+        printed_target = str(target).replace(' ', '_').replace(':', '_')
+        stdout = ('Pass 1: Checking inodes, blocks, and sizes\n'
+                  'Pass 2: Checking directory structure\n'
+                  'Pass 3: Checking directory connectivity\n'
+                  'Pass 4: Checking reference counts\n'
+                  'Pass 5: Checking group summary information\n'
+                  f'{printed_target}: 12/100 files (0.4% non-contiguous), 30/200 blocks\n')
+        return stdout, 'e2fsck 1.47.4 (6-Mar-2025)\n'
+
+    def test_fsck_accepts_only_complete_uneventful_check(self):
+        stdout, stderr = self.clean_fsck_output('/fixture.raw')
+        result = steam_vm.evaluate_offline_fsck(0, stdout, stderr, '/fixture.raw')
+        self.assertTrue(result['accepted'])
+        self.assertEqual(result['reason_codes'], [])
+        self.assertEqual(result['passes_and_summary'], [1, 2, 3, 4, 5, 'summary'])
+
+    def test_fsck_replays_actual_clean_and_declined_optimization_logs(self):
+        samples = [('steam-continuation-20261017/run6-offline-fsck.log', True),
+                   ('gui-local-20261017/build-volume-fsck.log', False)]
+        for relative, accepted in samples:
+            with self.subTest(relative=relative):
+                data = (ROOT/'evidence'/relative).read_text()
+                target = next(line.rsplit(': ', 1)[0] for line in data.splitlines()
+                              if ' files (' in line and line.endswith(' blocks'))
+                target = target.replace('Freddy_Fazbear', 'Freddy Fazbear')
+                result = steam_vm.evaluate_offline_fsck(0, data, '', target)
+                self.assertEqual(result['accepted'], accepted)
+
+    def test_fsck_matches_e2fsck_display_normalization_without_loosening_target(self):
+        target = '/fixture directory/disk:name.raw'
+        stdout, stderr = self.clean_fsck_output(target)
+        self.assertIn('/fixture_directory/disk_name.raw:', stdout)
+        self.assertTrue(steam_vm.evaluate_offline_fsck(0, stdout, stderr, target)['accepted'])
+        self.assertFalse(steam_vm.evaluate_offline_fsck(0, stdout, stderr, '/other.raw')['accepted'])
+
+    def test_fsck_zero_exit_cannot_hide_proposals_errors_or_unknown_output(self):
+        stdout, stderr = self.clean_fsck_output('/fixture.raw')
+        diagnostics = [
+            'Inode 419625 extent tree (at level 2) could be narrower.  Optimize? no',
+            'Deleted inode 370 has zero dtime.  Fix? no',
+            'Inode 1192 was part of the orphaned inode list.  IGNORED.',
+            '/fixture.raw: ********** WARNING: Filesystem still has errors **********',
+            '/fixture.raw: recovering journal',
+            'Warning: skipping journal recovery because doing a read-only filesystem check.',
+            '/fixture.raw: ***** FILE SYSTEM WAS MODIFIED *****',
+            'An unfamiliar future-tool diagnostic requires review',
+        ]
+        for diagnostic in diagnostics:
+            for stream in ('stdout', 'stderr'):
+                with self.subTest(diagnostic=diagnostic, stream=stream):
+                    out = stdout + (diagnostic+'\n' if stream == 'stdout' else '')
+                    err = stderr + (diagnostic+'\n' if stream == 'stderr' else '')
+                    result = steam_vm.evaluate_offline_fsck(0, out, err, '/fixture.raw')
+                    self.assertFalse(result['accepted'])
+                    self.assertIn('unapproved_output', result['reason_codes'])
+                    self.assertEqual(result['unexpected_lines'][0]['stream'], stream)
+
+    def test_fsck_rejects_incomplete_wrong_target_and_duplicate_evidence(self):
+        stdout, stderr = self.clean_fsck_output('/fixture.raw')
+        lines = stdout.splitlines(keepends=True)
+        cases = [('', ''), (stdout, ''), (''.join(lines[1:]), stderr),
+                 (''.join(lines[:-1]), stderr), (stdout+lines[-1], stderr),
+                 (lines[1]+lines[0]+''.join(lines[2:]), stderr),
+                 (stdout.replace('/fixture.raw:', '/other.raw:'), stderr),
+                 (stdout, stderr+stderr)]
+        for out, err in cases:
+            with self.subTest(stdout=out, stderr=err):
+                self.assertFalse(steam_vm.evaluate_offline_fsck(0, out, err, '/fixture.raw')['accepted'])
+
+    def test_fsck_rejects_nonzero_or_noninteger_exit_even_with_clean_text(self):
+        stdout, stderr = self.clean_fsck_output('/fixture.raw')
+        for code in (1, 2, 4, 8, 16, 32, 128, -9, None, False, 0.0, '0'):
+            with self.subTest(code=code):
+                result = steam_vm.evaluate_offline_fsck(code, stdout, stderr, '/fixture.raw')
+                self.assertFalse(result['accepted'])
+                self.assertIn('nonzero_or_invalid_exit', result['reason_codes'])
+
+    def test_fsck_exit_zero_with_proposal_preserves_copy_and_full_output(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            stdout, stderr = self.clean_fsck_output(root/'offline-fsck.raw')
+            stderr += 'Inode 419625 extent tree (at level 2) could be narrower.  Optimize? no\n'
+            def run(argv, **kwargs):
+                if argv[1] == 'info':
+                    return SimpleNamespace(stdout=json.dumps({'virtual-size': 1024}))
+                if argv[1] == 'convert':
+                    os.write(kwargs['pass_fds'][0], b'preserve rejected filesystem')
+                    return SimpleNamespace(returncode=0)
+                self.assertEqual(argv, ['/usr/sbin/e2fsck', '-f', '-n', str(root/'offline-fsck.raw')])
+                self.assertEqual(kwargs['env']['LC_ALL'], 'C')
+                return SimpleNamespace(returncode=0, stdout=stdout, stderr=stderr)
+            with patch.object(steam_vm.subprocess, 'run', side_effect=run), \
+                 patch.object(steam_vm.shutil, 'disk_usage', return_value=SimpleNamespace(free=8*1024**3)):
+                with self.assertRaisesRegex(RuntimeError, 'no repair or boot'):
+                    steam_vm.offline_fsck(root/'disk', root, ['qemu-img'], {'LC_ALL': 'non-C-fixture'})
+            self.assertEqual((root/'offline-fsck.raw').read_bytes(), b'preserve rejected filesystem')
+            self.assertEqual((root/'offline-fsck.stdout.log').read_text(), stdout)
+            self.assertEqual((root/'offline-fsck.stderr.log').read_text(), stderr)
+            self.assertEqual((root/'offline-fsck.log').read_text(), stdout+stderr)
+            receipt = json.loads((root/'offline-fsck.json').read_text())
+            self.assertEqual(receipt['exit_code'], 0)
+            self.assertEqual(receipt['status'], 'failed')
+            self.assertFalse(receipt['evaluation']['accepted'])
+
+    def test_fsck_removes_own_flattened_copy_only_after_strict_acceptance(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            stdout, stderr = self.clean_fsck_output(root/'offline-fsck.raw')
+            def run(argv, **kwargs):
+                if argv[1] == 'info':
+                    return SimpleNamespace(stdout=json.dumps({'virtual-size': 1024}))
+                if argv[1] == 'convert':
+                    os.write(kwargs['pass_fds'][0], b'checked filesystem')
+                    return SimpleNamespace(returncode=0)
+                return SimpleNamespace(returncode=0, stdout=stdout, stderr=stderr)
+            with patch.object(steam_vm.subprocess, 'run', side_effect=run), \
+                 patch.object(steam_vm.shutil, 'disk_usage', return_value=SimpleNamespace(free=8*1024**3)):
+                receipt = steam_vm.offline_fsck(root/'disk', root, ['qemu-img'], {})
+            self.assertEqual(receipt['status'], 'pass')
+            self.assertTrue(receipt['evaluation']['accepted'])
+            self.assertFalse((root/'offline-fsck.raw').exists())
+
     def test_fsync_or_marker_failure_cannot_later_become_clean(self):
         for phase in ('fsync', 'marker'):
             with self.subTest(phase=phase), tempfile.TemporaryDirectory() as temporary:

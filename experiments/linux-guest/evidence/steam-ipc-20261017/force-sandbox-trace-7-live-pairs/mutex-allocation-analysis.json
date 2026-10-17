@@ -1,0 +1,209 @@
+{
+  "mutex": {
+    "inode": 106,
+    "path": "/dev/shm/u1000-ValveIPCSharedObj-Steam",
+    "offset": 24,
+    "native_address": "0xffff4a25e018",
+    "browser_address": "0xffff9a4ed018",
+    "expected_values": {
+      "2147486195": "0x800009f3 = waiters bit | browser TID2547",
+      "2147485891": "0x800008c3 = waiters bit | native TID2243"
+    },
+    "wait_calls": [
+      {
+        "pid": 2547,
+        "timestamp": 1792239087.653673,
+        "line": 569,
+        "ip": "0000ffff9cc0bde8",
+        "call": "futex(0xffff9a4ed018, FUTEX_WAIT, 2147485891, {tv_sec=5, tv_nsec=0} <unfinished ...>",
+        "end_timestamp": 1792239087.716183,
+        "end_line": 584,
+        "result": "<... futex resumed>) = 0 <0.061041>"
+      },
+      {
+        "pid": 2547,
+        "timestamp": 1792239087.717543,
+        "line": 585,
+        "ip": "0000ffff9cc0bde8",
+        "call": "futex(0xffff9a4ed018, FUTEX_WAIT, 2147485891, {tv_sec=5, tv_nsec=0} <unfinished ...>",
+        "end_timestamp": 1792239087.720268,
+        "end_line": 587,
+        "result": "<... futex resumed>) = 0 <0.002326>"
+      },
+      {
+        "pid": 2243,
+        "timestamp": 1792239087.722329,
+        "line": 589,
+        "ip": "0000ffffbbd4bde8",
+        "call": "futex(0xffff4a25e018, FUTEX_WAIT, 2147486195, {tv_sec=5, tv_nsec=0} <unfinished ...>",
+        "end_timestamp": 1792239088.399003,
+        "end_line": 806,
+        "result": "<... futex resumed>) = 0 <0.675700>"
+      },
+      {
+        "pid": 2243,
+        "timestamp": 1792239088.406961,
+        "line": 810,
+        "ip": "0000ffffbbd4bde8",
+        "call": "futex(0xffff4a25e018, FUTEX_WAIT, 2147486195, {tv_sec=5, tv_nsec=0} <unfinished ...>",
+        "end_timestamp": 1792239088.425969,
+        "end_line": 823,
+        "result": "<... futex resumed>) = 0 <0.017991>"
+      },
+      {
+        "pid": 2243,
+        "timestamp": 1792239088.428625,
+        "line": 824,
+        "ip": "0000ffffbbd4bde8",
+        "call": "futex(0xffff4a25e018, FUTEX_WAIT, 2147486195, {tv_sec=5, tv_nsec=0} <unfinished ...>",
+        "end_timestamp": 1792239089.163121,
+        "end_line": 1033,
+        "result": "<... futex resumed>) = 0 <0.733170>"
+      },
+      {
+        "pid": 2243,
+        "timestamp": 1792239089.165011,
+        "line": 1034,
+        "ip": "0000ffffbbd4bde8",
+        "call": "futex(0xffff4a25e018, FUTEX_WAIT, 2147486195, {tv_sec=5, tv_nsec=0} <unfinished ...>",
+        "end_timestamp": 1792239089.17389,
+        "end_line": 1040,
+        "result": "<... futex resumed>) = 0 <0.008174>"
+      },
+      {
+        "pid": 2243,
+        "timestamp": 1792239089.176861,
+        "line": 1042,
+        "ip": "0000ffffbbd4bde8",
+        "call": "futex(0xffff4a25e018, FUTEX_WAIT, 2147486195, {tv_sec=5, tv_nsec=0} <unfinished ...>",
+        "end_timestamp": 1792239089.75185,
+        "end_line": 1207,
+        "result": "<... futex resumed>) = 0 <0.573488>"
+      },
+      {
+        "pid": 2243,
+        "timestamp": 1792239089.753572,
+        "line": 1208,
+        "ip": "0000ffffbbd4bde8",
+        "call": "futex(0xffff4a25e018, FUTEX_WAIT, 2147486195, {tv_sec=5, tv_nsec=0} <unfinished ...>",
+        "end_timestamp": 1792239089.76405,
+        "end_line": 1216,
+        "result": "<... futex resumed>) = 0 <0.009985>"
+      },
+      {
+        "pid": 2547,
+        "timestamp": 1792239089.766962,
+        "line": 1218,
+        "ip": "0000ffff9cc0bde8",
+        "call": "futex(0xffff9a4ed018, FUTEX_WAIT, 2147485891, {tv_sec=5, tv_nsec=0} <unfinished ...>",
+        "end_timestamp": 1792239090.294867,
+        "end_line": 1401,
+        "result": "<... futex resumed>) = 0 <0.526999>"
+      },
+      {
+        "pid": 2547,
+        "timestamp": 1792239090.29775,
+        "line": 1403,
+        "ip": "0000ffff9cc0bde8",
+        "call": "futex(0xffff9a4ed018, FUTEX_WAIT, 2147485891, {tv_sec=5, tv_nsec=0} <unfinished ...>",
+        "end_timestamp": 1792239090.308061,
+        "end_line": 1408,
+        "result": "<... futex resumed>) = 0 <0.009953>"
+      },
+      {
+        "pid": 2547,
+        "timestamp": 1792239090.310298,
+        "line": 1410,
+        "ip": "0000ffff9cc0bde8",
+        "call": "futex(0xffff9a4ed018, FUTEX_WAIT, 2147485891, {tv_sec=5, tv_nsec=0} <unfinished ...>",
+        "end_timestamp": 1792239090.863148,
+        "end_line": 1567,
+        "result": "<... futex resumed>) = 0 <0.550171>"
+      },
+      {
+        "pid": 2547,
+        "timestamp": 1792239090.864183,
+        "line": 1568,
+        "ip": "0000ffff9cc0bde8",
+        "call": "futex(0xffff9a4ed018, FUTEX_WAIT, 2147485891, {tv_sec=5, tv_nsec=0} <unfinished ...>",
+        "end_timestamp": 1792239090.868969,
+        "end_line": 1570,
+        "result": "<... futex resumed>) = 0 <0.003850>"
+      },
+      {
+        "pid": 2243,
+        "timestamp": 1792239090.872285,
+        "line": 1571,
+        "ip": "0000ffffbbd4bde8",
+        "call": "futex(0xffff4a25e018, FUTEX_WAIT, 2147486195, {tv_sec=5, tv_nsec=0} <unfinished ...>",
+        "end_timestamp": 1792239091.309151,
+        "end_line": 1758,
+        "result": "<... futex resumed>) = 0 <0.435846>"
+      },
+      {
+        "pid": 2243,
+        "timestamp": 1792239091.314023,
+        "line": 1759,
+        "ip": "0000ffffbbd4bde8",
+        "call": "futex(0xffff4a25e018, FUTEX_WAIT, 2147486195, {tv_sec=5, tv_nsec=0} <unfinished ...>",
+        "end_timestamp": 1792239091.325163,
+        "end_line": 1765,
+        "result": "<... futex resumed>) = 0 <0.010366>"
+      },
+      {
+        "pid": 2547,
+        "timestamp": 1792239092.11682,
+        "line": 2014,
+        "ip": "0000ffff9cc0bde8",
+        "call": "futex(0xffff9a4ed018, FUTEX_WAIT, 2147485891, {tv_sec=5, tv_nsec=0} <unfinished ...>",
+        "end_timestamp": 1792239092.2218,
+        "end_line": 2036,
+        "result": "<... futex resumed>) = 0 <0.104000>"
+      },
+      {
+        "pid": 2547,
+        "timestamp": 1792239092.225937,
+        "line": 2038,
+        "ip": "0000ffff9cc0bde8",
+        "call": "futex(0xffff9a4ed018, FUTEX_WAIT, 2147485891, {tv_sec=5, tv_nsec=0} <unfinished ...>",
+        "end_timestamp": 1792239092.246723,
+        "end_line": 2054,
+        "result": "<... futex resumed>) = 0 <0.019748>"
+      },
+      {
+        "pid": 2243,
+        "timestamp": 1792239098.402309,
+        "line": 3630,
+        "ip": "0000ffffbbd4bde8",
+        "call": "futex(0xffff4a25e018, FUTEX_WAIT, 2147486522, {tv_sec=5, tv_nsec=0}) = -1 EAGAIN (Resource temporarily unavailable) <0.002267>",
+        "result": "futex(0xffff4a25e018, FUTEX_WAIT, 2147486522, {tv_sec=5, tv_nsec=0}) = -1 EAGAIN (Resource temporarily unavailable) <0.002267>"
+      }
+    ],
+    "count": 17,
+    "timed_out": 0
+  },
+  "large_allocation": {
+    "pid": 2547,
+    "timestamp": 1792239091.355822,
+    "line": 1790,
+    "ip": "0000ffff9cc09f00",
+    "call": "mmap(NULL, 26214416, PROT_READ|PROT_WRITE, MAP_SHARED, 60, 0 <unfinished ...>",
+    "end_timestamp": 1792239091.357163,
+    "end_line": 1792,
+    "result": "<... mmap resumed>) = 0xffff0d1e2000 <0.001044>"
+  },
+  "same_thread_next_syscall": {
+    "pid": 2547,
+    "timestamp": 1792239092.110252,
+    "line": 2010,
+    "ip": "0000ffff9cc0bde8",
+    "call": "futex(0xffff9a4f43a8, FUTEX_WAKE, 1 <unfinished ...>",
+    "end_timestamp": 1792239092.113309,
+    "end_line": 2012,
+    "result": "<... futex resumed>) = 0 <0.002242>"
+  },
+  "gap_seconds": 0.753089,
+  "gap_is_not_exact_memset_duration": true,
+  "literal_500ms_waits": 0,
+  "root_cause_proven": false
+}

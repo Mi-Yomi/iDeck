@@ -9,7 +9,7 @@
     "ios/LinuxProbeView.swift": "bf62258b490f7d1322f10670b53809caef1e650d003591a7300853a98ba243eb",
     "tools/stage_bundle.py": "267a95eb31f50dba82a8f75547925a60533faebb53e3198cdeea83703cd77c83",
     "tools/stage_husk.py": "f211a73db58c51b30750d4c478ab277cd24109c62962172939a8df3816b73d2d",
-    "husk/patches/series": "6147087af1e2c4869cfb07a83ccb1d467196f48590ee70a8dd2dee0444282b56",
+    "husk/patches/series": "4d1d046a5966d9ac17604d02f8ca585f95493938de2c9682a97b03e771833df7",
     "husk/patches/0001-isolated-linux-probe-route.patch": "d037311ec48784fa03c3191cbb19c60b9c811c8f01c7e119dbebaca054d2c8cf",
     "tools/typecheck_source.py": "5a5418cb654db1ae704142b8e75a99870fb01cb1bfa72e9469f98ddda1e3d360",
     "husk/source-check.lock.json": "44db4e8620229cd07dbf302312eda0ff86d358284d0ebe9b96b89ca85fe2457d",
@@ -17,7 +17,7 @@
     "husk/patches/0002-jit-setup-routing.patch": "a93a4af2b82418280c14c1b7e7ec64c8e6f2395602987dc59b95a1c841ed3ec4",
     "ios/LinuxProbeReport.swift": "687626123c57ce77f2d75bd79c54302dea34902a93d1623055462babb30b2cd0",
     "ios/LinuxTerminalProfile.swift": "04d488d0052ab0f1fc3fbf9e3976aa72fb722e492f535ff7dd5f1e6a18149bc7",
-    "ios/LinuxTerminalSession.swift": "82d9387f475ea4602fb9e13f2e8bfeb4742a0dfcf6845fe0e385125422b526d1",
+    "ios/LinuxTerminalSession.swift": "9ecd9e6e5fdafee8c9c55ec4bdc46c7a152735e29e1182079776ec1f3c173b12",
     "ios/LinuxTerminalView.swift": "32cb24c27024f26628caa7d7fbe1b17532cc0f271dad8c91e49d587301bd733c",
     "tools/terminal_bundle.py": "c1c696498690085c6ddd4dc1eaf06dc4afa51b4dea738d883f498194cbbdef61",
     "ipa/terminal.lock.json": "e39514b53a2ae33de96b300b2578c760fb95b2b2685bb7a99502f0f2d0c6a98e",
@@ -30,7 +30,9 @@
     "ios/LinuxDebianProfile.swift": "6b1486e22819220aea29830a31fcec25bb6b31fd1fcacf52ca7c4fd2c3185912",
     "ios/LinuxConsoleLifecycle.swift": "a87b2dc2db56a72c97091b848fb23d883f8f6c0fe1284004090fb4e73a831d8d",
     "tools/debian_bundle.py": "e1bb0b89a87c4f95b3169c6f2772c37a515d5e6873c2db00e1d9a541e702a450",
-    "ipa/debian.lock.json": "45f3985e5ca35e95849f56a658811601b923168abc714bbdadaa329d81e1e9bd"
+    "ipa/debian.lock.json": "45f3985e5ca35e95849f56a658811601b923168abc714bbdadaa329d81e1e9bd",
+    "ios/LinuxDisplayPointer.swift": "7d3e5886f263bc7295b76c251c491d49befc7ba5fb13682d00ce31c18f993d59",
+    "husk/patches/0003-paired-display-pointer-release.patch": "503b4d827269616eddb3ac8a950c41ebfabb3ce4c52eed36e300ae8238c3890d"
   },
   "copies": {
     "ios/LinuxGuestProfile.swift": "src/app/Husk/LinuxGuestProfile.swift",
@@ -50,13 +52,15 @@
     "ios/LinuxDebianProfile.swift": "src/app/Husk/LinuxDebianProfile.swift",
     "ios/LinuxConsoleLifecycle.swift": "src/app/Husk/LinuxConsoleLifecycle.swift",
     "tools/debian_bundle.py": "scripts/ideck-stage-debian.py",
-    "ipa/debian.lock.json": "scripts/ideck-debian.lock.json"
+    "ipa/debian.lock.json": "scripts/ideck-debian.lock.json",
+    "ios/LinuxDisplayPointer.swift": "src/app/Husk/LinuxDisplayPointer.swift"
   },
   "patched_files": {
     "src/app/Husk/HuskApp.swift": "18ff389fa29628fd1d4eb168a18a3b12f6b8c75caf6804651699e926b1ab9e31",
     "src/app/project.yml": "9d7609c60bc137099456daa2ae92b9bd6a709c4218495666dc393312ba27997c",
     "src/app/Husk/JITBootstrap.swift": "e62daeeca0c95d9ae955a62c7d7885f7f4b36b34538c22d50bee4b67605cbb34",
     "src/app/Husk/JITSetup.swift": "e4963dea166bf5c5481c220330443c08fcc7a96a3a57fbc240e42884b8b5765d",
-    "src/app/Husk/JITSetupView.swift": "9b451834edaa1840dd6c2bfe2f56b10443111cd30b914d97cb4d8b934dac602d"
+    "src/app/Husk/JITSetupView.swift": "9b451834edaa1840dd6c2bfe2f56b10443111cd30b914d97cb4d8b934dac602d",
+    "src/app/Husk/HuskMetalView.swift": "69be9035829088b26608af3ae022fb2b6f7630731cf0b9715fb1fb7c908db8cf"
   }
 }

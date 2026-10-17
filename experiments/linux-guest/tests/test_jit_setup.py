@@ -51,7 +51,8 @@ class JITSetupSourceGuards(unittest.TestCase):
         patch = "husk/patches/0002-jit-setup-routing.patch"
         self.assertIn(patch, self.lock["inputs"])
         series = (stage_husk.ROOT / "husk/patches/series").read_text().splitlines()
-        self.assertEqual(series, ["0001-isolated-linux-probe-route.patch", "0002-jit-setup-routing.patch"])
+        self.assertEqual(series, ["0001-isolated-linux-probe-route.patch", "0002-jit-setup-routing.patch",
+                                  "0003-paired-display-pointer-release.patch"])
         self.assertEqual(hashlib.sha256((stage_husk.ROOT / patch).read_bytes()).hexdigest(), self.lock["inputs"][patch])
         for name in self.original:
             relative = "src/app/Husk/" + name

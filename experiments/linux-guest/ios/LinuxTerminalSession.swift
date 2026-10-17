@@ -232,6 +232,7 @@ final class LinuxTerminalSession: ObservableObject {
     func stop() {
         precondition(Thread.isMainThread)
         guard canStop, !stopping else { return }
+        NotificationCenter.default.post(name: Notification.Name("iDeck.releaseDisplayInput"), object: nil)
         stopping = true
         canStop = false
         ready = false

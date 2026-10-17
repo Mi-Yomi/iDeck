@@ -1,0 +1,77 @@
+--- a/src/app/Husk/HuskMetalView.swift
++++ b/src/app/Husk/HuskMetalView.swift
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ import MetalKit
++import UIKit
+ import SwiftUI
+ import os
+ 
+@@ -17,6 +18,8 @@
+     private var lastSequence: UInt64 = .max
+ 
+     /// Guest surface size, for mapping touches back into guest coordinates.
++    private var pointer = LinuxDisplayPointer()
++
+     private var guestWidth: Int32 = 0
+     private var guestHeight: Int32 = 0
+ 
+@@ -33,6 +36,22 @@
+         self.delegate = self
+         self.clearColor = MTLClearColorMake(0, 0, 0, 1)
+         buildPipeline()
++        for name in [UIApplication.willResignActiveNotification,
++                     UIApplication.didEnterBackgroundNotification,
++                     Notification.Name("iDeck.releaseDisplayInput")] {
++            NotificationCenter.default.addObserver(self, selector: #selector(releasePointer), name: name, object: nil)
++        }
++    }
++
++    deinit { NotificationCenter.default.removeObserver(self) }
++
++    override func didMoveToWindow() {
++        super.didMoveToWindow()
++        if window == nil { releasePointer() }
++    }
++
++    @objc private func releasePointer() {
++        if let event = pointer.release() { husk_display_send_pointer(event.x, event.y, event.down) }
+     }
+ 
+     private func buildPipeline() {
+@@ -75,27 +94,28 @@
+         return (Int32(gx), Int32(gy))
+     }
+ 
+-    private func send(_ touch: UITouch, down: Bool) {
++    private func send(_ touch: UITouch, began: Bool) {
+         guard let (x, y) = guestPoint(from: touch.location(in: self)) else { return }
+-        husk_display_send_pointer(x, y, down)
++        let event = began ? pointer.press(x: x, y: y) : pointer.move(x: x, y: y)
++        if let event { husk_display_send_pointer(event.x, event.y, event.down) }
+     }
+ 
+     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+-        if let t = touches.first { send(t, down: true) }
++        if let t = touches.first { send(t, began: true) }
+     }
+     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+-        if let t = touches.first { send(t, down: true) }
++        if let t = touches.first { send(t, began: false) }
+     }
+     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+-        if let t = touches.first { send(t, down: false) }
++        releasePointer()
+     }
+     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+-        if let t = touches.first { send(t, down: false) }
++        releasePointer()
+     }
+ }
+ 
+ extension HuskMetalView: MTKViewDelegate {
+-    func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {}
++    func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) { releasePointer() }
+ 
+     func draw(in view: MTKView) {
+         guard let device,

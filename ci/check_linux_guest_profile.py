@@ -63,11 +63,13 @@ def main():
         debian = source.parent / "LinuxDebianProfile.swift"
         lifecycle = source.parent / "LinuxConsoleLifecycle.swift"
         lifecycle_tests = source.parent / "tests/ConsoleLifecycleChecks.swift"
+        pointer = source.parent / "LinuxDisplayPointer.swift"
+        pointer_tests = source.parent / "tests/DisplayPointerChecks.swift"
         native = [source.parent / name for name in ("LinuxProbeSession.swift", "LinuxProbeView.swift",
                                                     "LinuxTerminalSession.swift", "LinuxTerminalView.swift")]
         report["source_sha256"] = hashlib.sha256(source.read_bytes()).hexdigest()
         report["input_sha256"] = {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
-                                  for p in [source, evidence, markdown, markdown_tests, terminal, terminal_tests, diagnostics, diagnostics_tests, desktop, desktop_disk, desktop_tests, desktop_profile_tests, debian, lifecycle, lifecycle_tests, *native]}
+                                  for p in [source, evidence, markdown, markdown_tests, terminal, terminal_tests, diagnostics, diagnostics_tests, desktop, desktop_disk, desktop_tests, desktop_profile_tests, debian, lifecycle, lifecycle_tests, pointer, pointer_tests, *native]}
         run("ios-typecheck", ["xcrun", "swiftc", "-typecheck", "-sdk", sdk, "-target", "arm64-apple-ios16.0",
                               str(source), str(evidence), str(markdown), str(terminal), str(diagnostics), str(desktop), str(desktop_disk), str(debian), str(lifecycle)])
         # Syntax-only for the Husk-integrated sources. No fake JIT/QEMU/UI types
@@ -79,12 +81,12 @@ def main():
         run("mac-compile", ["xcrun", "swiftc", "-sdk", macsdk, str(source), str(evidence), str(markdown), str(markdown_tests),
                             str(terminal), str(terminal_tests), str(diagnostics), str(diagnostics_tests),
                             str(desktop), str(desktop_disk), str(desktop_tests), str(desktop_profile_tests),
-                            str(debian), str(lifecycle), str(lifecycle_tests),
+                            str(debian), str(lifecycle), str(lifecycle_tests), str(pointer), str(pointer_tests),
                             str(source.parent / "tests/main.swift"), "-o", str(executable)])
         report["host_test_output"] = run("mac-tests", [str(executable), str(out / "fixtures"),
             str(ROOT / "experiments/linux-guest/evidence/guest-serial.log")])
         required = ("LINUX_CONSOLE_RUNTIME_REGRESSION_PASS", "LINUX_DESKTOP_DISK_CHECKS_PASS", "LINUX_DESKTOP_PROFILE_CHECKS_PASS",
-                    "LINUX_QEMU_OWNER_LIFETIME_PASS")
+                    "LINUX_QEMU_OWNER_LIFETIME_PASS", "LINUX_DISPLAY_POINTER_PASS")
         if not all(marker in report["host_test_output"] for marker in required):
             raise RuntimeError("Mandatory Swift runtime/storage regression did not complete")
         report["swift_runtime_regression"] = "PASS"

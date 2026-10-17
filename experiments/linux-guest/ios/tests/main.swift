@@ -120,3 +120,5 @@ let desktopGolden = URL(fileURLWithPath: "experiments/linux-guest/ios/tests/fixt
 try runDesktopDiskChecks(fixture: desktopGolden) { try runConsoleHostSyncFailureCheck(disk: $0) }
 try runDesktopProfileChecks(fixture: desktopGolden)
 try runConsoleLifecycleChecks()
+
+runDisplayPointerChecks()

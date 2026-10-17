@@ -477,32 +477,36 @@ private final class LinuxTerminalWorker {
                 let desktop = self.owner.isDebian && !self.owner.isDesktop ? (try LinuxDesktopProfile.load(from: assets)) : nil
                 try self.diagnostic.record(.assetsReturned)
                 try self.diagnostic.record(.diskBegin)
-                var preparedMetadata: [String: Any]
-                if let gui, self.isRecovery {
-                    try self.prepareRecovery(gui)
-                } else if let gui {
-                    if try LinuxGUIRecovery.promotePending(directory: self.dataDirectory, specification: gui.image, toolSeedSHA256: gui.rootfs.sha256) {
-                        self.report["recovery_phase"] = "promoted"
-                    }
+                // Each successful profile path supplies complete metadata.
+                // GUI recovery and desktop share the same validated contract.
+                let preparedMetadata: [String: Any]
+                if let gui {
                     self.report["debian_seed_sha256"] = gui.rootfs.sha256
                     self.report["terminal_initramfs_sha256"] = gui.initramfs.sha256
-                    let path = self.dataDirectory.appendingPathComponent("rootfs-v1.raw")
-                    var state = stat()
-                    if lstat(path.path, &state) == 0 {
-                        self.report["import_status"] = "existing_disk_preserved"; self.persist()
-                        do { self.disk = try gui.openExisting(in: self.dataDirectory, observe: self.observeSuperblock) }
-                        catch LinuxDesktopDisk.Invalid.needsRecovery {
-                            // Original boot gate refused BEFORE native entry.
-                            // Use this process's ONE VM for a clone-only repair;
-                            // desktop activation is deferred to a fresh process.
-                            self.report["storage_failure"] = "needsRecovery"
-                            try self.prepareRecovery(gui)
-                        }
+                    if self.isRecovery {
+                        try self.prepareRecovery(gui)
                     } else {
-                        guard errno == ENOENT else { throw LinuxDesktopDisk.Invalid.inspection }
-                        self.report["import_status"] = "copying_seed"; self.persist()
-                        self.disk = try gui.provision(in: self.dataDirectory, assets: assets)
-                        self.report["import_status"] = "seed_hash_verified_and_published"; self.persist()
+                        if try LinuxGUIRecovery.promotePending(directory: self.dataDirectory, specification: gui.image, toolSeedSHA256: gui.rootfs.sha256) {
+                            self.report["recovery_phase"] = "promoted"
+                        }
+                        let path = self.dataDirectory.appendingPathComponent("rootfs-v1.raw")
+                        var state = stat()
+                        if lstat(path.path, &state) == 0 {
+                            self.report["import_status"] = "existing_disk_preserved"; self.persist()
+                            do { self.disk = try gui.openExisting(in: self.dataDirectory, observe: self.observeSuperblock) }
+                            catch LinuxDesktopDisk.Invalid.needsRecovery {
+                                // Original boot gate refused BEFORE native entry.
+                                // Use this process's ONE VM for a clone-only repair;
+                                // desktop activation is deferred to a fresh process.
+                                self.report["storage_failure"] = "needsRecovery"
+                                try self.prepareRecovery(gui)
+                            }
+                        } else {
+                            guard errno == ENOENT else { throw LinuxDesktopDisk.Invalid.inspection }
+                            self.report["import_status"] = "copying_seed"; self.persist()
+                            self.disk = try gui.provision(in: self.dataDirectory, assets: assets)
+                            self.report["import_status"] = "seed_hash_verified_and_published"; self.persist()
+                        }
                     }
                     preparedMetadata = ["profile_cpu": "cortex-a72", "profile_memory_mib": 1024, "profile_vcpus": 4,
                         "profile_width": 800, "profile_height": 600, "requested_tcg_mib": 256,

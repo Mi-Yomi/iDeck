@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "evidence_kind": "parent-reported CI result; raw log not fetched by this executor",
+  "source_sha": "37869aad24b865978cb1f5c9c149dc7e58632359",
+  "build_url": "https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad3636d7550aed8108f8e6c",
+  "overall_status": "failed",
+  "failed_stage": "app-build/xcodebuild",
+  "first_compiler_error": {
+    "file": "LinuxTerminalSession.swift",
+    "line": 569,
+    "column": 35,
+    "message": "variable 'preparedMetadata' used before being initialized"
+  },
+  "parent_reported_pass": [
+    "LINUX_GUI_RECOVERY_PASS (actual IO/process locks/interrupted rename; synthetic bodies)",
+    "LINUX_STARTUP_FAILURE_PASS",
+    "Markdown report checks:201 assertions",
+    "native dependencies"
+  ],
+  "ipa_created": false,
+  "device_recovery_verified": false,
+  "ci_dispatched_by_this_executor": false,
+  "fix_app_build": "NOT RUN; parent coordinates one new CI after fresh gates"
+}

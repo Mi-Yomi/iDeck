@@ -18,6 +18,28 @@ from test_terminal import swift_block
 
 
 class GUIRecovery(unittest.TestCase):
+    def test_recovery_and_normal_gui_share_complete_definitely_initialized_metadata(self):
+        source=(ROOT/'ios/LinuxTerminalSession.swift').read_text()
+        worker=source.split('private final class LinuxTerminalWorker {',1)[1]
+        start=swift_block(worker,'    func start()')
+        self.assertIn('let preparedMetadata: [String: Any]',start)
+        self.assertNotIn('if let gui, self.isRecovery',start)
+        gui=swift_block(start,'if let gui {')
+        mode=swift_block(gui,'if self.isRecovery {')
+        self.assertIn('try self.prepareRecovery(gui)',mode)
+        self.assertNotIn('preparedMetadata =',mode)
+        self.assertEqual(gui.count('preparedMetadata ='),1)
+        metadata=gui[gui.index('preparedMetadata ='):]
+        for field in ['profile_cpu','profile_memory_mib','profile_vcpus','profile_width','profile_height',
+                      'requested_tcg_mib','userdata_size_bytes','userdata_filesystem','debian_seed_sha256',
+                      'terminal_initramfs_sha256','desktop_software_rendering']:
+            self.assertIn('"'+field+'"',metadata)
+        self.assertIn('gui.image.sizeBytes',metadata)
+        self.assertIn('gui.rootfs.sha256',metadata)
+        self.assertIn('gui.initramfs.sha256',metadata)
+        self.assertNotIn('preparedMetadata = [:]',start)
+        self.assertIn('else { throw LinuxTerminalProfile.Invalid.configuration }',start)
+
     def test_generated_native_suffix_is_exact_deterministic_reviewed_cpio(self):
         script = recovery_guest.SCRIPT.read_bytes()
         suffix = recovery_guest.suffix(script)

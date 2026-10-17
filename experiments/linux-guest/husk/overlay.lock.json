@@ -17,7 +17,7 @@
     "husk/patches/0002-jit-setup-routing.patch": "a93a4af2b82418280c14c1b7e7ec64c8e6f2395602987dc59b95a1c841ed3ec4",
     "ios/LinuxProbeReport.swift": "403d3c9e26f09aa45431f88f55b67f402e5a2be101dcd251fba245c29c0c1cdc",
     "ios/LinuxTerminalProfile.swift": "04d488d0052ab0f1fc3fbf9e3976aa72fb722e492f535ff7dd5f1e6a18149bc7",
-    "ios/LinuxTerminalSession.swift": "685090e8d93c58e88d96e6aab12ad142f974b743b73a8263e4d8a6b1ff47da50",
+    "ios/LinuxTerminalSession.swift": "7b629d051ab886d13e08a3ff51f046b2a71499d459fa5ddc8cd0705f68003a92",
     "ios/LinuxTerminalView.swift": "32cb24c27024f26628caa7d7fbe1b17532cc0f271dad8c91e49d587301bd733c",
     "tools/terminal_bundle.py": "c1c696498690085c6ddd4dc1eaf06dc4afa51b4dea738d883f498194cbbdef61",
     "ipa/terminal.lock.json": "e39514b53a2ae33de96b300b2578c760fb95b2b2685bb7a99502f0f2d0c6a98e",

@@ -2,12 +2,12 @@
   "schema": 1,
   "status": "source_and_old_seed_digest_bound_host_pass_current_production_blocked",
   "python_tests": {
-    "total": 316,
-    "passed": 311,
+    "total": 317,
+    "passed": 312,
     "skipped": 5,
     "failures": 0,
     "errors": 0,
-    "log_sha256": "55f539247225c050e997350bd16f8ebd9df6c0556163fcd01a5558c93a2b99a7"
+    "log_sha256": "72f2107a8c25c10398e07a225e8f29b96423faf9cbcb3fd2da52a2dd2ca0c1d9"
   },
   "offline_husk_overlay": {
     "status": "pass",
@@ -18,10 +18,8 @@
     "added_swift_sources": 21
   },
   "not_run": [
-    "Swift runtime/IO tests",
-    "Apple/UIKit compiler/layout",
-    "native link/new IPA",
-    "iPhone recovery",
+    "new fixed LinuxTerminalSession full Apple app-build/link/IPA",
+    "UIKit layout and iPhone recovery",
     "current production seed9c4d VM acceptance"
   ],
   "forcekill_gate": "PASS for OLD46fea only: TWO nonce/status-verified SIGKILL/recovery/GUI-relaunch cycles; final guest full-image digest matches host work BEFORE activation; saved files; final Stop exit+strict output gate. Production9c4d unavailable.",
@@ -33,19 +31,12 @@
   "ci_dispatched": false,
   "native_general_preen_or_destructive_repair": false,
   "remaining_blockers": [
-    "Production9c4d unavailable: Release proxy Tunnel403Forbidden; supported Library materialize helper failed twice (ONE refreshed transfer), exit1: library file transfer failed: download failed",
-    "Apple Swift compiler/runtime/IO and full native app gates",
+    "Current production9c4d assets unavailable (recorded Release/Library/direct task failures)",
+    "Fresh parent-coordinated Apple app-build for definite-initialization fix; previous37869aad failed, no IPA",
     "Owner/device recovery acceptance; owner image unavailable"
   ],
   "scoped_kernel_mount": "Only validated summary-counter class on work copy; every fsck unmounted; all non-primary bytes SHA256-identical and primary-byte whitelist enforced; no app/file access or general repair",
   "checked_image_digest_binding": "Trusted immutable guest tools, after strict full scan and sync, unmounted block-device RO; exact1342177280-byte stream/pipefail; ordered IMAGE_SHA256 control receipt; fresh process full file comparison required; legacy nil rejected; no new baseline at promotion",
-  "native_regressions_not_run": [
-    "fresh child rejects non-superblock byte mutation after verified receipt",
-    "fresh child rejects missing checked digest",
-    "before/after rename interruption idempotence with checked digest",
-    "65s recovery avoids desktop timeout; stalled hashing/supervisor and absolute deadline expire",
-    "recovery progress messages never promise desktop-ready or reopen before shutdown+fsync"
-  ],
   "recovery_watchdog": {
     "supervisor_seconds": 60,
     "inactivity_seconds": 90,
@@ -53,8 +44,17 @@
     "shutdown_seconds": 30,
     "clock": "ProcessInfo.systemUptime, separate from desktop ready",
     "failure": "latched worker+lifecycle failure, typed journal/report reason, no promotion, no forced teardown/unlock",
-    "native_fake_clock_tests": "WIRED mandatory Apple gate; NOT RUN here",
+    "native_fake_clock_tests": "Parent reports LINUX_GUI_RECOVERY_PASS at37869aad; unchanged helpers include fake-clock assertions. Full app-build failed; fix app-build pending.",
     "host_guest_inputs_unchanged": true,
     "new_vm_or_device_execution": false
-  }
+  },
+  "apple_ci_parent_report": "apple-ci-37869aa-parent-report.json",
+  "native_regressions_parent_reported_pass_at_37869aa": [
+    "fresh child rejects non-superblock byte mutation after verified receipt",
+    "fresh child rejects missing checked digest",
+    "before/after rename interruption idempotence with checked digest",
+    "65s recovery avoids desktop timeout; stalled hashing/supervisor and absolute deadline expire",
+    "recovery progress messages never promise desktop-ready or reopen before shutdown+fsync"
+  ],
+  "metadata_initialization_fix": "Single outer GUI branch; let preparedMetadata receives full GUI contract after explicit recovery OR normal/fallback preparation; all other supported branches assign, invalid configuration throws; no empty default."
 }

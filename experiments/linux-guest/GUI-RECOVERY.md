@@ -7,7 +7,12 @@ to the exact host work before activation:
 [digest receipt](evidence/gui-recovery-20261017/digest-receipt.json).
 Recovery65.08/63.53s, sampled host VmHWM1254961152/1253941248bytes with unchanged
 1024MiB guest/4CPU/256MiB TCG. These are host samples, not iOS memory proof.
-**Current production9c4d, Apple/native execution and iPhone recovery are not verified.**
+**Current production9c4d, full app-build/new IPA and iPhone recovery remain pending.**
+Parent reports actual Swift recovery IO/process/rename tests, startup-failure checks
+and201 Markdown assertions PASS in CI37869aad. That build FAILED at app-build:
+preparedMetadata was uninitialized on explicit recovery. The complete GUI metadata
+assignment now follows both preparation paths; a fresh Apple build is still needed.
+[Recorded CI result](evidence/gui-recovery-20261017/apple-ci-37869aa-parent-report.json).
 The confirmed Release request failed at the proxy: `Tunnel connection failed: 403
 Forbidden`. The supported Library route also resolved the423782833-byte IPA but
 the unchanged official materialize helper failed twice (one refreshed transfer):
@@ -38,8 +43,9 @@ DONE starts the existing30second shutdown watchdog. A timeout latches failure,
 records supervisor/progress/deadline in diagnostics and prevents promotion from
 that attempt; original/backup and native locks remain preserved. It performs no
 forced native teardown. Normal desktop/console startup remains60seconds.
-The mandatory Swift fake-clock regressions are wired but NOT RUN here (no Apple
-compiler/runtime). The existing old46fea VM receipt covers unchanged guest inputs,
+Parent reports the unchanged Swift recovery helper PASS at37869aad; its mandatory
+fake-clock assertions are included. The full app-build failed there as recorded
+above, so the new compiler fix and device controller still need Apple validation. The existing old46fea VM receipt covers unchanged guest inputs,
 not execution of this native timer/controller change.
 
 Recovery attaches ONLY the work copy and the immutable bundled seed. The latter
@@ -143,6 +149,7 @@ Then parent reviews/runs the coordinated Apple gate: real Swift IO/lock/low-spac
 partial-copy/receipt and fresh-child before/after-rename tests, mutation outside
 the superblock between verified receipt and promotion, missing-digest rejection,
 full Husk typecheck,
-new IPA and owner device checks. These are NOT RUN here. The owner's original
+new IPA and owner device checks. Swift helpers passed in the parent-reported
+37869aad CI; full app-build failed. The compiler fix/new IPA/device remain pending. The owner's original
 image was not available/accessed/restored. Exact current9c4d acceptance remains
 blocked on [the recorded asset request](evidence/gui-recovery-20261017/current-asset-attempt.json).

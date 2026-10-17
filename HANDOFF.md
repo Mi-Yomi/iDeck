@@ -1,5 +1,31 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Apple compiler follow-up: GUI metadata initialization — 2026-10-17
+
+Parent reports CI37869aad FAILED in app-build/xcodebuild:
+[build6ad3636d7550aed8108f8e6c](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad3636d7550aed8108f8e6c).
+First real compiler error: LinuxTerminalSession.swift:569:35, variable
+preparedMetadata used before initialization. The explicit GUI recovery branch
+called prepareRecovery without assigning the later merged metadata. Recovery and
+normal GUI now share ONE outer GUI branch and the complete profile-derived
+metadata assignment AFTER either preparation path. The binding is let, all other
+successful profile paths still assign it, and unsupported configuration throws.
+No empty default dictionary or missing mandatory seed/initramfs/geometry fields.
+
+Parent also reports LINUX_GUI_RECOVERY_PASS (actual IO/process locks/interrupted
+rename on synthetic bodies), LINUX_STARTUP_FAILURE_PASS,201 Markdown assertions
+and native dependencies PASS at37869aad. Their helper sources are unchanged in
+this fix; these results do not establish full app build/link/IPA/device success.
+No IPA was produced. Sanitized parent-report JSON is in gui-recovery evidence;
+this executor did not fetch the raw CI log or dispatch any CI.
+
+Local317tests:312PASS/5explicitSKIP/0failures/errors, focused GUI recovery17PASS;
+exact offline Husk restore/overlay PASS (81members/45inputs/28copies/10patches/
+21addedSwift). The added source regression protects complete metadata on both
+GUI modes; only a fresh Apple app-build can validate the compiler fix. Parent
+coordinates ONE new CI after fresh gates. Current9c4d transport/device gates
+remain blocked; guest suffix/payload/locks and prior real host proof unchanged.
+
 ## Recovery watchdog follow-up — 2026-10-17
 
 Review05cd7d6 found that the ordinary60s desktop-ready timer could report a false

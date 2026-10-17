@@ -1,0 +1,149 @@
+[
+  {
+    "iops_rd": 0,
+    "detect_zeroes": "off",
+    "active": true,
+    "image": {
+      "virtual-size": 1342177280,
+      "filename": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/prior-build/seed-final/seed/gui-rootfs-v1.raw",
+      "format": "raw",
+      "actual-size": 792367104,
+      "dirty-flag": false
+    },
+    "iops_wr": 0,
+    "ro": true,
+    "node-name": "#block351",
+    "backing_file_depth": 0,
+    "drv": "raw",
+    "iops": 0,
+    "bps_wr": 0,
+    "write_threshold": 0,
+    "encrypted": false,
+    "bps": 0,
+    "bps_rd": 0,
+    "cache": {
+      "no-flush": false,
+      "direct": false,
+      "writeback": true
+    },
+    "file": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/prior-build/seed-final/seed/gui-rootfs-v1.raw"
+  },
+  {
+    "iops_rd": 0,
+    "detect_zeroes": "off",
+    "active": true,
+    "image": {
+      "virtual-size": 1342177280,
+      "filename": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/prior-build/seed-final/seed/gui-rootfs-v1.raw",
+      "format": "file",
+      "actual-size": 792367104,
+      "format-specific": {
+        "type": "file",
+        "data": {}
+      },
+      "dirty-flag": false
+    },
+    "iops_wr": 0,
+    "ro": true,
+    "node-name": "#block244",
+    "backing_file_depth": 0,
+    "drv": "file",
+    "iops": 0,
+    "bps_wr": 0,
+    "write_threshold": 0,
+    "encrypted": false,
+    "bps": 0,
+    "bps_rd": 0,
+    "cache": {
+      "no-flush": false,
+      "direct": false,
+      "writeback": true
+    },
+    "file": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/prior-build/seed-final/seed/gui-rootfs-v1.raw"
+  },
+  {
+    "iops_rd": 0,
+    "detect_zeroes": "off",
+    "active": true,
+    "image": {
+      "backing-image": {
+        "virtual-size": 1342177280,
+        "filename": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/prior-build/seed-final/seed/gui-rootfs-v1.raw",
+        "format": "raw",
+        "actual-size": 792367104,
+        "dirty-flag": false
+      },
+      "backing-filename-format": "raw",
+      "virtual-size": 4294967296,
+      "filename": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/run4/steam-experiment.qcow2",
+      "cluster-size": 65536,
+      "format": "qcow2",
+      "actual-size": 200704,
+      "format-specific": {
+        "type": "qcow2",
+        "data": {
+          "compat": "1.1",
+          "compression-type": "zlib",
+          "lazy-refcounts": false,
+          "refcount-bits": 16,
+          "corrupt": false,
+          "extended-l2": false
+        }
+      },
+      "full-backing-filename": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/prior-build/seed-final/seed/gui-rootfs-v1.raw",
+      "backing-filename": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/prior-build/seed-final/seed/gui-rootfs-v1.raw",
+      "dirty-flag": false
+    },
+    "iops_wr": 0,
+    "ro": false,
+    "node-name": "#block114",
+    "backing_file_depth": 1,
+    "drv": "qcow2",
+    "iops": 0,
+    "bps_wr": 0,
+    "write_threshold": 0,
+    "backing_file": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/prior-build/seed-final/seed/gui-rootfs-v1.raw",
+    "encrypted": false,
+    "bps": 0,
+    "bps_rd": 0,
+    "cache": {
+      "no-flush": false,
+      "direct": false,
+      "writeback": true
+    },
+    "file": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/run4/steam-experiment.qcow2"
+  },
+  {
+    "iops_rd": 0,
+    "detect_zeroes": "off",
+    "active": true,
+    "image": {
+      "virtual-size": 197120,
+      "filename": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/run4/steam-experiment.qcow2",
+      "format": "file",
+      "actual-size": 200704,
+      "format-specific": {
+        "type": "file",
+        "data": {}
+      },
+      "dirty-flag": false
+    },
+    "iops_wr": 0,
+    "ro": false,
+    "node-name": "#block061",
+    "backing_file_depth": 0,
+    "drv": "file",
+    "iops": 0,
+    "bps_wr": 0,
+    "write_threshold": 0,
+    "encrypted": false,
+    "bps": 0,
+    "bps_rd": 0,
+    "cache": {
+      "no-flush": false,
+      "direct": false,
+      "writeback": true
+    },
+    "file": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/run4/steam-experiment.qcow2"
+  }
+]

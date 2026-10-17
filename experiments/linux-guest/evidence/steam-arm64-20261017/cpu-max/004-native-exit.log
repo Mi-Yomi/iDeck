@@ -1,0 +1,69 @@
+IDECK_STEAM_ERROR=launcher_already_running
+ACTUAL_LAUNCHER_EXIT:1
+[    2.303767] Freeing initrd memory: 11360K
+[    2.709270] Loaded X.509 cert 'alpinelinux.org: Alpine Linux kernel key: 87fa969a47f3e2a6aa35859eb932a17c95abcd82'
+[    2.772063] Demotion targets for Node 0: null
+[    2.776483] Key type .fscrypt registered
+[    2.776622] Key type fscrypt-provisioning registered
+[    2.828706] clk: Disabling unused clocks
+[    2.830169] PM: genpd: Disabling unused power domains
+[    3.260189] Freeing unused kernel memory: 2048K
+[    3.267486] Run /ideck-steam-init as init process
+[    3.268252]   with arguments:
+[    3.268398]     /ideck-steam-init
+[    3.268476]   with environment:
+[    3.268640]     HOME=/
+[    3.268746]     TERM=linux
+[    3.701695] virtio_blk virtio5: 1/0/0 default/read/poll queues
+[    3.715498] virtio_blk virtio5: [vda] 8388608 512-byte logical blocks (4.29 GB/4.00 GiB)
+[    4.140060] [drm] pci: virtio-gpu-pci detected at 0000:00:01.0
+[    4.141232] [drm] features: -virgl +edid -resource_blob -host_visible
+[    4.141349] [drm] features: -context_init
+[    4.145366] [drm] number of scanouts: 1
+[    4.145612] [drm] number of cap sets: 0
+[    4.172488] [drm] Initialized virtio_gpu 0.1.0 for 0000:00:01.0 on minor 0
+[    4.252262] Console: switching to colour frame buffer device 100x37
+[    4.265805] virtio-pci 0000:00:01.0: [drm] fb0: virtio_gpudrmfb frame buffer device
+[    4.325076] input: QEMU Virtio Tablet as /devices/platform/4010000000.pcie/pci0000:00/0000:00:02.0/virtio1/input/input0
+[    4.332428] input: QEMU Virtio Keyboard as /devices/platform/4010000000.pcie/pci0000:00/0000:00:03.0/virtio2/input/input1
+[    4.798519] EXT4-fs (vda): mounted filesystem b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7 r/w with ordered data mode. Quota mode: none.
+[    5.370343] EXT4-fs (vda): resizing filesystem from 327680 to 1048576 blocks
+[    5.415480] EXT4-fs (vda): resized filesystem to 1048576
+[  129.113493] hrtimer: interrupt took 3524295 ns
+-rwxr-xr-x 1 ideck ideck 10174384 Oct 17 09:39 /home/ideck/.local/share/Steam/steamrtarm64/steam
+	linux-vdso.so.1 (0x0000ffffb684c000)
+	libdl.so.2 => /lib/aarch64-linux-gnu/libdl.so.2 (0x0000ffffb67e0000)
+	libm.so.6 => /lib/aarch64-linux-gnu/libm.so.6 (0x0000ffffb5d50000)
+	libpthread.so.0 => /lib/aarch64-linux-gnu/libpthread.so.0 (0x0000ffffb5d20000)
+	libc.so.6 => /lib/aarch64-linux-gnu/libc.so.6 (0x0000ffffb5b60000)
+	/lib/ld-linux-aarch64.so.1 (0x0000ffffb6810000)
+processor	: 0
+BogoMIPS	: 2000.00
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm jscvt fcma lrcpc dcpop sha3 sm3 sm4 asimddp sha512 sve asimdfhm dit uscat ilrcpc flagm ssbs sb paca pacg dcpodp sve2 sveaes svepmull svebitperm svesha3 svesm4 flagm2 frint svei8mm svef32mm svef64mm svebf16 i8mm bf16 dgh rng bti ecv afp rpres sme smei16i64 smef64f64 smei8i32 smef16f32 smeb16f32 smef32f32 smefa64 wfxt ebf16 sveebf16 mops hbc
+CPU implementer	: 0x00
+CPU architecture: 8
+CPU variant	: 0x0
+CPU part	: 0x051
+CPU revision	: 0
+
+processor	: 1
+BogoMIPS	: 2000.00
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm jscvt fcma lrcpc dcpop sha3 sm3 sm4 asimddp sha512 sve asimdfhm dit uscat ilrcpc flagm ssbs sb paca pacg dcpodp sve2 sveaes svepmull svebitperm svesha3 svesm4 flagm2 frint svei8mm svef32mm svef64mm svebf16 i8mm bf16 dgh rng bti ecv afp rpres sme smei16i64 smef64f64 smei8i32 smef16f32 smeb16f32 smef32f32 smefa64 wfxt ebf16 sveebf16 mops hbc
+CPU implementer	: 0x00
+CPU architecture: 8
+CPU variant	: 0x0
+CPU part	: 0x051
+CPU revision	: 0
+
+processor	: 2
+BogoMIPS	: 2000.00
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm jscvt fcma lrcpc dcpop sha3 sm3 sm4 asimddp sha512 sve asimdfhm dit uscat ilrcpc flagm ssbs sb paca pacg dcpodp sve2 sveaes svepmull svebitperm svesha3 svesm4 flagm2 frint svei8mm svef32mm svef64mm svebf16 i8mm bf16 dgh rng bti ecv afp rpres sme smei16i64 smef64f64 smei8i32 smef16f32 smeb16f32 smef32f32 smefa64 wfxt ebf16 sveebf16 mops hbc
+CPU implementer	: 0x00
+CPU architecture: 8
+CPU variant	: 0x0
+CPU part	: 0x051
+/home/ideck/.local/share/Steam/logs
+/home/ideck/steam-experiment-logs
+
+STEAM_COMMAND_004_0
+debian# 

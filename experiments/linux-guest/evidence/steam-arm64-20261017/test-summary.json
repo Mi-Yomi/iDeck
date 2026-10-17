@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "total": 63,
+  "passed": 63,
+  "failed": 0,
+  "groups": {
+    "windows_installer": 31,
+    "windows_cached_helper_cleanup_v2": 12,
+    "wsl_posix_launcher": 11,
+    "wsl_bootstrap": 5,
+    "wsl_host_runner_guards": 4
+  },
+  "Apple_Swift": "NOT RUN",
+  "iPhone_Steam": "NOT RUN",
+  "fixture_tests_are_not_runtime_proof": true
+}

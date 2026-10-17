@@ -1,0 +1,31 @@
+VERIFIED_PRIVATE_INSTALLER_CACHE_REMOVED_BYTES 360938891
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/vda        3.9G  2.9G  1.1G  74% /
+[2026-10-17 09:40:55] Set percent complete: 86
+[2026-10-17 09:40:55] Set percent complete: 86
+[2026-10-17 09:40:55] Set percent complete: 86
+[2026-10-17 09:40:57] Set percent complete: 86
+[2026-10-17 09:40:58] Downloading update (610759 of 669522 KB)...
+[2026-10-17 09:40:58] Set status message: Downloading update (610759 of 669522 KB)...
+[2026-10-17 09:40:58] Set percent complete: 91
+[2026-10-17 09:41:00] Downloading update (618223 of 669522 KB)...
+[2026-10-17 09:41:00] Set status message: Downloading update (618223 of 669522 KB)...
+[2026-10-17 09:41:00] Set percent complete: 92
+[2026-10-17 09:41:01] Downloading update (669522 of 669522 KB)...
+[2026-10-17 09:41:01] Set status message: Downloading update (669522 of 669522 KB)...
+[2026-10-17 09:41:01] Set percent complete: 100
+[2026-10-17 09:41:03] Exhausted list of download hosts
+[2026-10-17 09:41:03] Download complete.
+[2026-10-17 09:41:03] Set percent complete: 100
+[2026-10-17 09:41:03] Set status message: Download complete.
+[2026-10-17 09:41:03] Saving metrics to disk (/home/ideck/.local/share/Steam/package/steam_client_metrics.bin)
+[2026-10-17 09:41:03] uninstalled manifest found in /home/ideck/.local/share/Steam/package/steam_client_steamdeck_publicbeta_linuxarm64 (1).
+[2026-10-17 09:41:03] Set percent complete: -1
+Unable to determine CPU Frequency. Try defining CPU_MHZ.
+
+Unable to determine CPU Frequency. Try defining CPU_MHZ.
+[2026-10-17 09:41:04] Extracting package...
+[2026-10-17 09:41:04] Set status message: Extracting package...
+
+STEAM_COMMAND_007_0
+debian# 

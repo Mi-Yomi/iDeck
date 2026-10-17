@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "kind": "offline-steam-client-fixtures",
+  "windows": {
+    "client_tests": 31,
+    "client_passed": 31,
+    "client_exit_code": 0,
+    "helper_tests": 9,
+    "helper_passed": 9,
+    "helper_exit_code": 0
+  },
+  "actual_locked_zip_inventory": {
+    "parts": 17,
+    "expanded_bytes": 960528505,
+    "safe_internal_symlinks": 12,
+    "client_extracted": false
+  },
+  "wsl_9p_prior_run": {
+    "tests": 24,
+    "passed": 22,
+    "errors": 2,
+    "failure": "renameat2(RENAME_NOREPLACE) returned EINVAL for absent destination on /mnt/e 9p",
+    "status": "unsupported filesystem, fail closed",
+    "guest_ext4_tested": false
+  },
+  "live_requests": false,
+  "authentic_client_executed": false,
+  "agreement_accepted": false,
+  "fixture_notice": "Synthetic ELF and ZIP content only; this does not prove a Steam client boot."
+}

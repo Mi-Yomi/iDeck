@@ -1,0 +1,70 @@
+IDECK_STEAM_STATUS=experimental_launch_requested
+IDECK_STEAM_RENDERING=cef_software_ui_only
+IDECK_STEAM_ERROR=client_exit_nonzero
+ACTUAL_LAUNCHER_EXIT:132
+[    1.508051] Freeing initrd memory: 11360K
+[    1.743813] Loaded X.509 cert 'alpinelinux.org: Alpine Linux kernel key: 87fa969a47f3e2a6aa35859eb932a17c95abcd82'
+[    1.783107] Demotion targets for Node 0: null
+[    1.786150] Key type .fscrypt registered
+[    1.786468] Key type fscrypt-provisioning registered
+[    1.828139] clk: Disabling unused clocks
+[    1.829862] PM: genpd: Disabling unused power domains
+[    1.918635] Freeing unused kernel memory: 2048K
+[    1.924663] Run /ideck-steam-init as init process
+[    1.924823]   with arguments:
+[    1.924878]     /ideck-steam-init
+[    1.924912]   with environment:
+[    1.924935]     HOME=/
+[    1.924962]     TERM=linux
+[    2.251619] virtio_blk virtio5: 1/0/0 default/read/poll queues
+[    2.260803] virtio_blk virtio5: [vda] 8388608 512-byte logical blocks (4.29 GB/4.00 GiB)
+[    2.727059] [drm] pci: virtio-gpu-pci detected at 0000:00:01.0
+[    2.730049] [drm] features: -virgl +edid -resource_blob -host_visible
+[    2.730539] [drm] features: -context_init
+[    2.735576] [drm] number of scanouts: 1
+[    2.735702] [drm] number of cap sets: 0
+[    2.761670] [drm] Initialized virtio_gpu 0.1.0 for 0000:00:01.0 on minor 0
+[    2.864993] Console: switching to colour frame buffer device 100x37
+[    2.872784] virtio-pci 0000:00:01.0: [drm] fb0: virtio_gpudrmfb frame buffer device
+[    2.958571] input: QEMU Virtio Tablet as /devices/platform/4010000000.pcie/pci0000:00/0000:00:02.0/virtio1/input/input0
+[    2.966021] input: QEMU Virtio Keyboard as /devices/platform/4010000000.pcie/pci0000:00/0000:00:03.0/virtio2/input/input1
+[    3.462826] EXT4-fs (vda): mounted filesystem b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7 r/w with ordered data mode. Quota mode: none.
+[    3.958522] EXT4-fs (vda): resizing filesystem from 327680 to 1048576 blocks
+[    3.991678] EXT4-fs (vda): resized filesystem to 1048576
+[   14.733788] hrtimer: interrupt took 5088560 ns
+-rwxr-xr-x 1 ideck ideck 10174384 Oct 17 09:30 /home/ideck/.local/share/Steam/steamrtarm64/steam
+	linux-vdso.so.1 (0x0000ffffbaadf000)
+	libdl.so.2 => /lib/aarch64-linux-gnu/libdl.so.2 (0x0000ffffbaa60000)
+	libm.so.6 => /lib/aarch64-linux-gnu/libm.so.6 (0x0000ffffb9f50000)
+	libpthread.so.0 => /lib/aarch64-linux-gnu/libpthread.so.0 (0x0000ffffbaa30000)
+	libc.so.6 => /lib/aarch64-linux-gnu/libc.so.6 (0x0000ffffb9d90000)
+	/lib/ld-linux-aarch64.so.1 (0x0000ffffbaa90000)
+processor	: 0
+BogoMIPS	: 125.00
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32 cpuid
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x0
+CPU part	: 0xd08
+CPU revision	: 3
+
+processor	: 1
+BogoMIPS	: 125.00
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32 cpuid
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x0
+CPU part	: 0xd08
+CPU revision	: 3
+
+processor	: 2
+BogoMIPS	: 125.00
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32 cpuid
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x0
+CPU part	: 0xd08
+/home/ideck/steam-experiment-logs
+
+STEAM_COMMAND_004_0
+debian# 

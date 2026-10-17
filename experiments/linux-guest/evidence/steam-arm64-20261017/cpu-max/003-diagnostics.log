@@ -1,0 +1,711 @@
+debian# Linux ideck 6.18.35-0-virt #1-Alpine SMP PREEMPT_DYNAMIC 2026-06-09 12:34:47 aarch64 GNU/Linux
+146.75.119.82   STREAM valve.map.fastly.net
+146.75.119.82   DGRAM  
+146.75.119.82   RAW    
+VALVE_MANIFEST_HTTPS_STATUS 200
+VALVE_MANIFEST_BYTES 12582
+unshare: unshare failed: Operation not permitted
+USER_MOUNT_NAMESPACE_STATUS:1
+6004
+               total        used        free      shared  buff/cache   available
+Mem:            1467         393         156          30        1026        1074
+Swap:              0           0           0
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/vda        3.9G  2.9G 1004M  75% /
+[2026-10-17 09:40:40] Set percent complete: 38
+[2026-10-17 09:40:40] Downloading update (263563 of 669522 KB)...
+[2026-10-17 09:40:40] Set status message: Downloading update (263563 of 669522 KB)...
+[2026-10-17 09:40:40] Set percent complete: 39
+[2026-10-17 09:40:40] Downloading update (271759 of 669522 KB)...
+[2026-10-17 09:40:40] Set status message: Downloading update (271759 of 669522 KB)...
+[2026-10-17 09:40:40] Set percent complete: 40
+[2026-10-17 09:40:40] Downloading update (278373 of 669522 KB)...
+[2026-10-17 09:40:40] Set status message: Downloading update (278373 of 669522 KB)...
+[2026-10-17 09:40:40] Set percent complete: 41
+[2026-10-17 09:40:41] Downloading update (283205 of 669522 KB)...
+[2026-10-17 09:40:41] Set status message: Downloading update (283205 of 669522 KB)...
+[2026-10-17 09:40:41] Set percent complete: 42
+[2026-10-17 09:40:41] Downloading update (286371 of 669522 KB)...
+[2026-10-17 09:40:41] Set status message: Downloading update (286371 of 669522 KB)...
+[2026-10-17 09:40:41] Set percent complete: 42
+[2026-10-17 09:40:41] Downloading update (297381 of 669522 KB)...
+[2026-10-17 09:40:41] Set status message: Downloading update (297381 of 669522 KB)...
+[2026-10-17 09:40:41] Set percent complete: 44
+[2026-10-17 09:40:41] Downloading update (306160 of 669522 KB)...
+[2026-10-17 09:40:41] Set status message: Downloading update (306160 of 669522 KB)...
+[2026-10-17 09:40:41] Set percent complete: 45
+[2026-10-17 09:40:42] Downloading update (312996 of 669522 KB)...
+[2026-10-17 09:40:42] Set status message: Downloading update (312996 of 669522 KB)...
+[2026-10-17 09:40:42] Set percent complete: 46
+[2026-10-17 09:40:42] Downloading update (319345 of 669522 KB)...
+[2026-10-17 09:40:42] Set status message: Downloading update (319345 of 669522 KB)...
+[2026-10-17 09:40:42] Set percent complete: 47
+[2026-10-17 09:40:42] Downloading update (324615 of 669522 KB)...
+[2026-10-17 09:40:42] Set status message: Downloading update (324615 of 669522 KB)...
+[2026-10-17 09:40:42] Set percent complete: 48
+[2026-10-17 09:40:42] Downloading update (334959 of 669522 KB)...
+[2026-10-17 09:40:42] Set status message: Downloading update (334959 of 669522 KB)...
+[2026-10-17 09:40:42] Set percent complete: 50
+[2026-10-17 09:40:43] Downloading update (340768 of 669522 KB)...
+[2026-10-17 09:40:43] Set status message: Downloading update (340768 of 669522 KB)...
+[2026-10-17 09:40:43] Set percent complete: 50
+[2026-10-17 09:40:43] Downloading update (345190 of 669522 KB)...
+[2026-10-17 09:40:43] Set status message: Downloading update (345190 of 669522 KB)...
+[2026-10-17 09:40:43] Set percent complete: 51
+[2026-10-17 09:40:43] Downloading update (354564 of 669522 KB)...
+[2026-10-17 09:40:43] Set status message: Downloading update (354564 of 669522 KB)...
+[2026-10-17 09:40:43] Set percent complete: 52
+[2026-10-17 09:40:43] Downloading update (359998 of 669522 KB)...
+[2026-10-17 09:40:43] Set status message: Downloading update (359998 of 669522 KB)...
+[2026-10-17 09:40:43] Set percent complete: 53
+[2026-10-17 09:40:44] Downloading update (370543 of 669522 KB)...
+[2026-10-17 09:40:44] Set status message: Downloading update (370543 of 669522 KB)...
+[2026-10-17 09:40:44] Set percent complete: 55
+[2026-10-17 09:40:44] Downloading update (376536 of 669522 KB)...
+[2026-10-17 09:40:44] Set status message: Downloading update (376536 of 669522 KB)...
+[2026-10-17 09:40:44] Set percent complete: 56
+[2026-10-17 09:40:44] Downloading update (382505 of 669522 KB)...
+[2026-10-17 09:40:44] Set status message: Downloading update (382505 of 669522 KB)...
+[2026-10-17 09:40:44] Set percent complete: 57
+[2026-10-17 09:40:44] Downloading update (388137 of 669522 KB)...
+[2026-10-17 09:40:45] Set status message: Downloading update (388137 of 669522 KB)...
+[2026-10-17 09:40:45] Set percent complete: 57
+[2026-10-17 09:40:45] Downloading update (396603 of 669522 KB)...
+[2026-10-17 09:40:45] Set status message: Downloading update (396603 of 669522 KB)...
+[2026-10-17 09:40:45] Set percent complete: 59
+[2026-10-17 09:40:45] Downloading update (405138 of 669522 KB)...
+[2026-10-17 09:40:45] Set status message: Downloading update (405138 of 669522 KB)...
+[2026-10-17 09:40:45] Set percent complete: 60
+[2026-10-17 09:40:45] Set percent complete: 60
+[2026-10-17 09:40:46] Set percent complete: 60
+[2026-10-17 09:40:46] Set percent complete: 60
+[2026-10-17 09:40:52] Downloading update (462227 of 669522 KB)...
+[2026-10-17 09:40:52] Set status message: Downloading update (462227 of 669522 KB)...
+[2026-10-17 09:40:52] Set percent complete: 69
+[2026-10-17 09:40:54] Downloading update (564112 of 669522 KB)...
+[2026-10-17 09:40:54] Set status message: Downloading update (564112 of 669522 KB)...
+[2026-10-17 09:40:54] Set percent complete: 84
+[2026-10-17 09:40:55] Downloading update (576071 of 669522 KB)...
+[2026-10-17 09:40:55] Set status message: Downloading update (576071 of 669522 KB)...
+[2026-10-17 09:40:55] Set percent complete: 86
+[2026-10-17 09:40:55] Set percent complete: 86
+[2026-10-17 09:40:55] Set percent complete: 86
+[2026-10-17 09:40:57] Set percent complete: 86
+[2026-10-17 09:40:58] Downloading update (610759 of 669522 KB)...
+[2026-10-17 09:40:58] Set status message: Downloading update (610759 of 669522 KB)...
+[2026-10-17 09:40:58] Set percent complete: 91
+[2026-10-17 09:41:00] Downloading update (618223 of 669522 KB)...
+[2026-10-17 09:41:00] Set status message: Downloading update (618223 of 669522 KB)...
+[2026-10-17 09:41:00] Set percent complete: 92
+[2026-10-17 09:41:01] Downloading update (669522 of 669522 KB)...
+[2026-10-17 09:41:01] Set status message: Downloading update (669522 of 669522 KB)...
+[2026-10-17 09:41:01] Set percent complete: 100
+[2026-10-17 09:41:03] Exhausted list of download hosts
+[2026-10-17 09:41:03] Download complete.
+[2026-10-17 09:41:03] Set percent complete: 100
+[2026-10-17 09:41:03] Set status message: Download complete.
+[2026-10-17 09:41:03] Saving metrics to disk (/home/ideck/.local/share/Steam/package/steam_client_metrics.bin)
+[2026-10-17 09:41:03] uninstalled manifest found in /home/ideck/.local/share/Steam/package/steam_client_steamdeck_publicbeta_linuxarm64 (1).
+[2026-10-17 09:41:03] Set percent complete: -1
+Unable to determine CPU Frequency. Try defining CPU_MHZ.
+
+Unable to determine CPU Frequency. Try defining CPU_MHZ.
+[2026-10-17 09:41:04] Extracting package...
+[2026-10-17 09:41:04] Set status message: Extracting package...
+
+xwininfo: Window id: 0x21d (the root window) (has no name)
+
+  Root window id: 0x21d (the root window) (has no name)
+  Parent window id: 0x0 (none)
+     24 children:
+     0x800009 (has no name): ()  1x1+-1+-1  +-1+-1
+     0xa00110 "pcmanfm": ("pcmanfm" "Pcmanfm")  2x2+0+0  +0+0
+        1 child:
+        0xa00111 (has no name): ()  1x1+-1+-1  +-1+-1
+     0xa00003 (has no name): ()  1x1+-1+-1  +-1+-1
+     0x800001 "Mousepad": ("mousepad" "Mousepad")  10x10+10+10  +10+10
+     0xa00001 "pcmanfm": ("pcmanfm" "Pcmanfm")  10x10+10+10  +10+10
+     0x60000c (has no name): ()  1x1+-1+-1  +-1+-1
+     0x600005 (has no name): ()  1x1+-1+-1  +-1+-1
+     0x600002 (has no name): ()  100x20+0+0  +0+0
+     0x20011f "Openbox": ("" (none))  1x1+-100+-100  +-100+-100
+     0x200173 (has no name): ()  1x1+0+0  +0+0
+        1 child:
+        0x200174 (has no name): ()  1x1+0+0  +1+1
+     0x200171 (has no name): ()  1x1+0+0  +0+0
+        1 child:
+        0x200172 (has no name): ()  1x1+0+0  +1+1
+     0x20016e (has no name): ()  1x1+0+0  +0+0
+        1 child:
+        0x20016f (has no name): ()  1x1+0+0  +1+1
+     0x20016a (has no name): ("OPENBOX_FOCUS_CYCLE_POPUP" "OPENBOX_FOCUS_CYCLE_POPUP")  1x1+0+0  +0+0
+        3 children:
+        0x20016d (has no name): ()  1x1+0+0  +1+1
+        0x20016c (has no name): ()  1x1+0+0  +1+1
+        0x20016b (has no name): ()  1x1+0+0  +1+1
+     0x200167 (has no name): ()  1x1+0+0  +0+0
+        2 children:
+        0x200169 (has no name): ()  1x1+0+0  +1+1
+        0x200168 (has no name): ()  1x1+0+0  +1+1
+     0x200166 (has no name): ()  1x1+0+0  +0+0
+     0x200165 (has no name): ()  1x1+0+0  +0+0
+     0x200164 (has no name): ()  1x1+0+0  +0+0
+     0x200163 (has no name): ()  1x1+0+0  +0+0
+     0x200170 (has no name): ()  1x1+0+0  +0+0
+     0x200347 (has no name): ()  402x150+200+244  +200+244
+        56 children:
+        0xc00002 "Steam": ()  400x129+1+20  +201+264
+        0x200393 (has no name): ()  1x1+0+0  +200+244
+        0x200392 (has no name): ()  1x1+0+0  +200+244
+        0x200391 (has no name): ()  1x1+0+0  +200+244
+        0x200390 (has no name): ()  1x1+0+0  +200+244
+        0x20038f (has no name): ()  1x1+0+0  +200+244
+        0x20038e (has no name): ()  1x1+0+0  +200+244
+        0x20038d (has no name): ()  1x1+0+0  +200+244
+        0x20038c (has no name): ()  1x1+0+0  +200+244
+        0x20038b (has no name): ()  1x1+0+0  +200+244
+        0x20038a (has no name): ()  1x1+0+0  +200+244
+        0x200389 (has no name): ()  1x1+0+0  +200+244
+        0x200388 (has no name): ()  1x1+0+0  +200+244
+        0x200387 (has no name): ()  1x1+0+0  +200+244
+        0x200386 (has no name): ()  1x1+0+0  +200+244
+        0x200385 (has no name): ()  1x1+0+0  +200+244
+        0x200384 (has no name): ()  1x1+0+0  +200+244
+        0x200383 (has no name): ()  1x1+0+0  +200+244
+        0x200382 (has no name): ()  1x1+0+0  +200+244
+        0x200381 (has no name): ()  1x1+0+0  +200+244
+        0x200380 (has no name): ()  1x1+0+0  +200+244
+        0x20037f (has no name): ()  1x1+0+0  +200+244
+        0x20037e (has no name): ()  1x1+0+0  +200+244
+        0x20037d (has no name): ()  1x1+0+0  +200+244
+        0x20037c (has no name): ()  1x1+0+0  +200+244
+        0x20037b (has no name): ()  1x1+0+0  +200+244
+        0x20037a (has no name): ()  1x1+0+0  +200+244
+        0x200379 (has no name): ()  1x1+0+0  +200+244
+        0x200378 (has no name): ()  1x1+0+0  +200+244
+        0x200377 (has no name): ()  1x1+0+0  +200+244
+        0x200376 (has no name): ()  1x1+0+0  +200+244
+        0x200375 (has no name): ()  1x1+0+0  +200+244
+        0x200374 (has no name): ()  1x1+0+0  +200+244
+        0x200373 (has no name): ()  26x1+375+149  +575+393
+        0x200372 (has no name): ()  1x1+0+0  +200+244
+        0x200371 (has no name): ()  1x25+401+125  +601+369
+        0x200370 (has no name): ()  26x1+1+149  +201+393
+        0x20036f (has no name): ()  1x1+0+0  +200+244
+        0x20036e (has no name): ()  1x25+0+125  +200+369
+        0x20036d (has no name): ()  348x1+27+149  +227+393
+        0x20036c (has no name): ()  1x1+0+0  +200+244
+        0x200367 (has no name): ()  1x1+0+0  +200+244
+           4 children:
+           0x20036b (has no name): ()  1x1+0+0  +200+244
+           0x20036a (has no name): ()  1x1+0+0  +200+244
+           0x200369 (has no name): ()  1x1+0+0  +200+244
+           0x200368 (has no name): ()  1x1+0+0  +200+244
+        0x20035f (has no name): ()  1x100+401+26  +601+270
+        0x20035e (has no name): ()  1x100+0+26  +200+270
+        0x200358 (has no name): ()  400x1+1+19  +201+263
+        0x200357 (has no name): ()  1x25+401+1  +601+245
+        0x200356 (has no name): ()  26x1+376+0  +576+244
+        0x200355 (has no name): ()  26x1+0+0  +200+244
+        0x200354 (has no name): ()  350x1+26+0  +226+244
+        0x200353 (has no name): ()  1x25+0+1  +200+245
+        0x200352 (has no name): ()  400x18+1+1  +201+245
+           12 children:
+           0x200366 (has no name): ()  12x12+352+3  +553+248
+           0x200365 (has no name): ()  14x14+4+2  +205+247
+           0x200364 (has no name): ()  12x12+0+0  +201+245
+           0x200363 (has no name): ()  12x12+0+0  +201+245
+           0x200362 (has no name): ()  12x12+384+3  +585+248
+           0x200361 (has no name): ()  12x12+368+3  +569+248
+           0x200360 (has no name): ()  296x14+52+2  +253+247
+           0x20035d (has no name): ()  4x18+0+0  +201+245
+           0x20035c (has no name): ()  25x3+0+0  +201+245
+           0x20035b (has no name): ()  4x18+0+0  +201+245
+           0x20035a (has no name): ()  25x3+0+0  +201+245
+           0x200359 (has no name): ()  1x1+0+0  +201+245
+        0x20034d (has no name): ()  1x1+0+0  +200+244
+           2 children:
+           0x20034f (has no name): ()  1x1+0+0  +200+244
+           0x20034e (has no name): ()  1x1+0+0  +200+244
+        0x20034c (has no name): ()  1x1+0+0  +200+244
+           1 child:
+           0x200351 (has no name): ()  1x1+0+0  +200+244
+        0x20034b (has no name): ()  1x1+0+0  +200+244
+        0x20034a (has no name): ()  1x1+0+0  +200+244
+           1 child:
+           0x200350 (has no name): ()  1x1+0+0  +200+244
+        0x200348 (has no name): ()  400x129+1+20  +201+264
+           1 child:
+           0x200349 (has no name): ()  400x129+0+0  +201+264
+     0x2002cd (has no name): ()  442x295+0+271  +0+271
+        56 children:
+        0x800003 "Untitled 1 - Mousepad": ("mousepad" "Mousepad")  440x270+1+20  +1+291
+           1 child:
+           0x800004 (has no name): ()  1x1+-1+-1  +0+290
+        0x200319 (has no name): ()  1x1+0+0  +0+271
+        0x200318 (has no name): ()  1x1+0+0  +0+271
+        0x200317 (has no name): ()  1x1+0+0  +0+271
+        0x200316 (has no name): ()  1x1+0+0  +0+271
+        0x200315 (has no name): ()  1x1+0+0  +0+271
+        0x200314 (has no name): ()  1x1+0+0  +0+271
+        0x200313 (has no name): ()  1x1+0+0  +0+271
+        0x200312 (has no name): ()  1x1+0+0  +0+271
+        0x200311 (has no name): ()  1x1+0+0  +0+271
+        0x200310 (has no name): ()  1x1+0+0  +0+271
+        0x20030f (has no name): ()  1x1+0+0  +0+271
+        0x20030e (has no name): ()  1x1+0+0  +0+271
+        0x20030d (has no name): ()  1x1+0+0  +0+271
+        0x20030c (has no name): ()  1x1+0+0  +0+271
+        0x20030b (has no name): ()  1x1+0+0  +0+271
+        0x20030a (has no name): ()  1x1+0+0  +0+271
+        0x200309 (has no name): ()  1x1+0+0  +0+271
+        0x200308 (has no name): ()  1x1+0+0  +0+271
+        0x200307 (has no name): ()  1x1+0+0  +0+271
+        0x200306 (has no name): ()  1x1+0+0  +0+271
+        0x200305 (has no name): ()  1x1+0+0  +0+271
+        0x200304 (has no name): ()  1x1+0+0  +0+271
+        0x200303 (has no name): ()  1x1+0+0  +0+271
+        0x200302 (has no name): ()  1x1+0+0  +0+271
+        0x200301 (has no name): ()  1x1+0+0  +0+271
+        0x200300 (has no name): ()  1x1+0+0  +0+271
+        0x2002ff (has no name): ()  1x1+0+0  +0+271
+        0x2002fe (has no name): ()  1x1+0+0  +0+271
+        0x2002fd (has no name): ()  1x1+0+0  +0+271
+        0x2002fc (has no name): ()  1x1+0+0  +0+271
+        0x2002fb (has no name): ()  1x1+0+0  +0+271
+        0x2002fa (has no name): ()  1x1+0+0  +0+271
+        0x2002f9 (has no name): ()  26x1+415+294  +415+565
+        0x2002f8 (has no name): ()  26x1+415+290  +415+561
+        0x2002f7 (has no name): ()  1x25+441+270  +441+541
+        0x2002f6 (has no name): ()  26x1+1+294  +1+565
+        0x2002f5 (has no name): ()  26x1+1+290  +1+561
+        0x2002f4 (has no name): ()  1x25+0+270  +0+541
+        0x2002f3 (has no name): ()  388x1+27+294  +27+565
+        0x2002f2 (has no name): ()  388x1+27+290  +27+561
+        0x2002ed (has no name): ()  440x3+1+291  +1+562
+           4 children:
+           0x2002f1 (has no name): ()  1x3+414+0  +415+562
+           0x2002f0 (has no name): ()  1x3+25+0  +26+562
+           0x2002ef (has no name): ()  25x3+415+0  +416+562
+           0x2002ee (has no name): ()  25x3+0+0  +1+562
+        0x2002e5 (has no name): ()  1x245+441+26  +441+297
+        0x2002e4 (has no name): ()  1x245+0+26  +0+297
+        0x2002de (has no name): ()  440x1+1+19  +1+290
+        0x2002dd (has no name): ()  1x25+441+1  +441+272
+        0x2002dc (has no name): ()  26x1+416+0  +416+271
+        0x2002db (has no name): ()  26x1+0+0  +0+271
+        0x2002da (has no name): ()  390x1+26+0  +26+271
+        0x2002d9 (has no name): ()  1x25+0+1  +0+272
+        0x2002d8 (has no name): ()  440x18+1+1  +1+272
+           12 children:
+           0x2002ec (has no name): ()  12x12+392+3  +393+275
+           0x2002eb (has no name): ()  14x14+4+2  +5+274
+           0x2002ea (has no name): ()  12x12+0+0  +1+272
+           0x2002e9 (has no name): ()  12x12+0+0  +1+272
+           0x2002e8 (has no name): ()  12x12+424+3  +425+275
+           0x2002e7 (has no name): ()  12x12+408+3  +409+275
+           0x2002e6 (has no name): ()  336x14+52+2  +53+274
+           0x2002e3 (has no name): ()  4x18+436+0  +437+272
+           0x2002e2 (has no name): ()  25x3+415+0  +416+272
+           0x2002e1 (has no name): ()  4x18+0+0  +1+272
+           0x2002e0 (has no name): ()  25x3+0+0  +1+272
+           0x2002df (has no name): ()  390x3+25+0  +26+272
+        0x2002d3 (has no name): ()  1x1+0+0  +0+271
+           2 children:
+           0x2002d5 (has no name): ()  1x1+0+0  +0+271
+           0x2002d4 (has no name): ()  1x1+0+0  +0+271
+        0x2002d2 (has no name): ()  1x1+0+0  +0+271
+           1 child:
+           0x2002d7 (has no name): ()  1x1+0+0  +0+271
+        0x2002d1 (has no name): ()  1x1+0+0  +0+271
+        0x2002d0 (has no name): ()  1x1+0+0  +0+271
+           1 child:
+           0x2002d6 (has no name): ()  1x1+0+0  +0+271
+        0x2002ce (has no name): ()  440x270+1+20  +1+291
+           1 child:
+           0x2002cf (has no name): ()  440x270+0+0  +1+291
+     0x200244 (has no name): ()  642x505+158+61  +158+61
+        56 children:
+        0xa00007 "ideck": ("pcmanfm" "Pcmanfm")  640x480+1+20  +159+81
+           1 child:
+           0xa00008 (has no name): ()  1x1+-1+-1  +158+80
+        0x200290 (has no name): ()  1x1+0+0  +158+61
+        0x20028f (has no name): ()  1x1+0+0  +158+61
+        0x20028e (has no name): ()  1x1+0+0  +158+61
+        0x20028d (has no name): ()  1x1+0+0  +158+61
+        0x20028c (has no name): ()  1x1+0+0  +158+61
+        0x20028b (has no name): ()  1x1+0+0  +158+61
+        0x20028a (has no name): ()  1x1+0+0  +158+61
+        0x200289 (has no name): ()  1x1+0+0  +158+61
+        0x200288 (has no name): ()  1x1+0+0  +158+61
+        0x200287 (has no name): ()  1x1+0+0  +158+61
+        0x200286 (has no name): ()  1x1+0+0  +158+61
+        0x200285 (has no name): ()  1x1+0+0  +158+61
+        0x200284 (has no name): ()  1x1+0+0  +158+61
+        0x200283 (has no name): ()  1x1+0+0  +158+61
+        0x200282 (has no name): ()  1x1+0+0  +158+61
+        0x200281 (has no name): ()  1x1+0+0  +158+61
+        0x200280 (has no name): ()  1x1+0+0  +158+61
+        0x20027f (has no name): ()  1x1+0+0  +158+61
+        0x20027e (has no name): ()  1x1+0+0  +158+61
+        0x20027d (has no name): ()  1x1+0+0  +158+61
+        0x20027c (has no name): ()  1x1+0+0  +158+61
+        0x20027b (has no name): ()  1x1+0+0  +158+61
+        0x20027a (has no name): ()  1x1+0+0  +158+61
+        0x200279 (has no name): ()  1x1+0+0  +158+61
+        0x200278 (has no name): ()  1x1+0+0  +158+61
+        0x200277 (has no name): ()  1x1+0+0  +158+61
+        0x200276 (has no name): ()  1x1+0+0  +158+61
+        0x200275 (has no name): ()  1x1+0+0  +158+61
+        0x200274 (has no name): ()  1x1+0+0  +158+61
+        0x200273 (has no name): ()  1x1+0+0  +158+61
+        0x200272 (has no name): ()  1x1+0+0  +158+61
+        0x200271 (has no name): ()  1x1+0+0  +158+61
+        0x200270 (has no name): ()  26x1+615+504  +773+565
+        0x20026f (has no name): ()  26x1+615+500  +773+561
+        0x20026e (has no name): ()  1x25+641+480  +799+541
+        0x20026d (has no name): ()  26x1+1+504  +159+565
+        0x20026c (has no name): ()  26x1+1+500  +159+561
+        0x20026b (has no name): ()  1x25+0+480  +158+541
+        0x20026a (has no name): ()  588x1+27+504  +185+565
+        0x200269 (has no name): ()  588x1+27+500  +185+561
+        0x200264 (has no name): ()  640x3+1+501  +159+562
+           4 children:
+           0x200268 (has no name): ()  1x3+614+0  +773+562
+           0x200267 (has no name): ()  1x3+25+0  +184+562
+           0x200266 (has no name): ()  25x3+615+0  +774+562
+           0x200265 (has no name): ()  25x3+0+0  +159+562
+        0x20025c (has no name): ()  1x455+641+26  +799+87
+        0x20025b (has no name): ()  1x455+0+26  +158+87
+        0x200255 (has no name): ()  640x1+1+19  +159+80
+        0x200254 (has no name): ()  1x25+641+1  +799+62
+        0x200253 (has no name): ()  26x1+616+0  +774+61
+        0x200252 (has no name): ()  26x1+0+0  +158+61
+        0x200251 (has no name): ()  590x1+26+0  +184+61
+        0x200250 (has no name): ()  1x25+0+1  +158+62
+        0x20024f (has no name): ()  640x18+1+1  +159+62
+           12 children:
+           0x200263 (has no name): ()  12x12+592+3  +751+65
+           0x200262 (has no name): ()  14x14+4+2  +163+64
+           0x200261 (has no name): ()  12x12+0+0  +159+62
+           0x200260 (has no name): ()  12x12+0+0  +159+62
+           0x20025f (has no name): ()  12x12+624+3  +783+65
+           0x20025e (has no name): ()  12x12+608+3  +767+65
+           0x20025d (has no name): ()  536x14+52+2  +211+64
+           0x20025a (has no name): ()  4x18+636+0  +795+62
+           0x200259 (has no name): ()  25x3+615+0  +774+62
+           0x200258 (has no name): ()  4x18+0+0  +159+62
+           0x200257 (has no name): ()  25x3+0+0  +159+62
+           0x200256 (has no name): ()  590x3+25+0  +184+62
+        0x20024a (has no name): ()  1x1+0+0  +158+61
+           2 children:
+           0x20024c (has no name): ()  1x1+0+0  +158+61
+           0x20024b (has no name): ()  1x1+0+0  +158+61
+        0x200249 (has no name): ()  1x1+0+0  +158+61
+           1 child:
+           0x20024e (has no name): ()  1x1+0+0  +158+61
+        0x200248 (has no name): ()  1x1+0+0  +158+61
+        0x200247 (has no name): ()  1x1+0+0  +158+61
+           1 child:
+           0x20024d (has no name): ()  1x1+0+0  +158+61
+        0x200245 (has no name): ()  640x480+1+20  +159+81
+           1 child:
+           0x200246 (has no name): ()  640x480+0+0  +159+81
+     0x2001d6 (has no name): ()  800x34+0+566  +0+566
+        56 children:
+        0x600008 "tint2": ("tint2" "Tint2")  800x34+0+0  +0+566
+        0x200222 (has no name): ()  1x1+0+0  +0+566
+        0x200221 (has no name): ()  1x1+0+0  +0+566
+        0x200220 (has no name): ()  1x1+0+0  +0+566
+        0x20021f (has no name): ()  1x1+0+0  +0+566
+        0x20021e (has no name): ()  1x1+0+0  +0+566
+        0x20021d (has no name): ()  1x1+0+0  +0+566
+        0x20021c (has no name): ()  1x1+0+0  +0+566
+        0x20021b (has no name): ()  1x1+0+0  +0+566
+        0x20021a (has no name): ()  1x1+0+0  +0+566
+        0x200219 (has no name): ()  1x1+0+0  +0+566
+        0x200218 (has no name): ()  1x1+0+0  +0+566
+        0x200217 (has no name): ()  1x1+0+0  +0+566
+        0x200216 (has no name): ()  1x1+0+0  +0+566
+        0x200215 (has no name): ()  1x1+0+0  +0+566
+        0x200214 (has no name): ()  1x1+0+0  +0+566
+        0x200213 (has no name): ()  1x1+0+0  +0+566
+        0x200212 (has no name): ()  1x1+0+0  +0+566
+        0x200211 (has no name): ()  1x1+0+0  +0+566
+        0x200210 (has no name): ()  1x1+0+0  +0+566
+        0x20020f (has no name): ()  1x1+0+0  +0+566
+        0x20020e (has no name): ()  1x1+0+0  +0+566
+        0x20020d (has no name): ()  1x1+0+0  +0+566
+        0x20020c (has no name): ()  1x1+0+0  +0+566
+        0x20020b (has no name): ()  1x1+0+0  +0+566
+        0x20020a (has no name): ()  1x1+0+0  +0+566
+        0x200209 (has no name): ()  1x1+0+0  +0+566
+        0x200208 (has no name): ()  1x1+0+0  +0+566
+        0x200207 (has no name): ()  1x1+0+0  +0+566
+        0x200206 (has no name): ()  1x1+0+0  +0+566
+        0x200205 (has no name): ()  1x1+0+0  +0+566
+        0x200204 (has no name): ()  1x1+0+0  +0+566
+        0x200203 (has no name): ()  1x1+0+0  +0+566
+        0x200202 (has no name): ()  1x1+0+0  +0+566
+        0x200201 (has no name): ()  1x1+0+0  +0+566
+        0x200200 (has no name): ()  1x1+0+0  +0+566
+        0x2001ff (has no name): ()  1x1+0+0  +0+566
+        0x2001fe (has no name): ()  1x1+0+0  +0+566
+        0x2001fd (has no name): ()  1x1+0+0  +0+566
+        0x2001fc (has no name): ()  1x1+0+0  +0+566
+        0x2001fb (has no name): ()  1x1+0+0  +0+566
+        0x2001f6 (has no name): ()  1x1+0+0  +0+566
+           4 children:
+           0x2001fa (has no name): ()  1x1+0+0  +0+566
+           0x2001f9 (has no name): ()  1x1+0+0  +0+566
+           0x2001f8 (has no name): ()  1x1+0+0  +0+566
+           0x2001f7 (has no name): ()  1x1+0+0  +0+566
+        0x2001ee (has no name): ()  1x1+0+0  +0+566
+        0x2001ed (has no name): ()  1x1+0+0  +0+566
+        0x2001e7 (has no name): ()  1x1+0+0  +0+566
+        0x2001e6 (has no name): ()  1x1+0+0  +0+566
+        0x2001e5 (has no name): ()  1x1+0+0  +0+566
+        0x2001e4 (has no name): ()  1x1+0+0  +0+566
+        0x2001e3 (has no name): ()  1x1+0+0  +0+566
+        0x2001e2 (has no name): ()  1x1+0+0  +0+566
+        0x2001e1 (has no name): ()  1x1+0+0  +0+566
+           12 children:
+           0x2001f5 (has no name): ()  12x12+0+0  +0+566
+           0x2001f4 (has no name): ()  14x14+0+0  +0+566
+           0x2001f3 (has no name): ()  12x12+0+0  +0+566
+           0x2001f2 (has no name): ()  12x12+0+0  +0+566
+           0x2001f1 (has no name): ()  12x12+0+0  +0+566
+           0x2001f0 (has no name): ()  12x12+0+0  +0+566
+           0x2001ef (has no name): ()  1x1+0+0  +0+566
+           0x2001ec (has no name): ()  4x18+0+0  +0+566
+           0x2001eb (has no name): ()  25x3+0+0  +0+566
+           0x2001ea (has no name): ()  4x18+0+0  +0+566
+           0x2001e9 (has no name): ()  25x3+0+0  +0+566
+           0x2001e8 (has no name): ()  1x1+0+0  +0+566
+        0x2001dc (has no name): ()  1x1+0+0  +0+566
+           2 children:
+           0x2001de (has no name): ()  1x1+0+0  +0+566
+           0x2001dd (has no name): ()  1x1+0+0  +0+566
+        0x2001db (has no name): ()  1x1+0+0  +0+566
+           1 child:
+           0x2001e0 (has no name): ()  1x1+0+0  +0+566
+        0x2001da (has no name): ()  1x1+0+0  +0+566
+        0x2001d9 (has no name): ()  1x1+0+0  +0+566
+           1 child:
+           0x2001df (has no name): ()  1x1+0+0  +0+566
+        0x2001d7 (has no name): ()  800x34+0+0  +0+566
+           1 child:
+           0x2001d8 (has no name): ()  800x34+0+0  +0+566
+     0x200175 (has no name): ()  474x263+30+40  +30+40
+        56 children:
+        0x40000c "ideck@ideck: ~": ("xterm" "XTerm")  472x238+1+20  +31+60
+           1 child:
+           0x400011 (has no name): ()  472x238+0+0  +31+60
+        0x2001c1 (has no name): ()  1x1+0+0  +30+40
+        0x2001c0 (has no name): ()  1x1+0+0  +30+40
+        0x2001bf (has no name): ()  1x1+0+0  +30+40
+        0x2001be (has no name): ()  1x1+0+0  +30+40
+        0x2001bd (has no name): ()  1x1+0+0  +30+40
+        0x2001bc (has no name): ()  1x1+0+0  +30+40
+        0x2001bb (has no name): ()  1x1+0+0  +30+40
+        0x2001ba (has no name): ()  1x1+0+0  +30+40
+        0x2001b9 (has no name): ()  1x1+0+0  +30+40
+        0x2001b8 (has no name): ()  1x1+0+0  +30+40
+        0x2001b7 (has no name): ()  1x1+0+0  +30+40
+        0x2001b6 (has no name): ()  1x1+0+0  +30+40
+        0x2001b5 (has no name): ()  1x1+0+0  +30+40
+        0x2001b4 (has no name): ()  1x1+0+0  +30+40
+        0x2001b3 (has no name): ()  1x1+0+0  +30+40
+        0x2001b2 (has no name): ()  1x1+0+0  +30+40
+        0x2001b1 (has no name): ()  1x1+0+0  +30+40
+        0x2001b0 (has no name): ()  1x1+0+0  +30+40
+        0x2001af (has no name): ()  1x1+0+0  +30+40
+        0x2001ae (has no name): ()  1x1+0+0  +30+40
+        0x2001ad (has no name): ()  1x1+0+0  +30+40
+        0x2001ac (has no name): ()  1x1+0+0  +30+40
+        0x2001ab (has no name): ()  1x1+0+0  +30+40
+        0x2001aa (has no name): ()  1x1+0+0  +30+40
+        0x2001a9 (has no name): ()  1x1+0+0  +30+40
+        0x2001a8 (has no name): ()  1x1+0+0  +30+40
+        0x2001a7 (has no name): ()  1x1+0+0  +30+40
+        0x2001a6 (has no name): ()  1x1+0+0  +30+40
+        0x2001a5 (has no name): ()  1x1+0+0  +30+40
+        0x2001a4 (has no name): ()  1x1+0+0  +30+40
+        0x2001a3 (has no name): ()  1x1+0+0  +30+40
+        0x2001a2 (has no name): ()  1x1+0+0  +30+40
+        0x2001a1 (has no name): ()  26x1+447+262  +477+302
+        0x2001a0 (has no name): ()  26x1+447+258  +477+298
+        0x20019f (has no name): ()  1x25+473+238  +503+278
+        0x20019e (has no name): ()  26x1+1+262  +31+302
+        0x20019d (has no name): ()  26x1+1+258  +31+298
+        0x20019c (has no name): ()  1x25+0+238  +30+278
+        0x20019b (has no name): ()  420x1+27+262  +57+302
+        0x20019a (has no name): ()  420x1+27+258  +57+298
+        0x200195 (has no name): ()  472x3+1+259  +31+299
+           4 children:
+           0x200199 (has no name): ()  1x3+446+0  +477+299
+           0x200198 (has no name): ()  1x3+25+0  +56+299
+           0x200197 (has no name): ()  25x3+447+0  +478+299
+           0x200196 (has no name): ()  25x3+0+0  +31+299
+        0x20018d (has no name): ()  1x213+473+26  +503+66
+        0x20018c (has no name): ()  1x213+0+26  +30+66
+        0x200186 (has no name): ()  472x1+1+19  +31+59
+        0x200185 (has no name): ()  1x25+473+1  +503+41
+        0x200184 (has no name): ()  26x1+448+0  +478+40
+        0x200183 (has no name): ()  26x1+0+0  +30+40
+        0x200182 (has no name): ()  422x1+26+0  +56+40
+        0x200181 (has no name): ()  1x25+0+1  +30+41
+        0x200180 (has no name): ()  472x18+1+1  +31+41
+           12 children:
+           0x200194 (has no name): ()  12x12+424+3  +455+44
+           0x200193 (has no name): ()  14x14+4+2  +35+43
+           0x200192 (has no name): ()  12x12+0+0  +31+41
+           0x200191 (has no name): ()  12x12+0+0  +31+41
+           0x200190 (has no name): ()  12x12+456+3  +487+44
+           0x20018f (has no name): ()  12x12+440+3  +471+44
+           0x20018e (has no name): ()  368x14+52+2  +83+43
+           0x20018b (has no name): ()  4x18+468+0  +499+41
+           0x20018a (has no name): ()  25x3+447+0  +478+41
+           0x200189 (has no name): ()  4x18+0+0  +31+41
+           0x200188 (has no name): ()  25x3+0+0  +31+41
+           0x200187 (has no name): ()  422x3+25+0  +56+41
+        0x20017b (has no name): ()  1x1+0+0  +30+40
+           2 children:
+           0x20017d (has no name): ()  1x1+0+0  +30+40
+           0x20017c (has no name): ()  1x1+0+0  +30+40
+        0x20017a (has no name): ()  1x1+0+0  +30+40
+           1 child:
+           0x20017f (has no name): ()  1x1+0+0  +30+40
+        0x200179 (has no name): ()  1x1+0+0  +30+40
+        0x200178 (has no name): ()  1x1+0+0  +30+40
+           1 child:
+           0x20017e (has no name): ()  1x1+0+0  +30+40
+        0x200176 (has no name): ()  472x238+1+20  +31+60
+           1 child:
+           0x200177 (has no name): ()  472x238+0+0  +31+60
+
+LOG:/home/ideck/.local/share/Steam/logs/bootstrap_log.txt
+[2026-10-17 09:40:27] Add pending download: https://client-update.steamstatic.com/bins_linuxarm64_linuxarm64.zip.vz.0b93255155bb94b71458346de0277e892c0146d4_61533584
+[2026-10-17 09:40:27] Manifest download: send request
+[2026-10-17 09:40:27] Add pending download: https://client-update.steamstatic.com/bins_sdk_linuxarm64_linuxarm64.zip.vz.a7a711403c380b2e7f821dfd122392e00477a6c5_10185555
+[2026-10-17 09:40:27] Manifest download: send request
+[2026-10-17 09:40:27] Add pending download: https://client-update.steamstatic.com/bins_androidarm64_linuxarm64.zip.vz.c615698e9400b116e58f1eef89c6cb482d06a063_9016860
+[2026-10-17 09:40:27] Manifest download: send request
+[2026-10-17 09:40:27] Add pending download: https://client-update.steamstatic.com/resource_linuxarm64_linuxarm64.zip.6e5691ac5a1a55a554250468a98c3f8e454fea4a
+[2026-10-17 09:40:27] Manifest download: send request
+[2026-10-17 09:40:27] Downloading update (16964 of 669522 KB)...
+[2026-10-17 09:40:28] Downloading update (23987 of 669522 KB)...
+[2026-10-17 09:40:28] Downloading update (30586 of 669522 KB)...
+[2026-10-17 09:40:28] Downloading update (34003 of 669522 KB)...
+[2026-10-17 09:40:28] Downloading update (39393 of 669522 KB)...
+[2026-10-17 09:40:30] Downloading update (60557 of 669522 KB)...
+[2026-10-17 09:40:31] Downloading update (69981 of 669522 KB)...
+[2026-10-17 09:40:31] Downloading update (75661 of 669522 KB)...
+[2026-10-17 09:40:31] Downloading update (87732 of 669522 KB)...
+[2026-10-17 09:40:32] Downloading update (91904 of 669522 KB)...
+[2026-10-17 09:40:32] Downloading update (107907 of 669522 KB)...
+[2026-10-17 09:40:32] Downloading update (113261 of 669522 KB)...
+[2026-10-17 09:40:32] Downloading update (121684 of 669522 KB)...
+[2026-10-17 09:40:35] Downloading update (134544 of 669522 KB)...
+[2026-10-17 09:40:37] Downloading update (171585 of 669522 KB)...
+[2026-10-17 09:40:37] Downloading update (205880 of 669522 KB)...
+[2026-10-17 09:40:38] Downloading update (223127 of 669522 KB)...
+[2026-10-17 09:40:39] Downloading update (227411 of 669522 KB)...
+[2026-10-17 09:40:39] Downloading update (247876 of 669522 KB)...
+[2026-10-17 09:40:40] Downloading update (256424 of 669522 KB)...
+[2026-10-17 09:40:40] Downloading update (263563 of 669522 KB)...
+[2026-10-17 09:40:40] Downloading update (271759 of 669522 KB)...
+[2026-10-17 09:40:40] Downloading update (278373 of 669522 KB)...
+[2026-10-17 09:40:41] Downloading update (283205 of 669522 KB)...
+[2026-10-17 09:40:41] Downloading update (286371 of 669522 KB)...
+[2026-10-17 09:40:41] Downloading update (297381 of 669522 KB)...
+[2026-10-17 09:40:41] Downloading update (306160 of 669522 KB)...
+[2026-10-17 09:40:42] Downloading update (312996 of 669522 KB)...
+[2026-10-17 09:40:42] Downloading update (319345 of 669522 KB)...
+[2026-10-17 09:40:42] Downloading update (324615 of 669522 KB)...
+[2026-10-17 09:40:42] Downloading update (334959 of 669522 KB)...
+[2026-10-17 09:40:43] Downloading update (340768 of 669522 KB)...
+[2026-10-17 09:40:43] Downloading update (345190 of 669522 KB)...
+[2026-10-17 09:40:43] Downloading update (354564 of 669522 KB)...
+[2026-10-17 09:40:43] Downloading update (359998 of 669522 KB)...
+[2026-10-17 09:40:44] Downloading update (370543 of 669522 KB)...
+[2026-10-17 09:40:44] Downloading update (376536 of 669522 KB)...
+[2026-10-17 09:40:44] Downloading update (382505 of 669522 KB)...
+[2026-10-17 09:40:44] Downloading update (388137 of 669522 KB)...
+[2026-10-17 09:40:45] Downloading update (396603 of 669522 KB)...
+[2026-10-17 09:40:45] Downloading update (405138 of 669522 KB)...
+[2026-10-17 09:40:52] Downloading update (462227 of 669522 KB)...
+[2026-10-17 09:40:54] Downloading update (564112 of 669522 KB)...
+[2026-10-17 09:40:55] Downloading update (576071 of 669522 KB)...
+[2026-10-17 09:40:58] Downloading update (610759 of 669522 KB)...
+[2026-10-17 09:41:00] Downloading update (618223 of 669522 KB)...
+[2026-10-17 09:41:01] Downloading update (669522 of 669522 KB)...
+[2026-10-17 09:41:03] Exhausted list of download hosts
+[2026-10-17 09:41:03] Download complete.
+[2026-10-17 09:41:03] Saving metrics to disk (/home/ideck/.local/share/Steam/package/steam_client_metrics.bin)
+[2026-10-17 09:41:03] uninstalled manifest found in /home/ideck/.local/share/Steam/package/steam_client_steamdeck_publicbeta_linuxarm64 (1).
+[2026-10-17 09:41:04] Extracting package...
+LOG:/home/ideck/.local/share/Steam/logs/updateui_child.txt
+[2026-10-17 09:40:40] Set status message: Downloading update (278373 of 669522 KB)...
+[2026-10-17 09:40:40] Set percent complete: 41
+[2026-10-17 09:40:41] Set status message: Downloading update (283205 of 669522 KB)...
+[2026-10-17 09:40:41] Set percent complete: 42
+[2026-10-17 09:40:41] Set status message: Downloading update (286371 of 669522 KB)...
+[2026-10-17 09:40:41] Set percent complete: 42
+[2026-10-17 09:40:41] Set status message: Downloading update (297381 of 669522 KB)...
+[2026-10-17 09:40:41] Set percent complete: 44
+[2026-10-17 09:40:41] Set status message: Downloading update (306160 of 669522 KB)...
+[2026-10-17 09:40:41] Set percent complete: 45
+[2026-10-17 09:40:42] Set status message: Downloading update (312996 of 669522 KB)...
+[2026-10-17 09:40:42] Set percent complete: 46
+[2026-10-17 09:40:42] Set status message: Downloading update (319345 of 669522 KB)...
+[2026-10-17 09:40:42] Set percent complete: 47
+[2026-10-17 09:40:42] Set status message: Downloading update (324615 of 669522 KB)...
+[2026-10-17 09:40:42] Set percent complete: 48
+[2026-10-17 09:40:42] Set status message: Downloading update (334959 of 669522 KB)...
+[2026-10-17 09:40:42] Set percent complete: 50
+[2026-10-17 09:40:43] Set status message: Downloading update (340768 of 669522 KB)...
+[2026-10-17 09:40:43] Set percent complete: 50
+[2026-10-17 09:40:43] Set status message: Downloading update (345190 of 669522 KB)...
+[2026-10-17 09:40:43] Set percent complete: 51
+[2026-10-17 09:40:43] Set status message: Downloading update (354564 of 669522 KB)...
+[2026-10-17 09:40:43] Set percent complete: 52
+[2026-10-17 09:40:43] Set status message: Downloading update (359998 of 669522 KB)...
+[2026-10-17 09:40:43] Set percent complete: 53
+[2026-10-17 09:40:44] Set status message: Downloading update (370543 of 669522 KB)...
+[2026-10-17 09:40:44] Set percent complete: 55
+[2026-10-17 09:40:44] Set status message: Downloading update (376536 of 669522 KB)...
+[2026-10-17 09:40:44] Set percent complete: 56
+[2026-10-17 09:40:44] Set status message: Downloading update (382505 of 669522 KB)...
+[2026-10-17 09:40:44] Set percent complete: 57
+[2026-10-17 09:40:45] Set status message: Downloading update (388137 of 669522 KB)...
+[2026-10-17 09:40:45] Set percent complete: 57
+[2026-10-17 09:40:45] Set status message: Downloading update (396603 of 669522 KB)...
+[2026-10-17 09:40:45] Set percent complete: 59
+[2026-10-17 09:40:45] Set status message: Downloading update (405138 of 669522 KB)...
+[2026-10-17 09:40:45] Set percent complete: 60
+[2026-10-17 09:40:45] Set percent complete: 60
+[2026-10-17 09:40:46] Set percent complete: 60
+[2026-10-17 09:40:46] Set percent complete: 60
+[2026-10-17 09:40:52] Set status message: Downloading update (462227 of 669522 KB)...
+[2026-10-17 09:40:52] Set percent complete: 69
+[2026-10-17 09:40:54] Set status message: Downloading update (564112 of 669522 KB)...
+[2026-10-17 09:40:54] Set percent complete: 84
+[2026-10-17 09:40:55] Set status message: Downloading update (576071 of 669522 KB)...
+[2026-10-17 09:40:55] Set percent complete: 86
+[2026-10-17 09:40:55] Set percent complete: 86
+[2026-10-17 09:40:55] Set percent complete: 86
+[2026-10-17 09:40:57] Set percent complete: 86
+[2026-10-17 09:40:58] Set status message: Downloading update (610759 of 669522 KB)...
+[2026-10-17 09:40:58] Set percent complete: 91
+[2026-10-17 09:41:00] Set status message: Downloading update (618223 of 669522 KB)...
+[2026-10-17 09:41:00] Set percent complete: 92
+[2026-10-17 09:41:01] Set status message: Downloading update (669522 of 669522 KB)...
+[2026-10-17 09:41:01] Set percent complete: 100
+[2026-10-17 09:41:03] Set percent complete: 100
+[2026-10-17 09:41:03] Set status message: Download complete.
+[2026-10-17 09:41:03] Set percent complete: -1
+[2026-10-17 09:41:04] Set status message: Extracting package...
+
+STEAM_COMMAND_003_0
+debian# 

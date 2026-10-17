@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "id": "steam-arm64-private-host-experiment-v1",
+  "app_route_enabled": false,
+  "client_bundled": false,
+  "agreement_accepted": false,
+  "disk": {
+    "kind": "new-qcow2-overlay",
+    "backing": "verified-gui-seed-read-only",
+    "virtual_size": "4G",
+    "reuse_dirty": false
+  },
+  "memory_mib": 1536,
+  "cpu": "max",
+  "network": {
+    "kind": "qemu-user-nat",
+    "explicit_opt_in": true,
+    "ipv6": false,
+    "host_forwarding": false,
+    "guest_address": "10.0.2.15/24",
+    "gateway": "10.0.2.2",
+    "dns": "10.0.2.3"
+  },
+  "stop": "existing-production-control-sync-unmount-then-qemu-process-exit",
+  "rendering": "CEF software UI experiment; no accelerated gaming claim"
+}

@@ -1,5 +1,79 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Isolated Steam ARM64 experiment — 2026-10-17
+
+Branch `codex/steam-arm64-experiment-20261017`, based exactly on
+`27e9736f35ffb7c572e2fa81c75458ee1d1b8ff9`; **not merged**. The GUI branch,
+accepted payload/Release, Codemagic configuration and existing user disks were
+not changed. Local worktree:
+`E:\Freddy Fazbear\iDeck.work\steam-arm64-experiment-20261017\source`.
+
+Implemented an original pinned Valve ARM64 installer, authenticated additional
+Debian dependency closure, ordinary UID1000 X11/D-Bus launcher, separate explicitly
+networked host profile and new qcow2 disk runner. See
+[STEAM-EXPERIMENT.md](experiments/linux-guest/STEAM-EXPERIMENT.md).
+No Valve binaries are in Git, an app payload or a Release; no account, agreement,
+game installation, sandbox-disable flag or system/security configuration change.
+The app Steam route remains disabled until actual client validation.
+
+**Actual runtime result:** the official native ARM64 executable starts with QEMU
+`-cpu max` and shows its real **Steam updater window** on the Debian Desktop.
+The main Steam/CEF UI, login and Big Picture are **NOT verified**. Screenshot and
+runtime records: [evidence](experiments/linux-guest/evidence/steam-arm64-20261017).
+Host QEMU10.0.13 and production Alpine6.18.35 were used; iOS QEMU10.0.12-utm,
+Swift/Apple build, IPA and Steam on iPhone are **NOT RUN**. No gaming/GPU claim.
+
+Two private disks were actually provisioned: all17 locked client ZIPs verified,
+41 additional packages configured, `dpkg --audit` exit0 and empty output, all341
+original GUI package versions preserved. Install times149.822s and143.613s.
+The first Cortex-A72 launch exited132 (SIGILL), with its ELF loader dependencies
+resolved. The fresh CPUmax run eliminated that early failure and displayed the
+updater. It then downloaded an additional669522KB as reported by Valve and began
+extracting its own update; this automatic update is separate from our pinned
+initial17-archive install. It was intentionally interrupted by VM Stop as E:
+approached exhaustion (about260MB free after stopping), **not** declared complete.
+The17 verified guest installer cache files were removed after successful install;
+the host source cache remains. This cleanup is now part of the installer and has
+three additional regressions. The final rebuilt bootstrap includes that change;
+it is built/verified but **not booted**. Runtime evidence binds the earlier exact
+bootstrap and the explicit equivalent cache-cleanup command.
+
+The final run proves read-only seed ownership via QMP, independent control-channel
+Stop, guest sync/unmount acknowledgement, QEMU process exit0 and host fsync. Its
+dirty marker was cleared only after these conditions. The earlier runner expected
+CRLF on the LF control channel and conservatively reported not-clean despite its
+guest acknowledgement/exit0; that failed classification is retained, not rewritten.
+The old private test overlay was discarded to reclaim space, never reused. The
+correct LF/CRLF exact-line predicate now has regression coverage. Embedded iOS
+LinuxTerminalSession/owner-thread/disk-lock lifetime code remains untouched.
+
+Next blockers and concrete continuation:
+
+1. Provide more free E: space before continuing the updater (several GiB of
+   headroom, plus a larger private virtual disk if needed). The retained private
+   test disk is `...\steam-arm64-experiment-20261017\run4\steam-experiment.qcow2`;
+   it has a clean **filesystem** stop but an unfinished Steam update. It depends on
+   the accepted GUI seed through the read-only `prior-build` mount. Recreate that
+   mount using the local `mount-inputs.sh` before any explicit reviewed continuation.
+   The runner intentionally refuses existing output directories; it does not
+   auto-resume, repair, delete or recreate this disk.
+2. `unshare --user --map-root-user --mount true` as UID1000 returns EPERM in the
+   current chroot route. Linux documents this restriction for chroot callers
+   ([unshare(2)](https://man7.org/linux/man-pages/man2/unshare.2.html)). Two private
+   mount-namespace probes did not solve it (same-root pivot EBUSY, distinct-root
+   pivot followed by user namespace EPERM). They changed no global mounts or
+   sysctls. Implement/test a proper separate Steam root/mount namespace bootstrap
+   with the existing Stop invariants before relying on Chromium's namespace
+   sandbox. This is a demonstrated namespace limitation, not yet a proven CEF
+   crash: the updater had not reached CEF. Do not bypass the sandbox.
+3. After the update and root-namespace work, validate the normal client window,
+   then `ideck-steam big-picture`; keep agreement/login decisions with the owner.
+
+Touched-code checks: **63 PASS** across Windows installer/cache fixtures and WSL
+launcher/bootstrap/host guards. The earlier unsupported DrvFS atomic-publication
+errors remain documented; actual installation inside guest ext4 succeeded twice.
+No Codemagic dispatch or merge was performed.
+
 ## Local Windows/WSL GUI rebuild — 2026-10-17
 
 Rebuilt from the authenticated package closure on E:, starting at `d88aaefea758479f1da4fb81f15a02bc904898b5`.

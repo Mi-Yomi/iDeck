@@ -1,0 +1,102 @@
+unshare: unshare failed: Operation not permitted
+PRIVATE_DISTINCT_ROOT_PROBE_EXIT:1
+[2026-10-17 09:40:43] Downloading update (354564 of 669522 KB)...
+[2026-10-17 09:40:43] Set status message: Downloading update (354564 of 669522 KB)...
+[2026-10-17 09:40:43] Set percent complete: 52
+[2026-10-17 09:40:43] Downloading update (359998 of 669522 KB)...
+[2026-10-17 09:40:43] Set status message: Downloading update (359998 of 669522 KB)...
+[2026-10-17 09:40:43] Set percent complete: 53
+[2026-10-17 09:40:44] Downloading update (370543 of 669522 KB)...
+[2026-10-17 09:40:44] Set status message: Downloading update (370543 of 669522 KB)...
+[2026-10-17 09:40:44] Set percent complete: 55
+[2026-10-17 09:40:44] Downloading update (376536 of 669522 KB)...
+[2026-10-17 09:40:44] Set status message: Downloading update (376536 of 669522 KB)...
+[2026-10-17 09:40:44] Set percent complete: 56
+[2026-10-17 09:40:44] Downloading update (382505 of 669522 KB)...
+[2026-10-17 09:40:44] Set status message: Downloading update (382505 of 669522 KB)...
+[2026-10-17 09:40:44] Set percent complete: 57
+[2026-10-17 09:40:44] Downloading update (388137 of 669522 KB)...
+[2026-10-17 09:40:45] Set status message: Downloading update (388137 of 669522 KB)...
+[2026-10-17 09:40:45] Set percent complete: 57
+[2026-10-17 09:40:45] Downloading update (396603 of 669522 KB)...
+[2026-10-17 09:40:45] Set status message: Downloading update (396603 of 669522 KB)...
+[2026-10-17 09:40:45] Set percent complete: 59
+[2026-10-17 09:40:45] Downloading update (405138 of 669522 KB)...
+[2026-10-17 09:40:45] Set status message: Downloading update (405138 of 669522 KB)...
+[2026-10-17 09:40:45] Set percent complete: 60
+[2026-10-17 09:40:45] Set percent complete: 60
+[2026-10-17 09:40:46] Set percent complete: 60
+[2026-10-17 09:40:46] Set percent complete: 60
+[2026-10-17 09:40:52] Downloading update (462227 of 669522 KB)...
+[2026-10-17 09:40:52] Set status message: Downloading update (462227 of 669522 KB)...
+[2026-10-17 09:40:52] Set percent complete: 69
+[2026-10-17 09:40:54] Downloading update (564112 of 669522 KB)...
+[2026-10-17 09:40:54] Set status message: Downloading update (564112 of 669522 KB)...
+[2026-10-17 09:40:54] Set percent complete: 84
+[2026-10-17 09:40:55] Downloading update (576071 of 669522 KB)...
+[2026-10-17 09:40:55] Set status message: Downloading update (576071 of 669522 KB)...
+[2026-10-17 09:40:55] Set percent complete: 86
+[2026-10-17 09:40:55] Set percent complete: 86
+[2026-10-17 09:40:55] Set percent complete: 86
+[2026-10-17 09:40:57] Set percent complete: 86
+[2026-10-17 09:40:58] Downloading update (610759 of 669522 KB)...
+[2026-10-17 09:40:58] Set status message: Downloading update (610759 of 669522 KB)...
+[2026-10-17 09:40:58] Set percent complete: 91
+[2026-10-17 09:41:00] Downloading update (618223 of 669522 KB)...
+[2026-10-17 09:41:00] Set status message: Downloading update (618223 of 669522 KB)...
+[2026-10-17 09:41:00] Set percent complete: 92
+[2026-10-17 09:41:01] Downloading update (669522 of 669522 KB)...
+[2026-10-17 09:41:01] Set status message: Downloading update (669522 of 669522 KB)...
+[2026-10-17 09:41:01] Set percent complete: 100
+[2026-10-17 09:41:03] Exhausted list of download hosts
+[2026-10-17 09:41:03] Download complete.
+[2026-10-17 09:41:03] Set percent complete: 100
+[2026-10-17 09:41:03] Set status message: Download complete.
+[2026-10-17 09:41:03] Saving metrics to disk (/home/ideck/.local/share/Steam/package/steam_client_metrics.bin)
+[2026-10-17 09:41:03] uninstalled manifest found in /home/ideck/.local/share/Steam/package/steam_client_steamdeck_publicbeta_linuxarm64 (1).
+[2026-10-17 09:41:03] Set percent complete: -1
+Unable to determine CPU Frequency. Try defining CPU_MHZ.
+
+Unable to determine CPU Frequency. Try defining CPU_MHZ.
+[2026-10-17 09:41:04] Extracting package...
+[2026-10-17 09:41:04] Set status message: Extracting package...
+
+xwininfo: Window id: 0x21d (the root window) (has no name)
+
+  Root window id: 0x21d (the root window) (has no name)
+  Parent window id: 0x0 (none)
+     24 children:
+     0x800009 (has no name): ()  1x1+-1+-1  +-1+-1
+     0xa00110 "pcmanfm": ("pcmanfm" "Pcmanfm")  2x2+0+0  +0+0
+        1 child:
+        0xa00111 (has no name): ()  1x1+-1+-1  +-1+-1
+     0xa00003 (has no name): ()  1x1+-1+-1  +-1+-1
+     0x800001 "Mousepad": ("mousepad" "Mousepad")  10x10+10+10  +10+10
+     0xa00001 "pcmanfm": ("pcmanfm" "Pcmanfm")  10x10+10+10  +10+10
+     0x60000c (has no name): ()  1x1+-1+-1  +-1+-1
+     0x600005 (has no name): ()  1x1+-1+-1  +-1+-1
+     0x600002 (has no name): ()  100x20+0+0  +0+0
+     0x20011f "Openbox": ("" (none))  1x1+-100+-100  +-100+-100
+     0x200173 (has no name): ()  1x1+0+0  +0+0
+        1 child:
+        0x200174 (has no name): ()  1x1+0+0  +1+1
+     0x200171 (has no name): ()  1x1+0+0  +0+0
+        1 child:
+        0x200172 (has no name): ()  1x1+0+0  +1+1
+     0x20016e (has no name): ()  1x1+0+0  +0+0
+        1 child:
+        0x20016f (has no name): ()  1x1+0+0  +1+1
+     0x20016a (has no name): ("OPENBOX_FOCUS_CYCLE_POPUP" "OPENBOX_FOCUS_CYCLE_POPUP")  1x1+0+0  +0+0
+        3 children:
+        0x20016d (has no name): ()  1x1+0+0  +1+1
+        0x20016c (has no name): ()  1x1+0+0  +1+1
+        0x20016b (has no name): ()  1x1+0+0  +1+1
+     0x200167 (has no name): ()  1x1+0+0  +0+0
+        2 children:
+        0x200169 (has no name): ()  1x1+0+0  +1+1
+        0x200168 (has no name): ()  1x1+0+0  +1+1
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/vda        3.9G  3.0G  929M  77% /
+
+STEAM_COMMAND_006_0
+debian# 

@@ -1,0 +1,1313 @@
+[
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/chromehtml.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "librt.so.1",
+      "ld-linux-aarch64.so.1",
+      "libtier0_s.so",
+      "libvstdlib_s.so",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/crashhandler.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "ld-linux-aarch64.so.1",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/filesystem_stdio.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "ld-linux-aarch64.so.1",
+      "libtier0_s.so",
+      "libvstdlib_s.so",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/fossilize_replay",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "librt.so.1",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/friendsui.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "librt.so.1",
+      "ld-linux-aarch64.so.1",
+      "libtier0_s.so",
+      "libvstdlib_s.so",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/gameoverlayrenderer.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "librt.so.1",
+      "ld-linux-aarch64.so.1",
+      "libGL.so.1",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/gameoverlayui",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/gameoverlayui.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "librt.so.1",
+      "ld-linux-aarch64.so.1",
+      "libtier0_s.so",
+      "libvstdlib_s.so",
+      "libavif.so.16",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/gldriverquery",
+    "architecture": 183,
+    "needed": [
+      "libSDL2-2.0.so.0",
+      "libstdc++.so.6",
+      "libm.so.6",
+      "libgcc_s.so.1",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": []
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/libVkLayer_khronos_validation.so",
+    "architecture": 183,
+    "needed": [
+      "libpthread.so.0",
+      "libm.so.6",
+      "libgcc_s.so.1",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": []
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/libVkLayer_steam_fossilize.so",
+    "architecture": 183,
+    "needed": [
+      "librt.so.1",
+      "ld-linux-aarch64.so.1",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/libaom.so.3",
+    "architecture": 183,
+    "needed": [
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": []
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/libaudio.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "ld-linux-aarch64.so.1",
+      "libtier0_s.so",
+      "libvstdlib_s.so",
+      "libpulse.so.0",
+      "libopenal.so.1",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/libdav1d.so.6",
+    "architecture": 183,
+    "needed": [
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": []
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/libmiles.so",
+    "architecture": 183,
+    "needed": [
+      "libopenal.so.1",
+      "libstdc++.so.6",
+      "libm.so.6",
+      "libgcc_s.so.1",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/libminigbm.so",
+    "architecture": 183,
+    "needed": [
+      "libpthread.so.0",
+      "libdrm.so.2",
+      "libgcc_s.so.1",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/libopenvr_api.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "ld-linux-aarch64.so.1",
+      "libpthread.so.0",
+      "libstdc++.so.6",
+      "libm.so.6",
+      "libc.so.6"
+    ],
+    "search": []
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/libpulsecommon-10.0.so",
+    "architecture": 183,
+    "needed": [
+      "libm.so.6",
+      "libsndfile.so.1",
+      "libdbus-1.so.3",
+      "libX11-xcb.so.1",
+      "libX11.so.6",
+      "libxcb.so.1",
+      "libsystemd.so.0",
+      "libasyncns.so.0",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": []
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/libs/libcurl.so.4.8.0",
+    "architecture": 183,
+    "needed": [
+      "libnghttp2.so.14",
+      "libssh2.so.1",
+      "libssl.so.3",
+      "libcrypto.so.3",
+      "libzstd.so.1",
+      "libbrotlidec.so.1",
+      "libz.so.1",
+      "libc.so.6"
+    ],
+    "search": []
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/libs/libnghttp2.so.14.20.1",
+    "architecture": 183,
+    "needed": [
+      "libc.so.6"
+    ],
+    "search": []
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/libsdkencryptedappticket.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "ld-linux-aarch64.so.1",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/libtier0_s.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "ld-linux-aarch64.so.1",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/libvideo.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "ld-linux-aarch64.so.1",
+      "libavcodec.so.62",
+      "libavformat.so.62",
+      "libswresample.so.6",
+      "libavutil.so.60",
+      "libswscale.so.9",
+      "libavfilter.so.11",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/libvk_swiftshader.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "libpthread.so.0",
+      "libm.so.6",
+      "libgcc_s.so.1",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": []
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/libvstdlib_s.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "librt.so.1",
+      "ld-linux-aarch64.so.1",
+      "libtier0_s.so",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/libvulkan.so",
+    "architecture": 183,
+    "needed": [
+      "libm.so.6",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": []
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/libvulkan.so.1",
+    "architecture": 183,
+    "needed": [
+      "libm.so.6",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": []
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/reaper",
+    "architecture": 183,
+    "needed": [
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": []
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/steam",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/steam_monitor",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/steamclient.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "librt.so.1",
+      "ld-linux-aarch64.so.1",
+      "libtier0_s.so",
+      "libvstdlib_s.so",
+      "libXrandr.so.2",
+      "libXi.so.6",
+      "libGL.so.1",
+      "libXrender.so.1",
+      "libX11.so.6",
+      "libXtst.so.6",
+      "libpipewire-0.3.so.0",
+      "libopenal.so.1",
+      "libpulse.so.0",
+      "libnm.so.0",
+      "libgobject-2.0.so.0",
+      "libglib-2.0.so.0",
+      "libudev.so.1",
+      "libgio-2.0.so.0",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/steamerrorreporter",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/steamoverlayvulkanlayer.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "ld-linux-aarch64.so.1",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/steamservice.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "ld-linux-aarch64.so.1",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/steamsysinfo",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/steamui.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "librt.so.1",
+      "ld-linux-aarch64.so.1",
+      "libtier0_s.so",
+      "libvstdlib_s.so",
+      "libSDL3.so.0",
+      "libvideo.so",
+      "libGL.so.1",
+      "libXtst.so.6",
+      "libXfixes.so.3",
+      "libXrandr.so.2",
+      "libXrender.so.1",
+      "libXext.so.6",
+      "libX11.so.6",
+      "libXi.so.6",
+      "libgobject-2.0.so.0",
+      "libglib-2.0.so.0",
+      "libgio-2.0.so.0",
+      "libgtk-x11-2.0.so.0",
+      "libpipewire-0.3.so.0",
+      "libpulse.so.0",
+      "libgdk_pixbuf-2.0.so.0",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/steamwebhelper",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "librt.so.1",
+      "libtier0_s.so",
+      "libvstdlib_s.so",
+      "libcef.so",
+      "libSDL3.so.0",
+      "libgobject-2.0.so.0",
+      "libglib-2.0.so.0",
+      "libgio-2.0.so.0",
+      "libX11.so.6",
+      "libXi.so.6",
+      "libXext.so.6",
+      "libXrender.so.1",
+      "libXtst.so.6",
+      "libXrandr.so.2",
+      "libXcomposite.so.1",
+      "libXdamage.so.1",
+      "libGL.so.1",
+      "libibus-1.0.so.5",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/streaming_client",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "libSDL3.so.0",
+      "libSDL3_image.so.0",
+      "libSDL3_ttf.so.0",
+      "libh264bitstream.so.0",
+      "libhevcbitstream.so.0",
+      "libXtst.so.6",
+      "libXrender.so.1",
+      "libX11.so.6",
+      "libXi.so.6",
+      "libXrandr.so.2",
+      "libGL.so.1",
+      "libbrotlidec.so.1",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/swiftshader/libEGL.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "libpthread.so.0",
+      "libgcc_s.so.1",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": []
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/swiftshader/libGLESv2.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "libpthread.so.0",
+      "libm.so.6",
+      "libgcc_s.so.1",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": []
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/vgui2_s.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "ld-linux-aarch64.so.1",
+      "libtier0_s.so",
+      "libvstdlib_s.so",
+      "libX11.so.6",
+      "libXi.so.6",
+      "libXrandr.so.2",
+      "libXrender.so.1",
+      "libGL.so.1",
+      "libfontconfig.so.1",
+      "libfreetype.so.6",
+      "libgtk-x11-2.0.so.0",
+      "libglib-2.0.so.0",
+      "libopenal.so.1",
+      "libXinerama.so.1",
+      "libSM.so.6",
+      "libICE.so.6",
+      "libXtst.so.6",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/vgui_panel_zoo",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "librt.so.1",
+      "libtier0_s.so",
+      "libvstdlib_s.so",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_linuxarm64_linuxarm64.zip.c10ca8366386600247b22796da24febe0805cbd7",
+    "file": "steamrtarm64/vulkandriverquery",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_sdk_linuxarm64_linuxarm64.zip.ba5879ea9713e405a2f81a1875c4b75d3ea7e250",
+    "file": "linuxarm64/crashhandler.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "ld-linux-aarch64.so.1",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_sdk_linuxarm64_linuxarm64.zip.ba5879ea9713e405a2f81a1875c4b75d3ea7e250",
+    "file": "linuxarm64/pw-audio-namespace",
+    "architecture": 183,
+    "needed": [
+      "libc.so.6"
+    ],
+    "search": []
+  },
+  {
+    "archive": "bins_sdk_linuxarm64_linuxarm64.zip.ba5879ea9713e405a2f81a1875c4b75d3ea7e250",
+    "file": "linuxarm64/steam-launch-wrapper",
+    "architecture": 183,
+    "needed": [
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": []
+  },
+  {
+    "archive": "bins_sdk_linuxarm64_linuxarm64.zip.ba5879ea9713e405a2f81a1875c4b75d3ea7e250",
+    "file": "linuxarm64/steamclient.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "librt.so.1",
+      "ld-linux-aarch64.so.1",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "bins_sdk_linuxarm64_linuxarm64.zip.ba5879ea9713e405a2f81a1875c4b75d3ea7e250",
+    "file": "linuxarm64/steamerrorreporter",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libavcodec.so",
+    "architecture": 183,
+    "needed": [
+      "libavutil.so.59",
+      "libvpx.so.6",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libva.so.2",
+      "libc.so.6"
+    ],
+    "search": []
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libavcodec.so.58",
+    "architecture": 183,
+    "needed": [
+      "libavutil.so.56",
+      "libvpx.so.6",
+      "libm.so.6",
+      "libva.so.2",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": []
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libavcodec.so.62",
+    "architecture": 183,
+    "needed": [
+      "libavutil.so.60",
+      "libvpx.so.6",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libva.so.2",
+      "libdl.so.2",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libavfilter.so",
+    "architecture": 183,
+    "needed": [
+      "libavutil.so.59",
+      "libc.so.6"
+    ],
+    "search": []
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libavfilter.so.11",
+    "architecture": 183,
+    "needed": [
+      "libswscale.so.9",
+      "libavutil.so.60",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libavfilter.so.7",
+    "architecture": 183,
+    "needed": [
+      "libavutil.so.56",
+      "libm.so.6",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": []
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libavformat.so",
+    "architecture": 183,
+    "needed": [
+      "libavcodec.so.61",
+      "libavutil.so.59",
+      "libm.so.6",
+      "libbz2.so.1.0",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": []
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libavformat.so.58",
+    "architecture": 183,
+    "needed": [
+      "libavcodec.so.58",
+      "libavutil.so.56",
+      "libm.so.6",
+      "libbz2.so.1.0",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": []
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libavformat.so.62",
+    "architecture": 183,
+    "needed": [
+      "libavcodec.so.62",
+      "libavutil.so.60",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libavif.so.16",
+    "architecture": 183,
+    "needed": [
+      "libdav1d.so.6",
+      "libaom.so.3",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      ""
+    ]
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libavresample.so",
+    "architecture": 183,
+    "needed": [
+      "libavutil.so.56",
+      "libm.so.6",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": []
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libavresample.so.4",
+    "architecture": 183,
+    "needed": [
+      "libavutil.so.56",
+      "libm.so.6",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": []
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libavutil.so",
+    "architecture": 183,
+    "needed": [
+      "libvdpau.so.1",
+      "libX11.so.6",
+      "libm.so.6",
+      "libdrm.so.2",
+      "libva.so.2",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": []
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libavutil.so.56",
+    "architecture": 183,
+    "needed": [
+      "libvdpau.so.1",
+      "libX11.so.6",
+      "libm.so.6",
+      "libdrm.so.2",
+      "libva.so.2",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": []
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libavutil.so.60",
+    "architecture": 183,
+    "needed": [
+      "libm.so.6",
+      "libdrm.so.2",
+      "libva.so.2",
+      "libdl.so.2",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libh264bitstream.so.0",
+    "architecture": 183,
+    "needed": [
+      "libc.so.6"
+    ],
+    "search": []
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libhevcbitstream.so.0",
+    "architecture": 183,
+    "needed": [
+      "libc.so.6"
+    ],
+    "search": []
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libogg.so",
+    "architecture": 183,
+    "needed": [
+      "libc.so.6"
+    ],
+    "search": []
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libogg.so.0",
+    "architecture": 183,
+    "needed": [
+      "libc.so.6"
+    ],
+    "search": [
+      "$$ORIGIN"
+    ]
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libswresample.so",
+    "architecture": 183,
+    "needed": [
+      "libavutil.so.59",
+      "libm.so.6",
+      "libc.so.6"
+    ],
+    "search": []
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libswresample.so.6",
+    "architecture": 183,
+    "needed": [
+      "libavutil.so.60",
+      "libm.so.6",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libswscale.so",
+    "architecture": 183,
+    "needed": [
+      "libavutil.so.59",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": []
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libswscale.so.5",
+    "architecture": 183,
+    "needed": [
+      "libavutil.so.56",
+      "libm.so.6",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": []
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libswscale.so.9",
+    "architecture": 183,
+    "needed": [
+      "libavutil.so.60",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libvorbis.so",
+    "architecture": 183,
+    "needed": [
+      "libm.so.6",
+      "libogg.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "/buildffmpeg7/ffmpeg-7.0.1/build_arm64/lib"
+    ]
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libvorbis.so.0",
+    "architecture": 183,
+    "needed": [
+      "libm.so.6",
+      "libogg.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "/home/buildbot/buildslave/libav_linux/build/ffmpeg-8.1.2/build_arm64/lib:$$ORIGIN"
+    ]
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libvorbisenc.so",
+    "architecture": 183,
+    "needed": [
+      "libvorbis.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "/buildffmpeg7/ffmpeg-7.0.1/build_arm64/lib"
+    ]
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libvorbisenc.so.2",
+    "architecture": 183,
+    "needed": [
+      "libvorbis.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "/home/buildbot/buildslave/libav_linux/build/ffmpeg-8.1.2/build_arm64/lib:$$ORIGIN"
+    ]
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libvorbisfile.so",
+    "architecture": 183,
+    "needed": [
+      "libvorbis.so.0",
+      "libogg.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "/buildffmpeg7/ffmpeg-7.0.1/build_arm64/lib"
+    ]
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libvorbisfile.so.3",
+    "architecture": 183,
+    "needed": [
+      "libvorbis.so.0",
+      "libogg.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "/home/buildbot/buildslave/libav_linux/build/ffmpeg-8.1.2/build_arm64/lib:$$ORIGIN"
+    ]
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libvpx.so",
+    "architecture": 183,
+    "needed": [
+      "libpthread.so.0",
+      "libm.so.6",
+      "libc.so.6"
+    ],
+    "search": []
+  },
+  {
+    "archive": "codecs_linuxarm64_linuxarm64.zip.53f9d355fbc58c16644f3c61ab1aeeb979059230",
+    "file": "steamrtarm64/libvpx.so.6",
+    "architecture": 183,
+    "needed": [
+      "libpthread.so.0",
+      "libm.so.6",
+      "libc.so.6"
+    ],
+    "search": [
+      "$$ORIGIN"
+    ]
+  },
+  {
+    "archive": "sdl3_linuxarm64_linuxarm64.zip.efa8d1a917106512c3703ee55f7e53546be04f9b",
+    "file": "steamrtarm64/libSDL3.so.0",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "ld-linux-aarch64.so.1",
+      "libEGL.so.1",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "sdl3_linuxarm64_linuxarm64.zip.efa8d1a917106512c3703ee55f7e53546be04f9b",
+    "file": "steamrtarm64/libSDL3_image.so.0",
+    "architecture": 183,
+    "needed": [
+      "libSDL3.so.0",
+      "libc.so.6"
+    ],
+    "search": []
+  },
+  {
+    "archive": "sdl3_linuxarm64_linuxarm64.zip.efa8d1a917106512c3703ee55f7e53546be04f9b",
+    "file": "steamrtarm64/libSDL3_ttf.so.0",
+    "architecture": 183,
+    "needed": [
+      "libSDL3.so.0",
+      "libm.so.6",
+      "libpthread.so.0",
+      "libc.so.6"
+    ],
+    "search": []
+  },
+  {
+    "archive": "webkit_linuxarm64_linuxarm64.zip.c1d5fa58a564375f71b34bccaa51c19be1143137",
+    "file": "steamrtarm64/cefsimple",
+    "architecture": 183,
+    "needed": [
+      "libcef.so",
+      "libX11.so.6",
+      "libpthread.so.0",
+      "libgcc_s.so.1",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  },
+  {
+    "archive": "webkit_linuxarm64_linuxarm64.zip.c1d5fa58a564375f71b34bccaa51c19be1143137",
+    "file": "steamrtarm64/libEGL.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "libpthread.so.0",
+      "libgcc_s.so.1",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": []
+  },
+  {
+    "archive": "webkit_linuxarm64_linuxarm64.zip.c1d5fa58a564375f71b34bccaa51c19be1143137",
+    "file": "steamrtarm64/libGLESv2.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "libpthread.so.0",
+      "libX11.so.6",
+      "libXext.so.6",
+      "libxcb.so.1",
+      "libdrm.so.2",
+      "libm.so.6",
+      "libgcc_s.so.1",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": []
+  },
+  {
+    "archive": "webkit_linuxarm64_linuxarm64.zip.c1d5fa58a564375f71b34bccaa51c19be1143137",
+    "file": "steamrtarm64/libcef.so",
+    "architecture": 183,
+    "needed": [
+      "libdl.so.2",
+      "libpthread.so.0",
+      "libgobject-2.0.so.0",
+      "libglib-2.0.so.0",
+      "libnss3.so",
+      "libnssutil3.so",
+      "libsmime3.so",
+      "libnspr4.so",
+      "libdbus-1.so.3",
+      "libatk-1.0.so.0",
+      "libatk-bridge-2.0.so.0",
+      "libcups.so.2",
+      "libgio-2.0.so.0",
+      "libm.so.6",
+      "libX11.so.6",
+      "libXcomposite.so.1",
+      "libXdamage.so.1",
+      "libXext.so.6",
+      "libXfixes.so.3",
+      "libXrandr.so.2",
+      "libgbm.so.1",
+      "libdrm.so.2",
+      "libexpat.so.1",
+      "libxcb.so.1",
+      "libxkbcommon.so.0",
+      "libpango-1.0.so.0",
+      "libcairo.so.2",
+      "libasound.so.2",
+      "libatspi.so.0",
+      "libgcc_s.so.1",
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "search": [
+      "$ORIGIN"
+    ]
+  }
+]

@@ -1,0 +1,251 @@
+{
+  "status": "all_locked_packages_downloaded_verified",
+  "packages": [
+    {
+      "name": "libabsl20240722",
+      "file": "libabsl20240722_20240722.0-4_arm64.deb",
+      "size": 452500,
+      "sha256": "eb6648c73cd69c577a2bc18c8d66d44de897c0207a734ffdb55f91945404d0ac"
+    },
+    {
+      "name": "libasound2-data",
+      "file": "libasound2-data_1.2.14-1+deb13u1_all.deb",
+      "size": 21188,
+      "sha256": "04688afdff3769c0f685541daed7b2f6f0cb946799ddf1d5847ddf11fe245559"
+    },
+    {
+      "name": "libasound2t64",
+      "file": "libasound2t64_1.2.14-1+deb13u1_arm64.deb",
+      "size": 341632,
+      "sha256": "9c808d819ccddc37c793dd3186c2ecd858b2feb2474cebb883f70386e7890d39"
+    },
+    {
+      "name": "libasyncns0",
+      "file": "libasyncns0_0.8-6+b5_arm64.deb",
+      "size": 11672,
+      "sha256": "818bbcaa7ada536a1bdd5b1c26b77608606403f5c15557691e83d0b4433b89ef"
+    },
+    {
+      "name": "libdecor-0-0",
+      "file": "libdecor-0-0_0.2.2-2_arm64.deb",
+      "size": 15204,
+      "sha256": "34c0db59390767ef7b1cb5594f78f142b0673a5e7788e068cdd323f9c16f9207"
+    },
+    {
+      "name": "libebur128-1",
+      "file": "libebur128-1_1.2.6-1+b2_arm64.deb",
+      "size": 14636,
+      "sha256": "3b7ac8f30620590a710e6c8877bb28aad295e253a87a173f05f852a953be3326"
+    },
+    {
+      "name": "libfftw3-single3",
+      "file": "libfftw3-single3_3.3.10-2+b1_arm64.deb",
+      "size": 516600,
+      "sha256": "874b10ccab6219bcae210cc9ff9298389e266ad7308be086956c859ae1aa8ba5"
+    },
+    {
+      "name": "libflac14",
+      "file": "libflac14_1.5.0+ds-2_arm64.deb",
+      "size": 179768,
+      "sha256": "11800827306e56fcbd1a65ea67d9d13126fc02bf87fdfecd35e0f48a145b3c59"
+    },
+    {
+      "name": "libgomp1",
+      "file": "libgomp1_14.2.0-19_arm64.deb",
+      "size": 123520,
+      "sha256": "43e84cb7971d8a4d8870cab6204e998ea4f23ee1339bb0ff556dd881bac82d25"
+    },
+    {
+      "name": "libgtk2.0-0t64",
+      "file": "libgtk2.0-0t64_2.24.33-7_arm64.deb",
+      "size": 1674412,
+      "sha256": "28b2f1622197443f07f25a93e03db1a964184946ac12f501b8221c895026d0ca"
+    },
+    {
+      "name": "libgtk2.0-common",
+      "file": "libgtk2.0-common_2.24.33-7_all.deb",
+      "size": 2661068,
+      "sha256": "f874797252735a9d0d14e6e6baf93e7c1ea7b2bc7ee44ef7ec09fb715bfbc9e6"
+    },
+    {
+      "name": "libibus-1.0-5",
+      "file": "libibus-1.0-5_1.5.32-2_arm64.deb",
+      "size": 452584,
+      "sha256": "70ca5d33241c0b34b3ef617c3f87572810aeec8b10e002dc5660f7e86dc082d6"
+    },
+    {
+      "name": "liblilv-0-0",
+      "file": "liblilv-0-0_0.24.26-1_arm64.deb",
+      "size": 41672,
+      "sha256": "eb14f680a7c639a9dce34928a2a560468baa25f03a79cb76b6acc9b35226b54e"
+    },
+    {
+      "name": "libmp3lame0",
+      "file": "libmp3lame0_3.100-6+b3_arm64.deb",
+      "size": 354760,
+      "sha256": "ed3563722129ffa4def03b7af0b589fa20eef972bdcc4599202ddb1ac654c58e"
+    },
+    {
+      "name": "libmpg123-0t64",
+      "file": "libmpg123-0t64_1.32.10-1+deb13u1_arm64.deb",
+      "size": 143208,
+      "sha256": "d284df39ff3b64f1cdf274352613c52534c55eed82c3a2ff0fc7ba154acd7bf0"
+    },
+    {
+      "name": "libmysofa1",
+      "file": "libmysofa1_1.3.3+dfsg-1_arm64.deb",
+      "size": 1156924,
+      "sha256": "691ae51a7b5643fb9f7c81c917d12c1dc71c74eb1cf2073f0d3f71141fbffa8a"
+    },
+    {
+      "name": "libnghttp2-14",
+      "file": "libnghttp2-14_1.64.0-1.1+deb13u1_arm64.deb",
+      "size": 71604,
+      "sha256": "ca222b98d5bef2193c05a1e736d0619798ba7a8f8e92526f3e1d06edcd0bf751"
+    },
+    {
+      "name": "libnm0",
+      "file": "libnm0_1.52.1-1_arm64.deb",
+      "size": 426116,
+      "sha256": "084202c4c7b53f30352bc2ad5048479a246198e1a1ef205763a18cb5e907b861"
+    },
+    {
+      "name": "libnspr4",
+      "file": "libnspr4_4.36-1_arm64.deb",
+      "size": 102088,
+      "sha256": "b8cd0221e4c35a77ec6e3b89959ca96deb75919a3c55b6735ca0288a1b61bdbb"
+    },
+    {
+      "name": "libnss3",
+      "file": "libnss3_3.110-1+deb13u4_arm64.deb",
+      "size": 1292972,
+      "sha256": "1a9f35c238e8bbb570fbdae88ffe43a3cf3462e1582cbe0903a9aa949e61f3e8"
+    },
+    {
+      "name": "libogg0",
+      "file": "libogg0_1.3.5-3+b2_arm64.deb",
+      "size": 23580,
+      "sha256": "d59a83ab352bf0c16ce9513fdf264f87214813ca8c628c652801ef476ece8286"
+    },
+    {
+      "name": "libopenal-data",
+      "file": "libopenal-data_1.24.2-1_all.deb",
+      "size": 167780,
+      "sha256": "003fb223f6ccd387adc28357021c243c604591806afb84dc46e906b911d8de38"
+    },
+    {
+      "name": "libopenal1",
+      "file": "libopenal1_1.24.2-1_arm64.deb",
+      "size": 577344,
+      "sha256": "2431891da0bce880529768817087a7789000f07d24e201f13ff07a1ace9b40b5"
+    },
+    {
+      "name": "libopus0",
+      "file": "libopus0_1.5.2-2_arm64.deb",
+      "size": 2812952,
+      "sha256": "1d980e8a4717074805a98dbe07671cb3bee068c25709315f3de836980c629836"
+    },
+    {
+      "name": "libpipewire-0.3-0t64",
+      "file": "libpipewire-0.3-0t64_1.4.2-1_arm64.deb",
+      "size": 260312,
+      "sha256": "f25ab475f09ab5ec952f13a2d6b7a870dd5eb8c7806664baf8be9bdee3ae995b"
+    },
+    {
+      "name": "libpulse0",
+      "file": "libpulse0_17.0+dfsg1-2+b1_arm64.deb",
+      "size": 236376,
+      "sha256": "2de5610e3affe69cfb11110f890375261b47c9e0fc1a81eef7ecc4d6d2dc9a6d"
+    },
+    {
+      "name": "libsamplerate0",
+      "file": "libsamplerate0_0.2.2-4+b2_arm64.deb",
+      "size": 944716,
+      "sha256": "5d9fad694b249d48d8457e1242ab60e04db6a30d7d56f80c6ae463ff122147ec"
+    },
+    {
+      "name": "libsdl2-2.0-0",
+      "file": "libsdl2-2.0-0_2.32.4+dfsg-1_arm64.deb",
+      "size": 602568,
+      "sha256": "6312ccbc29645ac5cc9dde9f9ed8bd5c85a0233690c270c83c963b49f8cd49d5"
+    },
+    {
+      "name": "libserd-0-0",
+      "file": "libserd-0-0_0.32.4-1_arm64.deb",
+      "size": 45596,
+      "sha256": "01205ff5c346ae395ec3066034e151e8100e46f596afc65d9bba7a80cce129ae"
+    },
+    {
+      "name": "libsndfile1",
+      "file": "libsndfile1_1.2.2-2+deb13u1_arm64.deb",
+      "size": 185528,
+      "sha256": "6c94f17e1f02778f98b96bb9ae19ff30085662e96685898a018c26bfd4bfc3f2"
+    },
+    {
+      "name": "libsord-0-0",
+      "file": "libsord-0-0_0.16.18-1_arm64.deb",
+      "size": 17284,
+      "sha256": "d2a648495869e680c7ecd107dad0c716590fec427817db703f3bebf719b37f59"
+    },
+    {
+      "name": "libspa-0.2-modules",
+      "file": "libspa-0.2-modules_1.4.2-1_arm64.deb",
+      "size": 895964,
+      "sha256": "b13c1955882ea689f9135bf45c020a364d3cba2d2ed69251827b5c6abd41d4b7"
+    },
+    {
+      "name": "libsratom-0-0",
+      "file": "libsratom-0-0_0.6.18-1_arm64.deb",
+      "size": 16040,
+      "sha256": "5ebc866e3632741477cc225a3a927ddacae432238494e73c50b07c00420d2406"
+    },
+    {
+      "name": "libssh2-1t64",
+      "file": "libssh2-1t64_1.11.1-1+deb13u2_arm64.deb",
+      "size": 236268,
+      "sha256": "245565f4ce5493d67a3c54e26bc3d9cf28b1b70eeb912de7cda61af52268017d"
+    },
+    {
+      "name": "libva2",
+      "file": "libva2_2.22.0-3_arm64.deb",
+      "size": 74212,
+      "sha256": "7a5e7cbaaddf1f39973c10f9daae6769b704e0d6d72fe752d64003929272cbcf"
+    },
+    {
+      "name": "libvdpau1",
+      "file": "libvdpau1_1.5-3+b1_arm64.deb",
+      "size": 24356,
+      "sha256": "2ec2bf9930e402330e6b165645cdcb1e5b8528ac9782651d0217e4f827bf1451"
+    },
+    {
+      "name": "libvorbis0a",
+      "file": "libvorbis0a_1.3.7-3_arm64.deb",
+      "size": 83772,
+      "sha256": "6e8e64ebe692dd2d019af7f914f2e3b81bf13d4b1ce2516fb4248a0310ef7cf6"
+    },
+    {
+      "name": "libvorbisenc2",
+      "file": "libvorbisenc2_1.3.7-3_arm64.deb",
+      "size": 75532,
+      "sha256": "4a477b3ae19ba50a288f036c8176d61cd9f3836ba65472f88b95e3f6b3bf2dd3"
+    },
+    {
+      "name": "libwebrtc-audio-processing-1-3",
+      "file": "libwebrtc-audio-processing-1-3_1.3-3+b1_arm64.deb",
+      "size": 340320,
+      "sha256": "b3222b13cac750380a6f6800aace801fbc0587ab1fa23a4aa2ce307ed0391ae2"
+    },
+    {
+      "name": "libxss1",
+      "file": "libxss1_1.2.3-1+b3_arm64.deb",
+      "size": 17088,
+      "sha256": "ffbdfe7ee0644984dfe7577a22edee74f1e3b2dd76721417c8e45aed9388a220"
+    },
+    {
+      "name": "libzix-0-0",
+      "file": "libzix-0-0_0.6.2-1_arm64.deb",
+      "size": 22532,
+      "sha256": "6848ea4b2911b670c8b7bf106c932eabd715c56819af4998f77a09a6be69a479"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "gui_seed": {
+    "path": "prior-build/seed-final/seed/gui-rootfs-v1.raw",
+    "size": 1342177280,
+    "sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791",
+    "matches_accepted_gui_lock": true,
+    "mount_read_only": true,
+    "mount_options": "ro,relatime,norecovery"
+  },
+  "qcow2_check": {
+    "tool": "authenticated QEMU 10.0.13 qemu-img",
+    "command": "check --output=json -f qcow2 run4/steam-experiment.qcow2",
+    "exit_code": 0,
+    "stdout": "{\n    \"image-end-offset\": 2814443520,\n    \"total-clusters\": 65536,\n    \"check-errors\": 0,\n    \"allocated-clusters\": 42932,\n    \"filename\": \"/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/run4/steam-experiment.qcow2\",\n    \"format\": \"qcow2\",\n    \"fragmented-clusters\": 1400\n}\n",
+    "stderr": "",
+    "repair_requested": false,
+    "scope": "Read-only qcow2 structural check only; NOT ext4 fsck"
+  },
+  "bootstrap_final": {
+    "runtime_status": "NOT BOOTED",
+    "initramfs": {
+      "size": 11634476,
+      "sha256": "ecedffdf912c86445650572e501b621251c1ed9d9d759dd9b2cc35dd4f00c1c7"
+    },
+    "receipt_sha256": "4edc690cd52c4341d5aed08e9fcdc49fdbffd83b382f591ee2431b1975bc3041"
+  },
+  "elapsed_seconds": 1.262,
+  "ext4_fsck": "NOT RUN"
+}

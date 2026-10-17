@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "kind": "actual-posix-launcher-and-bootstrap-guard-fixtures",
+  "tests": 16,
+  "passed": 16,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "seconds": 5.168,
+  "sources_sha256": {
+    "tests/test_steam_launch.py": "e282e5de7baea2ef53ec13b25f01fd8a449e99810571ade944edabf09fb7755d",
+    "tests/test_steam_bootstrap.py": "1aa6fb547e795a97575c678f1d4a0d314f5c7a31f01bc73f1ad7eda82e03b7f2",
+    "guest/steam/ideck-steam": "470bdf1559fb5272776dd076cf04a58a3a81b4c451bf97b9a870d8e1f9957603",
+    "tools/prepare_steam_bootstrap.py": "ae10dc0e3d5e537f14882f1a12c405727678276c221a570ef9e9312eea1b4d0f"
+  },
+  "runtime": "WSL archlinux /bin/sh with actual flock and synthetic client/session commands",
+  "authentic_client_executed": false,
+  "vm_boot_claimed": false
+}

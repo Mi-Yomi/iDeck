@@ -1,0 +1,14 @@
+test_actual_cache_bytes_verified_then_reused_without_network (test_steam_cached_install.CachedSteamInstall.test_actual_cache_bytes_verified_then_reused_without_network) ... ok
+test_bad_existing_cache_is_not_repaired (test_steam_cached_install.CachedSteamInstall.test_bad_existing_cache_is_not_repaired) ... ok
+test_dpkg_audit_requires_zero_and_exactly_empty_streams (test_steam_cached_install.CachedSteamInstall.test_dpkg_audit_requires_zero_and_exactly_empty_streams) ... ok
+test_endpoint_is_fixed_qemu_alias_and_explicit_high_port (test_steam_cached_install.CachedSteamInstall.test_endpoint_is_fixed_qemu_alias_and_explicit_high_port) ... ok
+test_every_redirect_is_refused_in_private_cache_mode (test_steam_cached_install.CachedSteamInstall.test_every_redirect_is_refused_in_private_cache_mode) ... ok
+test_exact_dependency_lock_and_invalid_inputs (test_steam_cached_install.CachedSteamInstall.test_exact_dependency_lock_and_invalid_inputs) ... ok
+test_existing_client_stops_before_any_dpkg_or_download (test_steam_cached_install.CachedSteamInstall.test_existing_client_stops_before_any_dpkg_or_download) ... ok
+test_inventory_requires_installed_and_preserves_version (test_steam_cached_install.CachedSteamInstall.test_inventory_requires_installed_and_preserves_version) ... ok
+test_short_extra_corrupt_response_never_published (test_steam_cached_install.CachedSteamInstall.test_short_extra_corrupt_response_never_published) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.044s
+
+OK

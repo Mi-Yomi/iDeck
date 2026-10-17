@@ -1,0 +1,21 @@
+IDECK_STEAM_INSTALL={"agreement_accepted": false, "client_executed": false, "client_installer_exit_code": 0, "client_lock_sha256": "9b8bc9fe5e8074ae4d798f645d259066e968b8bc5512183c0aca34e1f54a8bdd", "dependency_lock_sha256": "54e7e74bb481e44d550dcdd96f11440c8fee325d87032654eb748ad8e6a38287", "dpkg_audit_empty": true, "dpkg_exit_code": 0, "elapsed_seconds": 149.822, "login_performed": false, "status": "installed_private_client_not_launched", "unchanged_existing_packages": 341, "verified_client_parts": 17, "verified_debs": 41}
+{
+  "status": "installed_private_client_not_launched",
+  "client_executed": false,
+  "agreement_accepted": false,
+  "login_performed": false,
+  "dependency_lock_sha256": "54e7e74bb481e44d550dcdd96f11440c8fee325d87032654eb748ad8e6a38287",
+  "client_lock_sha256": "9b8bc9fe5e8074ae4d798f645d259066e968b8bc5512183c0aca34e1f54a8bdd",
+  "verified_debs": 41,
+  "dpkg_exit_code": 0,
+  "unchanged_existing_packages": 341,
+  "dpkg_audit_empty": true,
+  "verified_client_parts": 17,
+  "client_installer_exit_code": 0,
+  "elapsed_seconds": 149.822
+}
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/vda        3.9G  2.1G  1.8G  55% /
+
+STEAM_COMMAND_001_0
+debian# 

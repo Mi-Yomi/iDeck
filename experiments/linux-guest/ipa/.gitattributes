@@ -1,0 +1,2 @@
+# Preserve the exact captured lock bytes bound by the private Steam boot receipt.
+steam-client.lock.json -text whitespace=cr-at-eol

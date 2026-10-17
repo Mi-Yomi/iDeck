@@ -1,0 +1,96 @@
+#!/bin/sh
+# Experimental host-guest launcher. This does not prove an iPhone launch or gaming
+# performance. Valve's client remains a separately installed, user-owned input.
+set -eu
+umask 077
+
+steam_home=/home/ideck
+runtime_dir=/run/user/1000
+display=:0
+steam_root=$steam_home/.local/share/Steam
+client=$steam_root/steamrtarm64/steam
+
+fail() {
+    printf 'IDECK_STEAM_ERROR=%s\n' "$1" >&2
+    exit "${2:-1}"
+}
+
+[ "$#" -eq 1 ] || fail usage_desktop_big_picture_or_stop 64
+case "$1" in desktop|big-picture|stop) mode=$1;; *) fail unknown_mode 64;; esac
+[ "$(id -u)" = 1000 ] && [ "$(id -un)" = ideck ] || fail requires_ideck_uid1000
+[ "${HOME:-}" = "$steam_home" ] || fail wrong_home
+[ "${DISPLAY:-}" = "$display" ] || fail existing_desktop_required
+[ "${XDG_RUNTIME_DIR:-}" = "$runtime_dir" ] || fail wrong_runtime_dir
+[ "${XAUTHORITY:-}" = "$runtime_dir/Xauthority" ] || fail wrong_xauthority
+[ -d "$runtime_dir" ] && [ ! -L "$runtime_dir" ] || fail invalid_runtime_dir
+[ "$(stat -c '%u:%a' "$runtime_dir")" = 1000:700 ] || fail unsafe_runtime_dir
+[ -f "$XAUTHORITY" ] && [ -r "$XAUTHORITY" ] && [ ! -L "$XAUTHORITY" ] || fail missing_xauthority
+[ "$(stat -c '%u' "$XAUTHORITY")" = 1000 ] || fail wrong_xauthority_owner
+[ -d "$steam_root" ] && [ ! -L "$steam_root" ] || fail client_not_installed
+[ "$(stat -c '%u' "$steam_root")" = 1000 ] || fail wrong_client_owner
+[ -f "$client" ] && [ -x "$client" ] && [ ! -L "$client" ] || fail client_not_executable
+[ "$(stat -c '%u' "$client")" = 1000 ] || fail wrong_binary_owner
+for tool in flock pgrep dbus-send dbus-run-session; do
+    command -v "$tool" >/dev/null 2>&1 || fail missing_session_dependency
+done
+client_running() {
+    probe_status=0
+    pgrep -u 1000 -x steam >/dev/null 2>&1 || probe_status=$?
+    case "$probe_status" in
+        0) return 0;;
+        1) return 1;;
+        *) fail process_probe_failed;;
+    esac
+}
+
+export HOME=$steam_home USER=ideck LOGNAME=ideck DISPLAY=$display
+export XAUTHORITY=$runtime_dir/Xauthority XDG_RUNTIME_DIR=$runtime_dir
+export GDK_BACKEND=x11 QT_QPA_PLATFORM=xcb SDL_VIDEODRIVER=x11 SDL_VIDEO_X11_DGAMOUSE=0
+export STEAM_RUNTIME=1
+export LD_LIBRARY_PATH=$steam_root/steamrtarm64:$steam_root/steamrtarm64/panorama
+cd "$steam_root"
+
+if [ "$mode" = stop ]; then
+    # Never wait for the launch lock: its owner is precisely the running client
+    # that needs the request. This is not the VM Stop/clean-unmount protocol.
+    if ! client_running; then
+        printf 'IDECK_STEAM_STATUS=not_running\n'
+        exit 0
+    fi
+    status=0
+    "$client" -shutdown || status=$?
+    [ "$status" -eq 0 ] || fail shutdown_request_failed "$status"
+    printf 'IDECK_STEAM_STATUS=shutdown_requested_desktop_retained\n'
+    exit 0
+fi
+
+[ ! -L "$runtime_dir/ideck-steam.lock" ] || fail unsafe_lock_file
+exec 9>"$runtime_dir/ideck-steam.lock"
+flock -n 9 || fail launcher_already_running
+# The native client may outlive a terminal/launcher; do not depend on its inherited
+# descriptors for serialization or mistake an unlocked wrapper for no client.
+if client_running; then
+    fail client_already_running
+fi
+
+# Match the current upstream X11/runtime route; keep Chromium's sandbox enabled.
+# CEF software UI rendering is a diagnostic choice, not game-performance evidence.
+set -- -clientbeta steamdeck_publicbeta -cef-ozone-platform=x11 -cef-disable-gpu
+case "$mode" in
+    desktop) set -- "$@" -nobigpicture;;
+    big-picture) set -- "$@" -gamepadui -steamdeck -steamos3;;
+esac
+printf 'IDECK_STEAM_STATUS=experimental_launch_requested\n'
+printf 'IDECK_STEAM_RENDERING=cef_software_ui_only\n'
+status=0
+if [ -n "${DBUS_SESSION_BUS_ADDRESS:-}" ] &&
+   dbus-send --session --type=method_call --print-reply \
+       --dest=org.freedesktop.DBus /org/freedesktop/DBus \
+       org.freedesktop.DBus.ListNames >/dev/null 2>&1; then
+    "$client" "$@" || status=$?
+else
+    unset DBUS_SESSION_BUS_ADDRESS DBUS_SESSION_BUS_PID
+    dbus-run-session -- "$client" "$@" || status=$?
+fi
+[ "$status" -eq 0 ] || fail client_exit_nonzero "$status"
+printf 'IDECK_STEAM_STATUS=client_returned_window_not_asserted\n'

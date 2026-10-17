@@ -1,0 +1,8 @@
+{
+  "kind": "discarded-private-test-overlay",
+  "size": 1496514560,
+  "sha256": "688469ce25786fb85dec5f20db0645058ed75da89830df582f1153279ba18ead",
+  "reason": "Cortex-A72 SIGILL experiment; conservative dirty marker retained, disk not reused",
+  "user_disk": false,
+  "client_login": false
+}

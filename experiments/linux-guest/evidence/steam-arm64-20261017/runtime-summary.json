@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "base_commit": "27e9736f35ffb7c572e2fa81c75458ee1d1b8ff9",
+  "branch": "codex/steam-arm64-experiment-20261017",
+  "host_only": true,
+  "initial_install": {
+    "verified_parts": 17,
+    "extra_debian_packages": 41,
+    "unchanged_gui_packages": 341,
+    "dpkg_audit_exit": 0,
+    "dpkg_audit_empty": true,
+    "times_seconds": [
+      149.822,
+      143.613
+    ]
+  },
+  "cortex_a72_native_exit": 132,
+  "cpu_max": {
+    "actual_valve_updater_window": true,
+    "screenshot": "cpu-max/002-desktop.png",
+    "screenshot_sha256": "abddfb9434bb4d621a1c8560d680a5a1b9bc1ce700c062782de5a958f4a6c367",
+    "main_steam_ui": false,
+    "big_picture": false,
+    "updater_download_KB_as_reported": 669522,
+    "update_finished": false,
+    "stop_reason": "E storage approached exhaustion; native self-update was intentionally interrupted",
+    "guest_clean_unmount": true,
+    "qemu_exit_code": 0,
+    "host_fsync": true,
+    "forced": false
+  },
+  "namespace_probe": {
+    "uid1000_user_mount_namespace": "EPERM",
+    "same_root_private_pivot": "EBUSY",
+    "distinct_root_private_pivot_then_user_namespace": "EPERM",
+    "sandbox_disabled": false
+  },
+  "agreement_accepted": false,
+  "account_login": false,
+  "game_installed": false,
+  "phone_tested": false,
+  "Apple_Swift": "NOT RUN",
+  "final_cleanup_bootstrap": "built, NOT BOOTED; runtime used previous bootstrap plus explicitly recorded cache cleanup",
+  "final_helper_sha256": "72fb55d97ef402438e5dd23747e0cbd0ccd9ec8c881a964be696011cb6f96b59",
+  "receipt_hashes": {
+    "cpu_max_result": "bc0586d42adf265472907824406f5884dac545f9b0f22cc73debc79442a8e13e",
+    "post_run_inputs": "863c7a2eb9743d3c076a2de4dd5b4a4f64f268341c753f30e85b0bb0b05ec0ef"
+  }
+}

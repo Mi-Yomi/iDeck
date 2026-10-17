@@ -555,6 +555,10 @@ private final class LinuxTerminalWorker {
                     args = try profile.arguments(probeAssets: probe, assets: assets, session: bootSession,
                         disk: desktopDisk, serialFD: serial.qemu, controlFD: control.qemu)
                 } else { throw LinuxTerminalProfile.Invalid.configuration }
+                if gui != nil, let index = args.firstIndex(of: "-initrd"), index + 1 < args.count {
+                    self.report["desktop_runtime_initramfs_sha256"] = try self.digest(URL(fileURLWithPath: args[index + 1]))
+                    self.report["desktop_runtime_suffix_sha256"] = LinuxRecoveryGuest.sha256
+                }
                 try self.diagnostic.record(.argumentsReturned)
                 try self.diagnostic.record(.reportBegin)
                 guard FileManager.default.createFile(atPath: self.serialURL.path, contents: Data()) else { throw LinuxTerminalProfile.Invalid.io }
@@ -745,7 +749,8 @@ private final class LinuxTerminalWorker {
                     report["recovery_replay_exit"] = recoveryProgress.replay
                     report["recovery_verification_exit"] = recoveryProgress.verification
                     report["recovery_output_clean"] = recoveryProgress.scanClean
-                    let stage = recoveryProgress.done ? "awaiting_exit" : (recoveryProgress.verification != nil ? "verified" : (recoveryProgress.replay != nil ? "replayed" : "assessed"))
+                    report["recovery_summary_reconciled"] = recoveryProgress.summaryReconciled
+                    let stage = recoveryProgress.done ? "awaiting_exit" : (recoveryProgress.verification != nil ? "verified" : (recoveryProgress.summaryEligible ? (recoveryProgress.summaryReconciled ? "summary_reconciled" : "summary_reconciling") : (recoveryProgress.replay != nil ? "replayed" : "assessed")))
                     report["recovery_phase"] = stage
                     checkpoint(recoveryProgress.done ? .recoveryRelaunch : (recoveryProgress.verification != nil ? .recoveryVerified : (recoveryProgress.replay != nil ? .recoveryReplay : .recoveryAssessment)))
                     if recoveryProgress.done { lifecycle.record(.stop); stopRequested = true }
@@ -876,7 +881,8 @@ private final class LinuxTerminalWorker {
             if let recovery {
                 guard recoveryProgress.done, let assessment = recoveryProgress.assessment,
                       let replay = recoveryProgress.replay, let verification = recoveryProgress.verification else { throw LinuxGUIRecovery.Invalid.receipt }
-                try recovery.recordResult(assessment: assessment, replay: replay, verification: verification, scanClean: recoveryProgress.scanClean)
+                try recovery.recordResult(assessment: assessment, replay: replay, verification: verification,
+                                          scanClean: recoveryProgress.scanClean, summaryReconciled: recoveryProgress.summaryReconciled)
                 report["recovery_phase"] = "relaunch_required"
             }
             finalized = true

@@ -1,0 +1,468 @@
+{
+  "schema": 1,
+  "scope": "Read-only complete comparison of disposable laboratory images; not owner-image acceptance",
+  "before_sha256": "f56522d300328300327e0bb012cc70cc466ada97ab9f79c8a591c716e42d2d4c",
+  "after_sha256": "88353178d9774fb28f333fa9b90466a504a4eb2ad0a75d698f30c0ec254a9aaf",
+  "entries_before": 21229,
+  "entries_after": 21229,
+  "entry_types": {
+    "directory": 2471,
+    "symlink": 1440,
+    "regular": 17318
+  },
+  "added_paths": [],
+  "removed_paths": [],
+  "logical_differences": [],
+  "changed_inode_count": 18,
+  "directory_layout_changes": [
+    {
+      "path": "/usr/bin",
+      "inode": 323,
+      "size_before": 12288,
+      "size_after": 12288,
+      "flags_before": 524288,
+      "flags_after": 528384,
+      "blocks_before": 24,
+      "blocks_after": 24,
+      "changed_inode_byte_offsets": [
+        33,
+        124,
+        125,
+        130,
+        131
+      ],
+      "all_changes_limited_to_size_blocks_indexflag_extentroot_checksums": true
+    },
+    {
+      "path": "/usr/lib/aarch64-linux-gnu",
+      "inode": 787,
+      "size_before": 16384,
+      "size_after": 24576,
+      "flags_before": 524288,
+      "flags_after": 528384,
+      "blocks_before": 32,
+      "blocks_after": 48,
+      "changed_inode_byte_offsets": [
+        5,
+        28,
+        33,
+        92,
+        124,
+        125,
+        130,
+        131
+      ],
+      "all_changes_limited_to_size_blocks_indexflag_extentroot_checksums": true
+    },
+    {
+      "path": "/usr/lib/aarch64-linux-gnu/gconv",
+      "inode": 856,
+      "size_before": 20480,
+      "size_after": 12288,
+      "flags_before": 524288,
+      "flags_after": 528384,
+      "blocks_before": 40,
+      "blocks_after": 24,
+      "changed_inode_byte_offsets": [
+        5,
+        28,
+        33,
+        42,
+        124,
+        125,
+        130,
+        131
+      ],
+      "all_changes_limited_to_size_blocks_indexflag_extentroot_checksums": true
+    },
+    {
+      "path": "/usr/share/ca-certificates/mozilla",
+      "inode": 4453,
+      "size_before": 24576,
+      "size_after": 12288,
+      "flags_before": 524288,
+      "flags_after": 528384,
+      "blocks_before": 56,
+      "blocks_after": 32,
+      "changed_inode_byte_offsets": [
+        5,
+        28,
+        33,
+        124,
+        125,
+        130,
+        131
+      ],
+      "all_changes_limited_to_size_blocks_indexflag_extentroot_checksums": true
+    },
+    {
+      "path": "/usr/share/fonts/X11/misc",
+      "inode": 6616,
+      "size_before": 45056,
+      "size_after": 20480,
+      "flags_before": 524288,
+      "flags_after": 528384,
+      "blocks_before": 88,
+      "blocks_after": 40,
+      "changed_inode_byte_offsets": [
+        5,
+        28,
+        33,
+        92,
+        124,
+        125,
+        130
+      ],
+      "all_changes_limited_to_size_blocks_indexflag_extentroot_checksums": true
+    },
+    {
+      "path": "/usr/share/icons/Adwaita/symbolic/actions",
+      "inode": 7929,
+      "size_before": 24576,
+      "size_after": 16384,
+      "flags_before": 524288,
+      "flags_after": 528384,
+      "blocks_before": 56,
+      "blocks_after": 40,
+      "changed_inode_byte_offsets": [
+        5,
+        28,
+        33,
+        124,
+        125,
+        130,
+        131
+      ],
+      "all_changes_limited_to_size_blocks_indexflag_extentroot_checksums": true
+    },
+    {
+      "path": "/usr/share/icons/Adwaita/symbolic/status",
+      "inode": 8319,
+      "size_before": 36864,
+      "size_after": 16384,
+      "flags_before": 524288,
+      "flags_after": 528384,
+      "blocks_before": 80,
+      "blocks_after": 40,
+      "changed_inode_byte_offsets": [
+        5,
+        28,
+        33,
+        124,
+        125,
+        130,
+        131
+      ],
+      "all_changes_limited_to_size_blocks_indexflag_extentroot_checksums": true
+    },
+    {
+      "path": "/usr/share/icons/AdwaitaLegacy/16x16/legacy",
+      "inode": 8601,
+      "size_before": 32768,
+      "size_after": 16384,
+      "flags_before": 524288,
+      "flags_after": 528384,
+      "blocks_before": 72,
+      "blocks_after": 40,
+      "changed_inode_byte_offsets": [
+        5,
+        28,
+        33,
+        124,
+        125,
+        130,
+        131
+      ],
+      "all_changes_limited_to_size_blocks_indexflag_extentroot_checksums": true
+    },
+    {
+      "path": "/usr/share/icons/AdwaitaLegacy/22x22/legacy",
+      "inode": 8983,
+      "size_before": 32768,
+      "size_after": 16384,
+      "flags_before": 524288,
+      "flags_after": 528384,
+      "blocks_before": 64,
+      "blocks_after": 32,
+      "changed_inode_byte_offsets": [
+        5,
+        28,
+        33,
+        92,
+        124,
+        125,
+        130,
+        131
+      ],
+      "all_changes_limited_to_size_blocks_indexflag_extentroot_checksums": true
+    },
+    {
+      "path": "/usr/share/icons/AdwaitaLegacy/24x24/legacy",
+      "inode": 9365,
+      "size_before": 32768,
+      "size_after": 16384,
+      "flags_before": 524288,
+      "flags_after": 528384,
+      "blocks_before": 64,
+      "blocks_after": 32,
+      "changed_inode_byte_offsets": [
+        5,
+        28,
+        33,
+        92,
+        124,
+        125,
+        130,
+        131
+      ],
+      "all_changes_limited_to_size_blocks_indexflag_extentroot_checksums": true
+    },
+    {
+      "path": "/usr/share/icons/AdwaitaLegacy/32x32/legacy",
+      "inode": 9739,
+      "size_before": 32768,
+      "size_after": 16384,
+      "flags_before": 524288,
+      "flags_after": 528384,
+      "blocks_before": 72,
+      "blocks_after": 40,
+      "changed_inode_byte_offsets": [
+        5,
+        28,
+        33,
+        124,
+        125,
+        130,
+        131
+      ],
+      "all_changes_limited_to_size_blocks_indexflag_extentroot_checksums": true
+    },
+    {
+      "path": "/usr/share/icons/AdwaitaLegacy/48x48/legacy",
+      "inode": 10123,
+      "size_before": 32768,
+      "size_after": 16384,
+      "flags_before": 524288,
+      "flags_after": 528384,
+      "blocks_before": 64,
+      "blocks_after": 32,
+      "changed_inode_byte_offsets": [
+        5,
+        28,
+        33,
+        92,
+        124,
+        125,
+        130,
+        131
+      ],
+      "all_changes_limited_to_size_blocks_indexflag_extentroot_checksums": true
+    },
+    {
+      "path": "/usr/share/libwacom",
+      "inode": 11329,
+      "size_before": 65536,
+      "size_after": 28672,
+      "flags_before": 524288,
+      "flags_after": 528384,
+      "blocks_before": 136,
+      "blocks_after": 64,
+      "changed_inode_byte_offsets": [
+        5,
+        6,
+        28,
+        33,
+        124,
+        125,
+        130,
+        131
+      ],
+      "all_changes_limited_to_size_blocks_indexflag_extentroot_checksums": true
+    },
+    {
+      "path": "/usr/share/libwacom/layouts",
+      "inode": 11511,
+      "size_before": 24576,
+      "size_after": 12288,
+      "flags_before": 524288,
+      "flags_after": 528384,
+      "blocks_before": 48,
+      "blocks_after": 24,
+      "changed_inode_byte_offsets": [
+        5,
+        28,
+        33,
+        80,
+        124,
+        125,
+        130,
+        131
+      ],
+      "all_changes_limited_to_size_blocks_indexflag_extentroot_checksums": true
+    },
+    {
+      "path": "/usr/share/man/man1",
+      "inode": 14670,
+      "size_before": 20480,
+      "size_after": 20480,
+      "flags_before": 524288,
+      "flags_after": 528384,
+      "blocks_before": 48,
+      "blocks_after": 48,
+      "changed_inode_byte_offsets": [
+        33,
+        124,
+        125,
+        130,
+        131
+      ],
+      "all_changes_limited_to_size_blocks_indexflag_extentroot_checksums": true
+    },
+    {
+      "path": "/usr/share/man/man7",
+      "inode": 15212,
+      "size_before": 32768,
+      "size_after": 16384,
+      "flags_before": 524288,
+      "flags_after": 528384,
+      "blocks_before": 72,
+      "blocks_after": 40,
+      "changed_inode_byte_offsets": [
+        5,
+        28,
+        33,
+        124,
+        125,
+        130,
+        131
+      ],
+      "all_changes_limited_to_size_blocks_indexflag_extentroot_checksums": true
+    },
+    {
+      "path": "/usr/share/man/man8",
+      "inode": 15465,
+      "size_before": 12288,
+      "size_after": 12288,
+      "flags_before": 524288,
+      "flags_after": 528384,
+      "blocks_before": 24,
+      "blocks_after": 24,
+      "changed_inode_byte_offsets": [
+        33,
+        124,
+        125,
+        130,
+        131
+      ],
+      "all_changes_limited_to_size_blocks_indexflag_extentroot_checksums": true
+    },
+    {
+      "path": "/var/lib/ghostscript/CMap",
+      "inode": 17287,
+      "size_before": 20480,
+      "size_after": 12288,
+      "flags_before": 524288,
+      "flags_after": 528384,
+      "blocks_before": 40,
+      "blocks_after": 24,
+      "changed_inode_byte_offsets": [
+        5,
+        28,
+        33,
+        68,
+        124,
+        125,
+        130,
+        131
+      ],
+      "all_changes_limited_to_size_blocks_indexflag_extentroot_checksums": true
+    }
+  ],
+  "changed_blocks_by_structure": {
+    "superblock": 1,
+    "group_descriptors": 1,
+    "block_bitmap": 5,
+    "inode_table": 18,
+    "directory_data_or_index": 73,
+    "directory_extent_tree": 7
+  },
+  "unclassified_changed_blocks": [],
+  "changed_bytes_total": 209211,
+  "logical_comparison_fields": [
+    "path->inode",
+    "mode",
+    "uid",
+    "gid",
+    "links",
+    "regular size/content SHA256",
+    "symlink target",
+    "timestamps",
+    "xattrs",
+    "inode generation"
+  ],
+  "raw_inode_hashes_and_directory_physical_layout_excluded_from_logical_equality": true,
+  "full_before_catalog_sha256": "c59a06093e09a45ab8448789359909188920aad9df00f0eb0596546a7fe3ed68",
+  "full_after_catalog_sha256": "7fb5ec12a6012a4f010a2d5ff525f8dfaa893423f40b5321ecb10b185f128f9a",
+  "before_counts": {
+    "super_free_blocks": 111843,
+    "super_free_inodes": 142605,
+    "descriptor_free_blocks": 111837,
+    "descriptor_free_inodes": 142603,
+    "bitmap_free_blocks": 111837,
+    "bitmap_free_inodes": 142603,
+    "group_flags": [
+      4,
+      4,
+      5,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+    ]
+  },
+  "after_preen_counts": {
+    "super_free_blocks": 111891,
+    "super_free_inodes": 142603,
+    "descriptor_free_blocks": 111891,
+    "descriptor_free_inodes": 142603,
+    "bitmap_free_blocks": 111891,
+    "bitmap_free_inodes": 142603,
+    "group_flags": [
+      4,
+      4,
+      5,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+    ]
+  },
+  "after_kernel_cycle_counts": {
+    "super_free_blocks": 111837,
+    "super_free_inodes": 142603,
+    "descriptor_free_blocks": 111837,
+    "descriptor_free_inodes": 142603,
+    "bitmap_free_blocks": 111837,
+    "bitmap_free_inodes": 142603,
+    "group_flags": [
+      4,
+      4,
+      5,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+    ]
+  },
+  "conclusion": "General preen performed lossless directory-index construction in18 directories plus matching block-allocation/checksum bookkeeping. All named file contents and logical metadata matched. A narrower kernel mount/unmount instead changed only12 bytes in primary block0; all other bytes were hash-identical.",
+  "analyzer_sha256": "89173ad7d18e0ed84de4f44d2fd816759695753952b94952aa64344a16bd35c7"
+}

@@ -8,6 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / 'guest/recovery/ideck-recovery-init'
 DESKTOP = ROOT / 'guest/gui/ideck-desktop-init'
 SCAN = ROOT / 'guest/recovery/fsck-clean.awk'
+HEAD = ROOT / 'guest/recovery/scope-head.awk'
 
 
 def desktop_runtime():
@@ -35,7 +36,8 @@ def suffix(script):
         raise ValueError('invalid desktop init')
     for inode, name, mode, data in [(1, b'ideck-recovery-init', 0o100755, script),
                                   (2, b'ideck-desktop-init', 0o100755, desktop),
-                                  (3, b'ideck-fsck-clean.awk', 0o100444, SCAN.read_bytes()), (0, b'TRAILER!!!', 0, b'')]:
+                                  (3, b'ideck-fsck-clean.awk', 0o100444, SCAN.read_bytes()),
+                                  (4, b'ideck-scope-head.awk', 0o100444, HEAD.read_bytes()), (0, b'TRAILER!!!', 0, b'')]:
         fields = (inode, mode, 0, 0, 1, 0, len(data), 0, 0, 0, 0, len(name)+1, 0)
         output += b'070701' + ''.join(f'{value:08x}' for value in fields).encode()
         output += name + b'\0'

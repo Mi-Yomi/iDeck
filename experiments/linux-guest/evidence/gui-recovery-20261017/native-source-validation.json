@@ -1,18 +1,18 @@
 {
   "schema": 1,
-  "status": "source_checks_pass_recovery_acceptance_blocked",
+  "status": "source_and_old_seed_scoped_host_pass_current_production_blocked",
   "python_tests": {
-    "total": 309,
-    "passed": 304,
+    "total": 312,
+    "passed": 307,
     "skipped": 5,
     "failures": 0,
     "errors": 0,
-    "log_sha256": "b3acfe1c322cce5d73dfc92b11fefdd68ae7c93495dd5bdf304c61449415ca86"
+    "log_sha256": "a058dd65199df5b677e49899652c45d5f8ef1d2aa4a92e70cad095d7185ec506"
   },
   "offline_husk_overlay": {
     "status": "pass",
     "original_members": 81,
-    "locked_inputs": 44,
+    "locked_inputs": 45,
     "copied_files": 28,
     "patched_files": 10,
     "added_swift_sources": 21
@@ -24,7 +24,7 @@
     "iPhone recovery",
     "current production seed9c4d VM acceptance"
   ],
-  "forcekill_gate": "two actual nonce/status-verified force-kills correctly rejected unresolved fsck output; pristine positive scan gate passed; NOT successful recovery/relaunch acceptance",
+  "forcekill_gate": "PASS for OLD46fea only: two nonce/status-verified SIGKILL/recovery/GUI-relaunch cycles, streamed body/header scope, saved files and strict clean output/fsck. Production9c4d unavailable.",
   "old_acceptance": "withdrawn",
   "gui_lock_sha256": "fef0bf4c5b72cad5ee921616639f6e28bec73bce7b1e689c95c3734aed82c7eb",
   "gui_inputs_lock_sha256": "8b3ee6d1f255c7486e7226c65ab304036363edccea4e145b472fe7df1cf6ed98",
@@ -33,8 +33,9 @@
   "ci_dispatched": false,
   "native_general_preen_or_destructive_repair": false,
   "remaining_blockers": [
-    "Validated safe recovery of unresolved metadata/counter issues",
-    "Exact current published9c4d seed absent in selected cloud filesystem",
-    "Apple compile/runtime/device gates"
-  ]
+    "Current production9c4d asset GET failed at proxy: Tunnel connection failed403Forbidden",
+    "Apple Swift compiler/runtime/IO and full native app gates",
+    "Owner/device recovery acceptance; owner image unavailable"
+  ],
+  "scoped_kernel_mount": "Only validated summary-counter class on work copy; every fsck unmounted; all non-primary bytes SHA256-identical and primary-byte whitelist enforced; no app/file access or general repair"
 }

@@ -1,0 +1,6 @@
+{
+  "url": "https://raw.githubusercontent.com/gregkh/linux/v6.18.35/fs/ext4/super.c",
+  "scope": "Read-only upstream stable source inspection; running production kernel hash remains separately pinned",
+  "sha256": "d6f36eea3fbd7125940166ea16434d35aaab57d24f2d918eed3195c4ea888535",
+  "status": "read"
+}

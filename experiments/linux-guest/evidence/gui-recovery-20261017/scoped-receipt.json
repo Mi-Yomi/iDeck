@@ -1,0 +1,146 @@
+{
+  "schema": 1,
+  "status": "pass",
+  "owner_image_accessed": false,
+  "host_only": true,
+  "base_profile": {
+    "control_port": "org.ideck.control",
+    "image": {
+      "block_size": 4096,
+      "features": {
+        "compat": 44,
+        "incompat": 194,
+        "ro_compat": 1091
+      },
+      "size_bytes": 1342177280,
+      "uuid": "b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7"
+    },
+    "initramfs": {
+      "file": "initramfs-desktop.gz",
+      "sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4",
+      "size": 11319304
+    },
+    "kernel": {
+      "file": "vmlinuz-virt",
+      "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+      "size": 10351104
+    },
+    "mode": "desktop",
+    "rootfs": {
+      "file": "gui-rootfs-v1.raw",
+      "sha256": "46fea0230963ca494a5adeef19f46668f559f77522e3b82215d5f543646b0791",
+      "size": 1342177280
+    },
+    "schema": 1
+  },
+  "cycles": [
+    {
+      "cycle": 1,
+      "forcekill_exit": -9,
+      "dirty_header": {
+        "uuid": "b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7",
+        "block_size": 4096,
+        "features": {
+          "compat": 44,
+          "incompat": 198,
+          "ro_compat": 1091
+        },
+        "inode_size": 256,
+        "descriptor_size": 64
+      },
+      "original_sha256": "543cb8a1ab0d8cb4b6c1e98559e46e37fad3de6c5fa83442aab0bfc1210a311b",
+      "original_preserved": true,
+      "recovery_exit": 0,
+      "post_fsck_exit": 0,
+      "prior_control_files_read_before_write": 0,
+      "strict_clean_header": {
+        "recover_bit": false,
+        "state": 1,
+        "last_orphan": 0,
+        "error_count": 0,
+        "checksum": "valid"
+      },
+      "serial_receipts": [
+        {
+          "nonce": "12fb5e252da84707beba79ce1558468f",
+          "exit_status": 0,
+          "complete_output_line": true,
+          "marker_absent_from_input": true,
+          "command_sha256": "12427f1ec639b936388d3770a65eda81581b86cb235251a1f3d5469dd74a77e3"
+        }
+      ],
+      "recovery_seconds": 42.970145817998855,
+      "recovery_sampled_peak_rss_bytes": 1251635200,
+      "control_markers": "IDECK_DESKTOP_RECOVERY_READY\nIDECK_RECOVERY_ASSESS:0\nIDECK_RECOVERY_REPLAY:0\nIDECK_RECOVERY_SUMMARY_ELIGIBLE\nIDECK_RECOVERY_SUMMARY_RECONCILED\nIDECK_RECOVERY_VERIFY:0\nIDECK_RECOVERY_SCAN_CLEAN\nIDECK_RECOVERY_DONE\nIDECK_DESKTOP_CLEAN_UNMOUNT\n"
+    },
+    {
+      "cycle": 2,
+      "forcekill_exit": -9,
+      "dirty_header": {
+        "uuid": "b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7",
+        "block_size": 4096,
+        "features": {
+          "compat": 44,
+          "incompat": 198,
+          "ro_compat": 1091
+        },
+        "inode_size": 256,
+        "descriptor_size": 64
+      },
+      "original_sha256": "637ee618efa668773e4ee5a3e50c1b4d00926212d7a7b59c947dffcc3ef5436a",
+      "original_preserved": true,
+      "recovery_exit": 0,
+      "post_fsck_exit": 0,
+      "prior_control_files_read_before_write": 1,
+      "strict_clean_header": {
+        "recover_bit": false,
+        "state": 1,
+        "last_orphan": 0,
+        "error_count": 0,
+        "checksum": "valid"
+      },
+      "serial_receipts": [
+        {
+          "nonce": "721ddab82cc34408b67b43aff565dfb4",
+          "exit_status": 0,
+          "complete_output_line": true,
+          "marker_absent_from_input": true,
+          "command_sha256": "bb6ac1d9b43d41a871ecc7147de16dc13c49dabd9dd0fbab57adf0f8153016cf"
+        }
+      ],
+      "recovery_seconds": 44.73064448899822,
+      "recovery_sampled_peak_rss_bytes": 1253736448,
+      "control_markers": "IDECK_DESKTOP_RECOVERY_READY\nIDECK_RECOVERY_ASSESS:0\nIDECK_RECOVERY_REPLAY:0\nIDECK_RECOVERY_SUMMARY_ELIGIBLE\nIDECK_RECOVERY_SUMMARY_RECONCILED\nIDECK_RECOVERY_VERIFY:0\nIDECK_RECOVERY_SCAN_CLEAN\nIDECK_RECOVERY_DONE\nIDECK_DESKTOP_CLEAN_UNMOUNT\n"
+    }
+  ],
+  "suffix_sha256": "d1da3167bad7aa7a7a0e4c11133a6faab68fa4cd817292fc1fafc01a566499ac",
+  "final_serial_receipts": [
+    {
+      "nonce": "ba364422adad4899a3e796fb39cb247a",
+      "exit_status": 0,
+      "complete_output_line": true,
+      "marker_absent_from_input": true,
+      "command_sha256": "0b359a8879ca5e75d053574a2d5f3a5b3957273ca359cda16c18dfc0c22bf95b"
+    }
+  ],
+  "all_control_files_reopened": true,
+  "final_clean_stop": true,
+  "final_fsck_exit": 0,
+  "final_strict_header": {
+    "recover_bit": false,
+    "state": 1,
+    "last_orphan": 0,
+    "error_count": 0,
+    "checksum": "valid"
+  },
+  "acceptance_scope": "OLD cloud seed46fea only; current production9c4d unavailable (confirmed proxy403). No owner image, Apple/native runtime or iPhone acceptance.",
+  "source_inputs": {
+    "tools/check_gui_recovery.py": "65848cc1e9c393d3a7cb1b50c837b0d313ec66aa715190564d386aee1a70e956",
+    "tools/recovery_guest.py": "d7508ae3181229dd3485260abd7ea938de21ede87f5e39fa7815401de8560bec",
+    "guest/recovery/ideck-recovery-init": "1d6168f26af78979114804274d9a5619e4036fd8a720dd60406490545baefd95",
+    "guest/recovery/fsck-clean.awk": "2669aafe762c0c6c05cf692d85d7337f94967db06604cc00b809eaef2b5eee1a",
+    "guest/recovery/scope-head.awk": "473cd7589b83113ec8db80a03f2414ebf767ce1ff088c0d02e165bccfe7de856",
+    "guest/gui/ideck-desktop-init": "63c6b5c1cf55a7777fb6b05d9b24cae24e588668f659c7c5293b0715f01f990b"
+  },
+  "all_fsck_output_gates": "PASS: no unresolved diagnostics; independent full host -fn after each recovery and final Stop"
+}

@@ -31,27 +31,31 @@ class GUIRecovery(unittest.TestCase):
             name = suffix[offset:offset+fields[11]-1].decode(); offset += fields[11]; offset = (offset+3)//4*4
             data = suffix[offset:offset+fields[6]]; offset += fields[6]; offset = (offset+3)//4*4
             if name == 'TRAILER!!!': break
-            self.assertEqual(fields[1],0o100444 if name=='ideck-fsck-clean.awk' else 0o100755)
+            self.assertEqual(fields[1],0o100444 if name.endswith('.awk') else 0o100755)
             self.assertEqual(fields[2:6],[0,0,1,0])
             self.assertNotIn(name,files);files[name]=data
-        self.assertEqual(set(files),{'ideck-recovery-init','ideck-desktop-init','ideck-fsck-clean.awk'})
+        self.assertEqual(set(files),{'ideck-recovery-init','ideck-desktop-init','ideck-fsck-clean.awk','ideck-scope-head.awk'})
         self.assertEqual(files['ideck-recovery-init'],script)
         self.assertEqual(files['ideck-desktop-init'],recovery_guest.desktop_runtime())
         self.assertEqual(files['ideck-fsck-clean.awk'],recovery_guest.SCAN.read_bytes())
+        self.assertEqual(files['ideck-scope-head.awk'],recovery_guest.HEAD.read_bytes())
         self.assertIn(b'run tmp dev/shm dev/pts dev sys proc',files['ideck-desktop-init'])
         self.assertIn(b'mode=1777,size=64m tmpfs /sysroot/tmp',files['ideck-desktop-init'])
 
-    def test_guest_tools_are_ro_glibc_target_never_mounted_and_only_journal_can_write(self):
+    def test_guest_fsck_is_unmounted_and_kernel_cycle_has_scope_gates(self):
         script = recovery_guest.SCRIPT.read_text()
         self.assertIn('serial',script);self.assertIn('ideck-recovery-tools',script);self.assertIn('ideck-recovery-work',script)
         self.assertIn('mount -t ext4 -o ro,noload "/dev/$tools" /tools',script)
-        self.assertNotRegex(script,r'mount[^\n]*\$work')
+        self.assertIn('mount -t ext4 -o rw,noatime,nosuid,nodev,noexec "/dev/$work" /counter-sync',script)
+        self.assertLess(script.index('awk -v eligible=1'),script.index('mount -t ext4 -o rw,noatime'))
+        self.assertLess(script.index('umount /counter-sync'),script.rindex('check -f -n'))
+        self.assertNotIn('chroot /counter-sync',script)
         self.assertIn('chroot /tools /usr/bin/env -i',script)
         self.assertIn('E2FSCK_CONFIG=/dev/null',script)
         self.assertIn('/usr/sbin/e2fsck "$@" "/dev/$work" 3>&-',script)
         for forbidden in ('fsck -y','check -y','debugfs','tune2fs','mkfs','/home/ideck','chroot /sysroot'):
             self.assertNotIn(forbidden,script)
-        self.assertEqual(script.count('check -f -n'),2)
+        self.assertEqual(script.count('check -f -n'),3)
         self.assertEqual(script.count('check -p -E journal_only'),1)
         self.assertLess(script.index('set_target_mode ro 1'),script.index('check -f -n'))
         self.assertLess(script.index('check -p -E journal_only'),script.rindex('set_target_mode ro 1'))
@@ -115,15 +119,58 @@ class GUIRecovery(unittest.TestCase):
         current=json.loads((evidence/'strict-gate-receipt.json').read_text())
         self.assertEqual(current['status'],'blocked_verified');self.assertFalse(current['acceptance'])
         self.assertEqual(len(current['cycles']),2);self.assertTrue(current['pristine_positive_gate'])
-        self.assertEqual(current['suffix_sha256'],hashlib.sha256(recovery_guest.suffix(recovery_guest.SCRIPT.read_bytes())).hexdigest())
-        self.assertEqual(current['guest_script_sha256'],hashlib.sha256(recovery_guest.SCRIPT.read_bytes()).hexdigest())
-        self.assertEqual(current['scan_source_sha256'],hashlib.sha256(recovery_guest.SCAN.read_bytes()).hexdigest())
-        self.assertEqual(current['runner_sha256'],hashlib.sha256((ROOT/'tools/check_gui_recovery.py').read_bytes()).hexdigest())
+        self.assertEqual(current['guest_script_sha256'],hashlib.sha256((evidence/'strict-guest-source.sh').read_bytes()).hexdigest())
+        self.assertEqual(current['scan_source_sha256'],hashlib.sha256((evidence/'strict-scan-source.awk').read_bytes()).hexdigest())
+        self.assertEqual(current['runner_sha256'],hashlib.sha256((evidence/'strict-runner-source.py').read_bytes()).hexdigest())
         for row in current['cycles']:
             self.assertFalse(row['promoted']);self.assertNotEqual(row['post_output_gate_exit'],0)
             self.assertTrue(row['sync_completed_before_kill']);self.assertTrue(row['readonly_control_file_verified'])
             self.assertTrue(all(r['marker_absent_from_input'] and r['complete_output_line'] and r['exit_status']==0
                                 for r in row['serial_receipts']))
+
+    def test_scoped_real_acceptance_is_bound_to_current_sources_and_clean_output(self):
+        r=json.loads((ROOT/'evidence/gui-recovery-20261017/scoped-receipt.json').read_text())
+        self.assertEqual(r['status'],'pass');self.assertEqual(len(r['cycles']),2)
+        self.assertIn('OLD cloud seed46fea only',r['acceptance_scope'])
+        self.assertEqual(r['suffix_sha256'],hashlib.sha256(recovery_guest.suffix(recovery_guest.SCRIPT.read_bytes())).hexdigest())
+        for path,expected in r['source_inputs'].items():self.assertEqual(hashlib.sha256((ROOT/path).read_bytes()).hexdigest(),expected)
+        for c in r['cycles']:
+            self.assertEqual(c['post_fsck_exit'],0);self.assertTrue(c['original_preserved'])
+            self.assertIn('IDECK_RECOVERY_SUMMARY_RECONCILED\n',c['control_markers'])
+            self.assertIn('IDECK_RECOVERY_SCAN_CLEAN\n',c['control_markers'])
+            self.assertGreater(c['recovery_sampled_peak_rss_bytes'],0)
+
+    def test_header_scope_refuses_boot_uuid_state_and_feature_changes(self):
+        fixture=json.loads((ROOT/'ios/tests/fixtures/desktop-ext4-superblock.json').read_text())
+        before=bytearray(4096);before[1024:2048]=bytes.fromhex(fixture['header_hex'])
+        def run(after,eligible=False):
+            with tempfile.TemporaryDirectory() as tmp:
+                a=Path(tmp)/'a';b=Path(tmp)/'b'
+                a.write_text(' '.join(map(str,before))+'\n');b.write_text(' '.join(map(str,after))+'\n')
+                args=['awk','-f',str(recovery_guest.HEAD)]
+                if eligible:args+=['-v','eligible=1',str(a)]
+                else:args += [str(a),str(b)]
+                return subprocess.run(args,capture_output=True).returncode
+        self.assertEqual(run(before,True),0)
+        for offset in [1024+12,1024+16,1024+44,1024+48,1024+52,1024+376,1024+1020]:
+            after=before.copy();after[offset]^=1;self.assertEqual(run(after),0)
+        for offset in [0,4095,1024+58,1024+96,1024+104,1024+232,1024+404]:
+            after=before.copy();after[offset]^=1;self.assertNotEqual(run(after),0)
+
+    def test_counter_eligibility_is_separate_from_final_clean_gate_and_body_is_constrained(self):
+        normal='\n'.join(['e2fsck 1.47.2 (1-Jan-2025)','Pass 1: Checking inodes, blocks, and sizes',
+            'Pass 2: Checking directory structure','Pass 3: Checking directory connectivity','Pass 4: Checking reference counts',
+            'Pass 5: Checking group summary information','Free blocks count wrong (10, counted=9).','Fix? no','',
+            'Free inodes count wrong (20, counted=19).','Fix? no','',
+            '/dev/vda: 1/100 files (0.0% non-contiguous), 100/200 blocks'])+'\n'
+        def mode(text):return subprocess.run(['awk','-v','allow_counters=1','-f',str(recovery_guest.SCAN)],input=text,text=True,capture_output=True).returncode
+        self.assertEqual(mode(normal),0);self.assertNotEqual(output_gate(normal,Path('/dev/vda')),0)
+        self.assertNotEqual(mode(normal.replace('Free blocks count wrong','Free blocks count wrong for group #1')),0)
+        self.assertNotEqual(mode(normal.replace('Fix? no','Fix? yes')),0)
+        script=recovery_guest.SCRIPT.read_text()
+        self.assertIn('pipefail',script);self.assertIn('iflag=skip_bytes,fullblock',script)
+        self.assertEqual(script.count('$1==1342173184'),2)
+        self.assertIn('[ "$scope_before" = "$1" ] || fail counter_scope',script)
 
     def test_bundled_seed_is_hash_verified_and_original_never_attached(self):
         profile = (ROOT/'ios/LinuxGUIProfile.swift').read_text()

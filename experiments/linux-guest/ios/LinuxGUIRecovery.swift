@@ -28,6 +28,7 @@ final class LinuxGUIRecovery: LinuxConsoleDisk {
         var suffixSHA256: String?
         var failure: String?
         var scanClean: Bool?
+        var summaryReconciled: Bool?
     }
     static let process = UUID().uuidString.lowercased()
     let directory: URL
@@ -236,17 +237,18 @@ final class LinuxGUIRecovery: LinuxConsoleDisk {
         receipt?.toolSeedSHA256 = toolSeedSHA256; receipt?.suffixSHA256 = LinuxRecoveryGuest.sha256
         receipt?.phase = .running; try save()
     }
-    func recordResult(assessment: Int, replay: Int, verification: Int, scanClean: Bool) throws {
+    func recordResult(assessment: Int, replay: Int, verification: Int, scanClean: Bool, summaryReconciled: Bool = false) throws {
         guard receipt?.phase == .running, [0,4].contains(assessment), [0,1].contains(replay), verification == 0, scanClean else { throw Invalid.manualReview }
         // Receipt only. NEVER inspect/hash/promote a native-owned work image here.
         receipt?.assessment = assessment; receipt?.replay = replay; receipt?.verification = verification
         receipt?.scanClean = true
+        receipt?.summaryReconciled = summaryReconciled
         receipt?.phase = .verified; try save()
     }
     func recordFailure(_ reason: String) throws {
         guard LinuxRecoveryProgress.failures.contains(reason) else { throw Invalid.receipt }
         receipt?.failure = reason
-        receipt?.phase = ["assessment", "replay", "manual_review", "verification_output", "control_receipt"].contains(reason) ? .manualReview : .running
+        receipt?.phase = ["assessment", "replay", "manual_review", "verification_output", "control_receipt", "counter_scope", "counter_eligibility"].contains(reason) ? .manualReview : .running
         try save()
     }
 
@@ -303,7 +305,8 @@ struct LinuxRecoveryProgress {
     static let failures: Set<String> = ["proc", "sys", "dev", "applets", "module", "ext4", "control", "control_open",
         "duplicate_tools", "duplicate_work", "disk_identity", "extra_disk", "readonly", "size", "uuid", "tools_mount",
         "bind_dev", "bind_proc", "target_mode", "assessment", "replay", "manual_review", "sync", "unmount_proc",
-        "unmount_dev", "unmount_tools", "final_sync", "cancelled", "poweroff_returned", "control_receipt", "verification_output"]
+        "unmount_dev", "unmount_tools", "final_sync", "cancelled", "poweroff_returned", "control_receipt", "verification_output",
+        "scope_head", "scope_hash", "counter_scope", "counter_eligibility", "counter_directory", "counter_mount", "counter_sync", "counter_unmount"]
     static func failure(_ line: String) -> String? {
         let prefix = "IDECK_RECOVERY_FAILED:"
         guard line.hasPrefix(prefix) else { return nil }
@@ -314,6 +317,8 @@ struct LinuxRecoveryProgress {
     private(set) var replay: Int?
     private(set) var verification: Int?
     private(set) var scanClean = false
+    private(set) var summaryEligible = false
+    private(set) var summaryReconciled = false
     private(set) var done = false
     mutating func observe(_ line: String) throws {
         guard !done else { throw LinuxGUIRecovery.Invalid.receipt }
@@ -324,8 +329,14 @@ struct LinuxRecoveryProgress {
             guard assessment != nil, replay == nil else { throw LinuxGUIRecovery.Invalid.receipt }
             replay = line.hasSuffix(":0") ? 0 : 1
         } else if line == "IDECK_RECOVERY_VERIFY:0" {
-            guard replay != nil, verification == nil else { throw LinuxGUIRecovery.Invalid.receipt }
+            guard replay != nil, verification == nil, !summaryEligible || summaryReconciled else { throw LinuxGUIRecovery.Invalid.receipt }
             verification = 0
+        } else if line == "IDECK_RECOVERY_SUMMARY_ELIGIBLE" {
+            guard replay != nil, verification == nil, !summaryEligible else { throw LinuxGUIRecovery.Invalid.receipt }
+            summaryEligible = true
+        } else if line == "IDECK_RECOVERY_SUMMARY_RECONCILED" {
+            guard summaryEligible, !summaryReconciled, verification == nil else { throw LinuxGUIRecovery.Invalid.receipt }
+            summaryReconciled = true
         } else if line == "IDECK_RECOVERY_SCAN_CLEAN" {
             guard verification == 0, !scanClean else { throw LinuxGUIRecovery.Invalid.receipt }; scanClean = true
         } else if line == "IDECK_RECOVERY_DONE" {

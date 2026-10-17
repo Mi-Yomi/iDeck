@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "scope": "Disposable kernel counter-reconciliation experiment; not an owner/production image. fsck runs only while target unmounted. No apps or target file access during temporary mount.",
+  "qemu_exit": 0,
+  "control_markers": "IDECK_DESKTOP_RECOVERY_READY\nIDECK_RECOVERY_ASSESS:0\nIDECK_RECOVERY_REPLAY:0\nIDECK_RECOVERY_VERIFY:0\nIDECK_RECOVERY_SCAN_CLEAN\nIDECK_RECOVERY_DONE\nIDECK_DESKTOP_CLEAN_UNMOUNT\n",
+  "script_sha256": "b63a261dd5ef8f19a81db44c1dc84acc7beb9e35df350599870dae81de9e0425",
+  "before_sha256": "f56522d300328300327e0bb012cc70cc466ada97ab9f79c8a591c716e42d2d4c",
+  "after_sha256": "7254137d97ad376721c55a2ade4ceb0a96badd6a008a84bdcb3c380431e665e5",
+  "strict_header": {
+    "recover_bit": false,
+    "state": 1,
+    "last_orphan": 0,
+    "error_count": 0,
+    "checksum": "valid"
+  },
+  "changed_blocks": [
+    {
+      "block": 0,
+      "changed_bytes": 12
+    }
+  ],
+  "changed_bytes_outside_primary_block": 0,
+  "changed_offsets_within_block0": [
+    1036,
+    1040,
+    1068,
+    1069,
+    1072,
+    1073,
+    1076,
+    1400,
+    2044,
+    2045,
+    2046,
+    2047
+  ],
+  "changed_offsets_relative_to_superblock": [
+    12,
+    16,
+    44,
+    45,
+    48,
+    49,
+    52,
+    376,
+    1020,
+    1021,
+    1022,
+    1023
+  ],
+  "before_non_superblock_sha256": "71ddff22f816eaa598ca5eaa971f98e2c4b14d8d1d1a4e18621c4367cef82474",
+  "after_non_superblock_sha256": "71ddff22f816eaa598ca5eaa971f98e2c4b14d8d1d1a4e18621c4367cef82474"
+}

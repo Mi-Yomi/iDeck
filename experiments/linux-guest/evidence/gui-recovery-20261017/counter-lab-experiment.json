@@ -125,6 +125,6 @@
     ]
   ],
   "full_range_list_sha256": "193bf9fc212b8ffe0a353c957f5ba05cdf82c8fa7e6363ac23c3273f5010b36a",
-  "conclusion": "Not yet validated as an automatic counter-only solution. Changes outside the primary superblock require exact structural classification; this alone does not prove unsafe repair or data loss. Native app remains journal_only and refuses unresolved warnings. Only disposable lab copies were used.",
+  "conclusion": "Complete follow-up classified all writes: lossless directory-index construction plus matching metadata/checksums. Named file bodies, ownership, modes, links, timestamps and xattrs matched. This is not proof of danger, but broad preen remains disabled; the narrower kernel-cycle scope is used instead.",
   "environment_scope": "Exploratory pinned host-tool run with inherited/default host environment; not production env-i. Rejected as an automatic solution, not a proposed production operation."
 }

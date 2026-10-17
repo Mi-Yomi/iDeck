@@ -1,135 +1,113 @@
 # GUI recovery after process termination
 
-**Release gate BLOCKED.** Earlier two-cycle acceptance was withdrawn: exit0 with
-`Fix? no` was insufficient, and the old serial token could match terminal echo.
-The corrected nonce/status protocol and strict full-output gate were exercised in
-two independent real force-kill attempts; both correctly refused activation for
-unresolved counter mismatches. A pristine target passes the positive gate.
-Successful force-kill/recovery/GUI-relaunch acceptance is **NOT established**.
+Two real force-kill/recovery/GUI-relaunch cycles PASS on the explicitly OLD cloud
+seed46fea with corrected nonce framing, preserved files, clean Stop and independent
+full fsck. [Scoped receipt](evidence/gui-recovery-20261017/scoped-receipt.json).
+**Current production9c4d, Apple/native execution and iPhone recovery are not verified.**
+The confirmed Release request failed at the proxy: `Tunnel connection failed: 403
+Forbidden`. This is the remaining exact-assets blocker, not a GitHub authorization
+finding. No credential/token was read and no CI was dispatched.
 
-The diagnostic fix is pushed as7a9225a; initial host proof isdb542ce. Native
-transaction/UI integration now implements the workflow below. Apple compilation,
-Swift IO regressions, new IPA and iPhone recovery are **NOT RUN** here. Parent
-coordinates the single CI build after review and fresh quota/paid-OFF checks.
+## App workflow
 
-## App workflow and durable transaction
+Enable JIT and Start desktop. If the unchanged original clean-validator refuses
+needsRecovery BEFORE native entry, this process uses its ONE VM for copy recovery.
+Recover disk is also available before an attempt. Share report and Diagnostics
+stay fixed above scrolling/disabled inputs, including failure/low-space states.
 
-Enable JIT and choose Start desktop. If the unchanged normal clean-superblock
-validator refuses needsRecovery BEFORE native entry, this process uses its ONE
-VM for recovery instead. The top bar also offers Recover disk before an attempt.
-The UI shows backup/copy/check/result stages; Share report and Diagnostics remain
-fixed outside disabled inputs. The original disk is never attached to recovery.
+The GUI-only helper locks the source and workspace, records identity/uid/gid/mode/
+UUID/size/SHA256, streams/fsyncs an independent backup and verifies its readback,
+then makes/verifies a separate work copy. Two1.25GiB copies+512MiB reserve are
+required initially. Resume validates the backup, reclaims only uncommitted work,
+and checks actual free space again. Verified backups and the source are preserved.
+No existing image is resized/reformatted/reseeded. Console and Probe disks are
+outside this workflow.
 
-The GUI-only helper exclusively locks the original and recovery workspace, records
-its identity/uid/gid/mode/UUID/size/SHA-256, streams and fsyncs an independent backup,
-hash-verifies it, then separately copies/verifies the work image. No APFS clone or
-sparse allocation saving is assumed. A new attempt needs two1.25GiB copies plus
-512MiB reserve. A resume first validates the backup and reclaims only uncommitted
-work; actual free space is checked again before copying. Verified backups remain.
+Recovery attaches ONLY the work copy and the immutable bundled seed. The latter
+is RO/noload and supplies pinned glibc e2fsck, Bash and coreutils through chroot;
+no executable/configuration comes from the mutable target. Unique virtio serials,
+exact sizes and RO bits identify roles despite their shared filesystem UUID.
+Every fsck/journal operation runs with the work target UNMOUNTED; read-only scans
+also enforce block-device RO. Only journal_only replay and the restricted kernel
+cycle below can write the copy. No generic preen, -y or dirty-bit editing is enabled.
 
-After ordered assessment/replay/read-only verification AND SCAN_CLEAN markers, guest shutdown and
-host fsync, the worker writes a verified receipt only. Its work/source descriptors,
-lease and QEMU owner thread remain retained until PROCESS exit. Main-loop return
-never authorizes promotion, closing a native-owned image, or another qemu_init.
-The UI requires fully closing/reopening iDeck and choosing Start desktop.
+## Restricted primary-summary-counter class
 
-In that fresh process, before its first VM, promotion requires a different process
-UUID AND exclusive locks, matching immutable-tool/suffix receipts, original/backup
-hashes and source identity, plus the existing strict CLEAN validator on work. It
-hashes/fsyncs the recovered image, durably records promoting, atomically renames
-work to active, fsyncs both directories, then records promoted. If killed around
-rename, the next fresh process recognizes only the recorded original hash or
-recovered hash; unknown states fail closed. The per-generation original.raw and
-receipt remain for rollback/review. A subsequent recovery uses a new generation.
+After journal replay, a FULL unmounted `e2fsck -fn -E fixes_only` scan must be clean
+or contain ONLY the two exact primary free-summary-counter warnings/Fix?no, with
+all five ordered passes complete and exit0. Group/inode/directory repairs and all
+unknown diagnostics are rejected. Eligibility also requires state1, no RECOVER,
+last_orphan0, error_count0 and exact supported features. `fixes_only` suppresses
+optional optimization proposals; it does not skip consistency checks.
 
-Copying/running interruptions retry from the original/verified backup. A failed
-journal/manual-action/read-only gate or rejected clean header blocks activation
-and requires a separate decision; there is no general/destructive repair action.
-Reports export fixed phase/failure codes and exit numbers, never file contents or
-arbitrary native/error text. Raw backup export/rollback UI is not implemented.
-This cannot intercept SIGKILL or guarantee unsaved/uncommitted writes survive.
+For that narrow class, no app or target file is accessed: the kernel mounts the
+COPY noatime/nosuid/nodev/noexec, syncs it and unmounts it. Runtime SHA256 before/
+after must cover exactly1342173184 bytes outside primary block0 and match. Bash
+pipefail and dd's byte count reject short/error streams. All4096 primary-block
+bytes are compared; only global free counts, ordinary mount time/count/lifetime
+bookkeeping and checksum may differ. A final independent FULL read-only scan must
+have strictly clean output. Unknown classes/scope changes stop for review.
 
-The current [strict-gate receipt](evidence/gui-recovery-20261017/strict-gate-receipt.json)
-records base/suffix/source hashes, complete nonce-framed status0 after sync, actual
-SIGKILL, verified independent snapshots, rejected output gates and read-only
-control-file checks after replay. Rejected work was never promoted. The old
-[receipt](evidence/gui-recovery-20261017/receipt.json) is withdrawn and retained
-for audit. The owner image was neither available nor accessed.
+On the disposable test, descriptors AND bitmaps agreed at111837free blocks and
+142603free inodes; primary summaries were111843/142605. The kernel cycle changed
+ONLY12 bytes in primary block0; every other byte was hash-identical, preserving
+all inode/directory/file/link/permission/xattr/bitmap/journal bytes. See
+[kernel byte scope](evidence/gui-recovery-20261017/kernel-counter-lab.json) and
+[upstream kernel source](evidence/gui-recovery-20261017/kernel-counter-source.json).
 
-The test uses the earlier authenticated cloud seed46fea, with the SAME production
-Alpine6.18.35 kernel/base initramfs and Debian package closure as the current local
-payload. Current published local seed9c4d is unavailable in this environment and
-must be checked separately. No iPhone recovery or Apple/native test is claimed.
-The [glibc resolver smoke](evidence/gui-recovery-20261017/trusted-tools-loader.json)
-also ran the actual seed interpreter `/lib/ld-linux-aarch64.so.1 --list` in the
-production-kernel guest. e2fsck resolved libext2fs/libcom_err/libblkid/libuuid/
-libe2p/libc from `/lib/aarch64-linux-gnu`; blockdev resolved libc. That separately
-instrumented RO inspection is separate from recovery acceptance.
+## Native ownership and activation
 
-The trusted tool seed is attached RO and mounted ro,noload; its glibc e2fsck runs
-inside chroot, with its immutable loader/libraries and an explicit empty fsck
-configuration. No executable/configuration comes from the work target. Target and
-tools share a filesystem UUID; two unique virtio serials, RO bits and sizes select
-their roles. The work target is never mounted and is block-device RO during both
-`e2fsck -fn` passes. Only `e2fsck -p -E journal_only` gets a writable target. Any
-manual-action/error exit blocks activation; there is no general repair or -y.
-The [Debian e2fsck manual](https://manpages.debian.org/trixie/e2fsprogs/e2fsck.8.en.html)
-documents journal-only replay and read-only checking.
+Ordered assessment/replay/scope/verification/SCAN_CLEAN receipts, guest shutdown
+and host fsync authorize a verified RECEIPT only. The QEMU owner thread, source/
+work descriptors and locks remain retained until PROCESS exit. Main-loop return
+never authorizes rename, closing a native-owned image or another qemu_init.
+Fully close/reopen iDeck, then Start desktop.
 
-Both old checks returned fsck0 while printing unresolved free-block/free-inode
-counter mismatches/Fix?no. [Upstream source analysis](evidence/gui-recovery-20261017/e2fsck-source-analysis.json)
-identifies PR_NO_OK on these two problems: rejecting their fix does not clear the
-filesystem-valid flag. This explains exit0, not the origin of any owner-image
-problem. The new pinned-LC_C output gate accepts only banner+five ordered passes+
-ordinary summary. Any extra diagnostic blocks SCAN_CLEAN and native promotion.
-The checksum/clean-superblock gate remains necessary, but cannot substitute.
+In the fresh process BEFORE its VM, promotion requires a different process UUID
+AND exclusive locks, bound tool/suffix receipts, original/backup hashes and source
+identity, plus the existing strict clean header on work. It hashes/fsyncs work,
+durably records promoting, atomically activates it, fsyncs directories and records
+promoted. Kills around rename are idempotent: only recorded original/recovered
+hashes are accepted. Original.raw and generation receipts remain for rollback/
+review; no raw backup export or rollback UI is implemented. Unknown repair classes
+never become destructive automatic repair. SIGKILL cannot be intercepted and
+unsaved/uncommitted writes are not guaranteed.
 
-A separate [disposable host preen experiment](evidence/gui-recovery-20261017/counter-lab-experiment.json)
-is NOT enabled as an automatic counter-only solution: `-p -f -E fixes_only` changed
-209199 bytes outside the primary superblock and the following -fn still printed
-an Optimize?no proposal. Changes outside the superblock do not by themselves prove
-unsafe repair: group descriptors, checksums and other metadata must be classified.
-Source snapshots/control file remained intact. This was
-an isolated lab copy, never an app/owner-image action. The app enables journal_only
-only; general preen, manual dirty-bit editing and destructive answers stay absent.
+## Evidence and remaining gates
 
-Force-kill also left persistent `/tmp/.X0-lock`, blocking Xorg on relaunch. The
-small deterministic newc suffix now overlays the accepted desktop PID1 with two
-reviewed changes: mount `/tmp` as mode1777,size64m tmpfs and unmount it after killing
-session writers. Existing disk `/tmp` contents are hidden, not deleted. `/home`
-remains on ext4. The accepted base initramfs, GUI seed and payload lock are unchanged;
-no new large artifact or cloud export is needed.
+The initial [receipt](evidence/gui-recovery-20261017/receipt.json) is WITHDRAWN:
+exit0 did not exclude Fix?no and its serial substring token could match tty echo.
+The later [strict journal-only test](evidence/gui-recovery-20261017/strict-gate-receipt.json)
+correctly refused both attempts. Their historical source/logs are retained. The
+current scoped receipt uses full output-line nonces absent from the input command,
+separate status/failure markers and actual completed sync before SIGKILL.
 
-Reproduce in a NEW disposable output directory (needs space for copies/backups):
+General preen was investigated only on disposable copies. The
+[complete structure/content comparison](evidence/gui-recovery-20261017/repair-structure-analysis.json)
+found21229 identical logical paths,17318 matching regular-file hashes,1440symlinks,
+2471directories and matching ownership/modes/links/timestamps/xattrs. Extra writes
+were18 lossless directory-index constructions plus their metadata/checksums, not
+proof of danger. The narrower kernel method avoids all those non-SB writes.
+Actual [glibc resolver smoke](evidence/gui-recovery-20261017/trusted-tools-loader.json)
+verified the interpreter and libraries in the production-kernel guest.
+
+The small deterministic cpio suffix adds recovery/check scripts and gives desktop
+/tmp a temporary64MiB tmpfs to avoid stale Xorg locks. Accepted base initramfs,
+kernel, GUI seed and GUI locks stay unchanged; no new large payload is needed.
+Source/native unit gates do not replace VM/device evidence. Host QEMU10.0.13 also
+differs from iOS10.0.12-utm.
+
+Run on NEW disposable output with the CURRENT verified restored9c4d assets:
 
 ```sh
 python3 experiments/linux-guest/tools/check_gui_recovery.py \
   --assets /path/to/verified-restored-gui-assets \
-  --host /path/to/existing/authenticated-extracted-amd64-tools \
+  --host /path/to/authenticated-extracted-amd64-tools \
   --output /path/to/new-disposable-lab --cycles 2
 ```
 
-With current old-seed warnings this normal acceptance command must fail closed.
-Use `--verify-output-blocker` to reproduce two independent refusals plus the
-pristine positive gate; its blocked_verified status is explicitly NOT acceptance.
-
-The script verifies every input asset against its profile before creating any VM;
-uses existing relocated Debian tools; disables guest networking; does not install
-packages, contact an API, or read an owner disk. Retain the output receipts/logs and
-original-N.raw snapshots. Native promotion must wait for a fully fresh app process;
-host QEMU subprocess exit is not a model for safe same-process native teardown.
-
-## Remaining checks
-
-The cloud has the old46fea assets; current9c4d raw seed is retained on the parent's
-Windows/WSL workspace, not this selected filesystem. Live credential/token requests
-are prohibited; no authenticated fetch or known-failing artifact transport was
-attempted. This is an explicit current-production-assets blocker. Rerun with9c4d.
-The unresolved-counter recovery also needs a separately validated safe method;
-the app deliberately stops for review. Apple
-gate now requires real Swift IO/lock/low-space/partial-copy/control-receipt and
-fresh-child-process before/after-rename interruption tests. Those tests use sparse
-synthetic unit bodies and do not substitute for this real VM gate. They are NOT
-RUN without the Apple toolchain. Device must check live report sharing, recovery
-after force-quit, relaunch/promotion and saved user files. The owner's original
-image is unavailable; it has not been restored or claimed healthy.
+Then parent reviews/runs the coordinated Apple gate: real Swift IO/lock/low-space/
+partial-copy/receipt and fresh-child before/after-rename tests, full Husk typecheck,
+new IPA and owner device checks. These are NOT RUN here. The owner's original
+image was not available/accessed/restored. Exact current9c4d acceptance remains
+blocked on [the recorded asset request](evidence/gui-recovery-20261017/current-asset-attempt.json).

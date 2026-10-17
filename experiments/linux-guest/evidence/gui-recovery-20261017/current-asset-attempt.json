@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "asset_url": "https://api.github.com/repos/Mi-Yomi/iDeck/releases/assets/650023557",
+  "method": "GET",
+  "request_headers": {
+    "Accept": "application/octet-stream",
+    "Range": "bytes=0-0"
+  },
+  "authentication": "none; no credentials or token env read",
+  "download_limit_bytes": 128,
+  "expected_archive_sha256": "112bdba6e12ae182fb347e52e7368e26f748bb3dc2bcd77dbd3122fb14dcdedd",
+  "error": "URLError: <urlopen error Tunnel connection failed: 403 Forbidden>",
+  "result": "transport failed; asset not retrieved"
+}

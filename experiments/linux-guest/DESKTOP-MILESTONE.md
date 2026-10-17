@@ -1,5 +1,12 @@
 # Следующий milestone: persistent POSIX Linux и минимальный desktop
 
+Scoped update2026-10-17: два настоящих OLD46fea force-kill/recovery/GUI-relaunch
+цикла PASS с новым nonce-протоколом, сохранением файлов и clean fsck. Узкий класс
+summary counters исправляется empty kernel mount/unmount КОПИИ после полной
+offline проверки; runtime SHA всех non-SB bytes и whitelist первичного блока
+обязательны. Это НЕ general preen/dirty-bit clear. Current9c4d недоступен:
+Release GET → Tunnel403Forbidden. Apple/owner/device ещё не проверены; CI не запускался.
+
 Recovery follow-up **2026-10-17**: [GUI-RECOVERY.md](GUI-RECOVERY.md) описывает
 проверенные backup/work copies, отдельную journal-only VM и activation только в
 свежем app process после новых locks/hashes/SCAN_CLEAN/clean-validator. Старый

@@ -62,9 +62,10 @@ are not substitutes for those checks. No CI is dispatched by this task.
 
 The internal verified backup, recovery and fresh-process activation are described
 in [GUI-RECOVERY.md](GUI-RECOVERY.md). No owner disk was accessed by this executor.
-That workflow currently fails closed on unresolved fsck output; old acceptance is
-withdrawn and successful force-quit recovery is not established. A new suffix and
-SCAN_CLEAN receipt are required in addition to code0 and a clean superblock.
+Unknown fsck output still fails closed. The scoped summary-counter method now
+passes two old-seed host cycles; current9c4d and device remain unverified. The old
+acceptance is withdrawn. A new suffix, body/header scope verification where used,
+and SCAN_CLEAN are required in addition to code0 and a clean superblock.
 There is no raw disk share/export, general repair or reset button. A future raw
 exporter must establish that QEMU cannot still write, validate the source
 identity and hold an exclusive lock for the entire bounded copy, check destination

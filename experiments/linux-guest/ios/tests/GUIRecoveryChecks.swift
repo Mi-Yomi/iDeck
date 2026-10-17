@@ -121,6 +121,13 @@ func runGUIRecoveryChecks(root: URL, fixture: URL) throws {
     var progress = LinuxRecoveryProgress()
     for line in ["IDECK_RECOVERY_ASSESS:4", "IDECK_RECOVERY_REPLAY:1", "IDECK_RECOVERY_VERIFY:0", "IDECK_RECOVERY_SCAN_CLEAN", "IDECK_RECOVERY_DONE"] { try progress.observe(line) }
     precondition(progress.done)
+    var scoped = LinuxRecoveryProgress()
+    for line in ["IDECK_RECOVERY_ASSESS:0", "IDECK_RECOVERY_REPLAY:0", "IDECK_RECOVERY_SUMMARY_ELIGIBLE"] { try scoped.observe(line) }
+    do { try scoped.observe("IDECK_RECOVERY_VERIFY:0"); preconditionFailure("unfinished scope accepted") }
+    catch { }
+    try scoped.observe("IDECK_RECOVERY_SUMMARY_RECONCILED")
+    for line in ["IDECK_RECOVERY_VERIFY:0", "IDECK_RECOVERY_SCAN_CLEAN", "IDECK_RECOVERY_DONE"] { try scoped.observe(line) }
+    precondition(scoped.done && scoped.summaryReconciled)
     var legacyProgress = LinuxRecoveryProgress()
     for line in ["IDECK_RECOVERY_ASSESS:0", "IDECK_RECOVERY_REPLAY:0", "IDECK_RECOVERY_VERIFY:0"] { try legacyProgress.observe(line) }
     do { try legacyProgress.observe("IDECK_RECOVERY_DONE"); preconditionFailure("legacy receipt without SCAN_CLEAN accepted") }

@@ -84,10 +84,11 @@ def strict_header(path, image):
 
 
 class VM:
-    def __init__(self, assets, host, work, out, recovery):
+    def __init__(self, assets, host, work, out, recovery, journal_only=False):
         out.mkdir(parents=True, exist_ok=False)
         self.out, self.logs, self.peers = out, [bytearray(), bytearray()], []
         self.serial_receipts=[]
+        self.peak_rss=0;self.started=time.monotonic();self.elapsed=0
         servers = []
         for _ in range(2):
             s = socket.socket(); s.bind(('127.0.0.1', 0)); s.listen(1); s.settimeout(30); servers.append(s)
@@ -98,7 +99,7 @@ class VM:
         args = [host/'usr/bin/qemu-system-aarch64', '-L', host/'usr/share/qemu', '-machine', 'virt',
                 '-cpu', 'cortex-a72', '-m', '1024', '-smp', '4', '-accel', 'tcg,thread=multi,tb-size=256',
                 '-display', 'none', '-nodefaults', '-nic', 'none', '-no-reboot', '-kernel', assets/'vmlinuz-virt',
-                '-initrd', initrd, '-append', 'console=ttyAMA0 panic=0 loglevel=4 rdinit='+('/ideck-recovery-init' if recovery else '/ideck-desktop-init')]
+                '-initrd', initrd, '-append', 'console=ttyAMA0 panic=0 loglevel=4 rdinit='+('/ideck-recovery-init' if recovery else '/ideck-desktop-init')+(' ideck.recovery.journal_only=1' if journal_only else '')]
         if recovery:
             args += ['-drive', 'if=none,id=tools,format=raw,readonly=on,file='+str(assets/'gui-rootfs-v1.raw'),
                      '-device', 'virtio-blk-device,drive=tools,serial=ideck-recovery-tools']
@@ -122,6 +123,10 @@ class VM:
                 index = self.peers.index(peer); self.logs[index].extend(data)
                 with (self.out/('serial.log' if index == 0 else 'control.log')).open('ab') as f: f.write(data)
         if sum(map(len, self.logs)) > 4*1024**2: raise RuntimeError('guest log bound')
+        try:
+            for line in Path(f'/proc/{self.process.pid}/status').read_text().splitlines():
+                if line.startswith('VmHWM:'):self.peak_rss=max(self.peak_rss,int(line.split()[1])*1024)
+        except FileNotFoundError:pass
 
     def until(self, marker, seconds=180):
         deadline = time.monotonic()+seconds
@@ -148,6 +153,7 @@ class VM:
         status = self.process.wait(timeout=30)
         for peer in self.peers: peer.close()
         self.err.close()
+        self.elapsed=time.monotonic()-self.started
         return status
 
 
@@ -170,6 +176,7 @@ def run(assets, host, output, cycles):
                 checks = [f'test "$(cat /home/ideck/Documents/recovery-{previous}.txt)" = cycle-{previous}' for previous in range(1,index)]
                 checks += [f'printf cycle-{index} > /home/ideck/Documents/recovery-{index}.txt', 'sync']
                 vm.serial(' && '.join(checks))
+                serial_receipts=vm.serial_receipts
             finally: status = vm.close(kill=True)
             if status != -9: raise RuntimeError('force-kill not reproduced')
             dirty = base.ext4_header(active)
@@ -196,11 +203,13 @@ def run(assets, host, output, cycles):
                 'original_sha256':original_hash,'original_preserved':True,'recovery_exit':status,
                 'post_fsck_exit':fsck.returncode,'prior_control_files_read_before_write':index-1,
                 'strict_clean_header':clean_header,
+                'serial_receipts':serial_receipts,'recovery_seconds':vm.elapsed,'recovery_sampled_peak_rss_bytes':vm.peak_rss,
                 'control_markers':vm.logs[1].decode()})
         vm = VM(assets, host, active, output/'final-relaunch',False)
         try:
             vm.until(b'IDECK_DESKTOP_READY')
             vm.serial(' && '.join(f'test "$(cat /home/ideck/Documents/recovery-{i}.txt)" = cycle-{i}' for i in range(1,cycles+1)))
+            result['final_serial_receipts']=vm.serial_receipts
             vm.peers[1].sendall(b'IDECK_STOP_V1\n'); vm.until(b'IDECK_DESKTOP_CLEAN_UNMOUNT')
             if vm.close() != 0: raise RuntimeError('final relaunch stop failed')
         except BaseException:
@@ -243,7 +252,7 @@ def verify_blocker(assets, host, output, cycles=2):
             original_hash=base.sha256(active);backup=output/f'original-{index}.raw'
             shutil.copyfile(active,backup);shutil.copyfile(backup,work)
             if base.sha256(backup)!=original_hash or base.sha256(work)!=original_hash:raise RuntimeError('backup hash mismatch')
-            vm=VM(assets,host,work,output/f'recovery-{index}',True)
+            vm=VM(assets,host,work,output/f'recovery-{index}',True,journal_only=True)
             try:
                 vm.until(b'IDECK_RECOVERY_DONE')
                 raise RuntimeError('unresolved count warnings were unexpectedly accepted')

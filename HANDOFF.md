@@ -1,5 +1,65 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Scoped counter recovery PASS on old seed; production access blocked — 2026-10-17
+
+Published intermediate checkpoint: `1acee7b02e221df2d1bbecdfb4e037fbe8076dbc`.
+Its fail-closed/withdrawal record below is historical. The new scoped method has
+passed TWO real force-kill/recovery/GUI-relaunch cycles with the corrected nonce,
+full output gate and independent full read-only fsck. First-cycle file was read
+before writes in cycle2; final boot read both, then clean Stop/fsck passed.
+Recovery42.97/44.73s; sampled QEMU VmHWM1251635200/1253736448bytes, with unchanged
+1024MiB guest/4vCPU/256MiB TCG. These are Linux-host samples, not iOS memory proof.
+
+Exact finding: journal-replayed primary summaries111843blocks/142605inodes differed
+from BOTH group-descriptor and bitmap counts111837/142603. The latter agreed.
+e2fsck PR_NO_OK explains why -n returned0. General preen's extra writes were NOT
+proof of danger: complete comparison found21229 unchanged paths,17318 regular
+file hashes,1440 symlinks and2471 directories, matching modes/uid/gid/link counts/
+timestamps/xattrs. Changes mapped entirely to SB/GDT/bitmaps and18 losslessly
+indexed directories/extent metadata; no unexplained block. No general preen is
+enabled in the app; the narrower method below avoids that transformation.
+
+After journal-only replay, a FULL unmounted -fn -E fixes_only scan must either be
+strictly clean or match ONLY the two primary-summary warnings plus Fix?no and all
+five ordered passes. The counter class also requires state1, no RECOVER, orphan0,
+error_count0 and exact GUI features. Only that checked WORK COPY may get an empty
+noatime/nosuid/nodev/noexec kernel mount+sync+unmount; no app or target-file access.
+Every fsck/journal operation stays unmounted. A pipefail-protected streamed SHA256
+before/after must cover exactly1342173184 bytes outside block0 and be identical.
+All4096 primary-block bytes are compared; only summary counters, normal mount
+times/count/lifetime-writes and checksum may differ. Independent final full fsck
+must have strict clean output. Unknown classes or scope changes fail closed.
+
+The standalone kernel experiment changed ONLY12 primary-block bytes; all other
+bytes hash-identical. This preserves all file bodies, directory entries, inode
+permissions/ownership/links/xattrs, bitmaps and journal bytes, rather than relying
+on an exit code. Upstream6.18.35 ext4 source confirms free counters initialize
+from group metadata and are committed into SB at normal update/unmount.
+
+Native receipt/locks/fresh-process promotion, original snapshots and one-VM/
+retained-owner guards remain as in1acee7b. Scoped status/boot hashes are in MD;
+new small source-locked init suffix, same accepted large GUI payload/locks.
+Apple compiler/Swift IO/new IPA/device checks remain NOT RUN; no CI dispatched.
+
+**Current-production blocker:** bounded unauthenticated GET of the confirmed
+Release asset650023557 failed: `URLError: <urlopen error Tunnel connection failed:
+403 Forbidden>`. No asset retrieved; not a GitHub authorization diagnosis. Current
+seed9c4d remains unavailable in this cloud filesystem. All VM proof above uses the
+explicit OLD46fea seed, never substituted for production acceptance. No owner
+image was available/accessed/restored. Parent must obtain9c4d, run the scoped host
+gate, review native code, then coordinate Apple/device gates. No token was read.
+
+Current regressions:312 total /307PASS /5 explicit SKIP /0fail/error. Exact offline
+Husk restore/overlay PASS:81 members,45 locked inputs,28 copies,10 patched files,
+21 added Swift sources. GUI locks and accepted base guest bytes unchanged. New
+suffix14924bytes, SHAd1da3167bad7aa7a7a0e4c11133a6faab68fa4cd817292fc1fafc01a566499ac.
+Swift runtime/Apple/UIKit/device remain NOT RUN, rather than inferred from Python.
+
+Evidence: [scoped receipt](experiments/linux-guest/evidence/gui-recovery-20261017/scoped-receipt.json),
+[structure comparison](experiments/linux-guest/evidence/gui-recovery-20261017/repair-structure-analysis.json),
+[kernel-only byte scope](experiments/linux-guest/evidence/gui-recovery-20261017/kernel-counter-lab.json),
+[exact asset attempt](experiments/linux-guest/evidence/gui-recovery-20261017/current-asset-attempt.json).
+
 ## Force-quit recovery implementation — 2026-10-17
 
 **BLOCKED, not recovery acceptance.** Reviewer found two flaws in db542ce: exit0

@@ -12,10 +12,10 @@ see [GUI-DIAGNOSTICS.md](GUI-DIAGNOSTICS.md) and the implemented
 bytes stay unchanged. Host QEMU10.0.13 differs from iOS QEMU10.0.12-utm. Rendering is
 software Xorg modesetting; no Steam or guest GPU-acceleration readiness is claimed.
 
-Force-quit recovery acceptance is **BLOCKED**: the old pass receipt was withdrawn;
-corrected nonce/output gates reject unresolved e2fsck counter warnings. Current
-local seed9c4d and Apple/device recovery are not verified here. See the recovery
-guide before scheduling any build intended to restore the owner's disk.
+Current-production recovery acceptance is **BLOCKED** on unavailable seed9c4d
+and Apple/device checks. The old pass was withdrawn; a new scoped kernel-counter
+method passes two real OLD46fea cycles, with runtime whole-body/primary-header
+scope guards and strict clean fsck output. See the recovery guide before any build.
 
 ## Current evidence and bytes
 

@@ -38,7 +38,7 @@
     "ios/LinuxDesktopInput.swift": "5de0b1c9d175405b865f9b32c8169b495aa72a83acf8f3072ded52859cac9b36",
     "ios/LinuxDesktopView.swift": "24f32eaafee435149857ab31229c1fa08a1a56c52b9b904b382336c154b4cb7e",
     "husk/patches/0004-desktop-input-bridge.patch": "3eb1da30aa9724440ce4e79a48fbae7326aee8115be00e6299fd28b9fe326ee0",
-    "tools/gui_bundle.py": "55b10151e44ab0f3e091e4f37927fb8eceb9bc5d3b5c175d0b8ee14103b82015",
+    "tools/gui_bundle.py": "0bdd90ba31ca0c512980629d8c76bdc98da9a525e88c88fea4902681b52dc079",
     "ipa/gui.lock.json": "4bc3469a05a10f56315500f320873db7e645d35824119ccdde5fd1b805c5b8d8"
   },
   "copies": {

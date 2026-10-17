@@ -268,9 +268,15 @@ def fetch(destination, lock_path, *, diagnostic=None):
             raise ValueError()
         token = os.environ.get("IDECK_GUI_PAYLOAD_TOKEN", "")
         code = "GUI_FETCH_CONFIG_TOKEN_SCOPE"
-        if token and (parsed.hostname != "api.github.com" or parsed.port not in (None, 443)
-                      or parsed.query or parsed.fragment
-                      or not re.fullmatch(r"/repos/Mi-Yomi/iDeck/releases/assets/[0-9]+", parsed.path)):
+        github_asset = (parsed.hostname == "api.github.com" and parsed.port in (None, 443)
+                        and parsed.username is None and parsed.password is None
+                        and not parsed.query and not parsed.fragment
+                        and re.fullmatch(r"/repos/Mi-Yomi/iDeck/releases/assets/[0-9]+", parsed.path))
+        # Reuse the already imported CI credential only for the SAME approved
+        # asset API. Never even read this fallback for another transport URL.
+        if not token and github_asset:
+            token = os.environ.get("IDECK_DEBIAN_PAYLOAD_TOKEN", "")
+        if token and not github_asset:
             raise ValueError()
         code = "GUI_FETCH_CONFIG_DESTINATION"
         if destination.exists() or destination.is_symlink():

@@ -48,8 +48,12 @@ configure the existing private CI download route:
 IDECK_GUI_PAYLOAD_URL=https://api.github.com/repos/Mi-Yomi/iDeck/releases/assets/<actual-uploaded-asset-id>
 ```
 
-Use parent-managed existing release-download access for `IDECK_GUI_PAYLOAD_TOKEN`
-when required. This executor does not read or configure credentials. Do not
+`IDECK_GUI_PAYLOAD_TOKEN` is an optional override. When it is unset/empty,
+only for this exact approved Mi-Yomi/iDeck GitHub asset API, the downloader reuses
+`IDECK_DEBIAN_PAYLOAD_TOKEN` from the already imported `ideck-debian-payload` CI
+group. No new secret/group is needed. Other transports never read or receive
+this fallback. The GUI URL remains separate; Debian URL/token values are not
+replaced. This executor does not read or configure live credentials. Do not
 substitute an invented ID, public URL, refreshed payload hash or source image.
 `gui_bundle.py fetch` enforces the exact committed size/hash, HTTPS, the allowed
 repository asset API/token scope and safe redirects without logging credentials

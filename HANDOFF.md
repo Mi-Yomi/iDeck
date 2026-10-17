@@ -1,5 +1,51 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Limited GUI credential fallback; Library producer attempt failed — 2026-10-17
+
+После source/host readiness review parent указал avoidable CI setup blocker:
+YAML уже импортирует `ideck-debian-payload`, но GUI downloader использовал только
+отдельный GUI token. Исправлен ТОЛЬКО GUI transport selection:
+`IDECK_GUI_PAYLOAD_TOKEN` имеет приоритет; если unset/empty, существующий
+`IDECK_DEBIAN_PAYLOAD_TOKEN` читается/используется исключительно для HTTPS
+`api.github.com[:443]/repos/Mi-Yomi/iDeck/releases/assets/<numeric-id>` без
+userinfo/query/fragment, с прежним allowlist. Вне этого API fallback даже не
+читается. GUI URL остаётся отдельным; Debian URL/token не заменяются и не
+меняются. Новая credential/group не требуется. YAML/CI/guest/native/lifecycle
+и payload lock/bytes не менялись. Redirect stripping/redaction прежние.
+
+7 новых offline tests со СИНТЕТИЧЕСКОЙ env mapping и mocked HTTP: primary
+precedence, fallback/missing/empty primary, port443, чужой host/repo/path/port /
+query/fragment, bad URL, отсутствие чтения fallback вне scope, сохранение
+Debian URL/token, redirect credential stripping/HTTPS-only, redacted HTTP error
+и отсутствие publication. Никаких live env/token reads/auth requests в этих
+проверках. Полный suite:281 tests /276PASS /5 explicit SKIP /0fail/error.
+Обновлён только overlay input hash GUI helper. Повтор VM не требуется для
+transport-only fix; original-kernel GUI evidence/seed/payload остаются прежними.
+
+**Library output реально попробован:** свежие official upload/hosted-apps/
+file-transfer helpers в `.work/gui-library-producer.8z3qh2`, один prepared batch
+для ТОГО ЖЕ `ideck-debian-gui-v1.tar` и `SHA256SUMS`. Exit1, точный текст:
+`library upload failed: hosted apps tools/list request failed: network`.
+Подтверждённых Library files/library_file_id НЕТ; передача не состоялась.
+Архив292034560bytes, SHA
+`4b4b0bb1f75d5b662a8c1d866f482329449ee4d52d181e585ef4964a3540bbdb`
+и checksum90bytes сохранены; `sha256sum -c SHA256SUMS` после попытки PASS.
+Parent не имеет доступа к локальному `/workspace` пути: это НЕ delivery.
+Нужен рабочий supported producer bridge; прямые неподдерживаемые обходы не делались.
+
+**Уточнение прежней gh диагностики, БЕЗ повторных запросов:**
+`gh release list --repo Mi-Yomi/iDeck --limit 5 --json tagName,name,isDraft,isPrerelease`
+был последней shell-командой, exit1, stderr
+`Post "https://api.github.com/graphql": Forbidden`.
+`gh api repos/Mi-Yomi/iDeck/releases --jq 'map({id,tag_name,draft,prerelease})'`
+дал `Get "https://api.github.com/repos/Mi-Yomi/iDeck/releases": Forbidden`;
+его отдельный exit status не сохранён, общий shell позже вернул0 от tail.
+GitHub HTTP status/body не получены; auth-отказ GitHub и proxy/tool-policy
+запрет достоверно не различены. exec tool сам не отклонял команды.
+Не выдавать этот transport-level error за доказанный GitHub credential failure.
+Новых gh/auth/upload запросов, credential изменений и CI dispatch не было.
+
+
 ## ORIGINAL ALPINE GUI PASS; payload sealed, Apple inputs ready for review — 2026-10-17
 
 **Прежний module transfer blocker закрыт.** Parent commits

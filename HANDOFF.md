@@ -1,5 +1,63 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Debian device gate принят: две сессии, persistence и Stop — 2026-10-17
+
+**Принято в ограниченном объёме:** две Debian console сессии на runtime source
+**`338ee8065f90efd7f9fada1855c6f13d89035c8f`**, чтение сохранённого файла после
+перезапуска приложения и Stop без дополнительного reported crash. Это новый
+device evidence после fix; прежние записи «device NOT RUN / persistence
+условна» ниже относятся к состоянию до этой приёмки и сохранены исторически.
+
+Owner в **2026-10-17 04:50:36 UTC**: «Да все команды прошли успешно, вот тебе
+логи, и не крашнуло, два запуска норм». Это ответ на явный вопрос, вернул ли
+`cat` во втором запуске `ideck-debian-ok` **без повторного `echo`**, и перестал
+ли Stop вызывать crash. Persistence — **owner-confirmed**, поддержана
+screenshot; raw serial/result.json не предоставлены, machine-validated serial
+assertion не заявляется. Две сессии не являются exhaustive fix/stress proof.
+
+Parent прочитал оба device Markdown и осмотрел screenshot; этот executor
+получил их bounded summary, самостоятельно IPA/reports/screenshots не скачивал
+и визуальный просмотр не заявляет. Успешная Apple build:
+[`6ad2f81f7550aed8108f7b0e`](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad2f81f7550aed8108f7b0e).
+SHA-256 доставленной IPA по parent:
+`32ba7f8fbd3f2983d080ddf44103b90b5a0d907ef29c5aa11aaba404e275e75f`.
+Это provenance полученной сборки; новая CI в этой docs-задаче не запускалась.
+
+Оба reports: source338ee806, app2.0.0 build119, iOS27.0 build24A5430a;
+installed executable SHA-256
+`7d013c67bba87d71247d192b88ea6bf8c78c7bf9f33b78a7c7e8e11ec859ebdf`.
+Сессии started **2026-10-17T04:44:20Z / elapsed69.290 s** и
+**2026-10-17T04:47:53Z / elapsed72.445 s**. В обеих:
+`terminal_clean_stopped`, JIT до/после init PASS, terminal ready PASS,
+guest unmount PASS, QEMU loop return PASS, host fsync PASS, orderly Stop PASS,
+owner-thread **RETENTION ENTERED**, host log/socket close path **RETURNED**,
+disk lock **RETAINED**, import `existing_disk_preserved`, storage failure
+**NONE RECORDED**. Seed/initramfs hashes по сравнению parent неизменны;
+нового чтения/хеширования payload здесь не было. **Block layer drained
+NOT VERIFIED** остаётся отдельным результатом.
+
+Screenshot по parent: Debian GNU/Linux13(trixie), VERSION_FULL13.7, uid0;
+`/dev/vda` size480M / used136M / available335M; marker file16bytes с более
+ранним timestamp04:44; `CLEAN_UNMOUNT` и `Power down`. Это поддерживает
+owner-confirmed one-file persistence, не whole-filesystem audit.
+Bounded receipt с разделением источников:
+[debian-two-session-device-acceptance.json](experiments/linux-guest/evidence/debian-two-session-device-acceptance.json).
+
+**Ограничения сохранены:** GUI, accelerated GPU и полный backend teardown —
+NOT VERIFIED; Steam и extended stress — NOT RUN. Один VM invocation на процесс,
+следующая сессия после полного app exit/relaunch; disk owner/lock удерживаются
+до process exit. Возврат host close path не доказывает backend close/drain.
+Parent независимо проверяет следующий GUI milestone; реализации GUI здесь нет.
+
+Эта docs/evidence задача начата с чистого дерева и проверенного remote HEAD
+338ee8065f90efd7f9fada1855c6f13d89035c8f в той же ветке. Runtime, tests, overlay,
+guest/payload/locks, пользовательские диски, credentials и main не менялись.
+Старый native receipt остаётся исходной host-квитанцией до device acceptance.
+Новых CI/build/download/install/device-run действий этим executor нет.
+JSON/source/hash/date/claim-scope checks и `git diff --check` PASS; проверены
+ровно три docs/evidence изменения и побайтная сохранность исторических секций.
+Runtime tests повторно не запускались для этой документационной правки.
+
 ## Native RCU crash после Debian Stop: owner-thread lifetime — 2026-10-17
 
 Работа в облачном Codex `/workspace/iDeck`, только

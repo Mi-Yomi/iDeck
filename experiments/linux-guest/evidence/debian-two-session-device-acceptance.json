@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "date_utc": "2026-10-17",
+  "branch": "codex/linux-guest-feasibility-20261015",
+  "runtime_source_commit": "338ee8065f90efd7f9fada1855c6f13d89035c8f",
+  "acceptance": "ACCEPTED: two-session Debian console, owner-confirmed file persistence, and orderly Stop without a reported crash",
+  "provenance": {
+    "parent_review": "Parent read both owner-supplied device Markdown reports and inspected the screenshot; the executor received the bounded findings below.",
+    "executor_independent_device_or_artifact_inspection": false,
+    "raw_serial_supplied": false,
+    "raw_result_json_supplied": false,
+    "claim_limit": "Reported Markdown fields, parent screenshot observations, and explicit owner confirmation are separate evidence sources. No machine-validated raw serial persistence assertion or exhaustive crash-fix claim."
+  },
+  "owner_confirmation": {
+    "utc": "2026-10-17T04:50:36Z",
+    "text": "Да все команды прошли успешно, вот тебе логи, и не крашнуло, два запуска норм",
+    "question_answered": "The second launch's cat returned ideck-debian-ok without repeating echo, and Stop no longer crashed in these two sessions."
+  },
+  "apple_build": {
+    "status": "SUCCESS (parent supplied)",
+    "url": "https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad2f81f7550aed8108f7b0e",
+    "delivered_ipa_sha256": "32ba7f8fbd3f2983d080ddf44103b90b5a0d907ef29c5aa11aaba404e275e75f",
+    "hash_scope": "Parent-provided delivered IPA hash; not re-downloaded or re-hashed by this executor."
+  },
+  "both_device_reports": {
+    "source_commit": "338ee8065f90efd7f9fada1855c6f13d89035c8f",
+    "app_version": "2.0.0",
+    "app_build": "119",
+    "ios_version": "27.0",
+    "ios_build": "24A5430a",
+    "installed_executable_sha256": "7d013c67bba87d71247d192b88ea6bf8c78c7bf9f33b78a7c7e8e11ec859ebdf",
+    "status": "terminal_clean_stopped",
+    "jit_execution_before_start": "PASS",
+    "jit_available_after_qemu_init": "PASS",
+    "terminal_ready": "PASS",
+    "guest_disk_unmounted": "PASS",
+    "qemu_loop_returned": "PASS",
+    "host_disk_sync": "PASS",
+    "orderly_stop": "PASS",
+    "qemu_owner_thread_retained_until_app_exit": "RETENTION ENTERED",
+    "host_log_socket_close_path": "RETURNED",
+    "disk_lock_until_app_exit": "RETAINED",
+    "import_status": "existing_disk_preserved",
+    "storage_failure": "NONE RECORDED",
+    "qemu_block_layer_drained": "NOT VERIFIED",
+    "seed_and_initramfs_hashes": "Unchanged according to the parent comparison of the supplied reports; no payload bytes read by this executor."
+  },
+  "sessions": [
+    {
+      "started_utc": "2026-10-17T04:44:20Z",
+      "elapsed_seconds": 69.290
+    },
+    {
+      "started_utc": "2026-10-17T04:47:53Z",
+      "elapsed_seconds": 72.445
+    }
+  ],
+  "parent_screenshot_observations": {
+    "distribution": "Debian GNU/Linux 13 (trixie)",
+    "version_full": "13.7",
+    "uid": 0,
+    "filesystem": "/dev/vda",
+    "filesystem_size_display": "480M",
+    "filesystem_used_display": "136M",
+    "filesystem_available_display": "335M",
+    "marker_file_bytes": 16,
+    "marker_file_timestamp_display": "04:44 (earlier session)",
+    "shutdown_markers": ["CLEAN_UNMOUNT", "Power down"]
+  },
+  "gate_results": {
+    "two_session_console": "ACCEPTED (owner confirmation and parent-reviewed reports/screenshot)",
+    "file_persistence_across_app_relaunch": "ACCEPTED (owner-confirmed second-launch read without rewriting; screenshot supports retained earlier file)",
+    "stop_in_two_sessions": "ACCEPTED (both reports clean; owner reports no additional crash)",
+    "exhaustive_rcu_crash_fix_or_stress": "NOT VERIFIED"
+  },
+  "invariants": [
+    "One VM invocation per process; fully exit and reopen the app for the next session.",
+    "Disk owner and lock remain retained until process exit.",
+    "Loop return, host sync and close-path receipts do not establish full backend teardown or block-layer drain."
+  ],
+  "remaining_scope": {
+    "gui": "NOT VERIFIED / NOT IMPLEMENTED by this task",
+    "accelerated_guest_gpu": "NOT VERIFIED",
+    "full_backend_teardown": "NOT VERIFIED",
+    "steam": "NOT RUN",
+    "extended_stress": "NOT RUN",
+    "filesystem_wide_integrity_or_power_loss_durability": "NOT VERIFIED"
+  },
+  "this_task": {
+    "kind": "documentation/evidence only",
+    "runtime_changed": false,
+    "ci_dispatched": false,
+    "payload_or_user_disk_accessed": false,
+    "credentials_or_remote_changed": false,
+    "main_changed": false
+  }
+}

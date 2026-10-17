@@ -3,6 +3,25 @@
 Investigation starts at iDeck `341541d09251556eff6fd9c99f5abd83ea20fb82`,
 Husk `0695248f491cda877f7969d1f0cc89aeede1482e` (2.0.0 build 119).
 
+## Subsequent device acceptance, 2026-10-17
+
+The owner accepted two Debian sessions on runtime commit
+`338ee8065f90efd7f9fada1855c6f13d89035c8f`: console commands succeeded,
+the second launch read `ideck-debian-ok` without rewriting it, and neither
+Stop produced an additional reported crash. Parent-reviewed Markdown from
+both sessions records clean Stop, RETENTION ENTERED, host log/socket close
+path RETURNED and disk lock RETAINED. The screenshot supports the owner's
+one-file persistence confirmation; raw serial/result.json were not supplied.
+
+See the bounded, source-separated
+[device acceptance receipt](../evidence/debian-two-session-device-acceptance.json)
+and [successful Apple build](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad2f81f7550aed8108f7b0e).
+This accepts the two-session console/persistence/Stop gate, not exhaustive RCU
+fix verification, extended stress, GUI, accelerated GPU, Steam, full backend
+teardown or block drain. One VM per process and lock until exit remain required.
+The investigation and executor NOT RUN statements below describe the earlier
+runtime-fix task, before this owner/parent-supplied device acceptance.
+
 ## Device evidence supplied by the parent reviewer
 
 The second Debian session reached READY, then Stop crashed in native RCU:

@@ -1,0 +1,54 @@
+{
+  "time_utc": "2026-10-17T17:55:05.688443+00:00",
+  "owner_reported_network_config_version": "71a66f3c-3170-475c-82f6-cf3dc0ded790~cecfgver_6ad378804dc88199be22c7b77b1cebb4",
+  "network_config_version_independently_introspected": false,
+  "network_or_policy_changed": false,
+  "refused_updater_host_retried": false,
+  "proxy_forwarding_or_override_attempted": false,
+  "vm_started": false,
+  "proxy_configuration": {
+    "https": {
+      "scheme": "http",
+      "hostname": "proxy",
+      "port": 8080,
+      "credentials_present": false
+    },
+    "http": {
+      "scheme": "http",
+      "hostname": "proxy",
+      "port": 8080,
+      "credentials_present": false
+    }
+  },
+  "configured_resolvers": [
+    "172.31.1.221"
+  ],
+  "allowed_host_system_dns": {
+    "client-update.fastly.steamstatic.com": {
+      "success": false,
+      "error_type": "gaierror",
+      "errno": -3,
+      "elapsed_seconds": 0.003
+    },
+    "api.github.com": {
+      "success": false,
+      "error_type": "gaierror",
+      "errno": -3,
+      "elapsed_seconds": 5.007
+    }
+  },
+  "configured_dns_udp": {
+    "query": "client-update.fastly.steamstatic.com",
+    "server": "172.31.1.221",
+    "elapsed_seconds": 0.001,
+    "error_type": "ConnectionRefusedError",
+    "errno": 111
+  },
+  "native_updater_host_status": {
+    "hostname": "client-update.steamstatic.com",
+    "requested_this_run": false,
+    "prior_observation": "proxy CONNECT403, no origin status",
+    "new_approval_established": false,
+    "reason": "Owner lists three additions; this newly observed native updater host is absent. No denial retry."
+  }
+}

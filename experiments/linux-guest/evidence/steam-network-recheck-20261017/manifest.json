@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "scope": "Fresh bounded locked ZIP, host DNS and actual input revalidation; no new VM or Steam UI acceptance",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "size": 36,
+      "sha256": "f28b31fd7121e96d175f373beddde0ba26ad926f4da07ae3b90fef5dd8af6342"
+    },
+    {
+      "path": "README.md",
+      "size": 7090,
+      "sha256": "1d634b113475958086589b486382a27daac5af1eb30e2a40f6179e3100af842f"
+    },
+    {
+      "path": "current-network.json",
+      "size": 1603,
+      "sha256": "5a32e45b9afc91ea8eb5340ad5add527557e11bd1216132a176e297ec16d80f5"
+    },
+    {
+      "path": "current-verification.json",
+      "size": 5476,
+      "sha256": "3a330e9cf4e41cf7193e48500e48f47f37ddbec0f34615ea3e3ab5b815ffa402"
+    },
+    {
+      "path": "final-preservation.json",
+      "size": 939,
+      "sha256": "0bec60be311248ec3f21e7e9c0a073aef7b1c4baf238c134567afae9ee04f945"
+    },
+    {
+      "path": "first-locked-steam-get.json",
+      "size": 487,
+      "sha256": "99c6c9e74fb7c33224ff37e60233720303b4bd08e62a36a5acca01999c1462f2"
+    },
+    {
+      "path": "probe_current_network.py",
+      "size": 3608,
+      "sha256": "080b95f2df8067fd830bdf5a0b4c035986961bf59640044ce174735b679fee9c"
+    },
+    {
+      "path": "steam-tests.log",
+      "size": 22669,
+      "sha256": "13a6bf3e45b67deb3bb89cba4377206e38b34981ed735f9d9878cb79a98e42d5"
+    },
+    {
+      "path": "verify_current.py",
+      "size": 6849,
+      "sha256": "85619b14383e74b832eae4bdf08e4bc615351375f5e70270e5e0d43830277264"
+    }
+  ]
+}

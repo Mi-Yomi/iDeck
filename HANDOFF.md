@@ -1,5 +1,27 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Requested network revalidation: ZIP200, DNS still blocked — 2026-10-17
+
+One executor, selected cloud only, clean remote Steam `12074eaf24cd8c51cf74cd0f185a5454057aa9d9`
+(descendant of requested `bfcb3a8…`). A new complete locked Fastly ZIP GET returned
+HTTP200,386432 bytes and exact SHA-256. All7 previous Steam manifests/338 files,
+production Release/9c4d seed,17 ZIPs,45 dependency packages, unchanged installed
+disks/bootstrap and qemu-utils receipt were reverified. Storage entry gate passes.
+Preserved guest receipts show45 installed packages and byte-empty dpkg audit
+exit0; no new guest audit/boot/fsck is claimed. Both prior full fsck streams pass
+strict reevaluation. See [current bounded receipts and continuation gates](experiments/linux-guest/evidence/steam-network-recheck-20261017/README.md).
+
+The supplied network version remains owner-reported, not independently exposed.
+Current system DNS for allowed Fastly/GitHub returns EAI_AGAIN; one query to the
+configured resolver returns ECONNREFUSED. Native updater host
+`client-update.steamstatic.com` is absent from the three announced additions;
+its previous CONNECT403 was not retried. Owner/platform must confirm that host
+and a supported working guest NAT/DNS/HTTPS or managed-proxy path before a new
+Steam attempt. No policy, proxy/DNS/TLS, helper, sandbox, cache/sentinel, SHM,
+runtime flag, timeout or CPU change occurred.149 Steam tests PASS. No VM/image
+write or process remains; originals retained. Main UI/Big Picture remain
+NOT REACHED; new IPC/stack and Apple/iPhone/GPU remain NOT RUN.
+
 ## Native proxy and Chrome IPC static follow-up — 2026-10-17
 
 Selected cloud access was confirmed after the reported disconnect. At verified

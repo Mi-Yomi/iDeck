@@ -1,0 +1,165 @@
+{
+  "time_utc": "2026-10-17T17:54:42.892774+00:00",
+  "source_sha": "12074eaf24cd8c51cf74cd0f185a5454057aa9d9",
+  "read_only_image_verification": true,
+  "vm_started": false,
+  "policy_changed": false,
+  "experimental_seed_selected": false,
+  "manifests": {
+    "steam-cloud-20261017": {
+      "count": 23,
+      "sha256": "aab47274de54abba7a59971d6520ab52cc62dded250871d6ffd78d8ecbded8b4",
+      "all_match": true
+    },
+    "steam-cloud-seed-20261017": {
+      "count": 105,
+      "sha256": "bba52888c2dba34663e7f7bd7ff62b31b4e10c9f7e0335f1cfc2d00bf8c2261c",
+      "all_match": true
+    },
+    "steam-fresh-network-20261017": {
+      "count": 69,
+      "sha256": "a289a48a896aab1250a6e9d82e7e8a8cbfe05897d419b2e3a0721c487d172747",
+      "all_match": true
+    },
+    "steam-ipc-20261017": {
+      "count": 94,
+      "sha256": "fb7d0e61cdd5a6038d37c73f54cba1228b2e1d0d9677d1d81d4ed26f7b97dfef",
+      "all_match": true
+    },
+    "steam-network-readonly-20261017": {
+      "count": 12,
+      "sha256": "4b5c6387b0c1ed434b163e80799ab42a6627bd3717568388b3a5d7e9d672294f",
+      "all_match": true
+    },
+    "steam-proxy-ipc-static-20261017": {
+      "count": 13,
+      "sha256": "284194b880acd96db4354e7df304ea59a3949fda7b9aa400e85f13481fead450",
+      "all_match": true
+    },
+    "steam-seed-contract-20261017": {
+      "count": 22,
+      "sha256": "c592fb74de53bb8bdbac9a92d277016e05fcbba65cccb8b643e0346136dbedb7",
+      "all_match": true
+    }
+  },
+  "qemu_pids": [],
+  "task_mounts": [],
+  "production_inputs": {
+    "LICENSES-desktop.txt": {
+      "size": 1403,
+      "sha256": "7b4062d88f64efbfc636be91018df833d7d45997140cda60030a1caa8bce40b9"
+    },
+    "desktop-profile.json": {
+      "size": 761,
+      "sha256": "c8c487fdf7f847db8df51f9c6d6d2aefbed0d3967059a022c18922a034e88c71"
+    },
+    "gui-rootfs-v1.raw": {
+      "size": 1342177280,
+      "sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791"
+    },
+    "initramfs-desktop.gz": {
+      "size": 11319304,
+      "sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4"
+    },
+    "vmlinuz-virt": {
+      "size": 10351104,
+      "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+    }
+  },
+  "release": {
+    "size": 292065280,
+    "sha256": "112bdba6e12ae182fb347e52e7368e26f748bb3dc2bcd77dbd3122fb14dcdedd"
+  },
+  "client_cache": {
+    "count": 17,
+    "all_match": true,
+    "bytes": 360938891
+  },
+  "dependency_cache": {
+    "count": 45,
+    "all_match": true
+  },
+  "bootstrap": {
+    "size": 11665853,
+    "sha256": "af9aa6fb9a25a805ad3b8465aa2cada6ceaaffb103ec663e831d998c43276f4e"
+  },
+  "bootstrap_repo_inputs_match": true,
+  "runs": {
+    "run1": {
+      "size": 1500643328,
+      "sha256": "1f6816b06b927423b7545a90a6c81cdb08e1a319ebdef7c011f758e8e6253415",
+      "unchanged": true,
+      "owner_lock_free": true,
+      "dirty_marker": false
+    },
+    "run2": {
+      "size": 1498939392,
+      "sha256": "462a5804f296ec1333196fce0ad1a893204e841611c76f5f31e608a7b99a11e3",
+      "unchanged": true,
+      "owner_lock_free": true,
+      "dirty_marker": false
+    }
+  },
+  "previous_guest_install": {
+    "status": "installed_private_client_not_launched",
+    "client_executed": false,
+    "agreement_accepted": false,
+    "login_performed": false,
+    "dependency_lock_sha256": "0d153bbb2a9a39c32fb650d189cc972355fc1d94da39297cf0b9830fdbd922f6",
+    "client_lock_sha256": "9b8bc9fe5e8074ae4d798f645d259066e968b8bc5512183c0aca34e1f54a8bdd",
+    "verified_debs": 45,
+    "dpkg_exit_code": 0,
+    "unchanged_existing_packages": 341,
+    "dpkg_audit_empty": true,
+    "verified_client_parts": 17,
+    "client_installer_exit_code": 0,
+    "retained_verified_client_cache_parts": 17,
+    "elapsed_seconds": 97.27
+  },
+  "previous_boot_persistence": {
+    "document_sha256": "657b411c384b4aed78d6db7f502a4b824594b2d640041fddbac69a4911b1d13d",
+    "dpkg_audit": {
+      "exit_code": 0,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0
+    },
+    "machine_id_sha256": "4e8725b26e9ec461ec3f46de2044d7a10abb7fa948f072b9b868df0325028de6",
+    "network_denial_retried": false,
+    "retained_installer_zip_files": 17,
+    "scope": "independent cloud disk and installation persistence; Steam UI not reached",
+    "status": "pass",
+    "steam_launched": false,
+    "verified_client_elf_files": 4
+  },
+  "new_guest_audit_run": false,
+  "prior_offline_fsck_revalidated": {
+    "run2": {
+      "accepted": true,
+      "new_fsck_run": false,
+      "raw_sha256": "d04ccf8a75946c78f3cb8e40ade5f285dbcbfb7fd34279ab34d9935a74e28c2d"
+    },
+    "post-run2-fsck": {
+      "accepted": true,
+      "new_fsck_run": false,
+      "raw_sha256": "2bde57962657f7d45010b5f49230eabcbc71be84abdfd05ee2bc5a25e9fed7a6"
+    }
+  },
+  "qemu_img_binary": {
+    "size": 2534080,
+    "sha256": "77a92b0ca43516403064a4d0939f91c38b9ab2447b32e8f66709dcf29432d626"
+  },
+  "qemu_img_version": "qemu-img version 10.0.13 (Debian 1:10.0.13+ds-0+deb13u1)\nCopyright (c) 2003-2025 Fabrice Bellard and the QEMU Project developers",
+  "qemu_utils_receipt_verified": true,
+  "storage": {
+    "filesystem_path": "/workspace/steam-resume-20261017",
+    "free_bytes": 22218502144,
+    "virtual_disk_bytes": 12884901888,
+    "reserve_bytes": 4294967296,
+    "required_before_image_write_bytes": 17179869184,
+    "shortfall_bytes": 0,
+    "allowed": true,
+    "policy": "full-offline-copy-plus-4GiB-before-image-write",
+    "sparse_allocation_discount": false
+  },
+  "new_image_written": false
+}

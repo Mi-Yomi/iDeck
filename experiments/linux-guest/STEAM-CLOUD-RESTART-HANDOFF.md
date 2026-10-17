@@ -1,5 +1,18 @@
 # Safe checkpoint for the replacement cloud task
 
+**Latest requested network recheck:** started at verified Steam remote
+`12074eaf…`, a descendant of the requested `bfcb3a8…`. A new full first locked
+Fastly ZIP GET returnedHTTP200 with exact size/hash. Actual production9c4d inputs,
+both stopped installed disks,17 ZIPs,45 dependency packages, qemu-utils receipt
+and all7 evidence manifests/338 files match; storage entry gate passes.
+Current allowed-host system DNS still returns EAI_AGAIN and the configured
+resolver refuses UDP53. The actual native updater host is absent from the three
+announced additions; its prior CONNECT403 was not retried. No VM/image write,
+policy/proxy/DNS/TLS/runtime/security change or cleanup ran. Read
+[new receipts and exact remaining owner/platform prerequisites](evidence/steam-network-recheck-20261017/README.md).
+Preserved guest audit/fsck results were revalidated, not newly run. UI/Big Picture
+remain NOT REACHED;149 Steam regressions PASS. All private originals remain here.
+
 **Latest read-only follow-up:** the selected cloud remained accessible after a
 reported disconnect; installed disks/caches rehashed unchanged, no VM or writer.
 At verified remote Steam `d0a8201f…`, exact native code establishes application

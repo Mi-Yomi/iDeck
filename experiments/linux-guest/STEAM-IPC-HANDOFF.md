@@ -1,5 +1,15 @@
 # Steam IPC diagnosis and online handoff — 2026-10-17
 
+Latest requested-network recheck at verified Steam remote `12074eaf…`: a fresh
+locked Fastly ZIP GET returnsHTTP200 with exact size/hash, but current configured
+DNS fails and the native updater hostname is absent from the announced additions.
+No refused-host retry, proxy/DNS/security change or VM/Steam launch ran. Actual
+production inputs, stopped installed disks,45-package audit receipts and both
+prior strict fsck streams were revalidated;149 Steam tests pass. See
+[current receipts and remaining network gate](evidence/steam-network-recheck-20261017/README.md).
+There is no new browser/IPC/stack observation; the historical timeout remains
+unexplained and main UI/Big Picture remain NOT REACHED.
+
 New static follow-up at verified Steam remote `d0a8201f…`: the virtual
 `ChromeHTML_Controller_003` readiness target is now resolved to
 `chromehtml.so:0x4ea10`, reading controller+`0x20c` = IPC+`0x9c`. The exact

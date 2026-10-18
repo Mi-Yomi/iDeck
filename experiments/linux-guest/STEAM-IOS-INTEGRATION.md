@@ -58,6 +58,16 @@ libraries need separate inspection. Verify an authorized game's actual renderer,
 input, frame timing, repeated launches and saved data on the physical iPhone;
 host QEMU software-rendered Steam UI does not satisfy these checks.
 
+An official ARM64 client runtime was cached and statically inspected on Oct18:
+[Valve steamrt3c build3c.0.20260824.257593](https://repo.steampowered.com/steamrt3c/images/3c.0.20260824.257593/).
+The 52,436,064-byte `steam-runtime-steamrt-arm64.tar.xz` has SHA256
+`2f2be461b6a4360828e200e1644e18cd957eedc36a38e5a1e13a39276320b6e2`, matching
+Valve's same-origin SHA256SUMS (not a detached signature). Its launcher service,
+wrapper and bwrap have ELF machine183. It was not installed or executed, and
+differs from the client's bundled x86 runtime3c.0.20261007.263964. Compatibility
+is unverified. This client runtime is not a complete tested Proton/game stack.
+The archive remains outside Git; sanitized receipt: `evidence/steam-local-arm64-20261017/runtime-arm64-static`.
+
 The host runner accepts an explicit `--experimental-memory-mib 2560` control
 after measured guest memory pressure; its default remains the pinned 1536 MiB.
 Receipts distinguish the profile budget from the effective QEMU budget. Run20

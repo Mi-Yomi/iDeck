@@ -1,0 +1,104 @@
+{
+  "source": "official Valve HTTPS repository; digest compared with SHA256SUMS from same origin, not a detached signature",
+  "build": "3c.0.20260824.257593",
+  "checksum_document": {
+    "url": "https://repo.steampowered.com/steamrt3c/images/3c.0.20260824.257593/SHA256SUMS",
+    "size": 284499,
+    "sha256": "05e0d55508e01c34e6bfb0306587c47babf79cc1fdc375eab5e2c2f27c13c19f"
+  },
+  "archive": {
+    "url": "https://repo.steampowered.com/steamrt3c/images/3c.0.20260824.257593/steam-runtime-steamrt-arm64.tar.xz",
+    "size": 52436064,
+    "sha256": "2f2be461b6a4360828e200e1644e18cd957eedc36a38e5a1e13a39276320b6e2"
+  },
+  "checksum_matches": true,
+  "members": 6791,
+  "declared_uncompressed_bytes": 217842583,
+  "selected_files": [
+    {
+      "path": "steam-runtime-steamrt-arm64/VERSIONS.txt",
+      "kind": "regular",
+      "resolved": "steam-runtime-steamrt-arm64/VERSIONS.txt",
+      "size": 288,
+      "sha256": "83779212d56d85307ec5a51668c7e0bc1e85a30ca0262c847086143f6b6b2020",
+      "elf_machine": null
+    },
+    {
+      "path": "steam-runtime-steamrt-arm64/_v2-entry-point",
+      "kind": "regular",
+      "resolved": "steam-runtime-steamrt-arm64/_v2-entry-point",
+      "size": 9257,
+      "sha256": "ab9beb61c7c614caeb53e70ea0f4a1736d18b71eacb907ab09832db53cf6e46d",
+      "elf_machine": null
+    },
+    {
+      "path": "steam-runtime-steamrt-arm64/bin/steam-runtime-launcher-service",
+      "kind": "link",
+      "resolved": "steam-runtime-steamrt-arm64/pressure-vessel/libexec/steam-runtime-tools-0/aarch64-linux-gnu-srt-launcher-service",
+      "size": 199192,
+      "sha256": "5ac0d6b7ee54a44b91bb759ea13552caac97e084872969f3ab99b47dab307ba6",
+      "elf_machine": 183
+    },
+    {
+      "path": "steam-runtime-steamrt-arm64/pressure-vessel/bin/pressure-vessel-wrap",
+      "kind": "regular",
+      "resolved": "steam-runtime-steamrt-arm64/pressure-vessel/bin/pressure-vessel-wrap",
+      "size": 896744,
+      "sha256": "fc2cf94d8916bfa448e23a4375bab035bf9fcad77ecf287c8b14067d6c0abf81",
+      "elf_machine": 183
+    },
+    {
+      "path": "steam-runtime-steamrt-arm64/pressure-vessel/bin/steam-runtime-launcher-interface-0",
+      "kind": "regular",
+      "resolved": "steam-runtime-steamrt-arm64/pressure-vessel/bin/steam-runtime-launcher-interface-0",
+      "size": 10512,
+      "sha256": "ba20e37657fe777ddf94f02303015691b84282599bb938ada9293077133bbbe6",
+      "elf_machine": 183
+    },
+    {
+      "path": "steam-runtime-steamrt-arm64/pressure-vessel/bin/steam-runtime-launcher-service",
+      "kind": "link",
+      "resolved": "steam-runtime-steamrt-arm64/pressure-vessel/libexec/steam-runtime-tools-0/aarch64-linux-gnu-srt-launcher-service",
+      "size": 199192,
+      "sha256": "5ac0d6b7ee54a44b91bb759ea13552caac97e084872969f3ab99b47dab307ba6",
+      "elf_machine": 183
+    },
+    {
+      "path": "steam-runtime-steamrt-arm64/pressure-vessel/libexec/steam-runtime-tools-0/pv-adverb",
+      "kind": "regular",
+      "resolved": "steam-runtime-steamrt-arm64/pressure-vessel/libexec/steam-runtime-tools-0/pv-adverb",
+      "size": 634792,
+      "sha256": "2906159b79de758d5cacf2bf452623ba6200f5cfd950fc647973055571814828",
+      "elf_machine": 183
+    },
+    {
+      "path": "steam-runtime-steamrt-arm64/pressure-vessel/libexec/steam-runtime-tools-0/srt-bwrap",
+      "kind": "regular",
+      "resolved": "steam-runtime-steamrt-arm64/pressure-vessel/libexec/steam-runtime-tools-0/srt-bwrap",
+      "size": 68736,
+      "sha256": "1bbb6f4ad68c4f9cb9b1322f97a5551bb3daf70bad2ddd73036bea26e2af55fe",
+      "elf_machine": 183
+    },
+    {
+      "path": "steam-runtime-steamrt-arm64/steamrt3c_platform_3c.0.20260824.257593/files/bin/steam-runtime-launcher-interface-0",
+      "kind": "regular",
+      "resolved": "steam-runtime-steamrt-arm64/steamrt3c_platform_3c.0.20260824.257593/files/bin/steam-runtime-launcher-interface-0",
+      "size": 10512,
+      "sha256": "ba20e37657fe777ddf94f02303015691b84282599bb938ada9293077133bbbe6",
+      "elf_machine": 183
+    },
+    {
+      "path": "steam-runtime-steamrt-arm64/steamrt3c_platform_3c.0.20260824.257593/files/libexec/steam-runtime-tools-0/srt-bwrap",
+      "kind": "regular",
+      "resolved": "steam-runtime-steamrt-arm64/steamrt3c_platform_3c.0.20260824.257593/files/libexec/steam-runtime-tools-0/srt-bwrap",
+      "size": 68736,
+      "sha256": "5930835fe4953bea110ce6a2441da9857532bd81252aed557841f7a9c13773b6",
+      "elf_machine": 183
+    }
+  ],
+  "installed": false,
+  "executed": false,
+  "guest_modified": false,
+  "iphone_tested": false,
+  "compatibility_with_current_client": "unverified; its bundled x86 runtime reports3c.0.20261007.263964"
+}

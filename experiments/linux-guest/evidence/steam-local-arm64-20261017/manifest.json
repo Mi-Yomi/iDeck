@@ -2468,6 +2468,21 @@
       "sha256": "ada31920d87b7ad08d85ddf4140f1772483a8b530d26a5ec10dcb5f6cfb4dc38"
     },
     {
+      "file": "runtime-arm64-static/affinity-baseline.json",
+      "size": 1310,
+      "sha256": "022f6e3a8b84f0313f4aed10fbed858b2e94cbf9dee780759070b188f421f656"
+    },
+    {
+      "file": "runtime-arm64-static/inspect-official-arm64-runtime.py",
+      "size": 3530,
+      "sha256": "6bc2e71ea548b5255df993f33dc45767c8c842938e8ae1aba0426449d6981820"
+    },
+    {
+      "file": "runtime-arm64-static/inspection.json",
+      "size": 4737,
+      "sha256": "7d1c3193863b232abca95f6fb32ab4b365f2f4ef11d82d1a6c68d8684daa232d"
+    },
+    {
       "file": "runtime-static/chromehtml.so.txt",
       "size": 17641,
       "sha256": "c4a4b2f8b6d9dcc017b493df84cf8cc72d5a33c6f144db1b2cf64afb2030f072"

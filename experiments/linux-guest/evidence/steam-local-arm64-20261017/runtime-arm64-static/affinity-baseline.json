@@ -1,0 +1,45 @@
+{
+  "source_script": "pinned client steamrtarm64/steamwebhelper.sh",
+  "source_script_sha256": "38b2752fa774a40827d676dd1f7767f9afbfcf2884a935c9daafc463fb4a2386",
+  "taskset_mask": "0x7c",
+  "guest_cpu_count": 4,
+  "observations": {
+    "desktop-v16": {
+      "timeline_sha256": "6cf024e7aeb082ae7595c8df899d95f824f967cc1e5b8a8861fdbac685df6078",
+      "counts": [
+        {
+          "executable": "steam",
+          "allowed_cpus": "0-3",
+          "observations": 405
+        },
+        {
+          "executable": "steamwebhelper",
+          "allowed_cpus": "2-3",
+          "observations": 2558
+        },
+        {
+          "executable": "",
+          "allowed_cpus": "2-3",
+          "observations": 4
+        }
+      ]
+    },
+    "desktop-native-v17": {
+      "timeline_sha256": "074a9247ac051d43689d5269734de51a1107aeb171aa1c327285ac5721e472be",
+      "counts": [
+        {
+          "executable": "steam",
+          "allowed_cpus": "0-3",
+          "observations": 123
+        },
+        {
+          "executable": "steamwebhelper",
+          "allowed_cpus": "2-3",
+          "observations": 46
+        }
+      ]
+    }
+  },
+  "causality": "hypothesis only; reduced affinity is observed, UI failure cause not established",
+  "account_data_included": false
+}

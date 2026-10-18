@@ -164,6 +164,19 @@ user/mount and user/mount/PID/private-proc preflights; see
 
 ## Native runtime, CPU and network gates
 
+The user authorizes a larger host RAM budget and plans to use GetMoreRAM on
+iPhone when needed. The host runner accepts an explicit 4096 MiB comparison;
+the pinned default remains 1536 MiB. This also increases the guest's default
+tmpfs capacity, so it does not independently isolate RAM from shared memory.
+
+[GetMoreRAM](https://github.com/hugeBlack/GetMoreRam) enables Increased Memory
+Limit for the selected App ID and requires reinstalling the signed application.
+Apple documents this [entitlement](https://developer.apple.com/documentation/bundleresources/entitlements/com.apple.developer.kernel.increased-memory-limit)
+for supported devices. Before selecting a larger iPhone guest budget, verify
+the entitlement in the actual signed application and measure available process
+memory on that device, including QEMU/display/TCG overhead. The tool alone
+does not establish an available byte count or change the existing iOS profile.
+
 - [ ] Build and record the actual iOS `libqemu-aarch64-softmmu.dylib` from Husk
   `0695248f491cda877f7969d1f0cc89aeede1482e` and QEMU `10.0.12-utm`, using
   `ipa/native-sources.lock.json`. Keep its pinned libffi, GLib, pixman,

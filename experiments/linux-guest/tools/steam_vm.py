@@ -216,7 +216,7 @@ def boot(args):
     configured_memory = profile['memory_mib']
     memory_override = getattr(args, 'experimental_memory_mib', None)
     if memory_override is not None:
-        if type(memory_override) is not int or memory_override not in (1536, 2560):
+        if type(memory_override) is not int or memory_override not in (1536, 2560, 4096):
             raise ValueError('unsupported host memory experiment')
         # Explicit host control for measured reclaim pressure; never an iOS budget.
         profile['memory_mib'] = memory_override
@@ -470,7 +470,7 @@ if __name__ == '__main__':
     p.add_argument('--continue-from', type=Path, help='Explicit clean private run to COPY, never modify or repair')
     p.add_argument('--experimental-seed-contract', type=Path,
                    help='Explicit reviewed private seed contract; default still requires production GUI seed')
-    p.add_argument('--experimental-memory-mib', type=int, choices=(1536, 2560),
+    p.add_argument('--experimental-memory-mib', type=int, choices=(1536, 2560, 4096),
                    help='Host-only memory pressure control; default preserves the pinned profile')
     p.add_argument('--enable-experimental-network', action='store_true', required=True)
     a = p.parse_args()

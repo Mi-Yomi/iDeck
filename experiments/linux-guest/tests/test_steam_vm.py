@@ -23,7 +23,7 @@ class SteamHostGuards(unittest.TestCase):
     def test_explicit_memory_control_records_effective_budget_without_changing_profile(self):
         profile_path = ROOT/'profiles/steam-host-experiment.json'
         original = profile_path.read_bytes()
-        for override, expected in ((None, 1536), (1536, 1536), (2560, 2560)):
+        for override, expected in ((None, 1536), (1536, 1536), (2560, 2560), (4096, 4096)):
             with self.subTest(override=override), tempfile.TemporaryDirectory() as temporary:
                 output = Path(temporary)/'run'
                 def prepare(args, path, profile, out, report, cleanup):
@@ -42,7 +42,7 @@ class SteamHostGuards(unittest.TestCase):
     def test_unsupported_memory_control_refuses_before_creating_run(self):
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary)/'run'
-            for value in (True, 0, -1, 2560.0, '2560', 65536):
+            for value in (True, 0, -1, 2560.0, '2560', 4095, 4096.0, '4096', 8192, 65536):
                 with self.subTest(value=value), self.assertRaisesRegex(ValueError, 'unsupported host memory'):
                     steam_vm.boot(SimpleNamespace(output=output, experimental_memory_mib=value))
                 self.assertFalse(output.exists())

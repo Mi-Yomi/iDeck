@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "owner_reported_allowlist_updated": true,
+  "check": "one ordinary HTTPS HEAD to https://uploads.github.com",
+  "observed_utc": "2026-10-18 16:44:29 UTC",
+  "result": "CONNECT tunnel failed",
+  "http_status": 403,
+  "proxy_server": "envoy",
+  "curl_exit": 56,
+  "upload_retried_after_confirmation": false,
+  "alternate_route_attempted": false,
+  "ci_started": false,
+  "runtime_lock": "blocked",
+  "continuation": "New published cloud-environment session with applied network policy; preserve/transfer the final artifact through supported cloud workspace/artifact mechanisms, verify exact size/hash before upload",
+  "payload": {
+    "path": "/workspace/iDeck/.work/steam-device-payload-20261018-review-final/ideck-steam-device-v1.tar",
+    "size": 303667200,
+    "sha256": "f4084e40e854580a8e68a5f199936bf37e4a5f6779086c6b449b940a02325f56"
+  }
+}

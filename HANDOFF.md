@@ -1,3 +1,9 @@
+> Allowlist recheck, 18 October 2026 16:44:29 UTC: owner reported the domain added;
+> one ordinary uploads.github.com HEAD still gets CONNECT403/envoy in this session.
+> Upload was NOT retried. New published cloud session + supported preservation/
+> transfer of the saved final tar is required; check303667200B/SHAf4084e40… first.
+> No alternate network route, CI or fake asset pin. Payload/receipts are preserved.
+
 > BusyBox clarification, 18 October 2026: unchanged initramfs binary is verified
 > as 1.37.0 (ELF SHA97d52efa…). Its embedded configuration was statically recovered
 > (30368 bytes/1084 settings, SHA65290dba…). Exact Alpine revision, matching

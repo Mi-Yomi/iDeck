@@ -1,3 +1,11 @@
+> Recheck after the owner reported the allowlist change: at 2026-10-18 16:44:29 UTC,
+> one ordinary HTTPS HEAD still failed at CONNECT with 403/envoy in this session.
+> No upload retry or alternate route followed. A new published cloud-environment
+> session must receive the saved artifact through a supported cloud workspace/
+> artifact transfer or retained snapshot; then verify its exact size/hash before
+> upload. The tar itself is outside Git; only receipts/source pins are committed.
+> BusyBox source/provenance clarification is in BUSYBOX-PROVENANCE-20261018.md.
+
 # Steam payload delivery checkpoint — upload blocked
 
 The owner explicitly authorized uploading the final reviewed replacement payload to a new private Mi-Yomi/iDeck Release and pinning its URL/hash. The reviewed code/candidate was committed and pushed as **`0fffdaf787d10acc86e0caa785dfe27ff81be025`**, with `[skip ci]`. The exact checked candidate supersedes the old ca2a3da payload; no old payload was uploaded.

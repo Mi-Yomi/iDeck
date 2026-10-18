@@ -1,4 +1,23 @@
-> Current result, 18 October 2026: final rebuilt payload uploaded by the owner's
+> Current IPA delivery result: **CI #30 PASS**, built commit
+> **7421a2b61215df3fc8fcd74df75348f00574f2fc**.
+> https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad553f47550aed8108ff6f4 .
+> Native QEMU/ANGLE, Swift/host checks, full Husk typecheck, app-build, signature
+> verification and packaging PASS. **iDeck-Steam-Device-7421a2b6.ipa**:
+> **710626140 bytes**, SHA-256
+> **5e09a4bf1107090acf8bad208fe5acdbcc11235e34972fe5372b6dfec7dd71da**.
+> Downloaded IPA passed ZIP CRC, seven arm64 iPhoneOS Mach-O checks, ad-hoc
+> CodeDirectory/no-provisioning checks and all 19 locked Linux/Debian/GUI/Steam
+> resource pins. Private owner-only Drive delivery is complete; user has the IPA.
+> No personal Drive URL is recorded. Results are supplied by the coordinating
+> delivery executor; this docs-only session performed no IPA download or CI run.
+> **Built SHA above differs from the following documentation commit's SHA**;
+> that docs commit changes neither code nor payload/overlay pins.
+> iPhone/device Steam/Big Picture/games **NOT RUN**. Official Valve client download
+> occurs at first on-device setup/launch with network consent; client not bundled.
+> BusyBox corresponding-source provenance **OPEN**. Earlier pending Apple/IPA/CI
+> statements below are historical and superseded by CI #30's build result only.
+
+> Historical payload result, 18 October 2026: final rebuilt payload uploaded by the owner's
 > authorized browser is delivered and independently verified. Private Release
 > 416567174 has uploaded asset **654660064**, **303667200 bytes**, server and full
 > readback SHA-256 **f74e22f44422d5dded7dd23d2a8e9a22a98e2df13edd4620187943529a29c62c**.

@@ -1,4 +1,32 @@
-> Current CI fix, 18 October 2026: first Steam-ready Apple attempt **#29** at
+> Current Apple delivery result: **CI #30 PASSED** for built source commit
+> **7421a2b61215df3fc8fcd74df75348f00574f2fc**.
+> Build: https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad553f47550aed8108ff6f4 .
+> Native QEMU/ANGLE, Swift/host checks, full Husk typecheck, app-build, signature
+> verification and IPA packaging **PASS**. The CI #29 Steam staging failure below
+> is resolved in this successful build.
+>
+> Delivered IPA: **iDeck-Steam-Device-7421a2b6.ipa**, **710626140 bytes**,
+> SHA-256 **5e09a4bf1107090acf8bad208fe5acdbcc11235e34972fe5372b6dfec7dd71da**.
+> Download validation **PASS**: ZIP CRC; seven Mach-O binaries targeting arm64
+> iPhoneOS; ad-hoc CodeDirectory; no provisioning profile; all 19 locked
+> Linux/Debian/GUI/Steam resources match. Private owner-only Drive delivery is
+> complete and the user already has the IPA. The personal Drive link is omitted.
+> These CI/artifact/delivery results were supplied by the coordinating delivery
+> executor; this documentation-only session did not redownload the IPA or rerun CI.
+>
+> **Built SHA is 7421a2b61215df3fc8fcd74df75348f00574f2fc.** The subsequent
+> documentation commit records that result and is NOT the IPA's built source SHA.
+> Only HANDOFF and the short delivery report change; code/payload/overlay pins
+> remain exactly those used by CI #30. No additional CI was started.
+>
+> Physical iPhone, on-device Steam/Big Picture and games remain **NOT RUN**.
+> The official Valve client is downloaded during first on-device setup/launch
+> with explicit network consent; Valve client bytes are **not bundled** in the IPA.
+> BusyBox corresponding-source provenance remains **OPEN**; successful Apple
+> packaging does not close the missing revision/source/patch/recipe evidence.
+> Older NOT RUN and next-CI instructions below describe their earlier checkpoints.
+
+> Historical CI fix, 18 October 2026: first Steam-ready Apple attempt **#29** at
 > `3d00c93c151c93a6704947fbbab07963d4e2d749` reached app-build and failed with
 > xcodebuild exit 65 in **Stage verified experimental Steam assets**:
 > `scripts/ideck-stage-steam.py:18`, `hashlib.file_digest` AttributeError.

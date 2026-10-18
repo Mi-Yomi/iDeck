@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "repo": "Mi-Yomi/iDeck",
+  "repo_private_before_and_after": true,
+  "existing_authorized_github_auth_used": true,
+  "source_commit": "0fffdaf787d10acc86e0caa785dfe27ff81be025",
+  "release": {
+    "id": 416567174,
+    "tag": "ideck-steam-device-v1-20261018",
+    "url": "https://github.com/Mi-Yomi/iDeck/releases/tag/ideck-steam-device-v1-20261018",
+    "prerelease": true,
+    "latest_requested": false,
+    "assets_after_attempt": []
+  },
+  "archive": {
+    "name": "ideck-steam-device-v1.tar",
+    "size": 303667200,
+    "sha256": "f4084e40e854580a8e68a5f199936bf37e4a5f6779086c6b449b940a02325f56"
+  },
+  "upload": {
+    "status": "blocked",
+    "cli_error": "POST uploads.github.com Forbidden",
+    "diagnosis": "HTTPS CONNECT tunnel denied by proxy before upload",
+    "connect_http_status": 403,
+    "proxy_server": "envoy",
+    "automatic_approval_rejection": false,
+    "credential_scope_failure_proven": false,
+    "asset_id": null,
+    "server_digest": null,
+    "readback": "not possible; no asset exists",
+    "network_bypass_attempted": false
+  },
+  "runtime_lock": "blocked",
+  "ci_started": false,
+  "secrets_changed": false,
+  "system_settings_changed": false,
+  "old_releases_modified": false
+}

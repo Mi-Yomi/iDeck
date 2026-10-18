@@ -1,3 +1,13 @@
+> Authorized Steam delivery attempt, 18 October 2026: reviewed source pushed as
+> 0fffdaf787d10acc86e0caa785dfe27ff81be025. New private non-latest prerelease/tag
+> ideck-steam-device-v1-20261018 exists, but has ZERO assets: upload failed because
+> this environment's proxy denies HTTPS CONNECT to uploads.github.com (403 envoy).
+> No bypass/new token/settings/CI. Old GUI/Debian assets were verified unchanged.
+> Final checked tar: 303667200 bytes, SHA256 f4084e40e854580a8e68a5f199936bf37e4a5f6779086c6b449b940a02325f56.
+> Runtime Steam lock remains BLOCKED; do not invent an asset URL or run CI yet.
+> Resume upload from an approved cloud uploader, then server-digest/readback/pin
+> using existing ideck-debian-payload token. Exact steps: STEAM-DEVICE-DELIVERY-20261018.md.
+
 > Steam source review update, 18 October 2026: fixed root loader environment,
 > dpkg trigger retry, cache traversal, receipt/journal trust and shutdown completion.
 > Existing ideck-debian-payload token can now fetch a lock-pinned same-repo asset URL;

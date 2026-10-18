@@ -1,3 +1,8 @@
+> Delivery update: the owner authorized the final replacement payload. The new
+> private prerelease was created at reviewed source 0fffdaf, but upload was denied
+> by this environment's CONNECT proxy (403); it has no asset and runtime lock stays
+> blocked. See [actual result and continuation](STEAM-DEVICE-DELIVERY-20261018.md).
+
 # Steam device route — source review and fixes
 
 Scope: review/fixes following `ca2a3daac6f83b54dce5f1349cf2136f6dcc29ca`, only on `codex/steam-arm64-experiment-20261017`. This remains a **partial integration**. No new VM boot, Steam execution, Apple gate, CI, secret change, user machine access or additional agent was used. The owner subsequently authorized delivery of the final checked replacement payload and pinning; the delivery receipt records the actual publication separately.

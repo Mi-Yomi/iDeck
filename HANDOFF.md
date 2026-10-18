@@ -1,5 +1,22 @@
 # HANDOFF — продолжение iDeck, 2026-10-15
 
+## Latest run24 — 4096 MiB host comparison (2026-10-18)
+
+A fresh user request authorized more RAM after the overnight deadline. Run24
+actually used4096MiB, native500ms IPC and the same sandbox/CPU/observer as22.
+It reached the shared-memory reserve guard at264.631s with1872412KiB guest
+MemAvailable and zero kernelOOM; no main Steam UI was visible. Default tmpfs
+capacity also increased. Host Windows paging was observed and remains a timing
+confounder. Do not treat RAM alone as a verified fix or as an iPhone budget.
+
+VM Stop and final offline integrity passed; four clientELFs and package audit
+passed. No owned VM/input mount remains. The newest clean private continuation
+is `resume-local-20261017/run24/steam-experiment.qcow2`, SHA-256
+`7d2261892e4991e6536a1dbd2cb7a6e82727e5eb700d2412527e39b91e7f77e5`. Preserve earlier22; never continue incomplete23. No new Apple
+build/device/game/storage acceptance. Userdevice iPhone16ProMax; GetMoreRAM
+planned, actual signed entitlement/process limit untested. Current report:
+`RAM-RESULT-20261018.md`. Earlier checkpoints below are historical.
+
 ## Current checkpoint — 2026-10-18 01:00 UTC
 
 Read `NIGHT-RESULT-20261018.md` at the repository root for the current outcome.

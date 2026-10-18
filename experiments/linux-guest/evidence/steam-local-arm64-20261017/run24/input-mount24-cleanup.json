@@ -1,0 +1,13 @@
+{
+  "mount": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/prior-build",
+  "source": "/mnt/e/Freddy Fazbear/iDeck.work/gui-local-20261017/build.raw",
+  "verified_readonly_norecovery": true,
+  "normal_unmount": true,
+  "forced_or_lazy_unmount": false,
+  "keeper_pids_gone": [
+    228,
+    233
+  ],
+  "source_file_preserved": true,
+  "time_ns": 1792294981438012457
+}

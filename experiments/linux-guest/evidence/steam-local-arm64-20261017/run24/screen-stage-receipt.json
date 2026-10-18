@@ -1,0 +1,20 @@
+[
+  {
+    "private_file": "run24/003-progress.png",
+    "sha256": "f9529331ad6e1f601e1b86aa35debe590ba7fa0a31203e09adc28453957cc8f4",
+    "observed_stage": "Linux desktop at initial launch; no main Steam window",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run24/012-window-state.png",
+    "sha256": "d84a32f4dc94ae6631390a217f6194d1a6d03dece551650a7fd6da07af3eb808",
+    "observed_stage": "Linux desktop after browser start; only small auxiliary Steam windows in X11 tree",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run24/014-window-state.png",
+    "sha256": "cb1b33f9f019228f1f6266bc9b02da72e33ab1bcba72699714532201aa5a0d31",
+    "observed_stage": "Linux desktop after shared-memory reserve guard froze client; no main Steam UI",
+    "pixels_in_git": false
+  }
+]

@@ -1,0 +1,26 @@
+{
+  "run": 24,
+  "monitor_seconds": 264.631113198,
+  "stop_reason": "shared_memory_reserve",
+  "effective_memory_mib": 4096,
+  "native_ipc_deadline_ms": 500,
+  "diagnostic_library_absent_proven": true,
+  "maximum_kernel_oom_count": 0,
+  "minimum_available_kib": 1872412,
+  "shm_total_bytes": 2053566464,
+  "shm_free_after_freeze": 325754880,
+  "desktop_navigation_verified": false,
+  "big_picture_navigation_verified": false,
+  "steam_proton_games_verified": false,
+  "iphone_verified": false,
+  "application_stop": "unclean owned-process termination",
+  "owned_signal_counts": {
+    "SIGCONT": 8,
+    "SIGTERM": 10,
+    "SIGKILL": 2
+  },
+  "vm_stop": "clean original Stop; QEMU0; no recovery marker",
+  "post_run24_fsck": "full five phases plus summary, no errors, original source unchanged",
+  "host_ram_and_default_tmpfs_both_increased": true,
+  "conclusion": "Native IPC with4096MiB RAM and larger default SHM still reached shared-memory guard before mainUI. Guest retained1872412KiB available and no kernelOOM. Host Windows paging was observed, so host pressure remains a timing confounder; this does not establish a phone memory budget."
+}

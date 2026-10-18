@@ -1,0 +1,57 @@
+{
+  "before": {
+    "monotonic": 266.885585332,
+    "vmstat": {
+      "pgmajfault": 437,
+      "pgscan_kswapd": 0,
+      "pgscan_direct": 0,
+      "pgsteal_kswapd": 0,
+      "pgsteal_direct": 0,
+      "allocstall_dma": 0,
+      "allocstall_normal": 0,
+      "oom_kill": 0,
+      "pswpin": 0,
+      "pswpout": 0
+    },
+    "pressure": {
+      "available": false
+    },
+    "cpu_stat": "cpu  54276 0 17312 22581 448 0 268 0 0 0",
+    "loadavg": "4.22 2.16 0.89 4/168 1311\n",
+    "swaps": "Filename\t\t\t\tType\t\tSize\t\tUsed\t\tPriority\n"
+  },
+  "after": {
+    "monotonic": 286.904363466,
+    "vmstat": {
+      "pgmajfault": 473,
+      "pgscan_kswapd": 0,
+      "pgscan_direct": 0,
+      "pgsteal_kswapd": 0,
+      "pgsteal_direct": 0,
+      "allocstall_dma": 0,
+      "allocstall_normal": 0,
+      "oom_kill": 0,
+      "pswpin": 0,
+      "pswpout": 0
+    },
+    "pressure": {
+      "available": false
+    },
+    "cpu_stat": "cpu  57758 4 19137 24893 471 0 282 0 0 0",
+    "loadavg": "4.45 2.36 0.99 2/205 1400\n",
+    "swaps": "Filename\t\t\t\tType\t\tSize\t\tUsed\t\tPriority\n"
+  },
+  "elapsed_seconds": 20.018778134,
+  "counter_delta": {
+    "pgmajfault": 36,
+    "pgscan_kswapd": 0,
+    "pgscan_direct": 0,
+    "pgsteal_kswapd": 0,
+    "pgsteal_direct": 0,
+    "allocstall_dma": 0,
+    "allocstall_normal": 0,
+    "oom_kill": 0,
+    "pswpin": 0,
+    "pswpout": 0
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "suite": "test_steam_vm.py",
+  "tests": 25,
+  "failures": 0,
+  "errors": 0,
+  "posix_actual_execution": true,
+  "new_case": "4096MiB receipt and unchanged default; rejects4095/noninteger4096/8192",
+  "vm_started_by_tests": false,
+  "runner_sha256": "98d5dc61ebfcabdeb5fa7931087f7a96860eb5346a4a040140c06746511bc7b9",
+  "seed_protection_tests": 18,
+  "combined_tests": 43
+}

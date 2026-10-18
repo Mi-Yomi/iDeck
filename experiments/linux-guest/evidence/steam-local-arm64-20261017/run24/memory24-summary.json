@@ -1,0 +1,77 @@
+{
+  "samples": 80,
+  "first_oom": 0,
+  "last_oom": 0,
+  "maximum_oom": 0,
+  "min_available_kib": 1872412,
+  "minimum_at_seconds": 261.063,
+  "last_available_kib": 1872412,
+  "last_sample_seconds": 261.063,
+  "kernel": {
+    "before": {
+      "sha256": "aa02f2df5e8993788be48875f99aa3fa580425b9a69c76a921dd6c30ec1c1609",
+      "size": 17912,
+      "oom_lines": 0
+    },
+    "after": {
+      "sha256": "aa02f2df5e8993788be48875f99aa3fa580425b9a69c76a921dd6c30ec1c1609",
+      "size": 17912,
+      "oom_lines": 0
+    }
+  },
+  "process_disappeared": [
+    {
+      "seconds": 192.08,
+      "pid": "903",
+      "exe": "steam",
+      "seccomp": "0",
+      "state": "S (sleeping)",
+      "rss": "92084 kB",
+      "last_argv_role": []
+    },
+    {
+      "seconds": 192.091,
+      "pid": "905",
+      "exe": "steam",
+      "seccomp": "0",
+      "state": "S (sleeping)",
+      "rss": "104424 kB",
+      "last_argv_role": []
+    },
+    {
+      "seconds": 204.748,
+      "pid": "1170",
+      "exe": "steam",
+      "seccomp": "0",
+      "state": "R (running)",
+      "rss": "84412 kB",
+      "last_argv_role": []
+    },
+    {
+      "seconds": 251.283,
+      "pid": "1357",
+      "exe": "",
+      "seccomp": "2",
+      "state": "Z (zombie)",
+      "rss": null,
+      "last_argv_role": []
+    }
+  ],
+  "monitor": {
+    "reason": "shared_memory_reserve",
+    "observer_failure_class": null,
+    "seconds": 264.631113198,
+    "frozen": [
+      1169,
+      1224,
+      1249,
+      1250,
+      1266,
+      1344,
+      1347,
+      1434
+    ],
+    "launcher_pid": 877,
+    "path": "/home/ideck/steam-experiment-logs/resume-local-20261017-desktop-4g-v19"
+  }
+}

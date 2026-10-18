@@ -1,0 +1,13 @@
+{
+  "first_nonempty_seconds": 204.697,
+  "first_used_bytes": 2097152,
+  "last_seconds": 261.063,
+  "last_used_bytes": 1644609536,
+  "last_free_bytes": 408956928,
+  "capacity_bytes": 2053566464,
+  "last_object_count": 74,
+  "last_object_allocated_bytes": 1642217472,
+  "used_growth_bytes": 1642512384,
+  "observation_interval_seconds": 56.365999999999985,
+  "limits": "Usage growth observed during this interval; no leak cause or future growth rate inferred."
+}

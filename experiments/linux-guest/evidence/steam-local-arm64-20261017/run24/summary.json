@@ -1,0 +1,17 @@
+{
+  "reason": "shared_memory_reserve",
+  "observer_failure_class": null,
+  "seconds": 264.631113198,
+  "frozen": [
+    1169,
+    1224,
+    1249,
+    1250,
+    1266,
+    1344,
+    1347,
+    1434
+  ],
+  "launcher_pid": 877,
+  "path": "/home/ideck/steam-experiment-logs/resume-local-20261017-desktop-4g-v19"
+}

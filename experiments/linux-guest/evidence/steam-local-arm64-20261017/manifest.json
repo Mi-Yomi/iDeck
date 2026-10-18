@@ -2453,6 +2453,186 @@
       "sha256": "c5820c97b6ee52c59ff129196a63e06cb84b6241dc413ffac986bf8bac5deab8"
     },
     {
+      "file": "run24/application-stop.json",
+      "size": 4594,
+      "sha256": "499fad881df7782c71ac2b39de4bd6e0a05ecbe6e396940c0380901680a6397f"
+    },
+    {
+      "file": "run24/fast-guard.json",
+      "size": 130,
+      "sha256": "e25257511c4abf160b9339239aaad7170336f587e21cfe69f9562b045d88b3d2"
+    },
+    {
+      "file": "run24/game-runtime-inventory.json",
+      "size": 717,
+      "sha256": "804c91c92bc70de38446443189daaa49c72b6c58ecc4a44e150d2281440cb996"
+    },
+    {
+      "file": "run24/host-memory24-window.json",
+      "size": 482,
+      "sha256": "02869b202eb8ff251adc88828d1b14f8c6e1a12536b7610982fe2c82449a9934"
+    },
+    {
+      "file": "run24/input-mount24-cleanup.json",
+      "size": 385,
+      "sha256": "16772caee1cd3c69bd560a0743470b3af527daa7716d0a869f313fcc7de0c42d"
+    },
+    {
+      "file": "run24/launch-profile.json",
+      "size": 788,
+      "sha256": "32e927034612245837f74554a575dcd376e9a1f4813bf0ac9fc3a16f79cc70d8"
+    },
+    {
+      "file": "run24/memory-pressure-window.json",
+      "size": 1375,
+      "sha256": "54d4073b3d1567474693b8842befb9d60faf14598fbd4346af9b52b0475415fc"
+    },
+    {
+      "file": "run24/memory24-summary.json",
+      "size": 1638,
+      "sha256": "95ceebc1749eab912ad1ff4c6cff97899a1135629276797f69ad7d38e53678f3"
+    },
+    {
+      "file": "run24/no-preload-proof.json",
+      "size": 876,
+      "sha256": "d2b8118f36cb3db9e30425297b1dd608fc1c321639a49afeceaa67395d7b33a2"
+    },
+    {
+      "file": "run24/offline-fsck.json",
+      "size": 1416,
+      "sha256": "d4bda324638e377040998836e654876d2160f4f02f8ac3141f4bd7057a19ed58"
+    },
+    {
+      "file": "run24/offline-fsck.log",
+      "size": 401,
+      "sha256": "a7e3dce68809ca7697635bd1868cb9ca5808357673057e2a0c95368756c2d15e"
+    },
+    {
+      "file": "run24/offline-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "file": "run24/offline-fsck.stdout.log",
+      "size": 374,
+      "sha256": "c9f8667767c332c7cff02c0115472b6a5a4bcfeb166b30f196e451fdcda6a44a"
+    },
+    {
+      "file": "run24/outcome.json",
+      "size": 1146,
+      "sha256": "1377fde328f740b7b03cc04b195eb1b92fb20e063d9f3dfdf70420b6a9286043"
+    },
+    {
+      "file": "run24/post-application-check.json",
+      "size": 799,
+      "sha256": "7802b092970c53e35514a1d98e9c2b95a5aa0b35b574b8065710f3e3713077d8"
+    },
+    {
+      "file": "run24/post-run-fsck/offline-fsck.json",
+      "size": 1426,
+      "sha256": "aab43fd37ab93dcaf50e666260d715ee68634e0beb71aedc0503a640cc5792df"
+    },
+    {
+      "file": "run24/post-run-fsck/offline-fsck.log",
+      "size": 411,
+      "sha256": "1562f708698287f4c1358fb09eaa76c079470cdfecdb4db5b1b95911a6718cfa"
+    },
+    {
+      "file": "run24/post-run-fsck/offline-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "file": "run24/post-run-fsck/offline-fsck.stdout.log",
+      "size": 384,
+      "sha256": "6ad81cbd438fcd91419a8ea7b5fa4e7a3b35910e1df0e28b9f2573a461b568a2"
+    },
+    {
+      "file": "run24/post-run-fsck/source-preservation.json",
+      "size": 1818,
+      "sha256": "586b9ed736f74fe8c7fea14382a62525700ccd1f9431a79c214377481480c07a"
+    },
+    {
+      "file": "run24/profile24.json",
+      "size": 542,
+      "sha256": "ce9eb3cbdc09e024a8a51888c35e305985e276ba46d3e076c874c387d4d55a02"
+    },
+    {
+      "file": "run24/resource-budget.json",
+      "size": 268,
+      "sha256": "79fe75f0d19005f19b881641a2b725f122093dcfcf859e40be9e386c024734f4"
+    },
+    {
+      "file": "run24/result.json",
+      "size": 13194,
+      "sha256": "f5ce36ecc98602788f260c1d9c06144ddd30ab298cd355b2664dcc6c9a66447a"
+    },
+    {
+      "file": "run24/run24-memory-control-tests.json",
+      "size": 377,
+      "sha256": "59ebc08ff332e7d4bb0fc15265ced53fe5227e4097d1e230c033ba78b35647d7"
+    },
+    {
+      "file": "run24/run24-shm-growth.json",
+      "size": 461,
+      "sha256": "960bb2ecc5f486ad37edca1a088a96b933d496090b14410aa0677069f9499f73"
+    },
+    {
+      "file": "run24/screen-stage-receipt.json",
+      "size": 793,
+      "sha256": "1a76cff7c6576589b5365dd829aa4ce0b12dc58a405d97a0f9b6f73cccf1317c"
+    },
+    {
+      "file": "run24/scripts/002-start-native-observer.sh",
+      "size": 31595,
+      "sha256": "e765de22de81cea8035d4f4d40e31aea67a0d62f8954e066c4f7a753df4c0182"
+    },
+    {
+      "file": "run24/scripts/005-guest-resource-budget.sh",
+      "size": 702,
+      "sha256": "c4c03fc579ff9cbcb416d23dbc6d4204c9111a8acea66393425fd013408bb508"
+    },
+    {
+      "file": "run24/scripts/006-no-preload-proof.sh",
+      "size": 1486,
+      "sha256": "9d061fac92bd58585b133ecee66031adf87be901b4b954e3c42cb2cb54ee4466"
+    },
+    {
+      "file": "run24/scripts/008-memory-pressure.sh",
+      "size": 1604,
+      "sha256": "c277b8339d47c49d6320f474c1ebdfd082f8c786d2d2faeaa20fe68caf0c7c3d"
+    },
+    {
+      "file": "run24/scripts/900-finish-monitor.sh",
+      "size": 440,
+      "sha256": "d5e81690509d996ec47a7d56c03425da8905a6918ef3de053efb1f362ed0038e"
+    },
+    {
+      "file": "run24/scripts/901-stop-owned-app.sh",
+      "size": 6198,
+      "sha256": "e17aa4017804cdf23792afad114308fd252c26674000c9d27ea55a85ea083ae3"
+    },
+    {
+      "file": "run24/scripts/902-post-app-check.sh",
+      "size": 1851,
+      "sha256": "2d54cb18e0a0916a37cd6ebc127fcdc3194f7d1367f9d3440b89069b3f5c9bd8"
+    },
+    {
+      "file": "run24/scripts/903-private-export.sh",
+      "size": 1395,
+      "sha256": "a712f6b9a4be05d47625b9dd5154585ec8fc93f241050a2b563f8718e63b6fff"
+    },
+    {
+      "file": "run24/summary.json",
+      "size": 307,
+      "sha256": "d46f4f603620599d36f854e160fe0ded42b58802eb28bdda99761c092d6c2b16"
+    },
+    {
+      "file": "run24/updater.json",
+      "size": 168,
+      "sha256": "0ca6f39df992f03514f0a2b4f73c27d7e093a47b03ccec6813a650acb921c631"
+    },
+    {
       "file": "run9/control.log",
       "size": 108,
       "sha256": "0b8b6031582819a23d35f6f6bcbaff7bf9dffec4ac7e4a9967d4a28ba1d7fd51"

@@ -1,0 +1,20 @@
+[
+  {
+    "utc": "2026-10-18T03:34:04.1861426Z",
+    "available_mib": 668,
+    "pages_input_per_sec": 0,
+    "pages_output_per_sec": 0,
+    "page_reads_per_sec": 0,
+    "committed_bytes": 32501596160,
+    "commit_limit": 32793464832
+  },
+  {
+    "utc": "2026-10-18T03:34:24.5405383Z",
+    "available_mib": 622,
+    "pages_input_per_sec": 20095,
+    "pages_output_per_sec": 0,
+    "page_reads_per_sec": 1272,
+    "committed_bytes": 32509124608,
+    "commit_limit": 33879347200
+  }
+]

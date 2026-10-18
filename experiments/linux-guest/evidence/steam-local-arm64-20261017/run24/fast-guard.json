@@ -1,0 +1,6 @@
+{
+  "cause": "shared_memory_reserve",
+  "seconds": 261.333039427,
+  "browser_pid": 1224,
+  "free_bytes_after_freeze": 325754880
+}

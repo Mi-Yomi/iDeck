@@ -1,0 +1,16 @@
+{
+  "reference": "run22 native-no-preload",
+  "memory_mib": 4096,
+  "vcpus": 4,
+  "cpu": "max",
+  "functional_change": "explicit 4096MiB host memory budget; default tmpfs capacity also increases with RAM",
+  "source": "verified clean run22; never incomplete23",
+  "user_authorized_more_host_ram": true,
+  "monitor_seconds": 1200,
+  "backstop_seconds_after_boot": 1350,
+  "qemu_hard_limit_seconds": 2100,
+  "observer_functions_identical_to_run22": true,
+  "sandbox_preserved": true,
+  "no_diagnostic_preload": true,
+  "iphone_tested": false
+}

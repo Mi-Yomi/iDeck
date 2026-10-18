@@ -1,0 +1,10 @@
+{
+  "memory_kib": {
+    "MemTotal": 4010876,
+    "MemAvailable": 3536620,
+    "SwapTotal": 0
+  },
+  "shm_total_bytes": 2053566464,
+  "shm_free_bytes": 2053566464,
+  "note": "SHM tmpfs default capacity also changes with RAM; this is not a fixed-SHM-capacity control"
+}

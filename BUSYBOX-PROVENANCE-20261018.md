@@ -1,3 +1,10 @@
+> Fresh-session update: the same BusyBox binary/config is retained in a newly
+> rebuilt tar (303667200B, SHA25616e29b3a94d9487a244d6047bea7efaee897166459a0e4b482147f6c57625e79).
+> The source/revision/patch/recipe limitation below remains OPEN. Ordinary private
+> upload now reaches GitHub but returns401 Bad credentials; Release has no asset.
+> Runtime lock stays blocked. See STEAM-DEVICE-DELIVERY-20261018.md for current evidence.
+> Previous f4084e40/network notes below are historical, not the new tar identity.
+
 # BusyBox provenance clarification — no payload change
 
 The final Steam payload and all delivery receipts remain preserved. No upload retry, network probe, CI, ready pinning or accepted-payload edit was performed for this clarification.

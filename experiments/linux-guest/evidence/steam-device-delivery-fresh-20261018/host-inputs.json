@@ -1,0 +1,26 @@
+{
+  "package_manifest_sha256": "846da382001a4d1b76ae6aad6b3b6c69ee1e72673941c1d58ed962f6ae4beb95",
+  "source_commit": "b01986212fd46f27136ea204c401b8918d49ee02",
+  "checks": [
+    {
+      "tool": "e2fsck",
+      "version": "1.47.2",
+      "binary_sha256": "be1f2c99e0dc73640cffb549da5f3f4b15da0f89e7334c6730feb69eff784571"
+    },
+    {
+      "tool": "tune2fs",
+      "version": "1.47.2",
+      "binary_sha256": "23fe2546f4c677e0fc894c0b0b2a187571bcc484e678512d9bd088110ef151c5"
+    },
+    {
+      "tool": "resize2fs",
+      "version": "1.47.2",
+      "binary_sha256": "104b6d45667967b26389da3dfc559ce585ab4e8afb374fac77e751df54e53e17"
+    },
+    {
+      "tool": "unsquashfs",
+      "version": "4.6.1",
+      "binary_sha256": "1ecc68e64fbc975c0b1959cbf21cefb4c2376b0bcc5cec695f757b60165aae1e"
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "source_commit": "b01986212fd46f27136ea204c401b8918d49ee02",
+  "archive": {
+    "size": 303667200,
+    "sha256": "16e29b3a94d9487a244d6047bea7efaee897166459a0e4b482147f6c57625e79"
+  },
+  "raw": {
+    "size": 12884901888,
+    "sha256": "407200777b9ec5487a1a949563d464a84d867eabd7dcfb8f336750821254f071"
+  },
+  "strict_pre_fsck": {
+    "policy": "strict-e2fsck-fn-v1",
+    "accepted": true,
+    "reason_codes": [],
+    "unexpected_lines": [],
+    "passes_and_summary": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      "summary"
+    ],
+    "version_count": 1
+  },
+  "strict_post_fsck": {
+    "policy": "strict-e2fsck-fn-v1",
+    "accepted": true,
+    "reason_codes": [],
+    "unexpected_lines": [],
+    "passes_and_summary": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      "summary"
+    ],
+    "version_count": 1
+  },
+  "source_gui_preserved": true,
+  "source_bindings_current": true,
+  "tar_restore": "PASS",
+  "standalone_xcode_stage": "PASS",
+  "expanded_staged_gzip_hash": "PASS",
+  "bootstrap_matches_reviewed_candidate": true,
+  "base_initramfs_prefix_unchanged": true,
+  "appended_cpio_exact_allowlist": [
+    "ideck-steam-init",
+    "ideck-steam/files/device-action.py",
+    "ideck-steam/files/ideck-steam",
+    "ideck-steam/files/install-cached.py",
+    "ideck-steam/files/install-official.py",
+    "ideck-steam/files/lse-probe",
+    "ideck-steam/files/namespace-check.py",
+    "ideck-steam/files/prepare-display.py",
+    "ideck-steam/files/shm-recovery.py",
+    "ideck-steam/files/steam-client.lock.json",
+    "ideck-steam/files/steam-dependencies.lock.json",
+    "ideck-steam/files/steam_client.py",
+    "ideck-steam/network-load-order",
+    "usr/lib/modules/6.18.35-0-virt/kernel/drivers/net/net_failover.ko",
+    "usr/lib/modules/6.18.35-0-virt/kernel/drivers/net/virtio_net.ko",
+    "usr/lib/modules/6.18.35-0-virt/kernel/net/core/failover.ko"
+  ],
+  "readonly_debugfs_paths": {
+    "/home/ideck/.steam": "absent",
+    "/home/ideck/.local/share/Steam": "absent",
+    "/root/.steam": "absent",
+    "/root/.local/share/Steam": "absent",
+    "/home/ideck/.bash_history": "absent",
+    "/root/.bash_history": "absent",
+    "/opt/steam": "absent",
+    "/usr/games/steam": "absent",
+    "/usr/bin/steam": "absent"
+  },
+  "valve_packages_present": false,
+  "gpl2_text_present": true,
+  "raw_hash_preserved_after_inspection": true,
+  "busybox_binary_unchanged": true,
+  "valve_account_bytes_basis": "Exact accepted GUI seed; builder only changes ext4 metadata. Appended CPIO is exclusively bound original iDeck files/probe and pinned Alpine network modules. Standard account/client paths absent. No local account image or Valve binary was an input; this is not an arbitrary-file privacy scanner.",
+  "busybox_corresponding_source": "OPEN: exact Alpine revision/source/patch/recipe not established; private owner build only",
+  "apple_gate": "NOT RUN",
+  "guest_boot": "NOT RUN",
+  "device_gate": "NOT RUN"
+}

@@ -1,3 +1,18 @@
+> Fresh-session result, 18 October 2026: uploads.github.com now answers ordinary
+> GET with HTTP302 (the previous CONNECT403 is gone). Rebuilt from b01986212fd46f27136ea204c401b8918d49ee02;
+> NEW final tar303667200B, SHA25616e29b3a94d9487a244d6047bea7efaee897166459a0e4b482147f6c57625e79.
+> Strict fsck/full12GiB gzip hash/tar restore/staging/input and account-path checks PASS;
+> 503 Python tests OK,5 skips; exact source slice/five-patch overlay PASS.
+> Authorized ordinary gh upload reached uploads.github.com but returned HTTP401
+> Bad credentials with the existing GH_TOKEN. Existing GitHub connector confirms
+> Release416567174 still has zero assets. No new credentials/security changes.
+> Runtime/overlay locks remain unchanged and BLOCKED; no asset/readback/ready pin/CI.
+> Local tar is preserved in .work/steam-fresh-rebuild-VudASXFO/candidate/.
+> Current evidence: experiments/linux-guest/evidence/steam-device-delivery-fresh-20261018.
+> BusyBox matching source/revision/patch/recipe gate remains OPEN; private owner build.
+> Apple, guest and device runtime NOT RUN. Earlier f4084e40/CONNECT403 notes below
+> describe the old session; do not use that old hash for the rebuilt tar.
+
 # Final payload preservation / fresh-session rebuild
 
 The requested Library save was attempted through the current Library skill's required prepared-upload helper for a 303667200-byte local file. It stopped before upload preparation completed: `library upload failed: hosted apps tools/list request failed: network`. No Library ID or successful create/finalize result was returned. **`library_file_id` is unavailable; the file-size limit was not evaluated.** No direct-write substitute, temporary host, homemade server, alternate GitHub upload route or deletion was used.

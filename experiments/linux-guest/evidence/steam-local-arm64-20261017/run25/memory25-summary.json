@@ -1,0 +1,148 @@
+{
+  "samples": 234,
+  "first_oom": 0,
+  "last_oom": 0,
+  "maximum_oom": 0,
+  "min_available_kib": 2763224,
+  "minimum_at_seconds": 1146.097,
+  "last_available_kib": 3195492,
+  "last_sample_seconds": 1202.397,
+  "kernel": {
+    "before": {
+      "sha256": "a893a8dfc705c0b06959db094a3549bd16d0777f2763c5c48570857cb097b65b",
+      "size": 17912,
+      "oom_lines": 0
+    },
+    "after": {
+      "sha256": "a893a8dfc705c0b06959db094a3549bd16d0777f2763c5c48570857cb097b65b",
+      "size": 17912,
+      "oom_lines": 0
+    }
+  },
+  "process_disappeared": [
+    {
+      "seconds": 287.223,
+      "pid": "984",
+      "exe": "steam",
+      "seccomp": "0",
+      "state": "R (running)",
+      "rss": "93540 kB",
+      "last_argv_role": []
+    },
+    {
+      "seconds": 287.225,
+      "pid": "986",
+      "exe": "steam",
+      "seccomp": "0",
+      "state": "R (running)",
+      "rss": "104608 kB",
+      "last_argv_role": []
+    },
+    {
+      "seconds": 312.318,
+      "pid": "1336",
+      "exe": "steam",
+      "seccomp": "0",
+      "state": "R (running)",
+      "rss": "102820 kB",
+      "last_argv_role": []
+    },
+    {
+      "seconds": 386.489,
+      "pid": "1596",
+      "exe": "steamwebhelper",
+      "seccomp": "0",
+      "state": "R (running)",
+      "rss": "24408 kB",
+      "last_argv_role": []
+    },
+    {
+      "seconds": 410.383,
+      "pid": "1525",
+      "exe": "",
+      "seccomp": "0",
+      "state": "Z (zombie)",
+      "rss": null,
+      "last_argv_role": []
+    },
+    {
+      "seconds": 410.392,
+      "pid": "1558",
+      "exe": "",
+      "seccomp": "2",
+      "state": "Z (zombie)",
+      "rss": null,
+      "last_argv_role": []
+    },
+    {
+      "seconds": 1089.591,
+      "pid": "2389",
+      "exe": "steamwebhelper",
+      "seccomp": "2",
+      "state": "S (sleeping)",
+      "rss": "102084 kB",
+      "last_argv_role": [
+        "zygote"
+      ]
+    },
+    {
+      "seconds": 1134.084,
+      "pid": "2558",
+      "exe": "",
+      "seccomp": "2",
+      "state": "Z (zombie)",
+      "rss": null,
+      "last_argv_role": []
+    },
+    {
+      "seconds": 1185.109,
+      "pid": "1649",
+      "exe": "steamwebhelper",
+      "seccomp": "2",
+      "state": "R (running)",
+      "rss": "465124 kB",
+      "last_argv_role": [
+        "zygote"
+      ]
+    },
+    {
+      "seconds": 1185.898,
+      "pid": "2494",
+      "exe": "steamwebhelper",
+      "seccomp": "2",
+      "state": "S (sleeping)",
+      "rss": "141228 kB",
+      "last_argv_role": [
+        "zygote"
+      ]
+    },
+    {
+      "seconds": 1186.055,
+      "pid": "2614",
+      "exe": "steamwebhelper",
+      "seccomp": "0",
+      "state": "R (running)",
+      "rss": "223620 kB",
+      "last_argv_role": []
+    }
+  ],
+  "monitor": {
+    "reason": "deadline",
+    "observer_failure_class": null,
+    "seconds": 1211.877124159,
+    "frozen": [
+      1335,
+      1404,
+      1435,
+      1439,
+      1453,
+      1521,
+      1626,
+      1628,
+      2576,
+      2663
+    ],
+    "launcher_pid": 955,
+    "path": "/home/ideck/steam-experiment-logs/resume-local-20261017-desktop-zero-v20"
+  }
+}

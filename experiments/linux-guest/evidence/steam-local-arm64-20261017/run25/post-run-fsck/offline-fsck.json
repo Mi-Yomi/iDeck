@@ -1,0 +1,38 @@
+{
+  "exit_code": 0,
+  "read_only": true,
+  "writer_running": false,
+  "fsck_command": [
+    "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/prior-build/production/vm/host/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+    "--library-path",
+    "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/prior-build/production/vm/host/usr/lib/x86_64-linux-gnu",
+    "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/prior-build/production/vm/host/usr/sbin/e2fsck",
+    "-f",
+    "-n",
+    "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/resume-local-20261017/post-run25-fsck/offline-fsck.raw"
+  ],
+  "status": "pass",
+  "evaluation": {
+    "policy": "strict-e2fsck-fn-v1",
+    "accepted": true,
+    "reason_codes": [],
+    "unexpected_lines": [],
+    "passes_and_summary": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      "summary"
+    ],
+    "version_count": 1
+  },
+  "free_bytes_before_copy": 68156096512,
+  "virtual_size": 12884901888,
+  "raw_sha256": "4c11447b7d46d810cb4b43f9dd2523338d91bcf3fe665db728793934f9257f57",
+  "raw_size": 12884901888,
+  "stdout_sha256": "5cf97196d9a8f49c292d08a09cc5f6a96612b6f9ea7482e6b5cbd3c0b870d7e0",
+  "stderr_sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948",
+  "log_sha256": "22572537c72b4574775d5b42ce322d8edd5c5392487124c565c2490d089ebef2",
+  "scope": "ext4 filesystem, flattened offline copy"
+}

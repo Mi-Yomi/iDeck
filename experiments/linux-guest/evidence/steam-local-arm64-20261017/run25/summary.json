@@ -1,0 +1,19 @@
+{
+  "reason": "deadline",
+  "observer_failure_class": null,
+  "seconds": 1211.877124159,
+  "frozen": [
+    1335,
+    1404,
+    1435,
+    1439,
+    1453,
+    1521,
+    1626,
+    1628,
+    2576,
+    2663
+  ],
+  "launcher_pid": 955,
+  "path": "/home/ideck/steam-experiment-logs/resume-local-20261017-desktop-zero-v20"
+}

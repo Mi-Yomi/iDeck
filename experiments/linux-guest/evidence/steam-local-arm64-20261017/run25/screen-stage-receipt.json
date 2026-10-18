@@ -1,0 +1,38 @@
+[
+  {
+    "private_file": "run25/009-progress.png",
+    "sha256": "37efcc258666e7442a30b4139b7e8966651e4b9cfe28338c5528dd9f81c6d0f2",
+    "observed_stage": "Linux desktop, no main Steam UI",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run25/020-progress.png",
+    "sha256": "d6be7cf96100e3829197df144faf308c91f256aa1ce328809ef641ed5c66c3fb",
+    "observed_stage": "Rendered saved-account sign-in spinner; no main navigation yet",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run25/025-main-window.png",
+    "sha256": "c9176357369eacb337bd5572d6dc0efbe06c5e978d8d6adaa8509ec7ea083b46",
+    "observed_stage": "Activated main Steam X window; fully black body/frame",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run25/030-window-state.png",
+    "sha256": "3e264051895fa10b4367f71a3334ed3149b8234b0dbdc47f9aa8eecb1982d37a",
+    "observed_stage": "Main Steam navigation bar rendered, content body black",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run25/032-progress.png",
+    "sha256": "c17a0c4dcdcdfcc7cb245547b510f818bfbc2b3a6c58c95b1193fb66bf3342ab",
+    "observed_stage": "After visually grounded Library click, navigation bar present but content body still black",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run25/046-window-state.png",
+    "sha256": "1ad68e1293f33568722c90512abbef9e5fe3e0c2c50fbca182c943066e1f31d1",
+    "observed_stage": "After bounded direct Library URI phase, new Steam X window exists but pixels black",
+    "pixels_in_git": false
+  }
+]

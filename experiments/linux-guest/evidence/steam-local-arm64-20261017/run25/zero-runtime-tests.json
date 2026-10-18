@@ -1,0 +1,29 @@
+{
+  "platform": "actual ARM64 guest",
+  "files": {
+    "libideck-shm-zero.so": {
+      "size": 70296,
+      "sha256": "c350f21128358eb4bdc942db571affe38b5817341e9656cadb7e592c74e36f9d"
+    },
+    "arm64-unit": {
+      "size": 73640,
+      "sha256": "899c58f026debed7d28deffb660894fc5c0e4c809191974a0de72e61b6104cfc"
+    }
+  },
+  "tests": [
+    {
+      "case": "arm64-unit",
+      "exit": 0,
+      "stdout": "SHM_ZERO_UNIT_PASS: real tmpfs holes, contents, existing data, permissions, private/offset/size and ownership guards\n",
+      "stderr": ""
+    },
+    {
+      "case": "arm64-preload-fallback",
+      "exit": 0,
+      "stdout": "SHM_ZERO_UNIT_PASS: real tmpfs holes, contents, existing data, permissions, private/offset/size and ownership guards\n",
+      "stderr": ""
+    }
+  ],
+  "passed": true,
+  "steam_started": false
+}

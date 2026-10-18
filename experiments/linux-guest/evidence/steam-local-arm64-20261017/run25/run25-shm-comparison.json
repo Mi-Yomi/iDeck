@@ -1,0 +1,16 @@
+{
+  "comparison": "run24 and25 same4GiB/native500ms/CPU/sandbox;25 only selective already-zero initialization",
+  "samples": 234,
+  "shm_capacity_bytes": 2053566464,
+  "maximum_shm_used_bytes": 76935168,
+  "maximum_large_stream_count": 2,
+  "maximum_large_stream_allocated_bytes": 741376,
+  "final_large_stream_count": 2,
+  "actual_lazy_calls": 2,
+  "original_monitor_seconds": 1211.877124159,
+  "uri_extra_seconds": 303.094957047,
+  "uri_dispatch_exit": 0,
+  "stable_full_ui_verified": false,
+  "iphone_verified": false,
+  "one_run_only": true
+}

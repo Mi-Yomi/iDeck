@@ -1,0 +1,18 @@
+{
+  "cef_sources": {
+    "chrome_main_delegate.cc": 1,
+    "task_impl.cc": 2,
+    "bus.cc": 8,
+    "account_consistency_mode_manager.cc": 1,
+    "crash_reporting.cc": 8,
+    "bluez_dbus_manager.cc": 1,
+    "property.cc": 1,
+    "network_service_instance_impl.cc": 1,
+    "browser_management_service.cc": 1,
+    "atom_cache.cc": 2
+  },
+  "error_codes": {},
+  "gl_fields": [],
+  "offscreen_context_failure_count": 0,
+  "launcher_error_count": 0
+}

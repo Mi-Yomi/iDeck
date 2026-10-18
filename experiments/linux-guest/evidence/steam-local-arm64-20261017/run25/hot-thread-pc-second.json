@@ -1,0 +1,68 @@
+{
+  "kind": "bounded_pc_only_hot_thread_sample",
+  "hot_threads": [
+    {
+      "tgid": 2663,
+      "ticks": 5710,
+      "comm": "ServiceWorker t",
+      "tid": 2775,
+      "delta": 482
+    },
+    {
+      "tgid": 2663,
+      "ticks": 15491,
+      "comm": "steamwebhelper",
+      "tid": 2663,
+      "delta": 427
+    },
+    {
+      "tgid": 1404,
+      "ticks": 31832,
+      "comm": "steamwebhelper",
+      "tid": 1404,
+      "delta": 209
+    },
+    {
+      "tgid": 1404,
+      "ticks": 13611,
+      "comm": "Chrome_IOThread",
+      "tid": 1470,
+      "delta": 73
+    },
+    {
+      "tgid": 2663,
+      "ticks": 708,
+      "comm": "ThreadPoolForeg",
+      "tid": 2696,
+      "delta": 42
+    }
+  ],
+  "captures": [
+    {
+      "tid": 2775,
+      "tgid": 2663,
+      "prior_group_stopped": false,
+      "status": "captured",
+      "detached": true,
+      "group_stop_restored": null,
+      "stop_event": 128,
+      "stop_signal": 5,
+      "snapshot": {
+        "pc": {
+          "address": "0xffffaf68bb1c",
+          "module": "/home/ideck/.local/share/Steam/steamrtarm64/libcef.so",
+          "mapping_offset": "0x17acb1c",
+          "file_offset": "0x3b4bb1c"
+        },
+        "lr": {
+          "address": "0x63ffffaf6660c4"
+        }
+      },
+      "tracer_after": 0,
+      "state_after": "R"
+    }
+  ],
+  "register_writes": false,
+  "user_memory_read": false,
+  "source_sha256": "5aef2f1f820f7a8a04f87f347b8ecc89ae07238ab908834f8a34e034fe340fa4"
+}

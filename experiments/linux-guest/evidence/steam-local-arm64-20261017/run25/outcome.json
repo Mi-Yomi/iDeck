@@ -1,0 +1,72 @@
+{
+  "run": 25,
+  "monitor_seconds": 1211.877124159,
+  "stop_reason": "deadline",
+  "effective_memory_mib": 4096,
+  "native_ipc_deadline_ms": 500,
+  "ipc_timeout_library_absent_proven": true,
+  "selective_zero_library_active": true,
+  "maximum_kernel_oom_count": 0,
+  "minimum_available_kib": 2763224,
+  "shm_total_bytes": 2053566464,
+  "shm_free_after_freeze": 2040856576,
+  "desktop_navigation_verified": false,
+  "big_picture_navigation_verified": false,
+  "steam_proton_games_verified": false,
+  "iphone_verified": false,
+  "application_stop": "unclean owned-process termination",
+  "owned_signal_counts": {
+    "SIGCONT": 10,
+    "SIGTERM": 13,
+    "SIGKILL": 1
+  },
+  "vm_stop": "clean original Stop; QEMU0; no recovery marker",
+  "post_run25_fsck": "full five phases plus summary, no errors, original source unchanged",
+  "same_ram_and_shm_capacity_as_run24": true,
+  "conclusion": "Selective zero initialization activated in the exact ARM64 browser and two fresh25MiB streams stayed sparse. The original20min observation reached native500ms loginSuccess without repeatedlargeSHMgrowth or OOM, but only mainnavigation bar/blackbody appeared and the window later disappeared. A Libraryclick and303sec standardURIcontrol did not establish navigation. Hot browser threads actively executed libcef code on guestCPUs2-3; CPU-affinity combination is the next controlled hypothesis. This fixes measuredallocationgrowth in one run, not the fullSteamUI or iPhonegaming.",
+  "zero_initialization": {
+    "ready": 1,
+    "zero_calls": 2,
+    "lazy_zero_calls": 2,
+    "ordinary_fallback_calls": 0,
+    "invalid_log_lines": 0,
+    "events": [
+      {
+        "event": "ready",
+        "pid": 1404,
+        "browser_sha256": "0a849676a3ba0cc51ca23cba79be3df0546744fd92c2e2d628a1f71707a70a56"
+      },
+      {
+        "event": "stream_zero",
+        "pid": 1404,
+        "bytes": 26214416,
+        "caller_matched": true,
+        "already_zero": true,
+        "inode": 15
+      },
+      {
+        "event": "stream_zero",
+        "pid": 1404,
+        "bytes": 26214416,
+        "caller_matched": true,
+        "already_zero": true,
+        "inode": 16
+      }
+    ]
+  },
+  "uri_library_phase": {
+    "seconds": 303.094957047,
+    "guard": {
+      "cause": "uri_guardian_operator_budget",
+      "seconds": 303.09438083200007,
+      "browser_pid": 1404,
+      "free_bytes_after_freeze": 2038009856
+    },
+    "existing_client_resumed": true,
+    "same_steam_runtime_configuration": true
+  },
+  "uri_dispatch_exit": 0,
+  "same_original_client_resumed": true,
+  "one_run_only": true,
+  "normal_launcher_or_ios_enabled": false
+}

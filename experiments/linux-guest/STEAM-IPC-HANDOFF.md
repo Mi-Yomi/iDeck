@@ -1,5 +1,30 @@
 # Steam IPC diagnosis and online handoff — 2026-10-17
 
+## Latest run25 — allocation fix; run26 preparing (2026-10-18 04:48 UTC)
+
+A new manual request authorized solving the remaining issue. The pinned browser's
+fresh25MiB stream memset is now selectively skipped only for fully verified
+already-zero tmpfs holes. Actual ARM64 fixtures and browseractivation/two call
+receipts passed. Same4GiB/native500ms/sandbox, original20min monitor234samples:
+OOM0/min2763224KiB, maxSHM76935168B, maxlargecount2/allocated741376B. This removes
+the measured allocation growth in one run. Mainnavbar rendered but content was
+black; a Libraryclick plus303sec standardURIphase did not verify navigation.
+
+CleanVMStop/QEMU0/no recovery marker/fullpost25fsck/sourcepreservation passed;
+appshutdown separately needed one ownedSIGKILL. Four clientELFs/audit unchanged,
+namespaces/inputmount closed. Newest CLEAN private source25 SHA
+20a30a61ccbba6830442e067907f7dc9fcad22e452f57a98760dbe8b2790cef0. Keep24/22;
+never use incomplete23. Run26 is preparing from25 with only the existing owned
+browser-affinity0-3 helper added to the zero/native500 control. Earlier affinity
+alone failed; this combination is pending. Check fresh private NIGHT-PROGRESS.md
+and ACTIVE-RUN26.md/processes before acting; old PID/live-state claims below are
+historical. Old automation staysPAUSED. No new iPhone/game/storage acceptance.
+
+Current report: repository-root SHM-RESULT-20261018.md. Guarded experimental code:
+experiments/linux-guest/diagnostics/shm-zero-init; sanitized run25 evidence under
+experiments/linux-guest/evidence/steam-local-arm64-20261017/run25. Ordinary and
+iOS launch profiles do not enable the new library automatically.
+
 ## Latest run24 — 4096 MiB host comparison (2026-10-18)
 
 A fresh user request authorized more RAM after the overnight deadline. Run24

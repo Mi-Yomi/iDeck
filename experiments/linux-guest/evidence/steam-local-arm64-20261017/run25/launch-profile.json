@@ -1,0 +1,15 @@
+{
+  "mode": "native-500ms-lazy-zero",
+  "original_deadline_ms": 500,
+  "effective_deadline_ms": 500,
+  "library_sha256": null,
+  "library_source_sha256": "dd7a19b8531294772b3b11e1742c12341d1df2bd77186fdbf042accdb9c9b4c6",
+  "original_helper_sha256": "96c929eafefb2f76aa7751fb1869baa6def54e5e31be2a0e6620a486bca64b0d",
+  "private_helper_sha256": "dea4203b8a900577003d43408d60fceb61b04d59be624d0eecfcee5935c779bc",
+  "only_helper_change": "private UID1000 lazy-zero preload; native IPC500ms; restart-aware desktop launcher",
+  "private_launcher_sha256": "893ac73943214cbd6ac87723c32a3774c872dad2b91429cd4aedb48737e92b33",
+  "launcher_flag_change": "-nobigpicture desktop mode; no SteamOS/device flags",
+  "original_helper_unchanged": true,
+  "sandbox_preserved": true,
+  "resource_profile_changed": false
+}

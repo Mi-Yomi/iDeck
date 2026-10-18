@@ -1,0 +1,12 @@
+{
+  "reference": "run24",
+  "functional_change": "all-hole zero initialization in exact pinned browser stream constructor; native500ms IPC",
+  "memory_mib": 4096,
+  "source_sha256": "dfa4bb8edb0766551f6bd6d83fa9ef611ddbdeae1d8486fd4e1c8c24adf7b73b",
+  "library_sha256": "c350f21128358eb4bdc942db571affe38b5817341e9656cadb7e592c74e36f9d",
+  "client_elf_modified": false,
+  "observer_function_ast_unchanged": true,
+  "sandbox_preserved": true,
+  "fixture_before_steam_required": true,
+  "expected_result": "must observe actual ready/stream_zero events and healthy UI; no success claim from sparse buffers alone"
+}

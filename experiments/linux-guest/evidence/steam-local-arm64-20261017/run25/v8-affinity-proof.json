@@ -1,0 +1,88 @@
+{
+  "clock_ticks_per_second": 100,
+  "processes": [
+    {
+      "pid": 1404,
+      "cpus_allowed": "2-3",
+      "state": "R (running)",
+      "seccomp": "0",
+      "flags": [
+        "--disable-gpu-compositing",
+        "--disable-gpu",
+        "--disable-gpu-early-init"
+      ]
+    },
+    {
+      "pid": 1435,
+      "cpus_allowed": "2-3",
+      "state": "S (sleeping)",
+      "seccomp": "0",
+      "flags": [
+        "--type=zygote"
+      ]
+    },
+    {
+      "pid": 1439,
+      "cpus_allowed": "2-3",
+      "state": "S (sleeping)",
+      "seccomp": "0",
+      "flags": [
+        "--type=zygote"
+      ]
+    },
+    {
+      "pid": 1453,
+      "cpus_allowed": "2-3",
+      "state": "S (sleeping)",
+      "seccomp": "0",
+      "flags": [
+        "--type=zygote"
+      ]
+    },
+    {
+      "pid": 1521,
+      "cpus_allowed": "2-3",
+      "state": "S (sleeping)",
+      "seccomp": "0",
+      "flags": [
+        "--type=zygote"
+      ]
+    },
+    {
+      "pid": 1626,
+      "cpus_allowed": "2-3",
+      "state": "S (sleeping)",
+      "seccomp": "0",
+      "flags": [
+        "--type=utility"
+      ]
+    },
+    {
+      "pid": 1628,
+      "cpus_allowed": "2-3",
+      "state": "S (sleeping)",
+      "seccomp": "2",
+      "flags": [
+        "--type=zygote"
+      ]
+    },
+    {
+      "pid": 2576,
+      "cpus_allowed": "2-3",
+      "state": "S (sleeping)",
+      "seccomp": "2",
+      "flags": [
+        "--type=zygote"
+      ]
+    },
+    {
+      "pid": 2663,
+      "cpus_allowed": "2-3",
+      "state": "R (running)",
+      "seccomp": "2",
+      "flags": [
+        "--type=zygote"
+      ]
+    }
+  ]
+}

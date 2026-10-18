@@ -1,0 +1,174 @@
+{
+  "processes": [
+    {
+      "pid": 1335,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steam",
+      "type": [],
+      "preload": [
+        "LD_PRELOAD=/opt/ideck-shm-zero/libideck-shm-zero.so"
+      ],
+      "state": [
+        "State:\tR (running)",
+        "NoNewPrivs:\t0",
+        "Seccomp:\t0"
+      ],
+      "zero_mapped": true
+    },
+    {
+      "pid": 1404,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "type": [],
+      "preload": [
+        "LD_PRELOAD=/opt/ideck-shm-zero/libideck-shm-zero.so"
+      ],
+      "state": [
+        "State:\tR (running)",
+        "NoNewPrivs:\t0",
+        "Seccomp:\t0"
+      ],
+      "zero_mapped": true
+    },
+    {
+      "pid": 1435,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "type": [
+        "--type=zygote"
+      ],
+      "preload": [
+        "LD_PRELOAD=/opt/ideck-shm-zero/libideck-shm-zero.so"
+      ],
+      "state": [
+        "State:\tS (sleeping)",
+        "NoNewPrivs:\t1",
+        "Seccomp:\t0"
+      ],
+      "zero_mapped": true
+    },
+    {
+      "pid": 1439,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "type": [
+        "--type=zygote"
+      ],
+      "preload": [
+        "LD_PRELOAD=/opt/ideck-shm-zero/libideck-shm-zero.so"
+      ],
+      "state": [
+        "State:\tS (sleeping)",
+        "NoNewPrivs:\t1",
+        "Seccomp:\t0"
+      ],
+      "zero_mapped": true
+    },
+    {
+      "pid": 1453,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "type": [
+        "--type=zygote"
+      ],
+      "preload": [
+        "LD_PRELOAD=/opt/ideck-shm-zero/libideck-shm-zero.so"
+      ],
+      "state": [
+        "State:\tS (sleeping)",
+        "NoNewPrivs:\t1",
+        "Seccomp:\t0"
+      ],
+      "zero_mapped": true
+    },
+    {
+      "pid": 1521,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "type": [
+        "--type=zygote"
+      ],
+      "preload": [
+        "LD_PRELOAD=/opt/ideck-shm-zero/libideck-shm-zero.so"
+      ],
+      "state": [
+        "State:\tS (sleeping)",
+        "NoNewPrivs:\t1",
+        "Seccomp:\t0"
+      ],
+      "zero_mapped": true
+    },
+    {
+      "pid": 1626,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "type": [
+        "--type=utility"
+      ],
+      "preload": [
+        "LD_PRELOAD=/opt/ideck-shm-zero/libideck-shm-zero.so"
+      ],
+      "state": [
+        "State:\tS (sleeping)",
+        "NoNewPrivs:\t1",
+        "Seccomp:\t0"
+      ],
+      "zero_mapped": true
+    },
+    {
+      "pid": 1628,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "type": [
+        "--type=zygote"
+      ],
+      "preload": [
+        "LD_PRELOAD=/opt/ideck-shm-zero/libideck-shm-zero.so"
+      ],
+      "state": [
+        "State:\tS (sleeping)",
+        "NoNewPrivs:\t1",
+        "Seccomp:\t2"
+      ],
+      "zero_mapped": true
+    },
+    {
+      "pid": 1649,
+      "exe": "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper",
+      "type": [
+        "--type=zygote"
+      ],
+      "preload": [
+        "LD_PRELOAD=/opt/ideck-shm-zero/libideck-shm-zero.so"
+      ],
+      "state": [
+        "State:\tR (running)",
+        "NoNewPrivs:\t1",
+        "Seccomp:\t2"
+      ],
+      "zero_mapped": true
+    }
+  ],
+  "paths": {
+    "/run/user/1000": {
+      "uid": 1000,
+      "mode": "0o700",
+      "nlink": 5,
+      "size": 220
+    },
+    "/usr/lib/aarch64-linux-gnu/libcrypto.so.3": {
+      "uid": 0,
+      "mode": "0o644",
+      "nlink": 1,
+      "size": 6302952
+    },
+    "/home/ideck/.local/share/Steam/steamrtarm64/steamwebhelper": {
+      "uid": 1000,
+      "mode": "0o700",
+      "nlink": 1,
+      "size": 10326560,
+      "sha256": "0a849676a3ba0cc51ca23cba79be3df0546744fd92c2e2d628a1f71707a70a56"
+    }
+  },
+  "logs": [
+    {
+      "name": "ideck-shm-zero-1404.jsonl",
+      "size": 323,
+      "uid": 1000,
+      "mode": "0o600"
+    }
+  ],
+  "observer_finished": false
+}

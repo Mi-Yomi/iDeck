@@ -1,0 +1,118 @@
+{
+  "archives": [
+    {
+      "name": "SteamLinuxRuntime_4-arm64-4.0.20261007.263973.tar.xz",
+      "size": 90347988,
+      "sha256": "1ba0221e95e8b6a7722b0c5781aa83c4616dae8e9af492c6e0081169c600fcb8",
+      "members": 7212,
+      "regular_expanded_bytes": 427380612
+    },
+    {
+      "name": "GE-Proton11-9-aarch64.tar.gz",
+      "size": 647938895,
+      "sha256": "948957ea8929b8a1b444c8b9278f87b7cba0006ccfee51cd551ab69555c34265",
+      "members": 9591,
+      "regular_expanded_bytes": 2168240958
+    }
+  ],
+  "cases": [
+    {
+      "case": "wrap-version",
+      "exit": 0,
+      "seconds": 1.485,
+      "uid1000_preflights_passed": true,
+      "stdout_bytes": 5517,
+      "stderr_bytes": 0,
+      "container_marker": false,
+      "wine_version_reported": false
+    },
+    {
+      "case": "launcher-version",
+      "exit": 0,
+      "seconds": 1.353,
+      "uid1000_preflights_passed": true,
+      "stdout_bytes": 5527,
+      "stderr_bytes": 0,
+      "container_marker": false,
+      "wine_version_reported": false
+    },
+    {
+      "case": "verify-help",
+      "exit": 0,
+      "seconds": 1.157,
+      "uid1000_preflights_passed": true,
+      "stdout_bytes": 5929,
+      "stderr_bytes": 0,
+      "container_marker": false,
+      "wine_version_reported": false
+    },
+    {
+      "case": "container",
+      "exit": 0,
+      "seconds": 33.626,
+      "uid1000_preflights_passed": true,
+      "stdout_bytes": 5916,
+      "stderr_bytes": 422,
+      "container_marker": true,
+      "wine_version_reported": false
+    },
+    {
+      "case": "wine-version",
+      "exit": 0,
+      "seconds": 1.161,
+      "uid1000_preflights_passed": true,
+      "stdout_bytes": 5462,
+      "stderr_bytes": 0,
+      "container_marker": false,
+      "wine_version_reported": true
+    },
+    {
+      "case": "container-wine-version",
+      "exit": 0,
+      "seconds": 31.085,
+      "uid1000_preflights_passed": true,
+      "stdout_bytes": 5462,
+      "stderr_bytes": 422,
+      "container_marker": false,
+      "wine_version_reported": true
+    }
+  ],
+  "steam_started": false,
+  "registered_with_steam": false,
+  "game_launch_verified": false,
+  "iphone_verified": false,
+  "post": {
+    "private_namespace_holders": [
+      1382,
+      1384
+    ],
+    "steam_processes": [],
+    "audit_exit": 0,
+    "audit_stdout_bytes": 0,
+    "audit_stderr_bytes": 0,
+    "client": {
+      "steamrtarm64/steam": {
+        "sha256": "73da03ead208a74e14bee566869a4235063dc4a9e1063f29c4608de6d78bd4ea",
+        "unchanged": true
+      },
+      "steamrtarm64/steamwebhelper": {
+        "sha256": "0a849676a3ba0cc51ca23cba79be3df0546744fd92c2e2d628a1f71707a70a56",
+        "unchanged": true
+      },
+      "steamrtarm64/steamclient.so": {
+        "sha256": "276f021548f9016de834274f4042b796604530d910d114b77ee170b46e409072",
+        "unchanged": true
+      },
+      "steamrtarm64/chromehtml.so": {
+        "sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7",
+        "unchanged": true
+      }
+    },
+    "package_versions_unchanged": true,
+    "namespace_helper_unchanged": true,
+    "launcher_unchanged": true,
+    "ready_for_original_vm_stop": false
+  },
+  "kernel_oom_kill_before": 0,
+  "kernel_oom_kill_after": 0
+}

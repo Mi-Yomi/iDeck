@@ -1,0 +1,65 @@
+[
+  {
+    "case": "wrap-version",
+    "private_stdout_sha256": "493df4732cffbf874c1a8a7d3ae98e4a568958ecad389f4d95716f8f79534e2c",
+    "private_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_bytes": 0,
+    "generated_en_us_locale": false,
+    "reserved_flatpak_path_warning": false,
+    "namespace_snapshot_removed_from_public_stdout": true
+  },
+  {
+    "case": "launcher-version",
+    "private_stdout_sha256": "97ccae0d81c5b4a6a8ebe63c51b2734e56362724f06f0978e14d239b34ac474d",
+    "private_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_bytes": 0,
+    "generated_en_us_locale": false,
+    "reserved_flatpak_path_warning": false,
+    "namespace_snapshot_removed_from_public_stdout": true
+  },
+  {
+    "case": "verify-help",
+    "private_stdout_sha256": "74928cad2c8375567dfa165da73993201e1e50c262f6bc845b9d13e54e55891e",
+    "private_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_bytes": 0,
+    "generated_en_us_locale": false,
+    "reserved_flatpak_path_warning": false,
+    "namespace_snapshot_removed_from_public_stdout": true
+  },
+  {
+    "case": "container",
+    "private_stdout_sha256": "3bca669c16f4a127fc52100c8cc9f2895cb2f647589f2dab16fb282fe86c2e2e",
+    "private_stderr_sha256": "326b0e225b1205adc8581a967c09f1e7e07d661b1271f349fd0107f4ae0ed1d9",
+    "stderr_bytes": 422,
+    "generated_en_us_locale": true,
+    "reserved_flatpak_path_warning": true,
+    "namespace_snapshot_removed_from_public_stdout": true
+  },
+  {
+    "case": "wine-version",
+    "private_stdout_sha256": "ffcc289b4b704ebc32dc052441cce067101f334fdcb8996527492f6b8ff1464a",
+    "private_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_bytes": 0,
+    "generated_en_us_locale": false,
+    "reserved_flatpak_path_warning": false,
+    "namespace_snapshot_removed_from_public_stdout": true
+  },
+  {
+    "case": "container-wine-version",
+    "private_stdout_sha256": "4b9aca3ff8dc3d55f5cb26bf8e1eb604b18cb3fe35261b23d2fab4479ffbb52f",
+    "private_stderr_sha256": "c41f7049c9915d18676050b530e6292aeb6da37c48b28d957930764e0fc609c0",
+    "stderr_bytes": 422,
+    "generated_en_us_locale": true,
+    "reserved_flatpak_path_warning": true,
+    "namespace_snapshot_removed_from_public_stdout": true
+  },
+  {
+    "case": "managed-bus-repeat",
+    "private_stdout_sha256": "3cf9549781b75eb626b32d021a939f7f95c798f645c745d8b546754d31a3d48a",
+    "private_stderr_sha256": "5ae24093a1cd69012f4cc6e7677c541081ef27d059efbf6fa822c037a9000028",
+    "stderr_bytes": 422,
+    "generated_en_us_locale": true,
+    "reserved_flatpak_path_warning": true,
+    "namespace_snapshot_removed_from_public_stdout": true
+  }
+]

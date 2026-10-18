@@ -1,0 +1,11 @@
+{
+  "case": "container-wine-version-managed-bus",
+  "exit": 0,
+  "seconds": 29.901,
+  "wine_version_reported": true,
+  "private_namespace_holders": [],
+  "only_helper_change": "dbus-run-session inside existing UID1000 timeout; root and namespace guards unchanged",
+  "original_helper_sha256": "12870b42585b8297b19ec87c0a96402d704382a5f3e69ae5aa93d7610d7110ef",
+  "managed_helper_sha256": "7088f541f53d42f2c496dc50c1a10ad93de9ad51319787d6bb8aeae965ba254d",
+  "game_or_iphone_verified": false
+}

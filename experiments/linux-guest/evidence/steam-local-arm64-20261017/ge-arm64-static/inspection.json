@@ -1,0 +1,69 @@
+{
+  "project": "GloriousEggroll/proton-ge-custom",
+  "tag": "GE-Proton11-9",
+  "page": "https://github.com/GloriousEggroll/proton-ge-custom/releases/tag/GE-Proton11-9",
+  "published_at": "2026-10-14T00:14:59Z",
+  "archive": "GE-Proton11-9-aarch64.tar.gz",
+  "size": 647938895,
+  "sha256": "948957ea8929b8a1b444c8b9278f87b7cba0006ccfee51cd551ab69555c34265",
+  "sha512": "80739cb28d68d946b55f00cabf228c5fae2201d90cc4d37728cefc851c9c23ab37ca2118883b21a9f58490832bdc1b12e2a2a0995dbbf1735716ac9da0bccfee",
+  "integrity": "HTTPS, GitHub asset SHA256 and release author SHA512; no detached signature claimed",
+  "members": 9591,
+  "regular_expanded_bytes": 2168240958,
+  "elf_machine_counts": {
+    "183": 87
+  },
+  "selected_elfs": [
+    {
+      "path": "GE-Proton11-9-aarch64/files/bin-arm64/wine",
+      "size": 71232,
+      "elf_machine": 183
+    },
+    {
+      "path": "GE-Proton11-9-aarch64/files/bin-arm64/wineserver",
+      "size": 969456,
+      "elf_machine": 183
+    },
+    {
+      "path": "GE-Proton11-9-aarch64/files/lib/wine/aarch64-unix/wine",
+      "size": 71120,
+      "elf_machine": 183
+    }
+  ],
+  "metadata": {
+    "GE-Proton11-9-aarch64/files/lib/vkd3d/version": " fed0c3418f815b0bc07533f6fc6f4aa06e8712c3 vkd3d (vkd3d-2.1-113-gfed0c3418)\n",
+    "GE-Proton11-9-aarch64/files/lib/wine/d7vk/version": "d8363d1a690894dd01ca72da24d2f4c045a4f2b3\n",
+    "GE-Proton11-9-aarch64/files/lib/wine/dxvk/version": " 71ec7b5be6c517db39bcca4d38f38a63f6ddbc56 dxvk (v3.1.1-75-g71ec7b5be)\n",
+    "GE-Proton11-9-aarch64/files/lib/wine/igdext/version": " b63df694fbc47037fb41dd9a23dd538fbe058d46 dxvk-igdext (remotes/origin/HEAD)\n",
+    "GE-Proton11-9-aarch64/files/lib/wine/nvapi/version": " 0f26995d8126617d4d99f62c9571715fc7765da1 dxvk-nvapi (v0.9.2-94-g0f26995d)\n",
+    "GE-Proton11-9-aarch64/files/lib/wine/vkd3d-proton/version": " 2230755878b01993b4b82d0ac0c0624f3ab4d333 vkd3d-proton (vkd3d-1.1-5654-g223075587)\n",
+    "GE-Proton11-9-aarch64/compatibilitytool.vdf": "\"compatibilitytools\"\n{\n  \"compat_tools\"\n  {\n    \"GE-Proton11-9-aarch64\" // Internal name of this tool\n    {\n      // Can register this tool with Steam in two ways:\n      //\n      // - The tool can be placed as a subdirectory in compatibilitytools.d, in which case this\n      //   should be '.'\n      //\n      // - This manifest can be placed directly in compatibilitytools.d, in which case this should\n      //   be the relative or absolute path to the tool's dist directory.\n      \"install_path\" \".\"\n\n      // For this template, we're going to substitute the display_name key in here, e.g.:\n      \"display_name\" \"GE-Proton11-9-aarch64\"\n\n      \"from_oslist\"  \"windows\"\n      \"to_oslist\"    \"linux\"\n    }\n  }\n}\n",
+    "GE-Proton11-9-aarch64/toolmanifest.vdf": "\"manifest\"\n{\n  \"version\" \"2\"\n  \"commandline\" \"/proton %verb%\"\n  \"require_tool_appid\" \"4185400\"\n  \"use_sessions\" \"1\"\n  \"compatmanager_layer_name\" \"proton\"\n}\n",
+    "GE-Proton11-9-aarch64/version": "1791937263 GE-Proton11-9\n"
+  },
+  "extracted": false,
+  "installed": false,
+  "executed": false,
+  "game_or_iphone_verified": false,
+  "checksum_parser_selfcheck": "pass",
+  "bundled_translation_modules": [
+    {
+      "path": "GE-Proton11-9-aarch64/files/lib/wine/aarch64-unix/libarm64ecfex.so",
+      "size": 71760
+    },
+    {
+      "path": "GE-Proton11-9-aarch64/files/lib/wine/aarch64-unix/libwow64fex.so",
+      "size": 71760
+    },
+    {
+      "path": "GE-Proton11-9-aarch64/files/lib/wine/aarch64-windows/libarm64ecfex.dll",
+      "size": 5656576
+    },
+    {
+      "path": "GE-Proton11-9-aarch64/files/lib/wine/aarch64-windows/libwow64fex.dll",
+      "size": 5087232
+    }
+  ],
+  "bundled_translation_execution_tested": false,
+  "inspected_proton_source_sha256": "907e63fe43e8f10b2c35bce4b3c6f382f6b72254891d97ae29c52ed58508a59f"
+}

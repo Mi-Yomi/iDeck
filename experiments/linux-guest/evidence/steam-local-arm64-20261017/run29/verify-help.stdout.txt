@@ -1,0 +1,15 @@
+Usage:
+  pv-verify [OPTION…] DIRECTORY
+DIRECTORY is SteamLinuxRuntime_sniper or similar.
+
+
+Help Options:
+  -h, --help              Show help options
+
+Application Options:
+  --minimized-runtime     Verify a minimized runtime.
+  --mtree                 Verify a manifest other than the default filename.
+  --quiet                 Be less verbose.
+  -v, --verbose           Be more verbose. If given twice, log debug messages too.
+  --version               Print version number and exit
+

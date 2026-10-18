@@ -7,7 +7,9 @@ from pathlib import Path
 import platform
 
 
-def elf_machine(path):
+def elf_machine(path, root=None):
+    if root is not None and not path.resolve().is_relative_to(root.resolve()):
+        return None
     try:
         with path.open('rb') as source:
             header = source.read(20)
@@ -28,15 +30,17 @@ def inventory(steam, system=Path('/')):
                 if candidate.is_dir() and (candidate / 'proton').is_file():
                     tools.append({
                         'name': candidate.name,
-                        'wine_elf_machine': elf_machine(candidate / 'files/bin/wine'),
-                        'wine64_elf_machine': elf_machine(candidate / 'files/bin/wine64'),
+                        'wine_elf_machine': elf_machine(candidate / 'files/bin/wine', steam),
+                        'wine64_elf_machine': elf_machine(candidate / 'files/bin/wine64', steam),
+                        'wine_arm64_elf_machine': elf_machine(candidate / 'files/bin-arm64/wine', steam),
+                        'wineserver_arm64_elf_machine': elf_machine(candidate / 'files/bin-arm64/wineserver', steam),
                     })
     fex = {}
     for name in ('FEXInterpreter', 'FEXLoader'):
         for prefix in ('usr/bin', 'usr/local/bin'):
             candidate = system / prefix / name
             if candidate.is_file():
-                fex[prefix + '/' + name] = elf_machine(candidate)
+                fex[prefix + '/' + name] = elf_machine(candidate, system)
     icds = []
     for prefix in ('usr/share/vulkan/icd.d', 'etc/vulkan/icd.d'):
         directory = system / prefix
@@ -57,13 +61,13 @@ def inventory(steam, system=Path('/')):
                 launchers.append({
                     'origin': 'system' if base == system else 'steam',
                     'path': prefix + '/steam-runtime-launcher-service',
-                    'elf_machine': elf_machine(candidate),
+                    'elf_machine': elf_machine(candidate, base),
                     'executable': os.access(candidate, os.X_OK),
                 })
     fs = os.statvfs(steam)
     return {
         'schema': 1, 'host_machine': platform.machine(),
-        'native_steam_elf_machine': elf_machine(steam / 'steamrtarm64/steam'),
+        'native_steam_elf_machine': elf_machine(steam / 'steamrtarm64/steam', steam),
         'steam_filesystem_available_bytes': fs.f_bavail * fs.f_frsize,
         'proton_candidates': tools, 'system_fex_candidates': fex,
         'runtime_launcher_candidates': launchers,

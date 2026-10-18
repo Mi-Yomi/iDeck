@@ -1,0 +1,19 @@
+{
+  "suite": "test_steam_game_preflight",
+  "platform": "Linux/WSL, real statvfs and symlinks",
+  "tests": 4,
+  "failures": 0,
+  "errors": 0,
+  "result": "pass",
+  "seconds": 0.906,
+  "cases": [
+    "old Proton layout/account exclusion",
+    "ARM64 bin-arm64 layout and escaped symlink refusal",
+    "non-ELF/missing binary",
+    "launcher symlink architecture and escape refusal"
+  ],
+  "source_sha256": "24ce09cf97f5764bb74ebb4a600232a842ee4aa2b64967a9924ce39f5a240eec",
+  "test_source_sha256": "2beb9aa56820e4daf129db257191ecb8cba79bf0e123ba2e9139075797da746b",
+  "actual_game_execution": false,
+  "windows_host_execution_supported": false
+}

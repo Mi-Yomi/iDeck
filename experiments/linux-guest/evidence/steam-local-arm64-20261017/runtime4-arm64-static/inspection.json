@@ -1,0 +1,86 @@
+{
+  "official_base": "https://repo.steampowered.com/steamrt4/images/4.0.20261007.263973/",
+  "archive": "SteamLinuxRuntime_4-arm64.tar.xz",
+  "size": 90347988,
+  "sha256": "1ba0221e95e8b6a7722b0c5781aa83c4616dae8e9af492c6e0081169c600fcb8",
+  "integrity": "HTTPS plus matching same-origin SHA256SUMS; no detached signature claimed",
+  "members": 7212,
+  "regular_expanded_bytes": 427380612,
+  "links": 3,
+  "nonlocal_link_count": 3,
+  "nonlocal_link_examples": [
+    {
+      "name": "SteamLinuxRuntime_4-arm64/pressure-vessel/bin/srt-logger",
+      "link": "../libexec/steam-runtime-tools-0/srt-logger"
+    },
+    {
+      "name": "SteamLinuxRuntime_4-arm64/pressure-vessel/bin/srt-logger-0.bash",
+      "link": "../libexec/steam-runtime-tools-0/logger-0.bash"
+    },
+    {
+      "name": "SteamLinuxRuntime_4-arm64/pressure-vessel/bin/steam-runtime-launcher-service",
+      "link": "../libexec/steam-runtime-tools-0/aarch64-linux-gnu-srt-launcher-service"
+    }
+  ],
+  "elf_machine_counts": {
+    "183": 1105
+  },
+  "selected_elfs": [
+    {
+      "path": "SteamLinuxRuntime_4-arm64/pressure-vessel/bin/pressure-vessel-wrap",
+      "size": 909104,
+      "elf_machine": 183
+    },
+    {
+      "path": "SteamLinuxRuntime_4-arm64/pressure-vessel/bin/pv-verify",
+      "size": 218376,
+      "elf_machine": 183
+    },
+    {
+      "path": "SteamLinuxRuntime_4-arm64/pressure-vessel/bin/steam-runtime-launch-client",
+      "size": 164720,
+      "elf_machine": 183
+    },
+    {
+      "path": "SteamLinuxRuntime_4-arm64/pressure-vessel/libexec/steam-runtime-tools-0/pv-adverb",
+      "size": 643088,
+      "elf_machine": 183
+    },
+    {
+      "path": "SteamLinuxRuntime_4-arm64/pressure-vessel/libexec/steam-runtime-tools-0/srt-bwrap",
+      "size": 77024,
+      "elf_machine": 183
+    },
+    {
+      "path": "SteamLinuxRuntime_4-arm64/steamrt4_platform_4.0.20261007.263973/files/bin/steam-runtime-launch-client",
+      "size": 201664,
+      "elf_machine": 183
+    },
+    {
+      "path": "SteamLinuxRuntime_4-arm64/steamrt4_platform_4.0.20261007.263973/files/libexec/steam-runtime-tools-0/srt-bwrap",
+      "size": 134456,
+      "elf_machine": 183
+    }
+  ],
+  "selected_metadata": [
+    {
+      "path": "SteamLinuxRuntime_4-arm64/VERSIONS.txt",
+      "size": 281,
+      "regular": true
+    },
+    {
+      "path": "SteamLinuxRuntime_4-arm64/_v2-entry-point",
+      "size": 9257,
+      "regular": true
+    },
+    {
+      "path": "SteamLinuxRuntime_4-arm64/toolmanifest.vdf",
+      "size": 227,
+      "regular": true
+    }
+  ],
+  "archive_extracted": false,
+  "installed": false,
+  "executed": false,
+  "game_or_iphone_verified": false
+}

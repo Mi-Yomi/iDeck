@@ -273,6 +273,16 @@
       "sha256": "72d46814e27f7cfaea7e593393c4862a2872f7f5c3f9f410b8b9f1ef02c1306c"
     },
     {
+      "file": "game-preflight-arm64-layout-tests.json",
+      "size": 664,
+      "sha256": "0b457188840af378b311d2291cb6fd63af8956834d7dbe2a947d44c9614c1202"
+    },
+    {
+      "file": "ge-arm64-static/inspection.json",
+      "size": 3849,
+      "sha256": "36bfe417b7ef0cd6d08860b14b862368f3a19b4bc4a80ad6a387f018afb6afaf"
+    },
+    {
       "file": "host-resource-snapshot.json",
       "size": 356,
       "sha256": "d6cd3a3618b2baf56dfdd131c3a8d045a6e615cad4df48ab622e16f4fd6857bf"
@@ -3178,6 +3188,186 @@
       "sha256": "251e878a4b9b49dcb20fd3d7d9dedb6af51e179a246a13af82a39ead0f5a6e82"
     },
     {
+      "file": "run28/incomplete.json",
+      "size": 3120,
+      "sha256": "c9e2c51d94a39c46229fbd3d0f80e94e7f1e29b5df2c4f0cc5000bc29bc783f8"
+    },
+    {
+      "file": "run29/container-wine-version.stdout.txt",
+      "size": 20,
+      "sha256": "dac1eb2fefc5efc2ac89cfdcac73e38438b684c6279f0f4a1e1b8f554735d2d8"
+    },
+    {
+      "file": "run29/container.stdout.txt",
+      "size": 474,
+      "sha256": "257e906ea9a016a9b7bf7200a10cca91504ed11f0c0ec6a2f9e42c5972c97ef9"
+    },
+    {
+      "file": "run29/final-postcheck.json",
+      "size": 814,
+      "sha256": "d11aeaa2c765a924b4d1070190242228874c86e72c7b60760c171ee8bacbac05"
+    },
+    {
+      "file": "run29/input-mount29-cleanup.json",
+      "size": 385,
+      "sha256": "239cc236b1cf0f34e94ee2b94f3e4ee85ccdb2f2c2702d2707a9bed5c12374db"
+    },
+    {
+      "file": "run29/inventory.json",
+      "size": 731,
+      "sha256": "f55e638a24a26370260a4d96f76688e6c7e4252d3f53b88fcda0f88620804fe7"
+    },
+    {
+      "file": "run29/launcher-version.stdout.txt",
+      "size": 85,
+      "sha256": "579ecd97b91e6f9a6d10e3036f375f10d41f31d9cf568397d0243bee96bf85e4"
+    },
+    {
+      "file": "run29/managed-bus-repeat.json",
+      "size": 493,
+      "sha256": "e84ab46fd7cc6dfa7c750074cb214b629bb842fe340c88daaf703dd545a37cec"
+    },
+    {
+      "file": "run29/managed-bus-repeat.stdout.txt",
+      "size": 20,
+      "sha256": "dac1eb2fefc5efc2ac89cfdcac73e38438b684c6279f0f4a1e1b8f554735d2d8"
+    },
+    {
+      "file": "run29/offline-fsck.json",
+      "size": 1416,
+      "sha256": "6068fc34ec700f6ca0fe1e49240280af9567b0cb40c799cf7b7e6f6720fd8285"
+    },
+    {
+      "file": "run29/offline-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "file": "run29/offline-fsck.stdout.log",
+      "size": 374,
+      "sha256": "ca353e2304633c244ff05688201387414b84d03eea3766536a236ee97fe5eac7"
+    },
+    {
+      "file": "run29/outcome.json",
+      "size": 1662,
+      "sha256": "14d8fe49799ac458a31ca5e9afeea0535b569c703bd86deab451ec66626da782"
+    },
+    {
+      "file": "run29/output-review.json",
+      "size": 2770,
+      "sha256": "a7af2cd8272184a935166a8bba42aa300ae69e747023a5bcef34f47affc35f23"
+    },
+    {
+      "file": "run29/post-run-fsck/offline-fsck.json",
+      "size": 1426,
+      "sha256": "65f5f8ce878470b57e9a377c037feed831dd349acbd5b9677f03fe601e93ed56"
+    },
+    {
+      "file": "run29/post-run-fsck/offline-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "file": "run29/post-run-fsck/offline-fsck.stdout.log",
+      "size": 384,
+      "sha256": "17454f75f133b33e514900ddd00c1c53f5513c7fe573f7ff6efedb7d43a0441f"
+    },
+    {
+      "file": "run29/post-run-fsck/source-preservation.json",
+      "size": 1818,
+      "sha256": "130f13ef06d415d724355d1c2c8f05f053eb6f5971eb942933e99d3c8b2b81ca"
+    },
+    {
+      "file": "run29/probe29-boundary-selfcheck.json",
+      "size": 136,
+      "sha256": "7812669ed0179293e50408a7d665478ce5cdc687680ac05da3e299e417e15e3c"
+    },
+    {
+      "file": "run29/profile29.json",
+      "size": 447,
+      "sha256": "4c5eac1381bddcd3b10224af8b0c31b14427241f503d2dab9be67e4e78db043a"
+    },
+    {
+      "file": "run29/residuals-stopped.json",
+      "size": 301,
+      "sha256": "ace64e3ca574b2f0a8ef8e928370841057dce60752188e0539f30109954fcf83"
+    },
+    {
+      "file": "run29/result.json",
+      "size": 11959,
+      "sha256": "39b4fd2706e910a098262fd076bb5232f307066c04197e44c74389d016a1a61c"
+    },
+    {
+      "file": "run29/scripts/001-persistence.sh",
+      "size": 1611,
+      "sha256": "da5fe6b1f510082890c61f0f0f21362165dc6eb5d4d1c16298a506dc4a5216cf"
+    },
+    {
+      "file": "run29/scripts/002-fresh-zero-and-ipc-tests.sh",
+      "size": 2081,
+      "sha256": "09dd07303480b27f034f6fdc364c94938eba7813017b67a09983d3766610a8a7"
+    },
+    {
+      "file": "run29/scripts/003-native-tools-probe.sh",
+      "size": 11636,
+      "sha256": "fe092b4aa4fc7b80125f46c2971e560cde6838c5b34eb007e7c86109dcce1a27"
+    },
+    {
+      "file": "run29/scripts/004-postcheck-and-export.sh",
+      "size": 6501,
+      "sha256": "8bc9ed5ee4cffc29ba93e48299fd0c931b54ab65eecbef8a2453552e710c3fe5"
+    },
+    {
+      "file": "run29/scripts/005-inspect-residuals.sh",
+      "size": 1287,
+      "sha256": "9be6e8b60f7840201593146e5e669cc1bea475b0b3a19262dd4b61fb9ac887f1"
+    },
+    {
+      "file": "run29/scripts/006-stop-owned-test-bus.sh",
+      "size": 2346,
+      "sha256": "fb30081c1c34b9a5d730cdfe68cce8543b194c2b6ae8da0ee2e50da15a138167"
+    },
+    {
+      "file": "run29/scripts/007-final-postcheck-and-export.sh",
+      "size": 6501,
+      "sha256": "8bc9ed5ee4cffc29ba93e48299fd0c931b54ab65eecbef8a2453552e710c3fe5"
+    },
+    {
+      "file": "run29/scripts/008-idempotent-owned-bus-stop.sh",
+      "size": 2642,
+      "sha256": "beb91a8d590cf0e9732aa4c2ac255813b45e10f8e2aebd26b45b89b51bbffeab"
+    },
+    {
+      "file": "run29/scripts/009-managed-bus-repeat.sh",
+      "size": 2471,
+      "sha256": "cf961d01d3314e34cdf14c38ed002de155ae30ace44841f37e7e6927fbb74e49"
+    },
+    {
+      "file": "run29/scripts/010-final-managed-postcheck.sh",
+      "size": 6501,
+      "sha256": "8bc9ed5ee4cffc29ba93e48299fd0c931b54ab65eecbef8a2453552e710c3fe5"
+    },
+    {
+      "file": "run29/tools-probe.json",
+      "size": 3205,
+      "sha256": "589355355e01bbfd5175eefd0da180866784f1ff0fcba15b58b4a7ce9e2647a3"
+    },
+    {
+      "file": "run29/verify-help.stdout.txt",
+      "size": 487,
+      "sha256": "3d16d7ec09fd64cfb2f5d9064c31fa6083c15f72d1993afab177a9bcc388e95e"
+    },
+    {
+      "file": "run29/wine-version.stdout.txt",
+      "size": 20,
+      "sha256": "dac1eb2fefc5efc2ac89cfdcac73e38438b684c6279f0f4a1e1b8f554735d2d8"
+    },
+    {
+      "file": "run29/wrap-version.stdout.txt",
+      "size": 75,
+      "sha256": "fb949b37a7a4f1915106a3ecff81c5ff326516111b9948be3463b7ebe68b795e"
+    },
+    {
       "file": "run9/control.log",
       "size": 108,
       "sha256": "0b8b6031582819a23d35f6f6bcbaff7bf9dffec4ac7e4a9967d4a28ba1d7fd51"
@@ -3236,6 +3426,11 @@
       "file": "runtime-static/steamwebhelper.txt",
       "size": 17988,
       "sha256": "f0bca722ad780c166cbedf0c497941ec1ab023a57e825018ec9995ae75259078"
+    },
+    {
+      "file": "runtime4-arm64-static/inspection.json",
+      "size": 2711,
+      "sha256": "7c028961a4f3503cffbda5abd2eb8a937bbceab6e61e143462cc3cbac5239482"
     },
     {
       "file": "shm-recovery/orphan-manifest-v1.json",

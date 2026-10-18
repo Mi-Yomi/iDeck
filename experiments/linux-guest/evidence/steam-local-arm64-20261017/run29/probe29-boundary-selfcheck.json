@@ -1,0 +1,6 @@
+{
+  "positive_cases": 2,
+  "rejected_cases": 6,
+  "result": "pass",
+  "scope": "actual probe function on Linux, no archives executed"
+}

@@ -1,0 +1,15 @@
+{
+  "processes": [
+    {
+      "pid": 1382,
+      "already_exited": true
+    },
+    {
+      "pid": 1384,
+      "already_exited": true
+    }
+  ],
+  "signal_scope": "only the two pinned UID1000 D-Bus processes from namespace-container",
+  "forced_signal_used": false,
+  "time_ns": 1792331703125947334
+}

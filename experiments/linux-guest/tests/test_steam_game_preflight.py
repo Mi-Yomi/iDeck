@@ -38,6 +38,35 @@ class GamePreflightTests(unittest.TestCase):
             path.write_text('#!/bin/sh\nexit 0\n')
             self.assertIsNone(probe.elf_machine(path))
 
+    def test_arm64_proton_layout_is_detected_without_running_it(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            steam = root / 'Steam'
+            proton = steam / 'compatibilitytools.d/ARM64 fixture'
+            binary = proton / 'files/bin-arm64'
+            binary.mkdir(parents=True)
+            (proton / 'proton').write_text('must not execute')
+            elf = bytearray(20)
+            elf[:6] = b'\x7fELF\x02\x01'
+            elf[18:20] = (183).to_bytes(2, 'little')
+            for name in ('wine', 'wineserver'):
+                (binary / name).write_bytes(elf)
+            result = probe.inventory(steam, root)
+            tool = result['proton_candidates'][0]
+            self.assertIsNone(tool['wine_elf_machine'])
+            self.assertIsNone(tool['wine64_elf_machine'])
+            self.assertEqual(tool['wine_arm64_elf_machine'], 183)
+            self.assertEqual(tool['wineserver_arm64_elf_machine'], 183)
+            self.assertFalse(result['execution_tested'])
+            self.assertFalse(result['game_launch_verified'])
+            outside = root / 'private-file'
+            outside.write_bytes(elf)
+            (binary / 'wine').unlink()
+            (binary / 'wine').symlink_to(outside)
+            confined = probe.inventory(steam, root)['proton_candidates'][0]
+            self.assertIsNone(confined['wine_arm64_elf_machine'])
+            self.assertEqual(confined['wineserver_arm64_elf_machine'], 183)
+
     def test_launcher_symlink_keeps_architecture_and_does_not_follow_escape(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

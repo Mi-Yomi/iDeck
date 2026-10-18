@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "host_machine": "aarch64",
+  "native_steam_elf_machine": null,
+  "steam_filesystem_available_bytes": 4464578560,
+  "proton_candidates": [
+    {
+      "name": "GE-Proton11-9-aarch64",
+      "wine_elf_machine": 183,
+      "wine64_elf_machine": null,
+      "wine_arm64_elf_machine": 183,
+      "wineserver_arm64_elf_machine": 183
+    }
+  ],
+  "system_fex_candidates": {},
+  "runtime_launcher_candidates": [],
+  "vulkan_icd_manifests": [],
+  "render_nodes": [
+    "renderD128"
+  ],
+  "scope": "default Steam library and local compatibilitytools.d; external libraries not inspected",
+  "execution_tested": false,
+  "accelerated_graphics_verified": false,
+  "game_launch_verified": false,
+  "iphone_verified": false
+}

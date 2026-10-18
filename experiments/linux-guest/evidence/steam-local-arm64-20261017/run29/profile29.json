@@ -1,0 +1,14 @@
+{
+  "run": 29,
+  "source": "clean run27, NEVER run28",
+  "purpose": "isolated native ARM64 game-container and Wine version probes; no Steam or game launch",
+  "memory_mib": 4096,
+  "qemu_hard_seconds": 2100,
+  "backstop_seconds": 1650,
+  "automatic_stop_after_postcheck": true,
+  "namespace_source_unchanged": true,
+  "sandbox_bypass": false,
+  "registration_with_steam": false,
+  "iphone_verified": false,
+  "valve_client_bytes_changed": false
+}

@@ -1,0 +1,18 @@
+IDECK_RUNTIME4_CONTAINER_OK
+1000
+64
+aarch64
+PRETTY_NAME="Steam Runtime 4"
+NAME="Steam Runtime"
+VERSION_ID="4"
+VERSION="4"
+VERSION_CODENAME=steamrt4
+DEBIAN_VERSION_FULL=13.7
+ID=steamrt
+ID_LIKE=debian
+HOME_URL="https://store.steampowered.com/"
+SUPPORT_URL="https://help.steampowered.com/"
+BUG_REPORT_URL="https://github.com/ValveSoftware/steam-runtime/issues"
+BUILD_ID="4.0.20261007.263973"
+VARIANT=Platform
+VARIANT_ID="com.valvesoftware.steamruntime.platform-arm64-steamrt4"

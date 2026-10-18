@@ -68,6 +68,47 @@ differs from the client's bundled x86 runtime3c.0.20261007.263964. Compatibility
 is unverified. This client runtime is not a complete tested Proton/game stack.
 The archive remains outside Git; sanitized receipt: `evidence/steam-local-arm64-20261017/runtime-arm64-static`.
 
+The separate official ARM64 game container was also cached from
+[Valve steamrt4 build4.0.20261007.263973](https://repo.steampowered.com/steamrt4/images/4.0.20261007.263973/).
+`SteamLinuxRuntime_4-arm64.tar.xz` is 90,347,988 bytes, SHA256
+`1ba0221e95e8b6a7722b0c5781aa83c4616dae8e9af492c6e0081169c600fcb8`,
+matching the same-origin SHA256SUMS. Static inspection found 1,105 ARM64 ELF
+files, including pressure-vessel, its launcher and bwrap. The three relative
+symlinks contain `..` components; this inspection did not extract them or
+establish extraction safety. The archive was not installed or executed.
+This is a game container, not Proton or proof of game execution. Valve's
+[ARM64 Proton manifest](https://github.com/ValveSoftware/Proton/blob/proton_11.0/toolmanifest_arm64.vdf)
+requires runtime app4185400; keep that requirement and the sandbox intact.
+
+The separate [GE-Proton11-9 ARM64 release](https://github.com/GloriousEggroll/proton-ge-custom/releases/tag/GE-Proton11-9)
+was cached with matching GitHub asset SHA256 and the author's SHA512. The
+647,938,895-byte archive has SHA256
+`948957ea8929b8a1b444c8b9278f87b7cba0006ccfee51cd551ab69555c34265`.
+Static inspection found native ARM64 Wine and wineserver in `files/bin-arm64`,
+87 ARM64 ELF files overall, and the unmodified runtime app4185400 requirement.
+This third-party Proton build is separate from Valve's container and from the
+accepted app payload. Host caching does not establish installation or execution;
+see `evidence/steam-local-arm64-20261017/ge-arm64-static/inspection.json`.
+The read-only preflight now reports both the existing `files/bin` layout and
+`files/bin-arm64`, refusing binary symlinks that resolve outside the inspected
+root. Four Linux tests cover both layouts, symlinks and account-data exclusion.
+
+A separate run29 installed these exact archives into a new private guest prefix
+and executed the native tools, a UID1000 ARM64 Runtime4 shell and Wine's version
+command both directly and inside that container. All six subprocess cases
+passed. The initial namespace audit caught two D-Bus processes left by
+autolaunch; the managed `dbus-run-session` repeat passed with no new holders.
+Final client/package checks, clean Stop and full offline-copy fsck passed with
+the source unchanged. These are tool-execution results, not game, Steam UI or
+iPhone acceptance: [report](../../GAME-RUNTIME-RESULT-20261018.md),
+`evidence/steam-local-arm64-20261017/run29/outcome.json`.
+The static-inspection receipts describe the earlier host-cache snapshot.
+The isolated inventory also resolves `files/bin/wine` through GE's existing
+ARM64 alias, so adding the explicit `bin-arm64` fields is not a demonstrated
+fix for the prior Steam UI stall. System FEX executables remain absent, while
+this GE archive contains `libarm64ecfex`/`libwow64fex`; presence of those modules
+alone does not prove x86 game execution.
+
 The host runner accepts an explicit `--experimental-memory-mib 2560` control
 after measured guest memory pressure; its default remains the pinned 1536 MiB.
 Receipts distinguish the profile budget from the effective QEMU budget. Run20
@@ -168,6 +209,8 @@ The user authorizes a larger host RAM budget and plans to use GetMoreRAM on
 iPhone when needed. The host runner accepts an explicit 4096 MiB comparison;
 the pinned default remains 1536 MiB. This also increases the guest's default
 tmpfs capacity, so it does not independently isolate RAM from shared memory.
+The owner reports iPhone 16 Pro Max with iOS 27. This is device information,
+not a physical-device test or verified GetMoreRAM compatibility.
 
 [GetMoreRAM](https://github.com/hugeBlack/GetMoreRam) enables Increased Memory
 Limit for the selected App ID and requires reinstalling the signed application.

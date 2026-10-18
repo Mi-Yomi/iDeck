@@ -1,0 +1,122 @@
+{
+  "run": 28,
+  "status": "incomplete_not_accepted",
+  "source_run": 27,
+  "source_copy_preserved": true,
+  "source_sha256": "d11d18fcb7372854a5e00ed3a0b8d50951c15e62f214de31d0612a9d43d0f5b4",
+  "memory_mib": 4096,
+  "completed_command_count": 13,
+  "preboot_fsck_passed": true,
+  "clean_stop_evidence": false,
+  "needs_recovery_marker": true,
+  "post_stop_fsck_performed": false,
+  "reused_as_source": false,
+  "last_observed_seconds": 320.615,
+  "last_observed_oom_kill": 0,
+  "last_observed_launcher_exit": null,
+  "early_sample_count": 83,
+  "early_min_available_kib": 2869744,
+  "last_observed_processes": [
+    {
+      "pid": 1213,
+      "exe": "steam",
+      "state": "S (sleeping)",
+      "rss": "242952 kB",
+      "threads": "35",
+      "seccomp": "0",
+      "tracer": "0",
+      "cpus": "0-3"
+    },
+    {
+      "pid": 1273,
+      "exe": "steamwebhelper",
+      "state": "R (running)",
+      "rss": "208188 kB",
+      "threads": "29",
+      "seccomp": "0",
+      "tracer": "0",
+      "cpus": "0-3"
+    },
+    {
+      "pid": 1299,
+      "exe": "steamwebhelper",
+      "state": "S (sleeping)",
+      "rss": "68716 kB",
+      "threads": "1",
+      "seccomp": "0",
+      "tracer": "0",
+      "cpus": "0-3"
+    },
+    {
+      "pid": 1306,
+      "exe": "steamwebhelper",
+      "state": "S (sleeping)",
+      "rss": "71208 kB",
+      "threads": "1",
+      "seccomp": "0",
+      "tracer": "0",
+      "cpus": "0-3"
+    },
+    {
+      "pid": 1326,
+      "exe": "steamwebhelper",
+      "state": "S (sleeping)",
+      "rss": "21140 kB",
+      "threads": "1",
+      "seccomp": "0",
+      "tracer": "0",
+      "cpus": "0-3"
+    },
+    {
+      "pid": 1383,
+      "exe": "steamwebhelper",
+      "state": "S (sleeping)",
+      "rss": "70644 kB",
+      "threads": "12",
+      "seccomp": "0",
+      "tracer": "0",
+      "cpus": "0-3"
+    },
+    {
+      "pid": 1387,
+      "exe": "steamwebhelper",
+      "state": "S (sleeping)",
+      "rss": "89744 kB",
+      "threads": "8",
+      "seccomp": "0",
+      "tracer": "0",
+      "cpus": "0-3"
+    },
+    {
+      "pid": 1480,
+      "exe": "steamwebhelper",
+      "state": "S (sleeping)",
+      "rss": "45804 kB",
+      "threads": "7",
+      "seccomp": "2",
+      "tracer": "0",
+      "cpus": "0-3"
+    },
+    {
+      "pid": 1493,
+      "exe": "steamwebhelper",
+      "state": "R (running)",
+      "rss": "138264 kB",
+      "threads": "10",
+      "seccomp": "2",
+      "tracer": "0",
+      "cpus": "0-3"
+    }
+  ],
+  "stop_cause": "unknown host/control interruption; no Steam crash or memory causation inferred",
+  "current_state_observation": "Windows owned controls absent; WSL distro stopped at 13:27 UTC",
+  "ui_acceptance": false,
+  "games_verified": false,
+  "iphone_verified": false,
+  "reviewed_frame": {
+    "file": "013-startup-diagnostic.png",
+    "sha256": "098807b94ca397e28e4a5c5f0ffb367c75c96dc9b4e87289a3cf4692933c78a9",
+    "description": "original desktop; no painted Steam/Big Picture main window"
+  },
+  "private_artifacts_published": false
+}

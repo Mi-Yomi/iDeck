@@ -1,0 +1,32 @@
+{
+  "run": 29,
+  "scope": "native ARM64 tool/container versions on private QEMU; no Steam/game/iPhone execution",
+  "memory_mib": 4096,
+  "original_cases_passed": 6,
+  "managed_bus_repeat_passed": true,
+  "container_identity": "UID1000 / 64-bit / aarch64 / Steam Runtime 4 build4.0.20261007.263973",
+  "wine_version": "wine-11.0 (Staging)",
+  "real_steam_registration_changed": false,
+  "kernel_oom_kill_count": 0,
+  "client_elf_hashes_unchanged": true,
+  "package_versions_unchanged": true,
+  "default_launcher_and_namespace_helper_unchanged": true,
+  "final_new_namespace_holders": 0,
+  "native_runtime_tools_executed": true,
+  "games_verified": false,
+  "steam_ui_repeated": false,
+  "accelerated_gpu_verified": false,
+  "iphone_verified": false,
+  "inventory_scope": "isolated /opt/ideck-tools-probe29/tool-install; real Steam untouched",
+  "legacy_bin_alias_also_resolves_to_arm64": true,
+  "bin_arm64_diagnostic_change_is_not_proven_steam_stall_cause": true,
+  "known_harness_failures": [
+    "003: all six subprocesses passed, final namespace guard correctly refused two autolaunched test D-Bus holders",
+    "006: first owned pidfd SIGTERM closed its peer before second identity lookup; FileNotFound kept as failure",
+    "008: already-exited path replay passed; 009 managed dbus-run-session repeat left no holders; 010 independent final audit passed"
+  ],
+  "vm_stop": "clean original Stop, QEMU0, no recovery marker",
+  "post_fsck": "full offline COPY check: five passes and summary, no repair, source unchanged",
+  "clean_source_sha256": "c450673a940e0cefb1b27dc5a21697c7335e6fa8663e51c356da8d5a5e4dc03e",
+  "raw_private_artifacts_published": false
+}

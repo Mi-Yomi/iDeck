@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "ready_lock": {
+    "size": 4667,
+    "sha256": "a57a9e00d630a2b173832e08171f701e9321b74b155909c1eab5dc80a440613c"
+  },
+  "overlay_inputs": "PASS",
+  "source_input_bindings": "PASS",
+  "husk_source_files_verified": 81,
+  "husk_patch_count": 5,
+  "exact_source_slice_overlay": "PASS",
+  "standalone_xcode_script_stage": "PASS",
+  "incremental_stage": "PASS",
+  "steam_package_resource_verifier": "PASS",
+  "staged_expanded_gzip": {
+    "size": 12884901888,
+    "sha256": "ee04c5c66adf4ac1f56b9b36145c9b0ca164d3d09e59ffaf06805fa6815a0626"
+  },
+  "python_ast_files": 125,
+  "workflow_group": "ideck-debian-payload",
+  "token_fallback": "IDECK_DEBIAN_PAYLOAD_TOKEN for exact same-repo asset API; redirect Authorization stripped",
+  "secret_changes": false,
+  "codemagic_runtime_secret_access": "NOT RUN",
+  "apple_compile_link_package": "NOT RUN",
+  "ipa_created": false,
+  "device_gate": "NOT RUN"
+}

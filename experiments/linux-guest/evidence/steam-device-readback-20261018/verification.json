@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "source_commit": "eb743c38d8e03af0189aaebe8db2b69d3ff76760",
+  "git_blobs_verified": 1816,
+  "source_inputs_verified": 23,
+  "archive": {
+    "size": 303667200,
+    "sha256": "f74e22f44422d5dded7dd23d2a8e9a22a98e2df13edd4620187943529a29c62c"
+  },
+  "files": {
+    "LICENSES-steam.txt": {
+      "size": 4678,
+      "sha256": "c61bce80fd2709086999a3a7d74e42c0a4e0f75194400f7a56fa7ad420de38f5"
+    },
+    "initramfs-steam.gz": {
+      "size": 11699129,
+      "sha256": "51f8ea9d336b2cd5ee946afbdbcf0f68d517e9bbdcd9a0d1cac047a068368cc4"
+    },
+    "steam-profile.json": {
+      "size": 860,
+      "sha256": "8c9d03c869f92ba87a43aecb74f4f8ac75bebbd315c16a921bcf4d4c14c13cb4"
+    },
+    "steam-rootfs-v1.raw.gz": {
+      "size": 281604093,
+      "sha256": "0c078a60670825a11e6676adf081a7d9dc9defc48268d1fed1840dfd7ef7228e"
+    },
+    "vmlinuz-virt": {
+      "size": 10351104,
+      "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+    }
+  },
+  "raw": {
+    "size": 12884901888,
+    "sha256": "ee04c5c66adf4ac1f56b9b36145c9b0ca164d3d09e59ffaf06805fa6815a0626"
+  },
+  "ext4_header": {
+    "uuid": "c6a66b17-1b3e-4fe9-a07b-70c185fb2718",
+    "block_size": 4096,
+    "features": {
+      "compat": 44,
+      "incompat": 194,
+      "ro_compat": 1091
+    },
+    "inode_size": 256,
+    "descriptor_size": 64
+  },
+  "safe_flat_regular_archive": "PASS",
+  "restore": "PASS",
+  "base_initramfs_prefix": "PASS",
+  "exact_reconstructed_bootstrap": "PASS",
+  "appended_cpio_names": [
+    "ideck-steam-init",
+    "ideck-steam/files/device-action.py",
+    "ideck-steam/files/ideck-steam",
+    "ideck-steam/files/install-cached.py",
+    "ideck-steam/files/install-official.py",
+    "ideck-steam/files/lse-probe",
+    "ideck-steam/files/namespace-check.py",
+    "ideck-steam/files/prepare-display.py",
+    "ideck-steam/files/shm-recovery.py",
+    "ideck-steam/files/steam-client.lock.json",
+    "ideck-steam/files/steam-dependencies.lock.json",
+    "ideck-steam/files/steam_client.py",
+    "ideck-steam/network-load-order",
+    "usr/lib/modules/6.18.35-0-virt/kernel/drivers/net/net_failover.ko",
+    "usr/lib/modules/6.18.35-0-virt/kernel/drivers/net/virtio_net.ko",
+    "usr/lib/modules/6.18.35-0-virt/kernel/net/core/failover.ko"
+  ],
+  "apple_gate": "NOT RUN",
+  "guest_boot": "NOT RUN",
+  "device_gate": "NOT RUN",
+  "busybox_corresponding_source": "OPEN: exact Alpine revision/source/patch/recipe not established; private owner build only",
+  "strict_readonly_fsck": {
+    "policy": "strict-e2fsck-fn-v1",
+    "accepted": true,
+    "reason_codes": [],
+    "unexpected_lines": [],
+    "passes_and_summary": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      "summary"
+    ],
+    "version_count": 1
+  },
+  "readonly_standard_valve_account_paths": {
+    "/home/ideck/.steam": "absent",
+    "/home/ideck/.local/share/Steam": "absent",
+    "/root/.steam": "absent",
+    "/root/.local/share/Steam": "absent",
+    "/home/ideck/.bash_history": "absent",
+    "/root/.bash_history": "absent",
+    "/opt/steam": "absent",
+    "/usr/games/steam": "absent",
+    "/usr/bin/steam": "absent"
+  },
+  "dpkg_inventory_count": 341,
+  "valve_packages_present": false,
+  "gpl2_text_present": true,
+  "raw_preserved_after_readonly_inspection": true,
+  "valve_account_check_scope": "Standard paths and package inventory only; not an arbitrary-file privacy scanner. Bootstrap exactly reconstructed; no Valve bytes added by that suffix.",
+  "host_tools_manifest": {
+    "size": 5395,
+    "sha256": "846da382001a4d1b76ae6aad6b3b6c69ee1e72673941c1d58ed962f6ae4beb95"
+  },
+  "host_packages_verified": 15
+}

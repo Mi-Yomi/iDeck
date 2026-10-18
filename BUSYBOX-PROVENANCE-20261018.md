@@ -1,9 +1,10 @@
-> Fresh-session update: the same BusyBox binary/config is retained in a newly
-> rebuilt tar (303667200B, SHA25616e29b3a94d9487a244d6047bea7efaee897166459a0e4b482147f6c57625e79).
-> The source/revision/patch/recipe limitation below remains OPEN. Ordinary private
-> upload now reaches GitHub but returns401 Bad credentials; Release has no asset.
-> Runtime lock stays blocked. See STEAM-DEVICE-DELIVERY-20261018.md for current evidence.
-> Previous f4084e40/network notes below are historical, not the new tar identity.
+> Delivery update, 18 October 2026: private asset 654660064 is independently
+> verified and pinned ready (303667200 bytes, SHA-256
+> f74e22f44422d5dded7dd23d2a8e9a22a98e2df13edd4620187943529a29c62c).
+> The accepted initramfs prefix, including BusyBox, is unchanged. The matching
+> source/revision/patch/recipe/source-delivery limitation below remains OPEN.
+> See STEAM-DEVICE-DELIVERY-20261018.md for readback evidence. Earlier hashes and
+> failed-upload statements below are historical; pinning does not close provenance.
 
 # BusyBox provenance clarification — no payload change
 

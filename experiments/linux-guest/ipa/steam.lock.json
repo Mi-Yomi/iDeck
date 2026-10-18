@@ -1,11 +1,132 @@
 {
   "schema": 1,
   "kind": "ideck-steam-device-experiment",
-  "status": "blocked",
-  "blocker": "STEAM_PAYLOAD_NOT_SEALED",
+  "status": "ready",
   "disk_uuid": "c6a66b17-1b3e-4fe9-a07b-70c185fb2718",
   "disk_size_bytes": 12884901888,
   "memory_mib": 1536,
   "valve_client_bundled": false,
-  "device_verified": false
+  "device_verified": false,
+  "files": {
+    "LICENSES-steam.txt": {
+      "size": 4678,
+      "sha256": "c61bce80fd2709086999a3a7d74e42c0a4e0f75194400f7a56fa7ad420de38f5"
+    },
+    "initramfs-steam.gz": {
+      "size": 11699129,
+      "sha256": "51f8ea9d336b2cd5ee946afbdbcf0f68d517e9bbdcd9a0d1cac047a068368cc4"
+    },
+    "steam-profile.json": {
+      "size": 860,
+      "sha256": "8c9d03c869f92ba87a43aecb74f4f8ac75bebbd315c16a921bcf4d4c14c13cb4"
+    },
+    "steam-rootfs-v1.raw.gz": {
+      "size": 281604093,
+      "sha256": "0c078a60670825a11e6676adf081a7d9dc9defc48268d1fed1840dfd7ef7228e"
+    },
+    "vmlinuz-virt": {
+      "size": 10351104,
+      "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+    }
+  },
+  "seed_sha256": "ee04c5c66adf4ac1f56b9b36145c9b0ca164d3d09e59ffaf06805fa6815a0626",
+  "source_inputs": {
+    "guest/TERMINAL-LICENSES.txt": {
+      "size": 1635,
+      "sha256": "50cf68a71ffa53f5bbd8b9cdaab3ad93b37157399ff7b787eabaa1c635b7ac3a"
+    },
+    "guest/gui/LICENSES-desktop.txt": {
+      "size": 1403,
+      "sha256": "7b4062d88f64efbfc636be91018df833d7d45997140cda60030a1caa8bce40b9"
+    },
+    "guest/steam/device-action.py": {
+      "size": 6417,
+      "sha256": "4e8b81024c8e0444d82bc9fe3066ebe125343ff76e86c9156dfb38e641a12647"
+    },
+    "guest/steam/ideck-steam": {
+      "size": 4815,
+      "sha256": "893ac73943214cbd6ac87723c32a3774c872dad2b91429cd4aedb48737e92b33"
+    },
+    "guest/steam/install-cached.py": {
+      "size": 13140,
+      "sha256": "09744ae196d4a50a633ce169c1cc38484ffeefa7b995234ae23d9b5b31c9730b"
+    },
+    "guest/steam/install-official.py": {
+      "size": 11446,
+      "sha256": "cf0b50cf65f5b0455208ed57d2a613f1681ce380bd60a108703757f47ba500e8"
+    },
+    "guest/steam/namespace-check.py": {
+      "size": 15718,
+      "sha256": "96c929eafefb2f76aa7751fb1869baa6def54e5e31be2a0e6620a486bca64b0d"
+    },
+    "guest/steam/prepare-display.py": {
+      "size": 7092,
+      "sha256": "bccff722a8af5397fc33febb339ed8e2d2bfff513304dec2cc27dc1961c07bb4"
+    },
+    "guest/steam/shm-recovery.py": {
+      "size": 12909,
+      "sha256": "f90092f629593f6f653825e35359dd9f4a08a3ffef7a370d417719a1a9070b7e"
+    },
+    "ipa/desktop-kernel-source.lock.json": {
+      "size": 4197,
+      "sha256": "04142a101b7fd7a0c6144818b75904dd916de406ef9efe104694eb1f9a53cf2e"
+    },
+    "ipa/gui-inputs.lock.json": {
+      "size": 142686,
+      "sha256": "8b3ee6d1f255c7486e7226c65ab304036363edccea4e145b472fe7df1cf6ed98"
+    },
+    "ipa/gui.lock.json": {
+      "size": 3102,
+      "sha256": "fef0bf4c5b72cad5ee921616639f6e28bec73bce7b1e689c95c3734aed82c7eb"
+    },
+    "ipa/steam-client.lock.json": {
+      "size": 4757,
+      "sha256": "9b8bc9fe5e8074ae4d798f645d259066e968b8bc5512183c0aca34e1f54a8bdd"
+    },
+    "ipa/steam-dependencies.lock.json": {
+      "size": 17731,
+      "sha256": "0d153bbb2a9a39c32fb650d189cc972355fc1d94da39297cf0b9830fdbd922f6"
+    },
+    "tools/debian_rootfs.py": {
+      "size": 39889,
+      "sha256": "8b68c689e034fb09c39ef58c3a4ee01da3255579972f7a9ae31dbcf203581c0b"
+    },
+    "tools/desktop_modules.py": {
+      "size": 15225,
+      "sha256": "41961d1f57c7360731aa662454f19423a29a3784710b3fc7d85a0eb20f340a71"
+    },
+    "tools/gui_bundle.py": {
+      "size": 19275,
+      "sha256": "0bdd90ba31ca0c512980629d8c76bdc98da9a525e88c88fea4902681b52dc079"
+    },
+    "tools/prepare_steam_bootstrap.py": {
+      "size": 11359,
+      "sha256": "4fa5309f5237900007c428598503e2c3bc13e68d6b7ef550bdd4dfdc57640264"
+    },
+    "tools/prepare_steam_payload.py": {
+      "size": 8614,
+      "sha256": "f347f8e662ddcc8af283fe92e45c8248e0f5dc9b542b5fa9bc4198a0e0128db4"
+    },
+    "tools/steam_bundle.py": {
+      "size": 11193,
+      "sha256": "c55bb8d05698d64ecb3fbb6945976ef292f422ceee4592cd3cd34e2d7c5fa0ea"
+    },
+    "tools/steam_client.py": {
+      "size": 13988,
+      "sha256": "547f5791c751f10548d2c9e7da54068200208d205b7f78442a3bc915108cc0cb"
+    },
+    "tools/steam_cpu_probe.py": {
+      "size": 3251,
+      "sha256": "0c3c46c9352f8d67af7308cf43faf965e8bab709acafeaa11498b840cd52dc45"
+    },
+    "tools/steam_vm.py": {
+      "size": 27304,
+      "sha256": "98d5dc61ebfcabdeb5fa7931087f7a96860eb5346a4a040140c06746511bc7b9"
+    }
+  },
+  "archive": {
+    "size": 303667200,
+    "sha256": "f74e22f44422d5dded7dd23d2a8e9a22a98e2df13edd4620187943529a29c62c"
+  },
+  "payload_url": "https://api.github.com/repos/Mi-Yomi/iDeck/releases/assets/654660064"
 }

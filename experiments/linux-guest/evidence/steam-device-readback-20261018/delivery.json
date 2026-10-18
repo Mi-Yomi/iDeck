@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "checked_date_utc": "2026-10-18",
+  "status": "private_payload_pinned_not_device_accepted",
+  "baseline_remote_commit": "eb743c38d8e03af0189aaebe8db2b69d3ff76760",
+  "branch": "codex/steam-arm64-experiment-20261017",
+  "repository": {
+    "full_name": "Mi-Yomi/iDeck",
+    "private": true
+  },
+  "release": {
+    "assets": [
+      {
+        "digest": "sha256:f74e22f44422d5dded7dd23d2a8e9a22a98e2df13edd4620187943529a29c62c",
+        "id": 654660064,
+        "name": "ideck-steam-device-v1.tar",
+        "size": 303667200,
+        "state": "uploaded"
+      }
+    ],
+    "id": 416567174,
+    "prerelease": true,
+    "tag_name": "ideck-steam-device-v1-20261018"
+  },
+  "payload_url": "https://api.github.com/repos/Mi-Yomi/iDeck/releases/assets/654660064",
+  "download_method": "existing authorized gh api; Accept: application/octet-stream; independent complete readback",
+  "source_inputs_origin": "Exact eb743c38 committed fresh candidate source_inputs; all 23 independently compared with git show and checkout bytes; not regenerated from unverified new source",
+  "build_machine_claims": "Owner reports rebuild from 1816-blob eb743c38 snapshot and prior build checks. This session independently verifies downloaded bytes/source/bootstrap/fsck; it does not authenticate the build machine history.",
+  "unchanged_existing_assets": {
+    "gui": {
+      "digest": "sha256:112bdba6e12ae182fb347e52e7368e26f748bb3dc2bcd77dbd3122fb14dcdedd",
+      "id": 650023557,
+      "name": "ideck-debian-gui-v1.tar",
+      "size": 292065280,
+      "state": "uploaded"
+    },
+    "debian": {
+      "digest": "sha256:84851a3597901f1e3ef293c1490dc9c8a4a78b286bea8d2a10c330cb1413c558",
+      "id": 647969136,
+      "name": "ideck-debian-console-v1.tar",
+      "size": 75601920,
+      "state": "uploaded"
+    }
+  },
+  "python_regression": {
+    "command": "python3 -m unittest discover -s experiments/linux-guest/tests -v",
+    "exit_code": 0,
+    "tests_run": 503,
+    "passed": 498,
+    "skipped": 5,
+    "errors": 0,
+    "failures": 0
+  },
+  "scope": "Steam runtime lock + its overlay input pin + delivery documentation/evidence; no bound-source change",
+  "release_mutated": false,
+  "main_mutated": false,
+  "user_disks_accessed": false,
+  "new_credentials_or_secrets": false,
+  "codemagic_started": false,
+  "codemagic_quota_verified": false,
+  "codemagic_secret_access": "NOT RUN",
+  "apple_swift_native_ipa": "NOT RUN",
+  "guest_boot": "NOT RUN",
+  "device_verified": false,
+  "busybox_corresponding_source": "OPEN: exact Alpine revision, matching source/patch/recipe and source-delivery evidence remain missing; recovered config does not establish completeness",
+  "next_ci": {
+    "workflow_id": "ideck-linux-probe-ipa",
+    "branch": "codex/steam-arm64-experiment-20261017",
+    "instance_type": "mac_mini_m2",
+    "xcode": "27.0",
+    "max_build_duration_minutes": 120,
+    "inputs": {
+      "expected_commit": "FULL_POST_PINNING_PUSHED_REMOTE_SHA",
+      "free_quota_verified": "true only after fresh >=120 free macOS minutes and paid billing disabled",
+      "private_source_verified": "true only after fresh private source verification",
+      "native_build_approved": "true under owner authorization"
+    }
+  }
+}

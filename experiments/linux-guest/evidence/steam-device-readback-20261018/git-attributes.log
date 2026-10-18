@@ -1,0 +1,10 @@
+experiments/linux-guest/vendor/alpine-3.24.1-aarch64/modloop-virt: binary: set
+experiments/linux-guest/vendor/alpine-3.24.1-aarch64/modloop-virt: diff: unset
+experiments/linux-guest/vendor/alpine-3.24.1-aarch64/modloop-virt: merge: unset
+experiments/linux-guest/vendor/alpine-3.24.1-aarch64/modloop-virt: text: unset
+experiments/linux-guest/vendor/alpine-3.24.1-aarch64/modloop-virt: eol: lf
+experiments/linux-guest/husk/husk119-source-check.tar.gz: binary: set
+experiments/linux-guest/husk/husk119-source-check.tar.gz: diff: unset
+experiments/linux-guest/husk/husk119-source-check.tar.gz: merge: unset
+experiments/linux-guest/husk/husk119-source-check.tar.gz: text: unset
+experiments/linux-guest/husk/husk119-source-check.tar.gz: eol: lf

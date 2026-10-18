@@ -1,3 +1,51 @@
+> Current delivery result, 18 October 2026: final browser-uploaded private asset
+> **654660064** independently downloaded through existing authorized `gh` access.
+> **303667200 bytes**, SHA-256
+> **f74e22f44422d5dded7dd23d2a8e9a22a98e2df13edd4620187943529a29c62c**.
+> Runtime `ipa/steam.lock.json` is now **ready** with the real same-repo API URL;
+> its `husk/overlay.lock.json` input digest is refreshed. This removes the missing
+> payload delivery blocker only. Earlier f4084e40/16e29b3a hashes and empty-Release
+> or blocked-lock statements below are historical; never use those old pins.
+>
+> Clean checkout baseline and unchanged remote were exactly
+> `eb743c38d8e03af0189aaebe8db2b69d3ff76760`; all **1816 Git blobs** and **23
+> source_inputs** matched that commit. Five component pins, flat regular tar,
+> unchanged accepted initramfs prefix and exact reconstructed Steam bootstrap PASS.
+> Complete expanded raw: **12884901888 bytes**, SHA-256
+> **ee04c5c66adf4ac1f56b9b36145c9b0ca164d3d09e59ffaf06805fa6815a0626**;
+> UUID `c6a66b17-1b3e-4fe9-a07b-70c185fb2718`, 1536 MiB contract retained.
+> Strict read-only fsck PASS (all five phases + summary), nine standard Valve/
+> account paths absent, no Valve/Steam packages in 341-package inventory, GPL-2
+> text present, complete raw hash unchanged after inspection. This is a bounded
+> path/inventory check, not an arbitrary-file privacy scanner or independent proof
+> of the build machine's history. No Valve client is bundled; device_verified=false.
+>
+> Full real-checkout regression: **503 tests OK (498 PASS, 5 SKIP)**, including
+> actual `git check-attr`; 125 Python AST checks PASS. Exact 81-file Husk slice +
+> five-patch overlay, standalone/incremental Xcode staging script, actual Steam
+> package resource verifier and staged full expanded gzip digest PASS. No native
+> IPA is created by these checks. Receipts/logs:
+> `experiments/linux-guest/evidence/steam-device-readback-20261018/`.
+>
+> Existing `ideck-linux-probe-ipa` imports `ideck-debian-payload`; reviewed code
+> reuses **IDECK_DEBIAN_PAYLOAD_TOKEN** for the exact pinned same-repo asset API
+> and strips Authorization on redirects. Scope/fallback regressions PASS. No new
+> secret/URL override is needed; actual Codemagic secret access remains untested.
+> GUI/Debian/Terminal payloads, bound sources, Release and main were not changed.
+>
+> Next executor only: fetch the post-pinning remote Steam HEAD and use it as
+> `expected_commit` for **ideck-linux-probe-ipa**, branch
+> **codex/steam-arm64-experiment-20261017**, **mac_mini_m2**, **Xcode 27.0**,
+> **120-minute cap**. After fresh verification of at least 120 free macOS minutes,
+> disabled paid billing and private source, pass `free_quota_verified=true`,
+> `private_source_verified=true`, `native_build_approved=true`. No Codemagic
+> dispatch/quota claim here. Apple/Swift typecheck/runtime, native link/package,
+> new guest boot and physical-device Steam acceptance remain **NOT RUN**.
+> BusyBox corresponding-source provenance remains **OPEN**: exact Alpine package
+> revision and matching source/patch/recipe/source-delivery evidence are missing;
+> recovered configuration does not close it. Private owner experiment only;
+> no complete distribution-readiness claim. See BUSYBOX-PROVENANCE-20261018.md.
+
 > Fresh-session result, 18 October 2026: uploads.github.com now answers ordinary
 > GET with HTTP302 (the previous CONNECT403 is gone). Rebuilt from b01986212fd46f27136ea204c401b8918d49ee02;
 > NEW final tar303667200B, SHA25616e29b3a94d9487a244d6047bea7efaee897166459a0e4b482147f6c57625e79.

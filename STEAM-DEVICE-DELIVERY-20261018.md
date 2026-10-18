@@ -1,3 +1,31 @@
+> Current result, 18 October 2026: final rebuilt payload uploaded by the owner's
+> authorized browser is delivered and independently verified. Private Release
+> 416567174 has uploaded asset **654660064**, **303667200 bytes**, server and full
+> readback SHA-256 **f74e22f44422d5dded7dd23d2a8e9a22a98e2df13edd4620187943529a29c62c**.
+> Pinned URL: https://api.github.com/repos/Mi-Yomi/iDeck/releases/assets/654660064 .
+> Runtime Steam lock is **ready**; overlay pin refreshed. The old hashes,
+> empty-Release and blocked-lock instructions below are historical and superseded.
+>
+> Independent evidence: `experiments/linux-guest/evidence/steam-device-readback-20261018/`.
+> Five files, all 1816 baseline Git blobs, 23 exact source bindings, reconstructed
+> bootstrap, complete 12 GiB raw digest/UUID/features, strict read-only fsck and
+> bounded Valve/account-path/package checks PASS. Full checkout: 503 tests OK,
+> 5 skips; git check-attr, 125 AST checks, 81-file/five-patch source overlay,
+> standalone/incremental Xcode staging script and Steam package resource verifier
+> PASS, including full expanded staged gzip digest. Raw SHA-256 is
+> **ee04c5c66adf4ac1f56b9b36145c9b0ca164d3d09e59ffaf06805fa6815a0626**.
+> Existing GUI/Debian assets match their previous metadata; no Release/main,
+> secret, bound source or user disk was changed in this integration session.
+>
+> Use the **post-pinning pushed remote SHA**, not baseline eb743c38, for the manual
+> CI inputs below. The workflow already imports `ideck-debian-payload` and its
+> exact-repo token fallback uses `IDECK_DEBIAN_PAYLOAD_TOKEN`; no new secrets or
+> Steam URL variables are required. Code and fallback/scope tests were checked;
+> actual Codemagic group/token access is still untested. No CI was started here.
+> Apple/Swift/native IPA/guest/device gates remain NOT RUN. BusyBox corresponding
+> source/revision/patch/recipe provenance remains OPEN, as documented separately;
+> delivery readiness does not establish complete distribution readiness.
+
 > Fresh-session result, 18 October 2026: uploads.github.com now answers ordinary
 > GET with HTTP302 (the previous CONNECT403 is gone). Rebuilt from b01986212fd46f27136ea204c401b8918d49ee02;
 > NEW final tar303667200B, SHA25616e29b3a94d9487a244d6047bea7efaee897166459a0e4b482147f6c57625e79.

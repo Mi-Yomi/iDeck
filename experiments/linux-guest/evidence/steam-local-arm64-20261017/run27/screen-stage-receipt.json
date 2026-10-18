@@ -1,0 +1,116 @@
+[
+  {
+    "private_file": "run27/023-main-window.png",
+    "sha256": "3183c7896542b25e8051297fbd20a381f8fe652e22a4fe0f4d7f6f69aa524b28",
+    "observed_stage": "Main Steam window activated; loading spinner, not acceptance",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run27/027-window-state.png",
+    "sha256": "d36b45463d92bc1acc89e39943441fc17f979ec47159d43b3864623964649e0d",
+    "observed_stage": "Actual Store rendered with artwork before affinity phase",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run27/029-navigation-wait.png",
+    "sha256": "f2f76ff25275cbe066bbf70cf6eb08737b942451d70a1e40dd2111f404a0c7af",
+    "observed_stage": "After first Library click: black transitional content; not acceptance",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run27/030-owned-affinity-phase.png",
+    "sha256": "eba7e857a26b674cadbfe163623e3a92e3405c95e2ea51a73d71036eb1af0d05",
+    "observed_stage": "Populated Library after earlier click and one-shot CPU phase; causality confounded",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run27/031-affinity-wait.png",
+    "sha256": "eba7e857a26b674cadbfe163623e3a92e3405c95e2ea51a73d71036eb1af0d05",
+    "observed_stage": "Populated Library persisted",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run27/034-return-store.png",
+    "sha256": "7f7c4b3c6681305d2c064c5bcd70987214118488899b85c9ef925c0437d34180",
+    "observed_stage": "Return Store click dispatched; popup/transition; postclick active-window query failed",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run27/035-navigation-check.png",
+    "sha256": "5d6b598016079f799af0bf241fb6cf6b1eaf8406d7f782e0c916fc3cbdd67d73",
+    "observed_stage": "Actual Store artwork/menu after return click",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run27/036-repeat-library.png",
+    "sha256": "2153da362d57491aba017320be382bd558204ed6dea19e5619d33c9317b48c75",
+    "observed_stage": "Repeat Library click: transitional black frame, not acceptance",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run27/037-repeat-navigation-wait.png",
+    "sha256": "4e13b43bf8435a919b7c6646bfd7a8f4dadc2d3ff66789d4e9bcf135e63af86c",
+    "observed_stage": "Populated Library again: Store-Library-Store-Library roundtrip verified",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run27/041-mode-hover.png",
+    "sha256": "6ccf0f4af3578156fa5f3309cf6a98a6b83e95d227f9c2a8ab61e74e55aeca5d",
+    "observed_stage": "Actual tooltip identifies Enter Big Picture Mode control",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run27/044-bp-status.png",
+    "sha256": "1ad68e1293f33568722c90512abbef9e5fe3e0c2c50fbca182c943066e1f31d1",
+    "observed_stage": "Black frame during mode transition; not acceptance",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run27/045-bp-progress.png",
+    "sha256": "8e7517e5f9c65dcf08e16299b39686dc35a0a30e2b88dc09e29dde433d514cf9",
+    "observed_stage": "Big Picture Welcome instructional tips, actual rendered background",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run27/046-bp-welcome-continue.png",
+    "sha256": "42d8d16f5580d7f8c47ecd17f4ebd4042b8e77a654a24bbe4b5faf1d641dee1e",
+    "observed_stage": "Welcome tip still visible immediately after Return",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run27/047-bp-tip-space.png",
+    "sha256": "db8920e15d959fb32dc5a7525c22e74183bc5fb69d213774dd0bf04ec656f638",
+    "observed_stage": "Quick Access Menu informational tip after input",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run27/048-bp-quick-tip.png",
+    "sha256": "ffcc5af5605d408e11872d285190ff4aa7ae0f9555cd425ea0a028b7322f7518",
+    "observed_stage": "Parental controls informational tip only; no setting change",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run27/050-bp-info-tip.png",
+    "sha256": "ffcc5af5605d408e11872d285190ff4aa7ae0f9555cd425ea0a028b7322f7518",
+    "observed_stage": "Same informational tip after short Space; no acceptance claim",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run27/051-bp-held-tip-input.png",
+    "sha256": "31586e4a54799108c8effc43e4994e3ba9c2b881033a7d7d38f038f0521c8541",
+    "observed_stage": "Actual Big Picture main Home with recent games/news; instructional tips dismissed",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run27/052-bp-main-menu.png",
+    "sha256": "13ed390edbd9ea45382c55845f8ea06f7b63639dfb899f1f8498ddf71e989e37",
+    "observed_stage": "Actual Big Picture game-detail view after inputs; left menu area black, full F1 menu unverified",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run27/053-bp-final-check.png",
+    "sha256": "25fb723d54de6f50d252190bc707ca8bf4077e372a048cc03f4151be55582683",
+    "observed_stage": "Game details after bounded freeze; full BP menu and return navigation remain unverified",
+    "pixels_in_git": false
+  }
+]

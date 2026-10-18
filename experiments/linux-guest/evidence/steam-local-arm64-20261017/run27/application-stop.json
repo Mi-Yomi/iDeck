@@ -1,0 +1,61 @@
+{
+  "graceful_wait_seconds": 45,
+  "graceful_wait_completed": true,
+  "shutdown_request": {
+    "attempted": true,
+    "pid": 3575,
+    "exit_code": 0
+  },
+  "verified_owned_assertion_tracers": [],
+  "application_stop": "ordinary shutdown completed",
+  "owned_mount_namespaces": [
+    "mnt:[4026532196]"
+  ],
+  "signals": [
+    {
+      "pid": 1180,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 1238,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 1275,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 1283,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 1310,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 1369,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 1371,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 1377,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 1424,
+      "signal": "SIGCONT"
+    },
+    {
+      "pid": 3220,
+      "signal": "SIGCONT"
+    }
+  ],
+  "terminated_identities": [],
+  "remaining": [],
+  "ready_for_original_vm_stop": true,
+  "original_pid1_shutdown_changed": false,
+  "time_ns": 1792322647716663515
+}

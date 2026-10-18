@@ -1,0 +1,23 @@
+{
+  "webhelper_killing_unresponsive_browser_count": 0,
+  "cef_error_warning_sources": {
+    "chrome_main_delegate.cc": 1,
+    "task_impl.cc": 2,
+    "bus.cc": 8,
+    "account_consistency_mode_manager.cc": 1,
+    "crash_reporting.cc": 8,
+    "bluez_dbus_manager.cc": 1,
+    "property.cc": 1,
+    "browser_management_service.cc": 1,
+    "atom_cache.cc": 2
+  },
+  "zero_ready_events": 1,
+  "stream_zero_calls": 8,
+  "lazy_zero_calls": 7,
+  "ordinary_fallback_calls": 1,
+  "zero_event_files": 1,
+  "shm_capacity_bytes": 2053566464,
+  "maximum_main_shm_used_bytes": 159047680,
+  "maximum_bp_shm_used_bytes": 110493696,
+  "raw_logs_or_account_details_published": false
+}

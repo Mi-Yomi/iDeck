@@ -1,0 +1,37 @@
+{
+  "source_tests": {
+    "cases": 4,
+    "passed": true
+  },
+  "actual_pinned_library_cli_passed": true,
+  "existing_output_refused_and_unchanged": true,
+  "input_sources_and_library_unchanged": true,
+  "actual_runtime_script_hashes_match": true,
+  "output_profile": {
+    "schema": 1,
+    "reference_run": 27,
+    "rendered_only": true,
+    "installed": false,
+    "steam_launched": false,
+    "iphone_verified": false,
+    "input_sha256": {
+      "launcher": "893ac73943214cbd6ac87723c32a3774c872dad2b91429cd4aedb48737e92b33",
+      "namespace_helper": "96c929eafefb2f76aa7751fb1869baa6def54e5e31be2a0e6620a486bca64b0d",
+      "zero_library": "c350f21128358eb4bdc942db571affe38b5817341e9656cadb7e592c74e36f9d"
+    },
+    "output_sha256": {
+      "ideck-steam-desktop-v11": "e864839b710ee1db8ddcd3c86f82d5db3484ee3fdeadec904c8b8491e62f4f1d",
+      "namespace-zero-watchdog-500m.py": "dd3c87333e166b7d31673a81adbc4cb9ef574203d1d9d1c25c56251069271e72"
+    },
+    "required_runtime_controls": [
+      "fresh actual ARM64 checker, fallback and cross-process IPC fixtures",
+      "root-owned pinned library at /opt/ideck-shm-zero/libideck-shm-zero.so",
+      "private namespace helper; drop to UID1000 before preload",
+      "original bounded identity/pidfd, browser-exit and SHM reserve guardian",
+      "4096 MiB guest, four vCPUs; owned browser affinity phase recorded separately",
+      "ordinary application shutdown, verified original VM Stop and offline fsck"
+    ],
+    "limitations": "one local desktop navigation run; games, Big Picture and iPhone require separate acceptance"
+  },
+  "no_generated_code_executed": true
+}

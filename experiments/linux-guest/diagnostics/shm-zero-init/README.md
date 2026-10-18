@@ -50,3 +50,34 @@ and maximum combined resident allocation of the two large streams741376bytes.
 Main navigation rendered but the content stayed black; Library navigation and
 games remain unverified. This is an allocation fix observed in one run, not a
 complete Steam UI fix. See [run25 evidence](../../evidence/steam-local-arm64-20261017/run25/README.md).
+
+`shm-zero-ipc-unit.c` adds a bounded cross-process check: separate virtual
+addresses map the same exclusive test file, observe untouched zero holes,
+exchange data in both directions, and confirm that a blocked shared futex waiter
+is actually awakened. It runs as UID1000 with its own temporary file; it does
+not inspect or modify a Steam stream. Both ordinary and preload-fallback runs
+must pass in the actual ARM64 guest, in addition to the original checker tests.
+
+`render-tested-profile.py` renders the exact private launcher/helper used in
+run27 from the pinned launcher, namespace helper and compiled V5 library. It
+rejects different input hashes and existing output directories, and neither
+installs files nor launches Steam. Example from this directory:
+
+```sh
+python3 render-tested-profile.py \
+  --launcher ../../guest/steam/ideck-steam \
+  --namespace-helper ../../guest/steam/namespace-check.py \
+  --zero-library /path/to/private/libideck-shm-zero.so \
+  --output /path/to/new-private-profile
+python3 test_render_profile.py
+```
+
+The rendered profile uses the stock `-cef-disable-hang-timeouts` argument with
+the same sandbox and native 500 ms IPC deadline. Its receipt lists the required
+fresh ARM64 fixtures, pinned library location, credential drop, original bounded
+owner/resource guardian, application shutdown, original VM Stop and offline
+filesystem check. Rendering is not permission to omit these runtime controls.
+The separately recorded browser affinity phase uses all four guest CPUs;
+rendering alone does not apply it. Original launchers and iOS profiles remain
+unchanged. A newly compiled library with a different hash requires separate
+review and validation; do not simply replace the pin.

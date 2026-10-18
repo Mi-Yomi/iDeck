@@ -1,0 +1,550 @@
+{
+  "schema": 1,
+  "status": "experiment_finished",
+  "host_only": true,
+  "iphone_tested": false,
+  "steam_window_verified": false,
+  "big_picture_verified": false,
+  "clean_shutdown": true,
+  "qemu_started": true,
+  "profile_memory_mib": 1536,
+  "effective_memory_mib": 4096,
+  "experimental_memory_override": true,
+  "runner_sha256": "98d5dc61ebfcabdeb5fa7931087f7a96860eb5346a4a040140c06746511bc7b9",
+  "network": "explicit QEMU user NAT, no host forwarding",
+  "commands": [
+    {
+      "name": "001-persistence.sh",
+      "script_sha256": "da5fe6b1f510082890c61f0f0f21362165dc6eb5d4d1c16298a506dc4a5216cf",
+      "exit_code": 0
+    },
+    {
+      "name": "002-verify-shm-zero.sh",
+      "script_sha256": "deb988f6399975f7225682c1bd2bd396d4220de7ffa9d28f933b1fcaa27e376d",
+      "exit_code": 0
+    },
+    {
+      "name": "003-start-watchdog-observer.sh",
+      "script_sha256": "7a127440db283fddad93cc33be2ddf31f7fd53ff4b0ee7025309b6b02725d696",
+      "exit_code": 0
+    },
+    {
+      "name": "004-resource-budget.sh",
+      "script_sha256": "d931fbb8f817c82d289326964c6eca25f4ddfa4e23e90a64d8b9c3abf0995815",
+      "exit_code": 0
+    },
+    {
+      "name": "005-progress.sh",
+      "script_sha256": "11cbfd84b8171bfc938617d0a63917793b58d13ab8fe10a1fba792105b15ec0b",
+      "exit_code": 0
+    },
+    {
+      "name": "006-zero-proof.sh",
+      "script_sha256": "f1c3f151a1805a98a8b6caf3cacec37d3fc4cdb67af203fd563c7212a5e0a9d9",
+      "exit_code": 0
+    },
+    {
+      "name": "007-window-state.sh",
+      "script_sha256": "ba970d38d8a2b1f728c961cce4d91a79d820f7d12ef547fcb5b653a302eb7e01",
+      "exit_code": 0
+    },
+    {
+      "name": "008-memory-pressure.sh",
+      "script_sha256": "c6db25b8894f77e8cba0b38ac6fe24b589f5d0ab0eff7a2d200d0a7c82e87a52",
+      "exit_code": 0
+    },
+    {
+      "name": "009-progress.sh",
+      "script_sha256": "11cbfd84b8171bfc938617d0a63917793b58d13ab8fe10a1fba792105b15ec0b",
+      "exit_code": 0
+    },
+    {
+      "name": "010-window-state.sh",
+      "script_sha256": "ba970d38d8a2b1f728c961cce4d91a79d820f7d12ef547fcb5b653a302eb7e01",
+      "exit_code": 0
+    },
+    {
+      "name": "011-zero-events.sh",
+      "script_sha256": "f62f28b7a4fcd463aa2ba296bf1f09908d443553bc3af51b87acab1880e4eefa",
+      "exit_code": 0
+    },
+    {
+      "name": "012-progress.sh",
+      "script_sha256": "11cbfd84b8171bfc938617d0a63917793b58d13ab8fe10a1fba792105b15ec0b",
+      "exit_code": 0
+    },
+    {
+      "name": "013-browser-proof.sh",
+      "script_sha256": "cfa1ef5036ef2af3dbfd404faec00772e1f697f3fe4470cc4784940bb7535352",
+      "exit_code": 0
+    },
+    {
+      "name": "014-watchdog-proof.sh",
+      "script_sha256": "aa8512022e9bc0f91efaebf92d8da10b261bf49d4ff4f87f8bddbb27d46af341",
+      "exit_code": 0
+    },
+    {
+      "name": "015-ui-stage.sh",
+      "script_sha256": "2427ed8579c2c88e107c880afa792fe79b81590311e94789660b3b8da5ec1cf4",
+      "exit_code": 0
+    },
+    {
+      "name": "016-zero-ipc-test.sh",
+      "script_sha256": "0df155e90755e97fd94896568abf2b223ba884eb197ebbbcec75e4cc81acd2fc",
+      "exit_code": 1
+    },
+    {
+      "name": "017-zero-ipc-correct-location.sh",
+      "script_sha256": "962a0370f6a1e51d46673273d87f3dbec9fafbb5378c01860bc3eae50bdc0388",
+      "exit_code": 0
+    },
+    {
+      "name": "018-progress.sh",
+      "script_sha256": "11cbfd84b8171bfc938617d0a63917793b58d13ab8fe10a1fba792105b15ec0b",
+      "exit_code": 0
+    },
+    {
+      "name": "019-window-state.sh",
+      "script_sha256": "ba970d38d8a2b1f728c961cce4d91a79d820f7d12ef547fcb5b653a302eb7e01",
+      "exit_code": 0
+    },
+    {
+      "name": "020-progress.sh",
+      "script_sha256": "11cbfd84b8171bfc938617d0a63917793b58d13ab8fe10a1fba792105b15ec0b",
+      "exit_code": 0
+    },
+    {
+      "name": "021-window-state.sh",
+      "script_sha256": "ba970d38d8a2b1f728c961cce4d91a79d820f7d12ef547fcb5b653a302eb7e01",
+      "exit_code": 0
+    },
+    {
+      "name": "022-ui-stage.sh",
+      "script_sha256": "2427ed8579c2c88e107c880afa792fe79b81590311e94789660b3b8da5ec1cf4",
+      "exit_code": 0
+    },
+    {
+      "name": "023-main-window.sh",
+      "script_sha256": "51b216ea2ab3d756695eaecc2ec36cb932a649d2586063427d77e142680745a7",
+      "exit_code": 0
+    },
+    {
+      "name": "024-zero-ipc-wake-test.sh",
+      "script_sha256": "d3a515793fb156eb9722669b3d6a87c0cb1bd495fdaed8149c333220b50ed644",
+      "exit_code": 0
+    },
+    {
+      "name": "025-progress.sh",
+      "script_sha256": "11cbfd84b8171bfc938617d0a63917793b58d13ab8fe10a1fba792105b15ec0b",
+      "exit_code": 0
+    },
+    {
+      "name": "026-progress.sh",
+      "script_sha256": "11cbfd84b8171bfc938617d0a63917793b58d13ab8fe10a1fba792105b15ec0b",
+      "exit_code": 0
+    },
+    {
+      "name": "027-window-state.sh",
+      "script_sha256": "ba970d38d8a2b1f728c961cce4d91a79d820f7d12ef547fcb5b653a302eb7e01",
+      "exit_code": 0
+    },
+    {
+      "name": "028-library-click.sh",
+      "script_sha256": "eb9bf585b1954d1187c3881c529455dd87e87024e378d48dd59d11e04b5dce64",
+      "exit_code": 0
+    },
+    {
+      "name": "029-navigation-wait.sh",
+      "script_sha256": "668133c533a43380251d0691184904f354756dccc84e2322962f286dfe161b8b",
+      "exit_code": 0
+    },
+    {
+      "name": "030-owned-affinity-phase.sh",
+      "script_sha256": "01544617f3c867a65be1f0c61876e854a65b73fc65436f5452adebc2ca0d1e78",
+      "exit_code": 0
+    },
+    {
+      "name": "031-affinity-wait.sh",
+      "script_sha256": "c4d67b77875591072cb5fc917dc7ef8747187a603ea2ac96fb27a4f5b6fef600",
+      "exit_code": 0
+    },
+    {
+      "name": "032-affinity-receipt.sh",
+      "script_sha256": "5e00825e933a4351eec2e0a6cf2adcfcd36fd6fc71e59e62fdfb3082a8977561",
+      "exit_code": 1
+    },
+    {
+      "name": "033-affinity-receipt-normalize.sh",
+      "script_sha256": "233badfb814d43b4cf34d77dd450fa178c6c2f7cd3310736cc2ddaad4d6e858b",
+      "exit_code": 0
+    },
+    {
+      "name": "034-return-store.sh",
+      "script_sha256": "4f2bf4c0583c21b23c3cfcba34e8823a0aef4b49d9a541809e0771fdbbda3340",
+      "exit_code": 1
+    },
+    {
+      "name": "035-navigation-check.sh",
+      "script_sha256": "668133c533a43380251d0691184904f354756dccc84e2322962f286dfe161b8b",
+      "exit_code": 0
+    },
+    {
+      "name": "036-repeat-library.sh",
+      "script_sha256": "517e29020d02e3f314401b9bfffa6459f4718b31fbc840b2c2de8dfff84460ac",
+      "exit_code": 0
+    },
+    {
+      "name": "037-repeat-navigation-wait.sh",
+      "script_sha256": "668133c533a43380251d0691184904f354756dccc84e2322962f286dfe161b8b",
+      "exit_code": 0
+    },
+    {
+      "name": "038-view-menu.sh",
+      "script_sha256": "8f5e58100be7314344ab2e0b70ba7b633b2455ee66ba24b1e1a880caa4bc47b6",
+      "exit_code": 0
+    },
+    {
+      "name": "039-inspect-mode-control.sh",
+      "script_sha256": "f4b84f3ec2ef2cdfbf4de4405574ea54bfa8f5f96d4379fb7a6bb4abd04e33fc",
+      "exit_code": 0
+    },
+    {
+      "name": "040-mode-tooltip.sh",
+      "script_sha256": "3f027f5482a4e097063a5dac462a901a70cfbf35e7d7aaf85bb45266c83b2924",
+      "exit_code": 0
+    },
+    {
+      "name": "041-mode-hover.sh",
+      "script_sha256": "3f027f5482a4e097063a5dac462a901a70cfbf35e7d7aaf85bb45266c83b2924",
+      "exit_code": 0
+    },
+    {
+      "name": "042-enter-big-picture.sh",
+      "script_sha256": "2a49fa386d043ed37377528a375f09611d4edc7a191db124f3821248d982b2a2",
+      "exit_code": 0
+    },
+    {
+      "name": "043-bp-continuation.sh",
+      "script_sha256": "741f1449e24909b703baa46e2ca97ba726ff722a6d2b00d03a47d1a1c415a896",
+      "exit_code": 0
+    },
+    {
+      "name": "044-bp-status.sh",
+      "script_sha256": "e615523fc65e0a0133ebf892224cbbba9cc40370336ac12abbcf8f3d21357a49",
+      "exit_code": 0
+    },
+    {
+      "name": "045-bp-progress.sh",
+      "script_sha256": "3e9abcaf2087f2d15e816c8b867de5217fa42de9d8cea76ee94774251de86c5c",
+      "exit_code": 0
+    },
+    {
+      "name": "046-bp-welcome-continue.sh",
+      "script_sha256": "5b1577fe16923e5db023d817efa5695676a036e72eaf10bf00092ecb3d7826f8",
+      "exit_code": 0
+    },
+    {
+      "name": "047-bp-tip-space.sh",
+      "script_sha256": "6ddf2135d226ae03c5069968edc8955347de720d1c05211a4653891cea78d4b3",
+      "exit_code": 0
+    },
+    {
+      "name": "048-bp-quick-tip.sh",
+      "script_sha256": "92795da04ad8e0fa5f46f0415960d332da5645215d8940937097f7c42ee78da2",
+      "exit_code": 0
+    },
+    {
+      "name": "049-bp-resource-check.sh",
+      "script_sha256": "6d9c377d28f9f7a9acef3cc5bba2a394bb6894c97a850d97fd913c8131fe6855",
+      "exit_code": 0
+    },
+    {
+      "name": "050-bp-info-tip.sh",
+      "script_sha256": "727d21df3c0d5dfe51acf207d154f3700c795fa9378e184bf148637b3292b7c8",
+      "exit_code": 0
+    },
+    {
+      "name": "051-bp-held-tip-input.sh",
+      "script_sha256": "7f0a27a855b19938082839b969b1c609f998cfb7d08c2a017d55c7fe35917b83",
+      "exit_code": 0
+    },
+    {
+      "name": "052-bp-main-menu.sh",
+      "script_sha256": "ae737a8e025e2fa9ceead7060449e45c95886a54a69a2ce7552385f4637b1e7f",
+      "exit_code": 0
+    },
+    {
+      "name": "053-bp-final-check.sh",
+      "script_sha256": "f68af4e38501469d6b6eeb82fb0ca203f5fd99012050ca7a0326ccccf0b849b1",
+      "exit_code": 0
+    },
+    {
+      "name": "900-finish-monitor.sh",
+      "script_sha256": "ea7a98d2ef5505db4ec65c7b12c77a84e3e0ec452067ff5a3778e0ac80fd3cd8",
+      "exit_code": 0
+    },
+    {
+      "name": "901-stop-owned-app.sh",
+      "script_sha256": "9fef296dad69cadae974c58c5ffdab30e2dfa4e04b25ee54185d05db42bc9b39",
+      "exit_code": 0
+    },
+    {
+      "name": "902-post-app-check.sh",
+      "script_sha256": "3f6b75866393e3076aff0e3d8490a91c3fe6a731056486f8cd512152e0e9bf48",
+      "exit_code": 0
+    },
+    {
+      "name": "903-private-export.sh",
+      "script_sha256": "46058573a34810817f2d09adc98ac49134db7d0ab2cc026deb9c489939a39ae4",
+      "exit_code": 0
+    }
+  ],
+  "profile_sha256": "9b8e387773e61e82c183869db73877e3ca2fc4c0c673c2b858e61c933bf6e13f",
+  "bootstrap": {
+    "schema": 1,
+    "purpose": "private disposable Steam experiment; runtime unverified",
+    "base_initramfs": {
+      "size": 11319304,
+      "sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4"
+    },
+    "initramfs": {
+      "size": 11673081,
+      "sha256": "d4622a524cdd7f9a99111fff85a1e467e07d35660c63bc2124a6a4462c04e0fe"
+    },
+    "required_kernel_sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+    "modloop_sha256": "f969d12c8e23b486c8df651f04a4a9767f32fee16aed385c23462c31ea6cb47b",
+    "module_metadata": {
+      "modules.dep": {
+        "size": 79770,
+        "sha256": "8cd0e53b89ef000dd6270a91da70334f6696c7d089523da75746c08594e815c9"
+      },
+      "modules.softdep": {
+        "size": 818,
+        "sha256": "7d211e6d22125a59819964da6c98395da2f892cb2f88c738264466d1c6c500b5"
+      },
+      "modules.builtin": {
+        "size": 4315,
+        "sha256": "01969d14f424e6c02778adb9e4bb8b561f1cce085d1b23e62206f79bdda590c4"
+      }
+    },
+    "network_load_order": [
+      "kernel/net/core/failover.ko",
+      "kernel/drivers/net/net_failover.ko",
+      "kernel/drivers/net/virtio_net.ko"
+    ],
+    "network_modules": [
+      {
+        "path": "kernel/net/core/failover.ko",
+        "name": "failover",
+        "size": 29183,
+        "sha256": "f812cfef580eb24facf105b3bfef6af7a93cb9a9352244d5b5c2d048ad58d7aa",
+        "vermagic": "6.18.35-0-virt SMP preempt mod_unload modversions aarch64",
+        "depends": [],
+        "signature": {
+          "kind": "PKCS#7",
+          "size": 695,
+          "sha256": "25c9e144c80425d6a8e2ede17052b76457b3bb71e965873cd1a50047ef48c61b",
+          "algorithm_id": 0,
+          "hash_id": 0,
+          "public_key_verification": "not_performed; pinned modloop digest authenticates bytes"
+        }
+      },
+      {
+        "path": "kernel/drivers/net/net_failover.ko",
+        "name": "net_failover",
+        "size": 42223,
+        "sha256": "76644582666b394e3351dc7936f1c6684843d72fc7c323d607cb90ddd93e2d6e",
+        "vermagic": "6.18.35-0-virt SMP preempt mod_unload modversions aarch64",
+        "depends": [
+          "failover"
+        ],
+        "signature": {
+          "kind": "PKCS#7",
+          "size": 695,
+          "sha256": "5f05f9748be2c078d36482f2414455a162fb4dbc08d875f1f068f3b73bcc9263",
+          "algorithm_id": 0,
+          "hash_id": 0,
+          "public_key_verification": "not_performed; pinned modloop digest authenticates bytes"
+        }
+      },
+      {
+        "path": "kernel/drivers/net/virtio_net.ko",
+        "name": "virtio_net",
+        "size": 184671,
+        "sha256": "0b015f1d29694b99fe7aec058c0b0b3dc050c17b1c58cc47487a7677fc392d79",
+        "vermagic": "6.18.35-0-virt SMP preempt mod_unload modversions aarch64",
+        "depends": [
+          "net_failover"
+        ],
+        "signature": {
+          "kind": "PKCS#7",
+          "size": 695,
+          "sha256": "862bae7477cc9cc6f33ebda23c6441ca8e7946870b4fe66dd2028aecc8b29e57",
+          "algorithm_id": 0,
+          "hash_id": 0,
+          "public_key_verification": "not_performed; pinned modloop digest authenticates bytes"
+        }
+      }
+    ],
+    "inputs": {
+      "guest/steam/ideck-steam": {
+        "size": 4326,
+        "sha256": "11cc1c70d2960a745b0f2c31a989eedc3ed23a1f6a95d5be7e6094cd25a7f790"
+      },
+      "guest/steam/install-cached.py": {
+        "size": 12332,
+        "sha256": "81e39f6c23a7e5d0bfff8c133a550bd6a754d4f86c321bb14650c7a77874e909"
+      },
+      "guest/steam/namespace-check.py": {
+        "size": 15718,
+        "sha256": "96c929eafefb2f76aa7751fb1869baa6def54e5e31be2a0e6620a486bca64b0d"
+      },
+      "guest/steam/prepare-display.py": {
+        "size": 6969,
+        "sha256": "b932d9b11d89717e66c396f0302ed2500942505918ca629e75f5761d68fc06cc"
+      },
+      "guest/steam/shm-recovery.py": {
+        "size": 12909,
+        "sha256": "f90092f629593f6f653825e35359dd9f4a08a3ffef7a370d417719a1a9070b7e"
+      },
+      "tools/steam_client.py": {
+        "size": 12638,
+        "sha256": "f642b54ee73c777330be843ba4d38153fed0ab22259b8030ef9d205d70a554b1"
+      },
+      "ipa/steam-client.lock.json": {
+        "size": 4757,
+        "sha256": "9b8bc9fe5e8074ae4d798f645d259066e968b8bc5512183c0aca34e1f54a8bdd"
+      },
+      "ipa/steam-dependencies.lock.json": {
+        "size": 17731,
+        "sha256": "0d153bbb2a9a39c32fb650d189cc972355fc1d94da39297cf0b9830fdbd922f6"
+      }
+    },
+    "original_shutdown_function_preserved": true,
+    "required_cmdline": [
+      "rdinit=/ideck-steam-init",
+      "ideck.steam_experiment=1",
+      "ideck.steam_disk_grow=1"
+    ],
+    "guest_network": {
+      "device": "virtio-net-device",
+      "address": "10.0.2.15/24",
+      "gateway": "10.0.2.2",
+      "dns": "10.0.2.3"
+    },
+    "gui_payload_changed": false,
+    "valve_client_bundled": false,
+    "guest_boot_verified": false,
+    "iphone_verified": false
+  },
+  "initramfs_sha256": "d4622a524cdd7f9a99111fff85a1e467e07d35660c63bc2124a6a4462c04e0fe",
+  "kernel_sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+  "seed_sha256": "9c4d978f0ea33b608735e203c0e1695ca89188c02b097e610f971cffe1c05791",
+  "storage_preflight": {
+    "filesystem_path": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/resume-local-20261017/run27",
+    "free_bytes": 63469809664,
+    "virtual_disk_bytes": 12884901888,
+    "reserve_bytes": 4294967296,
+    "required_before_image_write_bytes": 17179869184,
+    "shortfall_bytes": 0,
+    "allowed": true,
+    "policy": "full-offline-copy-plus-4GiB-before-image-write",
+    "sparse_allocation_discount": false
+  },
+  "image_tool": {
+    "schema": 1,
+    "package": {
+      "name": "qemu-utils",
+      "version": "1:10.0.13+ds-0+deb13u1",
+      "architecture": "amd64",
+      "filename": "pool/main/q/qemu/qemu-utils_10.0.13+ds-0+deb13u1_amd64.deb",
+      "sha256": "6d31339b1630153fe7c5f8a51426b8fa6ce35731aeb015a84f2d333c4e4dca30",
+      "size": 2024216,
+      "installed_size_kib": 12510
+    },
+    "release": {
+      "url": "https://deb.debian.org/debian/dists/trixie/InRelease",
+      "size": 140421,
+      "sha256": "0584fba32e13e0ab8285fb16c27adea1ec03a73669c18702821094fd6ca86675",
+      "indexes": [
+        {
+          "architecture": "arm64",
+          "size": 9614192,
+          "sha256": "be16b37b2f740f066ea93d35d56f04f94d63693e5a3eb421b052bf86fae75bcd",
+          "url": "https://deb.debian.org/debian/dists/trixie/main/binary-arm64/by-hash/SHA256/be16b37b2f740f066ea93d35d56f04f94d63693e5a3eb421b052bf86fae75bcd"
+        },
+        {
+          "architecture": "amd64",
+          "size": 9678380,
+          "sha256": "7778d3e3f303b7ddb8ce0fe7c8d57473a076c6bf2e8f241f75421d2396352498",
+          "url": "https://deb.debian.org/debian/dists/trixie/main/binary-amd64/by-hash/SHA256/7778d3e3f303b7ddb8ce0fe7c8d57473a076c6bf2e8f241f75421d2396352498"
+        }
+      ],
+      "signer_fingerprints": [
+        "04B54C3CDCA79751B16BC6B5225629DF75B188BD",
+        "41587F7DB8C774BCCF131416762F67A0B2C39DE4",
+        "B8B80B5B623EAB6AD8775C45B7C5D7D6350947F8"
+      ],
+      "date": "Sat, 12 Sep 2026 07:55:41 UTC",
+      "max_age_days": 90
+    },
+    "binary_sha256": "77a92b0ca43516403064a4d0939f91c38b9ab2447b32e8f66709dcf29432d626",
+    "binary_size": 2534080,
+    "version_check": "qemu-img version 10.0.13 (Debian 1:10.0.13+ds-0+deb13u1)",
+    "loader": "prior-build/production/vm/host/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+    "library_path": "prior-build/production/vm/host/usr/lib/x86_64-linux-gnu",
+    "additional_libraries_needed": false,
+    "system_install": false
+  },
+  "continuation": {
+    "source": "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/resume-local-20261017/run25",
+    "source_sha256": "20a30a61ccbba6830442e067907f7dc9fcad22e452f57a98760dbe8b2790cef0",
+    "original_preserved": true,
+    "method": "qemu-img convert; source read lock",
+    "copied_sha256": "3cb1c3b62e713f250491b07314cba893ac3674a476702b61d7507a542e61c4ae"
+  },
+  "offline_fsck": {
+    "exit_code": 0,
+    "read_only": true,
+    "writer_running": false,
+    "fsck_command": [
+      "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/prior-build/production/vm/host/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+      "--library-path",
+      "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/prior-build/production/vm/host/usr/lib/x86_64-linux-gnu",
+      "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/prior-build/production/vm/host/usr/sbin/e2fsck",
+      "-f",
+      "-n",
+      "/mnt/e/Freddy Fazbear/iDeck.work/steam-arm64-experiment-20261017/resume-local-20261017/run27/offline-fsck.raw"
+    ],
+    "status": "pass",
+    "evaluation": {
+      "policy": "strict-e2fsck-fn-v1",
+      "accepted": true,
+      "reason_codes": [],
+      "unexpected_lines": [],
+      "passes_and_summary": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "summary"
+      ],
+      "version_count": 1
+    },
+    "free_bytes_before_copy": 58793074688,
+    "virtual_size": 12884901888,
+    "raw_sha256": "4c11447b7d46d810cb4b43f9dd2523338d91bcf3fe665db728793934f9257f57",
+    "raw_size": 12884901888,
+    "stdout_sha256": "f480495835b7a4b4aa2c1001e25a898a65b11b276e9f20f3b07e2854140850c3",
+    "stderr_sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948",
+    "log_sha256": "c3908968fc7a7ee2d364844bcf4dd96282c313d6ff4ecfab67989c789b6d0705",
+    "scope": "ext4 filesystem, flattened offline copy"
+  },
+  "cache_port": 35449,
+  "seed_read_only_qmp": true,
+  "gui_ready": true,
+  "elapsed_seconds": 1993.406,
+  "qemu_exit_code": 0,
+  "total_elapsed_seconds": 2443.829
+}

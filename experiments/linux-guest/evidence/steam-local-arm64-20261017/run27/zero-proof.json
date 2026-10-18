@@ -1,0 +1,18 @@
+{
+  "processes": [
+    {
+      "pid": 1238,
+      "zero_library_mapped": true,
+      "ipc_timeout_library_mapped": false
+    }
+  ],
+  "events": [
+    {
+      "event": "ready",
+      "pid": 1238,
+      "browser_sha256": "0a849676a3ba0cc51ca23cba79be3df0546744fd92c2e2d628a1f71707a70a56"
+    }
+  ],
+  "native_ipc_deadline_ms": 500,
+  "client_elf_patched": false
+}

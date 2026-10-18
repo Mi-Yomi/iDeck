@@ -1,0 +1,18 @@
+{
+  "reason": "deadline",
+  "observer_failure_class": null,
+  "seconds": 1503.934954632,
+  "frozen": [
+    1180,
+    1238,
+    1275,
+    1283,
+    1310,
+    1369,
+    1371,
+    1377,
+    1424
+  ],
+  "launcher_pid": 892,
+  "path": "/home/ideck/steam-experiment-logs/resume-local-20261017-desktop-zero-watchdog-v22"
+}

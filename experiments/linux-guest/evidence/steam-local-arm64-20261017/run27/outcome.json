@@ -1,0 +1,35 @@
+{
+  "reviewed_by_agent": true,
+  "desktop_navigation_verified": true,
+  "desktop_navigation_scope": "one local Store-Library-Store-Library roundtrip with slow transitions",
+  "big_picture_main_and_game_details_verified": true,
+  "big_picture_navigation_verified": false,
+  "big_picture_limitation": "main Home, tips and game details rendered; full menu/return not verified before bounded freeze",
+  "steam_proton_games_verified": false,
+  "iphone_verified": false,
+  "repeat_launch_stability_verified": false,
+  "conclusion": "Working bounded desktop navigation and Big Picture Home/game-detail rendering with 4GiB, selective lazy zero, stock CEF hang flag and later owned CPU-affinity phase; no broader game/device/stability acceptance",
+  "run": 27,
+  "memory_mib": 4096,
+  "vcpus": 4,
+  "native_ipc_deadline_ms": 500,
+  "production_zero_source_sha256": "dfa4bb8edb0766551f6bd6d83fa9ef611ddbdeae1d8486fd4e1c8c24adf7b73b",
+  "comparison": "same clean25 source plus stock CEF watchdog flag; later one-shot affinity phase is separate/confounded",
+  "maximum_kernel_oom_count": 0,
+  "minimum_available_kib": 1927896,
+  "main_monitor_minimum_available_kib": 1991664,
+  "bp_minimum_available_kib": 1927896,
+  "application_stop": "ordinary shutdown completed",
+  "owned_signal_counts": {
+    "SIGCONT": 10
+  },
+  "vm_stop": "clean original Stop, QEMU0, no recovery marker",
+  "full_post_fsck": "five passes plus summary; source unchanged",
+  "original_launchers_and_ios_unchanged": true,
+  "one_local_run_only": true,
+  "known_harness_failures": [
+    "016 root-only test payload path: permission denied, corrected017/024",
+    "032 own JSON receipt reading bug; no file write, corrected033",
+    "034 active-window query after actual click failed for popup; Store navigation visually verified035"
+  ]
+}

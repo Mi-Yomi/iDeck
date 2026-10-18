@@ -1,0 +1,62 @@
+{
+  "ready": 1,
+  "zero_calls": 6,
+  "lazy_zero_calls": 5,
+  "ordinary_fallback_calls": 1,
+  "invalid_log_lines": 0,
+  "events": [
+    {
+      "event": "ready",
+      "pid": 1238,
+      "browser_sha256": "0a849676a3ba0cc51ca23cba79be3df0546744fd92c2e2d628a1f71707a70a56"
+    },
+    {
+      "event": "stream_zero",
+      "pid": 1238,
+      "bytes": 26214416,
+      "caller_matched": true,
+      "already_zero": true,
+      "inode": 15
+    },
+    {
+      "event": "stream_zero",
+      "pid": 1238,
+      "bytes": 26214416,
+      "caller_matched": true,
+      "already_zero": true,
+      "inode": 16
+    },
+    {
+      "event": "stream_zero",
+      "pid": 1238,
+      "bytes": 26214416,
+      "caller_matched": true,
+      "already_zero": false,
+      "inode": 0
+    },
+    {
+      "event": "stream_zero",
+      "pid": 1238,
+      "bytes": 26214416,
+      "caller_matched": true,
+      "already_zero": true,
+      "inode": 20
+    },
+    {
+      "event": "stream_zero",
+      "pid": 1238,
+      "bytes": 26214416,
+      "caller_matched": true,
+      "already_zero": true,
+      "inode": 22
+    },
+    {
+      "event": "stream_zero",
+      "pid": 1238,
+      "bytes": 26214416,
+      "caller_matched": true,
+      "already_zero": true,
+      "inode": 23
+    }
+  ]
+}

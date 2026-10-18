@@ -1,0 +1,106 @@
+{
+  "processes": [
+    {
+      "pid": 1180,
+      "executable": "steam",
+      "cpus_allowed": "0-3",
+      "seccomp": "0",
+      "native_watchdog_flag": true,
+      "native_force_sandbox_flag": true,
+      "browser_hang_argument_names": [
+        "-cef-disable-hang-timeouts"
+      ]
+    },
+    {
+      "pid": 1238,
+      "executable": "steamwebhelper",
+      "cpus_allowed": "2-3",
+      "seccomp": "0",
+      "native_watchdog_flag": false,
+      "native_force_sandbox_flag": false,
+      "browser_hang_argument_names": [
+        "--disable-hang-monitor"
+      ]
+    },
+    {
+      "pid": 1275,
+      "executable": "steamwebhelper",
+      "cpus_allowed": "2-3",
+      "seccomp": "0",
+      "native_watchdog_flag": false,
+      "native_force_sandbox_flag": false,
+      "browser_hang_argument_names": [
+        "--change-stack-guard-on-fork"
+      ]
+    },
+    {
+      "pid": 1283,
+      "executable": "steamwebhelper",
+      "cpus_allowed": "2-3",
+      "seccomp": "0",
+      "native_watchdog_flag": false,
+      "native_force_sandbox_flag": false,
+      "browser_hang_argument_names": [
+        "--change-stack-guard-on-fork"
+      ]
+    },
+    {
+      "pid": 1310,
+      "executable": "steamwebhelper",
+      "cpus_allowed": "2-3",
+      "seccomp": "0",
+      "native_watchdog_flag": false,
+      "native_force_sandbox_flag": false,
+      "browser_hang_argument_names": [
+        "--change-stack-guard-on-fork"
+      ]
+    },
+    {
+      "pid": 1369,
+      "executable": "steamwebhelper",
+      "cpus_allowed": "2-3",
+      "seccomp": "0",
+      "native_watchdog_flag": false,
+      "native_force_sandbox_flag": false,
+      "browser_hang_argument_names": [
+        "--change-stack-guard-on-fork"
+      ]
+    },
+    {
+      "pid": 1371,
+      "executable": "steamwebhelper",
+      "cpus_allowed": "2-3",
+      "seccomp": "0",
+      "native_watchdog_flag": false,
+      "native_force_sandbox_flag": false,
+      "browser_hang_argument_names": [
+        "--change-stack-guard-on-fork"
+      ]
+    },
+    {
+      "pid": 1377,
+      "executable": "steamwebhelper",
+      "cpus_allowed": "2-3",
+      "seccomp": "2",
+      "native_watchdog_flag": false,
+      "native_force_sandbox_flag": false,
+      "browser_hang_argument_names": [
+        "--change-stack-guard-on-fork"
+      ]
+    },
+    {
+      "pid": 1424,
+      "executable": "steamwebhelper",
+      "cpus_allowed": "2-3",
+      "seccomp": "2",
+      "native_watchdog_flag": false,
+      "native_force_sandbox_flag": false,
+      "browser_hang_argument_names": [
+        "--change-stack-guard-on-fork"
+      ]
+    }
+  ],
+  "native_ipc_deadline_ms": 500,
+  "outer_monitor_seconds": 1500,
+  "hang_flag_is_not_ui_acceptance": true
+}

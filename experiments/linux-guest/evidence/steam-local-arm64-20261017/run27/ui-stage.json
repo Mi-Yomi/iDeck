@@ -1,0 +1,19 @@
+{
+  "cef_error_sources": {},
+  "checkpoint_counts": {
+    "Failed to connect to the bus": 8,
+    "GPU process exited": 0,
+    "Failed to create": 0,
+    "InitializeSandbox": 0,
+    "SharedJSContext": 0,
+    "OnMainFrameReady": 0,
+    "SetLoginState: Success - OK": 1,
+    "WaitingForLibraryReady": 9,
+    "Failed to connect": 16,
+    "Unable to connect": 0,
+    "assertion failed": 0
+  },
+  "updater_restarts": 1,
+  "launcher_failed": false,
+  "summary_exists": false
+}

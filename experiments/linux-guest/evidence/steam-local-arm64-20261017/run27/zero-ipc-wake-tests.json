@@ -1,0 +1,18 @@
+{
+  "sha256": "8693c717ca50ac2f1199db189555d68df4f00002411e7a404379504eaa8f57b1",
+  "tests": [
+    {
+      "case": "arm64-ipc",
+      "exit": 0,
+      "stdout": "SHM_ZERO_IPC_PASS: distinct process mappings, untouched holes, bidirectional payload visibility and observed blocked shared futex wake\n",
+      "stderr": ""
+    },
+    {
+      "case": "arm64-ipc-preload-fallback",
+      "exit": 0,
+      "stdout": "SHM_ZERO_IPC_PASS: distinct process mappings, untouched holes, bidirectional payload visibility and observed blocked shared futex wake\n",
+      "stderr": ""
+    }
+  ],
+  "passed": true
+}

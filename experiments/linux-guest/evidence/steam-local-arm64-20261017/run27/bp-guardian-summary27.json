@@ -1,0 +1,12 @@
+{
+  "seconds": 331.7511934009999,
+  "guard": {
+    "cause": "bp_guardian_operator_budget",
+    "seconds": 331.75065077599993,
+    "browser_pid": 1238,
+    "free_bytes_after_freeze": 1961213952
+  },
+  "existing_client_resumed": true,
+  "same_steam_configuration": true,
+  "new_uri_dispatched": false
+}

@@ -1,0 +1,12 @@
+{
+  "run": 26,
+  "completed": false,
+  "clean_shutdown": false,
+  "qemu_exit_code": null,
+  "recovery_marker_preserved": true,
+  "not_reused_as_source": true,
+  "run27_source": "clean run25",
+  "ui_and_affinity_result": "inconclusive after interruption",
+  "no_post_interruption_repair_or_reuse": true,
+  "incomplete_disk_not_opened_by_run27": true
+}

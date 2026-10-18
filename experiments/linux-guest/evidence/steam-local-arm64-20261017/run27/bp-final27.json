@@ -1,0 +1,23 @@
+{
+  "wall_ns": 1792322596710464794,
+  "samples": 173,
+  "minimum_available_kib": 1927896,
+  "minimum_shm_free_bytes": 1943072768,
+  "oom_kill": 0,
+  "kernel_exit": 0,
+  "kernel_oom_lines": 0,
+  "kernel_log_sha256": "ffc0758f1c2226c153ce635ab622952c2e6c3822d97a9d326ce562cc971df1e8",
+  "kernel_stderr_bytes": 0,
+  "guardian": {
+    "seconds": 331.7511934009999,
+    "guard": {
+      "cause": "bp_guardian_operator_budget",
+      "seconds": 331.75065077599993,
+      "browser_pid": 1238,
+      "free_bytes_after_freeze": 1961213952
+    },
+    "existing_client_resumed": true,
+    "same_steam_configuration": true,
+    "new_uri_dispatched": false
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "reference": "clean run25; interrupted26 is not reused",
+  "functional_change": "only stock -cef-disable-hang-timeouts in private Steam desktop launcher",
+  "basis": "run25 exact killing-unresponsive-browser log04:30:19UTC/about:blank; one CPU-active renderer later disappeared",
+  "memory_mib": 4096,
+  "vcpus": 4,
+  "browser_cpu_affinity": "original2-3; no widening helper",
+  "native_ipc_deadline_ms": 500,
+  "zero_library_sha256": "c350f21128358eb4bdc942db571affe38b5817341e9656cadb7e592c74e36f9d",
+  "private_launcher_sha256": "e864839b710ee1db8ddcd3c86f82d5db3484ee3fdeadec904c8b8491e62f4f1d",
+  "original_guard_functions_ast_unchanged": true,
+  "sandbox_preserved": true,
+  "fresh_fixture_before_steam_required": true,
+  "monitor_seconds": 1500,
+  "backstop_seconds": 1650,
+  "hard_seconds": 2400,
+  "iphone_verified": false,
+  "prepared_only": true
+}

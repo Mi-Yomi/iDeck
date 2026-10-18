@@ -1,0 +1,25 @@
+{
+  "source_sha256": "28fc5adf0e6c8b8f0a1b3c13c95b6f7218a1e937296e4712866474429d26f3c5",
+  "arm64_sha256": "8693c717ca50ac2f1199db189555d68df4f00002411e7a404379504eaa8f57b1",
+  "tests": [
+    {
+      "case": "native-build",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "case": "native-ipc",
+      "exit": 0,
+      "stdout": "SHM_ZERO_IPC_PASS: distinct process mappings, untouched holes, bidirectional payload visibility and observed blocked shared futex wake\n",
+      "stderr": ""
+    },
+    {
+      "case": "arm64-build",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "actual_arm64_test": "queued016"
+}

@@ -1,0 +1,17 @@
+{
+  "mode": "native-500ms-lazy-zero-no-ui-hang-timeouts",
+  "zero_library_sha256": "c350f21128358eb4bdc942db571affe38b5817341e9656cadb7e592c74e36f9d",
+  "ui_watchdog_flag": "-cef-disable-hang-timeouts",
+  "original_deadline_ms": 500,
+  "effective_deadline_ms": 500,
+  "library_sha256": null,
+  "library_source_sha256": "dd7a19b8531294772b3b11e1742c12341d1df2bd77186fdbf042accdb9c9b4c6",
+  "original_helper_sha256": "96c929eafefb2f76aa7751fb1869baa6def54e5e31be2a0e6620a486bca64b0d",
+  "private_helper_sha256": "dd3c87333e166b7d31673a81adbc4cb9ef574203d1d9d1c25c56251069271e72",
+  "only_helper_change": "private UID1000 lazy-zero preload; native IPC500ms; restart-aware desktop launcher",
+  "private_launcher_sha256": "e864839b710ee1db8ddcd3c86f82d5db3484ee3fdeadec904c8b8491e62f4f1d",
+  "launcher_flag_change": "same desktop flags plus stock -cef-disable-hang-timeouts; native IPC500ms and sandbox retained",
+  "original_helper_unchanged": true,
+  "sandbox_preserved": true,
+  "resource_profile_changed": false
+}

@@ -1,3 +1,5 @@
+Latest verified local run27, 2026-10-18: actual Store-Library-Store-Library navigation, Big Picture Home/game details rendered, 4GiB/native500ms/sandbox, zero OOM. Ordinary application shutdown, clean original VM Stop/QEMU0, full post-fsck/source preservation PASS. Pinned zero V5 + stock CEF watchdog flag; later owned CPU-affinity phase is separate/confounded. One bounded run only; full BP menu/return, Steam games, repeat launch and iPhone unverified. Run26 interrupted/inconclusive, preserved and not reused. Render-only pinned profile + 4 tests and actual CLI hash/overwrite checks PASS. No default/iOS launch profile activated. Read [current UI result](STEAM-UI-RESULT-20261018.md).
+
 # iDeck: результат ночной проверки 18 октября 2026
 
 По последующему ручному запросу проверено [исправление роста общей памяти](SHM-RESULT-20261018.md).

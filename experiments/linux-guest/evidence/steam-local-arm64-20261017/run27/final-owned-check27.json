@@ -1,0 +1,7 @@
+{
+  "owned_run27_host_processes_remaining": [],
+  "input_mount_still_present": false,
+  "matching_input_loop_devices_remaining": [],
+  "fresh_check": true,
+  "other_wsl_services_left_untouched": true
+}

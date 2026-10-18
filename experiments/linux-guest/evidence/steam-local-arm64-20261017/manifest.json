@@ -2883,6 +2883,301 @@
       "sha256": "20e1a8ff0e5ec6de1507bff9bc04a50c426b89e4a08096ddba20460e8c169136"
     },
     {
+      "file": "run26/outcome.json",
+      "size": 351,
+      "sha256": "a48a8671fce7cd08a79eb91893a6c68a7697c8dc45f0375095e22f8387e6f366"
+    },
+    {
+      "file": "run26/README.md",
+      "size": 365,
+      "sha256": "4d2781c156d8330f4393011192e5396f794243a2e89fdd33f01af7c9030b39db"
+    },
+    {
+      "file": "run27/affinity-phase27.json",
+      "size": 24791,
+      "sha256": "bb3f02330d472af6273ff65de79fd45d26c6262eab813716cb80d2db2c58500e"
+    },
+    {
+      "file": "run27/application-stop.json",
+      "size": 1074,
+      "sha256": "8e9127d983059b1f5339aaffd62becb96d82db15c243da2ef5b351eac2a2da8d"
+    },
+    {
+      "file": "run27/bp-final27.json",
+      "size": 650,
+      "sha256": "802c4070acf91cbc98716574c1022a5b5135cbd494c7589dca11e2f66a5192ae"
+    },
+    {
+      "file": "run27/bp-guardian-started27.json",
+      "size": 131,
+      "sha256": "ec57efdd9ba96dd565061ccd08e5428b3b19cb62d9064474bfbb78d142d17556"
+    },
+    {
+      "file": "run27/bp-guardian-summary27.json",
+      "size": 301,
+      "sha256": "53d67f4bfe54d811856964a7f1a86439bc454b4d2639aef33eb343a21d18ebc8"
+    },
+    {
+      "file": "run27/bp-resource-after-tips27.json",
+      "size": 112,
+      "sha256": "61da1906d3e5b1edb04e0eea40b45b5f8f26fd79de8690aa591d99eebb150991"
+    },
+    {
+      "file": "run27/fast-guard.json",
+      "size": 119,
+      "sha256": "d6136c1e6df03a7b84b368c76dd5df337b366f7cfef6d04647fcaf1180c5c0bf"
+    },
+    {
+      "file": "run27/final-owned-check27.json",
+      "size": 202,
+      "sha256": "40984b8e23e16a5143959733ecc470841ed5a24738711efbee14d52e4b74715b"
+    },
+    {
+      "file": "run27/input-mount27-cleanup.json",
+      "size": 385,
+      "sha256": "3159ea4ac32a0555cebda215588ecdf0d6d89931a65a831eba3ab69e5b9382a6"
+    },
+    {
+      "file": "run27/ipc-unit-build.json",
+      "size": 659,
+      "sha256": "0e364b98842574aefc0ad230e078c623ec61337508a609e40f7f8287d3f064ba"
+    },
+    {
+      "file": "run27/launch-profile.json",
+      "size": 1013,
+      "sha256": "cccc24be251218c4eb1851f9c0f80089fe2bb3315fd4740aff49346a1321bd0a"
+    },
+    {
+      "file": "run27/memory27-summary.json",
+      "size": 2792,
+      "sha256": "76d229a2637b528467ad986ac63588c1d60807ad75298d50a810ddf5533583f4"
+    },
+    {
+      "file": "run27/offline-fsck.json",
+      "size": 1416,
+      "sha256": "5e9ea646d5d36405af31ab75e459cf3390c555a1dc3dbe367148806c6d9b16b1"
+    },
+    {
+      "file": "run27/offline-fsck.log",
+      "size": 401,
+      "sha256": "c3908968fc7a7ee2d364844bcf4dd96282c313d6ff4ecfab67989c789b6d0705"
+    },
+    {
+      "file": "run27/offline-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "file": "run27/offline-fsck.stdout.log",
+      "size": 374,
+      "sha256": "f480495835b7a4b4aa2c1001e25a898a65b11b276e9f20f3b07e2854140850c3"
+    },
+    {
+      "file": "run27/outcome.json",
+      "size": 1799,
+      "sha256": "4d6ed5c4ea313612f239486b87efdb0008e296dd1116ac559a28896c05a9b172"
+    },
+    {
+      "file": "run27/post-application-check.json",
+      "size": 799,
+      "sha256": "7d1296e37993d926051ffd660bfdac88031d5a64c2b653e99fd35df59f8575d9"
+    },
+    {
+      "file": "run27/post-run-fsck/offline-fsck.json",
+      "size": 1426,
+      "sha256": "cb501a0f6cd22802bb231bd30d473bf7e5779fc70341783f7f373579d18b2a19"
+    },
+    {
+      "file": "run27/post-run-fsck/offline-fsck.log",
+      "size": 411,
+      "sha256": "6d25cce5e8b83a9e1db22540963c212ba7262787f15ee9cf90b8b1285001fe70"
+    },
+    {
+      "file": "run27/post-run-fsck/offline-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "file": "run27/post-run-fsck/offline-fsck.stdout.log",
+      "size": 384,
+      "sha256": "93c1660c169457acf738c0ca2894d2dc4f261af5300147976125759dbf7e36fa"
+    },
+    {
+      "file": "run27/post-run-fsck/source-preservation.json",
+      "size": 1818,
+      "sha256": "c198efc343e28dd799827fefbc00e0e1cc398f05d7ff9d90bb361fc51aa91398"
+    },
+    {
+      "file": "run27/profile27.json",
+      "size": 863,
+      "sha256": "d94cad3e2ed63d97493b719d0fec59014571ad3d87bc92dd2a029852b7bd3295"
+    },
+    {
+      "file": "run27/README.md",
+      "size": 2649,
+      "sha256": "54d6beb7824c1afcf32614c0e3bb30923c9b08162319e859bc0e30e468f47cfc"
+    },
+    {
+      "file": "run27/render-profile27-validation.json",
+      "size": 1628,
+      "sha256": "4efc888a21eb3c40ca7e7768615d354b5d6ffb791ca8137b2ddc38944103fbcb"
+    },
+    {
+      "file": "run27/result.json",
+      "size": 19575,
+      "sha256": "7443a951254a690dd647b5df44f0fcebe900f8cae144a91f6ff53c2306885e0d"
+    },
+    {
+      "file": "run27/screen-stage-receipt.json",
+      "size": 4931,
+      "sha256": "b2e4370c8fd628a8efc7565873075254330eca670edf0c94e9bcd79544d93b9e"
+    },
+    {
+      "file": "run27/scripts/004-resource-budget.sh",
+      "size": 713,
+      "sha256": "d931fbb8f817c82d289326964c6eca25f4ddfa4e23e90a64d8b9c3abf0995815"
+    },
+    {
+      "file": "run27/scripts/006-zero-proof.sh",
+      "size": 1228,
+      "sha256": "f1c3f151a1805a98a8b6caf3cacec37d3fc4cdb67af203fd563c7212a5e0a9d9"
+    },
+    {
+      "file": "run27/scripts/011-zero-events.sh",
+      "size": 806,
+      "sha256": "f62f28b7a4fcd463aa2ba296bf1f09908d443553bc3af51b87acab1880e4eefa"
+    },
+    {
+      "file": "run27/scripts/014-watchdog-proof.sh",
+      "size": 1374,
+      "sha256": "aa8512022e9bc0f91efaebf92d8da10b261bf49d4ff4f87f8bddbb27d46af341"
+    },
+    {
+      "file": "run27/scripts/028-library-click.sh",
+      "size": 962,
+      "sha256": "eb9bf585b1954d1187c3881c529455dd87e87024e378d48dd59d11e04b5dce64"
+    },
+    {
+      "file": "run27/scripts/030-owned-affinity-phase.sh",
+      "size": 5197,
+      "sha256": "01544617f3c867a65be1f0c61876e854a65b73fc65436f5452adebc2ca0d1e78"
+    },
+    {
+      "file": "run27/scripts/033-affinity-receipt-normalize.sh",
+      "size": 681,
+      "sha256": "233badfb814d43b4cf34d77dd450fa178c6c2f7cd3310736cc2ddaad4d6e858b"
+    },
+    {
+      "file": "run27/scripts/034-return-store.sh",
+      "size": 959,
+      "sha256": "4f2bf4c0583c21b23c3cfcba34e8823a0aef4b49d9a541809e0771fdbbda3340"
+    },
+    {
+      "file": "run27/scripts/036-repeat-library.sh",
+      "size": 949,
+      "sha256": "517e29020d02e3f314401b9bfffa6459f4718b31fbc840b2c2de8dfff84460ac"
+    },
+    {
+      "file": "run27/scripts/041-mode-hover.sh",
+      "size": 890,
+      "sha256": "3f027f5482a4e097063a5dac462a901a70cfbf35e7d7aaf85bb45266c83b2924"
+    },
+    {
+      "file": "run27/scripts/042-enter-big-picture.sh",
+      "size": 923,
+      "sha256": "2a49fa386d043ed37377528a375f09611d4edc7a191db124f3821248d982b2a2"
+    },
+    {
+      "file": "run27/scripts/043-bp-continuation.sh",
+      "size": 9278,
+      "sha256": "741f1449e24909b703baa46e2ca97ba726ff722a6d2b00d03a47d1a1c415a896"
+    },
+    {
+      "file": "run27/scripts/046-bp-welcome-continue.sh",
+      "size": 988,
+      "sha256": "5b1577fe16923e5db023d817efa5695676a036e72eaf10bf00092ecb3d7826f8"
+    },
+    {
+      "file": "run27/scripts/047-bp-tip-space.sh",
+      "size": 955,
+      "sha256": "6ddf2135d226ae03c5069968edc8955347de720d1c05211a4653891cea78d4b3"
+    },
+    {
+      "file": "run27/scripts/048-bp-quick-tip.sh",
+      "size": 988,
+      "sha256": "92795da04ad8e0fa5f46f0415960d332da5645215d8940937097f7c42ee78da2"
+    },
+    {
+      "file": "run27/scripts/050-bp-info-tip.sh",
+      "size": 985,
+      "sha256": "727d21df3c0d5dfe51acf207d154f3700c795fa9378e184bf148637b3292b7c8"
+    },
+    {
+      "file": "run27/scripts/051-bp-held-tip-input.sh",
+      "size": 1066,
+      "sha256": "7f0a27a855b19938082839b969b1c609f998cfb7d08c2a017d55c7fe35917b83"
+    },
+    {
+      "file": "run27/scripts/900-finish-monitor.sh",
+      "size": 962,
+      "sha256": "ea7a98d2ef5505db4ec65c7b12c77a84e3e0ec452067ff5a3778e0ac80fd3cd8"
+    },
+    {
+      "file": "run27/scripts/901-stop-owned-app.sh",
+      "size": 6545,
+      "sha256": "9fef296dad69cadae974c58c5ffdab30e2dfa4e04b25ee54185d05db42bc9b39"
+    },
+    {
+      "file": "run27/scripts/902-post-app-check.sh",
+      "size": 1862,
+      "sha256": "3f6b75866393e3076aff0e3d8490a91c3fe6a731056486f8cd512152e0e9bf48"
+    },
+    {
+      "file": "run27/scripts/903-private-export.sh",
+      "size": 1545,
+      "sha256": "46058573a34810817f2d09adc98ac49134db7d0ab2cc026deb9c489939a39ae4"
+    },
+    {
+      "file": "run27/summary.json",
+      "size": 316,
+      "sha256": "f872a3a92b39f785865d17c320b102090cb0715df32a15e93dfc08a1aef3575a"
+    },
+    {
+      "file": "run27/ui-log-summary27.json",
+      "size": 665,
+      "sha256": "0efd6fc60001877097b95680c65ea0b37753a6f5e5c729f4676b0824d93a56e7"
+    },
+    {
+      "file": "run27/ui-stage.json",
+      "size": 470,
+      "sha256": "e6a10773a9f4b8abb4347422220158a363e54212546467e0cac102a95e3319bc"
+    },
+    {
+      "file": "run27/watchdog-proof.json",
+      "size": 2687,
+      "sha256": "66e18e1c9e252a24f54cd74b9904d886f563b5ef4728feaebf4ae746a17228c4"
+    },
+    {
+      "file": "run27/zero-events-snapshot.json",
+      "size": 1261,
+      "sha256": "4f5cdf781896722d87f5f9f2a03c3a557da546d5e67aa6e16f3c772d3b49f0fc"
+    },
+    {
+      "file": "run27/zero-ipc-wake-tests.json",
+      "size": 599,
+      "sha256": "9912016c0c62fb85b0f45baff8effbdbb5358f02475dafe791ff24d99e9769e8"
+    },
+    {
+      "file": "run27/zero-proof.json",
+      "size": 362,
+      "sha256": "fe720fd4ba9c3022896ff5b9512f78b319bac315d1c35a94b33ece777976055c"
+    },
+    {
+      "file": "run27/zero-runtime-tests.json",
+      "size": 879,
+      "sha256": "251e878a4b9b49dcb20fd3d7d9dedb6af51e179a246a13af82a39ead0f5a6e82"
+    },
+    {
       "file": "run9/control.log",
       "size": 108,
       "sha256": "0b8b6031582819a23d35f6f6bcbaff7bf9dffec4ac7e4a9967d4a28ba1d7fd51"

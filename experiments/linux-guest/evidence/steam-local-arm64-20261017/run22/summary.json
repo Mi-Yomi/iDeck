@@ -1,0 +1,17 @@
+{
+  "reason": "shared_memory_reserve",
+  "observer_failure_class": null,
+  "seconds": 205.986165172,
+  "frozen": [
+    1113,
+    1168,
+    1195,
+    1198,
+    1209,
+    1282,
+    1284,
+    1294
+  ],
+  "launcher_pid": 851,
+  "path": "/home/ideck/steam-experiment-logs/resume-local-20261017-desktop-native-v17"
+}

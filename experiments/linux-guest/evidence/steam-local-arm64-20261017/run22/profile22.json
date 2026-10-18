@@ -1,0 +1,14 @@
+{
+  "reference": "run21",
+  "functional_change": "remove diagnostic LD_PRELOAD; native 500ms IPC deadline with same restart-aware desktop launcher and 2560MiB budget",
+  "reason": "run21 20second comparison has zero reclaim delta and about1GiB available but main navigation remains unverified; isolate remaining diagnostic timeout",
+  "resources": {
+    "memory_mib": 2560,
+    "vcpus": 4,
+    "cpu": "max",
+    "disk_gib": 12
+  },
+  "safety": "same observer function AST, SHM reserve, sandbox, bounded cleanup, original VM Stop",
+  "claims": "host control only, not iPhone or game acceptance",
+  "selfchecks": "generated Python compile; safety observer function AST identical; original helper and launcher preserved"
+}

@@ -1,5 +1,28 @@
 # Safe checkpoint for the replacement cloud task
 
+## Run22 — native IPC still reaches the shared-memory guard (2026-10-18)
+
+At the same 2560 MiB budget, removing diagnostic LD_PRELOAD restored the native
+500 ms IPC deadline. Actual client/browser maps and environments confirmed the
+library and its control variable were absent. The early 90-second browser probe
+ran during package extraction; the later probe passed. The restart-aware
+launcher handled the updater's restart, but no main Steam window was established.
+
+The shared-memory guard stopped observation after 205.986 seconds, leaving
+376815616 bytes free out of 1294241792. All 69 samples had OOM0; minimum available
+RAM was 1318872 KiB. More RAM therefore did not make the ordinary client usable
+under this host TCG setup. The previous diagnostic run's intermittent Store
+rendering remains insufficient for stable navigation or Steam game acceptance.
+
+The frozen test was ended early through owned application cleanup and the
+original VM Stop. Application termination was unclean; VM unmount/QEMU0/fsync
+was clean, with no recovery marker or remaining namespace holders. Four client
+ELFs and the package audit passed. A separate final offline read-only check
+passed all five phases plus summary with no errors and preserved the source
+disk hash. No iOS code, accepted payload, storage contract or other branch was
+changed. Evidence: `experiments/linux-guest/evidence/steam-local-arm64-20261017/run22`.
+
+
 ## Run21 — more memory did not establish stable navigation (2026-10-18)
 
 The 2560 MiB desktop comparison completed 20 minutes with 351 samples, no

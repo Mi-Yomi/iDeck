@@ -1,0 +1,14 @@
+[
+  {
+    "private_file": "run22/006-no-preload-proof.png",
+    "sha256": "cb9d9ba2e1e0d56534ff46d42b3a0798ab753b80ea2a12780458394a9f58d2a3",
+    "observed_stage": "Updater extracting packages; initial90second browser probe premature",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run22/011-progress.png",
+    "sha256": "106c58564cf380a99d2326afd380f699e9b7fc6f54b18898b399e77b1211b38e",
+    "observed_stage": "Linux desktop; no main Steam window at shared-memory guard stop",
+    "pixels_in_git": false
+  }
+]

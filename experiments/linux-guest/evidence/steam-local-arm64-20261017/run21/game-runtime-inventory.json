@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "host_machine": "aarch64",
+  "native_steam_elf_machine": 183,
+  "steam_filesystem_available_bytes": 7903961088,
+  "proton_candidates": [],
+  "system_fex_candidates": {},
+  "runtime_launcher_candidates": [
+    {
+      "origin": "steam",
+      "path": "steamrt64/pv-runtime/steam-runtime-steamrt/bin/steam-runtime-launcher-service",
+      "elf_machine": 62,
+      "executable": true
+    }
+  ],
+  "vulkan_icd_manifests": [],
+  "render_nodes": [
+    "renderD128"
+  ],
+  "scope": "default Steam library and local compatibilitytools.d; external libraries not inspected",
+  "execution_tested": false,
+  "accelerated_graphics_verified": false,
+  "game_launch_verified": false,
+  "iphone_verified": false
+}

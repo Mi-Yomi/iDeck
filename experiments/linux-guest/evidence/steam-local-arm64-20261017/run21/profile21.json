@@ -1,0 +1,14 @@
+{
+  "reference": "run20",
+  "functional_change": "memory 1536 to 2560 MiB only; same desktop mode, client, sandbox, V3 and CPU",
+  "resources": {
+    "memory_mib": 2560,
+    "vcpus": 4,
+    "cpu": "max",
+    "disk_gib": 12
+  },
+  "reason": "run20 measured 141011 kswapd pages scanned, 1774 direct pages scanned, 5 allocstall_normal and 332 major faults in 20.04 seconds, with no swap or kernel OOM",
+  "diagnostics": "same monitor with vmstat included in samples; raw logs/pixels remain private",
+  "claims": "host-only memory pressure control; no phone RAM budget, acceleration or game acceptance",
+  "selfchecks": "both generated Python sections and cleanup backstop compile; all replacements matched"
+}

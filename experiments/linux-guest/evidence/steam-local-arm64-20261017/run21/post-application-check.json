@@ -1,0 +1,26 @@
+{
+  "client": {
+    "steamrtarm64/steam": {
+      "sha256": "73da03ead208a74e14bee566869a4235063dc4a9e1063f29c4608de6d78bd4ea",
+      "unchanged": true
+    },
+    "steamrtarm64/steamwebhelper": {
+      "sha256": "0a849676a3ba0cc51ca23cba79be3df0546744fd92c2e2d628a1f71707a70a56",
+      "unchanged": true
+    },
+    "steamrtarm64/steamclient.so": {
+      "sha256": "276f021548f9016de834274f4042b796604530d910d114b77ee170b46e409072",
+      "unchanged": true
+    },
+    "steamrtarm64/chromehtml.so": {
+      "sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7",
+      "unchanged": true
+    }
+  },
+  "private_namespace_holders": [],
+  "audit_exit": 0,
+  "audit_stdout_bytes": 0,
+  "audit_stderr_bytes": 0,
+  "time_ns": 1792282216137395874,
+  "ready_for_original_vm_stop": true
+}

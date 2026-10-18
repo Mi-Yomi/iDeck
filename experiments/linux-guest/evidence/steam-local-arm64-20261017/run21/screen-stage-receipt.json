@@ -1,0 +1,44 @@
+[
+  {
+    "private_file": "run21/007-window-state.png",
+    "sha256": "bf44417b6e4aae1672611d2a94c5b8461187eb98b3fe9b371f5eb6e1b16db5c9",
+    "observed_stage": "Steam updater extracting packages",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run21/008-progress.png",
+    "sha256": "e4cb737200eb3fb1cf26ac3fd6089816d99530d7be8bd7964ef0271a11392fa8",
+    "observed_stage": "Main Steam navigation bar, blank Store body",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run21/011-library-click.png",
+    "sha256": "6e54023a3bdcc4a9828a713ffb207655a209e1d6438579bc20c3fe54f10aa46f",
+    "observed_stage": "Actual Steam Store artwork/content visible; Library click sent, navigation not confirmed",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run21/012-progress.png",
+    "sha256": "d149ea27e1377c51bd7dba4499dccec5a6a456b56d7b8b21da36666873724a15",
+    "observed_stage": "Store content visible, black Library hover menu",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run21/013-library-click.png",
+    "sha256": "a91aab0226032ee14218883a449740227dc60f474e0744f51bbaef055eb3e6d7",
+    "observed_stage": "Store body black after second Library click; Library not confirmed",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run21/015-add-game-menu.png",
+    "sha256": "d83bead96c43e6d53dfb8bd42f2aa87853d48b4167f05c0d7985411626c06f39",
+    "observed_stage": "Add a Game click sent; no visible usable menu",
+    "pixels_in_git": false
+  },
+  {
+    "private_file": "run21/900-finish-monitor.png",
+    "sha256": "4fd668e2d550c439ed7aa9a28a55d4b86ffeae0cb73678c7deae3399f90e6eeb",
+    "observed_stage": "Main Steam bar reappeared; blank body and empty data URL, no Library navigation",
+    "pixels_in_git": false
+  }
+]

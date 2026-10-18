@@ -1,5 +1,34 @@
 # Safe checkpoint for the replacement cloud task
 
+## Run21 — more memory did not establish stable navigation (2026-10-18)
+
+The 2560 MiB desktop comparison completed 20 minutes with 351 samples, no
+kernel OOM and a minimum 809388 KiB available. A 20.021-second probe recorded
+zero selected reclaim, allocation-stall and major-fault deltas. Lifetime reclaim
+was nonzero, and increasing guest RAM also increased the default tmpfs capacity;
+this was not an independent fixed-SHM experiment.
+
+Actual Store artwork rendered. Library and Add a Game clicks did not establish
+working navigation; the main window disappeared temporarily and returned with
+a blank body. More RAM therefore did not solve UI continuity. The native client
+remained alive while several browser subprocesses disappeared; this evidence
+does not identify a fatal signal or the root cause. No Steam game launch,
+usable Big Picture or iPhone performance is claimed.
+
+The application still required owned-process termination, including one SIGKILL.
+The separate original VM Stop completed cleanly: guest unmount, QEMU0 and host
+fsync, no recovery marker, no private namespaces, clean package audit and four
+unchanged client ELFs. Full post21 integrity passed run22's read-only preboot
+check on a separate copy: all five phases and summary, no errors, original21
+preserved. Account logs, screenshots and dump contents remain private.
+
+Run22 compares the same 2560 MiB desktop configuration without diagnostic
+LD_PRELOAD, restoring the native 500 ms IPC deadline while retaining the
+restart-aware launcher and sandbox. Its result is pending. The iPhone storage
+route remains unimplemented; the existing 4 GiB seed contract is unchanged.
+Sanitized evidence: `experiments/linux-guest/evidence/steam-local-arm64-20261017/run21`.
+
+
 ## Run20 — measured memory pressure, desktop still incomplete (2026-10-18)
 
 The ordinary desktop control completed 20 minutes with saved login and one

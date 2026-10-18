@@ -1,0 +1,15 @@
+{
+  "mode": "extend-5000",
+  "original_deadline_ms": 500,
+  "effective_deadline_ms": 5000,
+  "library_sha256": "14ae446d263a783d341c0236b7fe9a710f4fe7946eb43afde435063473cabb1c",
+  "library_source_sha256": "dd7a19b8531294772b3b11e1742c12341d1df2bd77186fdbf042accdb9c9b4c6",
+  "original_helper_sha256": "96c929eafefb2f76aa7751fb1869baa6def54e5e31be2a0e6620a486bca64b0d",
+  "private_helper_sha256": "764f5857841a364d7d83222fb31d1b2184106bcc35592a67c135c9eef8f1f961",
+  "only_helper_change": "V3 env after UID1000 drop and private restart-aware desktop launcher",
+  "private_launcher_sha256": "893ac73943214cbd6ac87723c32a3774c872dad2b91429cd4aedb48737e92b33",
+  "launcher_flag_change": "-nobigpicture desktop mode; no SteamOS/device flags",
+  "original_helper_unchanged": true,
+  "sandbox_preserved": true,
+  "resource_profile_changed": false
+}

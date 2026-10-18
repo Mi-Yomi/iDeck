@@ -1,0 +1,24 @@
+wsl: Failed to mount F:\, see dmesg for more details.
+test_configuration_is_deterministic_and_does_not_override_production (test_steam_seed.SeedContractFixtures.test_configuration_is_deterministic_and_does_not_override_production) ... ok
+test_contract_scope_and_schema_cannot_be_promoted_or_coerced (test_steam_seed.SeedContractFixtures.test_contract_scope_and_schema_cannot_be_promoted_or_coerced) ... ok
+test_default_runner_rejects_experimental_seed_without_explicit_contract (test_steam_seed.SeedContractFixtures.test_default_runner_rejects_experimental_seed_without_explicit_contract) ... ok
+test_evidence_corruption_missing_and_symlink_are_refused (test_steam_seed.SeedContractFixtures.test_evidence_corruption_missing_and_symlink_are_refused) ... ok
+test_existing_storage_threshold_is_not_discounted_for_sparse_overlay (test_steam_seed.SeedContractFixtures.test_existing_storage_threshold_is_not_discounted_for_sparse_overlay) ... ok
+test_explicit_continuation_requires_same_contract_and_preserves_source (test_steam_seed.SeedContractFixtures.test_explicit_continuation_requires_same_contract_and_preserves_source) ... ok
+test_external_self_asserted_contract_is_refused (test_steam_seed.SeedContractFixtures.test_external_self_asserted_contract_is_refused) ... ok
+test_forced_or_unclean_boot_is_refused_even_when_rehashed (test_steam_seed.SeedContractFixtures.test_forced_or_unclean_boot_is_refused_even_when_rehashed) ... ok
+test_full_fsck_output_rechecked_instead_of_trusting_pass_boolean (test_steam_seed.SeedContractFixtures.test_full_fsck_output_rechecked_instead_of_trusting_pass_boolean) ... ok
+test_insufficient_space_stops_runner_before_image_tools_or_disk_write (test_steam_seed.SeedContractFixtures.test_insufficient_space_stops_runner_before_image_tools_or_disk_write) ... ok
+test_kernel_and_bootstrap_tampering_is_refused (test_steam_seed.SeedContractFixtures.test_kernel_and_bootstrap_tampering_is_refused) ... ok
+test_machine_id_must_really_match (test_steam_seed.SeedContractFixtures.test_machine_id_must_really_match) ... ok
+test_manifest_traversal_and_duplicate_entries_are_refused (test_steam_seed.SeedContractFixtures.test_manifest_traversal_and_duplicate_entries_are_refused) ... ok
+test_profile_or_gui_lock_change_is_refused (test_steam_seed.SeedContractFixtures.test_profile_or_gui_lock_change_is_refused) ... ok
+test_same_size_wrong_seed_is_refused (test_steam_seed.SeedContractFixtures.test_same_size_wrong_seed_is_refused) ... ok
+test_self_asserted_failed_acceptance_is_refused_even_when_rehashed (test_steam_seed.SeedContractFixtures.test_self_asserted_failed_acceptance_is_refused_even_when_rehashed) ... ok
+test_symlinked_seed_or_contract_is_refused (test_steam_seed.SeedContractFixtures.test_symlinked_seed_or_contract_is_refused) ... ok
+test_wrong_builder_seed_identity_is_refused_even_when_rehashed (test_steam_seed.SeedContractFixtures.test_wrong_builder_seed_identity_is_refused_even_when_rehashed) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 24.055s
+
+OK

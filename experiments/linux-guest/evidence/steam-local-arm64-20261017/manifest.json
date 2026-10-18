@@ -8,11 +8,6 @@
       "sha256": "3636ade7434be12c8ed2bad9b7eaf7850b09115a0e6127f9aca8bb5a1dcc8a88"
     },
     {
-      "file": "README.md",
-      "size": 19158,
-      "sha256": "793fd0b738c861ddd38114a1d39d2cd432cb77693b2dc0e311c2df48bcf5e300"
-    },
-    {
       "file": "bootstrap-display.json",
       "size": 4626,
       "sha256": "9b333c6be70e7f020ee1471c1fb4148da57e1fa461d7a4a001a3f7404e6963ff"
@@ -776,6 +771,11 @@
       "file": "preflight.json",
       "size": 11233,
       "sha256": "483685a5e95b0a20a48a9063ec9b8de1955531cb180db70c83eb3de994567edc"
+    },
+    {
+      "file": "README.md",
+      "size": 19158,
+      "sha256": "793fd0b738c861ddd38114a1d39d2cd432cb77693b2dc0e311c2df48bcf5e300"
     },
     {
       "file": "resolved-address-snapshot.json",
@@ -2121,6 +2121,176 @@
       "file": "run20/updater-and-login.json",
       "size": 283,
       "sha256": "631cce347a2bc471d3b105a121c631943bc804167f08e2ab121a0154e74ed90c"
+    },
+    {
+      "file": "run21/application-stop.json",
+      "size": 6195,
+      "sha256": "9ab5cb33333952d46ee02d51b9124038d2ba00f22d41d540fcd95442e3e8ed31"
+    },
+    {
+      "file": "run21/fast-guard.json",
+      "size": 119,
+      "sha256": "f25550db92662310fbea1802b98e44efafcaa7e4cc797796f247659927788fff"
+    },
+    {
+      "file": "run21/game-runtime-inventory.json",
+      "size": 717,
+      "sha256": "58742e91308765dabc39b75aa4dd5d22d6fed4e38443ff566a1e6e19554fad7c"
+    },
+    {
+      "file": "run21/launch-profile.json",
+      "size": 843,
+      "sha256": "3e9e5dc8c2db13cbd27e96737eff337eab60281c63b69b3993d9534880c78365"
+    },
+    {
+      "file": "run21/memory-control-tests.json",
+      "size": 425,
+      "sha256": "755b5f03e2e0f1f814944c9a17fcd08b45d339dde5e34cabb6923b2f7f049092"
+    },
+    {
+      "file": "run21/memory-pressure-window.json",
+      "size": 1413,
+      "sha256": "454ed2e5954f7bb3f76d5bdcdee874f98a714a532c7d5db6f978f414544d8795"
+    },
+    {
+      "file": "run21/memory21-summary.json",
+      "size": 3189,
+      "sha256": "acfe3b1b82a0aafcd4f6fb5879169433a751fcaae244c8d6e72390b1927a999e"
+    },
+    {
+      "file": "run21/offline-fsck.json",
+      "size": 1416,
+      "sha256": "da27c6d5241a354703d198a0b78d02421761be1b1f5c8be1c910e68d068724fc"
+    },
+    {
+      "file": "run21/offline-fsck.log",
+      "size": 401,
+      "sha256": "a589895a66ed0b255d27902c9ab2bf8c87ce75d4cdf45c09dc27f8704898a18d"
+    },
+    {
+      "file": "run21/offline-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "file": "run21/offline-fsck.stdout.log",
+      "size": 374,
+      "sha256": "058bfce8a66ae8baa98b3abfe250590d9d4eca15d2075de154bcd26ef6b225e6"
+    },
+    {
+      "file": "run21/outcome.json",
+      "size": 1380,
+      "sha256": "c780a30396e5e1b13425a588972989c39746c787809659d4d2c6d92c40a3935d"
+    },
+    {
+      "file": "run21/post-application-check.json",
+      "size": 799,
+      "sha256": "bb801136e1944bb8426ab12816dbbbdb120a2c7712ee15e6f7e0ab6e26817331"
+    },
+    {
+      "file": "run21/post-run-fsck/copy-provenance.json",
+      "size": 372,
+      "sha256": "9ba932768f6583bf385266b3937398a91da0396605ddf1e74f4c40ed0115ad86"
+    },
+    {
+      "file": "run21/post-run-fsck/offline-fsck.json",
+      "size": 1416,
+      "sha256": "200e332559a7892a4f71ca813e60737a4982bd6afb2847257b3a81e9498d3696"
+    },
+    {
+      "file": "run21/post-run-fsck/offline-fsck.log",
+      "size": 401,
+      "sha256": "c54129a27781cfc942575286b5f6abfb40b0f1fe57ced207171ec1fd495f8114"
+    },
+    {
+      "file": "run21/post-run-fsck/offline-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "file": "run21/post-run-fsck/offline-fsck.stdout.log",
+      "size": 374,
+      "sha256": "e3ac6e0195af0422dbb0b0dfcb1d036de806f0a1d7beac58aea9780d6a026150"
+    },
+    {
+      "file": "run21/profile21.json",
+      "size": 706,
+      "sha256": "8c7a613c8528b1b85c1255f8c2dc78a3806dc26a6f5a70d65dda879aa95cea63"
+    },
+    {
+      "file": "run21/result.json",
+      "size": 14170,
+      "sha256": "c7dcd494e3f4ee6fb9e38878d5d5391ea0d122dfea2bd306671404aed01b8af9"
+    },
+    {
+      "file": "run21/screen-stage-receipt.json",
+      "size": 1803,
+      "sha256": "ffc7728fb5047bc6254c7cf836381fb1cb2ce4e356240410bbea35ff86da7747"
+    },
+    {
+      "file": "run21/scripts/002-start-desktop-observer.sh",
+      "size": 31764,
+      "sha256": "14a93c613f4e7bde003baad0abfe0bfaa0cfe34d70aef6813a67a298c82e79f3"
+    },
+    {
+      "file": "run21/scripts/004-runtime-inventory.sh",
+      "size": 3880,
+      "sha256": "3875e7e31f08c59e63d9e9c0199e37200900d3a4c10d5967f92a69064190dc45"
+    },
+    {
+      "file": "run21/scripts/005-guest-resource-budget.sh",
+      "size": 699,
+      "sha256": "8b55cd3cd84ebbed9afb8d65a48e3a9941ee234799c4d1bd1d469c6f72f673f3"
+    },
+    {
+      "file": "run21/scripts/010-memory-pressure.sh",
+      "size": 1601,
+      "sha256": "6be66659bfdf95cfe238065a3a5473a9dc5e597b0edb6b5de7e5985db802283e"
+    },
+    {
+      "file": "run21/scripts/011-library-click.sh",
+      "size": 661,
+      "sha256": "98a3c58e3092649de85484a36ddede30e43df08617f7da41c242d062522cd53d"
+    },
+    {
+      "file": "run21/scripts/015-add-game-menu.sh",
+      "size": 662,
+      "sha256": "55c44ecf74708665c1124c0315b9d98fbbf043e6c09251ccf0b43ca4ffd6edde"
+    },
+    {
+      "file": "run21/scripts/900-finish-monitor.sh",
+      "size": 437,
+      "sha256": "abad052002ac2da78429f035e2245d791134ebb3cf1609ed85e84524af66cd36"
+    },
+    {
+      "file": "run21/scripts/901-stop-owned-app.sh",
+      "size": 6195,
+      "sha256": "b86eb35caddc6f35a59134de4af962c8dce7dbbf74db9850106d57f8cb8210a0"
+    },
+    {
+      "file": "run21/scripts/902-post-app-check.sh",
+      "size": 1848,
+      "sha256": "c6f2bed3cd4f7b8539fee6cb725833705734ca90f5d2f7ce4e1bb63d059575ea"
+    },
+    {
+      "file": "run21/scripts/903-private-export.sh",
+      "size": 1392,
+      "sha256": "d2c077557f3a71a5beebc7b38dd27f74b37aa86f083627142d8675f4aef8df95"
+    },
+    {
+      "file": "run21/seed-after-memory-tests.log",
+      "size": 3070,
+      "sha256": "b228eaeed1a5e981ddf68c183bbde1f1d139cb3970a975d4cf6ac6218da0b537"
+    },
+    {
+      "file": "run21/summary.json",
+      "size": 322,
+      "sha256": "28489c03c6959e9eb4d7f6f8116713ae1b9f35e7b5f7a06c7d14867ee802d321"
+    },
+    {
+      "file": "run21/updater-and-login.json",
+      "size": 290,
+      "sha256": "4c9ddf26a0fb3deb218f6bb5dcafad9ef22b19c08ac2fed205a0548e3852b147"
     },
     {
       "file": "run9/control.log",

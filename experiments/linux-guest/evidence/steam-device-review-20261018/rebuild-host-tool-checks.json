@@ -1,0 +1,36 @@
+{
+  "scope": "actual extracted host tools/version checks only; no payload rebuild or VM",
+  "packages_verified": 15,
+  "reports": [
+    {
+      "tool": "e2fsck",
+      "version_observed": "1.47.2",
+      "command_uses_pinned_loader": true,
+      "executable_sha256": "be1f2c99e0dc73640cffb549da5f3f4b15da0f89e7334c6730feb69eff784571",
+      "no_filesystem_target_passed": true
+    },
+    {
+      "tool": "tune2fs",
+      "version_observed": "1.47.2",
+      "command_uses_pinned_loader": true,
+      "executable_sha256": "23fe2546f4c677e0fc894c0b0b2a187571bcc484e678512d9bd088110ef151c5",
+      "no_filesystem_target_passed": true
+    },
+    {
+      "tool": "resize2fs",
+      "version_observed": "1.47.2",
+      "command_uses_pinned_loader": true,
+      "executable_sha256": "104b6d45667967b26389da3dfc559ce585ab4e8afb374fac77e751df54e53e17",
+      "no_filesystem_target_passed": true
+    },
+    {
+      "tool": "unsquashfs",
+      "version_observed": "4.6.1",
+      "command_uses_pinned_loader": true,
+      "executable_sha256": "1ecc68e64fbc975c0b1959cbf21cefb4c2376b0bcc5cec695f757b60165aae1e",
+      "no_filesystem_target_passed": true
+    }
+  ],
+  "system_packages_installed": false,
+  "files_deleted": false
+}

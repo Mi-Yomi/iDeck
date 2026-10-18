@@ -1,3 +1,11 @@
+> Library preservation attempt, 18 October 2026: required prepared-upload helper
+> failed at hosted-app tools/list (network) before any Library ID was returned.
+> No Library save is confirmed. Original303667200B tar/SHAf4084e40… stays intact;
+> no deletion, public host, GitHub retry, CI or ready pin. Keep the old workspace.
+> Exact fresh-cloud rebuild entrypoint and 15 pinned host-package inputs are now
+> recorded in STEAM-PAYLOAD-TRANSFER-20261018.md. A rebuild may have a NEW SHA due
+> to ext4 timestamps; it must be revalidated, never labelled as original f4084e40.
+
 > Allowlist recheck, 18 October 2026 16:44:29 UTC: owner reported the domain added;
 > one ordinary uploads.github.com HEAD still gets CONNECT403/envoy in this session.
 > Upload was NOT retried. New published cloud session + supported preservation/

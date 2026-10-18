@@ -1,0 +1,149 @@
+{
+  "schema": 1,
+  "purpose": "Extracted Linux amd64 build tools and full ELF shared-library closure; no host installation",
+  "existing_tool_pins": "evidence/steam-device-integration-20261018/host-build-tool-pins.json",
+  "existing_gui_host_library_pins": "ipa/gui-inputs.lock.json",
+  "additional_library_pins_index": {
+    "architecture": "amd64",
+    "size": 9678380,
+    "sha256": "7778d3e3f303b7ddb8ce0fe7c8d57473a076c6bf2e8f241f75421d2396352498",
+    "url": "https://deb.debian.org/debian/dists/trixie/main/binary-amd64/by-hash/SHA256/7778d3e3f303b7ddb8ce0fe7c8d57473a076c6bf2e8f241f75421d2396352498"
+  },
+  "packages": [
+    {
+      "name": "e2fsprogs",
+      "version": "1.47.2-3+b12",
+      "architecture": "amd64",
+      "filename": "pool/main/e/e2fsprogs/e2fsprogs_1.47.2-3+b12_amd64.deb",
+      "sha256": "e9e638eb3e22b5f14d01ce0b28aa512a5a22fcc0e70d1c733444579b67ea236b",
+      "size": 591288,
+      "installed_size_kib": 1537
+    },
+    {
+      "name": "libext2fs2t64",
+      "version": "1.47.2-3+b12",
+      "architecture": "amd64",
+      "filename": "pool/main/e/e2fsprogs/libext2fs2t64_1.47.2-3+b12_amd64.deb",
+      "sha256": "9f5783fa48239e42260d41846fbc6c8b19c233251063524456096195660eaa09",
+      "size": 212664,
+      "installed_size_kib": 557
+    },
+    {
+      "name": "libcom-err2",
+      "version": "1.47.2-3+b12",
+      "architecture": "amd64",
+      "filename": "pool/main/e/e2fsprogs/libcom-err2_1.47.2-3+b12_amd64.deb",
+      "sha256": "bd43e020b8fed399db3eebf098111f10fba4c436fff99ccad72cc7e27c9764ec",
+      "size": 25036,
+      "installed_size_kib": 64
+    },
+    {
+      "name": "libss2",
+      "version": "1.47.2-3+b12",
+      "architecture": "amd64",
+      "filename": "pool/main/e/e2fsprogs/libss2_1.47.2-3+b12_amd64.deb",
+      "sha256": "c5d38d71984c1bf774c1254238636e605fc4e0dc24d853f709921eb740327f4a",
+      "size": 29724,
+      "installed_size_kib": 80
+    },
+    {
+      "name": "logsave",
+      "version": "1.47.2-3+b12",
+      "architecture": "amd64",
+      "filename": "pool/main/e/e2fsprogs/logsave_1.47.2-3+b12_amd64.deb",
+      "sha256": "aa028720743b79bd054749af34c501c093f0ab5e044e4dc44273765be5e95de5",
+      "size": 24864,
+      "installed_size_kib": 59
+    },
+    {
+      "name": "squashfs-tools",
+      "version": "1:4.6.1-1",
+      "architecture": "amd64",
+      "filename": "pool/main/s/squashfs-tools/squashfs-tools_4.6.1-1_amd64.deb",
+      "sha256": "0e185122f5858132bbc709e26228ba28cf7f0c41f6ed26e3f55f518f2a53b59d",
+      "size": 193888,
+      "installed_size_kib": 494
+    },
+    {
+      "name": "liblzo2-2",
+      "version": "2.10-3+b1",
+      "architecture": "amd64",
+      "filename": "pool/main/l/lzo2/liblzo2-2_2.10-3+b1_amd64.deb",
+      "sha256": "f3032201fe2928a87e13f05ce256ff3ac2a7860c7e594dc51ae6d7348a4466ce",
+      "size": 55100,
+      "installed_size_kib": 173
+    },
+    {
+      "name": "libc6",
+      "version": "2.41-12+deb13u4",
+      "architecture": "amd64",
+      "filename": "pool/main/g/glibc/libc6_2.41-12+deb13u4_amd64.deb",
+      "sha256": "967aa62605721081c3eb2a17650611a792aa802d76a6511d1840242623d204c9",
+      "size": 2846580,
+      "installed_size_kib": 13226
+    },
+    {
+      "name": "libblkid1",
+      "version": "2.41.5-0+deb13u1",
+      "architecture": "amd64",
+      "filename": "pool/main/u/util-linux/libblkid1_2.41.5-0+deb13u1_amd64.deb",
+      "sha256": "81535f3c2c0efc732965907c8749103a0a26377c761622c9ce39b4c92dcde52f",
+      "size": 171612,
+      "installed_size_kib": 453
+    },
+    {
+      "name": "libuuid1",
+      "version": "2.41.5-0+deb13u1",
+      "architecture": "amd64",
+      "filename": "pool/main/u/util-linux/libuuid1_2.41.5-0+deb13u1_amd64.deb",
+      "sha256": "c1bf4c4c3ff48c57fabf93307dfb56996b60cfa33927afc4158b5db36fb2721e",
+      "size": 37848,
+      "installed_size_kib": 98
+    },
+    {
+      "name": "liblzma5",
+      "version": "5.8.1-1+deb13u1",
+      "architecture": "amd64",
+      "filename": "pool/main/x/xz-utils/liblzma5_5.8.1-1+deb13u1_amd64.deb",
+      "sha256": "1cfcc6e0dc36f438a79b6e2189facdb9d150b08f57d190a60e01c98075c7f896",
+      "size": 309492,
+      "installed_size_kib": 435
+    },
+    {
+      "name": "liblz4-1",
+      "version": "1.10.0-4",
+      "architecture": "amd64",
+      "filename": "pool/main/l/lz4/liblz4-1_1.10.0-4_amd64.deb",
+      "sha256": "c31ec4c7c82755a38b2f3fe066fc0c5518cc91a601a268fbcd19bdacb1f22e1e",
+      "size": 63900,
+      "installed_size_kib": 173
+    },
+    {
+      "name": "libzstd1",
+      "version": "1.5.7+dfsg-1",
+      "architecture": "amd64",
+      "filename": "pool/main/libz/libzstd/libzstd1_1.5.7+dfsg-1_amd64.deb",
+      "sha256": "2f6a2aeacfc925eba8b00ac9139bc4bfccf8cacb09eb93de067074b26948eef9",
+      "size": 303836,
+      "installed_size_kib": 847
+    },
+    {
+      "name": "zlib1g",
+      "version": "1:1.3.dfsg+really1.3.1-1+b1",
+      "architecture": "amd64",
+      "filename": "pool/main/z/zlib/zlib1g_1.3.dfsg+really1.3.1-1+b1_amd64.deb",
+      "sha256": "015be740d6236ad114582dea500c1d907f29e16d6db00566ca32fb68d71ac90d",
+      "size": 88892,
+      "installed_size_kib": 173
+    },
+    {
+      "name": "libxxhash0",
+      "version": "0.8.3-2",
+      "architecture": "amd64",
+      "filename": "pool/main/x/xxhash/libxxhash0_0.8.3-2_amd64.deb",
+      "sha256": "81da7064d56fc044f5db4bb3c1e80ff50a4986dcbbf80d958eeca565b44c157f",
+      "size": 27096,
+      "installed_size_kib": 92
+    }
+  ]
+}

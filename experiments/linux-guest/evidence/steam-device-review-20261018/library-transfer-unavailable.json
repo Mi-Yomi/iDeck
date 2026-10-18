@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "requested_filename": "ideck-steam-device-v1.tar",
+  "size_bytes": 303667200,
+  "sha256": "f4084e40e854580a8e68a5f199936bf37e4a5f6779086c6b449b940a02325f56",
+  "library_file_id": null,
+  "create_confirmed": false,
+  "required_prepared_workflow_attempted": true,
+  "failure": "library upload failed: hosted apps tools/list request failed: network",
+  "file_size_limit_evaluated": false,
+  "direct_write_substitute_attempted": false,
+  "public_temporary_host_used": false,
+  "github_upload_retried": false,
+  "files_deleted": false,
+  "ci_started": false,
+  "fallback": "STEAM-PAYLOAD-TRANSFER-20261018.md and tools/rebuild_steam_candidate.sh"
+}

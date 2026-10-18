@@ -1,0 +1,16 @@
+{
+  "initramfs_sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4",
+  "members": 310,
+  "interesting": {
+    "usr/bin/busybox": {
+      "size": 919304,
+      "sha256": "97d52efa149563c8d886e3670e2496d4140d3c54138017afd3a105e0397fae2e",
+      "version_strings": [
+        "syslogd started: BusyBox v1.37.0",
+        "BusyBox v1.37.0 (2026-01-10 15:38:28 UTC)"
+      ],
+      "has_bbconfig_string": true
+    }
+  },
+  "scope": "read-only parsed exact accepted initramfs; no executable launched"
+}

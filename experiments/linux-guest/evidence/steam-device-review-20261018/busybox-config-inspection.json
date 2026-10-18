@@ -1,0 +1,15 @@
+[
+  {
+    "binary_sha256": "97d52efa149563c8d886e3670e2496d4140d3c54138017afd3a105e0397fae2e",
+    "offset": 825704,
+    "size": 30368,
+    "sha256": "65290dba19ad49da626a177ba59bdc8b08d5b192508ace15178bb01e264bc0bf",
+    "config_lines": 1084,
+    "selected": [
+      "CONFIG_BBCONFIG=y",
+      "CONFIG_FEATURE_COMPRESS_BBCONFIG=y"
+    ],
+    "source_archive_or_alpine_revision_recovered": false,
+    "scope": "static embedded bzip2 configuration extraction, no guest execution"
+  }
+]

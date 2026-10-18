@@ -1,3 +1,10 @@
+> BusyBox clarification, 18 October 2026: unchanged initramfs binary is verified
+> as 1.37.0 (ELF SHA97d52efa…). Its embedded configuration was statically recovered
+> (30368 bytes/1084 settings, SHA65290dba…). Exact Alpine revision, matching
+> source/patch/recipe bundle and source-delivery evidence are still missing;
+> distribution readiness is not accepted. See BUSYBOX-PROVENANCE-20261018.md.
+> Payload bytes/hash are unchanged. No upload/network retry, CI or ready pinning.
+
 > Authorized Steam delivery attempt, 18 October 2026: reviewed source pushed as
 > 0fffdaf787d10acc86e0caa785dfe27ff81be025. New private non-latest prerelease/tag
 > ideck-steam-device-v1-20261018 exists, but has ZERO assets: upload failed because

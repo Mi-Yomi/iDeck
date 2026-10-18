@@ -1,0 +1,11 @@
+{
+  "normal_unmount_completed": true,
+  "mount_absence_verified_proc_mountinfo": true,
+  "keeper_pids_gone": [
+    176,
+    219
+  ],
+  "forced_or_lazy_unmount": false,
+  "wsl_drvfs_e_unavailable": true,
+  "source_run22_hash_verified_windows_unchanged": true
+}

@@ -1,0 +1,14 @@
+{
+  "run": 23,
+  "vm_booted": false,
+  "failure_stage": "continuation copy source hash; before guest boot",
+  "errors": [
+    "OSError EIO during source hashing",
+    "OSError ENODEV writing result through WSL"
+  ],
+  "source_run22_sha256": "22218a60a774116e38881548419da68a1f870c9ef88745aff7f465d6790929e8",
+  "source_unchanged": true,
+  "prior_full_offline_fsck": "pass",
+  "affinity_experiment_executed": false,
+  "observed_at_utc": "2026-10-18T00:54:20.0421552Z"
+}

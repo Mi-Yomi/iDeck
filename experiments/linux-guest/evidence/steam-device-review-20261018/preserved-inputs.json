@@ -1,0 +1,54 @@
+{
+  "ipa/gui.lock.json": {
+    "sha256": "fef0bf4c5b72cad5ee921616639f6e28bec73bce7b1e689c95c3734aed82c7eb",
+    "unchanged_from_db5": true
+  },
+  "ipa/gui-inputs.lock.json": {
+    "sha256": "8b3ee6d1f255c7486e7226c65ab304036363edccea4e145b472fe7df1cf6ed98",
+    "unchanged_from_db5": true
+  },
+  "ipa/desktop-rootfs.lock.json": {
+    "sha256": "0e596b6cd43f8872649f0b813dfbe57cf3d6e3f8f94922d1af75594d7fd1b015",
+    "unchanged_from_db5": true
+  },
+  "ipa/desktop-kernel-source.lock.json": {
+    "sha256": "04142a101b7fd7a0c6144818b75904dd916de406ef9efe104694eb1f9a53cf2e",
+    "unchanged_from_db5": true
+  },
+  "ipa/debian.lock.json": {
+    "sha256": "45f3985e5ca35e95849f56a658811601b923168abc714bbdadaa329d81e1e9bd",
+    "unchanged_from_db5": true
+  },
+  "ipa/native-sources.lock.json": {
+    "sha256": "343ce97b29a08642f66eeb6d7a06cca06204abc5e4ae9c800530ffdce93c3feb",
+    "unchanged_from_db5": true
+  },
+  "guest/gui/ideck-desktop-init": {
+    "sha256": "63c6b5c1cf55a7777fb6b05d9b24cae24e588668f659c7c5293b0715f01f990b",
+    "unchanged_from_db5": true
+  },
+  "ios/LinuxGUIProfile.swift": {
+    "sha256": "1780558613046862b22ec7c1a740474609aef418505cc7933a3c5ac965808d6f",
+    "unchanged_from_db5": true
+  },
+  "ios/LinuxGuestProfile.swift": {
+    "sha256": "ddfea00eba911033c44168103f0727836521849eadab7fed5dfac479ab36bef3",
+    "unchanged_from_db5": true
+  },
+  "ios/LinuxTerminalProfile.swift": {
+    "sha256": "04d488d0052ab0f1fc3fbf9e3976aa72fb722e492f535ff7dd5f1e6a18149bc7",
+    "unchanged_from_db5": true
+  },
+  "ios/LinuxConsoleLifecycle.swift": {
+    "sha256": "a87b2dc2db56a72c97091b848fb23d883f8f6c0fe1284004090fb4e73a831d8d",
+    "unchanged_from_db5": true
+  },
+  "guest/steam/namespace-check.py": {
+    "sha256": "96c929eafefb2f76aa7751fb1869baa6def54e5e31be2a0e6620a486bca64b0d",
+    "unchanged_from_db5": true
+  },
+  "guest/steam/ideck-steam": {
+    "sha256": "893ac73943214cbd6ac87723c32a3774c872dad2b91429cd4aedb48737e92b33",
+    "unchanged_from_db5": true
+  }
+}

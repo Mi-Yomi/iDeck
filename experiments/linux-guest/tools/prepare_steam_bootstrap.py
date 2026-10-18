@@ -154,7 +154,10 @@ def prepare(initramfs, modloop, unsquashfs, output, *, persistent=False):
             if not {n.replace('-', '_') for n in info['depends']} <= {modules.module_name(p) for p in dep[path]}:
                 raise ValueError('network module ELF dependencies differ from modules.dep')
             files[module_destination(path)] = (data, 0o644)
-            manifest.append({'path': path, 'name': modules.module_name(path), 'size':len(data),
+            licenses = re.findall(rb'(?:^|\x00)license=([^\x00]{1,128})\x00', data)
+            if len(licenses) != 1:
+                raise ValueError('network module licence metadata missing/ambiguous')
+            manifest.append({'path': path, 'name': modules.module_name(path), 'license': licenses[0].decode('ascii'), 'size':len(data),
                              'sha256': modules.sha(data), **info})
     rows = ''.join(modules.module_name(path)+' '+path+'\n' for path in order).encode()
     files['ideck-steam/network-load-order'] = (rows, 0o644)

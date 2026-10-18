@@ -76,7 +76,7 @@ def save(journal):
         os.close(fd)
 
 
-def inventory(baseline, pins, output):
+def inventory(baseline, pins, output, *, allow_baseline_triggers=False):
     """Only the pinned additions may be incompletely configured on a retry."""
     allowed = {p['name']: p['version'] for p in pins}
     found = {}
@@ -85,7 +85,8 @@ def inventory(baseline, pins, output):
         if name in found:
             raise Failure('duplicate_package')
         if name in baseline:
-            if version != baseline[name] or status != 'installed':
+            expected = ('installed', 'triggers-pending', 'triggers-awaited') if allow_baseline_triggers else ('installed',)
+            if version != baseline[name] or status not in expected:
                 raise Failure('existing_gui_packages_changed')
         elif name not in allowed or version != allowed[name] or status not in (
                 'installed', 'unpacked', 'half-configured', 'half-installed', 'triggers-pending', 'triggers-awaited'):
@@ -94,6 +95,16 @@ def inventory(baseline, pins, output):
     if not baseline.keys() <= found.keys():
         raise Failure('missing_gui_packages')
     return found
+
+
+def validate_journal(journal, bindings):
+    if journal.get('bindings') != bindings or journal.get('schema') != 1:
+        raise Failure('installation_lock_changed')
+    baseline = journal.get('baseline')
+    if (journal.get('phase') not in ('dependencies', 'client', 'links', 'ready')
+            or not isinstance(baseline, dict) or not baseline
+            or any(not isinstance(k, str) or not k or not isinstance(v, str) or not v for k, v in baseline.items())):
+        raise Failure('invalid_install_journal')
 
 
 def published_client(journal, lock):
@@ -107,7 +118,16 @@ def published_client(journal, lock):
     receipt = DEST / 'package/ideck-install.json'
     if any(p.is_symlink() for p in (receipt, receipt.parent)) or not receipt.is_file():
         raise Failure('client_publication_receipt_missing')
-    row = json.loads(receipt.read_text())
+    fd = os.open(receipt, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK | os.O_CLOEXEC)
+    with os.fdopen(fd, 'rb') as stream:
+        meta = os.fstat(stream.fileno())
+        if (not stat.S_ISREG(meta.st_mode) or meta.st_nlink != 1 or meta.st_uid != 1000
+                or not 0 < meta.st_size <= 65536):
+            raise Failure('client_publication_receipt_unsafe')
+        data = stream.read(65537)
+        if len(data) != meta.st_size:
+            raise Failure('client_publication_receipt_changed')
+        row = json.loads(data)
     if row.get('manifest_sha256') != lock['manifest_sha256'] or row.get('agreement_accepted') is not False:
         raise Failure('client_publication_receipt_mismatch')
     binary = DEST / 'steamrtarm64/steam'
@@ -120,6 +140,9 @@ def install():
     if os.geteuid() != 0:
         raise Failure('requires_guest_root')
     common.safe_directory(STATE, 0)
+    # Root owns the cache; UID1000 must traverse it to read verified client ZIPs.
+    common.safe_directory(CACHE, 0)
+    CACHE.chmod(0o755)
     fd = os.open(STATE / 'install.lock', os.O_RDWR | os.O_CREAT | os.O_NOFOLLOW, 0o600)
     with os.fdopen(fd, 'r+') as held:
         try:
@@ -136,8 +159,7 @@ def install():
             if not stat.S_ISREG(meta.st_mode) or meta.st_uid != 0 or meta.st_nlink != 1 or meta.st_size > 65536:
                 raise Failure('unsafe_install_journal')
             journal = json.loads(path.read_text())
-            if journal.get('bindings') != bindings or journal.get('schema') != 1:
-                raise Failure('installation_lock_changed')
+            validate_journal(journal, bindings)
         else:
             if os.path.lexists(DEST) or any(os.path.lexists(p) for p in common.links()):
                 raise Failure('existing_client_no_replacement')
@@ -154,7 +176,7 @@ def install():
             return
         common.safe_directory(common.LOG, 0)
         result = subprocess.run(['dpkg-query', '-W', '-f=${Package}\t${Version}\t${db:Status-Status}\n'], capture_output=True, check=True)
-        inventory(journal['baseline'], pins, result.stdout.decode())
+        inventory(journal['baseline'], pins, result.stdout.decode(), allow_baseline_triggers=journal['phase'] == 'dependencies')
         # Downloads, expanded client and updater reserve. No sparse-space promise.
         required = sum(p['size'] for p in pins) + sum(p['size'] for p in lock['parts']) + 5 * 1024**3
         if not published and shutil.disk_usage(HOME).free < required:

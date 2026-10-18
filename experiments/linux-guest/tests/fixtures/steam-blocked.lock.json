@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "kind": "ideck-steam-device-experiment",
+  "status": "blocked",
+  "blocker": "STEAM_PAYLOAD_NOT_SEALED",
+  "disk_uuid": "c6a66b17-1b3e-4fe9-a07b-70c185fb2718",
+  "disk_size_bytes": 12884901888,
+  "memory_mib": 1536,
+  "valve_client_bundled": false,
+  "device_verified": false
+}

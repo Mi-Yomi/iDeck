@@ -205,13 +205,15 @@ def install(lock,cache,destination,*,resume=False):
             dest.parent.mkdir(parents=True,exist_ok=True)
             dest.symlink_to(target)
         native=stage/'steamrtarm64/steam'
-        header=native.read_bytes()[:20]
+        with native.open('rb') as stream:header=stream.read(20)
         if header[:6]!=b'\x7fELF\x02\x01' or int.from_bytes(header[18:20],'little')!=183:raise ValueError('not an authentic ARM64 ELF layout')
         (stage/'package').mkdir(exist_ok=True)
         (stage/'package/beta').write_text(lock['channel']+'\n')
         (stage/'package/ideck-install.json').write_text(json.dumps({'version':lock['version'],
             'manifest_sha256':lock['manifest_sha256'],'expanded_bytes':total,'private_experiment':True,
             'agreement_accepted':False,'login_performed':False},indent=2)+'\n')
+        for name in ('package/beta','package/ideck-install.json'):
+            with (stage/name).open('r+b') as stored:os.fsync(stored.fileno())
         # Rename publishes the complete tree only. Never replace an existing install.
         if destination.exists():raise ValueError('Steam destination appeared during install')
         for directory,_,_ in os.walk(stage,topdown=False):

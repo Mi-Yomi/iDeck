@@ -174,6 +174,7 @@ class SteamDevice(unittest.TestCase):
             with self.assertRaises(OSError): official.install()
             self.assertEqual(json.loads((state / 'journal.json').read_text())['phase'], 'client')
             self.assertFalse(dest.exists())
+            self.assertEqual((self.root / 'cache').stat().st_mode & 0o777, 0o755)
             with patch.object(official, 'save', side_effect=fail_after_publication):
                 with self.assertRaises(OSError): official.install()
             self.assertTrue((dest / 'steamrtarm64/steam').is_file())
@@ -211,7 +212,7 @@ class SteamDevice(unittest.TestCase):
             self.assertFalse(official.published_client({'phase': 'client'}, {}))
 
     def test_blocked_asset_stage_is_honest_and_incremental(self):
-        lock = ROOT / 'ipa/steam.lock.json'
+        lock = ROOT / 'tests/fixtures/steam-blocked.lock.json'
         out = self.root / 'bundle'
         result = bundle.prepare_for_build(out, lock, self.root)
         self.assertEqual(result['blocker'], 'STEAM_PAYLOAD_NOT_SEALED')
@@ -222,7 +223,7 @@ class SteamDevice(unittest.TestCase):
             bundle.verify(out, bundle.load_lock(lock))
 
     def test_payload_scope_cannot_enable_gui_or_bundle_client(self):
-        lock = json.loads((ROOT / 'ipa/steam.lock.json').read_text())
+        lock = json.loads((ROOT / 'tests/fixtures/steam-blocked.lock.json').read_text())
         for field, value in [('disk_size_bytes', 16 * 1024**3), ('disk_uuid', 'other'), ('valve_client_bundled', True),
                              ('status', 'ready')]:
             bad = dict(lock, **{field: value})

@@ -2,6 +2,7 @@
 """Separate Steam assets. A blocked contract packages only an honest blocker."""
 import argparse
 import hashlib
+import re
 import time
 import urllib.request
 import urllib.parse
@@ -45,7 +46,8 @@ SOURCE_NAMES = {
     'device-action.py', 'namespace-check.py', 'prepare-display.py', 'shm-recovery.py')
 } | {'tools/' + name for name in ('steam_client.py', 'steam_cpu_probe.py', 'prepare_steam_bootstrap.py',
                                 'prepare_steam_payload.py', 'steam_bundle.py', 'steam_vm.py', 'debian_rootfs.py', 'desktop_modules.py', 'gui_bundle.py')} | {
-    'ipa/steam-client.lock.json', 'ipa/steam-dependencies.lock.json', 'ipa/gui.lock.json'}
+    'ipa/steam-client.lock.json', 'ipa/steam-dependencies.lock.json', 'ipa/gui.lock.json',
+    'ipa/gui-inputs.lock.json', 'ipa/desktop-kernel-source.lock.json', 'guest/gui/LICENSES-desktop.txt', 'guest/TERMINAL-LICENSES.txt'}
 
 
 def load_lock(path):
@@ -61,7 +63,6 @@ def load_lock(path):
         return lock
     if lock.get('status') != 'ready' or set(lock.get('files', {})) != NAMES:
         raise ValueError('Steam payload is not sealed')
-    import re
     for name, pin in lock['files'].items():
         limit = 2 * 1024**3 if name.endswith('.raw.gz') else 128 * 1024**2 if name.endswith('.gz') else 32 * 1024**2 if name == 'vmlinuz-virt' else 65536
         if (set(pin) != {'size', 'sha256'} or type(pin['size']) is not int or not 0 < pin['size'] <= limit
@@ -75,6 +76,8 @@ def load_lock(path):
     if (set(archive) != {'size', 'sha256'} or type(archive['size']) is not int or not 0 < archive['size'] <= 3 * 1024**3
             or not re.fullmatch('[0-9a-f]{64}', archive['sha256']) or not re.fullmatch('[0-9a-f]{64}', lock.get('seed_sha256', ''))):
         raise ValueError('invalid Steam archive/raw pin')
+    if 'payload_url' in lock and (not isinstance(lock['payload_url'], str) or not re.fullmatch(r'https://api\.github\.com/repos/Mi-Yomi/iDeck/releases/assets/[0-9]+', lock['payload_url'])):
+        raise ValueError('pinned Steam URL must be the same repository asset API, without credentials/query')
     if lock['files']['vmlinuz-virt'] != {'size': 10351104, 'sha256': '47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756'}:
         raise ValueError('Steam kernel must retain the accepted kernel')
     return lock
@@ -157,13 +160,16 @@ class HTTPSOnly(urllib.request.HTTPRedirectHandler):
 
 def fetch(destination, lock):
     # URL/token never enter logs or receipts. No changes to CI secret settings.
-    url = os.environ.get('IDECK_STEAM_PAYLOAD_URL', '')
+    url = os.environ.get('IDECK_STEAM_PAYLOAD_URL', '') or lock.get('payload_url', '')
     p = urllib.parse.urlsplit(url)
     if p.scheme != 'https' or not p.hostname or p.username or p.password:
         raise ValueError('STEAM_PAYLOAD_URL_MISSING_OR_NOT_HTTPS')
+    asset_api = (p.hostname == 'api.github.com' and p.port in (None, 443) and not p.query and not p.fragment
+                 and re.fullmatch('/repos/Mi-Yomi/iDeck/releases/assets/[0-9]+', p.path))
     token = os.environ.get('IDECK_STEAM_PAYLOAD_TOKEN', '')
-    if token and (p.hostname != 'api.github.com' or p.port not in (None, 443) or p.query or p.fragment
-                  or not __import__('re').fullmatch('/repos/Mi-Yomi/iDeck/releases/assets/[0-9]+', p.path)):
+    if not token and asset_api:
+        token = os.environ.get('IDECK_DEBIAN_PAYLOAD_TOKEN', '')
+    if token and not asset_api:
         raise ValueError('STEAM_PAYLOAD_TOKEN_SCOPE')
     safe_destination(destination)
     if destination.exists():

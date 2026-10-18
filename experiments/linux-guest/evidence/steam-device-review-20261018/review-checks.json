@@ -1,0 +1,33 @@
+{
+  "source_inputs_current": true,
+  "bootstrap_inputs_exact_allowlist": true,
+  "base_initramfs_prefix_unchanged": true,
+  "network_modules_licenses": [
+    "GPL v2",
+    "GPL v2",
+    "GPL"
+  ],
+  "ci_fetch_restore_and_standalone_xcode_stage": "PASS with actual archive bytes, mocked HTTPS and fixture existing-group token; no live release request",
+  "real_network_test": false,
+  "expanded_size_bytes": 12884901888,
+  "expanded_sha256": "af7dc3f0c5a771a57a487cb6029ed2d16923293357850a5210893b6dd781a219",
+  "full_gzip_hash_pass": true,
+  "readonly_debugfs_paths_absent": [
+    "/home/ideck/.steam",
+    "/home/ideck/.local/share/Steam",
+    "/root/.steam",
+    "/root/.local/share/Steam",
+    "/home/ideck/.bash_history"
+  ],
+  "gpl2_license_text_present": true,
+  "raw_hash_preserved_after_inspection": true,
+  "logical_raw_size_bytes": 12884901888,
+  "physical_raw_allocation_bytes": 1342251008,
+  "archive": {
+    "size": 303667200,
+    "sha256": "f4084e40e854580a8e68a5f199936bf37e4a5f6779086c6b449b940a02325f56"
+  },
+  "apple_gate": "NOT RUN",
+  "guest_boot": "NOT RUN",
+  "device_gate": "NOT RUN"
+}

@@ -246,7 +246,7 @@ final class LinuxTerminalSession: ObservableObject {
         precondition(Thread.isMainThread)
         guard isSteam, ready, !stopping, ["INSTALL", "BIG_PICTURE", "DESKTOP"].contains(action),
               (action == "INSTALL" || steamInstalled), (!steamBusy || action == "DESKTOP") else { return }
-        steamBusy = action != "DESKTOP"
+        steamBusy = true
         worker?.steamAction(action)
     }
 
@@ -762,8 +762,10 @@ private final class LinuxTerminalWorker {
                     owner.publish { $0.steamBusy = false; $0.steamMessage = status }
                 } else if status == "IDECK_STEAM_CLIENT_RETURNED" {
                     owner.publish { $0.steamBusy = false; $0.steamMessage = "Steam launcher returned. This does not confirm a rendered client window." }
-                } else if status == "IDECK_STEAM_LAUNCH_REQUESTED" || status == "IDECK_STEAM_DESKTOP_REQUEST_SENT" {
-                    owner.publish { $0.steamMessage = status == "IDECK_STEAM_LAUNCH_REQUESTED" ? "Real Big Picture launch requested. Rendering on this device is unverified." : "Steam shutdown requested; Linux Desktop stays open. Wait for the client to close." }
+                } else if status == "IDECK_STEAM_DESKTOP_READY" {
+                    owner.publish { $0.steamBusy = false; $0.steamMessage = "Steam and its private namespace writers exited. Linux Desktop stays open." }
+                } else if status == "IDECK_STEAM_LAUNCH_REQUESTED" || status == "IDECK_STEAM_DESKTOP_REQUESTED" {
+                    owner.publish { $0.steamMessage = status == "IDECK_STEAM_LAUNCH_REQUESTED" ? "Real Big Picture launch requested. Rendering on this device is unverified." : "Steam shutdown requested. Waiting for client, namespace writers and launch owner to exit…" }
                 }
                 persist()
                 continue

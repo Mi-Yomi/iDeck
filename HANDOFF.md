@@ -1,3 +1,13 @@
+> Steam source review update, 18 October 2026: fixed root loader environment,
+> dpkg trigger retry, cache traversal, receipt/journal trust and shutdown completion.
+> Existing ideck-debian-payload token can now fetch a lock-pinned same-repo asset URL;
+> no new secret/group is needed. New candidate supersedes ca2a3da's payload/hash.
+> Owner authorized delivery/pinning of the final checked replacement payload;
+> publication/readback/pinning results are recorded in the final delivery receipt.
+> Full Python suite: 503 tests OK, 5 skips; these are not end-to-end Steam tests.
+> Apple/guest/device gates remain NOT RUN. No CI or old network run resumed.
+> Current review and parent delivery steps: STEAM-DEVICE-REVIEW-20261018.md.
+
 > New device integration, 18 October 2026: separate experimental Steam source route,
 > 12 GiB UUID-scoped persistent disk, explicit network consent, A76/LSE gate,
 > official HTTPS resumable installer and real namespace launch/Steam shutdown are

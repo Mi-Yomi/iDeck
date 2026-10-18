@@ -17,7 +17,7 @@
     "husk/patches/0002-jit-setup-routing.patch": "a93a4af2b82418280c14c1b7e7ec64c8e6f2395602987dc59b95a1c841ed3ec4",
     "ios/LinuxProbeReport.swift": "506f423b244972ab66b606b8ded284566d66626a68032fb843a57980db4958f1",
     "ios/LinuxTerminalProfile.swift": "04d488d0052ab0f1fc3fbf9e3976aa72fb722e492f535ff7dd5f1e6a18149bc7",
-    "ios/LinuxTerminalSession.swift": "3eca6214b79077aa505f1f138e25beb763d18fe309c892d105dc0c2418ba05a1",
+    "ios/LinuxTerminalSession.swift": "052f776f4140e96d25ba1330df1ebbe3178f63c8ffea8c086bea540820c3203e",
     "ios/LinuxTerminalView.swift": "32cb24c27024f26628caa7d7fbe1b17532cc0f271dad8c91e49d587301bd733c",
     "tools/terminal_bundle.py": "c1c696498690085c6ddd4dc1eaf06dc4afa51b4dea738d883f498194cbbdef61",
     "ipa/terminal.lock.json": "e39514b53a2ae33de96b300b2578c760fb95b2b2685bb7a99502f0f2d0c6a98e",
@@ -41,7 +41,7 @@
     "tools/gui_bundle.py": "0bdd90ba31ca0c512980629d8c76bdc98da9a525e88c88fea4902681b52dc079",
     "ipa/gui.lock.json": "fef0bf4c5b72cad5ee921616639f6e28bec73bce7b1e689c95c3734aed82c7eb",
     "ios/LinuxSteamProfile.swift": "649a088a394f0d2fa29414b570dfbb314a60d9b35e09a2c0501bb5cab6d9dca5",
-    "tools/steam_bundle.py": "b763469e6a071c1f88ac7420ef45de9a7675bb9db9921021e05fc7a64b3180f8",
+    "tools/steam_bundle.py": "c55bb8d05698d64ecb3fbb6945976ef292f422ceee4592cd3cd34e2d7c5fa0ea",
     "ipa/steam.lock.json": "fe35359387666e8bb822954403c19e6dc2c53de96471fbe92a6d0ea143316175",
     "husk/patches/0005-steam-asset-staging.patch": "7c3b66a36021d1b8fb2ec5980508782850e650eeda8b1ec1a6a771bee1487a4d"
   },

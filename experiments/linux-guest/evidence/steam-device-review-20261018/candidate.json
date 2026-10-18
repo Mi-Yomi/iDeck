@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "kind": "final-reviewed-candidate-before-authorized-upload",
+  "local_directory": "/workspace/iDeck/.work/steam-device-payload-20261018-review-final",
+  "archive": {
+    "file": "ideck-steam-device-v1.tar",
+    "size": 303667200,
+    "sha256": "f4084e40e854580a8e68a5f199936bf37e4a5f6779086c6b449b940a02325f56"
+  },
+  "seed_sha256": "af7dc3f0c5a771a57a487cb6029ed2d16923293357850a5210893b6dd781a219",
+  "supersedes_archive_sha256": "14664a7d12becc2850078e4e1cc150393ef06886130e4b21b33ffe37227e649b",
+  "source_inputs_current": true,
+  "strict_fsck_pre_and_post_pass": true,
+  "archive_stage_full_gzip_hash_pass": true,
+  "notice_preserves_busybox_source_limit": true,
+  "approval": "Owner explicitly authorized final replacement payload delivery and pinning through parent",
+  "uploaded_at_source_checkpoint": false,
+  "apple_gate": "NOT RUN",
+  "new_guest_boot": "NOT RUN",
+  "device_gate": "NOT RUN"
+}

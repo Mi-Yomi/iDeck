@@ -80,7 +80,35 @@ def build(gui, modloop, unsquashfs, e2fsck, tune2fs, resize2fs, output):
     for key, name in [('kernel', 'vmlinuz-virt'), ('initramfs', 'initramfs-steam.gz'), ('rootfs', compressed.name)]:
         profile[key] = {'file': name, **bundle.metadata(assets / name)}
     (assets / 'steam-profile.json').write_text(json.dumps(profile, indent=2) + '\n')
-    notices = (gui / 'LICENSES-desktop.txt').read_text() + '\nSteam experiment: original iDeck bootstrap/install tools; Valve client is NOT bundled.\nOfficial pinned client/dependencies are fetched on device after network consent.\n'
+    base_notice = (gui / 'LICENSES-desktop.txt').read_text().replace(
+        'The original probe licence notices remain in the separate iDeckLinuxProbe bundle.',
+        'The shared Alpine provenance notice is included below and in LICENSES-terminal.txt in the iDeckLinuxTerminal bundle.')
+    notices = base_notice + '\nShared Alpine provenance notice (preserved):\n\n' + (ROOT / 'guest/TERMINAL-LICENSES.txt').read_text() + '''
+Steam device extension (experimental; no runtime acceptance)
+
+The added failover, net_failover and virtio_net modules are unchanged Alpine
+Linux 6.18.35-0-virt bytes, from the exact modloop SHA-256 recorded in the
+bootstrap receipt. Their individual hashes and compiled licence declarations
+are preserved in that receipt. Kernel/module source and Alpine build recipe:
+https://github.com/alpinelinux/aports/tree/v3.24.1/main/linux-lts
+https://github.com/alpinelinux/aports/blob/v3.24.1/main/linux-lts/virt.aarch64.config
+Exact version, source/config observations and provenance:
+experiments/linux-guest/ipa/desktop-kernel-source.lock.json in Mi-Yomi/iDeck.
+Preserve the shared Alpine notice above, including its documented BusyBox
+source/configuration reconstruction limits; do not claim a complete file-level
+redistribution review from this payload build.
+
+The Debian base and all per-package copyright/licence files remain in the seed.
+Exact versions and source package provenance are in ipa/gui-inputs.lock.json;
+this payload adds no preinstalled Debian Steam dependency or Valve client.
+
+The original iDeck installer/namespace scripts and original FEAT_LSE probe are
+available in guest/steam and tools/steam_cpu_probe.py at the reviewed private
+Mi-Yomi/iDeck source commit. The candidate lock binds their exact source bytes;
+preserve the source attribution in steam_client.py. Valve client bytes and
+Steam account/session files are NOT included. The official pinned client and
+additional dependencies are downloaded only on device after network consent.
+'''
     (assets / 'LICENSES-steam.txt').write_text(notices)
     lock = bundle.load_lock(ROOT / 'ipa/steam.lock.json')
     lock.update(status='ready', files={name: bundle.metadata(assets / name) for name in sorted(bundle.NAMES)},

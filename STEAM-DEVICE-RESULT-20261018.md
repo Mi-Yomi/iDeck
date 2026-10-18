@@ -1,3 +1,7 @@
+> Superseded in part by [source review and fixes](STEAM-DEVICE-REVIEW-20261018.md).
+> Its new candidate/hash and existing-secret delivery path are current; the ca2a3da
+> payload below is retained as history. Upload and device acceptance remain pending.
+
 # Steam device route — 18 October 2026
 
 This is a new device-integration change from `db5c32b0ab9a91634c91860019fdb651d1877942`, on `codex/steam-arm64-experiment-20261017` only. It is **not a completed iPhone Steam acceptance**. The last Apple IPA #28 passed for db5 without Steam; it does not validate this change. No Codemagic run, Release/upload, secret, system network/security setting, user disk or other branch was changed. No additional agents, hooks or plugins were used. No AGENTS.md or local `.agents/skills` entries were present in this workspace. Ponytail full was read from the requested upstream SKILL.md without installation.

@@ -511,6 +511,8 @@ def main():
         stage_debian(debian_assets, source / "guests/ideck-debian", debian_lock)
         from gui_bundle import stage as stage_gui
         stage_gui(gui_assets, source / "guests/ideck-desktop", gui_lock)
+        from steam_bundle import prepare_for_build as prepare_steam
+        report["steam_assets"] = prepare_steam(source / "guests/ideck-steam", EXPERIMENT / "ipa/steam.lock.json", out)
         worker.run("native-recipe-patch", ["git", "apply", "--check", EXPERIMENT / "ipa/0001-fail-closed-native-build.patch"], source)
         worker.run("native-recipe-apply", ["git", "apply", EXPERIMENT / "ipa/0001-fail-closed-native-build.patch"], source)
         downloads = source / "third_party/sources"

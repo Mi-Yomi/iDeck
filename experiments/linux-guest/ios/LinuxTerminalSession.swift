@@ -9,14 +9,23 @@ final class LinuxTerminalSession: ObservableObject {
     static let shared = LinuxTerminalSession()
     static let debian = LinuxTerminalSession(isDebian: true)
     static let desktop = LinuxTerminalSession(isDesktop: true)
+    static let steam = LinuxTerminalSession(isSteam: true)
+    let isSteam: Bool
+    @Published var steamNetworkConsent = false
+    @Published fileprivate(set) var steamInstalled = false
+    @Published fileprivate(set) var steamBusy = false
+    @Published fileprivate(set) var steamMessage = "Install or resume after the desktop is ready. Login and agreements belong to you."
+    var steamPayloadAvailable: Bool { FileManager.default.fileExists(atPath: Bundle.main.bundleURL.appendingPathComponent("iDeckLinuxSteam/steam-profile.json").path) }
     let isDebian: Bool
     let isDesktop: Bool
     let desktopInput: LinuxDesktopInput?
-    init(isDebian: Bool = false, isDesktop: Bool = false) {
-        self.isDebian = isDebian || isDesktop
-        self.isDesktop = isDesktop
-        self.desktopInput = isDesktop ? LinuxDesktopInput() : nil
-        if isDesktop { message = "Enable JIT, then start the local Debian desktop. Files in /home/ideck persist on its separate GUI disk." }
+    init(isDebian: Bool = false, isDesktop: Bool = false, isSteam: Bool = false) {
+        self.isSteam = isSteam
+        self.isDebian = isDebian || isDesktop || isSteam
+        self.isDesktop = isDesktop || isSteam
+        self.desktopInput = (isDesktop || isSteam) ? LinuxDesktopInput() : nil
+        if isSteam { message = "Experimental Steam: separate 12 GiB disk, 1536 MiB guest RAM and 4 vCPUs. Device usability is unverified." }
+        else if isDesktop { message = "Enable JIT, then start the local Debian desktop. Files in /home/ideck persist on its separate GUI disk." }
         else if isDebian { message = "Enable JIT, then start Debian with its separate persistent ext4 disk." }
     }
     @Published fileprivate(set) var message = "Enable JIT, then start the local Linux terminal."
@@ -149,6 +158,10 @@ final class LinuxTerminalSession: ObservableObject {
     func start() {
         precondition(Thread.isMainThread)
         guard !attempted else { return }
+        if isSteam {
+            guard steamPayloadAvailable else { message = "Steam payload missing: prepare and pin steam-rootfs-v1.raw.gz and initramfs-steam.gz with steam-profile.json. VM was not started."; return }
+            guard steamNetworkConsent else { message = "Allow network access for this Steam session first."; return }
+        }
         let diagnostic: LinuxTerminalDiagnostics.Journal
         do {
             diagnostic = try journal()
@@ -169,7 +182,7 @@ final class LinuxTerminalSession: ObservableObject {
             recordJIT(true)
             try diagnostic.record(.runtimeOwnershipBegin)
             let runtimeFree = !LinuxProbeSession.shared.attempted && !LinuxTerminalSession.shared.attempted
-                && !LinuxTerminalSession.debian.attempted && !LinuxTerminalSession.desktop.attempted && !QemuRunner.shared.isRunning && husk_console_loaded_game() == nil
+                && !LinuxTerminalSession.debian.attempted && !LinuxTerminalSession.desktop.attempted && !LinuxTerminalSession.steam.attempted && !QemuRunner.shared.isRunning && husk_console_loaded_game() == nil
             try diagnostic.record(.runtimeOwnershipReturned)
             guard runtimeFree else {
                 try diagnostic.record(.startRejected)
@@ -193,7 +206,7 @@ final class LinuxTerminalSession: ObservableObject {
             message = "The app's Documents directory could not be validated. Close and reopen the app."
             return
         }
-        let root = documents.appendingPathComponent(isDesktop ? "iDeckDebianGUI-v1" : (isDebian ? "iDeckDebian" : "iDeckLinux"), isDirectory: true)
+        let root = documents.appendingPathComponent(isSteam ? "iDeckSteam-v1" : isDesktop ? "iDeckDebianGUI-v1" : (isDebian ? "iDeckDebian" : "iDeckLinux"), isDirectory: true)
         let session = documents.appendingPathComponent("iDeckLinuxSessions", isDirectory: true)
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
         let metadata: [String: Any] = [
@@ -227,6 +240,14 @@ final class LinuxTerminalSession: ObservableObject {
         precondition(Thread.isMainThread)
         guard (isDesktop ? serialReady : ready), !stopping, text.utf8.count <= 16384 else { return }
         worker?.send(Data(text.utf8))
+    }
+
+    func steamAction(_ action: String) {
+        precondition(Thread.isMainThread)
+        guard isSteam, ready, !stopping, ["INSTALL", "BIG_PICTURE", "DESKTOP"].contains(action),
+              (action == "INSTALL" || steamInstalled), (!steamBusy || action == "DESKTOP") else { return }
+        steamBusy = action != "DESKTOP"
+        worker?.steamAction(action)
     }
 
     func sendLine(_ line: String) { send(line + "\r") }
@@ -438,23 +459,46 @@ private final class LinuxTerminalWorker {
                 try LinuxDesktopDisk.validateDirectory(self.session, allowingMissing: true)
                 try FileManager.default.createDirectory(at: self.session, withIntermediateDirectories: true)
                 self.report = self.metadata
-                self.report["mode"] = self.owner.isDesktop ? "desktop" : (self.owner.isDebian ? "debian" : "terminal")
+                self.report["mode"] = self.owner.isSteam ? "steam-experimental" : self.owner.isDesktop ? "desktop" : (self.owner.isDebian ? "debian" : "terminal")
                 self.report["status"] = "terminal_prepared"
                 self.report["terminal_clean_stop"] = false
                 self.report["qemu_block_layer_drained_verified"] = false
                 self.report["import_status"] = "not_started"
                 self.persist()
-                let assets = self.bundle.appendingPathComponent(self.owner.isDesktop ? "iDeckLinuxDesktop" : (self.owner.isDebian ? "iDeckDebian" : "iDeckLinuxTerminal"))
+                let assets = self.bundle.appendingPathComponent(self.owner.isSteam ? "iDeckLinuxSteam" : self.owner.isDesktop ? "iDeckLinuxDesktop" : (self.owner.isDebian ? "iDeckDebian" : "iDeckLinuxTerminal"))
                 let probe = self.bundle.appendingPathComponent("iDeckLinuxProbe")
                 try self.diagnostic.record(.assetsBegin)
                 let terminal = self.owner.isDebian ? nil : (try LinuxTerminalProfile.load(from: assets))
-                let gui = self.owner.isDesktop ? (try LinuxGUIProfile.load(from: assets)) : nil
+                let steam = self.owner.isSteam ? (try LinuxSteamProfile.load(from: assets)) : nil
+                if steam != nil {
+                    let available = os_proc_available_memory()
+                    self.report["process_available_memory_bytes"] = available
+                    guard available >= UInt64(LinuxSteamProfile.memoryMib) * 1024 * 1024 + LinuxSteamProfile.hostReserve else { throw LinuxSteamProfile.Blocker.memoryBudget }
+                }
+                let gui = self.owner.isDesktop && !self.owner.isSteam ? (try LinuxGUIProfile.load(from: assets)) : nil
                 let debian = self.owner.isDebian && !self.owner.isDesktop ? (try LinuxDebianProfile.load(from: assets)) : nil
                 let desktop = self.owner.isDebian && !self.owner.isDesktop ? (try LinuxDesktopProfile.load(from: assets)) : nil
                 try self.diagnostic.record(.assetsReturned)
                 try self.diagnostic.record(.diskBegin)
                 var preparedMetadata: [String: Any]
-                if let gui {
+                if let steam {
+                    let path = self.dataDirectory.appendingPathComponent("rootfs-v1.raw")
+                    var state = stat()
+                    if lstat(path.path, &state) == 0 {
+                        self.report["import_status"] = "existing_steam_disk_preserved"; self.persist()
+                        self.disk = try steam.openExisting(in: self.dataDirectory)
+                    } else {
+                        guard errno == ENOENT else { throw LinuxDesktopDisk.Invalid.inspection }
+                        self.report["import_status"] = "copying_steam_seed"; self.persist()
+                        self.disk = try steam.provision(in: self.dataDirectory, assets: assets)
+                        self.report["import_status"] = "steam_seed_hash_verified_and_published"; self.persist()
+                    }
+                    preparedMetadata = ["profile_cpu": "cortex-a76", "profile_memory_mib": LinuxSteamProfile.memoryMib,
+                        "profile_vcpus": 4, "profile_width": 800, "profile_height": 600, "requested_tcg_mib": 256,
+                        "userdata_size_bytes": steam.image.sizeBytes, "userdata_filesystem": "ext4",
+                        "steam_seed_sha256": steam.seedSha256, "steam_seed_gzip_sha256": steam.rootfs.sha256, "terminal_initramfs_sha256": steam.initramfs.sha256,
+                        "steam_network_consent": self.owner.steamNetworkConsent, "steam_device_verified": false]
+                } else if let gui {
                     self.report["debian_seed_sha256"] = gui.rootfs.sha256
                     self.report["terminal_initramfs_sha256"] = gui.initramfs.sha256
                     let path = self.dataDirectory.appendingPathComponent("rootfs-v1.raw")
@@ -511,6 +555,9 @@ private final class LinuxTerminalWorker {
                 if let profile = terminal, let terminalDisk = disk as? LinuxTerminalDisk {
                     args = try profile.arguments(probeAssets: probe, terminalAssets: assets, session: bootSession,
                         disk: terminalDisk, serialFD: serial.qemu, controlFD: control.qemu)
+                } else if let profile = steam, let desktopDisk = disk as? LinuxDesktopDisk {
+                    args = try profile.arguments(probeAssets: probe, assets: assets, session: bootSession,
+                        disk: desktopDisk, serialFD: serial.qemu, controlFD: control.qemu, networkConsent: self.owner.steamNetworkConsent)
                 } else if let profile = gui, let desktopDisk = disk as? LinuxDesktopDisk {
                     args = try profile.arguments(probeAssets: probe, assets: assets, session: bootSession,
                         disk: desktopDisk, serialFD: serial.qemu, controlFD: control.qemu)
@@ -604,13 +651,18 @@ private final class LinuxTerminalWorker {
                 if let failure = error as? LinuxDesktopDisk.Invalid { self.report["storage_failure"] = String(describing: failure) }
                 if let failure = error as? LinuxDesktopProfile.Invalid { self.report["storage_failure"] = String(describing: failure) }
                 self.persist()
+                if let blocker = error as? LinuxSteamProfile.Blocker {
+                    self.report["steam_blocker"] = String(describing: blocker); self.persist()
+                    self.owner.publish { $0.message = "Steam preparation blocked: \(blocker). Missing payload requires a separately sealed Steam asset; memoryBudget requires 1536 MiB guest plus 1 GiB available host reserve. Existing disks were preserved." }
+                    return
+                }
                 let needsRecovery = (error as? LinuxDesktopDisk.Invalid) == .needsRecovery
                 let noSpace = (error as? LinuxDesktopDisk.Invalid) == .insufficientSpace
                 let busy = (error as? LinuxDesktopDisk.Invalid) == .locked
                 let badSeed = (error as? LinuxDesktopProfile.Invalid) == .assetDigest
                 self.owner.publish {
                     $0.message = needsRecovery ? "The Debian disk needs offline ext4 recovery after an unclean shutdown. It was not recreated or mounted. Export the report and preserve the disk before repair."
-                        : noSpace ? (self.owner.isDesktop ? "Not enough space for the GUI disk and 512 MiB reserve. Existing disks were preserved." : "Not enough free space to import Debian (512 MiB plus 32 MiB reserve). Existing disks were preserved. Free space and reopen the app to retry.")
+                        : noSpace ? (self.owner.isSteam ? "Not enough space for the separate 12 GiB Steam disk and 1 GiB reserve. Existing disks were preserved." : self.owner.isDesktop ? "Not enough space for the GUI disk and 512 MiB reserve. Existing disks were preserved." : "Not enough free space to import Debian (512 MiB plus 32 MiB reserve). Existing disks were preserved. Free space and reopen the app to retry.")
                         : busy ? "The Debian disk or import is busy. It was not replaced. Close the owning session before retrying."
                         : badSeed ? "The Debian seed failed its SHA-256 check. No disk was published. Restore the correct app payload before retrying; existing disks were preserved."
                         : "Console preparation failed. The existing disk was not replaced. Export the report; close and reopen the app to retry."
@@ -623,6 +675,14 @@ private final class LinuxTerminalWorker {
         queue.async {
             guard (self.owner.isDesktop ? self.guestWasReady : self.ready), !self.stopRequested, !self.loopReturned else { return }
             do { try self.serial?.enqueue(bytes) } catch { self.channelDisconnected(control: false) }
+        }
+    }
+
+    func steamAction(_ action: String) {
+        queue.async {
+            guard self.owner.isSteam, self.ready, !self.stopRequested, !self.loopReturned else { return }
+            do { try self.control?.enqueue(Data(("IDECK_STEAM_" + action + "\n").utf8)) }
+            catch { self.channelDisconnected(control: true) }
         }
     }
 
@@ -693,6 +753,21 @@ private final class LinuxTerminalWorker {
             var line = controlLines.subdata(in: controlLines.startIndex..<newline)
             controlLines.removeSubrange(controlLines.startIndex...newline)
             if line.last == 13 { line.removeLast() }
+            if owner.isSteam, let status = String(data: line, encoding: .utf8), status.hasPrefix("IDECK_STEAM_") {
+                report["steam_guest_status"] = status
+                if status == "IDECK_STEAM_CPU_LSE_PASS" { report["steam_cpu_lse_passed"] = true }
+                if status == "IDECK_STEAM_INSTALLED" {
+                    owner.publish { $0.steamInstalled = true; $0.steamBusy = false; $0.steamMessage = "Pinned client installed. Big Picture starts the real client; sign in and accept any terms yourself." }
+                } else if status.hasPrefix("IDECK_STEAM_BLOCKER:") {
+                    owner.publish { $0.steamBusy = false; $0.steamMessage = status }
+                } else if status == "IDECK_STEAM_CLIENT_RETURNED" {
+                    owner.publish { $0.steamBusy = false; $0.steamMessage = "Steam launcher returned. This does not confirm a rendered client window." }
+                } else if status == "IDECK_STEAM_LAUNCH_REQUESTED" || status == "IDECK_STEAM_DESKTOP_REQUEST_SENT" {
+                    owner.publish { $0.steamMessage = status == "IDECK_STEAM_LAUNCH_REQUESTED" ? "Real Big Picture launch requested. Rendering on this device is unverified." : "Steam shutdown requested; Linux Desktop stays open. Wait for the client to close." }
+                }
+                persist()
+                continue
+            }
             // Only this independent guest supervisor port can acknowledge
             // readiness/unmount. A shell echo in the serial transcript cannot.
             let prefix = owner.isDesktop ? "IDECK_DESKTOP_" : (owner.isDebian ? "IDECK_DEBIAN_" : "IDECK_TERMINAL_")

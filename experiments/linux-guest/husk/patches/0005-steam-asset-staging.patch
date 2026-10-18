@@ -1,0 +1,23 @@
+Subject: [PATCH] Stage separately sealed Steam assets or explicit blocker
+
+Class: local-experiment
+Evidence: Steam source regressions; Apple/device gate pending
+Offered-upstream: no; private experiment
+
+--- a/src/app/project.yml
++++ b/src/app/project.yml
+@@ -237,6 +237,14 @@
+           - "$(BUILT_PRODUCTS_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/lineage-efi-vars-seed.fd"
+           - "$(BUILT_PRODUCTS_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/lineage-vdb-seed.qcow2"
+ 
++      - name: Stage verified experimental Steam assets
++        script: |
++          set -e
++          python3 "$SRCROOT/../../scripts/ideck-stage-steam.py" stage \
++            "$SRCROOT/../../guests/ideck-steam" \
++            "$SRCROOT/../../scripts/ideck-steam.lock.json" \
++            --destination "$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/iDeckLinuxSteam"
++
+     postBuildScripts:
+       - name: Embed StikJIT
+         # The helper links StikJIT; it lives here, in the app's Frameworks,

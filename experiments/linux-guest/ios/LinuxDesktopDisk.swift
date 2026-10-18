@@ -27,7 +27,10 @@ final class LinuxDesktopDisk {
         let features: Features
 
         func validate() throws {
-            guard sizeBytes >= 64 * 1024 * 1024, sizeBytes <= 4 * 1024 * 1024 * 1024,
+            // Only the separately identified Steam disk may exceed the accepted 4GiB bound.
+            let boundedSize = sizeBytes <= 4 * 1024 * 1024 * 1024 ||
+                (uuid == "c6a66b17-1b3e-4fe9-a07b-70c185fb2718" && sizeBytes == 12 * 1024 * 1024 * 1024)
+            guard sizeBytes >= 64 * 1024 * 1024, boundedSize,
                   sizeBytes % 4096 == 0, blockSize == 4096, features == .supported, uuid.utf8.count == 36,
                   uuid.range(of: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
                              options: .regularExpression) != nil,

@@ -1,0 +1,97 @@
+import Foundation
+import CryptoKit
+import Darwin
+import zlib
+
+func runSteamProfileChecks(root: URL) throws {
+    let assets = root.appendingPathComponent("steam-assets", isDirectory: true)
+    let probe = root.appendingPathComponent("steam-probe", isDirectory: true)
+    let data = root.appendingPathComponent("steam-data", isDirectory: true)
+    for path in [assets, probe, data] { try FileManager.default.createDirectory(at: path, withIntermediateDirectories: true) }
+    let bytes = Data("synthetic checked asset; no client".utf8)
+    let hash = SHA256.hash(data: bytes).map { String(format: "%02x", $0) }.joined()
+    let asset: (String) -> [String: Any] = { ["file": $0, "size": bytes.count, "sha256": hash] }
+    var valid: [String: Any] = ["schema": 1, "mode": "steam-experimental", "control_port": "org.ideck.control",
+        "kernel": asset("vmlinuz-virt"), "initramfs": asset("initramfs-steam.gz"), "rootfs": asset("steam-rootfs-v1.raw.gz"),
+        "seed_sha256": hash, "image": ["size_bytes": LinuxSteamProfile.size, "uuid": LinuxSteamProfile.uuid,
+        "block_size": 4096, "features": ["compat": 44, "incompat": 194, "ro_compat": 1091]]]
+    let profileFile = assets.appendingPathComponent("steam-profile.json")
+    try JSONSerialization.data(withJSONObject: valid).write(to: profileFile)
+    let profile = try LinuxSteamProfile.load(from: assets)
+    try profile.validate()
+    for name in ["vmlinuz-virt", "initramfs-steam.gz"] { try bytes.write(to: assets.appendingPathComponent(name)) }
+    for name in ["vmlinuz-virt", "initramfs-ideck.gz"] { try bytes.write(to: probe.appendingPathComponent(name)) }
+    // Execute the actual bounded gzip decoder with small real IO fixtures.
+    let gzipFile = assets.appendingPathComponent("decoder-fixture.gz")
+    guard let zipped = gzopen(gzipFile.path, "wb") else { preconditionFailure("gzip fixture open") }
+    precondition(Int(bytes.withUnsafeBytes { gzwrite(zipped, $0.baseAddress, UInt32($0.count)) }) == bytes.count)
+    precondition(gzclose(zipped) == Z_OK)
+    let source = Darwin.open(gzipFile.path, O_RDONLY)
+    let outputFile = assets.appendingPathComponent("decoder-output")
+    let output = Darwin.open(outputFile.path, O_RDWR | O_CREAT | O_EXCL, 0o600)
+    precondition(source >= 0 && output >= 0)
+    defer { Darwin.close(source); Darwin.close(output) }
+    try LinuxSteamProfile.copyGzip(source, to: output, size: Int64(bytes.count), digest: hash)
+    let decoded = try Data(contentsOf: outputFile)
+    precondition(decoded == bytes)
+    do {
+        try LinuxSteamProfile.copyGzip(source, to: output, size: Int64(bytes.count - 1), digest: hash)
+        preconditionFailure("unbounded gzip accepted")
+    } catch LinuxDesktopProfile.Invalid.assetSize { }
+    do {
+        try LinuxSteamProfile.copyGzip(source, to: output, size: Int64(bytes.count), digest: String(repeating: "a", count: 64))
+        preconditionFailure("wrong expanded hash accepted")
+    } catch LinuxDesktopProfile.Invalid.assetDigest { }
+    let original: [String: Any] = ["schema": 1, "width": 800, "height": 600, "cpu": "cortex-a72",
+        "memory_mib": 1024, "vcpus": 4, "tcg_cache_mib": 256,
+        "kernel": asset("vmlinuz-virt"), "initramfs": asset("initramfs-ideck.gz")]
+    try JSONSerialization.data(withJSONObject: original).write(to: probe.appendingPathComponent("profile.json"))
+    // Synthetic sparse IO fixture only; never a real seed or physical-space claim.
+    let golden = try JSONSerialization.jsonObject(with: Data(contentsOf: URL(fileURLWithPath:
+        "experiments/linux-guest/ios/tests/fixtures/desktop-ext4-superblock.json"))) as! [String: Any]
+    let hex = golden["header_hex"] as! String
+    var header = stride(from: 0, to: hex.count, by: 2).map { index -> UInt8 in
+        let a = hex.index(hex.startIndex, offsetBy: index)
+        return UInt8(hex[a..<hex.index(a, offsetBy: 2)], radix: 16)!
+    }
+    func u32(_ offset: Int, _ value: UInt32) { for n in 0..<4 { header[offset + n] = UInt8(truncatingIfNeeded: value >> (8 * n)) } }
+    let uuid = LinuxSteamProfile.uuid.replacingOccurrences(of: "-", with: "")
+    for n in 0..<16 {
+        let a = uuid.index(uuid.startIndex, offsetBy: 2 * n)
+        header[0x68 + n] = UInt8(uuid[a..<uuid.index(a, offsetBy: 2)], radix: 16)!
+    }
+    let blocks = UInt32(LinuxSteamProfile.size / 4096)
+    u32(4, blocks)
+    let inodes = UInt32(header[0x28]) | UInt32(header[0x29]) << 8 | UInt32(header[0x2a]) << 16 | UInt32(header[0x2b]) << 24
+    u32(0, ((blocks + 32767) / 32768) * inodes)
+    u32(1020, LinuxDesktopDisk.crc32c(header[0..<1020]))
+    try LinuxDesktopDisk.validateHeader(header, specification: profile.image)
+    let raw = data.appendingPathComponent("rootfs-v1.raw")
+    let fd = Darwin.open(raw.path, O_RDWR | O_CREAT | O_EXCL, 0o600)
+    precondition(fd >= 0)
+    defer { Darwin.close(fd) }
+    precondition(ftruncate(fd, off_t(LinuxSteamProfile.size)) == 0)
+    precondition(pwrite(fd, header, header.count, 1024) == header.count)
+    let disk = try profile.openExisting(in: data)
+    defer { disk.closeUnused() }
+    do {
+        _ = try profile.arguments(probeAssets: probe, assets: assets, session: root.appendingPathComponent("steam-denied"),
+            disk: disk, serialFD: 10, controlFD: 11, networkConsent: false)
+        preconditionFailure("network without consent")
+    } catch LinuxSteamProfile.Blocker.networkConsent { }
+    let args = try profile.arguments(probeAssets: probe, assets: assets, session: root.appendingPathComponent("steam-argv"),
+        disk: disk, serialFD: 10, controlFD: 11, networkConsent: true)
+    precondition(args[args.firstIndex(of: "-cpu")! + 1] == "cortex-a76")
+    precondition(args[args.firstIndex(of: "-m")! + 1] == "1536")
+    precondition(!args.contains("-nic") && args.contains("virtio-net-device,netdev=steamnet"))
+    precondition(!args.joined().contains("hostfwd") && !args.joined().contains("steam_disk_grow"))
+    precondition(args.contains("socket,id=linuxserial,fd=10"))
+    let ordinary = LinuxDesktopDisk.Specification(sizeBytes: LinuxSteamProfile.size, uuid: LinuxGUIProfile.uuid,
+        blockSize: 4096, features: .supported)
+    do { try ordinary.validate(); preconditionFailure("global disk limit raised") }
+    catch LinuxDesktopDisk.Invalid.specification { }
+    valid["mode"] = "desktop"
+    try JSONSerialization.data(withJSONObject: valid).write(to: profileFile)
+    do { _ = try LinuxSteamProfile.load(from: assets); preconditionFailure("wrong Steam contract accepted") } catch { }
+    print("LINUX_STEAM_PROFILE_PASS")
+}

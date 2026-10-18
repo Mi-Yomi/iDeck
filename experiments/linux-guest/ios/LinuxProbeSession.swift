@@ -50,7 +50,7 @@ final class LinuxProbeSession: ObservableObject {
             message = "JIT did not pass its execution check. Open JIT setup."; return
         }
         recordJITExecution(true)
-        guard !LinuxTerminalSession.shared.attempted, !LinuxTerminalSession.debian.attempted, !LinuxTerminalSession.desktop.attempted else {
+        guard !LinuxTerminalSession.shared.attempted, !LinuxTerminalSession.debian.attempted, !LinuxTerminalSession.desktop.attempted, !LinuxTerminalSession.steam.attempted else {
             message = "The terminal owns this process. Close and reopen the app."; return
         }
         // The root chooser never creates ContentView/native-runtime screens in

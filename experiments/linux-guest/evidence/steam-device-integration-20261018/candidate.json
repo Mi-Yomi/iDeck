@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "kind": "local-candidate-not-published",
+  "local_directory": "/workspace/iDeck/.work/steam-device-payload-20261018-final",
+  "archive": {
+    "file": "ideck-steam-device-v1.tar",
+    "size": 303667200,
+    "sha256": "14664a7d12becc2850078e4e1cc150393ef06886130e4b21b33ffe37227e649b"
+  },
+  "candidate_lock": {
+    "size": 3980,
+    "sha256": "c439f2df9f055f8c88cf027b7f2d89f613255ecf6fcef386c8c2b0c7e8fe2bb8"
+  },
+  "files": {
+    "LICENSES-steam.txt": {
+      "size": 1572,
+      "sha256": "70c4620cc5b97e97c12f0f49b39a5b988ac8204db6e66b47dc40f56f8d065027"
+    },
+    "initramfs-steam.gz": {
+      "size": 11695369,
+      "sha256": "6ebcb87e4e96f0f82b4d4f1c0abb14ed3e2990b57822eead1a9c27bddc00b938"
+    },
+    "steam-profile.json": {
+      "size": 860,
+      "sha256": "b56de00d196c52f83d2e2e600982315a6896ce8936c55260126d9e390007fb46"
+    },
+    "steam-rootfs-v1.raw.gz": {
+      "size": 281604263,
+      "sha256": "d639262b0ad0f0dfc7a8ad9595ffdb09b65c02b96b62ea8f5b38b3e3d4860015"
+    },
+    "vmlinuz-virt": {
+      "size": 10351104,
+      "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+    }
+  },
+  "seed_sha256": "629b79bbb7d780f1b2151041f5c6af366003c732316aedc657c0425a182607fd",
+  "source_inputs_current": true,
+  "strict_fsck_pre_and_post_pass": true,
+  "roundtrip_pass": true,
+  "committed_runtime_lock": "blocked",
+  "uploaded": false,
+  "apple_gate": "NOT RUN",
+  "guest_boot": "NOT RUN",
+  "device_gate": "NOT RUN"
+}

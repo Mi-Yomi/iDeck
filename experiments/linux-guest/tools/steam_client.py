@@ -165,14 +165,25 @@ def publish(stage,destination):
     if rename(-100,os.fsencode(stage),-100,os.fsencode(destination),1):
         raise OSError(ctypes.get_errno(),'Steam publication failed')
 
-def install(lock,cache,destination):
+def install(lock,cache,destination,*,resume=False):
     validate(lock)
     if destination.exists() or destination.is_symlink():raise ValueError('Steam destination exists; no automatic repair/replacement')
     if any(p.is_symlink() for p in destination.parents):raise ValueError('symlink Steam ancestor')
     total,links=archive_inventory(lock,cache)
     destination.parent.mkdir(parents=True,exist_ok=True)
     if shutil.disk_usage(destination.parent).free<total+256*1024**2:raise ValueError('insufficient Steam staging space')
-    stage=Path(tempfile.mkdtemp(prefix='.steam-install-',dir=destination.parent))
+    if resume:
+        # Reserved installer tree only, serialized by the device install owner.
+        # A killed extraction restarts from verified ZIPs; no published data moves.
+        stage=destination.parent/('.steam-install-'+lock['manifest_sha256'])
+        if os.path.lexists(stage):
+            state=stage.lstat()
+            if not stat.S_ISDIR(state.st_mode) or state.st_uid!=os.geteuid() or stat.S_IMODE(state.st_mode)!=0o700:
+                raise ValueError('unsafe resumable Steam staging')
+            shutil.rmtree(stage)
+        stage.mkdir(mode=0o700)
+    else:
+        stage=Path(tempfile.mkdtemp(prefix='.steam-install-',dir=destination.parent))
     try:
         for part in lock['parts']:
             with zipfile.ZipFile(cache/part['file']) as z:
@@ -183,6 +194,7 @@ def install(lock,cache,destination):
                     dest.parent.mkdir(parents=True,exist_ok=True)
                     with z.open(info) as src,dest.open('wb') as target:
                         shutil.copyfileobj(src,target,1024*1024)
+                        target.flush();os.fsync(target.fileno())
                     with dest.open('rb') as f:prefix=f.read(4)
                     dest.chmod(0o755 if (info.external_attr>>16)&0o111 or prefix.startswith((b'\x7fELF',b'#!')) else 0o644)
         # Every regular byte is extracted before aliases; no extraction follows links.
@@ -202,7 +214,16 @@ def install(lock,cache,destination):
             'agreement_accepted':False,'login_performed':False},indent=2)+'\n')
         # Rename publishes the complete tree only. Never replace an existing install.
         if destination.exists():raise ValueError('Steam destination appeared during install')
+        for directory,_,_ in os.walk(stage,topdown=False):
+            if os.name=='posix':
+                fd=os.open(directory,os.O_RDONLY|os.O_DIRECTORY)
+                try:os.fsync(fd)
+                finally:os.close(fd)
         publish(stage,destination)
+        if os.name=='posix':
+            fd=os.open(destination.parent,os.O_RDONLY|os.O_DIRECTORY)
+            try:os.fsync(fd)
+            finally:os.close(fd)
         return {'status':'installed','version':lock['version'],'expanded_bytes':total,'native_machine':'AArch64',
                 'client_executed':False,'agreement_accepted':False}
     finally:
@@ -212,6 +233,7 @@ if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('command',choices=('capture','download','install'))
     p.add_argument('--lock',type=Path,required=True);p.add_argument('--manifest',type=Path)
     p.add_argument('--cache',type=Path);p.add_argument('--destination',type=Path)
+    p.add_argument('--resume',action='store_true',help='Restart only the reserved, unpublished installer tree')
     a=p.parse_args()
     if a.command=='capture':
         if a.lock.exists() or not a.manifest:p.error('new lock and --manifest required')
@@ -223,5 +245,5 @@ if __name__=='__main__':
         else:
             if not a.destination:p.error('--destination required')
             if hasattr(os,'geteuid') and os.geteuid()==0:p.error('install the private client as a normal guest user')
-            result=install(lock,a.cache,a.destination)
+            result=install(lock,a.cache,a.destination,resume=a.resume)
     print(json.dumps(result,indent=2))

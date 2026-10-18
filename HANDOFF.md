@@ -1,3 +1,14 @@
+> New device integration, 18 October 2026: separate experimental Steam source route,
+> 12 GiB UUID-scoped persistent disk, explicit network consent, A76/LSE gate,
+> official HTTPS resumable installer and real namespace launch/Steam shutdown are
+> implemented. A new private candidate payload is prepared locally; committed
+> Steam asset lock remains BLOCKED pending separately authorized delivery/pinning.
+> Python: 491 tests OK, 5 skips. NEW Apple/guest/device execution NOT RUN.
+> No CI, upload/Release, secrets, user machine/disks or other branches changed.
+> Current details and exact candidate evidence: STEAM-DEVICE-RESULT-20261018.md.
+> Older “unimplemented iOS route” statements below describe the db5 checkpoint;
+> host UI/game acceptance is unchanged and does not validate this new device route.
+
 > Текущее состояние, 18 октября 2026: run30 закрыт штатно, полная offline fsck
 > и сохранность исходного диска проверены, входной mount закрыт. ARM64 WineMine:
 > реальное поле/клик/F2/Alt+F4/exit0. x86-64 WineMine: PE+FEX загружены, но

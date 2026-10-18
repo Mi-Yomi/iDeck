@@ -63,13 +63,16 @@ struct LinuxDesktopView: View {
     @State private var keyboard = false
     @State private var recovery = false
     @State private var command = ""
-    init() { input = LinuxTerminalSession.desktop.desktopInput! }
+    init(session: LinuxTerminalSession = .desktop) {
+        self.session = session
+        input = session.desktopInput!
+    }
 
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 5) {
                 HStack {
-                    Text("Debian desktop").font(.headline)
+                    Text(session.isSteam ? "Steam · experimental" : "Debian desktop").font(.headline)
                     Spacer()
                     if session.attempted { Button("Stop Linux") { session.stop() }.disabled(!session.canStop || session.stopping) }
                 }
@@ -110,7 +113,22 @@ struct LinuxDesktopView: View {
             if !session.attempted {
                 Button("JIT setup") { jit.refreshPairingStatus(); jit.showSetup = true }.disabled(jit.busy)
                 Button("Enable JIT") { enableJIT() }.disabled(jit.busy)
-                Button("Start desktop") { session.start() }.disabled(jit.busy)
+                if session.isSteam {
+                    Text("Separate 12 GiB disk + 1 GiB free import reserve. Guest: 1536 MiB RAM, 4 vCPUs. Games and iPhone performance are unverified.").font(.caption2)
+                    Toggle("Allow Steam network this session", isOn: $session.steamNetworkConsent)
+                    Text("Downloads use pinned official Valve/Debian HTTPS. Steam later contacts its services and may update. You handle login and agreements.").font(.caption2)
+                    if !session.steamPayloadAvailable {
+                        Text("Blocker: sealed Steam seed/bootstrap/profile is missing from this IPA.").foregroundStyle(.orange)
+                    }
+                }
+                Button(session.isSteam ? "Start Steam environment" : "Start desktop") { session.start() }
+                    .disabled(jit.busy || (session.isSteam && (!session.steamPayloadAvailable || !session.steamNetworkConsent)))
+            }
+            if session.isSteam, session.attempted {
+                Text(session.steamMessage).font(.caption2)
+                Button("Install / resume Steam") { session.steamAction("INSTALL") }.disabled(!session.ready || session.stopping || session.steamBusy)
+                Button("Launch Big Picture") { session.steamAction("BIG_PICTURE") }.disabled(!session.ready || !session.steamInstalled || session.steamBusy || session.stopping)
+                Button("Return to Desktop") { session.steamAction("DESKTOP") }.disabled(!session.ready || !session.steamInstalled || session.stopping)
             }
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 5) {
                 Button("Keyboard") { keyboard.toggle() }

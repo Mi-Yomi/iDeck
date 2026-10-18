@@ -187,6 +187,28 @@ class SteamClient(unittest.TestCase):
             client.install(self.lock, self.cache, self.destination)
         self.assert_unpublished()
 
+    def test_resume_restarts_only_reserved_unpublished_tree_and_preserves_outside(self):
+        self.destination.parent.mkdir()
+        stage = self.destination.parent / ('.steam-install-' + self.lock['manifest_sha256'])
+        stage.mkdir(mode=0o700)
+        (stage / 'interrupted').write_bytes(b'incomplete extraction')
+        outside = self.root / 'user-file'
+        outside.write_bytes(b'preserve')
+        (stage / 'alias').symlink_to(outside)
+        client.install(self.lock, self.cache, self.destination, resume=True)
+        self.assertEqual((self.destination / 'steamrtarm64/steam').read_bytes(), elf())
+        self.assertEqual(outside.read_bytes(), b'preserve')
+        self.assertFalse(stage.exists())
+
+    def test_resume_refuses_reserved_directory_symlink(self):
+        self.destination.parent.mkdir()
+        stage = self.destination.parent / ('.steam-install-' + self.lock['manifest_sha256'])
+        stage.symlink_to(self.cache, target_is_directory=True)
+        with self.assertRaisesRegex(ValueError, 'unsafe resumable'):
+            client.install(self.lock, self.cache, self.destination, resume=True)
+        self.assertTrue((self.cache / self.lock['parts'][0]['file']).is_file())
+        self.assertFalse(self.destination.exists())
+
     def test_existing_install_never_repaired_or_overwritten(self):
         self.destination.mkdir(parents=True)
         sentinel = self.destination / 'user-data'

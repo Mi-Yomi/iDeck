@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "baseline": "db5c32b0ab9a91634c91860019fdb651d1877942",
+  "branch": "codex/steam-arm64-experiment-20261017",
+  "environment": "Linux",
+  "python": "3.12.14",
+  "python_suite": {
+    "tests": 491,
+    "result": "OK",
+    "skipped": 5,
+    "skip_categories": [
+      "existing Swift toolchain",
+      "explicit QEMU user/RCU inputs"
+    ]
+  },
+  "python_ast_files": 172,
+  "real_pinned_husk_source_overlay": "PASS",
+  "protected_inputs_unchanged": 13,
+  "asset_contract": "blocked_pending_reviewed_private_delivery",
+  "official_transfer_check": "official_dns_failed_in_cloud_direct_path",
+  "apple_gate": "NOT RUN",
+  "new_guest_boot": "NOT RUN",
+  "device_gate": "NOT RUN",
+  "codemagic_started": false,
+  "uploads_performed": false,
+  "security_network_settings_changed": false,
+  "additional_agents": 0,
+  "input_sha256": {
+    "ios/LinuxSteamProfile.swift": "649a088a394f0d2fa29414b570dfbb314a60d9b35e09a2c0501bb5cab6d9dca5",
+    "ios/LinuxTerminalSession.swift": "3eca6214b79077aa505f1f138e25beb763d18fe309c892d105dc0c2418ba05a1",
+    "ios/LinuxDesktopDisk.swift": "e7fb1115c66e9fd3a7b050734ff4fee7f97adf52cba47cfbff4d13ea52dc3d96",
+    "ios/LinuxDesktopView.swift": "43ab179138a431d3dccac109a73c307b492939207447387a92c4b5f5bd36cf0a",
+    "guest/steam/install-official.py": "f9b481956c395f51a218f50f40270742b0f2509fecfa3ab5edf7328f508f0c69",
+    "guest/steam/device-action.py": "ba7bba11e9b5008edd9e98ac636ed1e740f525338e4effb171aedb47e161b685",
+    "tools/prepare_steam_payload.py": "4b95d4b8071381df539a67bbb681aa5ea480f7b8928a49e7dfd2bfc3baea8799",
+    "tools/steam_bundle.py": "b763469e6a071c1f88ac7420ef45de9a7675bb9db9921021e05fc7a64b3180f8",
+    "ipa/steam.lock.json": "fe35359387666e8bb822954403c19e6dc2c53de96471fbe92a6d0ea143316175",
+    "husk/overlay.lock.json": "810bfcdf0cb2cbb87546c8817e8b0ff337aa9f7ec9137e3fcac9fef3bddfeccf",
+    "ios/tests/SteamProfileChecks.swift": "608a28f3ccad132fb924d9864ebed986ca3e0a24fa01346a560c09d5eb810d96",
+    "tests/test_steam_device.py": "d31daeef28ecfbee7ec2e6c7381679c903656919b07c036818b836d907e89eae",
+    "tools/steam_client.py": "c39bd4e49ed702e8d2404d3b7491e3cd6c70db6c0bf1d0d92a16be17bf5f7f93",
+    "tools/prepare_steam_bootstrap.py": "93ede2c4eeada74fa6646a9aafb979c3b0ec36584c0ebbe94b189fb1e9277768",
+    "ci/check_linux_guest_profile.py": "ec97f60d6f19b9eeddb18a97e9c78f500db59a90db6d28b57959d64d225eac1d"
+  }
+}

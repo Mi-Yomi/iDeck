@@ -139,6 +139,10 @@
         {
           "name": "Stage verified iDeck Debian desktop",
           "script": "set -e\npython3 \"$SRCROOT/../../scripts/ideck-stage-desktop.py\" stage \\\n  \"$SRCROOT/../../guests/ideck-desktop\" \\\n  \"$SRCROOT/../../scripts/ideck-desktop.lock.json\" \\\n  --destination \"$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/iDeckLinuxDesktop\"\n"
+        },
+        {
+          "name": "Stage verified experimental Steam assets",
+          "script": "set -e\npython3 \"$SRCROOT/../../scripts/ideck-stage-steam.py\" stage \\\n  \"$SRCROOT/../../guests/ideck-steam\" \\\n  \"$SRCROOT/../../scripts/ideck-steam.lock.json\" \\\n  --destination \"$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/iDeckLinuxSteam\"\n"
         }
       ],
       "postBuildScripts": [

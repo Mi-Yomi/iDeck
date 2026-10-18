@@ -13,6 +13,7 @@ import os
 from pathlib import Path, PurePosixPath
 import re
 import shutil
+import stat
 import subprocess
 import tempfile
 import time
@@ -82,8 +83,12 @@ def cache_url(port, group, name):
     return 'http://10.0.2.2:' + str(port) + '/' + group + '/' + urllib.parse.quote(name, safe='')
 
 
-def fetch(port, group, name, size, checksum, directory):
+def fetch(port, group, name, size, checksum, directory, *, official_url=None, official_opener=None, resume=False):
     url = cache_url(port, group, name)
+    if official_url is not None:
+        if not official_url.startswith("https://") or official_opener is None:
+            raise Failure("official_https_required")
+        url = official_url
     if type(size) is not int or not 0 < size < 1024**3 or not re.fullmatch('[0-9a-f]{64}', checksum):
         raise Failure('invalid_cache_pin')
     safe_directory(directory)
@@ -91,10 +96,20 @@ def fetch(port, group, name, size, checksum, directory):
     if os.path.lexists(target):
         checked(target, size, checksum)
         return target
-    fd, temporary = tempfile.mkstemp(prefix='.private-cache-', dir=directory)
-    temporary = Path(temporary)
+    if resume:
+        temporary = directory / ('.download-' + name + '.partial')
+        if os.path.lexists(temporary):
+            state = temporary.lstat()
+            if (not stat.S_ISREG(state.st_mode) or state.st_nlink != 1 or state.st_uid != os.geteuid()
+                    or stat.S_IMODE(state.st_mode) != 0o600):
+                raise Failure('unsafe_interrupted_download')
+            temporary.unlink()
+        fd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+    else:
+        fd, temporary = tempfile.mkstemp(prefix='.private-cache-', dir=directory)
+        temporary = Path(temporary)
     try:
-        opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), NoRedirect())
+        opener = official_opener or urllib.request.build_opener(urllib.request.ProxyHandler({}), NoRedirect())
         count = 0
         with os.fdopen(fd, 'wb') as out, opener.open(url, timeout=60) as response:
             if response.status != 200:

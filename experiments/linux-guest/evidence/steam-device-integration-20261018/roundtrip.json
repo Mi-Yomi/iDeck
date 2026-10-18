@@ -1,0 +1,9 @@
+{
+  "source_inputs_current": true,
+  "archive_restore_and_stage_hashes_pass": true,
+  "expanded_size": 12884901888,
+  "expanded_sha256": "629b79bbb7d780f1b2151041f5c6af366003c732316aedc657c0425a182607fd",
+  "matches_raw_pin": true,
+  "guest_boot": false,
+  "device_test": false
+}

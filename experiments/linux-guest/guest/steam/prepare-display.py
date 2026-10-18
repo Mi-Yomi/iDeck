@@ -149,8 +149,11 @@ def guard():
     cmdline = (PROC/'cmdline').read_text().split()
     current = os.stat('/')
     expected = os.stat(PROC/'1/root/sysroot')
+    opted_in = 'ideck.steam_experiment=1' in cmdline and (
+        'ideck.steam_disk_grow=1' in cmdline or
+        {'ideck.steam_persistent=1', 'ideck.steam_network=1'} <= set(cmdline))
     if (os.geteuid() != 0 or os.uname().release != '6.18.35-0-virt'
-            or not {'ideck.steam_experiment=1', 'ideck.steam_disk_grow=1'} <= set(cmdline)
+            or not opted_in
             or not (PROC/'1/root/ideck-steam-init').is_file()
             or (current.st_dev, current.st_ino) != (expected.st_dev, expected.st_ino)):
         raise Refusal('requires_original_opted_in_steam_guest_root')

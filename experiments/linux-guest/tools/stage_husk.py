@@ -83,10 +83,15 @@ def prepare(upstream, guest, output):
         changed[destination] = hashlib.sha256(target.read_bytes()).hexdigest()
     guest_assets = stage(guest, output / "guests/ideck-linux")
     terminal_assets = prepare_terminal(guest, output / "guests/ideck-linux-terminal")
+    from steam_bundle import load_lock as load_steam_lock, stage as stage_steam
+    steam_lock = ROOT / "ipa/steam.lock.json"
+    steam_assets = {"status": "external_sealed_payload_required"}
+    if load_steam_lock(steam_lock)["status"] == "blocked":
+        steam_assets = stage_steam(None, output / "guests/ideck-steam", steam_lock)
     git(output, "diff", "--check")
     report = {"schema": 1, "status": "source_and_guest_staged", "upstream_commit": PIN,
               "overlay_lock_sha256": hashlib.sha256((ROOT / "husk/overlay.lock.json").read_bytes()).hexdigest(),
-              "changed_files": changed, "guest_assets": guest_assets, "terminal_assets": terminal_assets,
+              "changed_files": changed, "guest_assets": guest_assets, "terminal_assets": terminal_assets, "steam_assets": steam_assets,
               "ios_compiled": False, "runtime_linked": False, "device_executed": False,
               "next": "On an existing Husk Apple build host: regenerate Xcode project, build unsigned, then perform authorized device test."}
     (output / "ideck-linux-stage.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")

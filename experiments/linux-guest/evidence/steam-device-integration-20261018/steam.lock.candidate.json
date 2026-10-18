@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "kind": "ideck-steam-device-experiment",
+  "status": "ready",
+  "disk_uuid": "c6a66b17-1b3e-4fe9-a07b-70c185fb2718",
+  "disk_size_bytes": 12884901888,
+  "memory_mib": 1536,
+  "valve_client_bundled": false,
+  "device_verified": false,
+  "files": {
+    "LICENSES-steam.txt": {
+      "size": 1572,
+      "sha256": "70c4620cc5b97e97c12f0f49b39a5b988ac8204db6e66b47dc40f56f8d065027"
+    },
+    "initramfs-steam.gz": {
+      "size": 11695369,
+      "sha256": "6ebcb87e4e96f0f82b4d4f1c0abb14ed3e2990b57822eead1a9c27bddc00b938"
+    },
+    "steam-profile.json": {
+      "size": 860,
+      "sha256": "b56de00d196c52f83d2e2e600982315a6896ce8936c55260126d9e390007fb46"
+    },
+    "steam-rootfs-v1.raw.gz": {
+      "size": 281604263,
+      "sha256": "d639262b0ad0f0dfc7a8ad9595ffdb09b65c02b96b62ea8f5b38b3e3d4860015"
+    },
+    "vmlinuz-virt": {
+      "size": 10351104,
+      "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756"
+    }
+  },
+  "seed_sha256": "629b79bbb7d780f1b2151041f5c6af366003c732316aedc657c0425a182607fd",
+  "source_inputs": {
+    "guest/steam/device-action.py": {
+      "size": 4108,
+      "sha256": "ba7bba11e9b5008edd9e98ac636ed1e740f525338e4effb171aedb47e161b685"
+    },
+    "guest/steam/ideck-steam": {
+      "size": 4815,
+      "sha256": "893ac73943214cbd6ac87723c32a3774c872dad2b91429cd4aedb48737e92b33"
+    },
+    "guest/steam/install-cached.py": {
+      "size": 13140,
+      "sha256": "09744ae196d4a50a633ce169c1cc38484ffeefa7b995234ae23d9b5b31c9730b"
+    },
+    "guest/steam/install-official.py": {
+      "size": 10168,
+      "sha256": "f9b481956c395f51a218f50f40270742b0f2509fecfa3ab5edf7328f508f0c69"
+    },
+    "guest/steam/namespace-check.py": {
+      "size": 15718,
+      "sha256": "96c929eafefb2f76aa7751fb1869baa6def54e5e31be2a0e6620a486bca64b0d"
+    },
+    "guest/steam/prepare-display.py": {
+      "size": 7092,
+      "sha256": "bccff722a8af5397fc33febb339ed8e2d2bfff513304dec2cc27dc1961c07bb4"
+    },
+    "guest/steam/shm-recovery.py": {
+      "size": 12909,
+      "sha256": "f90092f629593f6f653825e35359dd9f4a08a3ffef7a370d417719a1a9070b7e"
+    },
+    "ipa/gui.lock.json": {
+      "size": 3102,
+      "sha256": "fef0bf4c5b72cad5ee921616639f6e28bec73bce7b1e689c95c3734aed82c7eb"
+    },
+    "ipa/steam-client.lock.json": {
+      "size": 4757,
+      "sha256": "9b8bc9fe5e8074ae4d798f645d259066e968b8bc5512183c0aca34e1f54a8bdd"
+    },
+    "ipa/steam-dependencies.lock.json": {
+      "size": 17731,
+      "sha256": "0d153bbb2a9a39c32fb650d189cc972355fc1d94da39297cf0b9830fdbd922f6"
+    },
+    "tools/debian_rootfs.py": {
+      "size": 39889,
+      "sha256": "8b68c689e034fb09c39ef58c3a4ee01da3255579972f7a9ae31dbcf203581c0b"
+    },
+    "tools/desktop_modules.py": {
+      "size": 15225,
+      "sha256": "41961d1f57c7360731aa662454f19423a29a3784710b3fc7d85a0eb20f340a71"
+    },
+    "tools/gui_bundle.py": {
+      "size": 19275,
+      "sha256": "0bdd90ba31ca0c512980629d8c76bdc98da9a525e88c88fea4902681b52dc079"
+    },
+    "tools/prepare_steam_bootstrap.py": {
+      "size": 11114,
+      "sha256": "93ede2c4eeada74fa6646a9aafb979c3b0ec36584c0ebbe94b189fb1e9277768"
+    },
+    "tools/prepare_steam_payload.py": {
+      "size": 6856,
+      "sha256": "4b95d4b8071381df539a67bbb681aa5ea480f7b8928a49e7dfd2bfc3baea8799"
+    },
+    "tools/steam_bundle.py": {
+      "size": 10614,
+      "sha256": "b763469e6a071c1f88ac7420ef45de9a7675bb9db9921021e05fc7a64b3180f8"
+    },
+    "tools/steam_client.py": {
+      "size": 13819,
+      "sha256": "c39bd4e49ed702e8d2404d3b7491e3cd6c70db6c0bf1d0d92a16be17bf5f7f93"
+    },
+    "tools/steam_cpu_probe.py": {
+      "size": 3251,
+      "sha256": "0c3c46c9352f8d67af7308cf43faf965e8bab709acafeaa11498b840cd52dc45"
+    },
+    "tools/steam_vm.py": {
+      "size": 27304,
+      "sha256": "98d5dc61ebfcabdeb5fa7931087f7a96860eb5346a4a040140c06746511bc7b9"
+    }
+  },
+  "archive": {
+    "size": 303667200,
+    "sha256": "14664a7d12becc2850078e4e1cc150393ef06886130e4b21b33ffe37227e649b"
+  }
+}

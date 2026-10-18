@@ -370,7 +370,7 @@ class TerminalSourceContracts(unittest.TestCase):
         self.assertIn("S_IFDIR", validate)
         session = (EXPERIMENT / "ios/LinuxTerminalSession.swift").read_text()
         self.assertLess(session.index("LinuxTerminalDisk.trustedDirectory("),
-                        session.index('appendingPathComponent(isDesktop ? "iDeckDebianGUI-v1" : (isDebian ? "iDeckDebian" : "iDeckLinux")'))
+                        session.index('appendingPathComponent(isSteam ? "iDeckSteam-v1" : isDesktop ? "iDeckDebianGUI-v1" : (isDebian ? "iDeckDebian" : "iDeckLinux")'))
         checks = (EXPERIMENT / "ios/tests/TerminalChecks.swift").read_text()
         self.assertLess(checks.index("LinuxTerminalDisk.trustedDirectory(manager.temporaryDirectory)"),
                         checks.index('appendingPathComponent("ideck-terminal-checks-'))

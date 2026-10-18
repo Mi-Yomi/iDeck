@@ -1,3 +1,9 @@
+> Update 2026-10-18: the separate device source route and asset builder now exist.
+> The committed asset contract remains blocked until reviewed private delivery;
+> no new Apple/guest/device result is claimed. See
+> [current implementation/result](../../STEAM-DEVICE-RESULT-20261018.md).
+> The checklist below records the earlier db5 gap analysis, not current completion.
+
 # Future iOS Steam integration checklist
 
 This is an implementation checklist, not an enabled iOS route or an Apple test

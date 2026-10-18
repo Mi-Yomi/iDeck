@@ -1,0 +1,65 @@
+[
+  {
+    "name": "e2fsprogs",
+    "version": "1.47.2-3+b12",
+    "architecture": "amd64",
+    "filename": "pool/main/e/e2fsprogs/e2fsprogs_1.47.2-3+b12_amd64.deb",
+    "sha256": "e9e638eb3e22b5f14d01ce0b28aa512a5a22fcc0e70d1c733444579b67ea236b",
+    "size": 591288,
+    "installed_size_kib": 1537
+  },
+  {
+    "name": "libext2fs2t64",
+    "version": "1.47.2-3+b12",
+    "architecture": "amd64",
+    "filename": "pool/main/e/e2fsprogs/libext2fs2t64_1.47.2-3+b12_amd64.deb",
+    "sha256": "9f5783fa48239e42260d41846fbc6c8b19c233251063524456096195660eaa09",
+    "size": 212664,
+    "installed_size_kib": 557
+  },
+  {
+    "name": "libcom-err2",
+    "version": "1.47.2-3+b12",
+    "architecture": "amd64",
+    "filename": "pool/main/e/e2fsprogs/libcom-err2_1.47.2-3+b12_amd64.deb",
+    "sha256": "bd43e020b8fed399db3eebf098111f10fba4c436fff99ccad72cc7e27c9764ec",
+    "size": 25036,
+    "installed_size_kib": 64
+  },
+  {
+    "name": "libss2",
+    "version": "1.47.2-3+b12",
+    "architecture": "amd64",
+    "filename": "pool/main/e/e2fsprogs/libss2_1.47.2-3+b12_amd64.deb",
+    "sha256": "c5d38d71984c1bf774c1254238636e605fc4e0dc24d853f709921eb740327f4a",
+    "size": 29724,
+    "installed_size_kib": 80
+  },
+  {
+    "name": "logsave",
+    "version": "1.47.2-3+b12",
+    "architecture": "amd64",
+    "filename": "pool/main/e/e2fsprogs/logsave_1.47.2-3+b12_amd64.deb",
+    "sha256": "aa028720743b79bd054749af34c501c093f0ab5e044e4dc44273765be5e95de5",
+    "size": 24864,
+    "installed_size_kib": 59
+  },
+  {
+    "name": "squashfs-tools",
+    "version": "1:4.6.1-1",
+    "architecture": "amd64",
+    "filename": "pool/main/s/squashfs-tools/squashfs-tools_4.6.1-1_amd64.deb",
+    "sha256": "0e185122f5858132bbc709e26228ba28cf7f0c41f6ed26e3f55f518f2a53b59d",
+    "size": 193888,
+    "installed_size_kib": 494
+  },
+  {
+    "name": "liblzo2-2",
+    "version": "2.10-3+b1",
+    "architecture": "amd64",
+    "filename": "pool/main/l/lzo2/liblzo2-2_2.10-3+b1_amd64.deb",
+    "sha256": "f3032201fe2928a87e13f05ce256ff3ac2a7860c7e594dc51ae6d7348a4466ce",
+    "size": 55100,
+    "installed_size_kib": 173
+  }
+]

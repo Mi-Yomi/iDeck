@@ -111,6 +111,8 @@ def package(worker, built, source, commit):
     verify_debian(app / "iDeckDebian", load_debian_lock(Path(__file__).parent / "debian.lock.json"))
     from gui_bundle import verify as verify_gui, load_lock as load_gui_lock
     verify_gui(app / "iDeckLinuxDesktop", load_gui_lock(Path(__file__).parent / "gui.lock.json"))
+    from steam_bundle import verify as verify_steam, load_lock as load_steam_lock
+    verify_steam(app / "iDeckLinuxSteam", load_steam_lock(Path(__file__).parent / "steam.lock.json"))
     for extension in (app / "PlugIns").glob("*.appex"):
         metadata = plistlib.loads((extension / "Info.plist").read_bytes())
         if not metadata.get("CFBundleIdentifier", "").startswith("dev.ideck.linuxprobe."):

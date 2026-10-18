@@ -1,0 +1,7 @@
+{
+  "result": "blocked",
+  "code": "official_dns_failed",
+  "scope": "cloud direct DNS only; iOS network untested",
+  "network_settings_changed": false,
+  "client_executed": false
+}

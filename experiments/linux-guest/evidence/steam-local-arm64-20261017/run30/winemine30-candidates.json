@@ -1,0 +1,29 @@
+{
+  "pe_parser_selfcheck": "pass",
+  "files": [
+    {
+      "path": "GE-Proton11-9-aarch64/files/lib/wine/aarch64-windows/winemine.exe",
+      "size": 655360,
+      "sha256": "c50c5e538bca4eb31d6355b599d2ee11001fa752c5d49e558b57a9e91f24e656",
+      "pe_machine": 43620,
+      "pe_machine_hex": "0xaa64",
+      "executed": false
+    },
+    {
+      "path": "GE-Proton11-9-aarch64/files/lib/wine/i386-windows/winemine.exe",
+      "size": 208896,
+      "sha256": "c5c51fbf8b93a25ac070a2323d35a0a2e28efc084ba9de8109cb3a4eda9022f5",
+      "pe_machine": 332,
+      "pe_machine_hex": "0x14c",
+      "executed": false
+    },
+    {
+      "path": "GE-Proton11-9-aarch64/files/lib/wine/x86_64-windows/winemine.exe",
+      "size": 204800,
+      "sha256": "1d46a3c30b4ccacb3be50ab0d83a3537a04e06977d5193a274289233e758a820",
+      "pe_machine": 34404,
+      "pe_machine_hex": "0x8664",
+      "executed": false
+    }
+  ]
+}

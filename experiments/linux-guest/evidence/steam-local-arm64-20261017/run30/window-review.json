@@ -1,0 +1,56 @@
+{
+  "manually_reviewed": true,
+  "scope": "Observed private QMP frames and guarded X11 metadata; no pixels published",
+  "cases": {
+    "arm64": {
+      "visible_game_window": false,
+      "input_verified": false,
+      "gameplay_verified": false,
+      "normal_game_exit_verified": false,
+      "frames": [
+        "005-game-progress.png",
+        "007-game-progress.png"
+      ],
+      "note": "No game window observed; bounded360sec timeout"
+    },
+    "arm64-nosync": {
+      "visible_game_window": false,
+      "input_verified": false,
+      "gameplay_verified": false,
+      "normal_game_exit_verified": false,
+      "frames": [
+        "034-game-progress.png"
+      ],
+      "note": "Setup consumed most360sec; final display inactive due DPMS; no gameplay confirmation"
+    },
+    "arm64-long-nosync": {
+      "visible_game_window": true,
+      "input_verified": true,
+      "gameplay_verified": true,
+      "normal_game_exit_verified": true,
+      "frames": [
+        "046-keep-test-display-active.png",
+        "048-owned-winemine-cell-click.png",
+        "050-owned-winemine-reset.png"
+      ],
+      "note": "Board rendered; cell click opened cells and timer; F2 reset board; guarded Alt+F4 followed by exit0 at287.833sec"
+    },
+    "x64-long-nosync": {
+      "visible_game_window": false,
+      "input_verified": false,
+      "gameplay_verified": false,
+      "normal_game_exit_verified": false,
+      "frames": [
+        "063-game-progress.png",
+        "080-game-progress.png"
+      ],
+      "note": "Requested PE8664 mappedRX and FEX loaded in same game process; no playable window confirmed in reviewed frames/X11 metadata; exit124 after602.65sec. Final frame desktop."
+    }
+  },
+  "dpms": {
+    "before_timeout_seconds": 600,
+    "monitor_off_observed": true,
+    "test_only_xset_reset_and_disable": true,
+    "no_shipping_policy_change": true
+  }
+}

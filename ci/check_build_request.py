@@ -8,6 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 LINUX_BRANCH = "codex/linux-guest-feasibility-20261015"
+STEAM_BRANCH = "codex/steam-arm64-experiment-20261017"
 
 
 def validate(env, head, dirty):
@@ -22,8 +23,9 @@ def validate(env, head, dirty):
         if env.get(key) != "true":
             errors.append(f"{key}: current manual verification is required")
     if workflow.startswith("ideck-linux-"):
-        if env.get("CM_BRANCH") != LINUX_BRANCH:
-            errors.append(f"Select branch {LINUX_BRANCH} before selecting the Linux workflow; main is not the Linux source")
+        branches = (LINUX_BRANCH, STEAM_BRANCH) if workflow == "ideck-linux-probe-ipa" else (LINUX_BRANCH,)
+        if env.get("CM_BRANCH") not in branches:
+            errors.append(f"Select branch {' or '.join(branches)} before selecting the Linux workflow; main is not the Linux source")
         if env.get("CM_REPO_SLUG", "").lower() != "mi-yomi/ideck":
             errors.append("Expected the private Mi-Yomi/iDeck repository")
         if env.get("CM_COMMIT") != head or env.get("EXPECTED_COMMIT") != head:

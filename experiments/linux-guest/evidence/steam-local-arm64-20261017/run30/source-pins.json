@@ -1,0 +1,22 @@
+[
+  {
+    "file": "sources/002-stage-game-fixture.sh",
+    "sha256": "acdfea4bcd7f4ebe8f7a74a6e6cd982d733880e6364e405c5f25aa77324cb1e4"
+  },
+  {
+    "file": "sources/game-guardian30-v4.py",
+    "sha256": "c971dc8ee85011ebf16f6f04c7619d78b5680290cd08f6503662a4c4c875761f"
+  },
+  {
+    "file": "sources/game-namespace30-nosync.py",
+    "sha256": "4303b8193a5126610c5553278d75f529de071cd91ec704c7a0b83c92bb715dbe"
+  },
+  {
+    "file": "sources/inspect-winemine30-load-config.py",
+    "sha256": "aaf35b978542d3be0f6da634edb069ec57db6bfd5df8c7e27117be308a2d6a62"
+  },
+  {
+    "file": "sources/post-game30.py",
+    "sha256": "8ad7439a5633682aae85d7f40a880a6bf608976328605a55713e67c72ba79054"
+  }
+]

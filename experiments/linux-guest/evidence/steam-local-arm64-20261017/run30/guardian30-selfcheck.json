@@ -1,0 +1,4 @@
+{
+  "result": "pass",
+  "scope": "actual ownership predicate; stale starttime, wrong UID and parent refused; no process signalled"
+}

@@ -1,0 +1,8 @@
+{
+  "status": "pass",
+  "original_helper_sha256": "0153c2c563ea8080161c9b173b6c705f4a255a5cac385532b28085ff4b675de9",
+  "new_helper_sha256": "4303b8193a5126610c5553278d75f529de071cd91ec704c7a0b83c92bb715dbe",
+  "guardian_sha256": "e3eae1f1e400da7618f56b4bbd92d4dac228b16b2997bce8d9326de116aa8855",
+  "case_arch_checks": 5,
+  "only_sync_env_for_nosync": true
+}

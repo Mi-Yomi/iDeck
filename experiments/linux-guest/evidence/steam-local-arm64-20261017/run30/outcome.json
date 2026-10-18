@@ -1,0 +1,190 @@
+{
+  "run": 30,
+  "scope": "private QEMU ARM64 WineMine through Runtime4 and GE-Proton; UMU non-Steam mode",
+  "cases": [
+    {
+      "case": "arm64",
+      "result": {
+        "case": "arm64",
+        "exit": 124,
+        "seconds": 362.596,
+        "reason": "application_exit",
+        "failure_class": null,
+        "signals": [],
+        "samples": 244,
+        "minimum_available_kib": 3535592,
+        "first_oom": 0,
+        "last_oom": 0,
+        "ui_review_required": true,
+        "gameplay_automatically_accepted": false,
+        "steam_or_iphone_acceptance": false
+      },
+      "target_sha256": "c50c5e538bca4eb31d6355b599d2ee11001fa752c5d49e558b57a9e91f24e656",
+      "target_pe_machine": "AA64",
+      "requested_target_mapped_in_samples": true,
+      "requested_target_fex_mapped_in_samples": false,
+      "any_winemine_mapping": true,
+      "mapped_winemine_paths": [
+        "/opt/ideck-tools-probe29/tool-install/compatibilitytools.d/GE-Proton11-9-aarch64/files/lib/wine/aarch64-windows/winemine.exe"
+      ],
+      "other_process_fex_mapped": true,
+      "private_timeline_sha256": "7cfda5b448a3c98c18df9a4398326c1667ce383c8e4b33612c2607ecb67a7a39",
+      "actual_ui_review": {
+        "visible_game_window": false,
+        "input_verified": false,
+        "gameplay_verified": false,
+        "normal_game_exit_verified": false,
+        "frames": [
+          "005-game-progress.png",
+          "007-game-progress.png"
+        ],
+        "note": "No game window observed; bounded360sec timeout"
+      },
+      "bounded_timeout": true
+    },
+    {
+      "case": "arm64-nosync",
+      "result": {
+        "case": "arm64-nosync",
+        "exit": 124,
+        "seconds": 375.379,
+        "reason": "application_exit",
+        "failure_class": null,
+        "signals": [],
+        "samples": 163,
+        "minimum_available_kib": 3512700,
+        "first_oom": 0,
+        "last_oom": 0,
+        "ui_review_required": true,
+        "gameplay_automatically_accepted": false,
+        "steam_or_iphone_acceptance": false
+      },
+      "target_sha256": "c50c5e538bca4eb31d6355b599d2ee11001fa752c5d49e558b57a9e91f24e656",
+      "target_pe_machine": "AA64",
+      "requested_target_mapped_in_samples": false,
+      "requested_target_fex_mapped_in_samples": false,
+      "any_winemine_mapping": false,
+      "mapped_winemine_paths": [],
+      "other_process_fex_mapped": true,
+      "private_timeline_sha256": "7c0ec031f2f5767cc4e395609a9de65af773829e2f33387f17c1efa12376fa63",
+      "actual_ui_review": {
+        "visible_game_window": false,
+        "input_verified": false,
+        "gameplay_verified": false,
+        "normal_game_exit_verified": false,
+        "frames": [
+          "034-game-progress.png"
+        ],
+        "note": "Setup consumed most360sec; final display inactive due DPMS; no gameplay confirmation"
+      },
+      "bounded_timeout": true
+    },
+    {
+      "case": "arm64-long-nosync",
+      "result": {
+        "case": "arm64-long-nosync",
+        "exit": 0,
+        "seconds": 287.833,
+        "reason": "application_exit",
+        "failure_class": null,
+        "signals": [],
+        "samples": 165,
+        "minimum_available_kib": 3464756,
+        "first_oom": 0,
+        "last_oom": 0,
+        "ui_review_required": true,
+        "gameplay_automatically_accepted": false,
+        "steam_or_iphone_acceptance": false
+      },
+      "target_sha256": "c50c5e538bca4eb31d6355b599d2ee11001fa752c5d49e558b57a9e91f24e656",
+      "target_pe_machine": "AA64",
+      "requested_target_mapped_in_samples": true,
+      "requested_target_fex_mapped_in_samples": false,
+      "any_winemine_mapping": true,
+      "mapped_winemine_paths": [
+        "/opt/ideck-tools-probe29/tool-install/compatibilitytools.d/GE-Proton11-9-aarch64/files/lib/wine/aarch64-windows/winemine.exe"
+      ],
+      "other_process_fex_mapped": true,
+      "private_timeline_sha256": "0e3dc6c7614240e9f64f94d013c2ad77ad0882d81ededc1fe6c9dba3f43daaf5",
+      "actual_ui_review": {
+        "visible_game_window": true,
+        "input_verified": true,
+        "gameplay_verified": true,
+        "normal_game_exit_verified": true,
+        "frames": [
+          "046-keep-test-display-active.png",
+          "048-owned-winemine-cell-click.png",
+          "050-owned-winemine-reset.png"
+        ],
+        "note": "Board rendered; cell click opened cells and timer; F2 reset board; guarded Alt+F4 followed by exit0 at287.833sec"
+      },
+      "bounded_timeout": false
+    },
+    {
+      "case": "x64-long-nosync",
+      "result": {
+        "case": "x64-long-nosync",
+        "exit": 124,
+        "seconds": 602.65,
+        "reason": "application_exit",
+        "failure_class": null,
+        "signals": [],
+        "samples": 313,
+        "minimum_available_kib": 3505216,
+        "first_oom": 0,
+        "last_oom": 0,
+        "ui_review_required": true,
+        "gameplay_automatically_accepted": false,
+        "steam_or_iphone_acceptance": false
+      },
+      "target_sha256": "1d46a3c30b4ccacb3be50ab0d83a3537a04e06977d5193a274289233e758a820",
+      "target_pe_machine": "8664",
+      "requested_target_mapped_in_samples": true,
+      "requested_target_fex_mapped_in_samples": true,
+      "any_winemine_mapping": true,
+      "mapped_winemine_paths": [
+        "/opt/ideck-tools-probe29/tool-install/compatibilitytools.d/GE-Proton11-9-aarch64/files/lib/wine/x86_64-windows/winemine.exe"
+      ],
+      "other_process_fex_mapped": true,
+      "private_timeline_sha256": "f150bfff118f670bf9f632ce1fff7470a7ca96955de9b33bc1f683ccc2b9b62f",
+      "actual_ui_review": {
+        "visible_game_window": false,
+        "input_verified": false,
+        "gameplay_verified": false,
+        "normal_game_exit_verified": false,
+        "frames": [
+          "063-game-progress.png",
+          "080-game-progress.png"
+        ],
+        "note": "Requested PE8664 mappedRX and FEX loaded in same game process; no playable window confirmed in reviewed frames/X11 metadata; exit124 after602.65sec. Final frame desktop."
+      },
+      "bounded_timeout": true
+    }
+  ],
+  "ui_gameplay_verified": true,
+  "steam_game_launch_verified": false,
+  "x64_game_execution_attempted": true,
+  "accelerated_gpu_verified": false,
+  "iphone_verified": false,
+  "reported_phone": "iPhone16ProMax / iOS27 (user-reported, not measured)",
+  "client_hashes_unchanged": true,
+  "new_namespace_holders_final": 0,
+  "package_audit_empty": true,
+  "clean_vm_stop": true,
+  "full_offline_copy_fsck_passed": true,
+  "original_source_preserved": true,
+  "production_launcher_changed": false,
+  "shipping_ios_or_payload_changed": false,
+  "known_harness_failures": [
+    "016 Windows CRLF rejected by shell before Python; fixed LF017 passed",
+    "024 missing Proton log during locale preparation; later log collection passed",
+    "076 read-only registry parser had a quoting syntax error before any execution; corrected078 returned no selected entries and proves no service setting",
+    "900 Windows CRLF rejected the cleanup shell before Python; exact failed backstop stopped and verified LF081 completed postcheck/export before original Stop"
+  ],
+  "limits": [
+    "First two cases used360sec including setup; long cases600sec",
+    "No proof that fsync caused initial wait",
+    "No Steam/account/library registration changed",
+    "Raw logs, PE files, archives, disks and pixels remain private"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "status": "pass",
+  "case": "x64-long-nosync",
+  "PE_machine": "8664",
+  "seconds": 600,
+  "outer_seconds": 620,
+  "same_nosync_env": true,
+  "guardian_sha256": "c971dc8ee85011ebf16f6f04c7619d78b5680290cd08f6503662a4c4c875761f",
+  "requires_native_exit0_and_no_holders": true
+}

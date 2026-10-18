@@ -1,0 +1,47 @@
+{
+  "private_namespace_holders": [],
+  "fixture_processes": [],
+  "steam_processes": [],
+  "client": {
+    "steamrtarm64/steam": {
+      "sha256": "73da03ead208a74e14bee566869a4235063dc4a9e1063f29c4608de6d78bd4ea",
+      "unchanged": true
+    },
+    "steamrtarm64/steamwebhelper": {
+      "sha256": "0a849676a3ba0cc51ca23cba79be3df0546744fd92c2e2d628a1f71707a70a56",
+      "unchanged": true
+    },
+    "steamrtarm64/steamclient.so": {
+      "sha256": "276f021548f9016de834274f4042b796604530d910d114b77ee170b46e409072",
+      "unchanged": true
+    },
+    "steamrtarm64/chromehtml.so": {
+      "sha256": "753ca9cb1aff9740a99c84e0d8a8a1270c2cb081fd1a414696da2a5e8c833ae7",
+      "unchanged": true
+    }
+  },
+  "persistence_controls": {
+    "machine_id_sha256": {
+      "sha256": "a3104c0a16f9cba875267e39433db88195d6057eb4f1eb90a33e6531d316889f",
+      "unchanged": true
+    },
+    "document_sha256": {
+      "sha256": "da4a878f74aad07470b03d8811ed1e86bec4ac181c3fa01bc0d4a91bc67a5aa6",
+      "unchanged": true
+    }
+  },
+  "production_sources": {
+    "/opt/ideck-steam/namespace-check.py": {
+      "sha256": "96c929eafefb2f76aa7751fb1869baa6def54e5e31be2a0e6620a486bca64b0d",
+      "unchanged": true
+    },
+    "/usr/local/bin/ideck-steam": {
+      "sha256": "11cc1c70d2960a745b0f2c31a989eedc3ed23a1f6a95d5be7e6094cd25a7f790",
+      "unchanged": true
+    }
+  },
+  "audit_exit": 0,
+  "audit_stdout_bytes": 0,
+  "audit_stderr_bytes": 0,
+  "ready_for_original_vm_stop": true
+}

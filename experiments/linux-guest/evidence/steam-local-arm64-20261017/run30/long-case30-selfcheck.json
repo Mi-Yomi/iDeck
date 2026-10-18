@@ -1,0 +1,8 @@
+{
+  "status": "pass",
+  "seconds": 600,
+  "outer_seconds": 620,
+  "other_cases_still_360": true,
+  "guardian_sha256": "3abf606e52831ae393116e700d6a3a29673669002d14965b66bad96599ee8d16",
+  "reason": "Prior nosync preparation consumed most360sec before any target PE load; not proof of sync failure"
+}

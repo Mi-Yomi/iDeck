@@ -1,0 +1,28 @@
+{
+  "status": "pass",
+  "request_and_ipa_fixture_tests": 17,
+  "test_platform": "WSL archlinux Python unittest",
+  "test_seconds": 2.036,
+  "test_suite": "experiments/linux-guest/tests/test_ci_build.py",
+  "yaml_only_input_description_changed": true,
+  "native_builder_unchanged": true,
+  "provider_minutes_cap": 120,
+  "codemagic_dispatched": false,
+  "apple_build_tested": false,
+  "ipa_created_here": false,
+  "device_tested": false,
+  "files": [
+    {
+      "path": "ci/check_build_request.py",
+      "sha256": "3e55adf886d4a9c9eb9bda386a1bac02b104a2466c0ea154455997d55947da15"
+    },
+    {
+      "path": "codemagic.yaml",
+      "sha256": "d638ecc645cc46d29fa07929d6a141a6e35ace8113560b48d8e1e858a5868b74"
+    },
+    {
+      "path": "experiments/linux-guest/tests/test_ci_build.py",
+      "sha256": "28f621e155b03184d9802b422aff22cb5fb6bda68abfa57c284362b03e2619b9"
+    }
+  ]
+}

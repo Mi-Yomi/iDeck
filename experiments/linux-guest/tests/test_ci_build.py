@@ -31,6 +31,27 @@ class RequestGuards(unittest.TestCase):
         self.env["CM_BRANCH"] = "main"
         self.assertIn("Select branch", " ".join(check_build_request.validate(self.env, self.head, False)))
 
+    def test_steam_branch_is_allowed_only_for_exact_manual_ipa_workflow(self):
+        env = dict(self.env, CM_BRANCH=check_build_request.STEAM_BRANCH,
+                   IDECK_WORKFLOW_ID="ideck-linux-probe-ipa")
+        self.assertEqual(check_build_request.validate(env, self.head, False), [])
+        for workflow in ("ideck-linux-guest-profile-check", "ideck-linux-probe-ipa-other"):
+            with self.subTest(workflow=workflow):
+                self.assertTrue(check_build_request.validate(dict(env, IDECK_WORKFLOW_ID=workflow), self.head, False))
+        for branch in ("main", check_build_request.STEAM_BRANCH + "-other"):
+            with self.subTest(branch=branch):
+                self.assertTrue(check_build_request.validate(dict(env, CM_BRANCH=branch), self.head, False))
+
+    def test_steam_ipa_still_rejects_wrong_sha_dirty_checkout_and_missing_attestations(self):
+        env = dict(self.env, CM_BRANCH=check_build_request.STEAM_BRANCH,
+                   IDECK_WORKFLOW_ID="ideck-linux-probe-ipa")
+        self.assertTrue(check_build_request.validate(env, self.head, True))
+        for key, value in (("EXPECTED_COMMIT", "a" * 40), ("CM_COMMIT", "a" * 40),
+                           ("FREE_QUOTA_VERIFIED", "false"), ("PRIVATE_SOURCE_VERIFIED", "false"),
+                           ("CM_REPO_SLUG", "other/iDeck")):
+            with self.subTest(key=key):
+                self.assertTrue(check_build_request.validate(dict(env, **{key: value}), self.head, False))
+
     def test_old_checkout_and_provider_mismatch_rejected(self):
         for key in ("EXPECTED_COMMIT", "CM_COMMIT"):
             changed = dict(self.env, **{key: "a" * 40})

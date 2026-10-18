@@ -1,0 +1,27 @@
+{
+  "selfcheck": "pass",
+  "sources": [
+    "https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-image_load_config_directory64",
+    "https://lists.llvm.org/pipermail/llvm-commits/Week-of-Mon-20230529/1162539.html"
+  ],
+  "files": [
+    {
+      "path": "GE-Proton11-9-aarch64/files/lib/wine/aarch64-windows/winemine.exe",
+      "sha256": "c50c5e538bca4eb31d6355b599d2ee11001fa752c5d49e558b57a9e91f24e656",
+      "machine_hex": "0xaa64",
+      "load_config_size": 320,
+      "chpe_metadata_nonzero": false,
+      "dynamic_relocation_table_nonzero": false,
+      "is_pure_x64_proven_by_machine_field": false
+    },
+    {
+      "path": "GE-Proton11-9-aarch64/files/lib/wine/x86_64-windows/winemine.exe",
+      "sha256": "1d46a3c30b4ccacb3be50ab0d83a3537a04e06977d5193a274289233e758a820",
+      "machine_hex": "0x8664",
+      "load_config_size": 320,
+      "chpe_metadata_nonzero": false,
+      "dynamic_relocation_table_nonzero": false,
+      "is_pure_x64_proven_by_machine_field": false
+    }
+  ]
+}

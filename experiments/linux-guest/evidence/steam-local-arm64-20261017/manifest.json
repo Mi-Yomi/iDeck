@@ -3368,6 +3368,126 @@
       "sha256": "fb949b37a7a4f1915106a3ecff81c5ff326516111b9948be3463b7ebe68b795e"
     },
     {
+      "file": "run30/command-results.json",
+      "size": 12780,
+      "sha256": "31cfa49038c55e731cf0c22293ee5f309aff34f8b691e49ea04dc074d11a105e"
+    },
+    {
+      "file": "run30/final-postcheck.json",
+      "size": 1472,
+      "sha256": "ed2827e0e2db92e83796369e6148778d1c8670740a88a8093c4f609f66b109d8"
+    },
+    {
+      "file": "run30/guardian30-selfcheck.json",
+      "size": 133,
+      "sha256": "638494f7f209e2d8eebda23e4ae331139a99c5697ec5c3bf4c075863691de3b9"
+    },
+    {
+      "file": "run30/input-mount30-cleanup.json",
+      "size": 385,
+      "sha256": "286c39d62e58b38be974afaf192be226d8dbb392c4343767775c960992d82f80"
+    },
+    {
+      "file": "run30/ipa-handoff30-checks.json",
+      "size": 882,
+      "sha256": "e51a5f69a4d95a67117ac0f8a9a8d98ee80ea088dcfe22e04d1b0f2c552accc0"
+    },
+    {
+      "file": "run30/long-case30-selfcheck.json",
+      "size": 300,
+      "sha256": "908d2c92911b932f721bc02537776dc05b04da694ececa6e34fe19150abb65e8"
+    },
+    {
+      "file": "run30/outcome.json",
+      "size": 7365,
+      "sha256": "8bc7951cfe84651d4478d84f6f7721183a3933fec9d06ab46fc0169a6e7730b4"
+    },
+    {
+      "file": "run30/post-run-fsck/offline-fsck.json",
+      "size": 1427,
+      "sha256": "b7b231c95a8064cf16cd869b1d3a9a8566e6e9f388ab4f9effd7749b60b08348"
+    },
+    {
+      "file": "run30/post-run-fsck/offline-fsck.stderr.log",
+      "size": 27,
+      "sha256": "96fac6afa97813cc34940ffdb2c15ab0880c3e7f858ba3c9c10648baa097b948"
+    },
+    {
+      "file": "run30/post-run-fsck/offline-fsck.stdout.log",
+      "size": 384,
+      "sha256": "86ba42f99e56b177f37f31242217e16eac7d91674a4b34f877ffa1a0cf3f7513"
+    },
+    {
+      "file": "run30/post-run-fsck/source-preservation.json",
+      "size": 1819,
+      "sha256": "f8b4dc03c562ebfa8e455883e2c092307fb3cb93542ea7d1d2a2b27e86e6059b"
+    },
+    {
+      "file": "run30/source-pins.json",
+      "size": 692,
+      "sha256": "23a0935f375f9b0a45f56ef20c4af5f1842c2d4bc3a7eeb0dcf71dc143058cff"
+    },
+    {
+      "file": "run30/sources/002-stage-game-fixture.sh",
+      "size": 10235,
+      "sha256": "acdfea4bcd7f4ebe8f7a74a6e6cd982d733880e6364e405c5f25aa77324cb1e4"
+    },
+    {
+      "file": "run30/sources/game-guardian30-v4.py",
+      "size": 6646,
+      "sha256": "c971dc8ee85011ebf16f6f04c7619d78b5680290cd08f6503662a4c4c875761f"
+    },
+    {
+      "file": "run30/sources/game-namespace30-nosync.py",
+      "size": 2293,
+      "sha256": "4303b8193a5126610c5553278d75f529de071cd91ec704c7a0b83c92bb715dbe"
+    },
+    {
+      "file": "run30/sources/inspect-winemine30-load-config.py",
+      "size": 2851,
+      "sha256": "aaf35b978542d3be0f6da634edb069ec57db6bfd5df8c7e27117be308a2d6a62"
+    },
+    {
+      "file": "run30/sources/post-game30.py",
+      "size": 3398,
+      "sha256": "8ad7439a5633682aae85d7f40a880a6bf608976328605a55713e67c72ba79054"
+    },
+    {
+      "file": "run30/sync-candidate30-selfcheck.json",
+      "size": 360,
+      "sha256": "bd19a33275c7b90d534646c1e59aa445bfa9f93f02288627a3eba23481f25559"
+    },
+    {
+      "file": "run30/upstream-research30.json",
+      "size": 801,
+      "sha256": "6404930226f55d446e2203466b1b32a6601c637e68398efb515690d1de136b34"
+    },
+    {
+      "file": "run30/vm-stop.json",
+      "size": 154,
+      "sha256": "c4414d5c69caf8fcd2882f937c720d3a6084e3109475445458033e3d78e90616"
+    },
+    {
+      "file": "run30/window-review.json",
+      "size": 1869,
+      "sha256": "ad9a3577cec99ace9bdbc1a6d9afc101b6431a9bc12540927470d2b917586ed9"
+    },
+    {
+      "file": "run30/winemine30-candidates.json",
+      "size": 907,
+      "sha256": "7065db878eaa3ec54aff06ccd612147eb1e0e977e79c8aff9cf63e45506c4176"
+    },
+    {
+      "file": "run30/winemine30-load-config.json",
+      "size": 1012,
+      "sha256": "b83ca2e8a41ae2507e3d63c4f3936c6c77175ed195ac5288fe4676a186c4b650"
+    },
+    {
+      "file": "run30/x64-case30-selfcheck.json",
+      "size": 282,
+      "sha256": "905f70edb80e69824bc064ffeb3329e20c764660d8c06824ed42c876c5becf3f"
+    },
+    {
       "file": "run9/control.log",
       "size": 108,
       "sha256": "0b8b6031582819a23d35f6f6bcbaff7bf9dffec4ac7e4a9967d4a28ba1d7fd51"

@@ -1,0 +1,8 @@
+{
+  "status": "experiment_finished",
+  "qemu_exit_code": 0,
+  "clean_shutdown": true,
+  "forced": null,
+  "elapsed_seconds": 2044.79,
+  "failure": null
+}

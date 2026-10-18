@@ -685,7 +685,7 @@ workflows:
     max_build_duration: 120
     inputs:
       expected_commit:
-        description: Full reviewed HEAD of codex/linux-guest-feasibility-20261015; select this branch first
+        description: Full reviewed HEAD of codex/linux-guest-feasibility-20261015 or codex/steam-arm64-experiment-20261017; select the intended branch first
         type: string
         default: REQUIRED
       free_quota_verified:

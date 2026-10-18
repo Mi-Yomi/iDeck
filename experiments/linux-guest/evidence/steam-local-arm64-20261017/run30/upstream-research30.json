@@ -1,0 +1,18 @@
+{
+  "no_unrelated_registry_or_sandbox_workarounds_applied": true,
+  "sources": [
+    {
+      "url": "https://github.com/ValveSoftware/Proton",
+      "observation": "PROTON_NO_FSYNC and PROTON_NO_ESYNC are documented diagnostic compatibility options; frozen packaged code was checked too"
+    },
+    {
+      "url": "https://github.com/ValveSoftware/Proton/issues/10011",
+      "observation": "ARM64 Battle.net reporter describes RPC retries; this differs from our native WineMine sleeping waits and is not established causality or an applied fix"
+    },
+    {
+      "url": "https://github.com/ValveSoftware/steam-runtime",
+      "observation": "Valve Runtime tools are available as source and binaries; cached Runtime4 build was pinned and checked"
+    }
+  ],
+  "checked_utc": "2026-10-18T14:46:00Z"
+}

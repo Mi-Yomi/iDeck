@@ -1,0 +1,412 @@
+[
+  {
+    "name": "001-persistence.sh",
+    "script_sha256": "da5fe6b1f510082890c61f0f0f21362165dc6eb5d4d1c16298a506dc4a5216cf",
+    "exit_code": 0
+  },
+  {
+    "name": "002-stage-game-fixture.sh",
+    "script_sha256": "acdfea4bcd7f4ebe8f7a74a6e6cd982d733880e6364e405c5f25aa77324cb1e4",
+    "exit_code": 0
+  },
+  {
+    "name": "003-start-arm64-game.sh",
+    "script_sha256": "94f3a701159daf1e1de585eafe8aa85e15cdb581e9eb84b43abef26d0fd1ada7",
+    "exit_code": 0
+  },
+  {
+    "name": "004-game-progress.sh",
+    "script_sha256": "d140f015a0b9724cccf21dfb78ed83cdc1366ff96444a59bc720b32e79d95d30",
+    "exit_code": 0
+  },
+  {
+    "name": "005-game-progress.sh",
+    "script_sha256": "d140f015a0b9724cccf21dfb78ed83cdc1366ff96444a59bc720b32e79d95d30",
+    "exit_code": 0
+  },
+  {
+    "name": "006-private-startup-log.sh",
+    "script_sha256": "e8826763664cb0da7f8742daf73230f161672aa371417b1fb3b9092c96feec54",
+    "exit_code": 0
+  },
+  {
+    "name": "007-game-progress.sh",
+    "script_sha256": "d140f015a0b9724cccf21dfb78ed83cdc1366ff96444a59bc720b32e79d95d30",
+    "exit_code": 0
+  },
+  {
+    "name": "008-game-progress.sh",
+    "script_sha256": "d140f015a0b9724cccf21dfb78ed83cdc1366ff96444a59bc720b32e79d95d30",
+    "exit_code": 0
+  },
+  {
+    "name": "009-private-startup-log.sh",
+    "script_sha256": "e8826763664cb0da7f8742daf73230f161672aa371417b1fb3b9092c96feec54",
+    "exit_code": 0
+  },
+  {
+    "name": "010-game-progress.sh",
+    "script_sha256": "d140f015a0b9724cccf21dfb78ed83cdc1366ff96444a59bc720b32e79d95d30",
+    "exit_code": 0
+  },
+  {
+    "name": "011-private-wait-diagnostic.sh",
+    "script_sha256": "9242b34a56d8359e638689be4ca5bbae55abf99e9fc1d36c4511c677691076ef",
+    "exit_code": 0
+  },
+  {
+    "name": "012-game-progress.sh",
+    "script_sha256": "d140f015a0b9724cccf21dfb78ed83cdc1366ff96444a59bc720b32e79d95d30",
+    "exit_code": 0
+  },
+  {
+    "name": "013-game-progress.sh",
+    "script_sha256": "d140f015a0b9724cccf21dfb78ed83cdc1366ff96444a59bc720b32e79d95d30",
+    "exit_code": 0
+  },
+  {
+    "name": "014-game-progress.sh",
+    "script_sha256": "d140f015a0b9724cccf21dfb78ed83cdc1366ff96444a59bc720b32e79d95d30",
+    "exit_code": 0
+  },
+  {
+    "name": "015-game-progress.sh",
+    "script_sha256": "d140f015a0b9724cccf21dfb78ed83cdc1366ff96444a59bc720b32e79d95d30",
+    "exit_code": 0
+  },
+  {
+    "name": "016-stage-sync-candidate.sh",
+    "script_sha256": "1d8c4418c9b0a1972424c08f066c384c7b6af740a2d085f89c884a0c52b7eade",
+    "exit_code": 2
+  },
+  {
+    "name": "017-stage-sync-candidate.sh",
+    "script_sha256": "95e621dab5faa9e282bc2ae5e9da89fc2ef4f3a271b0314ad52a09de1ae63124",
+    "exit_code": 0
+  },
+  {
+    "name": "018-start-arm64-nosync-game.sh",
+    "script_sha256": "42754b6e52242ec2fb0c7e59e429d337b7684a1d45e2c9ba0d94744a602057be",
+    "exit_code": 0
+  },
+  {
+    "name": "019-game-progress.sh",
+    "script_sha256": "505b8893bc409f63575022c042947f3dac6c70d091ae693651321686d960ed68",
+    "exit_code": 0
+  },
+  {
+    "name": "020-game-progress.sh",
+    "script_sha256": "505b8893bc409f63575022c042947f3dac6c70d091ae693651321686d960ed68",
+    "exit_code": 0
+  },
+  {
+    "name": "021-private-nosync-log.sh",
+    "script_sha256": "bd7c1da2ebbf8959811ba8d251979fad4fc59dd4e4ac9e2e228933c34b1f8f94",
+    "exit_code": 0
+  },
+  {
+    "name": "022-game-progress.sh",
+    "script_sha256": "505b8893bc409f63575022c042947f3dac6c70d091ae693651321686d960ed68",
+    "exit_code": 0
+  },
+  {
+    "name": "023-private-nosync-log.sh",
+    "script_sha256": "bd7c1da2ebbf8959811ba8d251979fad4fc59dd4e4ac9e2e228933c34b1f8f94",
+    "exit_code": 0
+  },
+  {
+    "name": "024-private-nosync-wait.sh",
+    "script_sha256": "58b7e14b34715ec292d4046742f96ec28bebcd7e565b8d5dc90028623253c538",
+    "exit_code": 1
+  },
+  {
+    "name": "025-game-progress.sh",
+    "script_sha256": "505b8893bc409f63575022c042947f3dac6c70d091ae693651321686d960ed68",
+    "exit_code": 0
+  },
+  {
+    "name": "026-game-progress.sh",
+    "script_sha256": "505b8893bc409f63575022c042947f3dac6c70d091ae693651321686d960ed68",
+    "exit_code": 0
+  },
+  {
+    "name": "027-private-nosync-log.sh",
+    "script_sha256": "bd7c1da2ebbf8959811ba8d251979fad4fc59dd4e4ac9e2e228933c34b1f8f94",
+    "exit_code": 0
+  },
+  {
+    "name": "028-game-progress.sh",
+    "script_sha256": "505b8893bc409f63575022c042947f3dac6c70d091ae693651321686d960ed68",
+    "exit_code": 0
+  },
+  {
+    "name": "029-private-nosync-log.sh",
+    "script_sha256": "bd7c1da2ebbf8959811ba8d251979fad4fc59dd4e4ac9e2e228933c34b1f8f94",
+    "exit_code": 0
+  },
+  {
+    "name": "030-read-only-host-locale.sh",
+    "script_sha256": "84c1cdd331f770a48b5995fbac678fb8825eb120b74b4415614918174f028f0d",
+    "exit_code": 0
+  },
+  {
+    "name": "031-game-progress.sh",
+    "script_sha256": "505b8893bc409f63575022c042947f3dac6c70d091ae693651321686d960ed68",
+    "exit_code": 0
+  },
+  {
+    "name": "032-private-nosync-log.sh",
+    "script_sha256": "bd7c1da2ebbf8959811ba8d251979fad4fc59dd4e4ac9e2e228933c34b1f8f94",
+    "exit_code": 0
+  },
+  {
+    "name": "033-game-progress.sh",
+    "script_sha256": "505b8893bc409f63575022c042947f3dac6c70d091ae693651321686d960ed68",
+    "exit_code": 0
+  },
+  {
+    "name": "034-game-progress.sh",
+    "script_sha256": "ed36ae159e7b2124fda68014b334cdc12dbbd315ed76987fb2fe9a387ceb25df",
+    "exit_code": 0
+  },
+  {
+    "name": "035-stage-long-sync-case.sh",
+    "script_sha256": "17fab5fb48145797b9128b588fe3f294028451c3ef29a69f71dbdae5f88092e4",
+    "exit_code": 0
+  },
+  {
+    "name": "036-start-arm64-long-nosync.sh",
+    "script_sha256": "170b88cebe1389ca11b92faa5ac42cd5a3683fb56ec48a5e37427224505c083a",
+    "exit_code": 0
+  },
+  {
+    "name": "037-game-progress.sh",
+    "script_sha256": "ed36ae159e7b2124fda68014b334cdc12dbbd315ed76987fb2fe9a387ceb25df",
+    "exit_code": 0
+  },
+  {
+    "name": "038-game-progress.sh",
+    "script_sha256": "ed36ae159e7b2124fda68014b334cdc12dbbd315ed76987fb2fe9a387ceb25df",
+    "exit_code": 0
+  },
+  {
+    "name": "039-private-long-nosync-log.sh",
+    "script_sha256": "181bc2d9f56942cfcb49ddf148912056a009d3feacc8df48a8d4c7c3a36e3d7a",
+    "exit_code": 0
+  },
+  {
+    "name": "040-window-probe.sh",
+    "script_sha256": "692db1bca4a0ba99c03739d4414dd41c0809d87069223ef87022cd3d6ffb30cb",
+    "exit_code": 0
+  },
+  {
+    "name": "041-game-progress.sh",
+    "script_sha256": "ed36ae159e7b2124fda68014b334cdc12dbbd315ed76987fb2fe9a387ceb25df",
+    "exit_code": 0
+  },
+  {
+    "name": "042-game-progress.sh",
+    "script_sha256": "ed36ae159e7b2124fda68014b334cdc12dbbd315ed76987fb2fe9a387ceb25df",
+    "exit_code": 0
+  },
+  {
+    "name": "043-private-long-nosync-log.sh",
+    "script_sha256": "181bc2d9f56942cfcb49ddf148912056a009d3feacc8df48a8d4c7c3a36e3d7a",
+    "exit_code": 0
+  },
+  {
+    "name": "044-window-probe.sh",
+    "script_sha256": "692db1bca4a0ba99c03739d4414dd41c0809d87069223ef87022cd3d6ffb30cb",
+    "exit_code": 0
+  },
+  {
+    "name": "045-game-progress.sh",
+    "script_sha256": "ed36ae159e7b2124fda68014b334cdc12dbbd315ed76987fb2fe9a387ceb25df",
+    "exit_code": 0
+  },
+  {
+    "name": "046-keep-test-display-active.sh",
+    "script_sha256": "d68d3b022e9a0b0116ed105ffbf257e0c86387564aeb229929b1194958ddcfe8",
+    "exit_code": 0
+  },
+  {
+    "name": "047-window-probe.sh",
+    "script_sha256": "692db1bca4a0ba99c03739d4414dd41c0809d87069223ef87022cd3d6ffb30cb",
+    "exit_code": 0
+  },
+  {
+    "name": "048-owned-winemine-cell-click.sh",
+    "script_sha256": "2106c5dd89857f6da806d22614007039d17205c5a8b80e3d936d86535916ff3b",
+    "exit_code": 0
+  },
+  {
+    "name": "049-game-progress.sh",
+    "script_sha256": "ed36ae159e7b2124fda68014b334cdc12dbbd315ed76987fb2fe9a387ceb25df",
+    "exit_code": 0
+  },
+  {
+    "name": "050-owned-winemine-reset.sh",
+    "script_sha256": "d15ab33ee7c6e713cfde94b5761e5171cb37e71878c57dec745a4617b8d289df",
+    "exit_code": 0
+  },
+  {
+    "name": "051-game-progress.sh",
+    "script_sha256": "ed36ae159e7b2124fda68014b334cdc12dbbd315ed76987fb2fe9a387ceb25df",
+    "exit_code": 0
+  },
+  {
+    "name": "052-owned-winemine-close.sh",
+    "script_sha256": "7222a833344a5daed57a7a7d76f75711021f745dee743661c9751b2190ede12c",
+    "exit_code": 0
+  },
+  {
+    "name": "053-game-progress.sh",
+    "script_sha256": "ed36ae159e7b2124fda68014b334cdc12dbbd315ed76987fb2fe9a387ceb25df",
+    "exit_code": 0
+  },
+  {
+    "name": "054-stage-x64-case.sh",
+    "script_sha256": "bb106e154beccd4cd7a9db76fe737ba51a0230fa46a8e0ffebf92bfbfb90a08f",
+    "exit_code": 0
+  },
+  {
+    "name": "055-start-x64-long-nosync.sh",
+    "script_sha256": "910355fc644b1080e497ad00c71764541d09803a8936f16a843de766c5924697",
+    "exit_code": 0
+  },
+  {
+    "name": "056-game-progress.sh",
+    "script_sha256": "85b8b0bdf4a24049e539d4ee653ef5bd0282e19c970f766f6330067e31880154",
+    "exit_code": 0
+  },
+  {
+    "name": "057-game-progress.sh",
+    "script_sha256": "85b8b0bdf4a24049e539d4ee653ef5bd0282e19c970f766f6330067e31880154",
+    "exit_code": 0
+  },
+  {
+    "name": "058-private-x64-log.sh",
+    "script_sha256": "e63913cf86ba5ff2036c80e63f0d4f7ad7a1e1525f3f73c83ed73ce259c13af3",
+    "exit_code": 0
+  },
+  {
+    "name": "059-game-progress.sh",
+    "script_sha256": "85b8b0bdf4a24049e539d4ee653ef5bd0282e19c970f766f6330067e31880154",
+    "exit_code": 0
+  },
+  {
+    "name": "060-window-probe.sh",
+    "script_sha256": "692db1bca4a0ba99c03739d4414dd41c0809d87069223ef87022cd3d6ffb30cb",
+    "exit_code": 0
+  },
+  {
+    "name": "061-private-x64-log.sh",
+    "script_sha256": "e63913cf86ba5ff2036c80e63f0d4f7ad7a1e1525f3f73c83ed73ce259c13af3",
+    "exit_code": 0
+  },
+  {
+    "name": "062-window-probe.sh",
+    "script_sha256": "692db1bca4a0ba99c03739d4414dd41c0809d87069223ef87022cd3d6ffb30cb",
+    "exit_code": 0
+  },
+  {
+    "name": "063-game-progress.sh",
+    "script_sha256": "85b8b0bdf4a24049e539d4ee653ef5bd0282e19c970f766f6330067e31880154",
+    "exit_code": 0
+  },
+  {
+    "name": "064-window-probe.sh",
+    "script_sha256": "692db1bca4a0ba99c03739d4414dd41c0809d87069223ef87022cd3d6ffb30cb",
+    "exit_code": 0
+  },
+  {
+    "name": "065-x64-target-mapping.sh",
+    "script_sha256": "3320b89748db2c79e4ebf5f8bbf113768bfab8ef622b2cd26ebad133678ca611",
+    "exit_code": 0
+  },
+  {
+    "name": "066-window-probe.sh",
+    "script_sha256": "692db1bca4a0ba99c03739d4414dd41c0809d87069223ef87022cd3d6ffb30cb",
+    "exit_code": 0
+  },
+  {
+    "name": "067-game-progress.sh",
+    "script_sha256": "85b8b0bdf4a24049e539d4ee653ef5bd0282e19c970f766f6330067e31880154",
+    "exit_code": 0
+  },
+  {
+    "name": "068-private-x64-log.sh",
+    "script_sha256": "e63913cf86ba5ff2036c80e63f0d4f7ad7a1e1525f3f73c83ed73ce259c13af3",
+    "exit_code": 0
+  },
+  {
+    "name": "069-private-x64-wait.sh",
+    "script_sha256": "4064843be3f10f0df3481186d881c582ca5e2f520212b8c34aa1391e6d5b99b7",
+    "exit_code": 0
+  },
+  {
+    "name": "070-window-probe.sh",
+    "script_sha256": "692db1bca4a0ba99c03739d4414dd41c0809d87069223ef87022cd3d6ffb30cb",
+    "exit_code": 0
+  },
+  {
+    "name": "071-game-progress.sh",
+    "script_sha256": "85b8b0bdf4a24049e539d4ee653ef5bd0282e19c970f766f6330067e31880154",
+    "exit_code": 0
+  },
+  {
+    "name": "072-private-x64-descriptors.sh",
+    "script_sha256": "62e6f03caab70e01ecec31967f9f88edece1081aa2430de5d33fa5f58fa153d9",
+    "exit_code": 0
+  },
+  {
+    "name": "073-game-progress.sh",
+    "script_sha256": "85b8b0bdf4a24049e539d4ee653ef5bd0282e19c970f766f6330067e31880154",
+    "exit_code": 0
+  },
+  {
+    "name": "074-window-probe.sh",
+    "script_sha256": "692db1bca4a0ba99c03739d4414dd41c0809d87069223ef87022cd3d6ffb30cb",
+    "exit_code": 0
+  },
+  {
+    "name": "075-game-progress.sh",
+    "script_sha256": "85b8b0bdf4a24049e539d4ee653ef5bd0282e19c970f766f6330067e31880154",
+    "exit_code": 0
+  },
+  {
+    "name": "076-read-only-service-start.sh",
+    "script_sha256": "b3372dc5e753fd1bcf6ce34399a8640a60a85af077dbb92815355806e04f5b0a",
+    "exit_code": 1
+  },
+  {
+    "name": "077-game-progress.sh",
+    "script_sha256": "85b8b0bdf4a24049e539d4ee653ef5bd0282e19c970f766f6330067e31880154",
+    "exit_code": 0
+  },
+  {
+    "name": "078-read-only-service-start.sh",
+    "script_sha256": "2673a2366a542d265a54be74cfbc491a6b95f70714944e64cf487e6a41bd8fc0",
+    "exit_code": 0
+  },
+  {
+    "name": "900-final-postcheck-and-export.sh",
+    "script_sha256": "6cc8052d0216b755cfe32c536c71133aa1b870bf631cbf3f918eb94f477bccb4",
+    "exit_code": 2
+  },
+  {
+    "name": "079-game-progress.sh",
+    "script_sha256": "85b8b0bdf4a24049e539d4ee653ef5bd0282e19c970f766f6330067e31880154",
+    "exit_code": 0
+  },
+  {
+    "name": "080-game-progress.sh",
+    "script_sha256": "85b8b0bdf4a24049e539d4ee653ef5bd0282e19c970f766f6330067e31880154",
+    "exit_code": 0
+  },
+  {
+    "name": "081-final-postcheck-export.sh",
+    "script_sha256": "ee3027367d615bd19c987f26ee9fbf94d4b66ccaf2a8bcc4dd63642ac7729ead",
+    "exit_code": 0
+  }
+]

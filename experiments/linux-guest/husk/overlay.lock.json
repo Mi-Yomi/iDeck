@@ -41,8 +41,8 @@
     "tools/gui_bundle.py": "0bdd90ba31ca0c512980629d8c76bdc98da9a525e88c88fea4902681b52dc079",
     "ipa/gui.lock.json": "fef0bf4c5b72cad5ee921616639f6e28bec73bce7b1e689c95c3734aed82c7eb",
     "ios/LinuxSteamProfile.swift": "649a088a394f0d2fa29414b570dfbb314a60d9b35e09a2c0501bb5cab6d9dca5",
-    "tools/steam_bundle.py": "c55bb8d05698d64ecb3fbb6945976ef292f422ceee4592cd3cd34e2d7c5fa0ea",
-    "ipa/steam.lock.json": "a57a9e00d630a2b173832e08171f701e9321b74b155909c1eab5dc80a440613c",
+    "tools/steam_bundle.py": "00d0adda8d59b826e5406fa61d1f9263802790e8b0ba1170eecd1b04a75c0d15",
+    "ipa/steam.lock.json": "bc3dfe7b7c78a897503eb5e1f17cd67a245b6d2e7bd61ead705e6435d3c30741",
     "husk/patches/0005-steam-asset-staging.patch": "7c3b66a36021d1b8fb2ec5980508782850e650eeda8b1ec1a6a771bee1487a4d"
   },
   "copies": {

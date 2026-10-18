@@ -1,0 +1,8 @@
+{
+  "python_ast_files": 125,
+  "git_attributes": "experiments/linux-guest/vendor/alpine-3.24.1-aarch64/modloop-virt: text: unset",
+  "production_code_scope": "Only metadata() in tools/steam_bundle.py; every other AST node unchanged",
+  "staging_source_mapping": "tools/steam_bundle.py -> scripts/ideck-stage-steam.py in husk/overlay.lock.json; fifth Xcode preBuildScript uses that copy",
+  "other_staging_scripts": "Debian and GUI use 1 MiB streaming SHA-256 already; probe/terminal use explicit size bounds and hashlib.sha256 on bounded buffers; package hashing already streams",
+  "other_file_digest_uses": "steam_client (guest pinned Debian Python); steam_seed and steam_cpu_probe CLI diagnostics. Not Xcode stage code; unchanged to preserve guest/bootstrap/payload identity."
+}

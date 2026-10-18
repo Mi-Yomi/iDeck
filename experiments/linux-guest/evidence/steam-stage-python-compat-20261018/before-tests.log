@@ -1,0 +1,82 @@
+test_extra_and_symlink_destination_contents_rejected (test_streaming_hashes.DebianStagingWithoutFileDigest.test_extra_and_symlink_destination_contents_rejected) ... ok
+test_fsync_failure_prevents_publication (test_streaming_hashes.DebianStagingWithoutFileDigest.test_fsync_failure_prevents_publication) ... ok
+test_stage_independently_rejects_corrupted_written_file (test_streaming_hashes.DebianStagingWithoutFileDigest.test_stage_independently_rejects_corrupted_written_file) ... ok
+test_standalone_overlay_cli_verify_stage_and_repeat_without_api (test_streaming_hashes.DebianStagingWithoutFileDigest.test_standalone_overlay_cli_verify_stage_and_repeat_without_api) ... ok
+test_unsafe_destination_and_ancestors_rejected_without_writes (test_streaming_hashes.DebianStagingWithoutFileDigest.test_unsafe_destination_and_ancestors_rejected_without_writes) ... ok
+test_verify_and_stage_reject_hash_size_missing_extra_and_symlink (test_streaming_hashes.DebianStagingWithoutFileDigest.test_verify_and_stage_reject_hash_size_missing_extra_and_symlink) ... ok
+test_verify_stage_and_repeat_are_exact_bounded_and_synced (test_streaming_hashes.DebianStagingWithoutFileDigest.test_verify_stage_and_repeat_are_exact_bounded_and_synced) ... ok
+test_ci_sha_empty_small_and_multiblock_bounded (test_streaming_hashes.StreamingHashChecks.test_ci_sha_empty_small_and_multiblock_bounded) ... ok
+test_large_ipa_hash_empty_small_and_multiblock_bounded (test_streaming_hashes.StreamingHashChecks.test_large_ipa_hash_empty_small_and_multiblock_bounded) ... ok
+test_metadata_empty_small_and_multiblock_bounded (test_streaming_hashes.StreamingHashChecks.test_metadata_empty_small_and_multiblock_bounded) ... ok
+test_standalone_steam_overlay_stage_repeat_and_corruption_without_api (test_streaming_hashes.StreamingHashChecks.test_standalone_steam_overlay_stage_repeat_and_corruption_without_api) ... FAIL
+test_steam_metadata_empty_small_and_multiblock_bounded (test_streaming_hashes.StreamingHashChecks.test_steam_metadata_empty_small_and_multiblock_bounded) ... 
+  test_steam_metadata_empty_small_and_multiblock_bounded (test_streaming_hashes.StreamingHashChecks.test_steam_metadata_empty_small_and_multiblock_bounded) (size=0) ... ERROR
+  test_steam_metadata_empty_small_and_multiblock_bounded (test_streaming_hashes.StreamingHashChecks.test_steam_metadata_empty_small_and_multiblock_bounded) (size=3) ... ERROR
+  test_steam_metadata_empty_small_and_multiblock_bounded (test_streaming_hashes.StreamingHashChecks.test_steam_metadata_empty_small_and_multiblock_bounded) (size=2097156) ... ERROR
+test_terminal_package_gate_empty_small_and_multiblock_bounded (test_streaming_hashes.StreamingHashChecks.test_terminal_package_gate_empty_small_and_multiblock_bounded) ... ok
+
+======================================================================
+ERROR: test_steam_metadata_empty_small_and_multiblock_bounded (test_streaming_hashes.StreamingHashChecks.test_steam_metadata_empty_small_and_multiblock_bounded) (size=0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/iDeck/experiments/linux-guest/tests/test_streaming_hashes.py", line 108, in test_steam_metadata_empty_small_and_multiblock_bounded
+    self.assertEqual(steam_bundle.metadata(path), expected(data))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/iDeck/experiments/linux-guest/tools/steam_bundle.py", line 18, in metadata
+    digest = hashlib.file_digest(stream, 'sha256').hexdigest()
+             ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'hashlib' has no attribute 'file_digest'
+
+======================================================================
+ERROR: test_steam_metadata_empty_small_and_multiblock_bounded (test_streaming_hashes.StreamingHashChecks.test_steam_metadata_empty_small_and_multiblock_bounded) (size=3)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/iDeck/experiments/linux-guest/tests/test_streaming_hashes.py", line 108, in test_steam_metadata_empty_small_and_multiblock_bounded
+    self.assertEqual(steam_bundle.metadata(path), expected(data))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/iDeck/experiments/linux-guest/tools/steam_bundle.py", line 18, in metadata
+    digest = hashlib.file_digest(stream, 'sha256').hexdigest()
+             ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'hashlib' has no attribute 'file_digest'
+
+======================================================================
+ERROR: test_steam_metadata_empty_small_and_multiblock_bounded (test_streaming_hashes.StreamingHashChecks.test_steam_metadata_empty_small_and_multiblock_bounded) (size=2097156)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/iDeck/experiments/linux-guest/tests/test_streaming_hashes.py", line 108, in test_steam_metadata_empty_small_and_multiblock_bounded
+    self.assertEqual(steam_bundle.metadata(path), expected(data))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/iDeck/experiments/linux-guest/tools/steam_bundle.py", line 18, in metadata
+    digest = hashlib.file_digest(stream, 'sha256').hexdigest()
+             ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'hashlib' has no attribute 'file_digest'
+
+======================================================================
+FAIL: test_standalone_steam_overlay_stage_repeat_and_corruption_without_api (test_streaming_hashes.StreamingHashChecks.test_standalone_steam_overlay_stage_repeat_and_corruption_without_api)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/iDeck/experiments/linux-guest/tests/test_streaming_hashes.py", line 151, in test_standalone_steam_overlay_stage_repeat_and_corruption_without_api
+    self.assertEqual(result.returncode, 0, result.stderr)
+AssertionError: 1 != 0 : Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "<frozen runpy>", line 287, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "/tmp/tmp0caxq8pv/scripts/ideck-stage-steam.py", line 221, in <module>
+    result = verify(args.source, load_lock(args.lock))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp0caxq8pv/scripts/ideck-stage-steam.py", line 95, in verify
+    checked(source / name, pin)
+  File "/tmp/tmp0caxq8pv/scripts/ideck-stage-steam.py", line 35, in checked
+    if not path.is_file() or path.stat().st_size != pin['size'] or metadata(path) != pin:
+                                                                   ^^^^^^^^^^^^^^
+  File "/tmp/tmp0caxq8pv/scripts/ideck-stage-steam.py", line 18, in metadata
+    digest = hashlib.file_digest(stream, 'sha256').hexdigest()
+             ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'hashlib' has no attribute 'file_digest'
+
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.612s
+
+FAILED (failures=1, errors=3)

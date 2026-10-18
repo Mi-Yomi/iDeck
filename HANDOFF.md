@@ -1,3 +1,47 @@
+> Current CI fix, 18 October 2026: first Steam-ready Apple attempt **#29** at
+> `3d00c93c151c93a6704947fbbab07963d4e2d749` reached app-build and failed with
+> xcodebuild exit 65 in **Stage verified experimental Steam assets**:
+> `scripts/ideck-stage-steam.py:18`, `hashlib.file_digest` AttributeError.
+> Build: https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad54f507550aed8108ff628 .
+> This CI failure and preceding native QEMU/ANGLE/check success are supplied by
+> the coordinating executor; full private CI logs were not independently fetched
+> here. The same AttributeError was reproduced locally with the API removed.
+>
+> Fixed the original **tools/steam_bundle.py metadata()** to stream SHA-256 in
+> **1 MiB** reads, matching Debian/GUI. `husk/overlay.lock.json` copies that exact
+> source to `scripts/ideck-stage-steam.py`; no generated-copy-only fix or interpreter
+> override. Size/hash/symlink/flat-member/profile/token/redirect checks are retained.
+> Other Xcode staging scripts already avoid file_digest. Remaining uses are guest
+> Steam or host diagnostic code, outside this Xcode stage; no guest source changed.
+>
+> Updated only this host helper's current `source_inputs` pin and both corresponding
+> overlay input digests. **This is not a claim that the archive was rebuilt.**
+> Actual payload-build commit remains **eb743c38d8e03af0189aaebe8db2b69d3ff76760**;
+> all original build source pins are retained in the new source-review receipt and
+> immutable previous readback evidence. AST comparison proves only metadata()
+> changed; old/new hashes match on all five actual components and the actual tar.
+> Deterministic tar roundtrip preserves **f74e22f44422d5dded7dd23d2a8e9a22a98e2df13edd4620187943529a29c62c**.
+> All component/raw/archive pins and remaining 22 source pins are unchanged.
+> No payload rebuild, Release/main, GUI/Debian, token or user-disk change.
+>
+> After fix: **505 tests OK (500 PASS, 5 SKIP)**, actual git check-attr and 125
+> Python AST checks PASS. New absent-file_digest tests cover empty/small/multiblock
+> bounded hashing, standalone overlay CLI verify/stage/repeat and same-size corrupt
+> input rejection without changing the prior staged asset. Actual sealed archive
+> prepare_for_build (local transport only), 81-file/five-patch Husk overlay,
+> standalone/incremental Xcode script and Steam package resource verifier all PASS
+> with file_digest removed. Complete staged 12 GiB gzip digest remains
+> **ee04c5c66adf4ac1f56b9b36145c9b0ca164d3d09e59ffaf06805fa6815a0626**.
+> Evidence: `experiments/linux-guest/evidence/steam-stage-python-compat-20261018/`.
+>
+> **No new CI dispatched.** Next executor must freshly check free quota (at least
+> 120 macOS minutes), disabled paid billing/private source and pass the NEW pushed
+> remote SHA as expected_commit. Same ideck-linux-probe-ipa/Steam branch,
+> mac_mini_m2/Xcode27.0/120-minute limit and existing ideck-debian-payload group.
+> New Apple/Swift/native link/package/IPA gates remain **NOT RUN** after this fix;
+> no physical-device/Steam/game acceptance. BusyBox corresponding source/revision/
+> patch/recipe/source-delivery limitation remains **OPEN** and unchanged.
+
 > Current delivery result, 18 October 2026: final browser-uploaded private asset
 > **654660064** independently downloaded through existing authorized `gh` access.
 > **303667200 bytes**, SHA-256

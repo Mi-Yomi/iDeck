@@ -19,6 +19,7 @@ import debian_bundle as bundle
 import build_linux_probe_ipa as builder
 import package_probe
 import stage_husk
+import steam_bundle
 
 MIB = 1024 * 1024
 CASES = (b"", b"abc", bytes(range(256)) * (2 * MIB // 256) + b"tail")
@@ -97,6 +98,65 @@ class StreamingHashChecks(unittest.TestCase):
                 with bounded_reads(self) as reads:
                     self.assertEqual(builder.sha(path), expected(data)["sha256"])
                 self.assertEqual(len(reads), (len(data) + MIB - 1) // MIB + 1)
+
+    def test_steam_metadata_empty_small_and_multiblock_bounded(self):
+        path = self.root / "data"
+        for data in CASES:
+            with self.subTest(size=len(data)):
+                path.write_bytes(data)
+                with bounded_reads(self) as reads:
+                    self.assertEqual(steam_bundle.metadata(path), expected(data))
+                self.assertEqual(len(reads), (len(data) + MIB - 1) // MIB + 1)
+
+    def test_standalone_steam_overlay_stage_repeat_and_corruption_without_api(self):
+        mapping = stage_husk.load_overlay()["copies"]
+        self.assertEqual(mapping["tools/steam_bundle.py"], "scripts/ideck-stage-steam.py")
+        script = self.root / mapping["tools/steam_bundle.py"]
+        script.parent.mkdir()
+        shutil.copyfile(EXPERIMENT / "tools/steam_bundle.py", script)
+        lock = json.loads((EXPERIMENT / "ipa/steam.lock.json").read_text())
+        source = self.root / "guests/ideck-steam"
+        source.mkdir(parents=True)
+        builder.restore_guest(self.root / "probe")
+        shutil.copyfile(self.root / "probe/vmlinuz-virt", source / "vmlinuz-virt")
+        # Synthetic initramfs/rootfs bytes exercise staging, not guest boot.
+        for name, data in (("initramfs-steam.gz", CASES[2]),
+                           ("steam-rootfs-v1.raw.gz", b"root fixture"),
+                           ("LICENSES-steam.txt", b"notice fixture")):
+            (source / name).write_bytes(data)
+            lock["files"][name] = expected(data)
+        profile = {"schema": 1, "mode": "steam-experimental", "control_port": "org.ideck.control",
+                   "image": {"size_bytes": steam_bundle.SIZE, "uuid": steam_bundle.UUID,
+                             "block_size": 4096, "features": {"compat": 44, "incompat": 194, "ro_compat": 1091}},
+                   "seed_sha256": lock["seed_sha256"]}
+        for key, name in (("kernel", "vmlinuz-virt"), ("initramfs", "initramfs-steam.gz"),
+                          ("rootfs", "steam-rootfs-v1.raw.gz")):
+            profile[key] = {"file": name, **lock["files"][name]}
+        data = json.dumps(profile).encode()
+        (source / "steam-profile.json").write_bytes(data)
+        lock["files"]["steam-profile.json"] = expected(data)
+        lockpath = self.root / mapping["ipa/steam.lock.json"]
+        lockpath.write_text(json.dumps(lock))
+        destination = self.root / "Husk.app/iDeckLinuxSteam"
+        wrapper = ("import hashlib, runpy, sys; hashlib.__dict__.pop('file_digest', None); "
+                   "assert not hasattr(hashlib, 'file_digest'); sys.argv = sys.argv[1:]; "
+                   "runpy.run_path(sys.argv[0], run_name='__main__')")
+        for command, path in (("verify", source), ("stage", source),
+                              ("stage", source), ("verify", destination)):
+            args = [command, str(path), str(lockpath)]
+            if command == "stage":
+                args += ["--destination", str(destination)]
+            result = subprocess.run([sys.executable, "-I", "-B", "-c", wrapper, str(script), *args],
+                                    cwd=self.root, capture_output=True, text=True, timeout=30)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(json.loads(result.stdout), lock["files"])
+        (source / "initramfs-steam.gz").write_bytes(b"X" * len(CASES[2]))
+        result = subprocess.run([sys.executable, "-I", "-B", "-c", wrapper, str(script),
+                                 "stage", str(source), str(lockpath), "--destination", str(destination)],
+                                cwd=self.root, capture_output=True, text=True, timeout=30)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Steam asset integrity mismatch", result.stderr)
+        self.assertEqual((destination / "initramfs-steam.gz").read_bytes(), CASES[2])
 
     def test_large_ipa_hash_empty_small_and_multiblock_bounded(self):
         path = self.root / "fixture.ipa"

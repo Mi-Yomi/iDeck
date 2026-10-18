@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "baseline": "3d00c93c151c93a6704947fbbab07963d4e2d749",
+  "old_and_new_metadata_on_archive_and_five_components": "PASS",
+  "deterministic_tar_roundtrip": {
+    "size": 303667200,
+    "sha256": "f74e22f44422d5dded7dd23d2a8e9a22a98e2df13edd4620187943529a29c62c"
+  },
+  "source_inputs_current": "PASS",
+  "husk_source_files": 81,
+  "husk_patches": 5,
+  "real_archive_prepare_for_build_without_file_digest": "PASS (local transport only; no new network/token claim)",
+  "standalone_overlay_stage_without_file_digest": "PASS",
+  "incremental_stage_without_file_digest": "PASS",
+  "package_steam_resource_gate_without_file_digest": "PASS",
+  "staged_expanded_gzip": {
+    "size": 12884901888,
+    "sha256": "ee04c5c66adf4ac1f56b9b36145c9b0ca164d3d09e59ffaf06805fa6815a0626"
+  },
+  "payload_rebuilt": false,
+  "release_changed": false,
+  "apple_ci29": "Owner-provided failure: app-build / xcodebuild exit65 / Stage verified experimental Steam assets / hashlib.file_digest AttributeError. No claim of independent full CI log retrieval.",
+  "new_apple_ci": "NOT RUN",
+  "new_native_ipa": "NOT RUN",
+  "device_gate": "NOT RUN"
+}

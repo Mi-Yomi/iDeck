@@ -108,8 +108,8 @@
       "sha256": "f347f8e662ddcc8af283fe92e45c8248e0f5dc9b542b5fa9bc4198a0e0128db4"
     },
     "tools/steam_bundle.py": {
-      "size": 11193,
-      "sha256": "c55bb8d05698d64ecb3fbb6945976ef292f422ceee4592cd3cd34e2d7c5fa0ea"
+      "size": 11250,
+      "sha256": "00d0adda8d59b826e5406fa61d1f9263802790e8b0ba1170eecd1b04a75c0d15"
     },
     "tools/steam_client.py": {
       "size": 13988,

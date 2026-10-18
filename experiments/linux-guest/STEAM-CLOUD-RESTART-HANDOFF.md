@@ -1,5 +1,37 @@
 # Safe checkpoint for the replacement cloud task
 
+## Current checkpoint — 2026-10-18 01:00 UTC
+
+Read `NIGHT-RESULT-20261018.md` at the repository root for the current outcome.
+The older sections below are historical snapshots: their pending runs, live PIDs
+and disk paths are not current instructions.
+
+Run23 failed BEFORE guest boot when WSL lost access to E: (EIO/ENODEV during
+continuation preparation). There is no CPU-affinity experiment result from23.
+The last verified continuation source is the private
+`resume-local-20261017/run22/steam-experiment.qcow2`, SHA-256
+`22218a60a774116e38881548419da68a1f870c9ef88745aff7f465d6790929e8`.
+Its earlier full offline check passed and a fresh Windows read after the host
+failure matched that hash. Preserve the incomplete23 copy for diagnosis; do not
+use it as a continuation source. No test VM, helper or input mount remains live.
+Before any future boot, diagnose WSL's E: access, verify the input mount and
+source identity, then use the existing guarded copy/check path into a new output.
+Do not repair or overwrite the verified source, or reset unrelated WSL sessions.
+
+Affinity widening was already tested in run6 without a visible main interface;
+see `experiments/linux-guest/evidence/steam-continuation-20261017/README.md`.
+The newer baseline confirms the restriction persists, not that it causes the
+failure. Do not repeat the old probe as a newly discovered fix. Run23 would
+have compared a changed configuration but did not execute.
+
+The official ARM64 client runtime was statically checksum/ELF verified only.
+It is not installed or executed; its version differs from the bundled runtime.
+Do not count it as a working game/Proton stack. Evidence for this checkpoint:
+`experiments/linux-guest/evidence/steam-local-arm64-20261017/run23` and
+`runtime-arm64-static` in that same evidence directory. Real Library/Big Picture,
+Steam game launches, iPhone integration and internal game storage remain
+unverified or unimplemented. No new long tests after01:00UTC; final01:30UTC.
+
 ## Run22 — native IPC still reaches the shared-memory guard (2026-10-18)
 
 At the same 2560 MiB budget, removing diagnostic LD_PRELOAD restored the native

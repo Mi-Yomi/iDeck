@@ -1,6 +1,13 @@
 # iDeck launcher and session navigation
 
 Baseline: `cd19729dee56f7e4294def4763fde451dca88cc6`, Steam branch only.
+The follow-up from `d1e9d20988599e3b06477421c14ed1b2a59f8811` corrects the two
+read-only review findings: active probe diagnostics now uses its own report,
+without terminal fallback/refresh; waiting/error text scrolls inside the display
+while the report action remains fixed outside that scroll area. Lifecycle and
+runtime code are unchanged by this follow-up. Narrow portrait is structurally
+addressed; visual/device validation remains NOT RUN.
+
 The previous route allowed one selection from its chooser and had no Home path.
 Desktop/terminal disappearance also cancelled preparation, so adding a simple
 back button would have cancelled a pending start. Actual runtime ownership was
@@ -39,7 +46,7 @@ These bounded observations are included in Markdown reports. A current device
 report (source/build, mode, status, storage failure and Steam/GUI stage) is still
 needed to diagnose the specific phone behavior.
 
-Validation: **543 Python tests OK (538 PASS, 5 SKIP)**, generator/strict recovery
+Validation after follow-up: **545 Python tests OK (540 PASS, 5 SKIP)**, generator/strict recovery
 gates, actual git attributes, full 81-file/five-patch source overlay and real sealed
 Steam stage/repeat/resource verification without file_digest PASS. Production
 Foundation Home/resume/repeated-tap/sticky-owner checks are added to the mandatory

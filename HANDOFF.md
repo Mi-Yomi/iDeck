@@ -1,4 +1,22 @@
-> Current launcher source update, 19 October 2026: **LAUNCHER-UX-20261019.md**.
+> Current launcher follow-up, 19 October 2026, from
+> **d1e9d20988599e3b06477421c14ed1b2a59f8811**: fixed only the two self-review
+> findings. Home/Advanced diagnostics for active `.linux` now uses the actual
+> LinuxProbeSession report (MD/JSON/serial/error); it neither substitutes nor
+> refreshes a terminal report. Long waiting/error text now scrolls vertically
+> inside the 4:3 display, with the diagnostics/report action fixed outside the
+> scroll area and a 44-point minimum action height.
+>
+> **545 Python tests OK (540 PASS, 5 SKIP)**, including new routing/no-fallback
+> and overlay-scroll/action structure regressions. Generator, source overlay,
+> actual Steam stage/repeat/resource gate, AST and git attributes PASS. Lifecycle,
+> navigation policy, runtime, recovery transaction, payload/source pins and user
+> data are unchanged. New Swift/Apple/visual/phone execution **NOT RUN**. No CI
+> started here; parent reported requesting cancellation of the d1e9d209 attempt,
+> not a completed replacement build. Evidence:
+> `experiments/linux-guest/evidence/launcher-followup-20261019/`.
+> Use the new pushed SHA for the next quota-checked CI. BusyBox provenance OPEN.
+
+> Historical launcher source update, 19 October 2026: **LAUNCHER-UX-20261019.md**.
 > The old one-way chooser had no Home path; view disappearance cancelled startup
 > preparation. Home/resume now navigate independently of the existing static
 > runtime owner. No QEMU restart, JIT reset, implicit Stop or disk-owner release.

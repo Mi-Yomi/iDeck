@@ -7,6 +7,33 @@ from test_terminal import swift_block
 ROOT=Path(__file__).resolve().parents[1]
 
 class Launcher(unittest.TestCase):
+    def test_active_probe_diagnostics_has_its_own_report_and_no_terminal_fallback(self):
+        source=(ROOT/'ios/LinuxProbeView.swift').read_text()
+        sheet=swift_block(source,'.sheet(isPresented: $showDiagnostics)')
+        self.assertIn('if route.current == .linux',sheet)
+        self.assertIn('LinuxProbeDiagnosticsView(session: probe)',sheet)
+        self.assertIn('else',sheet)
+        self.assertIn('LinuxDesktopDiagnosticsView(session: currentSession)',sheet)
+        advanced=swift_block(source,'private var advanced:')
+        self.assertIn('if route.current != .linux { currentSession.recoverDiagnostics() }',advanced)
+        probe=swift_block(source,'private struct LinuxProbeDiagnosticsView:')
+        for field in ('session.message','session.markdownFile','session.shareFiles','session.exportError'):
+            self.assertIn(field,probe)
+        for forbidden in ('LinuxTerminalSession','session.start(', 'session.stop(', 'rootfs-v1.raw'):
+            self.assertNotIn(forbidden,probe)
+
+    def test_waiting_overlay_scrolls_text_and_keeps_report_action_outside_scroll(self):
+        source=(ROOT/'ios/LinuxDesktopView.swift').read_text()
+        display=swift_block(source,'private var display:')
+        scroll=swift_block(display,'ScrollView(.vertical)')
+        self.assertIn('Text(session.message)',scroll)
+        self.assertIn('session.displayTimedOut',scroll)
+        self.assertNotIn('Button("Диагностика / отчёт")',scroll)
+        self.assertIn('Button("Диагностика / отчёт")',display)
+        self.assertIn('minHeight: 44',display)
+        self.assertIn('ideck-session-waiting-text',display)
+        self.assertIn('ideck-session-waiting-diagnostics',display)
+
     def test_home_and_resume_never_touch_the_runtime_or_owner(self):
         source=(ROOT/'ios/LinuxProbeView.swift').read_text()
         for declaration in ('func home()', 'func resume()'):

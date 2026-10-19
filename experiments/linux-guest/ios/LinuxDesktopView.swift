@@ -159,20 +159,28 @@ struct LinuxDesktopView: View {
                 .allowsHitTesting(session.ready && !session.stopping && !recovery)
                 .accessibilityIdentifier("ideck-debian-desktop-display")
             if !session.ready || !session.displayHasFrame {
-                VStack(spacing: 10) {
-                    Image(systemName: session.displayTimedOut ? "exclamationmark.display" : "desktopcomputer").font(.largeTitle)
-                    if let preparation = session.preparationState, preparation.inProgress {
-                        ProgressView(preparation.message)
-                    } else {
-                        Text(session.message).multilineTextAlignment(.center)
+                VStack(spacing: 0) {
+                    ScrollView(.vertical) {
+                        VStack(spacing: 10) {
+                            Image(systemName: session.displayTimedOut ? "exclamationmark.display" : "desktopcomputer").font(.largeTitle)
+                            if let preparation = session.preparationState, preparation.inProgress {
+                                ProgressView(preparation.message)
+                            } else {
+                                Text(session.message).multilineTextAlignment(.center).textSelection(.enabled)
+                            }
+                            if session.displayTimedOut {
+                                Text("Кадр гостя не получен за 60 секунд. Причина не установлена. Сохраните отчёт в Диагностике; Stop остаётся доступен после готовности supervisor.")
+                            } else {
+                                Text(session.recoveryMode ? "Recovery работает без графического дисплея. Оригинал и резервная копия сохраняются." : session.attempted ? "Ожидаем готовность Linux и кадр гостевого дисплея…" : "Экран настоящей сессии появится после запуска Linux.")
+                            }
+                        }.padding(20).frame(maxWidth: .infinity)
                     }
-                    if session.displayTimedOut {
-                        Text("Кадр гостя не получен за 60 секунд. Причина не установлена. Сохраните отчёт в Диагностике; Stop остаётся доступен после готовности supervisor.")
-                    } else {
-                        Text(session.recoveryMode ? "Recovery работает без графического дисплея. Оригинал и резервная копия сохраняются." : session.attempted ? "Ожидаем готовность Linux и кадр гостевого дисплея…" : "Экран настоящей сессии появится после запуска Linux.")
-                    }
+                    .accessibilityIdentifier("ideck-session-waiting-text")
+                    Divider()
                     Button("Диагностика / отчёт") { prepareDiagnostics(); session.recoverDiagnostics(); showDiagnostics = true }
-                }.font(.callout).padding(20).frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .frame(maxWidth: .infinity, minHeight: 44).padding(.horizontal, 12).padding(.vertical, 6)
+                        .accessibilityIdentifier("ideck-session-waiting-diagnostics")
+                }.font(.callout).frame(maxWidth: .infinity, maxHeight: .infinity).clipped()
                     .background(Theme.surface.opacity(0.96))
             }
         }.aspectRatio(4.0 / 3.0, contentMode: .fit).background(Color.black)

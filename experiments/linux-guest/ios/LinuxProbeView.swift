@@ -91,7 +91,13 @@ struct LinuxProbeRoot: View {
         }
         .onAppear { LinuxTerminalSession.shared.recoverDiagnostics() }
         .sheet(isPresented: $showJIT) { JITSetupFlow() }
-        .sheet(isPresented: $showDiagnostics) { LinuxDesktopDiagnosticsView(session: currentSession) }
+        .sheet(isPresented: $showDiagnostics) {
+            if route.current == .linux {
+                LinuxProbeDiagnosticsView(session: probe)
+            } else {
+                LinuxDesktopDiagnosticsView(session: currentSession)
+            }
+        }
         .onChange(of: scenePhase) { phase in
             if phase == .background {
                 for session in [terminal, debian, desktop, steam] { session.cancelPreparation() }
@@ -178,7 +184,10 @@ struct LinuxProbeRoot: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
                 Text("Дополнительно").font(.largeTitle.bold())
-                Button("Диагностика / Share report") { currentSession.recoverDiagnostics(); showDiagnostics = true }
+                Button("Диагностика / Share report") {
+                    if route.current != .linux { currentSession.recoverDiagnostics() }
+                    showDiagnostics = true
+                }
                 Text("Recovery GUI-диска доступен в диагностике перед запуском. Steam-диск 12 GiB не поддерживает GUI recovery.").font(.footnote)
                 ForEach([LinuxProbeRoute.Destination.terminal, .debian, .linux], id: \.self) { target in
                     Button(target == .linux ? "Boot / display / input test" : target == .debian ? "Debian console" : "Linux terminal") { route.choose(target) }.disabled(!route.canChoose(target))
@@ -188,6 +197,38 @@ struct LinuxProbeRoot: View {
                 #endif
             }.buttonStyle(.bordered).padding(20).frame(maxWidth: 700)
         }
+    }
+}
+
+/// The probe owns a separate report; never substitute a terminal journal for it.
+private struct LinuxProbeDiagnosticsView: View {
+    @ObservedObject var session: LinuxProbeSession
+    @Environment(\.dismiss) private var dismiss
+    @State private var showShare = false
+    @State private var shareItems: [URL] = []
+    var body: some View {
+        NavigationView {
+            List {
+                Section("Linux probe") {
+                    Text(session.message).textSelection(.enabled)
+                    if let error = session.exportError { Text(error).foregroundStyle(.orange) }
+                }
+                Section("Probe report") {
+                    if let file = session.markdownFile {
+                        ShareLink("Share probe report (.md)", item: file)
+                    } else {
+                        Text("Probe Markdown report is not available yet. No terminal report is substituted.")
+                    }
+                    Button("Raw probe JSON and serial log") {
+                        shareItems = session.shareFiles; showShare = true
+                    }.disabled(session.shareFiles.isEmpty)
+                }
+            }
+            .navigationTitle("Probe diagnostics").navigationBarTitleDisplayMode(.inline)
+            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() } } }
+        }
+        .navigationViewStyle(.stack)
+        .sheet(isPresented: $showShare) { ShareSheet(items: shareItems) }
     }
 }
 

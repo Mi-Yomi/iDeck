@@ -112,6 +112,29 @@ OVERLAY = {
                         "image, as 32-bit programs already do, and its executable protections are applied without "
                         "EXEC. Frees the pool for hybrid DLL copies and code buffers. Hybrid images keep their "
                         "copy. Set it in the game's own file; restart the session after changing it."},
+    # Modified for iDeck-BCD, 2026-10-19: the adaptive emulator arena (virtual_ios.c, ios_arena_adaptive_trim).
+    "arena-adaptive": {"category": "Memory & JIT pool", "title": "Leave the game a large free range (adaptive emulator arena)",
+                "kind": "bool", "default": "0",
+                "note": "Default off. 1: when the emulator's arena would leave the game's largest free address range "
+                        "under arena-guest-min-mb (on a device without Extended Virtual Addressing), the arena gives "
+                        "back its top in 512 MB steps, down to arena-floor-mb; if that does not grow the range, the "
+                        "arena is restored. For games that reserve large blocks at start (Unity: 512 MB each). The 16 GB "
+                        "hardware band is never changed, and a smaller arena holds fewer emulator threads. Set it in "
+                        "the game's own file (the Unity recommendation does); read at session start."},
+    "arena-guest-min-mb": {"category": "Memory & JIT pool", "title": "Adaptive arena: free range the game keeps (MB)",
+                "kind": "int", "default": "2048",
+                "note": "With arena-adaptive = 1: the largest free address range, in MB, the arena tries to leave "
+                        "to the game (2048)."},
+    "arena-floor-mb": {"category": "Memory & JIT pool", "title": "Adaptive arena: smallest emulator arena (MB)",
+                "kind": "int", "default": "2048",
+                "note": "With arena-adaptive = 1: the arena is never trimmed below this many MB (2048; at least 1024)."},
+    # Modified for iDeck-BCD, 2026-10-19: virtual_ios.c ios_log_quiet.
+    "log-quiet": {"category": "Debugging / logs", "title": "Quieter memory log",
+                "kind": "bool", "default": "0",
+                "note": "Default off. 1: the log leaves out the ordinary per-allocation [valloc] and [vfree] lines and "
+                        "all but the first 64 and every 256th [bigres] line (one per 512 MB reservation); the watched "
+                        "address, limited or violating allocations and every line auto-tune reads stay. For the "
+                        "samplers and profilers use env.MADEIRA_LEAN_DIAG and env.MADEIRA_PROBES. Read at session start."},
     "env.MADEIRA_FIXED_BASE_GUARD": {"category": "Memory & JIT pool", "title": "Keep 0x140000000 for a fixed-base game",
                 "kind": "bool", "default": "0",
                 "note": "Default off. 1: a resource-only image view (a version or resource query, e.g. the Rockstar "

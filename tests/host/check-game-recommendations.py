@@ -92,7 +92,7 @@ for r in recs['rules']:
 assert list(presets) == ['rdr2-steam', 'rdr2-other', 'gta5e-steam', 'gta5e-other', 'gta5l-steam', 'ghost-of-tsushima', 'god-of-war',
                          'horizon-zero-dawn', 'horizon-forbidden-west', 'ratchet-clank-rift-apart', 'crysis-remastered',
                          'crysis-2-remastered', 'crysis-3-remastered', 'msfs-2024', 'counter-strike-2', 'warcraft-2-bne',
-                         'breakneck', 'standard'], list(presets)
+                         'breakneck', 'unity', 'standard'], list(presets)
 
 catalog_keys = set(re.findall(r'ConfigOption\(key: "([^"]+)"', catalog))
 for ident, p in presets.items():
@@ -126,7 +126,7 @@ for ident, p in presets.items():
         assert 'Madeira' not in line, (ident, line)
 header = block(profiles, '        if lines.isEmpty { lines = [', ']')
 assert 'Madeira' not in header and '# BCD settings for' in header, header
-print('PASS: eighteen lists in order, each starting "# BCD\'s recommended settings for", no key twice, every non-env key in '
+print('PASS: nineteen lists in order, each starting "# BCD\'s recommended settings for", no key twice, every non-env key in '
       'the settings catalog, no Social Club DLL lines, "Madeira" in no line, title or GameProfile header')
 
 # Red Dead Redemption 2 from Steam: the owner's list of 2026-10-09 (build 463), line for line,
@@ -413,6 +413,13 @@ assert bn['lines'][2:] == ['env.MADEIRA_EC_HOOK_TRACE = 0', 'env.MADEIRA_WOW_RWX
 assert bn['version'] == 1 and bn['switches'] == 'avx: false, nvidia: false, wineVCRT: false, display: "fit"', bn
 assert not any(line.startswith('env.MADEIRA_WOW_RWX_PLAIN') for p in presets.values() if p not in (wc2, bn) for line in p['lines']), \
     'plain RWX memory is Warcraft II\'s and Breakneck\'s only'
+# Unity games, version 1 (iDeck-BCD, 2026-10-19): any game with UnityPlayer.dll in its folder and no list of its own: the
+# standard line and the adaptive emulator arena (Unity reserves 512 MB blocks), no switches.
+un = presets['unity']
+assert un['lines'][2:] == ['env.MADEIRA_EC_HOOK_TRACE = 0', 'arena-adaptive = 1'], un['lines']
+assert un['version'] == 1 and un['switches'] == '' and un['small'] == [], un
+assert not any(line.startswith('arena-adaptive') for p in presets.values() if p is not un for line in p['lines']), \
+    'the adaptive arena is the Unity list\'s only'
 print('PASS: RDR2 (Steam) is the owner\'s 463 list plus the 466, 467, 470, 472, 475, 476, 480 and 514 test lines (v10), line for line with its switches (720 lines of this screen), and outside Steam the same without the Dock lines, with the ec-hook reporter off (v1); GTA V Enhanced keeps its tested lines plus the stamped orphan-lock mode (v2) and, from Steam, the VC++ engine block (v3), GoW its tested lines; Horizon Zero Dawn has build 491\'s proven list plus build 494\'s frame-rate switches (v16), GoT the owner\'s build 515 list (v3); Horizon Forbidden West its eleventh try\'s list with the aligned copies on and discarded targets loaded (v4: float3 views get a copy too; v5: MipLevels 0 textures get their full chain); Rift Apart HFW\'s general lines with AVX and NVIDIA on (v1); GTA V Legacy from Steam the owner\'s DirectX 11 lines (v1), without vram-mb and swap-mb and with the 3 GB RAM swap only under 12 GB of RAM (v2); Crysis Remastered the standard line with every switch off (v1); Crysis 3 Remastered with its own vcruntime140.dll refused (v2); MSFS 2024 the standard line with AVX and NVIDIA on (v1), pure-x64 images without a pool copy (v2), feature level 12_1 (v3), shader model 6.7 (v4), the fiber trace (v5), then without it (v6); Counter-Strike 2 the standard line with every switch off (v1); Warcraft II BNE plain RWX memory (v1); Breakneck the same (v1); every other game the standard list (v1)')
 
 # Recognition: Steam by App ID or steamapps\common folder; everything else by the program's name. Each
@@ -447,6 +454,8 @@ MATCH = {
     'counter-strike-2': {'steamAppIDs': [730], 'steamFolders': ['counter-strike global offensive'], 'programs': [{'name': 'cs2.exe'}]},
     'warcraft-2-bne': {'programs': [{'name': 'warcraft ii bne.exe'}]},
     'breakneck': {'steamAppIDs': [432940], 'steamFolders': ['breakneck'], 'programs': [{'name': 'breakneck.exe'}]},
+    # iDeck-BCD, 2026-10-19: an engine by its files, after every game's own rule.
+    'unity': {'filesBeside': ['unityplayer.dll']},
 }
 for ident, p in presets.items():
     assert p['match'] == MATCH.get(ident), (ident, p['match'])
@@ -463,6 +472,12 @@ assert 'if let steam = program.steam, steam != inSteam { continue }' in match
 assert 'if let beside = program.beside, !fileExists(folder + "\\\\" + beside) { continue }' in match
 assert 'if let notBeside = program.notBeside, fileExists(folder + "\\\\" + notBeside) { continue }' in match
 assert match.index('return rules.first { rule in') < match.index('for rule in rules {'), 'Steam folders before programs'
+# iDeck-BCD: filesBeside, in a Steam install folder and beside a program, after the rule's own programs.
+assert 'if installFolder != nil, Self.hasAll(match.filesBeside, in: path, fileExists) { return true }' in match
+assert 'if Self.hasAll(match.filesBeside, in: folder, fileExists) { return rule.recommendation }' in match
+assert match.index('for program in match.programs where program.name == last {') \
+    < match.index('if Self.hasAll(match.filesBeside, in: folder, fileExists) { return rule.recommendation }')
+assert '!names.isEmpty && !folder.isEmpty && names.allSatisfy { fileExists(folder + "\\\\" + $0) }' in lists_src
 
 # Where the app applies them.
 save = block(library, '    func save(_ entry: LibraryEntry) {', '\n    }\n')
@@ -711,6 +726,16 @@ check(id(msfs) == "msfs-2024", "MSFS 2024 by its Steam folder")
 check(id(msfs + #"\FlightSimulator2024.exe"#) == "msfs-2024", "its program inside Steam")
 check(id(#"C:\Games\MSFS2024\FlightSimulator.exe"#) == "none", "Flight Simulator 2020's program is another game")
 check(id(#"C:\Games\Foo\foo.exe"#) == "none" && id(steam + #"\Portal 2"#, 620) == "none", "other games")
+// iDeck-BCD: Unity games by UnityPlayer.dll in the game's folder, after every game's own rule.
+let unityGame = #"C:\Games\Not a Human"#
+check(id(unityGame + #"\NoImNotAHuman.exe"#, files: [unityGame + #"\UnityPlayer.dll"#]) == "unity", "a Unity program by UnityPlayer.dll beside it")
+check(id(unityGame + #"\NoImNotAHuman.exe"#) == "none", "no UnityPlayer.dll: not a Unity game")
+let unitySteam = steam + #"\No, I'm not a Human"#
+check(id(unitySteam, 3180070, files: [unitySteam + #"\UnityPlayer.dll"#]) == "unity"
+      && id(unitySteam, files: [unitySteam + #"\UnityPlayer.dll"#]) == "unity", "a Unity Steam game by its install folder")
+check(id(unitySteam + #"\start.bat"#, files: [unitySteam + #"\UnityPlayer.dll"#]) == "none", "a batch file in a Unity game's folder")
+check(id(#"D:\Games\RC\RIFTAPART.exe"#, files: [#"D:\Games\RC\UnityPlayer.dll"#]) == "ratchet-clank-rift-apart"
+      && id(steam + #"\Breakneck"#, files: [steam + #"\Breakneck\UnityPlayer.dll"#]) == "breakneck", "a game's own rule comes first")
 check(id("") == "none" && id("C:\\") == "none", "no path")
 print("PASS: Steam games by App ID or steamapps\\common folder, GTA V Enhanced and RDR2 inside and outside Steam, GoT, GoW, Horizon Zero Dawn, Horizon Forbidden West, Rift Apart, Crysis Remastered and MSFS 2024 by their programs, others none")
 

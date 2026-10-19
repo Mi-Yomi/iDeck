@@ -37,6 +37,10 @@
 //                                            App ID), false: only outside one, left out: anywhere;
 //                                            "beside" / "notBeside": a file that must / must not be
 //                                            in the program's folder
+//      "filesBeside": ["unityplayer.dll"]    (iDeck-BCD, 2026-10-19) lowercased file names that must
+//                                            all be in the game's folder: a program's folder, or a
+//                                            library Steam game's install folder; recognises an
+//                                            engine (Unity) whatever the game's program is called
 //    }
 //    "config": ["# comment", "key = value", {"line": "key = value", "minBuild": 575, "maxBuild": 590}]
 //                                the game's config file, line by line; a line as an object goes
@@ -98,6 +102,8 @@ struct GameRecommendationMatch: Equatable {
     var steamAppIDs: [Int] = []
     var steamFolders: [String] = []
     var programs: [Program] = []
+    /// iDeck-BCD, 2026-10-19: files that must all be in the game's folder (an engine's, e.g. Unity's).
+    var filesBeside: [String] = []
 }
 
 /// The switches a game's settings keep outside its config file (GameRecommendation).
@@ -203,7 +209,7 @@ struct RecommendationsFile: Equatable {
         if o["minBuild"] != nil { rule.minBuild = try JSONRead.int(o["minBuild"], path + ".minBuild") }
         if o["smallRAMConfig"] != nil { rule.smallRAMConfig = try lines(o["smallRAMConfig"], path + ".smallRAMConfig") }
         if let m = o["match"] {
-            let mo = try JSONRead.object(m, path + ".match", optional: ["steamAppIDs", "steamFolders", "programs"])
+            let mo = try JSONRead.object(m, path + ".match", optional: ["steamAppIDs", "steamFolders", "programs", "filesBeside"])
             var match = GameRecommendationMatch()
             if mo["steamAppIDs"] != nil {
                 match.steamAppIDs = try JSONRead.array(mo["steamAppIDs"], path + ".match.steamAppIDs").enumerated().map {
@@ -224,6 +230,11 @@ struct RecommendationsFile: Equatable {
                     if po["beside"] != nil { program.beside = try JSONRead.string(po["beside"], pp + ".beside") }
                     if po["notBeside"] != nil { program.notBeside = try JSONRead.string(po["notBeside"], pp + ".notBeside") }
                     return program
+                }
+            }
+            if mo["filesBeside"] != nil {
+                match.filesBeside = try JSONRead.array(mo["filesBeside"], path + ".match.filesBeside").enumerated().map {
+                    try JSONRead.string($1, path + ".match.filesBeside[\($0)]")
                 }
             }
             rule.match = match
@@ -310,9 +321,16 @@ struct RecommendationsFile: Equatable {
 
     private static func checkMatch(_ match: GameRecommendationMatch, _ path: String) throws {
         func fail(_ why: String) -> RecommendationsError { .format("\(path).match: \(why)") }
-        guard !match.steamAppIDs.isEmpty || !match.steamFolders.isEmpty || !match.programs.isEmpty else {
+        guard !match.steamAppIDs.isEmpty || !match.steamFolders.isEmpty || !match.programs.isEmpty
+                || !match.filesBeside.isEmpty else {
             throw fail("matches nothing")
         }
+        for file in match.filesBeside {
+            guard isName(file), file == file.lowercased() else {
+                throw fail("\"\(file)\" in filesBeside is not one lowercased file name")
+            }
+        }
+        guard Set(match.filesBeside).count == match.filesBeside.count else { throw fail("a file comes twice in filesBeside") }
         guard match.steamAppIDs.allSatisfy({ $0 > 0 }), Set(match.steamAppIDs).count == match.steamAppIDs.count else {
             throw fail("a Steam App ID is not a positive number, or comes twice")
         }

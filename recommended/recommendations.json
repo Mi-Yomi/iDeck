@@ -1,7 +1,7 @@
 {
   "format": 1,
-  "version": 1,
-  "generated": "2026-10-18",
+  "version": 2,
+  "generated": "2026-10-19",
   "rules": [
     {
       "id": "rdr2-steam",
@@ -924,6 +924,31 @@
         "writable, so one swap faulted until the redelivery guard ended the app. As plain",
         "memory the swap lands (ml1279; its automatic mode only knows Wine Mono, not Unity's).",
         "Build 563, owner: with the line the game runs well."
+      ]
+    },
+    {
+      "id": "unity",
+      "title": "Unity games",
+      "version": 1,
+      "match": {
+        "filesBeside": ["unityplayer.dll"]
+      },
+      "config": [
+        "# BCD's recommended settings for a Unity game.",
+        "# Reset to Recommended, at the bottom of the game's settings, brings them back.",
+        "env.MADEIRA_EC_HOOK_TRACE = 0",
+        "arena-adaptive = 1"
+      ],
+      "notes": [
+        "iDeck-BCD, 2026-10-19: any game with UnityPlayer.dll in its folder (Unity 2017 and later, Mono or",
+        "IL2CPP) that has no list of its own. The standard line, plus arena-adaptive: a Unity player reserves",
+        "512 MB blocks at start (0x1ffff000). The owner's log (build 573, No, I'm not a Human, iPhone17,2,",
+        "iOS 27, no Extended Virtual Addressing) had the emulator's 4 GB arena at the bottom of the last large",
+        "range, a 369 MB largest gap for the second block, c0000017 and a NULL write in UnityPlayer.dll.",
+        "arena-adaptive gives back the arena's top so such a block fits; on a device with the 16 GB hardware",
+        "band it changes nothing. Not yet run on a device. Not added: env.MADEIRA_X64_IMAGE_NOCOPY for IL2CPP",
+        "(\"Failed to load il2cpp\", build 574): auto-tune matched no rule in that run, so the JIT pool is not",
+        "shown to be the cause; it needs that run's log first."
       ]
     },
     {

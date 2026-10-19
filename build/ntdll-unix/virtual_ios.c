@@ -27233,6 +27233,23 @@ static UINT64 ios_vm_watch(void)
     return ios_vm_watch_addr;
 }
 
+/* Modified for iDeck-BCD, 2026-10-19: bcd.cfg log-quiet = 1 (default off).
+ *
+ * One session's log was 3.5 MB / 35,000 lines; the largest shares were the
+ * ordinary per-allocation [valloc] / [vfree] lines (about 4,100) and one
+ * [bigres] line per 512 MB reservation (2,438 in an exception loop). None of
+ * them is a signal auto-tune reads (build/tools/autotune_rules.py). Quiet keeps
+ * every special case -- the vmwatch address, a limited or violating allocation,
+ * the first 64 [bigres] lines and every 256th after -- and drops the rest.
+ * Combine with env.MADEIRA_LEAN_DIAG = 1 and env.MADEIRA_PROBES = light for the
+ * samplers and profilers, which have their own switches. */
+static int ios_log_quiet(void)
+{
+    static int quiet = -1;
+    if (quiet < 0) quiet = madeira_cfg_bool( "log-quiet", 0 );
+    return quiet;
+}
+
 /* Guest band only: FEX's own arenas and the JIT pool would bury the signal. */
 static void ios_vm_note_alloc( void *base, SIZE_T size, ULONG type, ULONG protect,
                                UINT64 hint, UINT64 zbits, UINT64 lim )
@@ -27262,6 +27279,7 @@ static void ios_vm_note_alloc( void *base, SIZE_T size, ULONG type, ULONG protec
     if (log_all < 0) { const char *e = getenv( "MADEIRA_VALLOC_LOG_ALL" ); log_all = e && e[0] == '1'; }
     if (!log_all && !covers && is_wow64()) return;
     if (b < 0x100000000ull && !viol && !zbits) return;
+    if (!covers && !special && ios_log_quiet()) return;   /* iDeck-BCD: log-quiet drops the ordinary lines */
     if (covers || (special && (log_all || special_logged < 200)) || (!special && ios_vm_alloc_logged < 3000))
     {
         if (special && !covers && ++special_logged == 200)
@@ -27285,6 +27303,7 @@ static void ios_vm_note_free( void *base, SIZE_T size, ULONG type )
     UINT64 b = (UINT64)(ULONG_PTR)base, w = ios_vm_watch();
     int hits = (w && b <= w && (size == 0 || w < b + size));
     if (b < 0x100000000ull) return;
+    if (!hits && ios_log_quiet()) return;   /* iDeck-BCD: log-quiet drops the ordinary lines */
     if (hits || ios_vm_free_logged < 3000)
     {
         ios_vm_free_logged++;
@@ -28496,11 +28515,12 @@ NTSTATUS WINAPI NtAllocateVirtualMemory( HANDLE process, PVOID *ret, ULONG_PTR z
              * separates the commit-upfront LookupCache path from pure reserves.
              * That splits the remaining candidates without an FEX build, and
              * without wiring a unixlib that iOS deliberately no-ops. */
-            dprintf( 2, "[bigres] tid=%04x #%u size=0x%lx (%lu MB) type=0x%x prot=0x%x hint=%p peb=%p total=%llu MB\n",
-                     NtCurrentTeb() ? (unsigned)(ULONG_PTR)NtCurrentTeb()->ClientId.UniqueThread : 0,
-                     bigres_n, (unsigned long)jumbo_size,
-                     (unsigned long)(jumbo_size >> 20), (unsigned)type, (unsigned)protect,
-                     jumbo_hint, NtCurrentTeb() ? NtCurrentTeb()->Peb : NULL, bigres_tot >> 20 );
+            if (!ios_log_quiet() || bigres_n <= 64 || !(bigres_n % 256))   /* iDeck-BCD: log-quiet */
+                dprintf( 2, "[bigres] tid=%04x #%u size=0x%lx (%lu MB) type=0x%x prot=0x%x hint=%p peb=%p total=%llu MB\n",
+                         NtCurrentTeb() ? (unsigned)(ULONG_PTR)NtCurrentTeb()->ClientId.UniqueThread : 0,
+                         bigres_n, (unsigned long)jumbo_size,
+                         (unsigned long)(jumbo_size >> 20), (unsigned)type, (unsigned)protect,
+                         jumbo_hint, NtCurrentTeb() ? NtCurrentTeb()->Peb : NULL, bigres_tot >> 20 );
             /* ml128: NAME THE CALLER. Elimination has run out — it is exactly
              * 2 x 512MB per guest thread of steam.exe (peb=0x11da68000, 12 tids),
              * and it is NOT the LookupCache (VirtualMemSize = 1ULL<<33 makes
@@ -29443,6 +29463,111 @@ static NTSTATUS get_extended_params( const MEM_EXTENDED_PARAMETER *parameters, U
  *             ZwAllocateVirtualMemoryEx   (NTDLL.@)
  */
 /***********************************************************************
+ *           ios_arena_largest_hole / ios_arena_adaptive_trim
+ *
+ * Modified for iDeck-BCD, 2026-10-19: bcd.cfg arena-adaptive = 1 (default off;
+ * the Unity recommendation turns it on per game).
+ *
+ * Without the extended-virtual-addressing entitlement the map can end at
+ * 0x7180000000, the 16 GB high band is past it, and the ladder below falls to
+ * "4GB @32-48G", which the kernel places ANYWHERE -- at the bottom of the last
+ * large free range. The guest then keeps about 1.4 GB in pieces: a Unity player
+ * reserves 512 MB blocks (0x1ffff000), the second one finds a 369 MB largest gap,
+ * gets c0000017 and writes through the NULL (owner's log, build 573). ml995
+ * already says the permanent fix is "never consume the largest free hole for a
+ * band that commits nothing"; arena-mb is the fixed cap, this is the adaptive one.
+ *
+ * With the arena held, measure the largest free hole the rest of the process can
+ * still use. While it is below arena-guest-min-mb (2048) and the arena is above
+ * arena-floor-mb (2048, never under 1024), give back the arena's TOP 512 MB: the
+ * freed range adjoins the free space above the arena, so the guest's largest hole
+ * grows by the same amount. The base never moves. If trimming did not grow the
+ * largest hole at all, the tail is mapped back, so a switch that cannot help
+ * costs the emulator nothing. The hardware 16 GB band is left alone.
+ * Trade-off: a smaller arena holds fewer FEX threads (ml756: ~3.5 GB for ~74
+ * threads), which is why this is a per-game switch, not a default. */
+static unsigned long long ios_arena_largest_hole( unsigned long long ceiling )
+{
+    mach_vm_address_t raddr = 0x100000000ull;   /* as ios_ml1027_place: below is images/furniture */
+    mach_vm_address_t prev_end = 0;
+    unsigned long long largest = 0;
+    natural_t depth = 0;
+    unsigned regions = 0;
+
+    for (;;)
+    {
+        vm_region_submap_info_data_64_t info;
+        mach_msg_type_number_t icnt = VM_REGION_SUBMAP_INFO_COUNT_64;
+        mach_vm_size_t rsize = 0;
+
+        if (mach_vm_region_recurse( mach_task_self(), &raddr, &rsize, &depth,
+                                    (vm_region_recurse_info_t)&info, &icnt ) != KERN_SUCCESS)
+            break;
+        if (info.is_submap) { depth++; continue; }
+        if (raddr >= ceiling) break;
+        if (prev_end && raddr > prev_end && raddr - prev_end > largest) largest = raddr - prev_end;
+        if (raddr + rsize > prev_end) prev_end = raddr + rsize;
+        raddr += rsize;   /* advance, or the walk returns the same region forever (ml1027) */
+        if (++regions > 200000) return ~0ull;   /* partial walk: unknown, never trim on it */
+    }
+    if (prev_end && prev_end < ceiling && ceiling - prev_end > largest) largest = ceiling - prev_end;
+    return largest;
+}
+
+static void ios_arena_adaptive_trim( mach_vm_address_t base, SIZE_T *size,
+                                     unsigned long long ceiling, const char *what )
+{
+    const unsigned long long step = 0x20000000ull;   /* 512 MB: one Unity block */
+    unsigned long long cur = *size, orig = *size, guest_min, floor_sz, before, hole;
+
+    if (!madeira_cfg_bool( "arena-adaptive", 0 ) || !ceiling) return;
+    if (orig >= 0x400000000ull)
+    {
+        dprintf( 2, "[fex-arena] ideck-adaptive %s: %llu MB is the hardware band, left as is\n",
+                 what, orig >> 20 );
+        return;
+    }
+    guest_min = (unsigned long long)madeira_cfg_int( "arena-guest-min-mb", 2048 ) << 20;
+    floor_sz  = (unsigned long long)madeira_cfg_int( "arena-floor-mb", 2048 ) << 20;
+    if (floor_sz < 0x40000000ull) floor_sz = 0x40000000ull;   /* 1 GB: below that FEX cannot start */
+
+    before = hole = ios_arena_largest_hole( ceiling );
+    dprintf( 2, "[fex-arena] ideck-adaptive %s: arena %llu MB at 0x%llx, guest's largest hole %llu MB, "
+                "wanted %llu MB, floor %llu MB\n", what, cur >> 20, (unsigned long long)base,
+             hole == ~0ull ? 0ull : hole >> 20, guest_min >> 20, floor_sz >> 20 );
+    if (hole == ~0ull || hole >= guest_min) return;
+
+    while (hole < guest_min && cur >= floor_sz + step)
+    {
+        if (mach_vm_deallocate( mach_task_self(), base + cur - step, step ) != KERN_SUCCESS) break;
+        cur -= step;
+        hole = ios_arena_largest_hole( ceiling );
+        if (hole == ~0ull) break;
+    }
+
+    if (cur < orig && (hole == ~0ull || hole <= before))
+    {
+        /* Trimming did not help: take the tail back so FEX keeps its capacity. */
+        mach_vm_address_t back = base + cur;
+        if (mach_vm_map( mach_task_self(), &back, orig - cur, 0, VM_FLAGS_FIXED, MEMORY_OBJECT_NULL,
+                         0, 0, PROT_NONE, VM_PROT_ALL, VM_INHERIT_COPY ) == KERN_SUCCESS)
+        {
+            dprintf( 2, "[fex-arena] ideck-adaptive %s: trimming did not grow the guest's hole "
+                        "(%llu MB); arena restored to %llu MB\n", what, before >> 20, orig >> 20 );
+            return;
+        }
+        dprintf( 2, "[fex-arena] ideck-adaptive %s: could not map the tail back; keeping %llu MB\n",
+                 what, cur >> 20 );
+    }
+    if (cur != orig)
+        dprintf( 2, "[fex-arena] ideck-adaptive %s: arena %llu -> %llu MB, guest's largest hole "
+                    "%llu -> %llu MB%s\n", what, orig >> 20, cur >> 20, before >> 20,
+                 hole == ~0ull ? 0ull : hole >> 20,
+                 hole != ~0ull && hole < guest_min ? " (still below the wanted size: at the floor)" : "" );
+    *size = (SIZE_T)cur;
+}
+
+/***********************************************************************
  *           ios_reserve_fex_arena   (ml756)
  *
  * Reserve FEX's host arena as a PLACEHOLDER, before any PE module loads.
@@ -29762,6 +29887,9 @@ void ios_reserve_fex_arena(void)
                 continue;
             }
         }
+        /* iDeck-BCD: bcd.cfg arena-adaptive (default off) may give back the arena's
+         * top so a guest that needs large reservations keeps a large hole. */
+        ios_arena_adaptive_trim( addr, &size, arena_task_max, plan[i].what );
     sc_arena_placed:
         base = (void *)(ULONG_PTR)addr;
         if (!mmap_add_fex_reserved_area( base, size ))
@@ -30445,11 +30573,12 @@ retry_code_carve_reuse:
              * separates the commit-upfront LookupCache path from pure reserves.
              * That splits the remaining candidates without an FEX build, and
              * without wiring a unixlib that iOS deliberately no-ops. */
-            dprintf( 2, "[bigres] tid=%04x #%u size=0x%lx (%lu MB) type=0x%x prot=0x%x hint=%p peb=%p total=%llu MB\n",
-                     NtCurrentTeb() ? (unsigned)(ULONG_PTR)NtCurrentTeb()->ClientId.UniqueThread : 0,
-                     bigres_n, (unsigned long)jumbo_size,
-                     (unsigned long)(jumbo_size >> 20), (unsigned)type, (unsigned)protect,
-                     jumbo_hint, NtCurrentTeb() ? NtCurrentTeb()->Peb : NULL, bigres_tot >> 20 );
+            if (!ios_log_quiet() || bigres_n <= 64 || !(bigres_n % 256))   /* iDeck-BCD: log-quiet */
+                dprintf( 2, "[bigres] tid=%04x #%u size=0x%lx (%lu MB) type=0x%x prot=0x%x hint=%p peb=%p total=%llu MB\n",
+                         NtCurrentTeb() ? (unsigned)(ULONG_PTR)NtCurrentTeb()->ClientId.UniqueThread : 0,
+                         bigres_n, (unsigned long)jumbo_size,
+                         (unsigned long)(jumbo_size >> 20), (unsigned)type, (unsigned)protect,
+                         jumbo_hint, NtCurrentTeb() ? NtCurrentTeb()->Peb : NULL, bigres_tot >> 20 );
             /* ml128: NAME THE CALLER. Elimination has run out — it is exactly
              * 2 x 512MB per guest thread of steam.exe (peb=0x11da68000, 12 tids),
              * and it is NOT the LookupCache (VirtualMemSize = 1ULL<<33 makes

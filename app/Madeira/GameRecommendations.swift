@@ -198,6 +198,8 @@ extension GameRecommendationList {
                 guard let match = rule.match else { return false }
                 if let steamAppID, match.steamAppIDs.contains(steamAppID) { return true }
                 if let installFolder, match.steamFolders.contains(installFolder) { return true }
+                // iDeck-BCD: an engine's files in the install folder (filesBeside).
+                if installFolder != nil, Self.hasAll(match.filesBeside, in: path, fileExists) { return true }
                 return false
             }?.recommendation
         }
@@ -213,8 +215,15 @@ extension GameRecommendationList {
                 if let notBeside = program.notBeside, fileExists(folder + "\\" + notBeside) { continue }
                 return rule.recommendation
             }
+            // iDeck-BCD: an engine's files beside the program (filesBeside), after the rule's own programs.
+            if Self.hasAll(match.filesBeside, in: folder, fileExists) { return rule.recommendation }
         }
         return nil
+    }
+
+    /// iDeck-BCD, 2026-10-19: every name of a non-empty `filesBeside` is in `folder`.
+    static func hasAll(_ names: [String], in folder: String, _ fileExists: (String) -> Bool) -> Bool {
+        !names.isEmpty && !folder.isEmpty && names.allSatisfy { fileExists(folder + "\\" + $0) }
     }
 }
 

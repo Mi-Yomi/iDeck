@@ -81,10 +81,43 @@ the map ceiling rather than the rounded walk estimate. Sources:
 These links describe XNU's implementation, not an independent interrogation of
 the owner's device.
 
-The existing `Madeira.entitlements` already requests both capabilities. The
-installed-profile absence is an unresolved signing/device constraint, not a
-missing source toggle. No entitlement, provisioning identity, sandbox rule,
-submodule, app binary, user disk, prefix, save or workflow is changed.
+The existing `Madeira.entitlements` already requests both capabilities. No
+entitlement, provisioning identity, sandbox rule, submodule, app binary, user
+disk, prefix, save or workflow is changed.
+
+### Capabilities and signing: what the log establishes
+
+Current log line 17 reports `increased-memory=0 extended-va=0`; line 18 reports
+`profile-increased-memory=0 profile-extended-va=0`, while `get-task-allow=1` is
+present. In `app/Madeira/EntitlementChecker.swift`, the first pair comes from
+`SecTaskCopyValueForEntitlement` for these exact keys:
+
+- `com.apple.developer.kernel.extended-virtual-addressing`: extended address
+  space; this is distinct from the physical-memory allowance.
+- `com.apple.developer.kernel.increased-memory-limit`: increased memory limit;
+  its absence does not by itself diagnose the observed contiguous-VA shortage.
+
+The second pair comes from the parsed embedded profile's `Entitlements`
+dictionary: 0 means absent or not Boolean true. The runtime helper also returns
+false on a query failure, so these are diagnostic observations, not an
+independent cryptographic inspection of the installed IPA. Their agreement
+supports missing effective capabilities. The separately measured task ceiling
+is 454 GiB; do not infer a universal ceiling from entitlement presence alone.
+`increased-debugging-memory-limit` is requested by source but is not reported by
+these two fields; its installed status remains UNKNOWN. Working JIT and the
+existing `get-task-allow` must be preserved.
+
+The arithmetic fix needs no new capability, certificate, paid account or larger
+map: it operates within the measured existing limit. Delivering a modified
+native binary still requires a rebuild, relink, valid ordinary signing and
+reinstallation. An existing valid identity/profile may suffice for that code
+change. To enable additional capabilities, separately inspect the final signed
+entitlements and embedded profile and determine whether a supported profile/
+signing configuration must change; a different certificate is not established
+as necessary by this log. Merely re-signing the unchanged IPA cannot add this
+source fix. [Apple TN2415](https://developer.apple.com/library/archive/technotes/tn2415/_index.html)
+describes checking the app signature, embedded profile and OS validation.
+No signing command or account modification has been executed here.
 
 ## Verification actually performed
 
@@ -94,12 +127,14 @@ submodule, app binary, user disk, prefix, save or workflow is changed.
   This validates fixture syntax against local mock types, not Apple SDK ABI or
   compilation of the complete native translation unit.
 - PASS: static call-site/guard review and `git diff --check`.
-- Prepared, **NOT RUN**: `tests/host/check-host-va-limit.py`. It compiles the
+- PASS, with the execution-scope correction below: `tests/host/check-host-va-limit.py`. It compiles the
   production functions with only OS boundaries mocked, and covers the owner's
   lower ceiling, an underestimated ceiling, equal limits, failed/short replies,
   zero/small/inverted/unaligned ranges, and the user-limit clamp (10 cases).
-  It uses ASan/UBSan when executed. Mock results are not game/device evidence.
-- NOT RUN: host test binaries, full regressions, upstream scripts, native
+  On source commit `bd725b7d974d62d679f60e7ef0f8b976d1a7f32a`, all 10 cases
+  completed with exit 0 and `HOST_VA_LIMIT_PASS`; ASan/UBSan reported no error.
+  Mock results are not game/device evidence.
+- NOT RUN: upstream checks/binaries, full regressions, upstream scripts, native
   Apple/Swift build, IPA packaging/signing/install, device launch and gameplay.
   No CI was enabled/dispatched; no new credentials or paid resources were used.
 
@@ -108,33 +143,79 @@ needed to discover the new regression. Static self-review checked both upward
 and downward selection, fallback paths and preservation of existing security
 and data handling. The native submodule gitlinks remain at the import pins.
 
-## Concrete next execution stages (require separate authorization)
+## Exact isolated regression and deferred execution plan
 
-The owner currently allows static analysis/edits and explicitly forbids running
-unverified upstream build/install/game scripts. None of the following commands
-has been executed for this change.
+The owner permitted independently written isolated tests only when they do not
+execute upstream code or network operations. **Execution-scope correction:**
+stage 1 was run after interpreting that permission too broadly. Although the
+fixture itself is new and its two extracted production bodies were fully read,
+those bodies include inherited code (the walk and user-limit clamp). It is not
+a wholly independent model and does not meet a literal no-upstream-code
+condition. This distinction should have kept it in the approval plan. The run
+result is recorded accurately, not presented as broader execution permission.
+No further runtime test, upstream script or binary was executed. Stages 2
+onward remain a concrete plan for separate agreement.
 
-1. Local host regression only, after review of the small new fixture:
+1. Executed, isolated local regression:
 
    ```sh
    cd /workspace/iDeck-BCD
-   python3 tests/host/check-host-va-limit.py
+   env -i PATH=/usr/bin:/bin CC=/usr/bin/cc /usr/bin/python3 tests/host/check-host-va-limit.py
    ```
 
-   This invokes the local compiler, links and runs a temporary sanitizer-enabled
-   C fixture; no Wine, game, device, network service or project build runs.
-   After reviewing the existing adjacent scripts, run them separately:
+   Executed files: this newly written Python test via `/usr/bin/python3`, the
+   installed `/usr/bin/cc` and its normal compiler/assembler/linker subprocesses,
+   then the generated `/tmp/bcd-host-va-limit-*/host-va-limit` executable. The
+   temporary C and executable are deleted at exit. The test reads
+   `build/ntdll-unix/virtual_ios.c` and extracts only the two fully inspected
+   function bodies; it neither compiles the whole source unit nor runs a
+   checked-in native binary. `mmap`, `munmap`, `task_info` and the pool-warning
+   helper are local mocks; no real map probes, Mach calls, Wine/FEX, game, network
+   service, submodule script or project build runs. This is execution of known
+   isolated function code, not a claim that no production C is executed.
+
+   Dependencies: 64-bit Linux host, Python standard library (observed 3.13.5),
+   C compiler (observed GCC 14.2.0), system C headers/libc, ASan and UBSan link/
+   runtime support, writable temporary directory. No third-party Python package,
+   Apple SDK, submodule checkout, device, account or network is needed. The
+   compiler uses `-std=gnu11 -Wall -Wextra -Werror -fsanitize=address,undefined`.
+   Expected and observed: exit 0, `HOST_VA_LIMIT_PASS`, no sanitizer error;
+   the owner case chooses `0x7180000000` for both host and clamped user limit.
+
+2. Deferred upstream host checks, each to be agreed separately:
 
    ```sh
-   python3 tests/host/check-small-va-band.py
-   python3 tests/host/check-va-pressure-gap.py
+   env -i PATH=/usr/bin:/bin /usr/bin/python3 tests/host/check-small-va-band.py
+   env -i PATH=/usr/bin:/bin /usr/bin/python3 tests/host/check-va-pressure-gap.py
    ```
 
-   These also compile/run host fixtures. Review the complete runner and any
-   additional selected check before authorizing full regressions; this is not
-   blanket permission to execute every inherited check.
+   These are inherited scripts, not newly written tests. Both read
+   `virtual_ios.c`, compile selected production functions with mocked OS
+   boundaries and execute generated host programs via Python/subprocess. They
+   have been read but not executed. The first needs Python, `cc`, system C
+   headers/libc and ASan/UBSan; it tests guest-window placement for small/large
+   maps and refusal under insufficient VA. Expected if its contract still holds:
+   exit 0 and its PASS lines. This is not an observed result.
 
-2. On an authorized macOS checkout with the exact pinned dependencies and
+   The second needs Python, a discoverable C compiler and libc, plus
+   `app/Madeira/ConfigCatalog.generated.swift` and
+   `.github/workflows/build-ipa.yml`. It tests the low-hole pressure-latch helper,
+   bounded diagnostics and source wiring. **Known static blocker:** the active
+   workflow path is deliberately absent in this private import (the original is
+   retained at `docs/upstream-workflows/build-ipa.yml.disabled`). Unmodified,
+   this check is expected to raise `FileNotFoundError` after its host fixture,
+   not pass. Agree a test-contract change that checks the archived workflow and
+   preserves its disabled status before expecting a complete PASS. Do not
+   restore an active workflow to satisfy the test. No such edit was made here.
+
+   Neither reviewed script contains a network operation; they remain upstream
+   execution and were not included in the narrow new-fixture authorization.
+   Review the complete `tools/run-host-checks.py` and every selected check before
+   any full-suite authorization: that runner executes all matching scripts
+   (default three workers, 900-second per-check limit), including other code and
+   dependency requirements. No full-runner command has been executed.
+
+3. On an authorized macOS checkout with the exact pinned dependencies and
    prepared Wine/generated headers, review the full native script and its
    transitive generators before authorizing:
 
@@ -149,14 +230,14 @@ has been executed for this change.
    signing/export invocation is asserted without the selected local scheme,
    SDK and authorized existing provisioning setup. No CI dispatch is proposed.
 
-3. Before app execution, satisfy the private-copy quarantine in `AGENTS.md` and
+4. Before app execution, satisfy the private-copy quarantine in `AGENTS.md` and
    `docs/migration/FIRST-SCOPE.md`: inherited automatic log/feedback/update/
    recommendation destinations still exist and have not been disabled by this
    allocator fix. Use our branding and inspect the existing signed app/profile
    capabilities privately; do not create keys or pretend entitlement requests
    equal granted capabilities. Obtain a fresh actual map measurement.
 
-4. With explicit device permission, preserve the existing prefix/saves, launch
+5. With explicit device permission, preserve the existing prefix/saves, launch
    the same owned game in a fresh process and capture only bounded allowlisted
    diagnostics. Do not wipe/recreate the prefix or download dependencies as a
    trial-and-error remedy. Stop on the first terminal reservation failure.

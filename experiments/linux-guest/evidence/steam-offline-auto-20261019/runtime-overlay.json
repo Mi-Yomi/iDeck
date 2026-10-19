@@ -1,0 +1,20 @@
+{
+  "kind": "reference append/CPIO structure check, not Swift/QEMU execution",
+  "base_initramfs_sha256": "51f8ea9d336b2cd5ee946afbdbcf0f68d517e9bbdcd9a0d1cac047a068368cc4",
+  "base_initramfs_preserved": true,
+  "base_pid1_unchanged": true,
+  "base_device_action_matches_original_source": true,
+  "overridden_files": [
+    "ideck-steam/files/device-action.py",
+    "ideck-steam/files/steam-offline-cache.py"
+  ],
+  "runtime_suffix_size": 12960,
+  "runtime_suffix_sha256": "c93832baf0071934761384f7beb22c078f3568e0e2f91f1ecef891b5dee78c73",
+  "reference_runtime_initramfs_size": 11712092,
+  "reference_runtime_initramfs_sha256": "269122bd2f1a3a983f6f020b6d79ba328ceba5ca446a80a70222410994e991c4",
+  "current_owner_archive_size": 379228160,
+  "valve_bytes_added": false,
+  "kernel_or_seed_rebuilt": false,
+  "guest_boot": "NOT RUN",
+  "swift_append": "NOT RUN"
+}

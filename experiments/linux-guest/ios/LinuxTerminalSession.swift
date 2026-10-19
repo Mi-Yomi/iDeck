@@ -17,7 +17,30 @@ final class LinuxTerminalSession: ObservableObject {
     @Published fileprivate(set) var steamMessage = "Install or resume after the desktop is ready. Login and agreements belong to you."
     var steamPayloadAvailable: Bool { FileManager.default.fileExists(atPath: Bundle.main.bundleURL.appendingPathComponent("iDeckLinuxSteam/steam-profile.json").path) }
     @Published fileprivate(set) var steamReadiness: LinuxSteamProfile.Readiness?
+    @Published var steamMemoryMode: LinuxSteamMemory.Mode = .auto
+    @Published fileprivate(set) var steamCacheImportBusy = false
+    @Published fileprivate(set) var steamCacheStatus = "Кэш владельца не импортирован. Сеть используется только с вашим согласием."
+    @Published fileprivate(set) var phoneFreeBytes: UInt64?
     private var jitObservation: Bool?
+    func importSteamCache(_ url: URL) {
+        precondition(Thread.isMainThread)
+        guard isSteam, !attempted, !steamCacheImportBusy else { return }
+        steamCacheImportBusy = true
+        steamCacheStatus = "Проверяем pinned файлы и сохраняем отдельный readonly кэш…"
+        let scoped = url.startAccessingSecurityScopedResource()
+        DispatchQueue.global(qos: .userInitiated).async {
+            defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+            let status: String
+            do {
+                let documents = try LinuxTerminalDisk.trustedDirectory(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0])
+                try LinuxSteamOfflineCache.importArchive(url, into: documents.appendingPathComponent("iDeckSteamOffline-v1"))
+                status = "Кэш проверен и импортирован. При следующем запуске installer читает его offline; Steam update/login могут требовать сеть."
+            } catch {
+                status = "Импорт не завершён (\(type(of: error))). Пользовательский Linux-диск не изменён. Существующий кэш не заменялся."
+            }
+            DispatchQueue.main.async { self.steamCacheImportBusy = false; self.steamCacheStatus = status }
+        }
+    }
     /// No JITBootstrap.ready here: that getter can prewarm native JIT on older
     /// iOS. Preview reads only the bounded bundle manifest and OS memory counter.
     @discardableResult func refreshSteamReadiness() -> LinuxSteamProfile.Readiness? {
@@ -26,8 +49,12 @@ final class LinuxTerminalSession: ObservableObject {
         let available = os_proc_available_memory()
         let result = LinuxSteamProfile.readiness(assets: Bundle.main.bundleURL.appendingPathComponent("iDeckLinuxSteam"),
             jitVerified: jitObservation, networkConsent: steamNetworkConsent,
-            availableMemory: LinuxSteamProfile.availableMemoryBytes(available))
+            availableMemory: LinuxSteamProfile.availableMemoryBytes(available), memoryMode: steamMemoryMode)
         steamReadiness = result
+        let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        if let values = try? FileManager.default.attributesOfFileSystem(forPath: documents.path),
+           let free = values[.systemFreeSize] as? NSNumber { phoneFreeBytes = free.uint64Value }
+        else { phoneFreeBytes = nil }
         return result
     }
     let isDebian: Bool
@@ -40,7 +67,7 @@ final class LinuxTerminalSession: ObservableObject {
         self.isDebian = isDebian || isDesktop || isSteam
         self.isDesktop = isDesktop || isSteam
         self.desktopInput = (isDesktop || isSteam) ? LinuxDesktopInput() : nil
-        if isSteam { message = "Experimental Steam: separate 12 GiB disk, 1536 MiB guest RAM and 4 vCPUs. Device usability is unverified." }
+        if isSteam { message = "Experimental Steam: separate 12 GiB disk, Auto RAM or fixed1536 and 4 vCPUs. Device usability is unverified." }
         else if isDesktop { message = "Enable JIT, then start the local Debian desktop. Files in /home/ideck persist on its separate GUI disk." }
         else if isDebian { message = "Enable JIT, then start Debian with its separate persistent ext4 disk." }
     }
@@ -200,7 +227,7 @@ final class LinuxTerminalSession: ObservableObject {
     }
     func start() {
         precondition(Thread.isMainThread)
-        guard !attempted else { return }
+        guard !attempted, !steamCacheImportBusy else { return }
         if isSteam {
             // Fresh reads on every click; a successful preview is never reused
             // as authority. No attempt/native operation is consumed by refusal.
@@ -234,6 +261,12 @@ final class LinuxTerminalSession: ObservableObject {
                 try diagnostic.record(.startRejected)
                 message = "Another runtime owns this process. Close and reopen the app."; return
             }
+            if isSteam {
+                _ = try LinuxSteamMemory.plan(available: LinuxSteamProfile.availableMemoryBytes(os_proc_available_memory()), mode: steamMemoryMode)
+            }
+        } catch is LinuxSteamMemory.Failure {
+            message = "Бюджет памяти после JIT недостаточен или неизвестен. Выберите фиксированные 1536 MiB или повторите проверку; VM не запущена."
+            return
         } catch {
             diagnosticFailure(); message = "Startup journal is unavailable. Export existing diagnostics before trying again."; return
         }
@@ -460,12 +493,16 @@ private final class LinuxTerminalWorker {
     var recoveryWatchdogRevision: UInt64 = 0
     var recoveryTimedOut = false
     var isRecovery: Bool
+    let steamMemoryMode: LinuxSteamMemory.Mode
+    var steamMemoryPlan: LinuxSteamMemory.Plan?
+    var steamOfflineCache: LinuxSteamOfflineCache.Handle?
 
     init(owner: LinuxTerminalSession, bundle: URL, session: URL, dataDirectory: URL, metadata: [String: Any],
          diagnostic: LinuxTerminalDiagnostics.Journal) {
         self.owner = owner; self.bundle = bundle; self.session = session
         self.dataDirectory = dataDirectory; self.metadata = metadata; self.diagnostic = diagnostic
         self.isRecovery = owner.recoveryMode
+        self.steamMemoryMode = owner.steamMemoryMode
     }
 
     /// Called synchronously on the thread reaching the boundary, including the
@@ -493,6 +530,14 @@ private final class LinuxTerminalWorker {
             try queue.sync {
                 guard let disk = self.disk else { throw LinuxTerminalProfile.Invalid.diskOwnership }
                 try disk.validateOwnership()
+                try self.steamOfflineCache?.validateIdentity()
+                if let plan = self.steamMemoryPlan {
+                    let available = LinuxSteamProfile.availableMemoryBytes(os_proc_available_memory())
+                    self.report["steam_memory_final_budget_bytes"] = available ?? 0
+                    try plan.recheck(available)
+                    self.report["steam_memory_final_recheck"] = "PASS"
+                    try self.saveReport()
+                }
             }
             try diagnostic.record(.qemuInitBegin)
             guard preparation.enterNative() else { throw LinuxStartupPreparation.Cancelled.beforeNativeEntry }
@@ -501,6 +546,7 @@ private final class LinuxTerminalWorker {
             let failure = LinuxTerminalSession.failure(error)
             let journalFailed = error is LinuxTerminalDiagnostics.Problem
             let cancelled = error is LinuxStartupPreparation.Cancelled
+            let memoryFailed = error is LinuxSteamMemory.Failure
             queue.async {
                 self.checkpoint(cancelled ? .preparationCancelled : .preparationFailed, failure: cancelled ? nil : failure)
                 self.startupAborted = true
@@ -509,13 +555,14 @@ private final class LinuxTerminalWorker {
                 try? self.logHandle?.close(); self.logHandle = nil
                 self.disk?.closeUnused()
                 self.report["status"] = cancelled ? "terminal_prepare_cancelled" : "terminal_prepare_failed"
+                if memoryFailed { self.report["steam_memory_final_recheck"] = "BLOCKED" }
                 if cancelled { self.report["preparation_cancelled_before_qemu"] = true }
                 self.persist()
                 self.owner.publish {
                     if journalFailed { $0.diagnosticFailure() }
                     $0.preparationState = self.preparation.snapshot
                     $0.message = cancelled ? "Startup cancelled before Linux started. Completed copies were preserved. Close and reopen iDeck before another attempt."
-                        : "Startup disk ownership or journal check failed. Linux was not started. Existing user data was preserved; close and reopen the app."
+                        : (memoryFailed ? "Бюджет памяти снизился или стал неизвестен перед native entry. Linux не запущен; данные сохранены. Перезапустите приложение и выберите Auto либо 1536 MiB." : "Startup disk ownership or journal check failed. Linux was not started. Existing user data was preserved; close and reopen the app.")
                 }
             }
             return false
@@ -555,7 +602,9 @@ private final class LinuxTerminalWorker {
                 if steam != nil {
                     let available = os_proc_available_memory()
                     self.report["process_available_memory_bytes"] = available
-                    guard available >= UInt64(LinuxSteamProfile.memoryMib) * 1024 * 1024 + LinuxSteamProfile.hostReserve else { throw LinuxSteamProfile.Blocker.memoryBudget }
+                    self.steamMemoryPlan = try LinuxSteamMemory.plan(available: LinuxSteamProfile.availableMemoryBytes(available), mode: self.steamMemoryMode)
+                    self.steamOfflineCache = try LinuxSteamOfflineCache.existing(in: self.dataDirectory.deletingLastPathComponent().appendingPathComponent("iDeckSteamOffline-v1"))
+                    self.report["steam_offline_cache_attached"] = self.steamOfflineCache != nil
                 }
                 let gui = self.owner.isDesktop && !self.owner.isSteam ? (try LinuxGUIProfile.load(from: assets)) : nil
                 let debian = self.owner.isDebian && !self.owner.isDesktop ? (try LinuxDebianProfile.load(from: assets)) : nil
@@ -657,8 +706,17 @@ private final class LinuxTerminalWorker {
                     args = try profile.arguments(probeAssets: probe, terminalAssets: assets, session: bootSession,
                         disk: terminalDisk, serialFD: serial.qemu, controlFD: control.qemu)
                 } else if let profile = steam, let desktopDisk = disk as? LinuxDesktopDisk {
+                    let plan = try LinuxSteamMemory.plan(available: LinuxSteamProfile.availableMemoryBytes(os_proc_available_memory()), mode: self.steamMemoryMode)
+                    self.steamMemoryPlan = plan
+                    self.report["steam_memory_mode"] = self.steamMemoryMode.rawValue
+                    self.report["steam_memory_budget_bytes"] = plan.sampledBudget
+                    self.report["steam_memory_overhead_bytes"] = plan.overhead
+                    self.report["steam_memory_reserve_bytes"] = plan.reserve
+                    self.report["steam_memory_effective_mib"] = plan.guestMib
+                    self.report["steam_memory_ceiling_device_verified"] = false
                     args = try profile.arguments(probeAssets: probe, assets: assets, session: bootSession,
-                        disk: desktopDisk, serialFD: serial.qemu, controlFD: control.qemu, networkConsent: self.owner.steamNetworkConsent)
+                        disk: desktopDisk, serialFD: serial.qemu, controlFD: control.qemu, networkConsent: self.owner.steamNetworkConsent,
+                        memoryMib: plan.guestMib, offlineCache: self.steamOfflineCache)
                 } else if let profile = gui, let recovery = self.recovery {
                     args = try profile.recoveryArguments(probeAssets: probe, assets: assets, session: bootSession,
                         transaction: recovery, serialFD: serial.qemu, controlFD: control.qemu)
@@ -680,6 +738,11 @@ private final class LinuxTerminalWorker {
                 guard FileManager.default.createFile(atPath: self.serialURL.path, contents: Data()) else { throw LinuxTerminalProfile.Invalid.io }
                 self.logHandle = try FileHandle(forWritingTo: self.serialURL)
                 self.report.merge(preparedMetadata) { _, next in next }
+                if let plan = self.steamMemoryPlan { self.report["profile_memory_mib"] = plan.guestMib }
+                if steam != nil, let i = args.firstIndex(of: "-initrd") {
+                    self.report["steam_runtime_initramfs_sha256"] = try self.digest(URL(fileURLWithPath: args[i + 1]))
+                    self.report["steam_runtime_suffix_sha256"] = LinuxSteamCacheContract.suffixSHA256
+                }
                 self.report.merge(["schema": 1, "status": "terminal_prepared", "argv": args,
                     "husk_commit": "0695248f491cda877f7969d1f0cc89aeede1482e",
                     "started_utc": ISO8601DateFormatter().string(from: Date()),
@@ -775,9 +838,20 @@ private final class LinuxTerminalWorker {
                 if let failure = error as? LinuxDesktopProfile.Invalid { self.report["storage_failure"] = String(describing: failure) }
                 if let failure = error as? LinuxGUIRecovery.Invalid { self.report["recovery_failure"] = String(describing: failure) }
                 self.persist()
+                if error is LinuxSteamMemory.Failure || error is LinuxSteamOfflineCache.Invalid {
+                    let memory = error is LinuxSteamMemory.Failure
+                    self.report["steam_blocker"] = memory ? "memoryBudget" : "offlineCache"
+                    self.persist()
+                    self.owner.publish {
+                        $0.preparationState = self.preparation.snapshot
+                        $0.message = memory ? "Steam: доступная память изменилась или неизвестна. VM не запущена; перезапустите приложение и выберите Auto либо 1536 MiB. Данные сохранены."
+                            : "Steam: локальный кэш не прошёл проверку. VM не запущена, сеть как обход не использовалась. Пользовательский диск сохранён; экспортируйте отчёт."
+                    }
+                    return
+                }
                 if let blocker = error as? LinuxSteamProfile.Blocker {
                     self.report["steam_blocker"] = String(describing: blocker); self.persist()
-                    self.owner.publish { $0.message = "Steam preparation blocked: \(blocker). Missing payload requires a separately sealed Steam asset; memoryBudget requires 1536 MiB guest plus 1 GiB available host reserve. Existing disks were preserved." }
+                    self.owner.publish { $0.message = "Steam preparation blocked: \(blocker). Existing disks were preserved; export the report. Fixed1536 needs 1 GiB reserve; Auto retains additional host overhead." }
                     return
                 }
                 let needsRecovery = (error as? LinuxDesktopDisk.Invalid) == .needsRecovery

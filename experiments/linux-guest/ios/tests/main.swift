@@ -131,4 +131,5 @@ runDesktopInputChecks()
 try runGUIProfileChecks(root: root)
 
 try runSteamProfileChecks(root: root)
+try runSteamOfflineChecks(root: root)
 try runGUIRecoveryChecks(root: root, fixture: desktopGolden)

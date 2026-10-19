@@ -38,6 +38,7 @@ struct LinuxSteamProfile: Decodable {
         let jit: Check
         let network: Check
         let memory: Check
+        let selectedMemoryMib: Int?
         var canCheckAndStart: Bool { manifest == .passed && network == .passed && memory == .passed }
         var summary: String {
             "Manifest: \(manifest.text) · JIT: \(jit.text) · Сеть (согласие): \(network.text) · Память: \(memory.text)"
@@ -50,19 +51,18 @@ struct LinuxSteamProfile: Decodable {
         return UInt64(exactly: measurement)
     }
     static func readiness(assets: URL, jitVerified: Bool?, networkConsent: Bool,
-                          availableMemory: UInt64?) -> Readiness {
+                          availableMemory: UInt64?, memoryMode: LinuxSteamMemory.Mode = .fixed1536) -> Readiness {
         let manifest: Check
         do { _ = try load(from: assets); manifest = .passed }
         catch Blocker.payloadMissing { manifest = .blocked("Manifest отсутствует в IPA") }
         catch { manifest = .blocked("Manifest не прошёл проверку формата/контракта") }
         let memory: Check
-        if let availableMemory, availableMemory > 0 {
-            memory = availableMemory >= UInt64(memoryMib) * 1024 * 1024 + hostReserve
-                ? .passed : .blocked("Нужно 1536 MiB гостю + 1 GiB резерва процесса")
-        } else { memory = .unknown }
+        let plan = try? LinuxSteamMemory.plan(available: availableMemory, mode: memoryMode)
+        if availableMemory == nil || availableMemory == 0 { memory = .unknown }
+        else { memory = plan == nil ? .blocked("Недостаточно бюджета процесса с резервом; Auto не использует всю физическую RAM") : .passed }
         return Readiness(manifest: manifest,
             jit: jitVerified.map { $0 ? .passed : .blocked("Последняя проверка JIT не пройдена") } ?? .unknown,
-            network: networkConsent ? .passed : .blocked("Требуется согласие на сеть"), memory: memory)
+            network: networkConsent ? .passed : .blocked("Требуется согласие на сеть"), memory: memory, selectedMemoryMib: plan?.guestMib)
     }
 
     func validate() throws {
@@ -172,8 +172,10 @@ struct LinuxSteamProfile: Decodable {
     }
 
     func arguments(probeAssets: URL, assets: URL, session: URL, disk: LinuxDesktopDisk,
-                   serialFD: Int32, controlFD: Int32, networkConsent: Bool) throws -> [String] {
+                   serialFD: Int32, controlFD: Int32, networkConsent: Bool,
+                   memoryMib: Int = LinuxSteamProfile.memoryMib, offlineCache: LinuxSteamOfflineCache.Handle? = nil) throws -> [String] {
         guard networkConsent else { throw Blocker.networkConsent }
+        guard memoryMib >= LinuxSteamMemory.minimum, memoryMib <= LinuxSteamMemory.ceiling, memoryMib % 256 == 0 else { throw Invalid.configuration }
         try validate()
         guard serialFD >= 0, controlFD >= 0, serialFD != controlFD else { throw LinuxTerminalProfile.Invalid.io }
         try disk.validateOwnership()
@@ -183,14 +185,17 @@ struct LinuxSteamProfile: Decodable {
         try checked(kernel, assets: assets); try checked(initramfs, assets: assets)
         let root = try LinuxDesktopDisk.trustedDirectory(assets)
         var args = try original.arguments(assets: probeAssets, session: session)
+        let runtimeInit = session.appendingPathComponent("steam-runtime-initramfs")
+        try LinuxSteamOfflineCache.appendRuntime(to: root.appendingPathComponent(initramfs.file), expectedSHA256: initramfs.sha256,
+            expectedSize: initramfs.size, output: runtimeInit)
         for (option, value) in [("-kernel", root.appendingPathComponent(kernel.file).path),
-                                ("-initrd", root.appendingPathComponent(initramfs.file).path)] {
+                                ("-initrd", runtimeInit.path)] {
             guard let index = args.firstIndex(of: option), index + 1 < args.count else { throw Invalid.configuration }
             args[index + 1] = value
         }
         guard let append = args.firstIndex(of: "-append"), let serial = args.firstIndex(of: "-chardev") else { throw Invalid.configuration }
         args[append + 1] = "console=ttyAMA0 earlycon=pl011,0x09000000 rdinit=/ideck-steam-init panic=0 loglevel=6 ideck.steam_experiment=1 ideck.steam_persistent=1 ideck.steam_network=1"
-        for (option, expected, replacement) in [("-cpu", "cortex-a72", "cortex-a76"), ("-m", "1024", String(Self.memoryMib)), ("-nic", "none", "none")] {
+        for (option, expected, replacement) in [("-cpu", "cortex-a72", "cortex-a76"), ("-m", "1024", String(memoryMib)), ("-nic", "none", "none")] {
             guard let index = args.firstIndex(of: option), args[index + 1] == expected else { throw Invalid.configuration }
             args[index + 1] = replacement
         }
@@ -203,6 +208,13 @@ struct LinuxSteamProfile: Decodable {
                  "-device", "virtserialport,chardev=control0,name=\(controlPort)",
                  "-drive", "if=none,id=desktop,format=raw,cache=writethrough,file.locking=off,file=\(path)",
                  "-device", "virtio-blk-device,drive=desktop"]
+        if let offlineCache {
+            try offlineCache.validateIdentity()
+            args[append + 1] += " ideck.steam_offline_cache=1"
+            let cache = offlineCache.url.path.replacingOccurrences(of: ",", with: ",,")
+            args += ["-drive", "if=none,id=steamcache,format=raw,readonly=on,file.locking=off,file=\(cache)",
+                     "-device", "virtio-blk-device,drive=steamcache"]
+        }
         return args
     }
 }

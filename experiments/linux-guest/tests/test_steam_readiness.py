@@ -28,8 +28,9 @@ class SteamReadiness(unittest.TestCase):
         source=(ROOT/'ios/LinuxSteamProfile.swift').read_text()
         preview=swift_block(source,'static func readiness(')
         self.assertIn('try load(from: assets)',preview)
-        self.assertIn('availableMemory > 0',preview)
-        self.assertIn('hostReserve',preview)
+        self.assertIn('availableMemory == nil || availableMemory == 0',preview)
+        self.assertIn('LinuxSteamMemory.plan',preview)
+        self.assertIn('memoryMode',preview)
         self.assertIn('memory = .unknown',preview)
         for forbidden in ('JITBootstrap','qemu_', 'provision(', 'openExisting(', 'flock(', 'systemFreeSize', 'URLSession', 'steam_root'):
             self.assertNotIn(forbidden,preview)
@@ -52,7 +53,8 @@ class SteamReadiness(unittest.TestCase):
             self.assertNotIn(forbidden,refresh)
         worker=source[source.index('private final class LinuxTerminalWorker'):]
         self.assertIn('try LinuxSteamProfile.load(from: assets)',worker)
-        self.assertIn('guard available >= UInt64(LinuxSteamProfile.memoryMib)',worker)
+        self.assertIn('LinuxSteamMemory.plan(available:',worker)
+        self.assertIn('plan.recheck',worker)
         self.assertIn('guard preparation.enterNative()',worker)
 
     def test_unknown_jit_is_not_a_preview_execution_or_compatibility_claim(self):

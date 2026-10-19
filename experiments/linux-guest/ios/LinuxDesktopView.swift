@@ -1,4 +1,5 @@
 import SwiftUI
+import UniformTypeIdentifiers
 import UIKit
 
 private final class LinuxDesktopKeyView: UIView, UIKeyInput {
@@ -65,6 +66,7 @@ struct LinuxDesktopView: View {
     @State private var controlsExpanded = false
     @State private var command = ""
     @State private var showDiagnostics = false
+    @State private var showCacheImporter = false
     @State private var showShare = false
     @State private var shareItems: [URL] = []
     init(session: LinuxTerminalSession = .desktop) {
@@ -102,10 +104,14 @@ struct LinuxDesktopView: View {
         .safeAreaInset(edge: .top, spacing: 0) { persistentActions }
         .ignoresSafeArea(.keyboard, edges: .bottom)
         .background(LinuxDesktopKeyboard(input: input, available: inputAvailable, show: keyboard).frame(width: 1,height: 1).opacity(0.01))
+        .fileImporter(isPresented: $showCacheImporter, allowedContentTypes: [.data]) { result in
+            if case .success(let url) = result { session.importSteamCache(url) }
+        }
         .sheet(isPresented: $jit.showSetup) { JITSetupFlow() }
         .sheet(isPresented: $showDiagnostics) { LinuxDesktopDiagnosticsView(session: session) }
         .sheet(isPresented: $showShare) { ShareSheet(items: shareItems) }
         .onAppear { session.recoverDiagnostics(); session.refreshSteamReadiness(); refreshInputFocus() }
+        .onChange(of: session.steamMemoryMode) { _ in session.refreshSteamReadiness() }
         .onChange(of: session.steamNetworkConsent) { _ in session.refreshSteamReadiness() }
         .onChange(of: session.jitExecutionReady) { _ in session.refreshSteamReadiness() }
         .onChange(of: recovery) { _ in refreshInputFocus() }
@@ -193,7 +199,21 @@ struct LinuxDesktopView: View {
                 Button("JIT setup") { jit.refreshPairingStatus(); jit.showSetup = true }.disabled(jit.busy)
                 Button("Enable JIT") { enableJIT() }.disabled(jit.busy)
                 if session.isSteam {
-                    Text("Separate 12 GiB disk. Only first import needs 13 GiB free (12 + 1 reserve); existing disks use the normal ownership/integrity checks. Guest: 1536 MiB RAM, 4 vCPUs. Games and iPhone performance are unverified.").font(.caption2)
+                    Text("Separate 12 GiB disk. Only first import needs 13 GiB free (12 + 1 reserve); existing disks use the normal ownership/integrity checks. Guest RAM: Auto or fixed1536 below, 4 vCPUs. Games and iPhone performance are unverified.").font(.caption2)
+                    Group {
+                        Picker("RAM", selection: $session.steamMemoryMode) {
+                            Text("Auto · cap 4096 MiB (эксперимент)").tag(LinuxSteamMemory.Mode.auto)
+                            Text("1536 MiB · прежний профиль").tag(LinuxSteamMemory.Mode.fixed1536)
+                        }.disabled(session.steamCacheImportBusy)
+                        if let mib = session.steamReadiness?.selectedMemoryMib {
+                            Text("Снимок RAM: \(mib) MiB гостю. Auto сохраняет 1 GiB на будущие расходы + 1 GiB резерва; окончательная проверка после JIT и перед native entry.").font(.caption2)
+                        }
+                        Text("Диск: 12 GiB во внутреннем хранилище iPhone. Размер/resize пока фиксированы. Свободно: \(session.phoneFreeBytes.map { ByteCountFormatter.string(fromByteCount: Int64(clamping: $0), countStyle: .binary) } ?? "не измерено").").font(.caption2)
+                        Button("Импортировать предскачанный кэш владельца") { showCacheImporter = true }
+                            .disabled(session.steamCacheImportBusy || jit.busy)
+                        if session.steamCacheImportBusy { ProgressView() }
+                        Text(session.steamCacheStatus).font(.caption2)
+                    }
                     Toggle("Allow Steam network this session", isOn: $session.steamNetworkConsent)
                     if let check = session.steamReadiness {
                         Text(check.summary).font(.caption2).textSelection(.enabled)
@@ -206,7 +226,7 @@ struct LinuxDesktopView: View {
                     }
                 }
                 Button(session.isSteam ? "Start Steam environment" : "Start desktop") { session.startDesktop() }
-                    .disabled(jit.busy || (session.isSteam && session.steamReadiness?.canCheckAndStart != true))
+                    .disabled(jit.busy || session.steamCacheImportBusy || (session.isSteam && session.steamReadiness?.canCheckAndStart != true))
             }
             if session.isSteam, session.attempted {
                 Text(session.steamMessage).font(.caption2)

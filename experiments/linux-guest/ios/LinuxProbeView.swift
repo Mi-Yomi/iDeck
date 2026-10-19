@@ -177,7 +177,7 @@ struct LinuxProbeRoot: View {
                 Button("Настроить JIT") { jit.refreshPairingStatus(); showJIT = true }.buttonStyle(.borderedProminent)
                     .disabled(route.runtimeOwner != nil || jit.busy)
                 if route.runtimeOwner != nil { Text("Настройки JIT заблокированы после попытки запуска. Текущая сессия сохраняет свой JIT.").font(.footnote) }
-                Text("Steam: отдельный диск 12 GiB, 1536 MiB RAM гостя. Согласие на сеть и официальный installer доступны перед запуском Steam-сессии.").foregroundStyle(Theme.textDim)
+                Text("Steam: отдельный диск 12 GiB; RAM Auto с резервом или фиксированные 1536 MiB. Согласие на сеть и официальный installer доступны перед запуском Steam-сессии.").foregroundStyle(Theme.textDim)
                 Button("Диагностика и сохранённые отчёты") { route.choose(.advanced) }
             }.padding(20).frame(maxWidth: 700)
         }

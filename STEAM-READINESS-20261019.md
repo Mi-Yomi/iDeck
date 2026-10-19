@@ -1,5 +1,10 @@
 # Steam readiness snapshot, 19 October 2026
 
+Newer source candidate: [owner offline cache and Auto RAM](STEAM-OFFLINE-CACHE-AUTO-RAM-20261019.md).
+It adds explicit cache import and Steam-only experimental Auto/fixed RAM with
+after-JIT/final native-entry checks. No new Apple/QEMU/device run or delivered IPA
+is claimed; the successful delivered result below belongs to209315cd only.
+
 Delivered result: **CI #35 [Build finished](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5824c7550aed8108ffe54)** for built source
 **`209315cd8b330c0ba1b5a7a28f2cf2884a86dafa`**. The coordinating executor reports
 LINUX_STEAM_READINESS_PASS, LINUX_LAUNCHER_NAVIGATION_PASS,

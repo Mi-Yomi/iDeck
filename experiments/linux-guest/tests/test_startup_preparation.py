@@ -51,7 +51,7 @@ class StartupPreparationWiring(unittest.TestCase):
             for forbidden in ('stop()', 'closeUnused', 'attempted = false', 'qemu_', 'Thread.cancel', 'removeItem'):
                 self.assertNotIn(forbidden, body)
         start = swift_block(source, 'func start()')
-        self.assertIn('guard !attempted else { return }', start)
+        self.assertIn('guard !attempted, !steamCacheImportBusy else { return }', start)
         self.assertEqual(source.count('attempted = false'), 1)  # initialization only
         self.assertEqual(source.count('"preparation_cancelled_before_qemu"] = true'), 2)
         self.assertNotIn('cleanStopped = true', cancel)

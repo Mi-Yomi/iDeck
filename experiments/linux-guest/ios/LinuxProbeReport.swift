@@ -106,6 +106,15 @@ enum LinuxProbeReport {
                 row("Storage failure", (report["storage_failure"] as? String).flatMap { failures.contains($0) ? $0 : nil } ?? "NONE RECORDED")
                 row("Seed SHA-256", hex(report[steam ? "steam_seed_sha256" : "debian_seed_sha256"], count: 64))
                 row("Production initramfs SHA-256", hex(report["terminal_initramfs_sha256"], count: 64))
+                if steam, report["steam_memory_mode"] != nil {
+                    row("Steam RAM mode", text(report["steam_memory_mode"], allowed: ["auto", "fixed1536"]))
+                    row("Steam RAM effective MiB", integer(report["steam_memory_effective_mib"]))
+                    row("Steam RAM future overhead bytes", integer(report["steam_memory_overhead_bytes"]))
+                    row("Steam RAM safety reserve bytes", integer(report["steam_memory_reserve_bytes"]))
+                    row("Steam RAM final recheck", text(report["steam_memory_final_recheck"], allowed: ["PASS", "BLOCKED"]))
+                    row("Steam readonly package cache", flag(report["steam_offline_cache_attached"], yes: "CONFIGURED READONLY / PINNED", no: "NOT ATTACHED"))
+                    row("Steam runtime suffix SHA-256", hex(report["steam_runtime_suffix_sha256"], count: 64))
+                }
                 row("Ext4 RECOVER bit", flag(report["ext4_recover_bit"], yes: "SET", no: "CLEAR"))
                 row("Ext4 state (raw)", unsigned(report["ext4_state"], maximum: UInt32(UInt16.max)))
                 row("Ext4 last_orphan", unsigned(report["ext4_last_orphan"]))

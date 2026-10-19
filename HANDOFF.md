@@ -1,4 +1,39 @@
-> Current launcher + readiness IPA delivery, 19 October 2026: coordinating
+> Current owner offline-cache + Auto RAM source candidate, 19 October 2026,
+> based on **33ece4ee09c7f8953a57b88827740a3ee3008fd6**.
+> **STEAM-OFFLINE-CACHE-AUTO-RAM-20261019.md** describes owner-local pack/verify,
+> explicit canonical pinned TAR import, separate readonly virtio cache and the
+> existing installer consuming it offline on NEW OR EXISTING userdata. No Valve
+> bytes are bundled/published. No account/token/cookie/game input, owner-PC
+> action, download/client execution/EULA acceptance or CI was performed here.
+>
+> **No new Linux-only payload required.** Kernel/initramfs/seed locks and all 23
+> source bindings remain exact. A generated 12960-byte own-code runtime cpio
+> overlay adapts only device-action/offline source; base PID1/Stop/recovery and
+> userdata are preserved. Actual pinned-base/reference overlay inspection PASS;
+> real Swift append/QEMU boot NOT RUN. New app Apple build is still required.
+>
+> Steam RAM choices: Auto (additional process budget minus 1 GiB future overhead
+> and 1 GiB safety reserve; 256 MiB steps, min 1536, experimental cap 4096) or the
+> existing fixed 1536 +1 GiB reserve fallback. No physical-RAM/RSS subtraction,
+> entitlement/security change, preview allocation, attempted reset or second VM.
+> Start after-JIT gate, post-import calculation and final native-entry recheck
+> share the selected plan; unknown/overflow/deterioration fail closed. Reports
+> include actual selected memory and readonly-cache configuration. Device RAM
+> safety/Steam performance NOT VERIFIED. Disk remains 12 GiB with free-capacity
+> display; resize/sparse/all-storage support is NOT implemented.
+>
+> **558 tests OK (553 PASS, 5 SKIP)**. Synthetic offline installer interruption/
+> retry/ready-repeat, cache integrity/no-network/data preservation PASS. Source
+> overlay, generators, real sealed Steam stage/repeat/resource gates, protected
+> recovery/disk/payload, AST/shell/Git attributes PASS. Mandatory new Apple marks:
+> **LINUX_STEAM_OFFLINE_CACHE_PASS**, **LINUX_STEAM_AUTO_MEMORY_PASS**; new
+> Swift/Apple/native/QEMU/physical-device/owner-PC checks **NOT RUN**. Evidence:
+> `experiments/linux-guest/evidence/steam-offline-auto-20261019/`.
+> Existing delivered IPA #35 below DOES NOT contain this update. Parent must
+> consolidate/freshly check quota before any new manual CI; no CI dispatched.
+> Cloud Valve redistribution conditions unconfirmed; BusyBox provenance OPEN.
+
+> Historical launcher + readiness IPA delivery, 19 October 2026: coordinating
 > executor confirmed **CI #35 Build finished**:
 > https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5824c7550aed8108ffe54 .
 > **Built source: 209315cd8b330c0ba1b5a7a28f2cf2884a86dafa.** Apple checks passed:
@@ -736,7 +771,7 @@ remain NOT RUN. Continue only after the precise network prerequisites are met.
 At verified remote Steam SHA `170c0e0c928a41b2af5ededeb774ee19f886bb88`, the owner
 requested network diagnosis while arranging the new updater hostname. No request
 to that refused domain was repeated, no VM/Steam writer started and no network,
-proxy, DNS or security setting changed. Both installed disks and17 client ZIPs /
+proxy, DNS or security setting changed. Both installed disks and 17 client ZIPs /
 45 dependency cache packages rehashed unchanged.
 See [read-only network proof, supported-path limits and seed provenance](experiments/linux-guest/evidence/steam-network-readonly-20261017/README.md).
 
@@ -1124,7 +1159,7 @@ Runtime progress and current limitation:
   QEMU exit0 and successful host fsync. Run5 is retained clean; run4 is untouched.
 - Run6 copied run5 and passed another offline ext4 check. It **booted the exact
   final namespace bootstrap**, verified helper bytes, and preserved machine-id,
-  the fsynced user document and client binary. Steam found version1792192922 with
+  the fsynced user document and client binary. Steam found version 1792192922 with
   no pending update, skipped download and completed checksum verification.
   This proves retained installation, not a successful main-interface restart.
 - The supported `-system-composer` diagnostic and measured guest webhelper
@@ -1205,7 +1240,7 @@ Swift/Apple build, IPA and Steam on iPhone are **NOT RUN**. No gaming/GPU claim.
 
 Two private disks were actually provisioned: all17 locked client ZIPs verified,
 41 additional packages configured, `dpkg --audit` exit0 and empty output, all341
-original GUI package versions preserved. Install times149.822s and143.613s.
+original GUI package versions preserved. Install times149.822s and 143.613s.
 The first Cortex-A72 launch exited132 (SIGILL), with its ELF loader dependencies
 resolved. The fresh CPUmax run eliminated that early failure and displayed the
 updater. It then downloaded an additional669522KB as reported by Valve and began

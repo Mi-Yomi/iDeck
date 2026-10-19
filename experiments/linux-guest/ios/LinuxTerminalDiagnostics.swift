@@ -9,7 +9,7 @@ import Glibc
 /// disk access, arbitrary error text, argv, pairing data or automatic uploads.
 final class LinuxTerminalDiagnostics {
     enum Failure: String, Codable {
-        case unknown, configuration, asset, disk, diskLocked, io, unsafePath, sessionAlreadyExists
+        case unknown, configuration, asset, disk, diskLocked, io, unsafePath, sessionAlreadyExists, steamMemoryBudget, steamOfflineCache
         case assetDescriptor, assetDirectory, assetInspection, assetType, assetSize
         case assetContainment, assetRead, assetContentSize, assetDigest, assetKernelMismatch
         case diskTrustedDirectory, diskDirectoryURL, diskDirectoryComponent, diskDirectoryType

@@ -3,6 +3,8 @@ import Foundation
 /// Fixed failure names only. Never export an Error's arbitrary text or paths.
 enum LinuxStartupFailure {
     static func classify(_ error: Error) -> LinuxTerminalDiagnostics.Failure {
+        if error is LinuxSteamMemory.Failure { return .steamMemoryBudget }
+        if error is LinuxSteamOfflineCache.Invalid { return .steamOfflineCache }
         if error is LinuxGUIRecovery.Invalid { return .recoveryFailed }
         let name: String
         if let value = error as? LinuxDesktopDisk.Invalid { name = String(describing: value) }

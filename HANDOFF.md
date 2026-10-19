@@ -1,4 +1,39 @@
-> Current fresh-memory handoff correction, 19 October 2026, from
+> Current offline-cache/Auto RAM/fresh-handoff IPA delivery, 19 October 2026:
+> coordinating executor confirmed successful Apple CI:
+> https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad595967550aed810900168 .
+> **Built source: 7782926dffb3ab513715518c18f8e667ca3c0c40.** Mandatory Apple host checks
+> **LINUX_STEAM_FRESH_HANDOFF_PASS**, **LINUX_STEAM_AUTO_MEMORY_PASS** and
+> **LINUX_STEAM_OFFLINE_CACHE_PASS**, typecheck/native build/link/resources PASS.
+> IPA: **710858044 bytes**, SHA-256
+> **ad404c43b6899fc2b8787df33e835792a5f4f4c6377b838a18e12b552bc9b373**, ad-hoc.
+> Private Drive delivery to the owner is confirmed. No personal Drive link is
+> recorded here. These CI/artifact/delivery facts were supplied by the coordinating
+> executor; this docs-only update did not download/rebuild or dispatch CI. Its
+> documentation commit is separate from the built source SHA.
+>
+> **Device NOT RUN. The real owner cache is NOT PREPARED.** The IPA contains the
+> importer and runtime code, no Valve cache/client bytes. Disk stays **12 GiB**;
+> resize/sparse/all-storage support is not implemented. Auto cap4096 remains
+> experimental, with no measured device RAM/Steam/jetsam acceptance. Steam may
+> still update and requires the owner's login/agreements after local extraction.
+>
+> Exact remaining owner-cache step: provide the17 ZIP +45 .deb named in
+> ipa/steam-client.lock.json and ipa/steam-dependencies.lock.json on the owner's
+> PC under applicable terms; run the own pack/verify tool without client execution
+> to produce **owner-steam-cache.tar,379228160 bytes** and its actual SHA-256;
+> transfer that private file to the owner's phone and explicitly import it before
+> starting Steam. Existing Install/resume then consumes the pinned cache locally.
+> The tool has **pack/verify only, no download mode**. No such files were obtained,
+> packed or transferred in this docs-only step. Detailed commands/boundaries:
+> **STEAM-OFFLINE-CACHE-AUTO-RAM-20261019.md**.
+>
+> Coordinator's latest quota snapshot: **106 free macOS minutes, paid OFF**.
+> This is below the existing120-minute threshold: **no new CI is authorized**
+> under the current snapshot. A future run needs a fresh >=120 check and the
+> existing private/native approvals. No quota guard, overlay, code or payload
+> changed. BusyBox corresponding-source provenance remains **OPEN**.
+
+> Historical fresh-memory handoff correction, 19 October 2026, from
 > **756e08c44456f62b48d45a9f08fdaf42321c34b3**. Read-only review found a stale
 > budget window: synchronous report/journal IO and a post-entry persist occurred
 > after the final RAM sample. All blocking ownership/cache/report/journal checks

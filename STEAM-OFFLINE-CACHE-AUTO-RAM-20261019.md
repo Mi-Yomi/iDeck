@@ -1,5 +1,38 @@
 # Owner offline cache and experimental Auto RAM
 
+Delivered result: **[Apple CI finished](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad595967550aed810900168)** for built source
+**`7782926dffb3ab513715518c18f8e667ca3c0c40`**. The coordinating executor confirms
+LINUX_STEAM_FRESH_HANDOFF_PASS, LINUX_STEAM_AUTO_MEMORY_PASS,
+LINUX_STEAM_OFFLINE_CACHE_PASS, typecheck/native build/link/resources PASS.
+IPA **710858044 bytes**, SHA-256
+`ad404c43b6899fc2b8787df33e835792a5f4f4c6377b838a18e12b552bc9b373`, **ad-hoc**.
+Private Drive delivery to the owner is confirmed; no personal delivery link is
+stored in this repository. These are coordinating-executor supplied results;
+this documentation update did not rebuild/download IPA or start CI. The docs
+commit differs from the built source SHA.
+
+**Device NOT RUN; real owner cache NOT PREPARED.** The delivered IPA contains
+code for import/offline source/Auto RAM, no bundled Valve bytes. Physical RAM,
+readonly guest-cache boot/import with actual packages and Steam behavior remain
+unverified. Disk remains12 GiB, no resize. The experimental4096 MiB ceiling is
+not a physical-device acceptance. Standard Steam update/login/agreements may
+still require internet and owner action after local package extraction.
+
+Latest coordinator quota snapshot: **106 free macOS minutes, paid OFF**, below
+our120-minute requirement. **Do not start a new CI under this snapshot.** Any
+future build requires a fresh >=120-minute check and existing approvals. No
+threshold or security setting was changed.
+
+The owner must next supply the17+45 exact locked input files under their terms,
+pack/verify locally, transfer the resulting private TAR to the phone and use
+Import before Steam Start, then Install/resume for offline extraction. The
+packing tool has no download mode. Neither input acquisition nor real packing,
+transfer, owner-PC execution or agreement acceptance was performed here. The
+commands and input/space requirements below describe that remaining step.
+
+The following preserves implementation history and the original Linux checks;
+Apple checks for the built SHA above subsequently passed, device checks did not.
+
 Fresh-handoff correction after review of `756e08c44456f62b48d45a9f08fdaf42321c34b3`:
 that source measured before synchronous report/journal IO, then persisted again
 before QEMU. The shared production gate now completes all blocking preparation
@@ -23,8 +56,8 @@ physical RAM or establish protection from jetsam.
 The following describes the underlying offline-cache/Auto implementation.
 
 Source baseline: `33ece4ee09c7f8953a57b88827740a3ee3008fd6`, Steam branch only.
-This is a new source candidate. Previously delivered IPA #35 was built at
-`209315cd8b330c0ba1b5a7a28f2cf2884a86dafa` and does not contain this update.
+The original source candidate followed IPA #35, built at
+`209315cd8b330c0ba1b5a7a28f2cf2884a86dafa`, which predates this update.
 No new CI, download/client execution, agreement acceptance, private package
 publication or actions on the owner's PC were performed here.
 
@@ -47,6 +80,35 @@ python3 experiments/linux-guest/tools/steam_offline_cache.py pack \
   --output owner-steam-cache.tar
 python3 experiments/linux-guest/tools/steam_offline_cache.py verify owner-steam-cache.tar
 ```
+
+For Windows PowerShell with an existing Python3.11 installation and an NTFS
+output volume (actual Windows execution NOT RUN), after placing the files in
+`E:\Freddy Fazbear\SteamOffline\client` and `...\debs`, use the following.
+`$repo` must point to the owner's checkout containing this tool and these locks;
+no checkout update/download or PC action was performed by this docs task.
+The output must not already exist.
+
+```powershell
+$repo = 'E:\Freddy Fazbear\iDeck.work\steam-arm64-experiment-20261017'
+$stage = 'E:\Freddy Fazbear\SteamOffline'
+$tool = Join-Path $repo 'experiments\linux-guest\tools\steam_offline_cache.py'
+$out = Join-Path $stage 'owner-steam-cache.tar'
+py -3.11 $tool pack --client-directory (Join-Path $stage 'client') --debs-directory (Join-Path $stage 'debs') --output $out
+if ($LASTEXITCODE -ne 0) { throw 'Cache packing failed' }
+py -3.11 $tool verify $out
+if ($LASTEXITCODE -ne 0) { throw 'Cache verification failed' }
+(Get-Item -LiteralPath $out).Length
+Get-FileHash -LiteralPath $out -Algorithm SHA256
+```
+
+Input names, versions, sizes and hashes come only from
+`ipa/steam-client.lock.json` (17 ZIP) and `ipa/steam-dependencies.lock.json`
+(45 .deb) under `experiments/linux-guest`. Input bytes379176939 plus output
+379228160 = **758405099 logical bytes**, about723 MiB; allow at least2 GiB
+working space, separately from Python/checkout/any unrelated files. Packing
+needs no Linux raw/SteamOS/account image. The phone importer separately requires
+archive-size free capacity plus1 GiB reserve, and the existing guest installer
+retains its own dependency/extraction/update-space checks.
 
 These pins select version 1792192922/steamdeck_publicbeta; they do not certify
 that it is the latest client. Expected input bytes 379176939; canonical archive

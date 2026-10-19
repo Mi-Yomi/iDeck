@@ -1,9 +1,15 @@
 # Steam readiness snapshot, 19 October 2026
 
-Newer source candidate: [owner offline cache and Auto RAM](STEAM-OFFLINE-CACHE-AUTO-RAM-20261019.md).
-It adds explicit cache import and Steam-only experimental Auto/fixed RAM with
-after-JIT/final native-entry checks. No new Apple/QEMU/device run or delivered IPA
-is claimed; the successful delivered result below belongs to209315cd only.
+Current delivered offline-cache/Auto RAM + fresh-handoff source:
+**`7782926dffb3ab513715518c18f8e667ca3c0c40`**, [successful Apple CI](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad595967550aed810900168).
+The coordinating executor confirms fresh-handoff/Auto/offline-cache host marks,
+typecheck/native/link/resources PASS; ad-hoc IPA710858044 bytes, SHA-256
+`ad404c43b6899fc2b8787df33e835792a5f4f4c6377b838a18e12b552bc9b373`, privately delivered.
+Device NOT RUN, real owner cache NOT PREPARED, disk12 GiB without resize.
+See [remaining owner-local cache step](STEAM-OFFLINE-CACHE-AUTO-RAM-20261019.md).
+Quota106 free minutes/paid OFF is below120: no new CI under that snapshot.
+These supplied build/delivery facts are recorded docs-only; no private Drive
+link, code/overlay/payload change or CI dispatch. The older result below is history.
 
 Delivered result: **CI #35 [Build finished](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5824c7550aed8108ffe54)** for built source
 **`209315cd8b330c0ba1b5a7a28f2cf2884a86dafa`**. The coordinating executor reports

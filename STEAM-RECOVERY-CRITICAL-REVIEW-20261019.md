@@ -1,3 +1,8 @@
+> Historicala669a397 review. CI43 compiled standalone Swift, then failed the
+> host renderer fixture before integrated Husk checks. Its24/22 budget is superseded
+> by [the CI43 correction and23/21-minute budget](STEAM-CI43-REPORT-REGRESSION-20261019.md).
+> Positive12-GiB recovery/device acceptance remains NOT RUN.
+
 # Steam recovery critical review — 19 October 2026
 
 Source review starts at `0f413a857c7b5273eef09c25d4746a7abe65e443`, on

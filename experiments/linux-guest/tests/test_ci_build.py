@@ -84,17 +84,17 @@ class IPAInputs(unittest.TestCase):
     def test_native_budget_fits_dedicated_provider_cap_with_cleanup_margin(self):
         import yaml
         workflow = yaml.safe_load((ROOT / "codemagic.yaml").read_text())["workflows"]["ideck-linux-probe-ipa"]
-        self.assertEqual(workflow["max_build_duration"], 24)
-        self.assertEqual(build_linux_probe_ipa.NATIVE_BUILD_BUDGET_SECONDS, 22 * 60)
+        self.assertEqual(workflow["max_build_duration"], 23)
+        self.assertEqual(build_linux_probe_ipa.NATIVE_BUILD_BUDGET_SECONDS, 21 * 60)
         self.assertEqual(workflow["max_build_duration"] * 60 - build_linux_probe_ipa.NATIVE_BUILD_BUDGET_SECONDS, 2 * 60)
 
     def test_total_budget_counts_preparation_and_does_not_reset_between_steps(self):
         with tempfile.TemporaryDirectory() as tmp:
             worker = build_linux_probe_ipa.Worker(Path(tmp), started=1000)
             with patch.object(build_linux_probe_ipa.time, "monotonic", return_value=1120):
-                self.assertEqual(worker.remaining(), 22 * 60 - 120)
+                self.assertEqual(worker.remaining(), 21 * 60 - 120)
             with patch.object(build_linux_probe_ipa.time, "monotonic", return_value=1600):
-                self.assertEqual(worker.remaining(), 22 * 60 - 600)
+                self.assertEqual(worker.remaining(), 21 * 60 - 600)
             with patch.object(build_linux_probe_ipa.time, "monotonic", return_value=2800):
                 with self.assertRaises(TimeoutError): worker.remaining()
 

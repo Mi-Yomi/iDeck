@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "baseline": "a669a3977c551fdaad7a4830dec116ec53660d9d",
+  "changed_source_files_sha256": {
+    "ci/build_linux_probe_ipa.py": "7b7609ea20644ae69a375a8f647f0f82d4ded793ac04fd2ae4f06456049db48e",
+    "codemagic.yaml": "f37def1113a724371e13567692367beb5cf072815c9428018a4e78d886a3fcec",
+    "experiments/linux-guest/ios/tests/MarkdownReportChecks.swift": "a73d3457b6e40737399b78fb1fcc83310e008ba5b35742094549dd266cb76ae3",
+    "experiments/linux-guest/ios/tests/SteamRecoveryChecks.swift": "4b0c0b9368289009b5aefe0802af55238218a6456366a94cba4dbb8850f658b7",
+    "experiments/linux-guest/tests/test_ci_build.py": "67f8b76b7df1d86b4dd1994026d204cf86df4b19194b2c5baa9057208e21e5e8",
+    "experiments/linux-guest/tests/test_markdown_report.py": "cfe8f82402920bc83dba1fa44e1566639bc64d6dffe21b6a53c3e6dd76aa9ef8"
+  },
+  "overlay_input_sources_and_payload_pins": "PASS byte-identical",
+  "upstream_files": 81,
+  "overlay_copies": 41,
+  "full_fresh_source_restore_overlay": "PASS",
+  "original_23_steam_source_bindings": "PASS unchanged",
+  "existing_real_linux_cache_staging_resources": "PASS reverified; no source/payload changed",
+  "git_attributes": "experiments/linux-guest/vendor/alpine-3.24.1-aarch64/modloop-virt: text: unset",
+  "ci43": {
+    "source": "a669a3977c551fdaad7a4830dec116ec53660d9d",
+    "outcome": "FAILED",
+    "first_failure": "main/MarkdownReportChecks.swift:15: Precondition failed",
+    "exit_code": -5,
+    "ios_typecheck": "PASS (coordinator supplied)",
+    "native_syntax": "PASS (coordinator supplied)",
+    "mac_compile": "PASS (coordinator supplied)",
+    "mac_tests": "FAILED",
+    "integrated_husk_typecheck": "NOT REACHED",
+    "ipa_created": false
+  },
+  "new_apple_execution": "NOT RUN",
+  "positive_12gib_recovery": "NOT RUN",
+  "device_acceptance": "NOT RUN",
+  "ci_started": false,
+  "budget": {
+    "provider_minutes": 23,
+    "worker_seconds": 1260,
+    "snapshot_free_minutes": 25,
+    "paid": "OFF, coordinator supplied; fresh recheck before dispatch",
+    "reserve_minutes": 2
+  },
+  "busybox_provenance": "OPEN"
+}

@@ -1,4 +1,20 @@
-> CURRENT REVIEWED SOURCE CANDIDATE — recovery remains unaccepted on device.
+> CURRENT CI43 FOLLOW-UP — failed host report regression, no IPA.
+> Exacta669a397 compiled standalone Swift, then mac-tests aborted at
+> `MarkdownReportChecks.swift:15`: obsolete "GUI recovery does not apply" text
+> expectation. Corrected fixture retains RECOVER SET and checks the current
+> copy-first/journal-only restriction, UNKNOWN preboot recovery evidence and
+> escaped phase output. Packaged runtime, renderer, payloads and guards unchanged.
+> **611 Python tests OK /5 SKIP**, full fresh overlay and staged resource checks PASS.
+> New Apple host-test result still **NOT RUN**; integrated Husk check was not
+> reached in CI43. Positive12-GiB recovery/device acceptance remains **NOT RUN**.
+> Fresh coordinator snapshot25 free minutes, paid OFF: provider **23 minutes**,
+> aggregate worker **21 minutes**, existing deadlines/termination retained.
+> Recheck quota/reserve/billing and exact remote SHA before manual dispatch.
+> No CI started here; BusyBox provenance **OPEN**.
+> [Cause, correction, evidence and next CI parameters](STEAM-CI43-REPORT-REGRESSION-20261019.md).
+> This supersedes earlier24/22 budget and unqualified Apple NOT RUN statements.
+
+> Historicala669a397 source review — recovery remains unaccepted on device.
 > Critical review of0f413a85 added a full guest input hash BEFORE journal writes,
 > Steam schema2 generation/nonce/source binding and stale/mixed/failed receipt
 > rejection. Late READY cannot revive failed/timed-out recovery. Original GUI

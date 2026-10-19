@@ -145,7 +145,7 @@ private func runSteamRecoveryBindingChecks(directory: URL, specification: LinuxD
         "recovery_generation": id, "recovery_run_nonce": nonce, "recovery_source_sha256": sourceHash,
         "recovery_binding_accepted": true, "recovery_source_verified": true])
     for text in ["| Recovery generation | " + id, "| Recovery run nonce | " + nonce,
-                 "| Recovery source SHA-256 | " + sourceHash, "| Recovery source verified | PASS", "checking_source"] {
+                 "| Recovery source SHA-256 | " + sourceHash, "| Recovery source verified | PASS", "| Recovery phase | checking&#95;source |"] {
         precondition(report.contains(text))
     }
     let unsafe = "PRIVATE_NONCE_CANARY"

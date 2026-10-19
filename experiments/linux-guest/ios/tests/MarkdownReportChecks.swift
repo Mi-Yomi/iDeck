@@ -12,7 +12,9 @@ func runMarkdownReportChecks() throws {
     precondition(steamFailure.contains("TIMEOUT (60 seconds)"))
     precondition(steamFailure.contains("COMPLETION NOT CONFIRMED (180 seconds)"))
     precondition(steamFailure.contains("needsRecovery") && steamFailure.contains("existing_steam_disk_preserved"))
-    precondition(steamFailure.contains("RECOVER bit | SET") && steamFailure.contains("GUI recovery does not apply"))
+    precondition(steamFailure.contains("RECOVER bit | SET"))
+    precondition(steamFailure.contains("Steam recovery is explicit and copy-first, restricted to eligible journal replay; the report must establish its result."))
+    precondition(steamFailure.contains("Device Steam/game acceptance is not established."))
     var assertions = 0
     func expect(_ condition: @autoclosure () -> Bool, _ message: String) {
         precondition(condition(), "Markdown report: " + message)
@@ -29,6 +31,10 @@ func runMarkdownReportChecks() throws {
         }
         preconditionFailure("Markdown report: missing row " + label)
     }
+    expect(cell(steamFailure, "Recovery phase") == "UNKNOWN", "preboot refusal does not establish recovery progress")
+    expect(cell(steamFailure, "Recovery source verified") == "UNKNOWN", "RECOVER observation does not establish a verified work copy")
+    let checkingSource = LinuxProbeReport.render(report: ["mode": "steam-experimental", "recovery_phase": "checking_source"])
+    expect(cell(checkingSource, "Recovery phase") == "checking&#95;source", "allowlisted recovery phase keeps Markdown escaping")
     let complete: [String: Any] = [
         "schema": 1, "status": "guest_frames_and_input_verified",
         "app_version": "2.0.0", "app_bundle_version": "119",

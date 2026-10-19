@@ -94,6 +94,10 @@ class MarkdownIntegration(unittest.TestCase):
         self.assertIn("NSNumber(value: 1)", checks)
         self.assertIn("LINUX_MARKDOWN_REPORT_CHECKS_PASS", checks)
         self.assertNotIn("import UIKit", checks)
+        self.assertIn('Steam recovery is explicit and copy-first, restricted to eligible journal replay; the report must establish its result.', checks)
+        self.assertNotIn('GUI recovery does not apply', checks)
+        self.assertIn('"Recovery source verified") == "UNKNOWN"', checks)
+        self.assertIn('"Recovery phase") == "checking&#95;source"', checks)
 
     def test_renderer_is_pure_allowlisted_presentation_not_private_data_collection(self):
         renderer = (stage_husk.ROOT / "ios/LinuxProbeReport.swift").read_text()

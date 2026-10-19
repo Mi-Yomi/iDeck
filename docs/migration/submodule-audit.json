@@ -1,0 +1,72 @@
+{
+  "wine": {
+    "commit": "a1049ce9cf37f6cf3c771dead31dcbe3b4e4a0c6",
+    "gitlinks": [],
+    "agents": [],
+    "license_files_read": [
+      "COPYING.LIB",
+      "LICENSE",
+      "LICENSE-MADEIRA.md",
+      "README.md"
+    ]
+  },
+  "FEX": {
+    "commit": "d0574ec2dee0743e55b098fb0f89cd8188d3dff4",
+    "gitlinks": [
+      "160000 commit b3fb4b9feafcd8d91c5cb510a4775143fdbef02f\tExternal/Catch2",
+      "160000 commit 450bd2232225d6c7728a4108055ac2e37cef6475\tExternal/Vulkan-Headers",
+      "160000 commit 3e49836995c1dcb3df709440ad2f270b569c6a5f\tExternal/drm-headers",
+      "160000 commit 442678a134e2d25e759c430cca32e06e9e142f1f\tExternal/fex-gcc-target-tests-bins",
+      "160000 commit 71349ae6d14ac2e3e792730e240aecd8076cee6c\tExternal/fex-gvisor-tests-bins",
+      "160000 commit 9ae29638f8000c1603f16385ed1cf6c4c23ee414\tExternal/fex-posixtest-bins",
+      "160000 commit 407c905e45ad75fc29bf0f9bb7c5c2fd3475976f\tExternal/fmt",
+      "160000 commit 8436195ad5e1bc347d9b39743af3d29abee59f06\tExternal/jemalloc_glibc",
+      "160000 commit ca1388fb9da8e69314dda222dc7b139ca84e092f\tExternal/range-v3",
+      "160000 commit 812c2b9cf4310ffacf14e6b64066e78ab0c394b5\tExternal/rpmalloc",
+      "160000 commit 650c98ece70da9e155e7ba1c2b3ee16004aae118\tExternal/tracy",
+      "160000 commit 3234af2c03549bc85656bfd3a86993bf1cd8aef1\tExternal/unordered_dense",
+      "160000 commit 5f418449c48f6ca3ad37c47ec632f17a561c0580\tExternal/vixl",
+      "160000 commit e626a72bc2321cd320e953a0ccf1584cad60f363\tExternal/xxhash",
+      "160000 commit 9bfadd6a55fc92dbd37fa3ba089bf8b36622df4f\tExternal/zydis",
+      "160000 commit 9f94388a339fcbb0bc95c17768eb786c85988f6e\tSource/Common/cpp-optparse"
+    ],
+    "agents": [
+      "AGENTS.md"
+    ],
+    "license_files_read": [
+      ".gitmodules",
+      "AGENTS.md",
+      "LICENSE",
+      "LICENSE-MADEIRA.md"
+    ]
+  },
+  "dxmt": {
+    "commit": "7ab4801645b8785c4138a8cdf000e34f41c101c6",
+    "gitlinks": [
+      "160000 commit d08488fcc82eef313b0464db37d2955709691e94\texternal/nvapi",
+      "160000 commit 9df86f2341616ef1888ae59919feaa6d4fad693d\tinclude/native/directx"
+    ],
+    "agents": [],
+    "license_files_read": [
+      ".gitmodules",
+      "COPYING.LIB",
+      "LICENSE",
+      "LICENSE-MADEIRA.md",
+      "README.md"
+    ]
+  },
+  "madeira-dock": {
+    "commit": "72558e416a390f3669457930f09a389e54f49556",
+    "gitlinks": [],
+    "agents": [
+      "AGENTS.md"
+    ],
+    "license_files_read": [
+      "AGENTS.md",
+      "COPYING",
+      "LICENSE",
+      "README.md",
+      "docs/HANDOFF.md"
+    ]
+  }
+}

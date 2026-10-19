@@ -1,0 +1,1490 @@
+[
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "f9461978e3877f6ec1083904fbf45c660430cae4",
+    "path": ".gitattributes",
+    "size": 70,
+    "sha256": "b6dc3dc744bfb0711e7b033994511c088b22db6041eb6f9488133779de17abf1"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "84ac425b4938416678b184a29eabf03df45a7dbd",
+    "path": ".github/workflows/build-ipa.yml",
+    "size": 123365,
+    "sha256": "6537801b095d0364197d6bfb84bcd646ea4e60bcccb306e1342b3dd5e7c86aec"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "5f72f62c5dde5f2591b9919ae61a0e3ef77a9906",
+    "path": ".gitmodules",
+    "size": 414,
+    "sha256": "5eac61fb148794960dba91ae12f2ac8cbed1d5ed13f5d4d6868b4ac7c505cfea"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "30cba19fa9f8ae1b6decae20f27ba4f41965ae87",
+    "path": "CONTRIBUTING.md",
+    "size": 1249,
+    "sha256": "daa3ede66379f29023ec089db74ce7ef18d1ed219e20d0cc98148dafe1e99a33"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "2a000655e93f84c8d458d702e13a0f682a45cf45",
+    "path": "LICENSE",
+    "size": 35150,
+    "sha256": "e6037104443f9a7829b2aa7c5370d0789a7bda3ca65a0b904cdc0c2e285d9195"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "f200bf771b43a1cfde84327e042b1fac2b40ff36",
+    "path": "LICENSE-BCD.md",
+    "size": 8786,
+    "sha256": "a7a2efb7b8a1e18a21d3fe7f3f8a09e24835b782483763347f27bf6c86077e86"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "5eac352c3149ce0cf7e643192cdc3423f9290ae6",
+    "path": "LICENSE-EXCEPTION.md",
+    "size": 3840,
+    "sha256": "534f059c2e9fe5de1acde82b920651b77ea3b4253f86837a3d6a81f54a5bdbbc"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "e7c6c8c35e60b08a5250328b643950c89829892f",
+    "path": "README.md",
+    "size": 8214,
+    "sha256": "7ff21c8e15087774044b27b2a4473c572a53766e3009bbabc600fa9395dcbdc8"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "d2278685fe4484b0cbff554f80cf072be0db771e",
+    "path": "THIRD-PARTY-NOTICES.md",
+    "size": 19202,
+    "sha256": "66c97b3277ced2bfd1e29f2edb8b49ec2eec0cc74bc3b3d100034caddc490885"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "53fa0161f4c7fb549f4000926e2daf46eca82a2c",
+    "path": "app/Madeira.xcodeproj/project.pbxproj",
+    "size": 108338,
+    "sha256": "ed9dc0fd519dcff0927341e69424f5f84d18372a11104c1578c419df26b3e7e0"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "82ff4de75674a70e48968b3bc67d93c2f4dd5e65",
+    "path": "app/Madeira/AutoTune.swift",
+    "size": 18051,
+    "sha256": "3057dea8c3037de048cfb1b988769089fdf4d14d3df64fbc7c615bf8ca1c3019"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "8edf51a040de088e78167dfd93db34957a1df424",
+    "path": "app/Madeira/AutoTuneCore.swift",
+    "size": 29924,
+    "sha256": "ed541605ce1b02c13ca5bb7ee9405f296f8f55e91a95e06af91f7771669fba4b"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "eac12cd15c2213de2f13bcdcc1e2e5d57c2c523e",
+    "path": "app/Madeira/AutoTuneRules.generated.swift",
+    "size": 21269,
+    "sha256": "3b0bad7f0a25b83bc4cd798c4964a4d564b30b80f0d677d33f3c2184f31c8261"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "c876e1fe41e8515332e5e43e2a9585312b060a35",
+    "path": "app/Madeira/AutoTuneViews.swift",
+    "size": 2699,
+    "sha256": "9361d4c831980d8074822e906433a6a0606dd66000aba1fa4f2b126ead0d696a"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "d182fe0f9e86bf33d4650679e8ee40e23ac9131a",
+    "path": "app/Madeira/BCDAccounts.swift",
+    "size": 29596,
+    "sha256": "6e8565d513eedd28cab321cb5ed6d71d70913f262393547484d068354bd03077"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "f7f9051551944d630bbac13e43add298a0899500",
+    "path": "app/Madeira/BCDAccountsLive.swift",
+    "size": 6466,
+    "sha256": "b72aca72bfe7f0f7a319bf9f88990b87e0d4c81e4000b9200d8cbab1d3d8f883"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "7515d34a130e429be45e6e795e86206510cea77d",
+    "path": "app/Madeira/BCDAddGame.swift",
+    "size": 17169,
+    "sha256": "8c6985e3527d8267081429946665b4e9631a04ac55620dd2f333b79e0a862a8c"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "1195a493859c5cf2640b9bb1540c6d1e5c34fbdf",
+    "path": "app/Madeira/BCDAddGameLive.swift",
+    "size": 3881,
+    "sha256": "15f84d70cfc780f58aadd9180d9a7b5d2b685a35e83b077bfdcafeca1082834c"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "d8ad8be0b2d5099b9b068f823dc3f935a0124c37",
+    "path": "app/Madeira/BCDArt.swift",
+    "size": 20297,
+    "sha256": "cfc82d44721b4ecd0adc85438d0ea7f12d7a9dd5610b2b613050a5e43c80971d"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "33dcd1c28a79d521440359fae4585e4c84cff5e1",
+    "path": "app/Madeira/BCDComponents.swift",
+    "size": 16624,
+    "sha256": "df1211161e4b1b73fdd14768591a6e46d5e2368659f4e4dbc7909045ec430c4a"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "4ccb6157095e21c4cbd21157144820dc104fc40f",
+    "path": "app/Madeira/BCDContent/BCDContentBackground.swift",
+    "size": 8619,
+    "sha256": "740cf3baee3403901d7a55a00053a1c6db015e40d6a6961db613989054fb8c99"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "44a54b858cc72ec43507c7620cdc3eb9a9cd309e",
+    "path": "app/Madeira/BCDContent/BCDContentCodec.swift",
+    "size": 5787,
+    "sha256": "f29366fbe078a3001c12019221ab422f60ddec30f7da80b6a5df33e7c534e143"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "d3c830b55f487922a4605cc20c975481db133544",
+    "path": "app/Madeira/BCDContent/BCDContentEngine.swift",
+    "size": 22343,
+    "sha256": "2da5eeb408e0964c2d22a5626d1c2555a935a494801e5e57957eb3409e3ddf09"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "6c59f1cadab64719131e575f3ccbc0d286b303a6",
+    "path": "app/Madeira/BCDContent/BCDContentFetch.swift",
+    "size": 9681,
+    "sha256": "2e2affa39d418a51a75ba56c278159f3843a37f335ef4a2453e0c78e4f8d57fd"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "71c3066c7c13cd39d37de932fa8d6d643925262f",
+    "path": "app/Madeira/BCDContent/BCDContentJournal.swift",
+    "size": 3903,
+    "sha256": "365d681350b8a1e55b0b5a0650927d2631ac3b4e922b736b8b34125b90001170"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "d8c26e992b0acb946577fc5ec5079b43d8a88303",
+    "path": "app/Madeira/BCDContent/BCDContentPlan.swift",
+    "size": 21453,
+    "sha256": "959d99aaeb83862c5570a757343b476186b96203d779e676a4cc4ed63da28eb2"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "c1bc931a65c46379be9909225ea270f3c912382a",
+    "path": "app/Madeira/BCDContent/BCDContentQueue.swift",
+    "size": 16238,
+    "sha256": "0f5248f02fe5869bd8aae7c86c4fc8adf1d83406deaed11dbe67200ea2e60ed2"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "a137045897d78fecbe7d6efcb28e8b0b1791d5f3",
+    "path": "app/Madeira/BCDContent/BCDContentSecrets.swift",
+    "size": 2682,
+    "sha256": "d426e904932ee97f14e8365709a36fe586bc82fc60eadbb671d931378adb1fa1"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "b118fd394fdbc3e936c0e730f2a74173baaf7841",
+    "path": "app/Madeira/BCDContent/BCDWebSignIn.swift",
+    "size": 8517,
+    "sha256": "13a022215021a526a6b07bbdc79b76f96759994c8fde32fe23eaaf86eace9a02"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "f4e0e46a5a7aa7b637eecb2a4a639bd036ae274e",
+    "path": "app/Madeira/BCDControllerHub.swift",
+    "size": 35594,
+    "sha256": "fded51aabb0ef194ce22ebc0fb79ab4fcfac7cae52fc90000cf2db46ae2795b1"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "645c37105d290cf69983d4fe7af72694b1c48c57",
+    "path": "app/Madeira/BCDControllerHubLive.swift",
+    "size": 1622,
+    "sha256": "7a3575ee26584e4c60de1a893a91bec040b87b598ccc4b18189984f4be65439a"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "39ff5678a39388139730a0d1227860ca9d33016a",
+    "path": "app/Madeira/BCDControllerScreen.swift",
+    "size": 28988,
+    "sha256": "496473107cb293ab66a6ef8b1bebc465fef70ed2089e63051963b815b03fc495"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "c0764479095a0c4d3455168c5f3a7e411ce9dbdd",
+    "path": "app/Madeira/BCDDock.swift",
+    "size": 19012,
+    "sha256": "06c5fa5d0199416d26d40d17c15e016721cf7a06453080a5511708b3e7bd0e0f"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "b73444b735e7dacf62a51fe7b55ef22a22da76f9",
+    "path": "app/Madeira/BCDDockLive.swift",
+    "size": 6871,
+    "sha256": "6c8a89e90537d6cfcd80c466fd0eb9fe2d6a80fc17c4ac29fc13fd6a300d7577"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "33606bebaff58eba12db38aa6de684acea0fd0c1",
+    "path": "app/Madeira/BCDDownloadsView.swift",
+    "size": 11428,
+    "sha256": "d6dd48a240a6b03b9619e6e172fe6fa7c01291ce4eaf9949cf8b4018dade5b29"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "aab116f00302bd1ba0389969c96a33e1a687ccf6",
+    "path": "app/Madeira/BCDFocus.swift",
+    "size": 16010,
+    "sha256": "9bcb44a1e15b5e5e4a416a30e8886ac47e9b8b3ab183533bcd27b8c859bcab90"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "0e6183418a1840be39a5488fdae284bf20949ba1",
+    "path": "app/Madeira/BCDFrontEnd.swift",
+    "size": 11109,
+    "sha256": "a3e80a6518000bb63da68b2748b9eade05792cb5fcef15c1f7daf6cbd8cb5b78"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "9533275f0671c529df620a3f34967f56f09a191e",
+    "path": "app/Madeira/BCDGOG/BCDGOG.swift",
+    "size": 18540,
+    "sha256": "02eda8b12a8347b8833eb919e6719829af7ed8bc140fe867a7999077e53bd3e4"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "df9757a14df8740a27eced94038da9a23e55b72f",
+    "path": "app/Madeira/BCDGOG/BCDGOGAuth.swift",
+    "size": 12420,
+    "sha256": "cb2c0e417174a10d93e7d291ea358f798871e541fa341465c7511ccd342b21e6"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "a07577dc01c452580967e45a0de2c5a2dfba8bc8",
+    "path": "app/Madeira/BCDGOG/BCDGOGCatalog.swift",
+    "size": 4834,
+    "sha256": "e9c91ade7ef2ae028b674876d0a4d9b8318aa7ab49b395665dfb10d345fd3c48"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "91bc014e4c7b7ebdf0bf57922502efab5424113f",
+    "path": "app/Madeira/BCDGOG/BCDGOGContent.swift",
+    "size": 20124,
+    "sha256": "a52b39d8d0fdaaa52b154499dc4ab73dc2b50570b0f2600811001b02d3d91bce"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "5bb2df2e26806bc2b0b0191e61082698d5d058a2",
+    "path": "app/Madeira/BCDGOG/BCDGOGInstall.swift",
+    "size": 9509,
+    "sha256": "4d9f149e33f9be7bb914a74cdd8788341b0ef60e020b0793459dd4539bd1a4df"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "364b4eb08a2f044c3da45173b3ba341ca32de8ee",
+    "path": "app/Madeira/BCDGOG/BCDLiveStoreGOG.swift",
+    "size": 9095,
+    "sha256": "815b46d4ff203bc368ba885a2a752de7f17ccfefdacf548d22cb63476babf106"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "3393f043bb14bbd408b9a29bd4ac15d4521c1df3",
+    "path": "app/Madeira/BCDGamePage.swift",
+    "size": 130126,
+    "sha256": "67f82b8d0c861c4dcb27b41f3da4b019de1c105b5fd4fc531376dea09f5f2dcd"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "240409446cad944ae1ce7bd28e33d1ddfb0e733a",
+    "path": "app/Madeira/BCDGamePageLive.swift",
+    "size": 72222,
+    "sha256": "a6997852bc2198bb8d24e47a8c0728ca23c182607a792d81dda59cac9c19be43"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "0e75964e269919a1c169305e6e9d0ebb62aba28d",
+    "path": "app/Madeira/BCDHomeView.swift",
+    "size": 12840,
+    "sha256": "3a9f710fa094d680243dbb1cc9be261147a8811fff9e70fa57f9c358588fdce6"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "772969173c60be7c1d45e23b45b9f20902714c23",
+    "path": "app/Madeira/BCDInGameMenu.swift",
+    "size": 29800,
+    "sha256": "f433d2d4a17fa6f0ea4eeed4a61e25cc5ed67d6679af1739c3dddaeb4290ec85"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "386fc1c73947752804ecc8a8eb9f503cac65f041",
+    "path": "app/Madeira/BCDJIT.swift",
+    "size": 33604,
+    "sha256": "6f29a3344a55ff58848dcfa0202afbd91ca67f7caf8b3c968bb3cc3e1b7c7a46"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "137443fae1cb27d4b0ec180fcf00beda5a51be18",
+    "path": "app/Madeira/BCDJITLive.swift",
+    "size": 10469,
+    "sha256": "85c22a990b65a296bd8cd86e56de7af2d2ca4611acdfce77bb58f46aa75f3909"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "760512842d83b1441681980d4de654ad243c71f7",
+    "path": "app/Madeira/BCDLibraryView.swift",
+    "size": 18283,
+    "sha256": "c284886d4cbb39c93a9f8ab66bc9118b8c741b9e503bd4076fbf69d80355c02a"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "8c7f4a8c175da52976910d3191dfc5c7a204d6c7",
+    "path": "app/Madeira/BCDLiveFrontEnd.swift",
+    "size": 10532,
+    "sha256": "f3061bd06ac522e1cc2e6a32bec206d17d86bd51416d4ed415d527b7196e3967"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "06cd0c20d8f5f507296ee1f72bce7bc102eee980",
+    "path": "app/Madeira/BCDLiveStore.swift",
+    "size": 37085,
+    "sha256": "2db0935c45a5e514460ecef73d5adfc2a8a6ab22d498dff8422e1bdbb94a72a0"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "28548f33f00bce7b6ece944cfb71c7783f6d547b",
+    "path": "app/Madeira/BCDMenu.swift",
+    "size": 14348,
+    "sha256": "1e324df3fbdf7ad71c8cbde9f7dafa75a0f6f469415c27a004b91565ebfb513e"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "db1b6e0c96670041e333df169e8973dce3c974ae",
+    "path": "app/Madeira/BCDPerformanceOverlay.swift",
+    "size": 6184,
+    "sha256": "6250c81048b3fb8aef13f2ad438dbf29d93b31fb17d182958e5eb157abee48c0"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "8a06a822194d8331a6511e22a70bc84c0f904fae",
+    "path": "app/Madeira/BCDSectionKit.swift",
+    "size": 29475,
+    "sha256": "61273a08a4581fa9723e9e59c37b7c5565050f5608b1310193813a164d56411c"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "feff10108a8fd98ad67d705c6940ac7111d81c20",
+    "path": "app/Madeira/BCDSession.swift",
+    "size": 20408,
+    "sha256": "95a7220b10c17aff2b40b4c69515a8535a744f66d7a141e4c94c3631ff8e1256"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "be0c88feadf5bc770b5810a79488127b5e30cf6c",
+    "path": "app/Madeira/BCDSessionLive.swift",
+    "size": 72052,
+    "sha256": "599944858979df8ba91914540ed0bc98c111be2bb50cc0e40218ed2bcb0cd457"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "e5a4371012d58ec72763d1c384b0c106f075f4e2",
+    "path": "app/Madeira/BCDSettings.swift",
+    "size": 52359,
+    "sha256": "1998e81cf29a09e015faeacc3eeef12e92781dce98da9b0c87a69450a8dadd5a"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "ab460bbb63b919a555169cbc2e72f9fb6fd06ceb",
+    "path": "app/Madeira/BCDSettingsAbout.swift",
+    "size": 4325,
+    "sha256": "6c4278365e80fd93a1fbf185a4a51f1af702b835632e8ec72fbe5cf7d9bf424c"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "02eb9f9695de5539b73cbd6f4dae8e38be45e9df",
+    "path": "app/Madeira/BCDSettingsAll.swift",
+    "size": 15865,
+    "sha256": "6c9dc01ea8a9743cc726e18596fc8290bf8aee9736e6ee376be3e78ed6b10297"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "458f6f13a5ff4ccdac7b5ae68670267ed04313c5",
+    "path": "app/Madeira/BCDSettingsCore.swift",
+    "size": 12811,
+    "sha256": "0ab965ada2ef29d5454c76e1b6986ba0ba4cf787399e22e0ad314e167f37e06d"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "2659d53b5d667c6abcf3d7387e8fe1e34c642bdd",
+    "path": "app/Madeira/BCDSettingsFeedback.swift",
+    "size": 12248,
+    "sha256": "dd26583735ae1e32802efeb52aee33efb30825af76209a4293d40a2f3e774a2a"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "3bc36fa0ff4b7e0b2af16fca511e70eb2da8d1b9",
+    "path": "app/Madeira/BCDSettingsLive.swift",
+    "size": 46902,
+    "sha256": "3ef1e9110698464dcc40d71d62327faebdf40eeea2938b5f2f14068c907891c7"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "fec7402a02f61ef26c24787a23f2ceade3e1e481",
+    "path": "app/Madeira/BCDSettingsSections.swift",
+    "size": 65353,
+    "sha256": "8f18381f13c2b6dcdd9379a4e011b1e68d61c513ede169735b28aa8c0e0f59a7"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "acca950847647a3659e201d7cd9308dde3a82df1",
+    "path": "app/Madeira/BCDSetupView.swift",
+    "size": 31878,
+    "sha256": "8eabfba1ada3cd866bff27721ce9725c267a30b9f85727467eab39640cad843b"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "4bd73787734fdf9d2e28965365b1e43340f33d32",
+    "path": "app/Madeira/BCDStartingScreen.swift",
+    "size": 15806,
+    "sha256": "f3e6643f80419e6838b6cfa65b6093f014e797bda5cc5392fa2242eefec805e0"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "d0502346d35b30578474991a6a45885f7f83f554",
+    "path": "app/Madeira/BCDStore.swift",
+    "size": 8595,
+    "sha256": "b63ef09ef877c4301efa6ce98efc6702fea122c719586851c6febd4aec500ef7"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "ef5e164cf168038f22cec81e969b43dae47c89f0",
+    "path": "app/Madeira/BCDStyle.swift",
+    "size": 5521,
+    "sha256": "10d672a6ca7e92de7827c0fe039122e2cc8f74c6876708a1d8e549a30b2bc9e8"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "fe99f716c23c8ee6367017178d22739c44d73451",
+    "path": "app/Madeira/BCDTouchControls.swift",
+    "size": 21907,
+    "sha256": "afb1a0ee12e862b1367f37c939c7850f0d1ebcfbb3be86cec73160a483958a4e"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "031bbdb8c0517a08e179a0085fb5bff356450680",
+    "path": "app/Madeira/BCDTouchCore.swift",
+    "size": 17154,
+    "sha256": "540a7040fb6934d4154ca0b1c7563aede8a8dd243e135be81a0a614c16502d9e"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "c7eed5cdaab3a8fee9839b04d1d67fb71607af2a",
+    "path": "app/Madeira/BCDTouchEditor.swift",
+    "size": 21728,
+    "sha256": "acf23811f4d919407504a2ca06573573b8910b4022710d4ba0c07a036fb34b13"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "29e8433112498369f6dc1f627b4c69d0b6fb08d3",
+    "path": "app/Madeira/BCDTouchLayouts.swift",
+    "size": 22393,
+    "sha256": "110009453bcd94b2e1a4cb7767e6b308821dc2979540d6eedab373bc02d29c72"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "ca35695bf95c4029573a496504abcbc32fd4ccaa",
+    "path": "app/Madeira/BCDTouchLive.swift",
+    "size": 14258,
+    "sha256": "467241510585f8c06e517fa77b8f6c854353360e158a4138a3d67bb10b97f253"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "e5b03070aefc6e5b4d98055317433077c986a796",
+    "path": "app/Madeira/BCDUpdates.swift",
+    "size": 8075,
+    "sha256": "e7d9d275a4f15aed31cdd992c8cc52b55eea51fd7d05e92063fae097aa444078"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "6279a07716ade563d2103404018d60dc36657bc2",
+    "path": "app/Madeira/ConfigCatalog.generated.swift",
+    "size": 237469,
+    "sha256": "0acbddb54f33599a7cabcbbe885684ab38a6fa189122ac39b898354b7b8ebad4"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "9bcf0ef0b74f6733692ef6aff55497eaa3eedd5a",
+    "path": "app/Madeira/ConfigCatalog.swift",
+    "size": 1543,
+    "sha256": "c60c3eef7367262045c274f58c62458ce94fb155b9ad259e68ed5edb3f9b2566"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "27da1b50a3d411eb133d557b588355b04f7622e5",
+    "path": "app/Madeira/ContentView.swift",
+    "size": 154415,
+    "sha256": "6312ab1cb51e83cdf8befa8c9bf73cf77bb327c8dfe3b5bc7add3e3a0a4c0286"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "54f173c9bd9ba64b9606fdd81ce83348ce53223d",
+    "path": "app/Madeira/DeviceCapability.swift",
+    "size": 9636,
+    "sha256": "9f303be6befa29f11f2b3beaba9208771faa2538a68f8d4b6b3b018ac4605a53"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "85875ef7364da581015c21ef8ca98f6340349c48",
+    "path": "app/Madeira/DockInstallers.swift",
+    "size": 67801,
+    "sha256": "3873055a5da22c8b0a8d0893ab38f6aa126df4ce2c2bd1dd5898a3032b436220"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "25dd65b81b957540facb93db526a321798298717",
+    "path": "app/Madeira/DockReset.swift",
+    "size": 33319,
+    "sha256": "6ddeb4d5da96dbb977376b57395508f98eb47982cf4af8a25492e9536847142b"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "35bf0ee9addf80d677384e764a3f66f4c7a68a06",
+    "path": "app/Madeira/DockStartScreen.swift",
+    "size": 21342,
+    "sha256": "22e2dc894609ec9b33c8979f36dfb66d6781963df17a35048901802f8d4c3e61"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "a6e5f7f45777f6b92794c8e0c81e52d82da78ab5",
+    "path": "app/Madeira/EntitlementChecker.swift",
+    "size": 11098,
+    "sha256": "dfe2abfd5bb4858590a801022c79ae8c818de8a22f852c23cc89f287f5cb4f79"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "0c63b9610bd408c1d97536c51d0c3e2e8a942f36",
+    "path": "app/Madeira/FeedbackUpload.swift",
+    "size": 5852,
+    "sha256": "aa6c660c6363f10707e5f10508a55c9d8a65e70b8a8a5efda211113c1a49cd5d"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "9d8ed64f2689f7cb454fa2671e7e7ec68bab98f2",
+    "path": "app/Madeira/FeedbackUploadCore.swift",
+    "size": 4757,
+    "sha256": "3dbc4f900471527d591fa9b5206a1e33e5e538b103fb4d26ebb0b4ac87a033a6"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "77fdbbe25c0d48f846b4fb8e8ef6c8046902a71d",
+    "path": "app/Madeira/GameFiles.swift",
+    "size": 6087,
+    "sha256": "9da1b5d0ceec0e4a3e50db30db5ab9f7c0252d54b773be6cff6894c58f57c180"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "b37e57321b6af66c66a2a188b7979fb00c2e01f4",
+    "path": "app/Madeira/GameLibrary.swift",
+    "size": 18014,
+    "sha256": "f1f2affa21f5064f2f9d669262604a46f4ca57bfaaf75a118a698a879b21de39"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "89220e7b96cb4d0bc68c0ea2029b938a435479f3",
+    "path": "app/Madeira/GameProfiles.swift",
+    "size": 7946,
+    "sha256": "b3c52e742118842460aed5714a870dfb96fe819f9de3c639c01f1069c9d4bb7c"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "932755d4f04785dadda64e9bd1ac32708799d26e",
+    "path": "app/Madeira/GameRecommendations.swift",
+    "size": 11137,
+    "sha256": "dfec628ee6971935fc4828f13c927a0472ab26b66bd985bca6108a7a0da7e6ef"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "d3696a1b99459520efae7643c508ff453eaf31ac",
+    "path": "app/Madeira/GameRecommendationsApply.swift",
+    "size": 13719,
+    "sha256": "e097d7eee86812adb21499e796e46b87eb7195f201a3b4237f1b04e43201bc1e"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "f9c97771343b8135cd63a016d1253b94026cb01b",
+    "path": "app/Madeira/GameRecommendationsList.swift",
+    "size": 30740,
+    "sha256": "9ebb48e9809ca516b1ba3c0c53e6c10fb646f9d9cf1fce769e59ce8c29bd365d"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "c2ebdc45408bda30df9a9a0b48ceeeb9c3a888c6",
+    "path": "app/Madeira/GameRecommendationsSource.swift",
+    "size": 22053,
+    "sha256": "e1eff9c10b1a2880b4904539906e35156005f672e761781cd41d6480bcaabbcb"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "72693c7620cf260997e40a0de3bb39ad42490a4d",
+    "path": "app/Madeira/GamepadInput.swift",
+    "size": 25077,
+    "sha256": "61c2e1b1da63b3b9124b5c6bbe9cc8cae5bd57b40086443a09e8d6fb5baa6ba0"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "9cb6fd295398e92a99a59650ffa7e9801c796777",
+    "path": "app/Madeira/GuestDisplay.swift",
+    "size": 14485,
+    "sha256": "9d520958d697fea11a0a914411d0b16b876a3698b1c51674b795cdc00ee9297a"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "05428c1884ae87bbdc044f5a68d045811981de9d",
+    "path": "app/Madeira/HardwareInput.swift",
+    "size": 123160,
+    "sha256": "8ac2529b1a1e930121d0933723e47e2ac57a4af276b0a681c4ee27a5e58d3918"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "fb4083128ae8d838c87cc36186502356a9e58ffa",
+    "path": "app/Madeira/Info.plist",
+    "size": 2330,
+    "sha256": "a950f6cb6a63ae26ddb134e39c463d74398ecaf89ddd720da23a569a6f7bed0e"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "c5aea14b280dc8600bcf5f5324d6f5958d4630c0",
+    "path": "app/Madeira/JITBuiltInHost.swift",
+    "size": 8863,
+    "sha256": "c2cdec02dfaac2ee4ba4bf5aeee5ca3a7110b007f74e57fb05548b0487bc0189"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "f12892c6b8e6aab89a79a4b35e8d4ac43fa44bfc",
+    "path": "app/Madeira/JITBuiltInMessages.swift",
+    "size": 1471,
+    "sha256": "fb15379da988c6402eb90c1220d959bc2f11f3a6150296bf50b33cd311639076"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "3e5c03d3cc50a16f0d7bc3d610e4f4361349f794",
+    "path": "app/Madeira/JITNetwork.swift",
+    "size": 17521,
+    "sha256": "270a7846cc8d667d60674d0d70caa0fe2c933781451e7b41f0e1997b795f3939"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "f82980e7a677582153ac06f4c0d9edc159d000b4",
+    "path": "app/Madeira/JITPairing.swift",
+    "size": 13690,
+    "sha256": "15667f13fbeb673791ed88a18bc7d9c2b4407c808b9d3fe420d795828702d8e7"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "ec005f3cd98bd7da0f36baf52efab32a1ea01e22",
+    "path": "app/Madeira/JITSetup.swift",
+    "size": 23963,
+    "sha256": "4340a847e2ea371884fc92a7db9d087380a6452601162c100db2c59e3ca49b98"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "536ed1de29e994f71645c5281225cd602fd2293e",
+    "path": "app/Madeira/Library.swift",
+    "size": 91077,
+    "sha256": "78d748e738c8cd1d49eca90711467e692bf8b5846e1abd3db0b7f5088618723e"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "e78ee9a9b794f08c3f1cd0a578d315d4d8b6db7f",
+    "path": "app/Madeira/LibraryBCD.swift",
+    "size": 6080,
+    "sha256": "d709460ae690d11e79b0a0633457cd95c5f41cfff476cda781b0104520349ccf"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "af5c43f90daef6c69375d65d8d8143554d3d61d0",
+    "path": "app/Madeira/LibraryPrefs.swift",
+    "size": 5470,
+    "sha256": "78a2fdcf22ad62d60d56ef07fb06e0fe9a7e8f5d1a5dafeeed10017588e49048"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "9fdcbf7d6d7d80b2c6d8bf7b8f74f2759307dd1d",
+    "path": "app/Madeira/LogPattern.swift",
+    "size": 3907,
+    "sha256": "e9bda2d881761df1b6f627b0ff556485e804f7b79b6d9facafaded22eff4f2bf"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "87694ca0d1207f80fbcfae31583e7227f8f8ca4b",
+    "path": "app/Madeira/LogStore.swift",
+    "size": 17679,
+    "sha256": "6859602822ebe1e0350157bfe76b19862d00619373164cccb37c441ff9630ad9"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "d67f264ca304d6a009e9fb9ebf211da62658be81",
+    "path": "app/Madeira/LogTail.swift",
+    "size": 4413,
+    "sha256": "e8bb421ee454d1cf24b9925c86fc9836091f75cc2e9df0626ffba7458f913289"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "f96636117d13ba1bc3880ede31d3e8cfced57e14",
+    "path": "app/Madeira/LogUpload.swift",
+    "size": 8805,
+    "sha256": "a9fc376a81ae6d148eb0aae4be252c3b119c4c166e4bf57363569daf215c53be"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "cba8db3563efaaabd2f9253080e51b1d072c1d61",
+    "path": "app/Madeira/LogUploadCore.swift",
+    "size": 10060,
+    "sha256": "95d5312a97cfb8b14ac5e61f30c6e072cbe030787de6fe4a0794262e1020f97d"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "292f04a583b2cc930b16d32456531c103fe7ec56",
+    "path": "app/Madeira/Madeira.entitlements",
+    "size": 1124,
+    "sha256": "59733b546b63e2b74e6372cfd33e878a01f3af4abfd823ea510696b7393eb229"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "18d962a3fa3afc4e7f1d067d57a32723bf18a3d8",
+    "path": "app/Madeira/MadeiraApp.swift",
+    "size": 2165,
+    "sha256": "8bf7106f90761474d4fef3ce1565050463d178abf2e9bf7bff5339c8c6a6b2e8"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "440ac7fa05d3ed138c33170d10d5137c726900d2",
+    "path": "app/Madeira/MadeiraConfig.swift",
+    "size": 9238,
+    "sha256": "05cd15167772ce3b1cc88408e49a9e87f5f2f5be2c7680d7f90650ad78dc393d"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "9453f93c19ff5488707b443de574a00b78358504",
+    "path": "app/Madeira/MadeiraDock.swift",
+    "size": 39162,
+    "sha256": "6b9814413eb93859e237da3ecea6bd72e060d54b8b3445a358283806de960293"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "281eea4ee1706bb7b246c0850b2b7e9d9d874519",
+    "path": "app/Madeira/MadeiraDockModel.swift",
+    "size": 8901,
+    "sha256": "b54560677266783f3bd6f61070835bd30dbbb014c91d62fcab0bdde756adb336"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "9788d5a2a397725a50e7a72a1a51d938921303a0",
+    "path": "app/Madeira/Onboarding.swift",
+    "size": 10285,
+    "sha256": "8973801132a9f863e34b3ebde8d648c394c19349691588592caf48aa319ab9c6"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "f44f68cae6c0c9f0f987492aaa95902f9dc6153e",
+    "path": "app/Madeira/PadKeyboardMouse.swift",
+    "size": 12589,
+    "sha256": "4f095336dc3ac1883f53f4f384f7ea70d64753bb53b7b3a80300ca240052adfa"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "b66cbeb1f2b58439b7e872d4612c8cb0ef5815c8",
+    "path": "app/Madeira/ProMotionIntent.swift",
+    "size": 5052,
+    "sha256": "954a343f0c012f7436382aee565be843c510924a47403a5070ae90c65dd7424f"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "e1f710103e18e140d78a209d66ba7971a8ebcd43",
+    "path": "app/Madeira/SavesAndShortcuts.swift",
+    "size": 14011,
+    "sha256": "a41159b32af9f0f70ad41f5cacee1dec10417f0419aff24db78b173e1ad405b6"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "90cd2af227371e19e883aba4ea2c1a783fe5aa7e",
+    "path": "app/Madeira/SessionUI.swift",
+    "size": 3351,
+    "sha256": "85388363d926ca2b768ebf10da95cf221a59e5828b169543d634534df9856508"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "0c103bd6e6df881b669e6ae7d695ab6fe947a38a",
+    "path": "app/Madeira/Sideload.entitlements",
+    "size": 886,
+    "sha256": "5c9b2c945106a8ab4a8119da4add662e5a520444f09a8c10fc804ba24817a411"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "31cf7960012247f5138682f9176c27b140521d36",
+    "path": "app/Madeira/SteamCloud.swift",
+    "size": 35739,
+    "sha256": "3a157c03f3315fe4a65d9f9f3102bff39adb92e975a233f46e0e9bb72e6df02d"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "ff5fd6cd2e4e4a98269ad604c2e4b22d6b72d4b2",
+    "path": "app/Madeira/SteamDownloadBackground.swift",
+    "size": 9900,
+    "sha256": "8f722248de0c10397f6d940739417932fffe135023e92b3033d515663ad2eaf3"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "b505460b5a567a0ed867e7e31b98d7e94e7524d5",
+    "path": "app/Madeira/SteamGames.swift",
+    "size": 22981,
+    "sha256": "316259aa00840bfb5b10ffbad8ca9e611e730301958d710dc5061548bf3a1ede"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "5d15312e4429ace365689418aefc231ad7dbd2c6",
+    "path": "app/Madeira/SteamInstall.swift",
+    "size": 6632,
+    "sha256": "5d3d0c55420514ca0c82e6d3679f920760a9400078e97f85e6b761879c28ba23"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "0ded4980d32d32ec36c467eac0edae13f677c970",
+    "path": "app/Madeira/SteamKeyValues.swift",
+    "size": 4244,
+    "sha256": "8e4d9e0da3c5111d8314cb3110f8462ff06a0906cab7f124ecd607741ca567cf"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "c97407f2f0d61ef5d3d4072a46a4c28caec0cc9b",
+    "path": "app/Madeira/SteamOwnedLibrary.swift",
+    "size": 59250,
+    "sha256": "d57dff38e167eb13a6b79122df0086658a03ffa9d55d1651eb6f0c76513c324e"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "0d66986505d745d9dab6012fca08c905a08c1142",
+    "path": "app/Madeira/SteamRuntime.swift",
+    "size": 17711,
+    "sha256": "36b56907e7bc4ad67dcf947d67aa0c5597a1d1229c292494cb1e50612c40b1ca"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "a260357051627c074f6b580722387494a4f7505e",
+    "path": "app/Madeira/StikJITHelper.swift",
+    "size": 134321,
+    "sha256": "d81396faaf2b3dbd163dc6f100ef896c804c6f7fb60bfe2365317a76096143e2"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "60fd45e61af948651761e8bb0bb2ccd9f4f9ac42",
+    "path": "app/Madeira/StorageModel.swift",
+    "size": 4528,
+    "sha256": "29aabd64bb22864666348de74aea609658b6e649249e5b1650ff43bdbf8e68ae"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "8cdf6c5a7a37ae2fccb4d15b5d49862c70aba8c8",
+    "path": "app/Madeira/SwiftSteam/Auth/SteamAuthAPI.swift",
+    "size": 3509,
+    "sha256": "5786f910af69b7f0cdaed09f4c2b9419ac7f1fca01bb39542a447e934d5cb2e5"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "0ee1a823380298ec8d9ba2a58ec5162e2c4b9951",
+    "path": "app/Madeira/SwiftSteam/Auth/SteamCredentialAuth.swift",
+    "size": 9599,
+    "sha256": "05fbca74eb8dc515daefdf0878cc7532b894b7c5403437d74599e00e1dca9dc3"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "c6492dfcd576047fe44f6db979ffd4ea1fc8cfe4",
+    "path": "app/Madeira/SwiftSteam/Auth/SteamQRAuth.swift",
+    "size": 6191,
+    "sha256": "f5b8c4d3e1dfd9639a05c73dcc6851517fb05b8fbe34719308621cc083cfab04"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "fd32056fd0b2e1649cc48e5abfcf70447b55a0de",
+    "path": "app/Madeira/SwiftSteam/Auth/SteamTokenStore.swift",
+    "size": 3207,
+    "sha256": "f325b9a465a13a52f833fd4e6a41b10af0e71852af47ad1b7cd3b3eba8cf67f2"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "69f00d615a42b5e9c19f8bd36080948a900c18ff",
+    "path": "app/Madeira/SwiftSteam/Content/ContentDecryptor.swift",
+    "size": 11377,
+    "sha256": "5b848bbda7e9d9718db3d44583e22a787ad2ebd58317f517a9bd9364279fcd1b"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "dcdbb8b9fc6b5fdbb8c81445943febfd643703bf",
+    "path": "app/Madeira/SwiftSteam/Content/DepotDownloader.swift",
+    "size": 41320,
+    "sha256": "65f463a42695c344d3625d44b79e7ffae09c9283eb6f8987d3f90a504a32196e"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "4277f0c681fd91d00572aba2dd24f3eb418de517",
+    "path": "app/Madeira/SwiftSteam/Content/DepotManifest.swift",
+    "size": 8099,
+    "sha256": "1410a262edcca9f4446fd38ff7d1e7d100f98282a7cdd7d4e01dd56ac8fd506a"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "2f3e95c341aecb4c2df96e5fed97751744858cc0",
+    "path": "app/Madeira/SwiftSteam/Core/CMServerList.swift",
+    "size": 5011,
+    "sha256": "482dac3bb8e63ce3f98f45f24277a4bb04b0e4b6dbef81ee9a420bfdc63d19df"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "3f8a9a494c63c868c97a5eb1a99fd01e6d3183b1",
+    "path": "app/Madeira/SwiftSteam/Core/LicenseListBox.swift",
+    "size": 2259,
+    "sha256": "9f8d2333d933966c1de5f3108424ae9de2f83300a43f753fb3f87a828b65761c"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "c3cd38a6880ba0991b29e35784a0054f5b20faf5",
+    "path": "app/Madeira/SwiftSteam/Core/SteamCMSession.swift",
+    "size": 1482,
+    "sha256": "3568528a9946539eb43796dbb459aa2ef27e1baeb1524a422c226eba3ab06647"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "70c30052c7d4939d357ca3690cca0b65813a995d",
+    "path": "app/Madeira/SwiftSteam/Core/SteamConnection.swift",
+    "size": 7808,
+    "sha256": "b29e4b529c702598cb889148d5eee72f64c57d6010b836bffb8dc71d10ea3683"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "d920554c0750f4d0cbf23756d3758438e31b0572",
+    "path": "app/Madeira/SwiftSteam/Core/SteamError.swift",
+    "size": 5077,
+    "sha256": "6dc3ba2241ec2ba75c4f2442d64e9a679a044e1beb7daacc4009e3b0b7867fe4"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "f748a789659a3a5032a7d7655580d28bfc18c376",
+    "path": "app/Madeira/SwiftSteam/Core/SteamMessageCodec.swift",
+    "size": 9055,
+    "sha256": "ee9fdf6431cdb96d2880070f8dabe01fcc96ad37e403804a5fa10a00daf12a11"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "20ecbfa4f598dc3db9c9048e6199dae5d332b023",
+    "path": "app/Madeira/SwiftSteam/Core/SteamProtocol.swift",
+    "size": 2818,
+    "sha256": "ce6747794995df34e07d1cf622d5ca65ef5ce67938ce0b4f9b01f4f38c4a0420"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "c9dad145e8f778eda68140b746fd3005101ff8cb",
+    "path": "app/Madeira/SwiftSteam/Core/SteamSession.swift",
+    "size": 35099,
+    "sha256": "f6bc5096beb2374835f49964092be7916d7a5d58b7515dbc79e4d80ca6a10d1d"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "70c127470e65e140f5df157d14444726b28ee88a",
+    "path": "app/Madeira/SwiftSteam/Helpers/SteamDevice.swift",
+    "size": 623,
+    "sha256": "3f7b45a3eab7937d20160bd6379f47ecd5fe191601135752ba4a28e76eb84b62"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "9acae90badcf2068241efad48512b37955ed165a",
+    "path": "app/Madeira/SwiftSteam/Helpers/SteamLog.swift",
+    "size": 1045,
+    "sha256": "7c9e18b5db860051907f27e514c7a595f68ded5125a5e1b772467ac97c0df3ba"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "5886819fdc178a5c87c2cc82acb818a2d72cb783",
+    "path": "app/Madeira/SwiftSteam/Install/AppManifestWriter.swift",
+    "size": 9651,
+    "sha256": "dc4ef26dde41e4fea581bba0b781c38756a9c6ef336123b6809d83fc1dea2212"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "27adee616ae37359a3be0ce28e1a67dc615a5876",
+    "path": "app/Madeira/SwiftSteam/Library/SteamAppInfo.swift",
+    "size": 20562,
+    "sha256": "7ab29dbfe74aff64b494cdbf59d0622421e6f072ab0ea1e316945028312d5467"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "c01735adcef9530af33cf417eb9e6fa563dc399b",
+    "path": "app/Madeira/SwiftSteam/Library/SteamLibraryFetcher.swift",
+    "size": 17267,
+    "sha256": "92a4aaeb6865dfb9f22dbd4018dfb0381320582e2c0fc99b012f6189f43d5266"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "a6a4e51ccef385cdd07fe3962565ef135cf4cbdf",
+    "path": "app/Madeira/SwiftSteam/Proto/SteamProtoMessages.swift",
+    "size": 35906,
+    "sha256": "3d6fd25715f0d1efcab2bb4e212bf6e6f0be1f945d6022818202362b9c2b4c46"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "1e5f112a15321921fce3798c749fd1813587ca8b",
+    "path": "app/Madeira/SwiftSteam/SteamSignIn.swift",
+    "size": 9864,
+    "sha256": "413a234152f654db94902252a8e9390eb90be68cac345636ba2954efbbd9fcc4"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "8bdc49f53abdb96f04d59d929ab31ee4b2672baa",
+    "path": "app/Madeira/SystemGestures.swift",
+    "size": 4888,
+    "sha256": "27ab409e6014bc32eaaf8f2e157daa411189712121274bd58f6be8bb672959e6"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "65898957e6b20b29d041c9f6ad2c50befbc0f60a",
+    "path": "app/Madeira/TouchControlPresets.swift",
+    "size": 21326,
+    "sha256": "53994186c49b6a1ef98838caeb5b8e94182e7ba2814680b13256864f955361a9"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "bb54757f64e62d634c20ded5c81359fbee92ad42",
+    "path": "app/Madeira/TouchGamepad.swift",
+    "size": 8678,
+    "sha256": "d8db4817052bc8fbed23108c6d39f0074c6158328efc426b4afdb86771960f79"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "dba430fe191b910ab8cb37a79568cd830657137d",
+    "path": "app/Madeira/VCRuntimeDownload.swift",
+    "size": 41677,
+    "sha256": "a1cc7583687ba6c5639c681c0658f0d97c67cb845a699108cd42c8206e77d703"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "cabf6ad60c1a2af88bdf4fc4788a88ebd9e9ca89",
+    "path": "app/Madeira/WineMono.swift",
+    "size": 20684,
+    "sha256": "1cc20f53b25878f51453dfb79d6a568b94337a5c57eaa03d869d39ab9448a694"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "5c0cd765777b2b527c95bb649cb25d7c1abe7107",
+    "path": "build/crypto-unix/gen_gnutls_symtab.sh",
+    "size": 3189,
+    "sha256": "90b89ffff03b20ea1184d3d6cb81fc2d9c1533fd18df93c6035779e0acf37694"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "fdedba2f151042b843244d8fa8504874c7e3e591",
+    "path": "build/d3d11-triangle/build.sh",
+    "size": 1978,
+    "sha256": "6de999213a09f25754da7903806d4fc5634cae9c3b341662945afa1eac6f3c5b"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "872bcb31feaa44704bdea50ae1c1ac9b9138412f",
+    "path": "build/dxmt-ios/build.sh",
+    "size": 18313,
+    "sha256": "9ffcd11fb82eec4c5eb3db3846ae171908173b8e88100c6782c6c7b0d04fcfb0"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "0e57e12a01401dd74a55b573ba306d6aa6521891",
+    "path": "build/faultrep/build.sh",
+    "size": 1446,
+    "sha256": "e8420130e6faadd186713f4a3ee5073797105ba9c0d99cab7dac1f791dcd0d58"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "1024eb28c9670b5604386f7aef3856169f20da55",
+    "path": "build/fex-arm64ec/build.sh",
+    "size": 1867,
+    "sha256": "3192a5f294627c3944182864e9b9bf5dfdcb96192f366c04285a13eecfd14da0"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "ce3cc602fe326f95c0629840d7690de41cb6d88e",
+    "path": "build/fex-ios/build.sh",
+    "size": 789,
+    "sha256": "77459a9082e05016b93658ba3df7b5fa296457224a05fca8c2d4c72176c5e6e2"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "8a29c38c836566d4cc2583d9cf95a45082a50855",
+    "path": "build/fex-wow64/build.sh",
+    "size": 1281,
+    "sha256": "e24c64e7c94f01d2c79c296d38679c57e42614d0ca1b045d0df4cfbf40937ebf"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "c9e773c4bb836ce306358977ed4e46272783f47e",
+    "path": "build/ffmpeg/build.sh",
+    "size": 7277,
+    "sha256": "232b163feecb188edbeebd1b58662aaa8fd51ec33b8e371bbdea3471075aeb95"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "f7893222a035ca41c07df1466ea3366efe056bf0",
+    "path": "build/freetype-ios/build.sh",
+    "size": 1212,
+    "sha256": "28d7517ac8e259918bcf86428cac56672aec3a33f14ea50ba9f4be288666a9e8"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "bdf6c331871c19f8241e7e5a3cfd6479185476f3",
+    "path": "build/gnutls-ios/build.sh",
+    "size": 4314,
+    "sha256": "da8c25ecdd8cfa3bd9d9208f7d27b585f97ae01445430daf1ec46c6d3672a72b"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "0907a37ce532ad24b9aac085b86725e7ec2561da",
+    "path": "build/madeira-d3d12/build-canary-ios.sh",
+    "size": 1174,
+    "sha256": "122991b5f5ff91e0b921ce79674f9ba042d18d13a3b3e7b32e553618cbb3f500"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "1043146350390b8e64763736ee585235ebeb04b0",
+    "path": "build/madeira-d3d12/build-canary.sh",
+    "size": 1241,
+    "sha256": "735e6559c4ba431688330aca994118672f398f9bc911b592344af53ee94c8ae2"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "2dc01f6eab00bf1fc4b13b82ccc5ed8f6aca093c",
+    "path": "build/madeira-d3d12/build-ir-roundtrip.sh",
+    "size": 1208,
+    "sha256": "95d9d108a4f71ec0845bfb30be4915c6e604d51157bb8643841533efd2d9ad25"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "8617c5fbd48ac8225596d7b07b06adab8cfeaa10",
+    "path": "build/madeira-d3d12/build-pe.sh",
+    "size": 6827,
+    "sha256": "0a516a13aca80bdf96a8f4838bd4e4ac2f47f3f2c76bd55c4134364f7f9a3040"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "030ef545669dacd4f0aedaa3e953dd0d12173363",
+    "path": "build/madeira-d3d12/deps.sh",
+    "size": 4673,
+    "sha256": "5e6456a1be7e1181b67ff7e8a3b2a9f6f9b1a3e96545ed86f2343213cb89bffd"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "080d43395ba2a6d4894f388cecd4c44f72bdf5f3",
+    "path": "build/madeira-d3d12/fetch-converter.sh",
+    "size": 2614,
+    "sha256": "0eb7d20999da4e3b574db3304bac6e5e1e657e8cd7e53938af86bc681b0053a6"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "5951b56d5a0868537a313d559da95aaf9b3ca2e5",
+    "path": "build/madeira-dock/build.sh",
+    "size": 2639,
+    "sha256": "d6e1842a9a155a7fac7b260e826888470c6a8a514578604001444552cf98bc27"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "3a9f282d611244d133c93040fdf42fdab4b19f79",
+    "path": "build/ntdll-unix/build.sh",
+    "size": 10643,
+    "sha256": "0d65d806edb69fce328a986139f8fddf603cf720327673608064a9cbf2dc5f7e"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "eb5423f8525713a80f21f81ba9e27d801f38c12d",
+    "path": "build/ntdll-unix/compile_patched.sh",
+    "size": 2360,
+    "sha256": "ae13a522dcd1c43eaea9903ef73130cba87e2af31fa9c2df9e04628bc7bd707b"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "cca85f921b19c7a4f3117a1131056c9a94de02fd",
+    "path": "build/rppairing-ios/Cargo.toml",
+    "size": 428,
+    "sha256": "c5cbcaf9d6d5bd1e0076fcd9929f9014ea1a0e6b1f6151218b9d8082d726dde0"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "669d8a57ea9df8c5b479a196191aeac7af0091e8",
+    "path": "build/rppairing-ios/build.sh",
+    "size": 1078,
+    "sha256": "078937964633f5ae5e37a184c511c638d13ddd206b3e0bf97814623a1d676df8"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "02392fc4defae646a9602ec64e0c2156e1888f0c",
+    "path": "build/stage-licenses.sh",
+    "size": 611,
+    "sha256": "3a1095ff5cf2feffc124d60138905d6912cd5f86e04a1d0872fbf115743126f5"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "50d6fdb1d59389285100d0a4fbb483619839219a",
+    "path": "build/win32u-unix/build.sh",
+    "size": 5356,
+    "sha256": "b5ff2f561d7fc60d302bc8d108762141e0ec2d27daa87a5c6279687e8e9d3602"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "2dd00c8178d9e63369e851226b5217a0824516c9",
+    "path": "build/wine-i386/build.sh",
+    "size": 9077,
+    "sha256": "9a846dc9ea16bcf836d8efb08bec45b0358f9dd5d473300ab2b2295045653f50"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "998b4071c363860dbfb99ea20d89a8e3bd69a9d1",
+    "path": "build/wine-mono/bundle.sh",
+    "size": 3851,
+    "sha256": "2f251a9489a3a9ba5534cea95287cf70816f09268aef0cd8322af5308f3a92ad"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "e0c28c931d8607c655264fa93e56d3cb61ac3123",
+    "path": "build/wine-mono/fetch.sh",
+    "size": 1603,
+    "sha256": "b128db237296bedc4f3a81098c65f8282ec43245c9c2f666cf00101a05257de0"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "2a0bfe583fa432fda6e51e4d0c1cddc1da0fd871",
+    "path": "build/wine-mono/pin.sh",
+    "size": 1784,
+    "sha256": "55c4b537b85da2aeca2ce8180de4e07286230f1963cdbf995e6dd42107b4d09d"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "6ecab7f7b2298f307dc5723201c1866e54edac52",
+    "path": "build/wine-pe/build-modules.sh",
+    "size": 8799,
+    "sha256": "7e9829e4c34f6fd1d79df510287c93d578e35edf206a7e2049cc2641e9019a42"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "f9ca80d2beab3e857e1798c501252faf16c0bf7e",
+    "path": "build/wine-pe/build-ntdll.sh",
+    "size": 2882,
+    "sha256": "eef7a2f2f44b083196d84382cea72050bc82bf599d69e137ade5dfb276099859"
+  },
+  {
+    "mode": "100755",
+    "type": "blob",
+    "blob": "389392f36020abb8dc76db7ce902abc4a01c31a0",
+    "path": "build/wineserver/build.sh",
+    "size": 11027,
+    "sha256": "841c6e8edaee1f3580d7999ed1e288b4590b6a31a06cd8fa21247e568ba9eb2b"
+  },
+  {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "bd8de3efd0506b5e4ea4afd71eafd8a84d04250b",
+    "path": "madeira-d3d12/LICENSE",
+    "size": 1005,
+    "sha256": "1404291ae2be2beeddacba577a1597431bf456f0a14cce45dddfc46163ef99c8"
+  }
+]

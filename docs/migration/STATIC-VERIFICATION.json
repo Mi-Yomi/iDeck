@@ -1,0 +1,22 @@
+{
+  "baseline": "4e633d9c4787010b433130f0fc95a9b8a15fa73e",
+  "import_parent": "184e4396be393d4d87083445335f264d263051f7",
+  "upstream_ancestor_commits": 926,
+  "runtime_sources": "PASS unchanged",
+  "licenses_notices_credits": "PASS unchanged",
+  "workflow_archive_sha256": "6537801b095d0364197d6bfb84bcd646ea4e60bcccb306e1342b3dd5e7c86aec",
+  "runnable_workflow_files": 0,
+  "top_level_gitlinks": {
+    "FEX": "d0574ec2dee0743e55b098fb0f89cd8188d3dff4",
+    "wine": "a1049ce9cf37f6cf3c771dead31dcbe3b4e4a0c6",
+    "dxmt": "7ab4801645b8785c4138a8cdf000e34f41c101c6",
+    "madeira-dock": "72558e416a390f3669457930f09a389e54f49556"
+  },
+  "old_ideck_head": "b5d11af7b7dbc9596f35f98ce234a38a57408a87",
+  "old_ideck_checkout_clean": true,
+  "old_ideck_origin_unchanged": true,
+  "actions_permissions_api": "403 Resource not accessible by integration",
+  "app_outbound_endpoints": "STILL PRESENT: execution quarantined until separately disabled",
+  "third_party_code_build_test_install": "NOT RUN",
+  "ci_started": false
+}

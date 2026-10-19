@@ -23,12 +23,71 @@ our120-minute requirement. **Do not start a new CI under this snapshot.** Any
 future build requires a fresh >=120-minute check and existing approvals. No
 threshold or security setting was changed.
 
-The owner must next supply the17+45 exact locked input files under their terms,
-pack/verify locally, transfer the resulting private TAR to the phone and use
-Import before Steam Start, then Install/resume for offline extraction. The
-packing tool has no download mode. Neither input acquisition nor real packing,
-transfer, owner-PC execution or agreement acceptance was performed here. The
-commands and input/space requirements below describe that remaining step.
+The owner can now prepare all17+45 exact locked inputs and the canonical TAR
+with the separate host-only command below, under the applicable terms, then
+transfer the private TAR to the phone, Import before Steam Start and use
+Install/resume for offline extraction. Existing pack/verify is unchanged.
+No real input acquisition/packing, transfer, owner-PC execution or agreement
+acceptance was performed here. The delivered app, overlay and payload did not
+change; this host-only addition needs no new app CI.
+
+## One-command preparation on the owner's PC
+
+From the owner's updated checkout, using existing Python3.11 and a native NTFS
+output volume (Windows execution **NOT RUN** here):
+
+```powershell
+py -3.11 'E:\Freddy Fazbear\iDeck.work\steam-arm64-experiment-20261017\experiments\linux-guest\tools\steam_offline_download.py' --directory 'E:\Freddy Fazbear\SteamOffline'
+```
+
+The checkout path must match the actual owner checkout; this command was not
+executed on that PC. It downloads only the existing17 Valve lock names from
+the locked manifest's official Fastly origin and45 Debian pool paths from the
+existing official Debian contract. The Debian lock must match the accepted
+GUI input hash and release descriptor. No new/current manifest, mirror,
+credentials or version override is accepted. This verifies captured lock pins,
+not a newly authenticated Debian index or the latest Steam client.
+
+Standard CA/hostname-verified HTTPS only, no proxy credentials or TLS bypass.
+**All redirects are refused**, including same-origin redirects; a redirect/404
+requires source review, never a fallback or silent repin. Each request has a60s
+socket timeout, bounded1 MiB reads, exact size/SHA and a15-minute elapsed check
+between reads. Content length, if supplied, must be exact; encoded responses
+are refused. Files remain temporary until fsync and an independent rehash, then
+publish by atomic no-replace rename using the existing Windows/Linux helper.
+No files are extracted/executed and no agreements are accepted.
+
+The command automatically packs/verifies the62 files using the unchanged
+`steam_offline_cache.py` and prints the real TAR size/SHA. Result:
+`E:\Freddy Fazbear\SteamOffline\owner-steam-cache.tar`, **379228160 bytes**.
+Input bytes plus TAR are **758405099 bytes**; allow at least2 GiB initially.
+A preflight requires missing inputs + TAR +1 GiB reserve. Existing verified
+output is checked and reported without network or repacking. Keep this personal
+cache local/private; do not add it to Git, Release, CI or the IPA.
+
+After an interrupted/error run, repeat the exact command. All completed input
+files are rehashed and reused; the unfinished component restarts from byte0.
+There is no HTTP Range continuation. Corrupt existing inputs/output and unsafe
+links are preserved and refused, never automatically deleted/replaced. Soft
+interruptions remove the command's own temporary file. A hard process kill may
+leave a randomly named private temporary file or pack directory; retry ignores
+it and does not delete files that could belong to another active run. Such
+orphans can consume space until the owner reviews them with preparation stopped.
+Symlinks, hardlinks and Windows junction/reparse paths are refused. Unsupported
+atomic rename/filesystem behavior fails closed; native Windows/NTFS is intended,
+not WSL on a Windows-mounted volume. Existing manual pack/verify below remains
+available if the owner already has the exact pinned files.
+
+**575 tests OK (570 PASS, 5 SKIP)**, offline synthetic transport only. This
+includes62-part download/pack/verify, repeat with network forbidden, retry after
+interruption, wrong hash/size/status/URL/encoding, unsafe paths, no-replace races,
+verified TLS context and redirect refusal. Full overlay/generator/source pin and
+original real Steam staging checks passed without changing their files.
+Evidence: `experiments/linux-guest/evidence/steam-offline-download-20261019/`.
+Live official download/URL availability, actual Windows execution, real owner
+cache preparation and device acceptance **NOT RUN**. No actual TAR digest is
+claimed, no Valve bytes downloaded, and no new CI was started. BusyBox source
+provenance remains OPEN.
 
 The following preserves implementation history and the original Linux checks;
 Apple checks for the built SHA above subsequently passed, device checks did not.
@@ -63,8 +122,8 @@ publication or actions on the owner's PC were performed here.
 
 ## Owner-local cache: implemented source path
 
-The host tool reads only the 17 pinned Valve ZIP filenames and 45 Debian .deb
-filenames from owner-obtained directories. It performs bounded SHA-256/size and
+The original pack/verify tool reads only the17 pinned Valve ZIP filenames and
+45 Debian .deb filenames from owner-obtained directories. It performs bounded SHA-256/size and
 regular-file/identity checks, then writes canonical deterministic USTAR. It does
 not read account directories, download anything, run Steam, install packages,
 accept terms or upload an artifact. It refuses existing output and unsafe links.

@@ -17,21 +17,45 @@
 > experimental, with no measured device RAM/Steam/jetsam acceptance. Steam may
 > still update and requires the owner's login/agreements after local extraction.
 >
-> Exact remaining owner-cache step: provide the17 ZIP +45 .deb named in
-> ipa/steam-client.lock.json and ipa/steam-dependencies.lock.json on the owner's
-> PC under applicable terms; run the own pack/verify tool without client execution
-> to produce **owner-steam-cache.tar,379228160 bytes** and its actual SHA-256;
-> transfer that private file to the owner's phone and explicitly import it before
-> starting Steam. Existing Install/resume then consumes the pinned cache locally.
-> The tool has **pack/verify only, no download mode**. No such files were obtained,
-> packed or transferred in this docs-only step. Detailed commands/boundaries:
+> Exact remaining owner-cache step: run the new host-only
+> **tools/steam_offline_download.py --directory <owner-local-directory>** from
+> experiments/linux-guest on the owner's PC under applicable terms. It obtains
+> the17 ZIP +45 .deb only from the existing official lock sources, verifies them,
+> and uses the unchanged pack/verify implementation to produce
+> **owner-steam-cache.tar,379228160 bytes** and its actual SHA-256. Transfer that
+> private file to the phone, explicitly Import before Start, then Install/resume.
+> The separate command is not bound into the app/overlay. Existing pack/verify
+> stays available. No real packages, owner-PC action or transfer occurred here.
+> Exact PowerShell command and retry boundaries:
 > **STEAM-OFFLINE-CACHE-AUTO-RAM-20261019.md**.
 >
 > Coordinator's latest quota snapshot: **106 free macOS minutes, paid OFF**.
 > This is below the existing120-minute threshold: **no new CI is authorized**
 > under the current snapshot. A future run needs a fresh >=120 check and the
-> existing private/native approvals. No quota guard, overlay, code or payload
+> existing private/native approvals. No quota guard, overlay, app code or payload
 > changed. BusyBox corresponding-source provenance remains **OPEN**.
+
+> Host-only one-command preparation, 19 October 2026, based on
+> **3a44415b07d99869fd358d4289579fffc0ad5831**: added
+> **tools/steam_offline_download.py**, separate because the packer is an existing
+> overlay hash input. No app, overlay, lock, payload, guest or CI file changed.
+> Standard verified HTTPS; exact locked names/sizes/SHA; all redirects refused;
+> bounded temporary streaming; fsync and rehash before atomic no-replace rename;
+> no extraction/execution/terms acceptance/upload. Repeat reuses verified files,
+> restarts an incomplete component and refuses damaged existing files/output.
+> Symlinks, hardlinks and Windows reparse paths are refused. Native Windows/NTFS
+> is the intended PC route; unsupported atomic publication fails closed.
+>
+> **575 Python tests OK (570 PASS, 5 SKIP)**, including a synthetic62-part
+> download/pack/verify, interruption/retry, no-network repeat, corruption, unsafe
+> paths, TLS context/redirect and concurrent publication tests. Generators,
+> full source overlay, all23 bindings, real original Steam stage/repeat/package
+> resource checks, protected sources, AST/shell/git attributes PASS.
+> Evidence: **experiments/linux-guest/evidence/steam-offline-download-20261019/**.
+> Live URL availability/download and Windows execution **NOT RUN**. Real owner
+> cache **NOT PREPARED**; actual TAR SHA is unknown until owner preparation.
+> Delivered app stays built at7782926; no new CI needed for this host-only change
+> and none launched. Device NOT RUN; BusyBox provenance OPEN.
 
 > Historical fresh-memory handoff correction, 19 October 2026, from
 > **756e08c44456f62b48d45a9f08fdaf42321c34b3**. Read-only review found a stale

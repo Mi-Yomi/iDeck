@@ -1,3 +1,9 @@
+> Historical CI43 correction. CI44 on the correctedc21eb465 source subsequently
+> passed all27 Swift checks and produced the delivered IPA; see
+> [current delivery evidence and acceptance limits](STEAM-DEVICE-DELIVERY-20261018.md).
+> Positive12-GiB recovery/device acceptance remains NOT RUN;4 free minutes now
+> block new full CI runs. The23/21-minute configuration is unchanged.
+
 # CI43 report regression correction — 19 October 2026
 
 CI43 ran exact source `a669a3977c551fdaad7a4830dec116ec53660d9d`:

@@ -1,4 +1,28 @@
-> CURRENT CI43 FOLLOW-UP — failed host report regression, no IPA.
+> CURRENT DELIVERED RESULT — CI44 PASS, 19 October 2026,20m36s.
+> https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad6168f7550aed8109022c2 .
+> **Built source: c21eb465c765038e41f16e409bf940ca680d5693.**
+> IPA **1086811015 bytes**, SHA-256
+> **0e0667fb6b3507a30633bd0512f48a08c27879f33c998539d35f3513f6f19dae**.
+> Coordinator verified ZIP,7 arm64 iPhoneOS/ad-hoc Mach-O binaries and19 locked
+> resources/cache. All27 Swift checks PASS, including
+> `LINUX_STEAM_RECOVERY_BINDING_PASS` and `LINUX_STEAM_RECOVERY_SCOPE_PASS`.
+> Owner-only Drive delivery is complete; no personal Drive URL is stored in Git.
+> CI/artifact/inspection/delivery facts are coordinator supplied. This docs-only
+> update did not rebuild/download the IPA, run CI or access a user disk. Its
+> commit differs from the built source and changes no code/config/payload pins.
+>
+> **Positive12-GiB journal replay/promotion and device acceptance: NOT RUN.**
+> Passing host regressions does not establish owner recovery readiness. First
+> copy-first recovery requires **24 GiB +512 MiB additional actual free space**;
+> original data remains preserved by the recovery design. No owner-disk recovery
+> result is claimed. BusyBox corresponding-source completeness remains **OPEN**.
+>
+> Latest coordinator balance: **4 free minutes, paid OFF**. New full CI runs are
+> **BLOCKED by quota**; do not dispatch. Provider23/worker21 configuration is
+> unchanged. Earlier quota, failed CI43 and Apple NOT RUN checkpoints below are
+> historical and superseded by CI44 only within the verification limits above.
+
+> Historical CI43 follow-up — failed host report regression, no IPA.
 > Exacta669a397 compiled standalone Swift, then mac-tests aborted at
 > `MarkdownReportChecks.swift:15`: obsolete "GUI recovery does not apply" text
 > expectation. Corrected fixture retains RECOVER SET and checks the current
@@ -50,7 +74,7 @@
 > or limit change here; coordinator must review a suitable budget and fresh quota.
 > BusyBox provenance **OPEN**. [Detailed cause, safety, limits and evidence](STEAM-RECOVER-FLAG-AND-SAFE-RECOVERY-20261019.md).
 
-> CURRENT DELIVERED RESULT — Apple CI#42 PASS, 19 October 2026.
+> Historical delivered result — Apple CI#42 PASS, 19 October 2026.
 > https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5fa7a7550aed81090197b .
 > **Built source: 08978cd962e5c53818a287f41285d32a702ac5ad.**
 > IPA **1086788107 bytes**, SHA-256

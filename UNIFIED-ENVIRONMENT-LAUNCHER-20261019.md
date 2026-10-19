@@ -1,9 +1,18 @@
-# One environment launcher — source candidate, 19 October 2026
+# One environment launcher — delivered CI#40, 19 October 2026
 
-Based on `7fdb81605c117fdc03dba8c7dd9fc4dc80beda77`, on the Steam branch only.
-The delivered CI#39 IPA was built from `bcbb8db7c909d34f05ccdf6ec95675f26f29ed78`
-and predates this change. No new IPA, Apple execution or device acceptance is
-claimed here. This task did not start Codemagic or change a Release.
+Implementation baseline: `7fdb81605c117fdc03dba8c7dd9fc4dc80beda77`, Steam branch.
+**Delivered built source: `cf773c48e4c11d9c341667cb55e5b40522655df8`.**
+Apple [CI#40](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5e8747550aed8109013fd)
+**PASS,16m44s**, including `LINUX_UNIFIED_ENVIRONMENT_PASS` in mac-tests.log.
+IPA **1086777985 bytes**, SHA-256
+`9c8565f28f8a25cd81109a74562f4bf915c532095b2605b4f8f0f8f7b5e8c7c0`.
+Coordinator independently verified ZIP CRC, resources/cache and all7 Mach-O
+binaries as arm64 iPhoneOS ad-hoc, then delivered it through owner-only Drive.
+The personal Drive link is not stored in Git. These CI/artifact/delivery facts
+are coordinator supplied; this documentation update did not download or rebuild
+the IPA, change code/payload/pins/secrets, start CI or modify a Release.
+The previously delivered CI#39 build predates this launcher.
+**iPhone NOT RUN; wait for owner feedback.**
 
 ## Owner flow
 
@@ -68,32 +77,30 @@ The cache remains379228160 bytes, SHA-256
 `a75ea9bb8a19946cf81b2fb3d6cc4db97db6a1fe0938e4f23857c2c6e826adef`,
 asset655626057; no new payload or cache upload is needed.
 
-New Swift/iOS typecheck, integrated Husk/native build, visual layout,
-device Home/Resume/Stop, automatic real installation, Steam rendering and
-gameplay: **NOT RUN**. The new pure Swift launch/state fixtures are mandatory
-in the next Apple check, marker `LINUX_UNIFIED_ENVIRONMENT_PASS`, alongside
-`LINUX_STEAM_BUNDLED_CACHE_PASS` and `LINUX_STEAM_SCREEN_CONTROLS_PASS`.
+The local evidence above records the pre-CI source verification; its Apple
+NOT RUN fields are historical. The subsequent coordinator-reported CI#40 passed
+and confirmed the new pure Swift launch/state marker
+`LINUX_UNIFIED_ENVIRONMENT_PASS` in mac-tests.log. Existing bundled-cache and
+screen-controls markers remain mandatory; no check was removed.
+Visual layout on iPhone, device Home/Resume/Stop, automatic real installation,
+Steam rendering and gameplay remain **NOT RUN**. CI success and package
+inspection do not establish these device results.
 Disk12 GiB and experimental Auto memory cap4096 remain unverified on device.
 Known incomplete BusyBox corresponding-source provenance remains **OPEN**.
 
-## Next manual CI — coordinator only
+## Wait for owner feedback — no new CI
 
-Review the pushed commit and use private `Mi-Yomi/iDeck`, branch
-`codex/steam-arm64-experiment-20261017`, workflow `ideck-linux-probe-ipa`:
+Latest coordinator snapshot after CI#40: **62 free minutes, paid OFF**.
+The current `ideck-linux-probe-ipa` provider cap is70 minutes and its internal
+worker budget is3900 seconds (65 minutes); **neither fits that remainder**.
+Do not reuse the earlier79-minute snapshot or dispatch another run with the
+current cap. This docs-only update leaves those code/config limits unchanged.
+A future build needs a separately reviewed suitable provider/internal limit,
+fresh free quota with reserve, paid OFF and private/native approvals. Then use
+`expected_commit=<full newly reviewed remote HEAD>` and the existing
+`free_quota_verified`, `private_source_verified`, `native_build_approved` inputs.
+No new run or cancellation was performed here.
 
-```text
-expected_commit=<full newly reviewed remote HEAD>
-free_quota_verified=true
-private_source_verified=true
-native_build_approved=true
-```
-
-Provider: `mac_mini_m2`, Xcode27.0, **70 minutes**; worker total native budget
-**3900 seconds (65 minutes)**, including its existing preflight time accounting.
-Coordinator's 09:15 UTC snapshot was79 free minutes, paid OFF, no active build:
-9 minutes beyond the provider cap. Recheck actual remaining free quota with
-reserve and paid OFF immediately before one manual dispatch. The previous
-cap95 instructions are historical. Existing group `ideck-debian-payload` and
-`IDECK_DEBIAN_PAYLOAD_TOKEN` serve both pinned private assets through existing
-code; no secret or workflow authentication setting changed. Other workflows
-are unchanged. This executor dispatched no CI.
+The existing `ideck-debian-payload` group and `IDECK_DEBIAN_PAYLOAD_TOKEN`
+remain unchanged. Delivered build source stays `cf773c48e4c11d9c341667cb55e5b40522655df8` even when this later
+status-only documentation commit changes branch HEAD.

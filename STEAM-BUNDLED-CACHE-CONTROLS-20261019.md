@@ -1,27 +1,30 @@
-> CURRENT SOURCE CANDIDATE — one environment launcher, 19 October 2026.
-> Based on `7fdb81605c117fdc03dba8c7dd9fc4dc80beda77`; Steam branch only.
-> **Запустить среду** uses the existing Steam VM/disk/cache, then requests local
-> installation and Steam launch in order from actual guest completion receipts.
-> Home/Resume retain that VM; diagnostics and legacy modes are in Advanced
-> Settings. Explicit JIT, network consent, safe Stop and all disk guards remain.
-> The derived own-code runtime releases its install lock before INSTALLED;
-> sealed Linux payload, all23 source bindings and real bundled cache unchanged.
-> **591 Python tests OK /5 SKIP**, full overlay and real repeated staging PASS.
-> New Swift/UI/native/device/automatic Steam acceptance **NOT RUN**. CI#39 below
-> is the previously delivered IPA and predates this source change.
+> CURRENT DELIVERED RESULT — unified launcher, Apple CI#40 PASS, 19 October 2026.
+> https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5e8747550aed8109013fd . Duration16m44s.
+> **Built source: cf773c48e4c11d9c341667cb55e5b40522655df8.**
+> `LINUX_UNIFIED_ENVIRONMENT_PASS` confirmed in mac-tests.log.
+> IPA **1086777985 bytes**, SHA-256
+> **9c8565f28f8a25cd81109a74562f4bf915c532095b2605b4f8f0f8f7b5e8c7c0**.
+> Coordinator independently verified ZIP CRC, resources/cache and all7 Mach-O
+> binaries as arm64 iPhoneOS ad-hoc. Owner-only Drive delivery is confirmed;
+> the personal Drive URL is not stored in Git. CI/artifact/delivery facts in this
+> block are coordinator supplied; this docs-only task did not download/rebuild
+> the IPA, change code/pins/secrets, dispatch CI or modify any Release.
 >
-> Next manual CI is the coordinator's task after source review: dedicated
-> `ideck-linux-probe-ipa`, **cap70 / worker65 minutes**, `mac_mini_m2`, Xcode27.0.
-> Inputs: `expected_commit=<full reviewed remote HEAD>`, `free_quota_verified=true`,
-> `private_source_verified=true`, `native_build_approved=true`. Coordinator's
-> latest snapshot09:15 UTC:79 free minutes, paid OFF, no active CI; recheck fresh
-> quota with reserve and paid OFF before dispatch. No CI dispatched here.
-> Required new Apple marker: `LINUX_UNIFIED_ENVIRONMENT_PASS`; all previous
-> mandatory markers remain. Existing payload secret group/token unchanged.
-> BusyBox source provenance **OPEN**; Auto4096/device memory, rendered Steam and
-> gameplay unverified. Details/evidence: [unified launcher](UNIFIED-ENVIRONMENT-LAUNCHER-20261019.md).
-> Historical cap95/wait instructions and explicit separate install buttons below
-> describe earlier checkpoints and do not supersede this block.
+> One **Запустить среду** entry uses the existing VM/disk/cache, with local
+> installation then Steam launch driven by guest receipts. Home/Resume retain
+> that VM; explicit JIT/network consent and safe Stop remain. Source regression:
+> **591 Python tests OK /5 SKIP**, full overlay and real repeated staging PASS.
+> **iPhone/device, automatic real Steam installation/rendering and gameplay
+> NOT RUN — WAIT FOR OWNER FEEDBACK.** Apple CI is not device acceptance.
+> Controls remain keyboard/mouse mapping, not a Linux HID gamepad. Disk12 GiB
+> and experimental Auto4096 unchanged; BusyBox source provenance **OPEN**.
+>
+> Latest coordinator quota snapshot: **62 free minutes, paid OFF**. Current
+> provider cap70 / worker65 exceeds that remainder: **do not start another CI**.
+> Any future run requires a newly reviewed suitable limit, fresh free quota with
+> reserve, paid-OFF/private/native checks and the exact reviewed source SHA.
+> Historical dispatch instructions below do not authorize a new run.
+> Details: [unified launcher](UNIFIED-ENVIRONMENT-LAUNCHER-20261019.md).
 
 > PREVIOUSLY DELIVERED RESULT — Apple CI#39 PASS, 19 October 2026.
 > https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5d2987550aed810900dd2 . Duration25m41s.
@@ -46,8 +49,8 @@
 > guest/runtime errors are not declared fixed by predownload. Disk12 GiB and
 > experimental Auto cap4096 unchanged. BusyBox source provenance **OPEN**.
 >
-> **WAIT FOR DEVICE FEEDBACK.** Latest coordinator snapshot: **79 free macOS
-> minutes, paid OFF**. Current workflow cap95 exceeds79: **do not start CI**.
+> Historical CI#39 checkpoint: **79 free macOS minutes, paid OFF**.
+> The then-configured cap95 exceeded79; no CI was authorized by that checkpoint.
 > Any future build requires a separately reviewed smaller provider cap and
 > matching internal budget within fresh remaining quota with reserve, plus
 > private/native approvals and paid-OFF verification. No cap/code change now,
@@ -56,7 +59,8 @@
 # Bundled Steam package cache and screen controls
 
 Implementation/cache preparation baseline: `52aa5b55d3c3466adf59ac2edac82a4b670f767f`.
-Delivered build source is now `bcbb8db7c909d34f05ccdf6ec95675f26f29ed78`.
+Historical CI#39 source: `bcbb8db7c909d34f05ccdf6ec95675f26f29ed78`.
+Current delivered CI#40 source is `cf773c48e4c11d9c341667cb55e5b40522655df8`.
 CI#38 failed on the fixture's raw-colon expectation; the fixture-only correction
 preserved renderer escaping and the subsequent CI#39 passed the required Apple
 checks and produced the delivered IPA. Actual touch UI/device/Steam/gameplay
@@ -135,8 +139,10 @@ with a new seed. Both paths attach the same pinned readonly cache block device.
 All blocking cache/disk/report IO precedes the existing fresh RAM/native gate.
 Cancellation is checked between chunks without per-chunk report persistence.
 
-Honest stages: verified packages → Linux desktop → **Install / resume** →
-**Launch Big Picture**. These last two remain explicit actions. A cache is not
+Historical CI#39 stages: verified packages → Linux desktop → **Install / resume** →
+**Launch Big Picture**, with the last two explicit. CI#40 automates those guest
+commands after explicit environment Start and confirmation receipts; see the
+unified launcher document. A cache is not
 a fully installed client or proof of a working window. Existing installer and
 runtime failures are not claimed fixed by predownload; actual blocker/status
 remains visible. Steam updater/login/agreements may require network and owner
@@ -198,10 +204,11 @@ cache, interruption/retry/publication recovery, preservation of a synthetic
 userdata sentinel, simultaneous controls, overlapping physical key/mouse
 ownership, neutral/nonfinite sticks and release-all. The integrated pinned Husk
 typecheck includes the actual new UIKit overlay. These Apple checks were not executed in the Linux environment; the coordinator
-subsequently confirmed CI#39 PASS for the built SHA above. Device, graphics,
+subsequently confirmed CI#39 PASS for its historical source and CI#40 PASS
+for the current unified launcher. Device, graphics,
 games and new installed-client acceptance remain NOT RUN.
 
-The user explicitly authorized using the remaining106 free minutes; the former
+Historical CI#39 budget: the user explicitly authorized the then-remaining106 free minutes; the former
 120-minute prerequisite is removed for this task. Only the dedicated
 `ideck-linux-probe-ipa` workflow changed: provider cap **95 minutes**, aggregate
 worker budget **90 minutes from script entry**, including initial cache/source
@@ -209,7 +216,7 @@ preparation. At the coordinator's106-minute snapshot this leaves11 minutes below
 the provider cap. Fresh quota with reserve, **paid OFF**, private source and
 native-build approval remain mandatory. No CI was dispatched/cancelled here.
 
-Historical CI#39 dispatch parameters (completed; do not reuse under the current79-minute balance):
+Historical CI#39 dispatch parameters (completed; do not reuse under the current62-minute balance):
 
 - Source branch `codex/steam-arm64-experiment-20261017`; workflow
   `ideck-linux-probe-ipa`; `expected_commit=<full final post-pin HEAD>`.

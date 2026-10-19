@@ -153,16 +153,94 @@ class OfflineCache(unittest.TestCase):
     def test_guest_block_device_must_be_readonly_and_exact_size(self):
         import struct
         out, _ = self.pack()
-        actual = os.stat(out)
-        fake = Mock(st_mode=__import__('stat').S_IFBLK)
+        identity = os.makedev(252, 16)
+        fake = Mock(st_mode=__import__('stat').S_IFBLK, st_rdev=identity)
         for readonly, size, valid in [(0, 10240, False), (1, 10241, False), (1, 10240, True)]:
             fd = os.open(out, os.O_RDONLY)
-            with patch.object(cache.os, 'open', return_value=fd), patch.object(cache.os, 'fstat', return_value=fake), \
+            with patch.object(cache, 'cache_device', return_value=(Path('/dev/vda'), identity)), \
+                 patch.object(cache.os, 'open', return_value=fd), patch.object(cache.os, 'fstat', return_value=fake), \
                  patch('fcntl.ioctl', side_effect=[struct.pack('i', readonly), struct.pack('Q', size)]):
                 if valid:
                     opened = cache.open_device(10240); self.assertEqual(opened, fd); os.close(opened)
                 else:
                     with self.assertRaises(ValueError): cache.open_device(10240)
+
+    def inventory(self, rows):
+        sys_block = self.root / 'sys-block'; sys_block.mkdir(exist_ok=True)
+        for name, serial, identity in rows:
+            device = sys_block / name; device.mkdir()
+            if serial is not None: (device / 'serial').write_bytes(serial)
+            (device / 'dev').write_text(identity)
+        return sys_block
+
+    def test_cache_serial_selects_actual_cache_in_both_orders_not_writable_root(self):
+        # Real sysfs-shaped IO; only the block-device/ioctl boundary is modeled.
+        import struct
+        import stat
+        for cache_name, root_name in [('vda', 'vdb'), ('vdb', 'vda')]:
+            with self.subTest(cache=cache_name):
+                with tempfile.TemporaryDirectory(dir=self.root) as temp:
+                    sys_block=Path(temp)
+                    for name, serial in [(cache_name, cache.DEVICE_SERIAL), (root_name, 'root')]:
+                        device=sys_block/name;device.mkdir()
+                        (device/'serial').write_text(serial)
+                        (device/'dev').write_text('252:0' if name=='vda' else '252:16')
+                    expected=os.makedev(252,0 if cache_name=='vda' else 16)
+                    out,_=self.pack()
+                    opened=[];real_open=os.open
+                    def open_block(path,flags):
+                        opened.append(path)
+                        self.assertEqual(flags & os.O_ACCMODE,os.O_RDONLY)
+                        return real_open(out,flags)
+                    def ioctl(fd,command,buffer):
+                        # Writable root deliberately has the wrong size and RO=0.
+                        correct=opened[-1].name==cache_name
+                        return struct.pack('i',int(correct)) if command==0x125e else struct.pack('Q',10240 if correct else 12*1024**3)
+                    with patch.object(cache,'SYS_BLOCK',sys_block),patch.object(cache.os,'open',side_effect=open_block), \
+                         patch.object(cache.os,'fstat',return_value=Mock(st_mode=stat.S_IFBLK,st_rdev=expected)), \
+                         patch('fcntl.ioctl',side_effect=ioctl):
+                        fd=cache.open_device(10240)
+                        self.assertEqual(opened,[Path('/dev')/cache_name]);os.close(fd)
+                    out.unlink()
+
+    def test_missing_duplicate_partition_and_prefix_serial_fail_closed(self):
+        import shutil
+        for rows,error in [
+            ([('vda',b'root','252:0'),('vdb',None,'252:16')],'missing'),
+            ([('vda',cache.DEVICE_SERIAL.encode(),'252:0'),('vdb',cache.DEVICE_SERIAL.encode(),'252:16')],'ambiguous'),
+            ([('vda1',cache.DEVICE_SERIAL.encode(),'252:1')],'missing'),
+            ([('vda',cache.DEVICE_SERIAL.encode()+b'X','252:0')],'missing'),
+            ([('vda',cache.DEVICE_SERIAL.encode(),'invalid')],'identity')]:
+            with self.subTest(error=error):
+                inventory=self.inventory(rows)
+                with patch.object(cache,'SYS_BLOCK',inventory),patch.object(cache.os,'open') as opened:
+                    with self.assertRaisesRegex(ValueError,'offline_cache_device_'+error):cache.open_device(10240)
+                    opened.assert_not_called()
+                shutil.rmtree(inventory)
+
+    def test_opened_block_identity_mismatch_is_closed_before_any_read_or_install(self):
+        out,_=self.pack();fd=os.open(out,os.O_RDONLY)
+        with patch.object(cache,'cache_device',return_value=(Path('/dev/vda'),os.makedev(252,0))), \
+             patch.object(cache.os,'open',return_value=fd), \
+             patch.object(cache.os,'fstat',return_value=Mock(st_mode=__import__('stat').S_IFBLK,st_rdev=os.makedev(252,16))), \
+             patch('fcntl.ioctl') as ioctl:
+            with self.assertRaisesRegex(ValueError,'offline_cache_device_identity'):cache.open_device(10240)
+            ioctl.assert_not_called()
+        with self.assertRaises(OSError):os.fstat(fd)
+
+    def test_apple_argv_fixture_is_valid_canonical_input_not_an_empty_cache(self):
+        import re
+        source=(ROOT/'ios/tests/SteamProfileChecks.swift').read_text()
+        header=re.search(r'let cacheEntry = LinuxSteamOfflineCache.Entry\(header: "([^"]+)"',source).group(1)
+        body=re.search(r'let cacheBody = Data\("([^"]+)".utf8\)',source).group(1).encode()
+        row={'name':'client/fixture.zip','size':len(body),'sha256':hashlib.sha256(body).hexdigest()}
+        import base64
+        archive=base64.b64decode(header)+body
+        archive+=bytes(10240-len(archive))
+        self.assertEqual(cache.validate(io.BytesIO(archive),[row]),{'client/fixture.zip':512})
+        self.assertIn('offlineCache: cacheHandle',source)
+        self.assertIn('cacheArgs.contains("virtio-blk-device,drive=steamcache,serial=',source)
+        self.assertIn('cacheArgs.contains("if=none,id=steamcache,format=raw,readonly=on,',source)
 
     def test_auto_policy_is_shared_by_preview_start_argv_and_final_entry(self):
         memory = (ROOT / 'ios/LinuxSteamMemory.swift').read_text()
@@ -187,6 +265,8 @@ class OfflineCache(unittest.TestCase):
         self.assertNotIn('extract', swift_block(source, 'static func importArchive('))
         profile = (ROOT / 'ios/LinuxSteamProfile.swift').read_text()
         self.assertIn('readonly=on,file.locking=off', profile)
+        self.assertIn('drive=steamcache,serial=\\(LinuxSteamCacheContract.deviceSerial)', profile)
+        self.assertIn('static let deviceSerial = "'+cache.DEVICE_SERIAL+'"', tool.swift())
         self.assertIn('LinuxSteamOfflineCache.appendRuntime', profile)
         session = (ROOT / 'ios/LinuxTerminalSession.swift').read_text()
         self.assertIn('guard !attempted, !steamCacheImportBusy', session)

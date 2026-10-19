@@ -5,12 +5,16 @@ import io
 import json
 import os
 from pathlib import Path
+import re
 import stat
 import struct
 import tarfile
 
 LIMIT = 512 * 1024**2
 MARKER = 'ideck.steam_offline_cache=1'
+DEVICE_SERIAL = 'ideck-steam-cache-v1'
+SYS_BLOCK = Path('/sys/class/block')
+DEV = Path('/dev')
 
 
 def entries(client, dependencies):
@@ -96,13 +100,38 @@ class Slice:
         pass
 
 
+def cache_device():
+    # ARM virtio-mmio enumeration can reverse vda/vdb; identify the host's cache.
+    matches = []
+    for device in SYS_BLOCK.glob('vd*'):
+        if not re.fullmatch(r'vd[a-z]+', device.name):
+            continue
+        try:
+            with (device / 'serial').open('rb') as stream:
+                serial = stream.read(22)
+        except FileNotFoundError:
+            continue
+        if serial.rstrip(b'\n') == DEVICE_SERIAL.encode('ascii'):
+            identity = (device / 'dev').read_text().strip()
+            if not re.fullmatch(r'[0-9]+:[0-9]+', identity):
+                raise ValueError('offline_cache_device_identity')
+            major, minor = map(int, identity.split(':'))
+            matches.append((DEV / device.name, os.makedev(major, minor)))
+    if len(matches) != 1:
+        raise ValueError('offline_cache_device_missing' if not matches else 'offline_cache_device_ambiguous')
+    return matches[0]
+
+
 def open_device(size):
     import fcntl
-    # The reviewed argv attaches only root=vda and this optional readonly=vdb.
-    fd = os.open('/dev/vdb', os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK | os.O_CLOEXEC)
+    path, identity = cache_device()
+    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK | os.O_CLOEXEC)
     try:
-        if not stat.S_ISBLK(os.fstat(fd).st_mode):
+        state = os.fstat(fd)
+        if not stat.S_ISBLK(state.st_mode):
             raise ValueError('offline_cache_not_block_device')
+        if state.st_rdev != identity:
+            raise ValueError('offline_cache_device_identity')
         if struct.unpack('i', fcntl.ioctl(fd, 0x125e, bytes(4)))[0] != 1:  # BLKROGET
             raise ValueError('offline_cache_not_readonly')
         if struct.unpack('Q', fcntl.ioctl(fd, 0x80081272, bytes(8)))[0] != size:  # BLKGETSIZE64

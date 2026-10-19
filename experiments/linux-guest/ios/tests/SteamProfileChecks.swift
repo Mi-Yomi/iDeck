@@ -86,6 +86,24 @@ func runSteamProfileChecks(root: URL) throws {
     precondition(!args.contains("-nic") && args.contains("virtio-net-device,netdev=steamnet"))
     precondition(!args.joined().contains("hostfwd") && !args.joined().contains("steam_disk_grow"))
     precondition(args.contains("socket,id=linuxserial,fd=10"))
+    // One synthetic canonical member tests the actual optional argv branch.
+    let cacheFile = root.appendingPathComponent("cache-identity-fixture.tar")
+    let cacheBody = Data("fixture".utf8)
+    let cacheDigest = SHA256.hash(data: cacheBody).map { String(format: "%02x", $0) }.joined()
+    let cacheEntry = LinuxSteamOfflineCache.Entry(header: "Y2xpZW50L2ZpeHR1cmUuemlwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAwMDA2NDQAMDAwMDAwMAAwMDAwMDAwADAwMDAwMDAwMDA3ADAwMDAwMDAwMDAwADAxMTQzMgAgMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB1c3RhcgAwMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=", size: 7, sha256: cacheDigest)
+    var cacheArchive = Data(base64Encoded: cacheEntry.header)!
+    cacheArchive.append(cacheBody)
+    cacheArchive.append(Data(repeating: 0, count: 10240 - cacheArchive.count))
+    try cacheArchive.write(to: cacheFile)
+    try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: cacheFile.path)
+    let cacheHandle = try LinuxSteamOfflineCache.Handle(cacheFile, entries: [cacheEntry], archiveSize: 10240)
+    let cacheArgs = try profile.arguments(probeAssets: probe, assets: assets, session: root.appendingPathComponent("steam-cache-argv"),
+        disk: disk, serialFD: 10, controlFD: 11, networkConsent: true, offlineCache: cacheHandle)
+    precondition(LinuxSteamCacheContract.deviceSerial == "ideck-steam-cache-v1")
+    precondition(LinuxSteamCacheContract.deviceSerial.utf8.count <= 20)
+    precondition(cacheArgs.contains("virtio-blk-device,drive=steamcache,serial=\(LinuxSteamCacheContract.deviceSerial)"))
+    precondition(cacheArgs.contains("if=none,id=steamcache,format=raw,readonly=on,file.locking=off,file=\(cacheFile.path)"))
+    precondition(cacheArgs.contains("virtio-blk-device,drive=desktop"))
     let ordinary = LinuxDesktopDisk.Specification(sizeBytes: LinuxSteamProfile.size, uuid: LinuxGUIProfile.uuid,
         blockSize: 4096, features: .supported)
     do { try ordinary.validate(); preconditionFailure("global disk limit raised") }

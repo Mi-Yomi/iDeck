@@ -217,7 +217,7 @@ struct LinuxSteamProfile: Decodable {
             args[append + 1] += " ideck.steam_offline_cache=1"
             let cache = offlineCache.url.path.replacingOccurrences(of: ",", with: ",,")
             args += ["-drive", "if=none,id=steamcache,format=raw,readonly=on,file.locking=off,file=\(cache)",
-                     "-device", "virtio-blk-device,drive=steamcache"]
+                     "-device", "virtio-blk-device,drive=steamcache,serial=\(LinuxSteamCacheContract.deviceSerial)"]
         }
         return args
     }

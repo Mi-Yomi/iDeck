@@ -1,3 +1,19 @@
+> CURRENT SOURCE CORRECTION — stable Steam cache device identity, 19 October 2026.
+> Based on `460d5f260089e0c9f0a62d0049a6ee04b9e78468`. Coordinator-inspected
+> device screenshot10:51 UTC shows `offline_cache_not_readonly`; this is separate
+> from RAM/JIT feedback. The old guest guessed `/dev/vdb`, although ARM virtio
+> disk order is unstable and root is already found by UUID. New argv supplies a
+> cache serial; the guest selects its unique identity, checks major/minor, then
+> still requires actual RO=1, exact size and all pinned bytes. Device mapping
+> on the owner's phone remains unmeasured; no real host QEMU result is claimed.
+> **599 Python tests OK /5 SKIP**, full overlay and real repeated staging PASS.
+> New Apple/Swift/phone acceptance **NOT RUN**. Base payload/cache, native worker,
+> user disks and safety guards unchanged; no Release or payload rebuild needed.
+> CI#41 on460d5f26 was coordinator-reported running and lacks this correction.
+> No parallel/new CI started here; recheck fresh remaining quota and paid OFF
+> before any future manual run. Current cap55/worker50 remains unchanged.
+> BusyBox provenance **OPEN**. [Cause, safety and evidence](STEAM-CACHE-DEVICE-IDENTITY-20261019.md).
+
 > CURRENT DELIVERED RESULT — Apple CI#39 PASS, 19 October 2026.
 > https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5d2987550aed810900dd2 . Duration25m41s.
 > **Built source: bcbb8db7c909d34f05ccdf6ec95675f26f29ed78.** LINUX_STEAM_BUNDLED_CACHE_PASS

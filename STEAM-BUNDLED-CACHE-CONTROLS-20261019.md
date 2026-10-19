@@ -1,3 +1,16 @@
+Latest Apple result (coordinator supplied): CI#38 on a33d19ba failed in
+`mac-tests` at `SteamBundledChecks.swift:30`, exit-5. iOS typecheck/native
+syntax/Mac compile PASS; integrated Husk/native build/new IPA were not reached.
+The new fixture expected raw `blocked: digest`, whereas the existing protected
+renderer intentionally outputs `blocked&#58; digest`. Only the fixture changed:
+it now requires exact escaped Markdown cells, rejects raw forms and verifies
+unknown/injected statuses are redacted. The production renderer/importer/input
+and all cache/payload pins are unchanged. Corrected Apple runtime NOT RUN here;
+no new CI dispatched. Full587 Python tests OK/5 SKIP and real resource gates PASS.
+Latest coordinator quota104 free, paid OFF;95/90 caps fit with9-minute provider
+reserve, subject to fresh coordinator checks. Evidence:
+`experiments/linux-guest/evidence/steam-bundled-fixture-fix-20261019/`.
+
 # Bundled Steam package cache and screen controls
 
 Source baseline: `52aa5b55d3c3466adf59ac2edac82a4b670f767f`, Steam branch only.

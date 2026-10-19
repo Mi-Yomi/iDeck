@@ -1,3 +1,21 @@
+> CURRENT APPLE FIXTURE CORRECTION — based ona33d19ba0b4b10f4ea2c714d1ed311310c0ad598.
+> Coordinator reports Apple CI#38 failed at mac-tests, SteamBundledChecks.swift:30
+> (exit-5): https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5d0b17550aed810900d49 .
+> iOS typecheck, native syntax and Mac compile PASS; integrated Husk/native build
+> and a new IPA were not reached. The fixture incorrectly searched raw
+> blocked: digest; the unchanged safe renderer emits blocked&#58; digest.
+> Fixed only the fixture: exact escaped cells for all8 cache failures and both
+> success/preparation stages, raw-colon refusal and unknown/injected status
+> redaction. No renderer, importer, input, payload, resource pin or guard changed.
+> All587 Python tests OK /5 SKIP; generators/overlay/real staging/resources PASS.
+> Corrected Apple runtime remains NOT RUN here. Evidence:
+> experiments/linux-guest/evidence/steam-bundled-fixture-fix-20261019/.
+> Native downloads=[] describes Worker source archives; cache preflight precedes
+> swift-source-check, so that array alone does not establish cache-fetch status.
+> Coordinator's latest quota snapshot104 free minutes, paid OFF; cap95/internal90
+> still fits with9 minutes below provider cap. Fresh check remains coordinator's
+> responsibility. No new CI dispatched here. BusyBox provenance OPEN.
+
 > CURRENT PINNING CHECKPOINT — based on1593537c7ae7e7fdada864afb1830cac83a91fa4.
 > Actual private cache payload_url and delivery metadata pinned; cache content,
 > source inputs and functional code unchanged. All587 Python tests OK /5 SKIP;

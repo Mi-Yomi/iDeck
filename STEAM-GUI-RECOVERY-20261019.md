@@ -1,5 +1,23 @@
 # Steam branch: restore GUI recovery and failure diagnostics
 
+Apple CI completed successfully for **built SHA
+9018b9bfbaab7b50d6011ae1e29e5eba0995fd28**:
+https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad570cd7550aed8108ffb95 .
+Provider status: **Build finished**. Runtime link, Apple source/host checks, full
+app build and IPA packaging **PASS**. Actual host markers:
+`LINUX_GUI_RECOVERY_PASS`, `LINUX_STARTUP_PREPARATION_PASS`,
+`LINUX_STARTUP_FAILURE_PASS`, `LINUX_EXT4_DIAGNOSTICS_PASS`.
+Markdown renderer: **318 assertions PASS**.
+
+Delivered recovery IPA: **710726196 bytes**, SHA-256
+**95b7a07a6379a32fd80bb8fc256d3de5eba8f3c6341a7ffa7f541c17b712b38a**.
+Downloaded IPA CRC/hash, seven arm64 iPhoneOS Mach-O/ad-hoc checks and all 19
+resource pins **PASS**. Private owner-only Drive delivery is complete; no personal
+Drive link is included. Results are supplied by the coordinating delivery
+executor; this documentation-only session performed no IPA download or CI run.
+The subsequent **docs SHA is not the built SHA** above; no code/payload/overlay
+changes accompany this delivery record.
+
 Baseline: `ff39aaf43afa4a6805c7e05d2d1a754a2865c901`, only
 `codex/steam-arm64-experiment-20261017`. The reported screen says Debian desktop
 and shows the old offline-ext4-recovery refusal. The screenshot does **not**
@@ -46,19 +64,22 @@ diagnostics. No GUI transaction is allowed to act on the Steam UUID/size.
 Payload/GUI/Debian/Terminal locks and all 23 Steam source bindings are unchanged.
 Only app/overlay sources change; the GUI runtime initramfs suffix is generated
 from the existing recovery source without altering the accepted bundled payload.
-No Release, secret, main, CI dispatch or user-data migration was performed.
+The source-fix session performed no Release, secret, main, CI dispatch or
+user-data migration change; the subsequent Apple CI result is recorded above.
 
 Validation: **538 Python tests OK (533 PASS, 5 SKIP)**, including real AWK/output
 gates, generator/CPIO checks, git attributes and full source-overlay regressions.
 Actual sealed Steam asset staging/repeat and its package resource verifier pass
 without `hashlib.file_digest`. The mandatory Apple gate now includes real Swift
 IO/locking/interrupted-promotion/relaunch checks plus repeated dirty Steam opens,
-byte preservation and rejection by GUI recovery. New Apple/Swift/native IPA,
-guest boot, UIKit layout/share-sheet and phone recovery execution are **NOT RUN**.
+byte preservation and rejection by GUI recovery. Apple source/host checks and
+native IPA now **PASS** for the built SHA above. New guest boot, UIKit
+layout/share-sheet and phone recovery execution remain **NOT RUN**.
 Imported old-cloud receipts retain their historical scope; they do not establish
 new device acceptance. BusyBox source provenance remains **OPEN**.
 
-Next: parent verifies fresh quota and runs the one native workflow for the exact
-new pushed SHA. Preserve the installed app/data while updating. The device
+The recovery IPA has been delivered. Preserve the installed app/data while
+updating; the previously installed source version remains unknown. Steam 12 GiB
+recovery remains fail-closed outside the GUI-only transaction. The device
 report must establish source/build/mode, storage failure, ext4 observations and
 recovery phase/result before declaring this particular device problem resolved.

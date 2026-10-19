@@ -1,4 +1,27 @@
-> Current source fix, 19 October 2026: the reported Debian desktop recovery refusal
+> Current recovery IPA delivery, 19 October 2026: Apple CI **Build finished** for
+> built source **9018b9bfbaab7b50d6011ae1e29e5eba0995fd28**.
+> https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad570cd7550aed8108ffb95 .
+> Runtime link, Apple source/host checks, full app build and packaging **PASS**.
+> Actual markers: **LINUX_GUI_RECOVERY_PASS**, **LINUX_STARTUP_PREPARATION_PASS**,
+> **LINUX_STARTUP_FAILURE_PASS**, **LINUX_EXT4_DIAGNOSTICS_PASS**;
+> Markdown **318 assertions PASS**.
+>
+> Recovery IPA: **710726196 bytes**, SHA-256
+> **95b7a07a6379a32fd80bb8fc256d3de5eba8f3c6341a7ffa7f541c17b712b38a**.
+> Downloaded IPA CRC/hash, seven arm64 iPhoneOS Mach-O/ad-hoc checks and all 19
+> resource pins **PASS**. Private owner-only Drive delivery is complete; the user
+> already has the IPA. No personal Drive link is recorded here. CI/artifact and
+> delivery results were supplied by the coordinating executor; this docs-only
+> session did not download the IPA or start CI.
+>
+> **Built SHA remains 9018b9bfbaab7b50d6011ae1e29e5eba0995fd28.** The following
+> documentation commit has a different SHA and changes no code/payload/overlay.
+> **Device recovery/phone validation NOT RUN**; the previously installed source
+> version remains unknown. Steam 12 GiB recovery remains fail-closed outside the
+> GUI-only recovery transaction. BusyBox source provenance remains **OPEN**.
+> Earlier pending Apple/IPA and next-CI notes below are historical checkpoints.
+
+> Historical source fix, 19 October 2026: the reported Debian desktop recovery refusal
 > was traced to a **missing integration** of GUI recovery/accessible diagnostics
 > from GUI `7e3235e8a533112fb543855d7aded2502f50b5c9` into this Steam branch.
 > The exact `.needsRecovery` message diagnoses neither corruption nor the reason

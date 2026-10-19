@@ -205,7 +205,7 @@ class DownloadSafety(unittest.TestCase):
         self.assertEqual({p.name for p in self.root.iterdir()}, {"tmp", "cargo", "rustup", self.destination.name})
 
     def test_exhausted_aggregate_budget_prevents_network(self):
-        self.worker.started -= 6901
+        self.worker.started -= build.NATIVE_BUILD_BUDGET_SECONDS + 1
         with mock.patch.object(build.urllib.request, "urlopen") as opened:
             with self.assertRaises(TimeoutError):
                 self.worker.fetch(self.item, self.destination)
@@ -225,7 +225,7 @@ class DownloadSafety(unittest.TestCase):
 
     def test_worker_budget_expiration_after_transport_error_prevents_next_attempt(self):
         def opening(url, **kwargs):
-            self.worker.started = time.monotonic() - 6901
+            self.worker.started = time.monotonic() - (build.NATIVE_BUILD_BUDGET_SECONDS + 1)
             raise ConnectionResetError(errno.ECONNRESET, "reset")
 
         with mock.patch.object(build.urllib.request, "urlopen", side_effect=opening) as opened, \
@@ -265,7 +265,7 @@ class DownloadSafety(unittest.TestCase):
             time.sleep(1)
             return Response(self.payload)
 
-        self.worker.started = time.monotonic() - 6899.97
+        self.worker.started = time.monotonic() - (build.NATIVE_BUILD_BUDGET_SECONDS - 0.03)
         before = time.monotonic()
         with mock.patch.object(build.urllib.request, "urlopen", side_effect=opening) as opened:
             with self.assertRaises(build.DownloadDeadlineExceeded):
@@ -310,7 +310,7 @@ class DownloadSafety(unittest.TestCase):
         self.assert_no_partial()
 
     def test_per_socket_timeout_is_clipped_to_remaining_worker_budget(self):
-        self.worker.started = time.monotonic() - 6898
+        self.worker.started = time.monotonic() - (build.NATIVE_BUILD_BUDGET_SECONDS - 2)
         opened, _ = self.fetch([Response(self.payload)])
         self.assertLessEqual(opened.call_args.kwargs["timeout"], 2)
         self.assertEqual(self.destination.read_bytes(), self.payload)

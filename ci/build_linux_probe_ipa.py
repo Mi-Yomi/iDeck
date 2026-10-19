@@ -39,6 +39,7 @@ from gui_bundle import FetchError as GUIFetchError
 DOWNLOAD_MAX_ATTEMPTS = 3
 DOWNLOAD_TIMEOUT_SECONDS = 300
 DOWNLOAD_BACKOFF_SECONDS = (2, 4)
+NATIVE_BUILD_BUDGET_SECONDS = 90 * 60  # Provider cap95; authorized remaining quota106, paid OFF.
 NATIVE_PYTHON_REQUIREMENTS = EXPERIMENT / "ipa/python-requirements.lock.txt"
 NATIVE_PYYAML_VERSION = "6.0.2"
 
@@ -322,9 +323,9 @@ def ensure_qemu_build_compiler(worker, report):
 
 
 class Worker:
-    def __init__(self, output):
+    def __init__(self, output, started=None):
         self.output = output
-        self.started = time.monotonic()
+        self.started = time.monotonic() if started is None else started
         self.env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1", GIT_TERMINAL_PROMPT="0",
                         HOMEBREW_NO_AUTO_UPDATE="1", HOMEBREW_NO_ANALYTICS="1")
         for variable, name in (("TMPDIR", "tmp"), ("CARGO_HOME", "cargo"), ("RUSTUP_HOME", "rustup")):
@@ -335,12 +336,13 @@ class Worker:
         self.downloads = []
 
     def remaining(self):
-        seconds = 6900 - (time.monotonic() - self.started)
+        seconds = NATIVE_BUILD_BUDGET_SECONDS - (time.monotonic() - self.started)
         if seconds <= 0:
             raise TimeoutError("Aggregate native-build budget exhausted")
         return seconds
 
     def run(self, name, command, cwd=ROOT):
+        self.remaining()  # Cache/source preparation counts before any new child starts.
         log = self.output / (name + ".log")
         print("IDECK_BUILD_STEP=" + name, flush=True)
         before = time.monotonic()
@@ -442,6 +444,7 @@ class Worker:
 
 
 def main():
+    started = time.monotonic()
     out = ROOT / ".work/linux-ipa"
     out.mkdir(parents=True, exist_ok=False)
     report = {"status": "failed", "ipa_created": False, "device_tested": False, "steam_executed": False}
@@ -452,7 +455,7 @@ def main():
         if os.environ.get("IDECK_WORKFLOW_ID") != "ideck-linux-probe-ipa":
             raise RuntimeError("Select the dedicated ideck-linux-probe-ipa workflow")
         if os.environ.get("NATIVE_BUILD_APPROVED") != "true":
-            raise RuntimeError("Native build/tool setup approval is required; this is a separate 120-minute workflow")
+            raise RuntimeError("Native build/tool setup approval is required; this is a separate 95-minute workflow")
         # Recheck here as well as in YAML: direct script execution is not a bypass.
         sys.path.insert(0, str(ROOT / "ci"))
         from check_build_request import main as check_request
@@ -463,7 +466,9 @@ def main():
         from gui_bundle import load_lock as load_gui_lock, fetch as fetch_gui, restore as restore_gui
         gui_lock = EXPERIMENT / "ipa/gui.lock.json"
         load_gui_lock(gui_lock)
-        worker = Worker(out)
+        from steam_bundled_cache import prepare_for_build as prepare_steam_cache
+        report["steam_cache_assets"] = prepare_steam_cache(out / "steam-cache-assets", EXPERIMENT / "ipa/steam-cache.lock.json", out)
+        worker = Worker(out, started=started)
         report["steps"] = worker.steps
         report["downloads"] = worker.downloads
         report["commit"] = worker.run("checkout", ["git", "rev-parse", "HEAD"])
@@ -513,6 +518,8 @@ def main():
         stage_gui(gui_assets, source / "guests/ideck-desktop", gui_lock)
         from steam_bundle import prepare_for_build as prepare_steam
         report["steam_assets"] = prepare_steam(source / "guests/ideck-steam", EXPERIMENT / "ipa/steam.lock.json", out)
+        from steam_bundled_cache import stage as stage_steam_cache
+        stage_steam_cache(out / "steam-cache-assets/owner-steam-cache.tar", source / "guests/ideck-steam-cache", EXPERIMENT / "ipa/steam-cache.lock.json")
         worker.run("native-recipe-patch", ["git", "apply", "--check", EXPERIMENT / "ipa/0001-fail-closed-native-build.patch"], source)
         worker.run("native-recipe-apply", ["git", "apply", EXPERIMENT / "ipa/0001-fail-closed-native-build.patch"], source)
         downloads = source / "third_party/sources"

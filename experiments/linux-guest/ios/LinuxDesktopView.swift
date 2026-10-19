@@ -67,6 +67,7 @@ struct LinuxDesktopView: View {
     @State private var command = ""
     @State private var showDiagnostics = false
     @State private var showCacheImporter = false
+    @State private var showScreenControls = true
     @State private var showShare = false
     @State private var shareItems: [URL] = []
     init(session: LinuxTerminalSession = .desktop) {
@@ -145,6 +146,11 @@ struct LinuxDesktopView: View {
                 .accessibilityLabel("Saved startup diagnostics, Markdown")
                 .accessibilityIdentifier("ideck-desktop-startup-diagnostics")
             Spacer(minLength: 0)
+            if session.isSteam {
+                Button(showScreenControls ? "Hide controls" : "Show controls") {
+                    input.releaseScreenControls(); showScreenControls.toggle()
+                }.accessibilityIdentifier("ideck-steam-screen-controls")
+            }
             if let preparation = session.preparationState, preparation.inProgress {
                 Button(preparation.canCancel ? "Cancel start" : "Cancelling…") { session.cancelPreparation() }
                     .disabled(!preparation.canCancel).accessibilityIdentifier("ideck-desktop-cancel-start")
@@ -191,6 +197,10 @@ struct LinuxDesktopView: View {
                 }.font(.callout).frame(maxWidth: .infinity, maxHeight: .infinity).clipped()
                     .background(Theme.surface.opacity(0.96))
             }
+            if session.isSteam, showScreenControls, session.displayHasFrame {
+                LinuxSteamControlsView(input: input, enabled: inputAvailable)
+                    .accessibilityIdentifier("ideck-steam-keyboard-mouse-controls")
+            }
         }.aspectRatio(4.0 / 3.0, contentMode: .fit).background(Color.black)
     }
     private var controls: some View {
@@ -209,8 +219,11 @@ struct LinuxDesktopView: View {
                             Text("Снимок RAM: \(mib) MiB гостю. Auto сохраняет 1 GiB на будущие расходы + 1 GiB резерва; окончательная проверка после JIT и перед native entry.").font(.caption2)
                         }
                         Text("Диск: 12 GiB во внутреннем хранилище iPhone. Размер/resize пока фиксированы. Свободно: \(session.phoneFreeBytes.map { ByteCountFormatter.string(fromByteCount: Int64(clamping: $0), countStyle: .binary) } ?? "не измерено").").font(.caption2)
-                        Button("Импортировать предскачанный кэш владельца") { showCacheImporter = true }
-                            .disabled(session.steamCacheImportBusy || jit.busy)
+                        Text("Встроенные пакеты проверяются автоматически при Start. Это пакеты для локальной установки; обновление Steam и вход могут требовать сеть.").font(.caption2)
+                        DisclosureGroup("Дополнительный личный кэш") {
+                            Button("Импортировать личный кэш") { showCacheImporter = true }
+                                .disabled(session.steamCacheImportBusy || jit.busy)
+                        }
                         if session.steamCacheImportBusy { ProgressView() }
                         Text(session.steamCacheStatus).font(.caption2)
                     }
@@ -220,7 +233,7 @@ struct LinuxDesktopView: View {
                     }
                     Text("Снимок условий: Start проверит их снова, включая JIT. LSE, GUI и Steam ещё не проверены. Hash ресурсов проверяется при подготовке; manifest check не заменяет его.").font(.caption2)
                     Button("Обновить проверку") { session.refreshSteamReadiness() }
-                    Text("Downloads use pinned official Valve/Debian HTTPS. Steam later contacts its services and may update. You handle login and agreements.").font(.caption2)
+                    Text("Bundled files use exact Valve/Debian pins. Missing/corrupt cache blocks Start; no silent network fallback. You handle login and agreements.").font(.caption2)
                     if !session.steamPayloadAvailable {
                         Text("Blocker: sealed Steam seed/bootstrap/profile is missing from this IPA.").foregroundStyle(.orange)
                     }
@@ -230,6 +243,8 @@ struct LinuxDesktopView: View {
             }
             if session.isSteam, session.attempted {
                 Text(session.steamMessage).font(.caption2)
+                Text(session.steamCacheStatus).font(.caption2)
+                Text("Screen controls are keyboard/mouse mapping, not a Linux gamepad. Left stick WASD; right/D-pad arrows; A/Start Enter, B/Select Esc, X Space, Y Tab; L1 Shift, R1 Ctrl, L2/R2 mouse.").font(.caption2)
                 Button("Install / resume Steam") { session.steamAction("INSTALL") }.disabled(!session.ready || session.stopping || session.steamBusy)
                 Button("Launch Big Picture") { session.steamAction("BIG_PICTURE") }.disabled(!session.ready || !session.steamInstalled || session.steamBusy || session.stopping)
                 Button("Return to Desktop") { session.steamAction("DESKTOP") }.disabled(!session.ready || !session.steamInstalled || session.stopping)

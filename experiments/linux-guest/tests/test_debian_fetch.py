@@ -330,6 +330,7 @@ class DebianFetchChecks(unittest.TestCase):
                 patch.object(build, "Worker", return_value=worker), patch.object(check_build_request, "main"), \
                 patch.object(bundle, "load_lock", return_value=self.lock), \
                 patch("gui_bundle.load_lock", return_value={"status":"ready"}), \
+                patch("steam_bundled_cache.prepare_for_build", return_value={"fixture":"independent cache gate"}), \
                 patch.dict(os.environ, {"IDECK_WORKFLOW_ID": "ideck-linux-probe-ipa", "NATIVE_BUILD_APPROVED": "true"}), \
                 contextlib.redirect_stdout(output):
             try:

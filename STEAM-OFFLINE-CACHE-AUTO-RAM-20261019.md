@@ -1,3 +1,9 @@
+Current source adds automatic bundled-cache preparation and original screen
+keyboard/mouse controls: see **STEAM-BUNDLED-CACHE-CONTROLS-20261019.md**.
+The real62-part TAR is now prepared and retained in the owner's private Library.
+The delivered IPA described below predates that source and still uses explicit
+import. No new IPA has been built here.
+
 # Owner offline cache and experimental Auto RAM
 
 Delivered result: **[Apple CI finished](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad595967550aed810900168)** for built source
@@ -18,10 +24,11 @@ unverified. Disk remains12 GiB, no resize. The experimental4096 MiB ceiling is
 not a physical-device acceptance. Standard Steam update/login/agreements may
 still require internet and owner action after local package extraction.
 
-Latest coordinator quota snapshot: **106 free macOS minutes, paid OFF**, below
-our120-minute requirement. **Do not start a new CI under this snapshot.** Any
-future build requires a fresh >=120-minute check and existing approvals. No
-threshold or security setting was changed.
+Latest coordinator snapshot: **106 free macOS minutes, paid OFF**. The user has
+explicitly authorized this remainder for the bundled-cache/controls task; its
+former120-minute prerequisite is removed. Dedicated workflow cap95 minutes,
+total worker budget90; fresh free-quota/paid-OFF/private/native approvals and
+coordinator review remain required. This executor did not start CI.
 
 The owner can now prepare all17+45 exact locked inputs and the canonical TAR
 with the separate host-only command below, under the applicable terms, then

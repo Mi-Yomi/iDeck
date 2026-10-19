@@ -1,3 +1,13 @@
+> Current Steam-task override (19 October 2026): user authorized the remaining
+> 106 free macOS minutes; the earlier120-minute prerequisite is removed for this
+> task. ideck-linux-probe-ipa now has95-minute provider cap /90-minute total worker
+> budget. Fresh quota with reserve, paid OFF, private source and native approval
+> remain mandatory; coordinator dispatches once after review. No run here.
+> New bundled cache must first be delivered and its real private asset URL pinned;
+> current cache upload returned HTTP401, no usable asset exists. Exact status,
+> SHA/size and next steps: STEAM-BUNDLED-CACHE-CONTROLS-20261019.md.
+> Use the final reviewed Steam branch HEAD after that pin, not an older build SHA.
+
 # Задача для Dots: собрать IPA iDeck через Codemagic
 
 Собери настоящий iDeck Linux Probe IPA из приватного репозитория

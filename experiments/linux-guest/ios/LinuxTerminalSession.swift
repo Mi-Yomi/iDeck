@@ -19,7 +19,7 @@ final class LinuxTerminalSession: ObservableObject {
     @Published fileprivate(set) var steamReadiness: LinuxSteamProfile.Readiness?
     @Published var steamMemoryMode: LinuxSteamMemory.Mode = .auto
     @Published fileprivate(set) var steamCacheImportBusy = false
-    @Published fileprivate(set) var steamCacheStatus = "Кэш владельца не импортирован. Сеть используется только с вашим согласием."
+    @Published fileprivate(set) var steamCacheStatus = "Встроенные пакеты проверятся автоматически при Start, отдельно от пользовательского диска."
     @Published fileprivate(set) var phoneFreeBytes: UInt64?
     private var jitObservation: Bool?
     func importSteamCache(_ url: URL) {
@@ -615,8 +615,16 @@ private final class LinuxTerminalWorker {
                     let available = os_proc_available_memory()
                     self.report["process_available_memory_bytes"] = available
                     self.steamMemoryPlan = try LinuxSteamMemory.plan(available: LinuxSteamProfile.availableMemoryBytes(available), mode: self.steamMemoryMode)
-                    self.steamOfflineCache = try LinuxSteamOfflineCache.existing(in: self.dataDirectory.deletingLastPathComponent().appendingPathComponent("iDeckSteamOffline-v1"))
+                    self.report["steam_bundled_cache_status"] = "verifying_or_importing_local_packages"
+                    self.owner.publish { $0.steamCacheStatus = "Проверяем встроенные пакеты. Это ещё не установка Steam…" }
+                    self.steamOfflineCache = try LinuxSteamOfflineCache.prepareBundled(
+                        from: self.bundle.appendingPathComponent("iDeckSteamCache"),
+                        into: self.dataDirectory.deletingLastPathComponent().appendingPathComponent("iDeckSteamOffline-v1"),
+                        checkpoint: { try self.preparation.advance(.assets) })
                     self.report["steam_offline_cache_attached"] = self.steamOfflineCache != nil
+                    self.report["steam_bundled_cache_sha256"] = LinuxSteamOfflineCache.bundledSHA256
+                    self.report["steam_bundled_cache_status"] = "verified_local_packages_not_installed"
+                    self.owner.publish { $0.steamCacheStatus = "Встроенные пакеты проверены. После загрузки рабочего стола: Install / resume; updater, вход и соглашения — отдельные стадии." }
                 }
                 let gui = self.owner.isDesktop && !self.owner.isSteam ? (try LinuxGUIProfile.load(from: assets)) : nil
                 let debian = self.owner.isDebian && !self.owner.isDesktop ? (try LinuxDebianProfile.load(from: assets)) : nil
@@ -852,12 +860,26 @@ private final class LinuxTerminalWorker {
                 self.persist()
                 if error is LinuxSteamMemory.Failure || error is LinuxSteamOfflineCache.Invalid {
                     let memory = error is LinuxSteamMemory.Failure
-                    self.report["steam_blocker"] = memory ? "memoryBudget" : "offlineCache"
+                    let cacheReason: String
+                    if let problem = error as? LinuxSteamOfflineCache.Invalid {
+                        switch problem {
+                        case .space: cacheReason = "Не хватает свободного места для кэша и 1 GiB резерва."
+                        case .busy: cacheReason = "Кэш занят другой операцией."
+                        case .exists: cacheReason = "Кэш уже опубликован; автоматической замены нет."
+                        case .io: cacheReason = "Встроенный ресурс недоступен или копирование не завершено."
+                        case .metadata, .header, .digest, .padding: cacheReason = "Метаданные, структура или SHA кэша не прошли проверку."
+                        }
+                    } else { cacheReason = "" }
+                    self.report["steam_blocker"] = memory ? "memoryBudget" : "bundledCacheMissingOrInvalid"
+                    if !memory {
+                        self.report["steam_bundled_cache_status"] = "blocked: \(error)"
+                        self.owner.publish { $0.steamCacheStatus = cacheReason + " Пользовательский диск не заменялся. Сохраните отчёт; автоматической загрузки вместо кэша нет." }
+                    }
                     self.persist()
                     self.owner.publish {
                         $0.preparationState = self.preparation.snapshot
                         $0.message = memory ? "Steam: доступная память изменилась или неизвестна. VM не запущена; перезапустите приложение и выберите Auto либо 1536 MiB. Данные сохранены."
-                            : "Steam: локальный кэш не прошёл проверку. VM не запущена, сеть как обход не использовалась. Пользовательский диск сохранён; экспортируйте отчёт."
+                            : "Steam: " + cacheReason + " VM не запущена, пользовательский диск сохранён; экспортируйте отчёт."
                     }
                     return
                 }

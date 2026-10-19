@@ -6,7 +6,7 @@ Offered-upstream: no; private experiment
 
 --- a/src/app/project.yml
 +++ b/src/app/project.yml
-@@ -237,6 +237,14 @@
+@@ -237,6 +237,22 @@
            - "$(BUILT_PRODUCTS_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/lineage-efi-vars-seed.fd"
            - "$(BUILT_PRODUCTS_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/lineage-vdb-seed.qcow2"
  
@@ -17,6 +17,14 @@ Offered-upstream: no; private experiment
 +            "$SRCROOT/../../guests/ideck-steam" \
 +            "$SRCROOT/../../scripts/ideck-steam.lock.json" \
 +            --destination "$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/iDeckLinuxSteam"
++
++      - name: Stage verified owner Steam cache
++        script: |
++          set -e
++          python3 "$SRCROOT/../../scripts/ideck-stage-steam-cache.py" stage \
++            "$SRCROOT/../../guests/ideck-steam-cache/owner-steam-cache.tar" \
++            "$SRCROOT/../../scripts/ideck-steam-cache.lock.json" \
++            --destination "$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/iDeckSteamCache"
 +
      postBuildScripts:
        - name: Embed StikJIT

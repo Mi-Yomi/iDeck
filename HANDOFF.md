@@ -1,4 +1,60 @@
-> Current offline-cache/Auto RAM/fresh-handoff IPA delivery, 19 October 2026:
+> CURRENT SOURCE CANDIDATE — bundled owner cache + screen controls, 19 October 2026.
+> Based on **52aa5b55d3c3466adf59ac2edac82a4b670f767f**, Steam branch only.
+> **No new IPA / Apple execution / device run / CI dispatch here.** The previously
+> delivered IPA below is still built at7782926 and does not contain this change.
+>
+> **REAL official cache prepared and retained in the owner's private Library**:
+> owner-steam-cache.tar, **379228160 bytes**, SHA-256
+> **a75ea9bb8a19946cf81b2fb3d6cc4db97db6a1fe0938e4f23857c2c6e826adef**.
+> All17 Valve ZIP +45 Debian files match unchanged locks; normal verified TLS via
+> existing managed proxy, no redirect, no denied updater-host request or policy
+> change. Packer, independent tarfile62-member hashes, ZIP safety inventory
+> (960528505 expanded bytes,12 internal links; no extraction) and real repeated
+> resource staging PASS. No client execution, agreement acceptance, account data,
+> user disk access or public sharing. Native Library link/ID is supplied to the
+> coordinator separately; personal artifact identifiers are not embedded here.
+>
+> **DELIVERY BLOCKER:** ordinary private GitHub cache upload returned **HTTP401
+> Bad credentials** at uploads.github.com. Not an approval-review rejection;
+> no retry, new token or bypass. The failed request mentioned release417003571,
+> but subsequent API GET was404, release list/tag checks found no new cache
+> release/tag: do not claim a created Release or asset URL. Original Linux Release
+> asset654660064 remains uploaded303667200 bytes / f74e22f4…a29c62c, unchanged.
+> Cache lock seals real bytes but deliberately has **no payload_url**. CI fails
+> before Apple setup until the actual private asset is uploaded/read back/pinned,
+> or the verified local TAR is explicitly materialized on that runner.
+>
+> Start now verifies the bundled full digest and auto-imports/reuses the separate
+> pinned readonly cache before either userdata route. Existing userdata is never
+> reseeded/replaced. Missing/corrupt bundle/cache fails closed; no silent network
+> fallback. This is **local installation input**, not an installed client:
+> Install/resume and Launch Big Picture remain explicit, with honest guest errors.
+> Updater/login/agreements may need network; prior guest/runtime errors are not
+> claimed fixed. No kernel/initramfs/raw/23 source bindings or payload lock changed.
+>
+> Original multitouch controls overlay uses existing **QEMU keyboard/mouse**:
+> left stick digital WASD; right stick +D-pad arrows; A/Start Enter, B/Select Esc,
+> X Space, Y Tab, L1 Shift, R1 Ctrl, L2/R2 right/left mouse. It is **not a Linux
+> HID gamepad**. Existing Android husk_gamepad API is not called. Multiple held
+> controls and physical/touch ownership coexist; hide releases screen controls
+> without losing VM, Home/background/Stop release all through existing helpers.
+> Ordinary touch/keyboard/navigation and native lifetime/data guards remain.
+>
+> **587 Python tests OK (582 PASS,5 SKIP)**. Required new Apple markers:
+> LINUX_STEAM_BUNDLED_CACHE_PASS and LINUX_STEAM_SCREEN_CONTROLS_PASS; source,
+> real stage/repeat/package-resource gate, generators, overlay and attrs PASS.
+> New Apple/Swift/UI multitouch/physical-device acceptance **NOT RUN** in Linux.
+> Evidence: experiments/linux-guest/evidence/steam-bundled-gamepad-20261019/.
+> Detailed transport/CI steps: **STEAM-BUNDLED-CACHE-CONTROLS-20261019.md**.
+>
+> **User explicitly authorized the remaining106 free minutes for this task;
+> the earlier120-minute prerequisite is removed here.** Dedicated workflow cap
+> now95 minutes, total worker budget90 including initial preparation. Fresh free
+> quota/private-source/native approvals and paid OFF remain mandatory. Coordinator
+> alone dispatches after review/delivery; no CI run/cancel here. BusyBox source
+> provenance remains **OPEN**. Disk12 GiB and Auto experimental cap4096 unchanged.
+
+> Historical delivered offline-cache/Auto RAM IPA, before the bundled-cache change:
 > coordinating executor confirmed successful Apple CI:
 > https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad595967550aed810900168 .
 > **Built source: 7782926dffb3ab513715518c18f8e667ca3c0c40.** Mandatory Apple host checks

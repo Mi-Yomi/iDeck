@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "baseline": "52aa5b55d3c3466adf59ac2edac82a4b670f767f",
+  "client_executed": false,
+  "agreement_accepted": false,
+  "network_policy_changed": false,
+  "existing_managed_proxy_used": true,
+  "official_origin_fallback_or_redirect_used": false,
+  "real_archive": {
+    "size": 379228160,
+    "sha256": "a75ea9bb8a19946cf81b2fb3d6cc4db97db6a1fe0938e4f23857c2c6e826adef",
+    "parts": 62
+  },
+  "packer_verify": 62,
+  "independent_tarfile_hash_verification": {
+    "parts": 62,
+    "input_bytes": 379176939,
+    "matches_existing_locks": true
+  },
+  "official_zip_safety_inventory": {
+    "compressed_parts": 17,
+    "expanded_bytes": 960528505,
+    "validated_internal_link_count": 12,
+    "extracted": false
+  },
+  "real_stage": {
+    "size": 379228160,
+    "sha256": "a75ea9bb8a19946cf81b2fb3d6cc4db97db6a1fe0938e4f23857c2c6e826adef",
+    "parts": 62
+  },
+  "real_stage_repeat": {
+    "size": 379228160,
+    "sha256": "a75ea9bb8a19946cf81b2fb3d6cc4db97db6a1fe0938e4f23857c2c6e826adef",
+    "parts": 62
+  },
+  "delivery": {
+    "upload_endpoint": "https://uploads.github.com/repos/Mi-Yomi/iDeck/releases/417003571/assets",
+    "upload_result": "HTTP401 Bad credentials",
+    "auto_review_rejection": false,
+    "new_credentials_created": false,
+    "retry_or_bypass": false,
+    "post_failure_release_get": "HTTP404",
+    "post_failure_release_tag_list_matches": 0,
+    "asset_url": "NOT AVAILABLE"
+  },
+  "apple_swift": "NOT RUN",
+  "physical_device": "NOT RUN",
+  "busybox_provenance": "OPEN"
+}

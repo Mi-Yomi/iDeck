@@ -232,7 +232,7 @@ class QemuHostCompilerTests(unittest.TestCase):
                 self.assert_not_published()
 
     def test_host_probe_uses_existing_aggregate_budget_and_retains_logs(self):
-        self.worker.started = time.monotonic() - 6800
+        self.worker.started = time.monotonic() - (build.NATIVE_BUILD_BUDGET_SECONDS - 100)
         self.ensure()
         names = ("qemu-host-clang", "qemu-host-sdk", "qemu-host-triple", "qemu-host-compile", "qemu-host-execute")
         for name, call in zip(names, self.calls):

@@ -127,6 +127,7 @@ try runConsoleLifecycleChecks()
 runDisplayPointerChecks()
 
 runDesktopInputChecks()
+runSteamControlsChecks()
 
 try runGUIProfileChecks(root: root)
 

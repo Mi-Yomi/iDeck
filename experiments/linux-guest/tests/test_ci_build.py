@@ -5,8 +5,10 @@ import json
 import sys
 import tarfile
 import tempfile
+import time
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "ci"))
@@ -77,6 +79,12 @@ class RequestGuards(unittest.TestCase):
 
 
 class IPAInputs(unittest.TestCase):
+    def test_expired_total_budget_cannot_start_another_build_process(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            worker = build_linux_probe_ipa.Worker(Path(tmp), started=time.monotonic() - build_linux_probe_ipa.NATIVE_BUILD_BUDGET_SECONDS - 1)
+            with patch.object(build_linux_probe_ipa.subprocess, "Popen", side_effect=AssertionError("expired worker spawned a child")):
+                with self.assertRaises(TimeoutError): worker.run("expired", ["never-run"])
+
     def test_failed_build_command_is_not_a_successful_step(self):
         with tempfile.TemporaryDirectory() as tmp:
             worker = build_linux_probe_ipa.Worker(Path(tmp))
@@ -120,7 +128,7 @@ class IPAInputs(unittest.TestCase):
         self.assertIn("libqemu-aarch64-softmmu.dylib", dependencies)
         self.assertIn("libANGLE-shared.dylib", dependencies)
         self.assertIn("HuskJITHelper", dependencies)
-        self.assertEqual(len(target["preBuildScripts"]), 5)
+        self.assertEqual(len(target["preBuildScripts"]), 6)
         self.assertIn("ideck-stage-linux-guest.py", target["preBuildScripts"][0]["script"])
         self.assertIn("ideck-stage-linux-terminal.py", target["preBuildScripts"][1]["script"])
         self.assertIn("iDeckLinuxTerminal", target["preBuildScripts"][1]["script"])

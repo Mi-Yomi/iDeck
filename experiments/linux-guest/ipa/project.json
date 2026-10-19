@@ -143,6 +143,10 @@
         {
           "name": "Stage verified experimental Steam assets",
           "script": "set -e\npython3 \"$SRCROOT/../../scripts/ideck-stage-steam.py\" stage \\\n  \"$SRCROOT/../../guests/ideck-steam\" \\\n  \"$SRCROOT/../../scripts/ideck-steam.lock.json\" \\\n  --destination \"$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/iDeckLinuxSteam\"\n"
+        },
+        {
+          "name": "Stage verified owner Steam cache",
+          "script": "set -e\npython3 \"$SRCROOT/../../scripts/ideck-stage-steam-cache.py\" stage \\\n  \"$SRCROOT/../../guests/ideck-steam-cache/owner-steam-cache.tar\" \\\n  \"$SRCROOT/../../scripts/ideck-steam-cache.lock.json\" \\\n  --destination \"$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/iDeckSteamCache\"\n"
         }
       ],
       "postBuildScripts": [

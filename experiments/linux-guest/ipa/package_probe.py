@@ -113,6 +113,8 @@ def package(worker, built, source, commit):
     verify_gui(app / "iDeckLinuxDesktop", load_gui_lock(Path(__file__).parent / "gui.lock.json"))
     from steam_bundle import verify as verify_steam, load_lock as load_steam_lock
     verify_steam(app / "iDeckLinuxSteam", load_steam_lock(Path(__file__).parent / "steam.lock.json"))
+    from steam_bundled_cache import verify as verify_steam_cache
+    verify_steam_cache(app / "iDeckSteamCache", Path(__file__).parent / "steam-cache.lock.json")
     for extension in (app / "PlugIns").glob("*.appex"):
         metadata = plistlib.loads((extension / "Info.plist").read_bytes())
         if not metadata.get("CFBundleIdentifier", "").startswith("dev.ideck.linuxprobe."):

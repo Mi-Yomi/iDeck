@@ -682,14 +682,14 @@ workflows:
   ideck-linux-probe-ipa:
     name: iDeck Linux Probe - native build and sideload IPA
     instance_type: mac_mini_m2
-    max_build_duration: 120
+    max_build_duration: 95
     inputs:
       expected_commit:
         description: Full reviewed HEAD of codex/linux-guest-feasibility-20261015 or codex/steam-arm64-experiment-20261017; select the intended branch first
         type: string
         default: REQUIRED
       free_quota_verified:
-        description: At least 120 free macOS minutes remain; paid subscription is disabled; checked for THIS run
+        description: User approved remaining 106 minutes for this task; recheck at least 95 free minutes plus reserve, paid OFF for THIS run
         type: string
         default: "false"
       private_source_verified:

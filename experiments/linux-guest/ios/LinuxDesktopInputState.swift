@@ -10,10 +10,20 @@ struct LinuxDesktopInputState {
     private var hardware: Set<String> = []
     private var hardwareModifiers: Set<String> = []
     private var modifierUsages: Set<Int> = []
-    private(set) var buttons: UInt32 = 0
+    private var touchButtons: UInt32 = 0
+    private var screenKeys: Set<String> = []
+    private var screenButtons: UInt32 = 0
+    var buttons: UInt32 { touchButtons | screenButtons }
     private var x: Int32 = 0
     private var y: Int32 = 0
-    private var held: Set<String> { latched.union(hardware).union(hardwareModifiers) }
+    private var held: Set<String> { latched.union(hardware).union(hardwareModifiers).union(screenKeys) }
+
+    /// Screen ownership is independent of a physical key or touchscreen click.
+    mutating func screen(keys: Set<String>, buttons: UInt32) -> [Event] {
+        let before = held, previousButtons = self.buttons
+        screenKeys = keys; screenButtons = buttons & 7
+        return changes(from: before) + (previousButtons == self.buttons ? [] : [.pointer(x, y, self.buttons, 0)])
+    }
 
     mutating func toggle(_ name: String) -> [Event] {
         guard Self.modifiers.contains(name) else { return [] }
@@ -100,17 +110,17 @@ struct LinuxDesktopInputState {
     }
     mutating func point(x: Int32, y: Int32, begin: UInt32? = nil) -> [Event] {
         self.x = max(0, min(799, x)); self.y = max(0, min(599, y))
-        if let begin { guard buttons == 0 else { return [] }; buttons = begin & 7 }
+        if let begin { guard touchButtons == 0 else { return [] }; touchButtons = begin & 7 }
         return [.pointer(self.x, self.y, buttons, 0)]
     }
     mutating func releasePointer() -> [Event] {
-        guard buttons != 0 else { return [] }
-        buttons = 0
-        return [.pointer(x, y, 0, 0)]
+        guard touchButtons != 0 else { return [] }
+        touchButtons = 0
+        return [.pointer(x, y, buttons, 0)]
     }
     mutating func clickRight() -> [Event] {
         let release = releasePointer()
-        return release + [.pointer(x, y, 2, 0), .pointer(x, y, 0, 0)]
+        return release + [.pointer(x, y, buttons | 2, 0), .pointer(x, y, buttons, 0)]
     }
     func scroll(_ steps: Int32) -> [Event] {
         guard steps != 0 else { return [] }
@@ -118,7 +128,9 @@ struct LinuxDesktopInputState {
     }
     mutating func releaseAll() -> [Event] {
         let releases = held.filter { !Self.modifiers.contains($0) }.sorted() + held.filter { Self.modifiers.contains($0) }.sorted()
-        let events = releases.map { Event.key($0, false) } + releasePointer()
+        let pointerRelease: [Event] = buttons == 0 ? [] : [.pointer(x, y, 0, 0)]
+        let events = releases.map { Event.key($0, false) } + pointerRelease
+        screenKeys = []; screenButtons = 0; touchButtons = 0
         latched = []; hardware = []; hardwareModifiers = []; modifierUsages = []
         return events
     }

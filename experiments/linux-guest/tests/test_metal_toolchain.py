@@ -193,7 +193,7 @@ class MetalToolchainTests(unittest.TestCase):
                 json.dumps(self.report)
 
     def test_angle_environment_isolation_and_remaining_budget_reach_every_child(self):
-        self.worker.started = time.monotonic() - 6800
+        self.worker.started = time.monotonic() - (build.NATIVE_BUILD_BUDGET_SECONDS - 100)
         self.ensure(dict(code=1, log=self.missing_component), dict(log="download passed"), dict())
         for call in self.calls:
             self.assertEqual(call["command"][:4], ["/usr/bin/env", "-i",

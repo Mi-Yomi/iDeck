@@ -109,6 +109,7 @@ func runSteamOfflineChecks(root: URL) throws {
         try LinuxSteamOfflineCache.importArchive(source, into: blocked, entries: [entry], archiveSize: 10240)
         preconditionFailure("competing importer accepted")
     } catch LinuxSteamOfflineCache.Invalid.busy { }
+    try runSteamBundledChecks(root: folder, entry: entry, archive: archive)
     print("LINUX_STEAM_OFFLINE_CACHE_PASS (actual synthetic tar IO/digest/headers/links/corruption/interruption/no-replace/owner lock)")
 }
 

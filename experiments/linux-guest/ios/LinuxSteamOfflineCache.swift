@@ -13,29 +13,33 @@ enum LinuxSteamOfflineCache {
     }
     static let filename = "packages.tar"
     static let reserve: UInt64 = 1024 * 1024 * 1024
+    static let bundledSHA256 = "a75ea9bb8a19946cf81b2fb3d6cc4db97db6a1fe0938e4f23857c2c6e826adef"
 
     final class Handle {
         let fd: Int32
         let url: URL
-        init(_ url: URL) throws {
+        private let archiveSize: Int64
+        init(_ url: URL, entries: [Entry] = LinuxSteamCacheContract.entries,
+             archiveSize: Int64 = LinuxSteamCacheContract.archiveSize) throws {
             self.url = url
+            self.archiveSize = archiveSize
             let descriptor = Darwin.open(url.path, O_RDONLY | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC)
             guard descriptor >= 0 else { throw Invalid.io }
             do {
-                try LinuxSteamOfflineCache.metadata(descriptor, size: LinuxSteamCacheContract.archiveSize, owned: true)
+                try LinuxSteamOfflineCache.metadata(descriptor, size: archiveSize, owned: true)
                 guard flock(descriptor, LOCK_SH | LOCK_NB) == 0 else { throw Invalid.busy }
-                try LinuxSteamOfflineCache.verify(descriptor)
+                try LinuxSteamOfflineCache.verify(descriptor, entries: entries, archiveSize: archiveSize)
             } catch { Darwin.close(descriptor); throw error }
             fd = descriptor
         }
         deinit { Darwin.close(fd) }
         func validateIdentity() throws {
-            try LinuxSteamOfflineCache.metadata(fd, size: LinuxSteamCacheContract.archiveSize, owned: true)
+            try LinuxSteamOfflineCache.metadata(fd, size: archiveSize, owned: true)
             var opened = stat(), named = stat()
             guard fstat(fd, &opened) == 0, lstat(url.path, &named) == 0,
                   named.st_mode & S_IFMT == S_IFREG, named.st_nlink == 1,
                   opened.st_dev == named.st_dev, opened.st_ino == named.st_ino,
-                  opened.st_size == LinuxSteamCacheContract.archiveSize else { throw Invalid.metadata }
+                  opened.st_size == archiveSize else { throw Invalid.metadata }
         }
     }
 
@@ -144,8 +148,9 @@ enum LinuxSteamOfflineCache {
         guard unlinkat(parent, ".import.partial", 0) == 0, fsync(parent) == 0 else { throw Invalid.io }
     }
 
-    static func existing(in directory: URL) throws -> Handle? {
-        try reconcilePublication(in: directory)
+    static func existing(in directory: URL, entries: [Entry] = LinuxSteamCacheContract.entries,
+                         archiveSize: Int64 = LinuxSteamCacheContract.archiveSize) throws -> Handle? {
+        try reconcilePublication(in: directory, entries: entries, archiveSize: archiveSize)
         try LinuxDesktopDisk.validateDirectory(directory, allowingMissing: true)
         let file = directory.appendingPathComponent(filename)
         var s = stat()
@@ -153,7 +158,39 @@ enum LinuxSteamOfflineCache {
             guard errno == ENOENT else { throw Invalid.metadata }
             return nil
         }
-        return try Handle(file)
+        return try Handle(file, entries: entries, archiveSize: archiveSize)
+    }
+
+    /// Start-only preparation, independent of the existing/new userdata route.
+    /// Always verify the signed bundle input; a bad published cache is preserved.
+    static func prepareBundled(from assets: URL, into directory: URL,
+                               entries: [Entry] = LinuxSteamCacheContract.entries,
+                               archiveSize: Int64 = LinuxSteamCacheContract.archiveSize,
+                               expectedSHA256: String = LinuxSteamOfflineCache.bundledSHA256,
+                               checkpoint: (() throws -> Void)? = nil) throws -> Handle {
+        guard archiveSize > 0, archiveSize <= 512 * 1024 * 1024 else { throw Invalid.metadata }
+        let canonical: URL
+        do { canonical = try LinuxDesktopDisk.trustedDirectory(assets) }
+        catch { throw Invalid.io }
+        let source = canonical.appendingPathComponent("owner-steam-cache.tar")
+        let fd = Darwin.open(source.path, O_RDONLY | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC)
+        guard fd >= 0 else { throw Invalid.io }
+        defer { Darwin.close(fd) }
+        try metadata(fd, size: archiveSize, owned: false)
+        var offset: Int64 = 0, hash = SHA256()
+        while offset < archiveSize {
+            try checkpoint?()
+            let bytes = try read(fd, offset: offset, count: Int(min(archiveSize-offset, 1024*1024)))
+            hash.update(data: bytes); offset += Int64(bytes.count)
+        }
+        guard hash.finalize().map({ String(format: "%02x", $0) }).joined() == expectedSHA256 else { throw Invalid.digest }
+        try metadata(fd, size: archiveSize, owned: false)
+        try checkpoint?()
+        if let cached = try existing(in: directory, entries: entries, archiveSize: archiveSize) { return cached }
+        try importArchive(source, into: directory, entries: entries, archiveSize: archiveSize, checkpoint: checkpoint)
+        try checkpoint?()
+        guard let handle = try existing(in: directory, entries: entries, archiveSize: archiveSize) else { throw Invalid.io }
+        return handle
     }
 
     /// Explicit owner import. Only the reserved partial can be restarted; an

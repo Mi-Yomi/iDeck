@@ -291,7 +291,7 @@ class NativePythonTests(unittest.TestCase):
         self.assertEqual(self.report["native_python"]["status"], "failed")
 
     def test_every_process_retains_logs_and_aggregate_timeout(self):
-        self.worker.started = time.monotonic() - 6800
+        self.worker.started = time.monotonic() - (build.NATIVE_BUILD_BUDGET_SECONDS - 100)
         self.ensure()
         self.assertEqual([step["exit_code"] for step in self.worker.steps], [0, 0, 0])
         for name, call in zip(("python-venv", "python-install", "python-probe"), self.calls):

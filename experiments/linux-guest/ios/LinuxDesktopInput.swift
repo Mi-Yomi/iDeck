@@ -22,6 +22,7 @@ final class LinuxDesktopInput: ObservableObject {
     @Published private(set) var latched: Set<String> = []
     @Published private(set) var message = "US keyboard layout; text, special keys and modifiers go to Linux."
     private var state = LinuxDesktopInputState()
+    private var screen = LinuxSteamControlsState()
     private var focused = false
     private let gate = LinuxInputGate()
     private let queue = DispatchQueue(label: "ideck.desktop.input", qos: .userInteractive)
@@ -34,7 +35,7 @@ final class LinuxDesktopInput: ObservableObject {
     /// retention. It never waits for an in-flight BQL call or releases QEMU.
     func guestEnded() {
         gate.finish()
-        DispatchQueue.main.async { self.enabled = false; _ = self.state.releaseAll(); self.latched = [] }
+        DispatchQueue.main.async { self.enabled = false; _ = self.state.releaseAll(); self.screen.releaseAll(); self.latched = [] }
     }
     func setFocused(_ focused: Bool) {
         precondition(Thread.isMainThread)
@@ -60,7 +61,18 @@ final class LinuxDesktopInput: ObservableObject {
     func releaseHeld() {
         precondition(Thread.isMainThread)
         _ = gate.cancelText()
-        emit(state.releaseAll()); latched = []
+        screen.releaseAll(); emit(state.releaseAll()); latched = []
+    }
+    func screenControl(_ control: LinuxSteamControlsState.Control, down: Bool, x: Double = 0, y: Double = 0) {
+        precondition(Thread.isMainThread)
+        guard enabled else { return }
+        _ = gate.cancelText()
+        screen.set(control, down: down, x: x, y: y)
+        emit(state.screen(keys: screen.keys, buttons: screen.buttons))
+    }
+    func releaseScreenControls() {
+        precondition(Thread.isMainThread)
+        screen.releaseAll(); emit(state.screen(keys: [], buttons: 0))
     }
     func prepareStop(_ completion: @escaping () -> Void) {
         precondition(Thread.isMainThread)

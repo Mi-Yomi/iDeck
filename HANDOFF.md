@@ -1,3 +1,12 @@
+> CURRENT PINNING CHECKPOINT — based on1593537c7ae7e7fdada864afb1830cac83a91fa4.
+> Actual private cache payload_url and delivery metadata pinned; cache content,
+> source inputs and functional code unchanged. All587 Python tests OK /5 SKIP;
+> generators, full overlay, original/new real staging/resource gates PASS.
+> Evidence: experiments/linux-guest/evidence/steam-cache-pin-20261019/.
+> Coordinator may review this final pushed HEAD for one Apple CI: cap95/internal90,
+> authorized remainder106, fresh quota/paid-OFF/private/native attestations needed.
+> No CI dispatched here. New Apple/device checks NOT RUN; BusyBox provenance OPEN.
+
 > CURRENT SOURCE CANDIDATE — bundled owner cache + screen controls, 19 October 2026.
 > Based on **52aa5b55d3c3466adf59ac2edac82a4b670f767f**, Steam branch only.
 > **No new IPA / Apple execution / device run / CI dispatch here.** The previously
@@ -14,15 +23,19 @@
 > user disk access or public sharing. Native Library link/ID is supplied to the
 > coordinator separately; personal artifact identifiers are not embedded here.
 >
-> **DELIVERY BLOCKER:** ordinary private GitHub cache upload returned **HTTP401
-> Bad credentials** at uploads.github.com. Not an approval-review rejection;
-> no retry, new token or bypass. The failed request mentioned release417003571,
-> but subsequent API GET was404, release list/tag checks found no new cache
-> release/tag: do not claim a created Release or asset URL. Original Linux Release
-> asset654660064 remains uploaded303667200 bytes / f74e22f4…a29c62c, unchanged.
-> Cache lock seals real bytes but deliberately has **no payload_url**. CI fails
-> before Apple setup until the actual private asset is uploaded/read back/pinned,
-> or the verified local TAR is explicitly materialized on that runner.
+> **DELIVERY READY / PINNED:** coordinator completed authorized private upload
+> and independent full readback. Release417038191, prerelease=true, tag
+> ideck-owner-steam-cache-v1-20261019 points exactly at1593537c7ae7e7fdada864afb1830cac83a91fa4.
+> Asset655626057,379228160 bytes, server digest and downloaded full SHA both
+> a75ea9bb8a19946cf81b2fb3d6cc4db97db6a1fe0938e4f23857c2c6e826adef.
+> API URL: https://api.github.com/repos/Mi-Yomi/iDeck/releases/assets/655626057 .
+> These remote/readback facts were supplied by the coordinating executor; this
+> pinning task reverified the existing real local TAR/canonical/resource gates
+> and did not repeat the failed upload or request credentials. The earlier401
+> attempt is historical. Original Linux Release and all old payloads unchanged.
+> Cache source_commit stays52aa5b5: exact source-input Git blobs at that real
+> preparation commit were rechecked. Release tag commit1593537 is recorded
+> separately in delivery.tag_commit. Final app/CI source is the new post-pin HEAD.
 >
 > Start now verifies the bundled full digest and auto-imports/reuses the separate
 > pinned readonly cache before either userdata route. Existing userdata is never

@@ -40,13 +40,24 @@ credentials, auth login or workaround followed. Subsequent release GET417003571
 returned404; listing releases and the remote tag found no such cache release/tag.
 The request's ID is not proof of an existing release or uploaded asset.
 
-**Remaining delivery blocker:** the private GitHub asset URL does not exist yet.
-`ipa/steam-cache.lock.json` seals the real local bytes but deliberately omits
-`payload_url`. `steam_bundled_cache.prepare_for_build` stops before Apple/native
-setup with `STEAM_BUNDLED_CACHE_ASSET_NOT_UPLOADED`. It accepts an explicitly
-materialized `IDECK_STEAM_CACHE_FILE` on an approved runner, verifying the same
-full digest and canonical entry contract. No synthetic substitute or unchecked
-URL is accepted. No Valve binaries are committed to Git or publicly uploaded.
+**Delivery completed:** the coordinating executor reports authorized private
+upload and independent full readback for release417038191, prerelease=true:
+https://github.com/Mi-Yomi/iDeck/releases/tag/ideck-owner-steam-cache-v1-20261019 .
+The actual tag ref is1593537c7ae7e7fdada864afb1830cac83a91fa4. Asset655626057 is
+379228160 bytes; server digest and independently downloaded full SHA match
+`a75ea9bb8a19946cf81b2fb3d6cc4db97db6a1fe0938e4f23857c2c6e826adef`.
+`ipa/steam-cache.lock.json` now pins
+`https://api.github.com/repos/Mi-Yomi/iDeck/releases/assets/655626057`.
+Remote/readback facts are coordinator supplied; this pinning step reverified the
+real existing TAR and staging locally, without repeating failed credentials.
+The earlier401 attempt above is historical. Existing releases were not changed.
+
+Cache `source_commit` remains52aa5b55d3c3466adf59ac2edac82a4b670f767f: it records
+actual cache preparation, not the app build or release tag. Its source-input
+hashes/sizes were rechecked against those exact Git blobs. The delivery tag SHA
+is recorded separately. Archive, entries, source inputs and functional code are
+unchanged; only delivery/URL and the necessary overlay-lock hash changed.
+New pinning evidence: `experiments/linux-guest/evidence/steam-cache-pin-20261019/`.
 
 ## Automatic Start path
 
@@ -141,24 +152,20 @@ preparation. At the coordinator's106-minute snapshot this leaves11 minutes below
 the provider cap. Fresh quota with reserve, **paid OFF**, private source and
 native-build approval remain mandatory. No CI was dispatched/cancelled here.
 
-Minimal coordinator continuation:
+Coordinator continuation after reviewing the final pushed pinning commit:
 
-1. Materialize the retained owner cache with authorized tools; verify size/full
-   SHA. Use an existing authorized private uploader to place it in Mi-Yomi/iDeck
-   without changing repository audience or the original Linux payload asset.
-2. Verify actual server upload/readback. Add only the real same-repository asset
-   API `payload_url` to `ipa/steam-cache.lock.json`, update delivery facts, and
-   update that file's SHA in `husk/overlay.lock.json`. Never invent an asset ID.
-3. Run checks, commit `[skip ci]`, push only the Steam branch, verify remote SHA
-   and clean checkout. Cache content digest stays exactlya75ea9bb…e826adef.
-4. After review and fresh quota/paid-OFF checks, dispatch **one** manual build:
-   branch `codex/steam-arm64-experiment-20261017`, workflow
-   `ideck-linux-probe-ipa`, `expected_commit=<full final post-pin HEAD>`,
-   `free_quota_verified=true`, `private_source_verified=true`,
-   `native_build_approved=true`. Keep existing `ideck-debian-payload` group and
-   `IDECK_DEBIAN_PAYLOAD_TOKEN`; no new secret. The cache fetch uses the pinned
-   API URL and existing private payload transport; do not set the Linux-seed URL
-   override to select cache bytes. All previous mandatory Apple markers remain.
+- Source branch `codex/steam-arm64-experiment-20261017`; workflow
+  `ideck-linux-probe-ipa`; `expected_commit=<full final post-pin HEAD>`.
+- `free_quota_verified=true`, `private_source_verified=true`,
+  `native_build_approved=true`, only after fresh quota/reserve and paid-OFF checks.
+- Provider cap95/internal90 remain; no static120-minute prerequisite in the
+  active native workflow/worker. The authorized106-minute snapshot leaves11
+  minutes below the provider cap. Other workflows/environments are unchanged.
+- Keep existing `ideck-debian-payload` / `IDECK_DEBIAN_PAYLOAD_TOKEN`; no new
+  secret or URL override. The pinned cache URL uses existing private transport.
+- Run all mandatory Apple markers, including bundled-cache/screen-controls,
+  fresh-handoff/offline/Auto RAM and integrated actual Husk/UIKit typecheck.
+  No CI dispatch occurred here; new Apple/device checks remain NOT RUN.
 
 BusyBox corresponding-source provenance remains **OPEN**. This change does not
 close that inherited limitation or establish general distribution permission.

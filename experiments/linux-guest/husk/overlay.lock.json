@@ -55,7 +55,7 @@
     "ios/LinuxSteamControlsState.swift": "2d16c5a415959496a323a4b22fe0278e6e155a76beb6ca0fea88893fb4e18cb9",
     "ios/LinuxSteamControlsView.swift": "f5596aa3c9ef1265771d2d816c44eec19ed9fc2a3ae3480a613016fff610f616",
     "tools/steam_bundled_cache.py": "45c17528f0e9bcd8fa99fc2ec9e5b2974ef3a707eb6f373b0b27d83755be6bb9",
-    "ipa/steam-cache.lock.json": "bfedb2aa2433e4d96a6ef13dcfc46d6af02d8fb637af093bd2c9fb4de6e6e5af"
+    "ipa/steam-cache.lock.json": "43a5ce660d0ad44a876b1665b0a175984a76918ecc05b38d460b11e21c742d6e"
   },
   "copies": {
     "ios/LinuxGuestProfile.swift": "src/app/Husk/LinuxGuestProfile.swift",

@@ -338,13 +338,21 @@
   "account_data_included": false,
   "device_verified": false,
   "delivery": {
-    "status": "asset_upload_blocked_http401",
-    "release_tag_attempted": "ideck-owner-steam-cache-v1-20261019",
-    "release_id_seen_in_failed_upload_request": 417003571,
-    "release_exists_verified": false,
-    "post_failure_release_by_id_http_status": 404,
-    "post_failure_release_list_matches": 0,
-    "asset_url_pinned": false
+    "status": "uploaded_and_independent_readback_verified",
+    "release_tag": "ideck-owner-steam-cache-v1-20261019",
+    "release_id": 417038191,
+    "release_url": "https://github.com/Mi-Yomi/iDeck/releases/tag/ideck-owner-steam-cache-v1-20261019",
+    "tag_commit": "1593537c7ae7e7fdada864afb1830cac83a91fa4",
+    "prerelease": true,
+    "asset_id": 655626057,
+    "state": "uploaded",
+    "server_digest": "sha256:a75ea9bb8a19946cf81b2fb3d6cc4db97db6a1fe0938e4f23857c2c6e826adef",
+    "readback_size": 379228160,
+    "readback_sha256": "a75ea9bb8a19946cf81b2fb3d6cc4db97db6a1fe0938e4f23857c2c6e826adef",
+    "readback_verified_by": "coordinating_executor_independent_full_download",
+    "release_exists_verified": true,
+    "asset_url_pinned": true
   },
-  "scope": "Sealed real owner-personal official package cache, not a preinstalled client; existing seed/userdata remain unchanged. URL may be added only after actual private upload/readback verification."
+  "scope": "Sealed real owner-personal official package cache, not a preinstalled client; existing seed/userdata remain unchanged. URL may be added only after actual private upload/readback verification.",
+  "payload_url": "https://api.github.com/repos/Mi-Yomi/iDeck/releases/assets/655626057"
 }

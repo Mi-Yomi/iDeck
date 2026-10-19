@@ -1,5 +1,27 @@
 # Owner offline cache and experimental Auto RAM
 
+Fresh-handoff correction after review of `756e08c44456f62b48d45a9f08fdaf42321c34b3`:
+that source measured before synchronous report/journal IO, then persisted again
+before QEMU. The shared production gate now completes all blocking preparation
+IO, samples/rechecks and atomically commits entry; handoff has no intervening
+synchronous persistence or extra queue hop. Mandatory crash-journal fsync still
+precedes entry. Post-entry report persistence is asynchronous and cannot release
+native ownership on failure. A memory refusal retains the userdata lock/dirty
+bytes and closes that preparation permanently; attempted is not reset.
+
+A mandatory `LINUX_STEAM_FRESH_HANDOFF_PASS` Swift fixture injects deterioration
+while a real journal fsync is held at a semaphore barrier, checks retained real
+flock/synthetic dirty-header bytes, rejects repeated entry and failed journal
+sync, and covers success/non-Steam controls. **560 Python tests OK (555 PASS,
+5 SKIP)**; generators/overlay/real staging/pins PASS. New Swift/Apple/QEMU/device
+execution **NOT RUN** here. Evidence is in
+`experiments/linux-guest/evidence/steam-fresh-handoff-20261019/`. The coordinator
+reports holding/stopping the 756e08c CI; this task did not dispatch/cancel CI.
+The OS may still change headroom after any preflight; this check does not reserve
+physical RAM or establish protection from jetsam.
+
+The following describes the underlying offline-cache/Auto implementation.
+
 Source baseline: `33ece4ee09c7f8953a57b88827740a3ee3008fd6`, Steam branch only.
 This is a new source candidate. Previously delivered IPA #35 was built at
 `209315cd8b330c0ba1b5a7a28f2cf2884a86dafa` and does not contain this update.

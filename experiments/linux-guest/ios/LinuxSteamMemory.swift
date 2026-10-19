@@ -18,6 +18,22 @@ enum LinuxSteamMemory {
             guard available >= required else { throw Failure.insufficient }
         }
     }
+    /// Finish blocking ownership/journal IO before sampling. A refusal closes
+    /// this preparation permanently; the caller retains its one-use VM owner.
+    static func enterAfterIO(plan: Plan?, preparation: LinuxStartupPreparation,
+                             prepare: () throws -> Void, sample: () -> UInt64?) throws -> UInt64? {
+        do {
+            try prepare()
+            let available = plan == nil ? nil : sample()
+            try plan?.recheck(available)
+            guard preparation.enterNative() else { throw LinuxStartupPreparation.Cancelled.beforeNativeEntry }
+            return available
+        } catch {
+            preparation.finish()
+            throw error
+        }
+    }
+
     /// available is ADDITIONAL process budget; never subtract current RSS again.
     /// H includes future JIT/TCG commitment and display/QEMU/IO growth. Keeping
     /// the full conservative H avoids inferring resident bytes from prewarmed VA.

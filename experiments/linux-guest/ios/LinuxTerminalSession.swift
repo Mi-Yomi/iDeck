@@ -528,19 +528,39 @@ private final class LinuxTerminalWorker {
     private func prepareNativeEntry(serial: LinuxTerminalSocket, control: LinuxTerminalSocket) -> Bool {
         do {
             try queue.sync {
-                guard let disk = self.disk else { throw LinuxTerminalProfile.Invalid.diskOwnership }
-                try disk.validateOwnership()
-                try self.steamOfflineCache?.validateIdentity()
-                if let plan = self.steamMemoryPlan {
-                    let available = LinuxSteamProfile.availableMemoryBytes(os_proc_available_memory())
-                    self.report["steam_memory_final_budget_bytes"] = available ?? 0
-                    try plan.recheck(available)
-                    self.report["steam_memory_final_recheck"] = "PASS"
-                    try self.saveReport()
+                do {
+                    let available = try LinuxSteamMemory.enterAfterIO(plan: self.steamMemoryPlan, preparation: self.preparation,
+                        prepare: {
+                            guard let disk = self.disk else { throw LinuxTerminalProfile.Invalid.diskOwnership }
+                            try disk.validateOwnership()
+                            try self.steamOfflineCache?.validateIdentity()
+                            if self.steamMemoryPlan != nil { try self.saveReport() }
+                            try diagnostic.record(.qemuInitBegin)
+                        }, sample: {
+                            let available = LinuxSteamProfile.availableMemoryBytes(os_proc_available_memory())
+                            self.report["steam_memory_final_budget_bytes"] = available ?? 0
+                            return available
+                        })
+                    // No blocking IO or further queue hop between the fresh gate
+                    // and handoff. Post-entry report failures cannot release locks.
+                    self.enteredQEMU = true
+                    self.lifecycle.record(.entered)
+                    serial.handToQEMU(); control.handToQEMU()
+                    if self.steamMemoryPlan != nil {
+                        self.report["steam_memory_final_budget_bytes"] = available ?? 0
+                        self.report["steam_memory_final_recheck"] = "PASS"
+                    }
+                    self.report["userdata_lock_retained_until_process_exit"] = true
+                    self.owner.publish {
+                        $0.preparationState = self.preparation.snapshot
+                        $0.message = "Starting Linux. Keep iDeck open; Stop becomes available when the guest supervisor is ready."
+                    }
+                    self.queue.async { self.persist() }
+                } catch {
+                    self.startupAborted = true
+                    throw error
                 }
             }
-            try diagnostic.record(.qemuInitBegin)
-            guard preparation.enterNative() else { throw LinuxStartupPreparation.Cancelled.beforeNativeEntry }
         }
         catch {
             let failure = LinuxTerminalSession.failure(error)
@@ -553,9 +573,12 @@ private final class LinuxTerminalWorker {
                 self.preparation.finish()
                 serial.closeUnused(); control.closeUnused()
                 try? self.logHandle?.close(); self.logHandle = nil
-                self.disk?.closeUnused()
+                if !memoryFailed { self.disk?.closeUnused() }
                 self.report["status"] = cancelled ? "terminal_prepare_cancelled" : "terminal_prepare_failed"
-                if memoryFailed { self.report["steam_memory_final_recheck"] = "BLOCKED" }
+                if memoryFailed {
+                    self.report["steam_memory_final_recheck"] = "BLOCKED"
+                    self.report["userdata_lock_retained_until_process_exit"] = true
+                }
                 if cancelled { self.report["preparation_cancelled_before_qemu"] = true }
                 self.persist()
                 self.owner.publish {
@@ -566,17 +589,6 @@ private final class LinuxTerminalWorker {
                 }
             }
             return false
-        }
-        queue.sync {
-            self.enteredQEMU = true
-            self.owner.publish {
-                $0.preparationState = self.preparation.snapshot
-                $0.message = "Starting Linux. Keep iDeck open; Stop becomes available when the guest supervisor is ready."
-            }
-            self.lifecycle.record(.entered)
-            self.report["userdata_lock_retained_until_process_exit"] = true
-            self.persist()
-            serial.handToQEMU(); control.handToQEMU()
         }
         return true
     }

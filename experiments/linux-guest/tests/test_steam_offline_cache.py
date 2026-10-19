@@ -191,7 +191,7 @@ class OfflineCache(unittest.TestCase):
         session = (ROOT / 'ios/LinuxTerminalSession.swift').read_text()
         self.assertIn('guard !attempted, !steamCacheImportBusy', session)
         entry = swift_block(session, 'private func prepareNativeEntry(')
-        self.assertLess(entry.index('plan.recheck'), entry.index('preparation.enterNative()'))
+        self.assertIn('LinuxSteamMemory.enterAfterIO', entry)
         self.assertIn('steamOfflineCache?.validateIdentity()', entry)
         self.assertEqual(session.count('attempted = false'), 1)
         ci = (ROOT.parents[1] / 'ci/check_linux_guest_profile.py').read_text()

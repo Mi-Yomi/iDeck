@@ -54,8 +54,10 @@ class SteamReadiness(unittest.TestCase):
         worker=source[source.index('private final class LinuxTerminalWorker'):]
         self.assertIn('try LinuxSteamProfile.load(from: assets)',worker)
         self.assertIn('LinuxSteamMemory.plan(available:',worker)
-        self.assertIn('plan.recheck',worker)
-        self.assertIn('guard preparation.enterNative()',worker)
+        self.assertIn('LinuxSteamMemory.enterAfterIO',worker)
+        gate = (ROOT / 'ios/LinuxSteamMemory.swift').read_text()
+        self.assertIn('plan?.recheck',gate)
+        self.assertIn('guard preparation.enterNative()',gate)
 
     def test_unknown_jit_is_not_a_preview_execution_or_compatibility_claim(self):
         source=(ROOT/'ios/LinuxSteamProfile.swift').read_text()

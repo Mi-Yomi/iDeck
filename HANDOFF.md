@@ -1,4 +1,34 @@
-> Current owner offline-cache + Auto RAM source candidate, 19 October 2026,
+> Current fresh-memory handoff correction, 19 October 2026, from
+> **756e08c44456f62b48d45a9f08fdaf42321c34b3**. Read-only review found a stale
+> budget window: synchronous report/journal IO and a post-entry persist occurred
+> after the final RAM sample. All blocking ownership/cache/report/journal checks
+> now complete before the shared Foundation gate samples process headroom,
+> rechecks the frozen plan and commits `enterNative`. Socket/lifecycle handoff
+> follows in the same queue block; report persistence is asynchronous. Mandatory
+> qemuInitBegin journal/fsync remains before entry and failure still blocks it.
+>
+> Budget refusal finishes preparation without resetting attempted/entered or
+> allowing another VM. The existing userdata fd/lock is retained until process
+> exit on this refusal; dirty filesystem bytes are never cleared or rewritten.
+> Failure latches synchronously before queued callbacks. GUI/Debian routes skip
+> the Steam budget sampler and preserve their journal/ownership entry guards.
+>
+> **560 Python tests OK (555 PASS, 5 SKIP)**. New mandatory production Swift
+> **LINUX_STEAM_FRESH_HANDOFF_PASS** fixture blocks real journal fsync, lowers an
+> injected budget during IO, and checks fresh refusal, durable journal, actual
+> synthetic dirty header/held flock preservation, no second entry, failed fsync
+> and successful/non-Steam controls. New Swift execution is **NOT RUN** locally;
+> source/wiring checks are not a claim of its runtime pass. Evidence:
+> `experiments/linux-guest/evidence/steam-fresh-handoff-20261019/`.
+>
+> Generators, full source overlay, real Steam stage/repeat/package-resource gate,
+> all 23 bindings, recovery/disk/payload preservation, AST/shell/Git attrs PASS.
+> New Apple/native/QEMU/device checks NOT RUN. Parent reports holding/stopping
+> CI for 756e08c during coordination; no CI was launched/stopped here. Next build
+> must use the full correction SHA after fresh quota/private/native attestations.
+> No new payload, Valve bytes, owner-PC actions or secrets. BusyBox provenance OPEN.
+
+> Historical owner offline-cache + Auto RAM source candidate, 19 October 2026,
 > based on **33ece4ee09c7f8953a57b88827740a3ee3008fd6**.
 > **STEAM-OFFLINE-CACHE-AUTO-RAM-20261019.md** describes owner-local pack/verify,
 > explicit canonical pinned TAR import, separate readonly virtio cache and the

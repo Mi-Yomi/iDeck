@@ -37,6 +37,7 @@ func runSteamOfflineChecks(root: URL) throws {
         "steam_memory_overhead_bytes": 1024 * mib, "steam_memory_reserve_bytes": 1024 * mib,
         "steam_memory_final_recheck": "BLOCKED", "steam_offline_cache_attached": true])
     precondition(exported.contains("Steam RAM mode") && exported.contains("BLOCKED") && exported.contains("CONFIGURED READONLY / PINNED"))
+    try runFreshMemoryHandoffChecks(root: root, plan: floor)
     print("LINUX_STEAM_AUTO_MEMORY_PASS (unknown/bounds/step/overhead/overflow/final deterioration; synthetic budgets)")
 
     let folder = root.appendingPathComponent("offline-cache-checks")
@@ -109,4 +110,91 @@ func runSteamOfflineChecks(root: URL) throws {
         preconditionFailure("competing importer accepted")
     } catch LinuxSteamOfflineCache.Invalid.busy { }
     print("LINUX_STEAM_OFFLINE_CACHE_PASS (actual synthetic tar IO/digest/headers/links/corruption/interruption/no-replace/owner lock)")
+}
+
+
+/// Actual production gate + journal fsync barrier; no QEMU or device execution.
+private func runFreshMemoryHandoffChecks(root: URL, plan: LinuxSteamMemory.Plan) throws {
+    final class Budget {
+        private let lock = NSLock()
+        private var bytes: UInt64?
+        init(_ value: UInt64) { bytes = value }
+        func set(_ value: UInt64?) { lock.lock(); bytes = value; lock.unlock() }
+        func get() -> UInt64? { lock.lock(); defer { lock.unlock() }; return bytes }
+    }
+    let budget = Budget(plan.required)
+    let inIO = DispatchSemaphore(value: 0), resumeIO = DispatchSemaphore(value: 0)
+    var armed = false, syncFailed = false
+    let documents = root.appendingPathComponent("fresh-handoff-journal")
+    try FileManager.default.createDirectory(at: documents, withIntermediateDirectories: true)
+    let store = try LinuxTerminalDiagnostics(documents: documents, synchronize: { fd in
+        if syncFailed { return -1 }
+        if armed {
+            inIO.signal()
+            guard resumeIO.wait(timeout: .now() + 5) == .success else { return -1 }
+        }
+        return fsync(fd)
+    })
+    let journal = try store.begin(source: String(repeating: "a", count: 40), build: "handoff-fixture")
+    // SteamProfileChecks leaves this sparse synthetic ext4 header dirty. Keep
+    // its real exclusive fd lock throughout refusal; never rewrite its bytes.
+    let raw = root.appendingPathComponent("steam-data/rootfs-v1.raw")
+    let held = Darwin.open(raw.path, O_RDWR | O_NOFOLLOW)
+    precondition(held >= 0 && flock(held, LOCK_EX | LOCK_NB) == 0)
+    defer { Darwin.close(held) }
+    var before = Data(count: 1024)
+    let beforeCount = before.withUnsafeMutableBytes { pread(held, $0.baseAddress!, $0.count, 1024) }
+    precondition(beforeCount == 1024 && before[0x60] & 4 != 0)
+    let preparation = LinuxStartupPreparation()
+    let changer = Thread {
+        precondition(inIO.wait(timeout: .now() + 5) == .success)
+        budget.set(plan.required - 1)
+        resumeIO.signal()
+    }
+    armed = true; changer.start()
+    var samples = 0
+    do {
+        _ = try LinuxSteamMemory.enterAfterIO(plan: plan, preparation: preparation,
+            prepare: { try journal.record(.qemuInitBegin) },
+            sample: { samples += 1; return budget.get() })
+        preconditionFailure("budget during blocked fsync was not resampled")
+    } catch LinuxSteamMemory.Failure.insufficient { }
+    armed = false
+    precondition(samples == 1 && preparation.snapshot.state == .finished)
+    precondition(!preparation.enterNative(), "a refused preparation cannot start another VM")
+    let contender = Darwin.open(raw.path, O_RDWR | O_NOFOLLOW)
+    precondition(contender >= 0)
+    precondition(flock(contender, LOCK_EX | LOCK_NB) != 0, "memory refusal released the disk owner")
+    Darwin.close(contender)
+    var after = Data(count: 1024)
+    let afterCount = after.withUnsafeMutableBytes { pread(held, $0.baseAddress!, $0.count, 1024) }
+    precondition(afterCount == 1024 && after == before, "memory refusal cleared dirty ext4 metadata")
+    let snapshot = try store.snapshot(id: journal.id)
+    precondition(snapshot.records.contains { $0.stage == .qemuInitBegin }, "mandatory journal was not durable before sampling")
+    // Even after budget recovers, the same one-use preparation cannot re-enter.
+    budget.set(plan.required)
+    do {
+        _ = try LinuxSteamMemory.enterAfterIO(plan: plan, preparation: preparation,
+            prepare: {}, sample: { budget.get() })
+        preconditionFailure("refused preparation was reopened")
+    } catch LinuxStartupPreparation.Cancelled.beforeNativeEntry { }
+    // Journal failure must prevent the sample/native boundary altogether.
+    syncFailed = true
+    let failed = LinuxStartupPreparation()
+    do {
+        _ = try LinuxSteamMemory.enterAfterIO(plan: plan, preparation: failed,
+            prepare: { try journal.record(.qemuInitBegin) },
+            sample: { preconditionFailure("sample ran after failed fsync") })
+        preconditionFailure("failed mandatory journal allowed native entry")
+    } catch LinuxTerminalDiagnostics.Problem.synchronize { }
+    precondition(failed.snapshot.state == .finished && !failed.enterNative())
+    // The successful route is still exactly one atomic commit.
+    let success = LinuxStartupPreparation()
+    let sampled = try LinuxSteamMemory.enterAfterIO(plan: plan, preparation: success, prepare: {}, sample: { budget.get() })
+    precondition(sampled == plan.required && success.snapshot.state == .entered && !success.enterNative())
+    let nonSteam = LinuxStartupPreparation()
+    let noBudget = try LinuxSteamMemory.enterAfterIO(plan: nil, preparation: nonSteam, prepare: {},
+        sample: { preconditionFailure("non-Steam route sampled Steam budget") })
+    precondition(noBudget == nil && nonSteam.snapshot.state == .entered)
+    print("LINUX_STEAM_FRESH_HANDOFF_PASS (blocked journal IO, fresh budget, durable journal, dirty bytes/lock retained, refusal one-use, sync failure)")
 }

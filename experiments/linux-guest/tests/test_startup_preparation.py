@@ -28,9 +28,12 @@ class StartupPreparationWiring(unittest.TestCase):
         source = (ROOT / 'ios/LinuxTerminalSession.swift').read_text()
         entry = swift_block(source, 'private func prepareNativeEntry(')
         checks = ['try disk.validateOwnership()', 'try diagnostic.record(.qemuInitBegin)',
-                  'guard preparation.enterNative()', 'self.enteredQEMU = true', 'serial.handToQEMU()']
+                  'self.enteredQEMU = true', 'serial.handToQEMU()']
         self.assertEqual([entry.index(s) for s in checks], sorted(entry.index(s) for s in checks))
-        self.assertIn('Cancelled.beforeNativeEntry', entry)
+        gate = swift_block((ROOT / 'ios/LinuxSteamMemory.swift').read_text(), 'static func enterAfterIO(')
+        self.assertIn('guard preparation.enterNative()', gate)
+        self.assertIn('Cancelled.beforeNativeEntry', gate)
+        self.assertIn('LinuxSteamMemory.enterAfterIO', entry)
         self.assertIn('serial.closeUnused(); control.closeUnused()', entry)
         worker_start = swift_block(source[source.index('private final class LinuxTerminalWorker'):], 'func start()')
         self.assertIn('guard self.prepareNativeEntry(serial: serial, control: control) else { return }', worker_start)

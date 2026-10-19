@@ -117,9 +117,23 @@ func runSteamProfileChecks(root: URL) throws {
     // is left alone: its ownership/recovery check belongs to the real Start path.
     let manifestBytes = try Data(contentsOf: profileFile)
     let budget = UInt64(LinuxSteamProfile.memoryMib) * 1024 * 1024 + LinuxSteamProfile.hostReserve
+    // Exercise the actual signed SDK boundary, not an inferred UInt64 fixture.
+    let unknownMeasurements: [Int] = [Int.min, -1, 0]
+    for signedMeasurement in unknownMeasurements {
+        let converted: UInt64? = LinuxSteamProfile.availableMemoryBytes(signedMeasurement)
+        precondition(converted == nil)
+    }
+    let positiveMeasurements: [Int] = [1, Int(budget) - 1, Int(budget), Int(budget) + 1, Int.max]
+    for signedMeasurement in positiveMeasurements {
+        let converted: UInt64? = LinuxSteamProfile.availableMemoryBytes(signedMeasurement)
+        precondition(converted == UInt64(exactly: signedMeasurement))
+    }
     func readiness(_ memory: UInt64?, jit: Bool? = nil, consent: Bool = true) -> LinuxSteamProfile.Readiness {
         LinuxSteamProfile.readiness(assets: assets, jitVerified: jit, networkConsent: consent, availableMemory: memory)
     }
+    precondition(readiness(LinuxSteamProfile.availableMemoryBytes(Int.min)).memory == .unknown)
+    precondition(!readiness(LinuxSteamProfile.availableMemoryBytes(Int(budget) - 1)).canCheckAndStart)
+    precondition(readiness(LinuxSteamProfile.availableMemoryBytes(Int(budget))).canCheckAndStart)
     precondition(readiness(nil).memory == .unknown && !readiness(nil).canCheckAndStart)
     precondition(readiness(0).memory == .unknown)
     precondition(!readiness(budget - 1).canCheckAndStart)

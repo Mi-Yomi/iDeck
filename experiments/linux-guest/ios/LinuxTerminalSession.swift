@@ -26,7 +26,7 @@ final class LinuxTerminalSession: ObservableObject {
         let available = os_proc_available_memory()
         let result = LinuxSteamProfile.readiness(assets: Bundle.main.bundleURL.appendingPathComponent("iDeckLinuxSteam"),
             jitVerified: jitObservation, networkConsent: steamNetworkConsent,
-            availableMemory: available > 0 ? available : nil)
+            availableMemory: LinuxSteamProfile.availableMemoryBytes(available))
         steamReadiness = result
         return result
     }

@@ -1,5 +1,19 @@
 # Steam readiness snapshot, 19 October 2026
 
+Update: the parent's actual readiness CI for `14d2ea33d75a7f14787e039a394f88ad6fa02e07`
+[failed integrated Swift typecheck](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5804a7550aed8108ffdfb)
+at `LinuxTerminalSession.swift:29:44`: `Int?` could not convert to `UInt64?`.
+The parent reported Mac runtime markers (including LINUX_STEAM_READINESS_PASS)
+and upstream typecheck PASS; native downloads had not started. The SDK returns
+signed `Int`. The follow-up uses an explicit nonpositive -> unknown guard and
+failable `UInt64(exactly:)`, with typed boundary fixtures. One new affected call
+was found; the pre-existing worker comparison is unchanged. Follow-up local
+checks: **550 tests OK (545 PASS, 5 SKIP)**, generator/overlay/staging/resource
+verification PASS. New Swift/Apple execution **NOT RUN**. See current HANDOFF and
+`experiments/linux-guest/evidence/steam-memory-types-20261019/`. The following
+original validation describes the pre-fix source, not a successful integrated
+Apple build of readiness.
+
 Source baseline: `f7a89d2c8e1f324843fd6d215a1ebd60171451aa`.
 This is a new source candidate; the parent's CI for that baseline does not
 validate these changes. No CI was started, cancelled or modified here.

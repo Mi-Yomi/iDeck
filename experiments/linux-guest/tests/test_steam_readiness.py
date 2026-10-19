@@ -7,6 +7,23 @@ from test_terminal import swift_block
 ROOT=Path(__file__).resolve().parents[1]
 
 class SteamReadiness(unittest.TestCase):
+    def test_signed_apple_memory_api_uses_failable_conversion_and_typed_fixtures(self):
+        profile=(ROOT/'ios/LinuxSteamProfile.swift').read_text()
+        conversion=swift_block(profile,'static func availableMemoryBytes(')
+        self.assertIn('static func availableMemoryBytes(_ measurement: Int) -> UInt64?',profile)
+        self.assertIn('guard measurement > 0 else { return nil }',conversion)
+        self.assertIn('UInt64(exactly: measurement)',conversion)
+        self.assertNotIn('UInt64(measurement)',conversion)
+        self.assertNotIn('truncatingIfNeeded',conversion)
+        refresh=swift_block((ROOT/'ios/LinuxTerminalSession.swift').read_text(),'func refreshSteamReadiness()')
+        self.assertIn('availableMemory: LinuxSteamProfile.availableMemoryBytes(available)',refresh)
+        self.assertNotIn('available > 0 ? available : nil',refresh)
+        fixtures=(ROOT/'ios/tests/SteamProfileChecks.swift').read_text()
+        for expression in ('unknownMeasurements: [Int]', 'positiveMeasurements: [Int]', 'let converted: UInt64?', '[Int.min, -1, 0]',
+                           'Int(budget) - 1, Int(budget), Int(budget) + 1, Int.max',
+                           'readiness(LinuxSteamProfile.availableMemoryBytes(Int.min)).memory == .unknown'):
+            self.assertIn(expression,fixtures)
+
     def test_snapshot_reuses_manifest_validator_and_has_no_userdata_or_native_inputs(self):
         source=(ROOT/'ios/LinuxSteamProfile.swift').read_text()
         preview=swift_block(source,'static func readiness(')

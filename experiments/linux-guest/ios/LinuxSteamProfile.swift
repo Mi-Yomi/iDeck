@@ -43,6 +43,12 @@ struct LinuxSteamProfile: Decodable {
             "Manifest: \(manifest.text) · JIT: \(jit.text) · Сеть (согласие): \(network.text) · Память: \(memory.text)"
         }
     }
+    /// Apple's process-memory API returns a signed Int. Nonpositive readings
+    /// mean unknown; use a failable conversion so no reading can trap or wrap.
+    static func availableMemoryBytes(_ measurement: Int) -> UInt64? {
+        guard measurement > 0 else { return nil }
+        return UInt64(exactly: measurement)
+    }
     static func readiness(assets: URL, jitVerified: Bool?, networkConsent: Bool,
                           availableMemory: UInt64?) -> Readiness {
         let manifest: Check

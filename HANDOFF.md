@@ -1,4 +1,31 @@
-> Current Steam readiness candidate, 19 October 2026, based on
+> Current Apple type fix, 19 October 2026, based on readiness source
+> **14d2ea33d75a7f14787e039a394f88ad6fa02e07**. Parent reported actual CI
+> https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5804a7550aed8108ffdfb
+> failed **integrated Swift typecheck** before native downloads:
+> `LinuxTerminalSession.swift:29:44: cannot convert value of type Int? to expected
+> argument type UInt64?`. Apple's `os_proc_available_memory()` returns `Int`.
+> Mac runtime tests (including LINUX_STEAM_READINESS_PASS and other markers) and
+> upstream typecheck passed in that run; they did not cover this integrated call.
+> These CI results are parent-supplied, not a new local Apple execution.
+>
+> Fixed the signed SDK boundary through `LinuxSteamProfile.availableMemoryBytes`:
+> nonpositive Int -> nil/unknown, positive Int -> `UInt64(exactly:)` (failable,
+> no trap/wrap). One new preview call site was affected; the existing worker
+> integer comparison is unchanged. Added typed production Swift fixtures for
+> Int.min/-1/0/1, budget -1/exact/+1 and Int.max, plus conversion-to-readiness
+> cases and a wiring regression. No JIT/disk/runtime lifecycle changes.
+>
+> **550 Python tests OK (545 PASS, 5 SKIP)**. Generator, full pinned source
+> overlay, actual Steam stage/repeat/package-resource gate, AST, shell and real
+> Git attributes PASS. All payload locks, 23 source bindings, recovery/disk
+> implementation and navigation policy unchanged. Evidence:
+> `experiments/linux-guest/evidence/steam-memory-types-20261019/`.
+> New Apple/Swift/IPA/visual/device checks **NOT RUN**; no CI started here.
+> Parent-reported Apple-built launcher fallback **f7a89d2** is preserved.
+> BusyBox corresponding-source provenance remains **OPEN**. Next readiness CI
+> must use the full new pushed SHA and fresh quota/private/native attestations.
+
+> Historical Steam readiness candidate, 19 October 2026, based on
 > **f7a89d2c8e1f324843fd6d215a1ebd60171451aa**:
 > **STEAM-READINESS-20261019.md**. Home/Steam now show a read-only manifest,
 > cached JIT, network-consent and memory snapshot. Missing/malformed manifest,

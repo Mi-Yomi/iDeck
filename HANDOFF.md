@@ -1,4 +1,30 @@
-> Current launcher follow-up, 19 October 2026, from
+> Current Steam readiness candidate, 19 October 2026, based on
+> **f7a89d2c8e1f324843fd6d215a1ebd60171451aa**:
+> **STEAM-READINESS-20261019.md**. Home/Steam now show a read-only manifest,
+> cached JIT, network-consent and memory snapshot. Missing/malformed manifest,
+> absent consent, insufficient/unknown memory block before JIT/native work and
+> before `attempted` is reserved. Start reads the conditions again; the existing
+> worker repeats manifest/hash/memory/ownership gates. Later failure never resets
+> an attempted/entered runtime. Preview never reads `JITBootstrap.ready` (it can
+> prewarm), opens userdata, changes disk locks or enables network/JIT. JIT preview
+> is informational; the real execution check remains at Start. No guest
+> LSE/GUI/Steam compatibility claim. Import-space 13 GiB applies to a new disk only.
+>
+> **549 Python tests OK (544 PASS, 5 SKIP)**. Recovery generator, pinned Husk
+> overlay/Theme, actual sealed Steam staging/repeat/package-resource gate,
+> Python AST, shell syntax and real git attributes PASS. All 23 Steam source
+> bindings, payload locks, recovery/disk code and navigation policy unchanged.
+> Mandatory **LINUX_STEAM_READINESS_PASS** production Swift fixtures added;
+> new Apple/Swift/visual/physical-device checks **NOT RUN**. Evidence:
+> `experiments/linux-guest/evidence/steam-readiness-20261019/`.
+>
+> Parent's existing CI for **f7a89d2** was not changed/cancelled; it cannot
+> validate this newer source candidate. No new CI dispatched here. Next manual
+> `ideck-linux-probe-ipa` must use the full pushed readiness SHA and fresh
+> quota/private/native attestations per DOTS-CODEMAGIC-IPA-PROMPT.md. Existing
+> token group only. BusyBox corresponding-source provenance remains **OPEN**.
+
+> Historical launcher follow-up, 19 October 2026, from
 > **d1e9d20988599e3b06477421c14ed1b2a59f8811**: fixed only the two self-review
 > findings. Home/Advanced diagnostics for active `.linux` now uses the actual
 > LinuxProbeSession report (MD/JSON/serial/error); it neither substitutes nor

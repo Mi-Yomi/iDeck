@@ -52,7 +52,7 @@ class StartupDiagnosticsWiring(unittest.TestCase):
         self.assertIn('Menu("Startup diagnostics (.md)")', view)
         self.assertIn('shareItems = [file]', view)
         chooser = (EXPERIMENT / "ios/LinuxProbeView.swift").read_text()
-        self.assertIn('.onAppear { LinuxTerminalSession.shared.recoverDiagnostics() }', chooser)
+        self.assertIn('.onAppear { LinuxTerminalSession.shared.recoverDiagnostics();', chooser)
 
     def test_real_io_helper_has_no_signal_runtime_or_secret_collection(self):
         helper = (EXPERIMENT / "ios/LinuxTerminalDiagnostics.swift").read_text()

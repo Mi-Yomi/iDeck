@@ -16,6 +16,20 @@ final class LinuxTerminalSession: ObservableObject {
     @Published fileprivate(set) var steamBusy = false
     @Published fileprivate(set) var steamMessage = "Install or resume after the desktop is ready. Login and agreements belong to you."
     var steamPayloadAvailable: Bool { FileManager.default.fileExists(atPath: Bundle.main.bundleURL.appendingPathComponent("iDeckLinuxSteam/steam-profile.json").path) }
+    @Published fileprivate(set) var steamReadiness: LinuxSteamProfile.Readiness?
+    private var jitObservation: Bool?
+    /// No JITBootstrap.ready here: that getter can prewarm native JIT on older
+    /// iOS. Preview reads only the bounded bundle manifest and OS memory counter.
+    @discardableResult func refreshSteamReadiness() -> LinuxSteamProfile.Readiness? {
+        precondition(Thread.isMainThread)
+        guard isSteam, !attempted else { return steamReadiness }
+        let available = os_proc_available_memory()
+        let result = LinuxSteamProfile.readiness(assets: Bundle.main.bundleURL.appendingPathComponent("iDeckLinuxSteam"),
+            jitVerified: jitObservation, networkConsent: steamNetworkConsent,
+            availableMemory: available > 0 ? available : nil)
+        steamReadiness = result
+        return result
+    }
     let isDebian: Bool
     let isDesktop: Bool
     @Published fileprivate(set) var recoveryMode = false
@@ -165,6 +179,7 @@ final class LinuxTerminalSession: ObservableObject {
     }
 
     private func recordJIT(_ passed: Bool) {
+        jitObservation = passed
         jitExecutionReady = passed
         jitExecutionMessage = passed ? "JIT execution check passed."
             : "JIT execution has not been verified. Open JIT setup."
@@ -187,8 +202,11 @@ final class LinuxTerminalSession: ObservableObject {
         precondition(Thread.isMainThread)
         guard !attempted else { return }
         if isSteam {
-            guard steamPayloadAvailable else { message = "Steam payload missing: prepare and pin steam-rootfs-v1.raw.gz and initramfs-steam.gz with steam-profile.json. VM was not started."; return }
-            guard steamNetworkConsent else { message = "Allow network access for this Steam session first."; return }
+            // Fresh reads on every click; a successful preview is never reused
+            // as authority. No attempt/native operation is consumed by refusal.
+            guard let preflight = refreshSteamReadiness(), preflight.canCheckAndStart else {
+                message = "Steam preflight: \(steamReadiness?.summary ?? "Не проверено"). Исправьте условия и повторите. Native запуск не начат."; return
+            }
         }
         let diagnostic: LinuxTerminalDiagnostics.Journal
         do {

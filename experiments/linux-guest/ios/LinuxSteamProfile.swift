@@ -21,6 +21,44 @@ struct LinuxSteamProfile: Decodable {
     let seedSha256: String
     let image: LinuxDesktopDisk.Specification
 
+    enum Check: Equatable {
+        case passed, unknown, blocked(String)
+        var text: String {
+            switch self {
+            case .passed: return "Проверено"
+            case .unknown: return "Не проверено / нет измерения"
+            case .blocked(let reason): return reason
+            }
+        }
+    }
+    /// A read-only snapshot, not authorization to enter native code. JIT's cached
+    /// observation is informational; Start must perform its real execution check.
+    struct Readiness: Equatable {
+        let manifest: Check
+        let jit: Check
+        let network: Check
+        let memory: Check
+        var canCheckAndStart: Bool { manifest == .passed && network == .passed && memory == .passed }
+        var summary: String {
+            "Manifest: \(manifest.text) · JIT: \(jit.text) · Сеть (согласие): \(network.text) · Память: \(memory.text)"
+        }
+    }
+    static func readiness(assets: URL, jitVerified: Bool?, networkConsent: Bool,
+                          availableMemory: UInt64?) -> Readiness {
+        let manifest: Check
+        do { _ = try load(from: assets); manifest = .passed }
+        catch Blocker.payloadMissing { manifest = .blocked("Manifest отсутствует в IPA") }
+        catch { manifest = .blocked("Manifest не прошёл проверку формата/контракта") }
+        let memory: Check
+        if let availableMemory, availableMemory > 0 {
+            memory = availableMemory >= UInt64(memoryMib) * 1024 * 1024 + hostReserve
+                ? .passed : .blocked("Нужно 1536 MiB гостю + 1 GiB резерва процесса")
+        } else { memory = .unknown }
+        return Readiness(manifest: manifest,
+            jit: jitVerified.map { $0 ? .passed : .blocked("Последняя проверка JIT не пройдена") } ?? .unknown,
+            network: networkConsent ? .passed : .blocked("Требуется согласие на сеть"), memory: memory)
+    }
+
     func validate() throws {
         guard schema == 1, mode == "steam-experimental", controlPort == "org.ideck.control",
               kernel.file == "vmlinuz-virt", initramfs.file == "initramfs-steam.gz",

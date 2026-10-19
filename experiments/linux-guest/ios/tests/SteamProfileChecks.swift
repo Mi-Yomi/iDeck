@@ -113,6 +113,36 @@ func runSteamProfileChecks(root: URL) throws {
     let read = preserved.withUnsafeMutableBytes { pread(fd, $0.baseAddress!, $0.count, 1024) }
     precondition(read == preserved.count)
     precondition(preserved == header, "dirty Steam metadata must remain byte-for-byte intact")
+    // Preview inspects only the bundle manifest. Even this existing dirty disk
+    // is left alone: its ownership/recovery check belongs to the real Start path.
+    let manifestBytes = try Data(contentsOf: profileFile)
+    let budget = UInt64(LinuxSteamProfile.memoryMib) * 1024 * 1024 + LinuxSteamProfile.hostReserve
+    func readiness(_ memory: UInt64?, jit: Bool? = nil, consent: Bool = true) -> LinuxSteamProfile.Readiness {
+        LinuxSteamProfile.readiness(assets: assets, jitVerified: jit, networkConsent: consent, availableMemory: memory)
+    }
+    precondition(readiness(nil).memory == .unknown && !readiness(nil).canCheckAndStart)
+    precondition(readiness(0).memory == .unknown)
+    precondition(!readiness(budget - 1).canCheckAndStart)
+    precondition(readiness(budget).memory == .passed)
+    precondition(readiness(budget + 1).canCheckAndStart)
+    precondition(readiness(budget).jit == .unknown)
+    precondition(readiness(budget, jit: false).jit != .passed)
+    precondition(readiness(budget, jit: true).jit == .passed)
+    precondition(!readiness(budget, consent: false).canCheckAndStart)
+    let before = try FileManager.default.contentsOfDirectory(atPath: data.path)
+    for _ in 0..<20 { precondition(readiness(budget).canCheckAndStart) }
+    let after = try FileManager.default.contentsOfDirectory(atPath: data.path)
+    precondition(after == before)
+    preserved.withUnsafeMutableBytes { precondition(pread(fd, $0.baseAddress!, $0.count, 1024) == $0.count) }
+    precondition(preserved == header)
+    try Data("{ malformed".utf8).write(to: profileFile)
+    precondition(!readiness(budget).canCheckAndStart, "fresh Start check must reject a changed manifest")
+    try FileManager.default.removeItem(at: profileFile)
+    precondition(!readiness(budget).canCheckAndStart)
+    try manifestBytes.write(to: profileFile)
+    precondition(readiness(budget).canCheckAndStart)
+    precondition(!readiness(budget - 1).canCheckAndStart, "preview pass cannot authorize a later low-memory Start")
+    print("LINUX_STEAM_READINESS_PASS (bounded manifest read, memory boundaries, unknowns, repeated preview, existing disk preserved)")
     valid["mode"] = "desktop"
     try JSONSerialization.data(withJSONObject: valid).write(to: profileFile)
     do { _ = try LinuxSteamProfile.load(from: assets); preconditionFailure("wrong Steam contract accepted") } catch { }

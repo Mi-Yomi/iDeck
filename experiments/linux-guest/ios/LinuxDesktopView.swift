@@ -105,14 +105,16 @@ struct LinuxDesktopView: View {
         .sheet(isPresented: $jit.showSetup) { JITSetupFlow() }
         .sheet(isPresented: $showDiagnostics) { LinuxDesktopDiagnosticsView(session: session) }
         .sheet(isPresented: $showShare) { ShareSheet(items: shareItems) }
-        .onAppear { session.recoverDiagnostics(); refreshInputFocus() }
+        .onAppear { session.recoverDiagnostics(); session.refreshSteamReadiness(); refreshInputFocus() }
+        .onChange(of: session.steamNetworkConsent) { _ in session.refreshSteamReadiness() }
+        .onChange(of: session.jitExecutionReady) { _ in session.refreshSteamReadiness() }
         .onChange(of: recovery) { _ in refreshInputFocus() }
         .onChange(of: showDiagnostics) { _ in refreshInputFocus() }
         .onChange(of: showShare) { _ in refreshInputFocus() }
         .onChange(of: jit.showSetup) { _ in refreshInputFocus() }
         .onDisappear { keyboard = false; input.setFocused(false) }
         .onChange(of: phase) { value in
-            if value == .active { session.recoverDiagnostics() }
+            if value == .active { session.recoverDiagnostics(); session.refreshSteamReadiness() }
             if value == .background { session.cancelPreparation() }
             refreshInputFocus()
         }
@@ -191,15 +193,20 @@ struct LinuxDesktopView: View {
                 Button("JIT setup") { jit.refreshPairingStatus(); jit.showSetup = true }.disabled(jit.busy)
                 Button("Enable JIT") { enableJIT() }.disabled(jit.busy)
                 if session.isSteam {
-                    Text("Separate 12 GiB disk + 1 GiB free import reserve. Guest: 1536 MiB RAM, 4 vCPUs. Games and iPhone performance are unverified.").font(.caption2)
+                    Text("Separate 12 GiB disk. Only first import needs 13 GiB free (12 + 1 reserve); existing disks use the normal ownership/integrity checks. Guest: 1536 MiB RAM, 4 vCPUs. Games and iPhone performance are unverified.").font(.caption2)
                     Toggle("Allow Steam network this session", isOn: $session.steamNetworkConsent)
+                    if let check = session.steamReadiness {
+                        Text(check.summary).font(.caption2).textSelection(.enabled)
+                    }
+                    Text("Снимок условий: Start проверит их снова, включая JIT. LSE, GUI и Steam ещё не проверены. Hash ресурсов проверяется при подготовке; manifest check не заменяет его.").font(.caption2)
+                    Button("Обновить проверку") { session.refreshSteamReadiness() }
                     Text("Downloads use pinned official Valve/Debian HTTPS. Steam later contacts its services and may update. You handle login and agreements.").font(.caption2)
                     if !session.steamPayloadAvailable {
                         Text("Blocker: sealed Steam seed/bootstrap/profile is missing from this IPA.").foregroundStyle(.orange)
                     }
                 }
                 Button(session.isSteam ? "Start Steam environment" : "Start desktop") { session.startDesktop() }
-                    .disabled(jit.busy || (session.isSteam && (!session.steamPayloadAvailable || !session.steamNetworkConsent)))
+                    .disabled(jit.busy || (session.isSteam && session.steamReadiness?.canCheckAndStart != true))
             }
             if session.isSteam, session.attempted {
                 Text(session.steamMessage).font(.caption2)

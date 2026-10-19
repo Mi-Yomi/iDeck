@@ -89,7 +89,7 @@ struct LinuxProbeRoot: View {
                 }
             }.buttonStyle(.bordered).padding(.horizontal).padding(.vertical, 6).background(.ultraThinMaterial)
         }
-        .onAppear { LinuxTerminalSession.shared.recoverDiagnostics() }
+        .onAppear { LinuxTerminalSession.shared.recoverDiagnostics(); steam.refreshSteamReadiness() }
         .sheet(isPresented: $showJIT) { JITSetupFlow() }
         .sheet(isPresented: $showDiagnostics) {
             if route.current == .linux {
@@ -99,6 +99,7 @@ struct LinuxProbeRoot: View {
             }
         }
         .onChange(of: scenePhase) { phase in
+            if phase == .active { steam.refreshSteamReadiness() }
             if phase == .background {
                 for session in [terminal, debian, desktop, steam] { session.cancelPreparation() }
             }
@@ -148,6 +149,7 @@ struct LinuxProbeRoot: View {
                     launcherCard("Рабочий стол", icon: "desktopcomputer", detail: route.runtimeOwner == .steam ? "Экран текущей Steam/Linux-сессии без смены диска или перезапуска VM." : "Открыть экран Linux. Отдельный GUI-диск сохраняет ваши файлы.", target: route.runtimeOwner == .steam ? .steam : .desktop)
                     launcherCard("Настройки", icon: "gearshape", detail: "JIT, подключение и параметры сессии", target: .settings)
                 }
+                if let check = steam.steamReadiness { Text("Steam · \(check.summary)").font(.footnote).foregroundStyle(Theme.textDim) }
                 if route.runtimeOwner != nil {
                     Text("Смена среды заблокирована после попытки запуска, включая остановку и ошибку. Для другой VM нужен новый процесс iDeck.").font(.footnote).foregroundStyle(Theme.textDim)
                 }

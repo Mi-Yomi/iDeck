@@ -99,7 +99,7 @@ def main():
         required = ("LINUX_CONSOLE_RUNTIME_REGRESSION_PASS", "LINUX_DESKTOP_DISK_CHECKS_PASS", "LINUX_DESKTOP_PROFILE_CHECKS_PASS",
                     "LINUX_QEMU_OWNER_LIFETIME_PASS", "LINUX_DISPLAY_POINTER_PASS", "LINUX_DESKTOP_INPUT_PASS", "LINUX_GUI_PROFILE_PASS", "LINUX_STEAM_PROFILE_PASS",
                     "LINUX_STARTUP_FAILURE_PASS", "LINUX_EXT4_DIAGNOSTICS_PASS", "LINUX_GUI_RECOVERY_PASS",
-                    "LINUX_STARTUP_PREPARATION_PASS", "LINUX_LAUNCHER_NAVIGATION_PASS")
+                    "LINUX_STARTUP_PREPARATION_PASS", "LINUX_LAUNCHER_NAVIGATION_PASS", "LINUX_STEAM_READINESS_PASS")
         if not all(marker in report["host_test_output"] for marker in required):
             raise RuntimeError("Mandatory Swift runtime/storage regression did not complete")
         report["swift_runtime_regression"] = "PASS"

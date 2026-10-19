@@ -194,7 +194,7 @@ struct LinuxDesktopView: View {
             if let preparation = session.preparationState, preparation.inProgress {
                 Button(preparation.canCancel ? (unified ? "Отменить" : "Cancel start") : (unified ? "Отмена…" : "Cancelling…")) { session.cancelPreparation() }
                     .disabled(!preparation.canCancel).accessibilityIdentifier("ideck-desktop-cancel-start")
-            } else if session.attempted {
+            } else if session.attempted && !session.startupEndedBeforeNative {
                 Button(unified ? "Остановить" : "Stop Linux") {
                     if unified { input.releaseHeld(); showStopConfirmation = true } else { session.stop() }
                 }.disabled(!session.canStop || session.stopping)
@@ -218,22 +218,25 @@ struct LinuxDesktopView: View {
                 VStack(spacing: 0) {
                     ScrollView(.vertical) {
                         VStack(spacing: 10) {
-                            Image(systemName: session.displayTimedOut ? "exclamationmark.display" : "desktopcomputer").font(.largeTitle)
-                            if let preparation = session.preparationState, preparation.inProgress {
+                            Image(systemName: session.startupEndedBeforeNative || session.displayTimedOut ? "exclamationmark.display" : "desktopcomputer").font(.largeTitle)
+                            if !session.startupEndedBeforeNative, let preparation = session.preparationState, preparation.inProgress {
                                 ProgressView(preparation.message)
                             } else {
                                 Text(session.message).multilineTextAlignment(.center).textSelection(.enabled)
                             }
-                            if session.displayTimedOut {
+                            if session.startupEndedBeforeNative {
+                                Text("Запуск завершён до входа в Linux. Ожидание экрана остановлено; Stop не требуется. Откройте «Диагностика / отчёт» ниже и сохраните текущий отчёт. Диск не удаляйте и не сбрасывайте.")
+                                    .accessibilityIdentifier("ideck-startup-ended-before-native")
+                            } else if session.displayTimedOut {
                                 Text("Кадр гостя не получен за 60 секунд. Причина не установлена. Сохраните отчёт в Диагностике; Stop остаётся доступен после готовности supervisor.")
                             } else {
-                                Text(session.recoveryMode ? "Recovery работает без графического дисплея. Оригинал и резервная копия сохраняются." : session.attempted ? "Ожидаем готовность Linux и кадр гостевого дисплея…" : "Экран настоящей сессии появится после запуска Linux.")
+                                Text(session.recoveryMode ? "Режим восстановления без графического дисплея. Текущее состояние — выше; сохраните отчёт до выхода. Оригинал сохраняется." : session.attempted ? "Ожидаем готовность Linux и кадр гостевого дисплея…" : "Экран настоящей сессии появится после запуска Linux.")
                             }
                         }.padding(20).frame(maxWidth: .infinity)
                     }
                     .accessibilityIdentifier("ideck-session-waiting-text")
                     Divider()
-                    if unified {
+                    if unified && !session.startupEndedBeforeNative {
                         Text("Подробности и отчёты — в расширенных настройках. Домой сохраняет текущую сессию.")
                             .font(.caption).padding(12).frame(minHeight: 44)
                     } else {
@@ -350,6 +353,7 @@ struct LinuxDesktopDiagnosticsView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var shareItems: [URL] = []
     @State private var showShare = false
+    @State private var confirmSteamRecovery = false
     var body: some View {
         NavigationView {
             List {
@@ -362,6 +366,12 @@ struct LinuxDesktopDiagnosticsView: View {
                     Section("GUI recovery") {
                         Text("Preserves the original with verified backup/work copies. Requires two full copies plus 512 MiB reserve and a new process before activation.")
                         Button("Recover GUI disk") { session.startRecovery() }
+                    }
+                }
+                if session.isSteam && !session.attempted {
+                    Section("Восстановление Steam 12 GiB") {
+                        Text("Только проверка и replay журнала на отдельной копии. Оригинал и проверенная резервная копия сохраняются. Для первого запуска нужно 24 GiB + 512 MiB свободного места; RAM фиксируется на 1536 MiB с прежним резервом. Сначала включите JIT в настройках.")
+                        Button("Подготовить безопасное восстановление Steam") { confirmSteamRecovery = true }
                     }
                 }
                 Section("Session report (.md)") {
@@ -385,6 +395,15 @@ struct LinuxDesktopDiagnosticsView: View {
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() } } }
         }
         .navigationViewStyle(.stack)
+        .confirmationDialog("Восстановить Steam только на отдельной копии?", isPresented: $confirmSteamRecovery, titleVisibility: .visible) {
+            Button("Создать копии и проверить журнал") {
+                session.startRecovery()
+                if session.attempted { dismiss(); LinuxProbeRoute.shared.choose(.steam) }
+            }
+            Button("Отмена", role: .cancel) { }
+        } message: {
+            Text("Не закрывайте iDeck во время копирования и проверки. Автоматического сброса или общего fsck-ремонта нет. После успешной проверки потребуется полностью перезапустить iDeck и явно запустить среду для активации проверенной копии.")
+        }
         .sheet(isPresented: $showShare) { ShareSheet(items: shareItems) }
         .onAppear { session.recoverDiagnostics() }
     }

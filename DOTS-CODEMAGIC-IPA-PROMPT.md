@@ -1,3 +1,22 @@
+> CURRENT SOURCE CANDIDATE — RECOVER-only Steam recovery and terminal failure UI.
+> Coordinator-read device MD, Build119/source08978cd9: existing Steam disk,
+> `needsRecovery`, **RECOVER SET/state1/orphan0/error_count0**, failed at disk
+> preparation before native entry. The origin of RECOVER is unknown; neither
+> corruption nor full filesystem cleanliness is established.
+> New source ends misleading frame/boot waiting after permanent preboot refusal
+> and exposes the report. Explicit Steam recovery reuses the copy-first engine,
+> immutable GUI tools, original+backup/work full hashes, journal-only work replay,
+> strict offline checks and next-process-only verified activation. Default GUI
+> scope and normal ext4/lifecycle guards remain; no user disk operation ran here.
+> First recovery requires **24 GiB +512 MiB additional free space**; existing
+> tools payloads suffice, no new Release/large payload or seed rebuild is needed.
+> **607 Python tests OK /5 SKIP**, original GUI source-receipt bindings and full
+> overlay/real Linux+cache staging PASS. New Apple/UIKit and positive12-GiB
+> recovery/device acceptance **NOT RUN**; CI#42 below predates this candidate.
+> Workflow cap35/worker30 still exceeds supplied26 free CI minutes. No CI run
+> or limit change here; coordinator must review a suitable budget and fresh quota.
+> BusyBox provenance **OPEN**. [Detailed cause, safety, limits and evidence](STEAM-RECOVER-FLAG-AND-SAFE-RECOVERY-20261019.md).
+
 > CURRENT DELIVERED RESULT — Apple CI#42 PASS, 19 October 2026.
 > https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5fa7a7550aed81090197b .
 > **Built source: 08978cd962e5c53818a287f41285d32a702ac5ad.**

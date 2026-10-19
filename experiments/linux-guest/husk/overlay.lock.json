@@ -6,7 +6,7 @@
     "ios/LinuxGuestProfile.swift": "ddfea00eba911033c44168103f0727836521849eadab7fed5dfac479ab36bef3",
     "ios/LinuxProbeEvidence.swift": "e17ee28c23a8879a6e74dd783f901297d2bcd8d089ad4e515c972b0016f034d4",
     "ios/LinuxProbeSession.swift": "663ac2c5218516da4191725b7d66635720cbb9619532181743ea5e7996f662cb",
-    "ios/LinuxProbeView.swift": "30b965339367f40a062b7ed91d57081e1360bd892342a3fd4b49749957541ec4",
+    "ios/LinuxProbeView.swift": "aea64cc28066c404548ee50dbbf80a49c4218d411a61884a70e58d2415d22144",
     "tools/stage_bundle.py": "267a95eb31f50dba82a8f75547925a60533faebb53e3198cdeea83703cd77c83",
     "tools/stage_husk.py": "b0d5b4eb4d3c8025b3af59663f1d7340775835c6ee1c39ff17c43786a0950d5e",
     "husk/patches/series": "e399b4660c013e0a4358faea32065e9708f4d9568a213903e0dd9e0f3ec82056",
@@ -15,9 +15,9 @@
     "husk/source-check.lock.json": "aa90962030511770fb7656162f265933ebc9fb3d96264131e2b23f528c5a86ec",
     "husk/husk119-source-check.tar.gz": "58f6b18320d4d541a70c2a0112d2e9caebe8d15ffb3d3d9cb817edddb56bc7b1",
     "husk/patches/0002-jit-setup-routing.patch": "a93a4af2b82418280c14c1b7e7ec64c8e6f2395602987dc59b95a1c841ed3ec4",
-    "ios/LinuxProbeReport.swift": "28e6b37d8eb7fdae8361794e56fb3e395391b259449c9140a59d4c07d3c000cf",
+    "ios/LinuxProbeReport.swift": "19d8c11a4d722d3955b02a139d95cb984528833f4ab73c8edf0dd522f8d8c28a",
     "ios/LinuxTerminalProfile.swift": "04d488d0052ab0f1fc3fbf9e3976aa72fb722e492f535ff7dd5f1e6a18149bc7",
-    "ios/LinuxTerminalSession.swift": "e8691bd52c6b30705173d9d781b9c7105b274a5befc010ba76adfa7ebe887986",
+    "ios/LinuxTerminalSession.swift": "422fe2bd4e367193a9ea705facdb7ef3000034acae8de17d92c5cb7179771772",
     "ios/LinuxTerminalView.swift": "fd4c82b59aeef28380e9854abbcd15e26300948644d0bd192454b86fcb70604a",
     "tools/terminal_bundle.py": "c1c696498690085c6ddd4dc1eaf06dc4afa51b4dea738d883f498194cbbdef61",
     "ipa/terminal.lock.json": "e39514b53a2ae33de96b300b2578c760fb95b2b2685bb7a99502f0f2d0c6a98e",
@@ -33,10 +33,10 @@
     "ipa/debian.lock.json": "45f3985e5ca35e95849f56a658811601b923168abc714bbdadaa329d81e1e9bd",
     "ios/LinuxDisplayPointer.swift": "7d3e5886f263bc7295b76c251c491d49befc7ba5fb13682d00ce31c18f993d59",
     "husk/patches/0003-paired-display-pointer-release.patch": "ee63376d9b7ad0dc85412c98aced7fe577e5dadfd6c58edc4cc6e9d8bb972f52",
-    "ios/LinuxGUIProfile.swift": "321de9d403d6a2795f213eae5a5e3377e93848122d700f35efdd9e6fafac57a8",
+    "ios/LinuxGUIProfile.swift": "65888c94f90b22557fac7a461a6d9b958c3457b9fecd8e8f29521c262f4b3d3f",
     "ios/LinuxDesktopInputState.swift": "ebfee20bf54ad77bda9f38ff9cd5f0f50ee78da1a43c6b28c6ed0f9d17b59024",
     "ios/LinuxDesktopInput.swift": "6b859ecdeca4c19f142634a528488e5793de02f7b97414dc12265f42be7c23e7",
-    "ios/LinuxDesktopView.swift": "c011d6357e33f38a0731b80dedde1b1636b38c80a7c144d54a48feef77d58e14",
+    "ios/LinuxDesktopView.swift": "cdd650292de7b8414c19b91ce3b64604771e06de674248df0cdcbcb72ea585b6",
     "husk/patches/0004-desktop-input-bridge.patch": "3eb1da30aa9724440ce4e79a48fbae7326aee8115be00e6299fd28b9fe326ee0",
     "tools/gui_bundle.py": "0bdd90ba31ca0c512980629d8c76bdc98da9a525e88c88fea4902681b52dc079",
     "ipa/gui.lock.json": "fef0bf4c5b72cad5ee921616639f6e28bec73bce7b1e689c95c3734aed82c7eb",
@@ -45,7 +45,7 @@
     "ipa/steam.lock.json": "bc3dfe7b7c78a897503eb5e1f17cd67a245b6d2e7bd61ead705e6435d3c30741",
     "husk/patches/0005-steam-asset-staging.patch": "9dbb1f2de5e4584ca261dd3acf53d5ed273d44b8fe6add3c3f08b11e9714e614",
     "ios/LinuxStartupFailure.swift": "22011f5c414ab2e1f3365efa3c5b08104558cf983bc25917e365976895fe101f",
-    "ios/LinuxGUIRecovery.swift": "259ffb5b152db34d9e99c01cf2e1db9850d11e4d36c84dcd31c327814b9d6bd9",
+    "ios/LinuxGUIRecovery.swift": "f50aab0dc85c922445b0e481d19be507a8be3090ef09ab8509ff0cd8bdb6f0c3",
     "ios/LinuxRecoveryGuest.swift": "f3052e0294239da5f3f851ed99b029739c4cb65b4f13342455570ca1000b7e79",
     "ios/LinuxSteamMemory.swift": "229b364631f90c615d77a04fd49164d8138e334a1784fb776ddd62188df2e8e7",
     "ios/LinuxSteamOfflineCache.swift": "0eee48dbed309d744f6c2080b9ef9aee20f131ae812b7a3a6f5cd9d36328b52f",
@@ -56,7 +56,9 @@
     "ios/LinuxSteamControlsView.swift": "f5596aa3c9ef1265771d2d816c44eec19ed9fc2a3ae3480a613016fff610f616",
     "tools/steam_bundled_cache.py": "45c17528f0e9bcd8fa99fc2ec9e5b2974ef3a707eb6f373b0b27d83755be6bb9",
     "ipa/steam-cache.lock.json": "43a5ce660d0ad44a876b1665b0a175984a76918ecc05b38d460b11e21c742d6e",
-    "ios/LinuxEnvironmentStartup.swift": "42e331121eadd0364491bddf5553537c7027135312da666a41ca401876f5f4a2"
+    "ios/LinuxEnvironmentStartup.swift": "42e331121eadd0364491bddf5553537c7027135312da666a41ca401876f5f4a2",
+    "ios/LinuxSteamRecoveryGuest.swift": "4eeb0a506e1172746ee85b9c6e2c7a406e8466358ef4cb7daf274b9abbe9b6a6",
+    "tools/steam_recovery_guest.py": "1760e1b888e9bc9d16b7e2e8e1b7f01e1a3b7ac7410f9defba58f34c659c76a0"
   },
   "copies": {
     "ios/LinuxGuestProfile.swift": "src/app/Husk/LinuxGuestProfile.swift",
@@ -98,7 +100,8 @@
     "tools/steam_bundled_cache.py": "scripts/ideck-stage-steam-cache.py",
     "ipa/steam-cache.lock.json": "scripts/ideck-steam-cache.lock.json",
     "guest/steam-offline-cache.py": "scripts/ideck-steam-cache-format.py",
-    "ios/LinuxEnvironmentStartup.swift": "src/app/Husk/LinuxEnvironmentStartup.swift"
+    "ios/LinuxEnvironmentStartup.swift": "src/app/Husk/LinuxEnvironmentStartup.swift",
+    "ios/LinuxSteamRecoveryGuest.swift": "src/app/Husk/LinuxSteamRecoveryGuest.swift"
   },
   "patched_files": {
     "src/app/Husk/HuskApp.swift": "18ff389fa29628fd1d4eb168a18a3b12f6b8c75caf6804651699e926b1ab9e31",

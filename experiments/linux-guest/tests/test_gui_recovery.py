@@ -91,7 +91,8 @@ class GUIRecovery(unittest.TestCase):
         self.assertIn('receipt.process != process',store)
         self.assertIn('LOCK_EX | LOCK_NB',store)
         self.assertIn('receipt.toolSeedSHA256 == toolSeedSHA256',store)
-        self.assertIn('receipt.suffixSHA256 == LinuxRecoveryGuest.sha256',store)
+        self.assertIn('receipt.suffixSHA256 == scope.suffixSHA256',store)
+        self.assertIn('LinuxSteamRecoveryGuest.sha256 : LinuxRecoveryGuest.sha256',store)
         self.assertIn('receipt.scanClean == true',store)
         result = swift_block(store,'func recordResult(')
         for forbidden in ('renameat','hash(','validateSuperblock','closeUnused','unlink'):
@@ -113,7 +114,7 @@ class GUIRecovery(unittest.TestCase):
         self.assertIn('LinuxQEMUThreadLifetime.retainCurrentThread',session)
         self.assertIn('catch LinuxDesktopDisk.Invalid.needsRecovery',session)
         prepare = swift_block(session,'private func prepareRecovery(')
-        self.assertIn('guard owner.isDesktop, !owner.isSteam, !enteredQEMU',prepare)
+        self.assertIn('guard owner.isDesktop, !enteredQEMU, !owner.isSteam || (isRecovery && target != nil)',prepare)
 
     def test_guest_final_full_image_digest_is_after_clean_scan_and_readonly(self):
         script=recovery_guest.SCRIPT.read_text()
@@ -158,7 +159,7 @@ class GUIRecovery(unittest.TestCase):
         source=(ROOT/'ios/LinuxTerminalSession.swift').read_text()
         startup=swift_block(source,'private func scheduleStartupTimeout()')
         self.assertIn('if isRecovery {',startup)
-        self.assertIn('LinuxRecoveryWatchdog(started: ProcessInfo.processInfo.systemUptime)',startup)
+        self.assertIn('LinuxRecoveryWatchdog(started: ProcessInfo.processInfo.systemUptime, scope: owner.isSteam ? .steam : .gui)',startup)
         self.assertIn('guard !self.isRecovery',startup)
         self.assertIn('queue.asyncAfter(deadline: .now() + 60)',startup)
         control=swift_block(source,'private func receiveControl(')

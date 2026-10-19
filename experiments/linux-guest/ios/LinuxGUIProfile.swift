@@ -130,7 +130,7 @@ struct LinuxGUIProfile: Decodable {
                            serialFD: Int32, controlFD: Int32) throws -> [String] {
         try validate(); try transaction.validateOwnership()
         guard serialFD >= 0, controlFD >= 0, serialFD != controlFD,
-              transaction.specification == image else { throw Invalid.configuration }
+              (transaction.specification == image || (transaction.scope == .steam && transaction.scope.accepts(transaction.specification))) else { throw Invalid.configuration }
         let original = try LinuxGuestProfile.load(from: probeAssets)
         guard kernel.sha256 == original.kernel.sha256, kernel.size == Int64(original.kernel.size) else { throw Invalid.configuration }
         // Full bounded hashes, including the pristine RO tool seed. Never use
@@ -139,8 +139,15 @@ struct LinuxGUIProfile: Decodable {
         let root = try LinuxDesktopDisk.trustedDirectory(assets)
         var args = try original.arguments(assets: probeAssets, session: session)
         let recoveryInit = session.appendingPathComponent("recovery-initramfs")
-        try LinuxRecoveryGuest.append(to: root.appendingPathComponent(initramfs.file), expectedSHA256: initramfs.sha256,
-                                      expectedSize: initramfs.size, output: recoveryInit)
+        if transaction.scope == .steam {
+            try LinuxSteamRecoveryGuest.append(to: root.appendingPathComponent(initramfs.file), expectedSHA256: initramfs.sha256,
+                                               expectedSize: initramfs.size, output: recoveryInit)
+            guard let memory = args.firstIndex(of: "-m"), args[memory + 1] == "1024" else { throw Invalid.configuration }
+            args[memory + 1] = "1536"
+        } else {
+            try LinuxRecoveryGuest.append(to: root.appendingPathComponent(initramfs.file), expectedSHA256: initramfs.sha256,
+                                          expectedSize: initramfs.size, output: recoveryInit)
+        }
         for (option, value) in [("-kernel", root.appendingPathComponent(kernel.file).path), ("-initrd", recoveryInit.path),
                                 ("-append", "console=ttyAMA0 rdinit=/ideck-recovery-init panic=0 loglevel=6"),
                                 ("-chardev", "socket,id=linuxserial,fd=\(serialFD)")] {

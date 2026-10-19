@@ -94,6 +94,7 @@ final class LinuxTerminalSession: ObservableObject {
     }
     @Published fileprivate(set) var message = "Enable JIT, then start the local Linux terminal."
     @Published fileprivate(set) var attempted = false
+    @Published fileprivate(set) var startupEndedBeforeNative = false
     @Published fileprivate(set) var running = false
     @Published fileprivate(set) var ready = false
     @Published fileprivate(set) var displayHasFrame = false
@@ -254,18 +255,19 @@ final class LinuxTerminalSession: ObservableObject {
         worker?.retryEnvironmentSteam()
     }
     func startRecovery() {
-        guard isDesktop, !isSteam else {
-            message = "This recovery supports only the separate Debian GUI disk. Share diagnostics and preserve this disk for offline review."; return
+        guard isDesktop else {
+            message = "Восстановление доступно только для отдельных GUI/Steam-дисков. Сохраните отчёт; диск не изменялся."; return
         }
         guard !attempted else {
             message = "Close and reopen the app, then choose Recover disk before starting a VM. Recovery uses a separate one-use VM."; return
         }
+        if isSteam { steamMemoryMode = .fixed1536 }
         recoveryRequested = true; start()
     }
     func start() {
         precondition(Thread.isMainThread)
         guard !attempted, !steamCacheImportBusy else { return }
-        if isSteam {
+        if isSteam && !recoveryRequested {
             // Fresh reads on every click; a successful preview is never reused
             // as authority. No attempt/native operation is consumed by refusal.
             guard let preflight = refreshSteamReadiness(), preflight.canCheckAndStart else {
@@ -308,7 +310,7 @@ final class LinuxTerminalSession: ObservableObject {
             diagnosticFailure(); message = "Startup journal is unavailable. Export existing diagnostics before trying again."; return
         }
         attempted = true
-        recoveryMode = isDesktop && !isSteam && recoveryRequested
+        recoveryMode = isDesktop && recoveryRequested
         let documents: URL
         do {
             // Resolve only the system-provided existing prefix. The userdata
@@ -321,6 +323,7 @@ final class LinuxTerminalSession: ObservableObject {
             do { try diagnostic.record(.preparationFailed, failure: Self.failure(error)) } catch { diagnosticFailure() }
             HuskLog.log("ideck-terminal", "Documents validation or diagnostic write failed")
             message = "The app's Documents directory could not be validated. Close and reopen the app."
+            startupEndedBeforeNative = true
             return
         }
         let root = documents.appendingPathComponent(isSteam ? "iDeckSteam-v1" : isDesktop ? "iDeckDebianGUI-v1" : (isDebian ? "iDeckDebian" : "iDeckLinux"), isDirectory: true)
@@ -609,6 +612,7 @@ private final class LinuxTerminalWorker {
                 self.checkpoint(cancelled ? .preparationCancelled : .preparationFailed, failure: cancelled ? nil : failure)
                 self.startupAborted = true
                 self.preparation.finish()
+                self.environment.stop(); self.publishEnvironment()
                 serial.closeUnused(); control.closeUnused()
                 try? self.logHandle?.close(); self.logHandle = nil
                 if !memoryFailed { self.disk?.closeUnused() }
@@ -622,6 +626,7 @@ private final class LinuxTerminalWorker {
                 self.owner.publish {
                     if journalFailed { $0.diagnosticFailure() }
                     $0.preparationState = self.preparation.snapshot
+                    $0.startupEndedBeforeNative = true
                     $0.message = cancelled ? "Startup cancelled before Linux started. Completed copies were preserved. Close and reopen iDeck before another attempt."
                         : (memoryFailed ? "Бюджет памяти снизился или стал неизвестен перед native entry. Linux не запущен; данные сохранены. Перезапустите приложение и выберите Auto либо 1536 MiB." : "Startup disk ownership or journal check failed. Linux was not started. Existing user data was preserved; close and reopen the app.")
                 }
@@ -654,18 +659,27 @@ private final class LinuxTerminalWorker {
                     let available = os_proc_available_memory()
                     self.report["process_available_memory_bytes"] = available
                     self.steamMemoryPlan = try LinuxSteamMemory.plan(available: LinuxSteamProfile.availableMemoryBytes(available), mode: self.steamMemoryMode)
-                    self.report["steam_bundled_cache_status"] = "verifying_or_importing_local_packages"
-                    self.owner.publish { $0.steamCacheStatus = "Проверяем встроенные пакеты. Это ещё не установка Steam…" }
-                    self.steamOfflineCache = try LinuxSteamOfflineCache.prepareBundled(
-                        from: self.bundle.appendingPathComponent("iDeckSteamCache"),
-                        into: self.dataDirectory.deletingLastPathComponent().appendingPathComponent("iDeckSteamOffline-v1"),
-                        checkpoint: { try self.preparation.advance(.assets) })
-                    self.report["steam_offline_cache_attached"] = self.steamOfflineCache != nil
-                    self.report["steam_bundled_cache_sha256"] = LinuxSteamOfflineCache.bundledSHA256
-                    self.report["steam_bundled_cache_status"] = "verified_local_packages_not_installed"
-                    self.owner.publish { $0.steamCacheStatus = "Встроенные пакеты проверены. После загрузки рабочего стола: Install / resume; updater, вход и соглашения — отдельные стадии." }
+                    if let plan = self.steamMemoryPlan {
+                        self.report["steam_memory_mode"] = self.steamMemoryMode.rawValue
+                        self.report["steam_memory_effective_mib"] = plan.guestMib
+                        self.report["steam_memory_overhead_bytes"] = plan.overhead
+                        self.report["steam_memory_reserve_bytes"] = plan.reserve
+                    }
+                    if !self.isRecovery {
+                        self.report["steam_bundled_cache_status"] = "verifying_or_importing_local_packages"
+                        self.owner.publish { $0.steamCacheStatus = "Проверяем встроенные пакеты. Это ещё не установка Steam…" }
+                        self.steamOfflineCache = try LinuxSteamOfflineCache.prepareBundled(
+                            from: self.bundle.appendingPathComponent("iDeckSteamCache"),
+                            into: self.dataDirectory.deletingLastPathComponent().appendingPathComponent("iDeckSteamOffline-v1"),
+                            checkpoint: { try self.preparation.advance(.assets) })
+                        self.report["steam_offline_cache_attached"] = self.steamOfflineCache != nil
+                        self.report["steam_bundled_cache_sha256"] = LinuxSteamOfflineCache.bundledSHA256
+                        self.report["steam_bundled_cache_status"] = "verified_local_packages_not_installed"
+                        self.owner.publish { $0.steamCacheStatus = "Встроенные пакеты проверены. После загрузки рабочего стола: Install / resume; updater, вход и соглашения — отдельные стадии." }
+                    }
                 }
-                let gui = self.owner.isDesktop && !self.owner.isSteam ? (try LinuxGUIProfile.load(from: assets)) : nil
+                let guiAssets = self.owner.isSteam ? self.bundle.appendingPathComponent("iDeckLinuxDesktop") : assets
+                let gui = self.owner.isDesktop ? (try LinuxGUIProfile.load(from: guiAssets)) : nil
                 let debian = self.owner.isDebian && !self.owner.isDesktop ? (try LinuxDebianProfile.load(from: assets)) : nil
                 let desktop = self.owner.isDebian && !self.owner.isDesktop ? (try LinuxDesktopProfile.load(from: assets)) : nil
                 try self.diagnostic.record(.assetsReturned)
@@ -673,22 +687,30 @@ private final class LinuxTerminalWorker {
                 try self.diagnostic.record(.diskBegin)
                 let preparedMetadata: [String: Any]
                 if let steam {
-                    let path = self.dataDirectory.appendingPathComponent("rootfs-v1.raw")
-                    var state = stat()
-                    if lstat(path.path, &state) == 0 {
-                        self.report["import_status"] = "existing_steam_disk_preserved"; self.persist()
-                        self.disk = try steam.openExisting(in: self.dataDirectory, observe: self.observeSuperblock)
+                    guard let tools = gui else { throw LinuxGUIRecovery.Invalid.metadata }
+                    if self.isRecovery {
+                        try self.prepareRecovery(tools, target: steam.image)
                     } else {
-                        guard errno == ENOENT else { throw LinuxDesktopDisk.Invalid.inspection }
-                        self.report["import_status"] = "copying_steam_seed"; self.persist()
-                        try self.preparationCheckpoint(.importingSeed)
-                        self.disk = try steam.provision(in: self.dataDirectory, assets: assets)
-                        self.report["import_status"] = "steam_seed_hash_verified_and_published"; self.persist()
+                        if try LinuxGUIRecovery.promotePending(directory: self.dataDirectory, specification: steam.image,
+                            toolSeedSHA256: tools.rootfs.sha256, scope: .steam) { self.report["recovery_phase"] = "promoted" }
+                        let path = self.dataDirectory.appendingPathComponent("rootfs-v1.raw")
+                        var state = stat()
+                        if lstat(path.path, &state) == 0 {
+                            self.report["import_status"] = "existing_steam_disk_preserved"; self.persist()
+                            self.disk = try steam.openExisting(in: self.dataDirectory, observe: self.observeSuperblock)
+                        } else {
+                            guard errno == ENOENT else { throw LinuxDesktopDisk.Invalid.inspection }
+                            self.report["import_status"] = "copying_steam_seed"; self.persist()
+                            try self.preparationCheckpoint(.importingSeed)
+                            self.disk = try steam.provision(in: self.dataDirectory, assets: assets)
+                            self.report["import_status"] = "steam_seed_hash_verified_and_published"; self.persist()
+                        }
                     }
-                    preparedMetadata = ["profile_cpu": "cortex-a76", "profile_memory_mib": LinuxSteamProfile.memoryMib,
+                    preparedMetadata = ["profile_cpu": self.isRecovery ? "cortex-a72" : "cortex-a76", "profile_memory_mib": LinuxSteamProfile.memoryMib,
                         "profile_vcpus": 4, "profile_width": 800, "profile_height": 600, "requested_tcg_mib": 256,
                         "userdata_size_bytes": steam.image.sizeBytes, "userdata_filesystem": "ext4",
-                        "steam_seed_sha256": steam.seedSha256, "steam_seed_gzip_sha256": steam.rootfs.sha256, "terminal_initramfs_sha256": steam.initramfs.sha256,
+                        "steam_seed_sha256": steam.seedSha256, "steam_seed_gzip_sha256": steam.rootfs.sha256,
+                        "terminal_initramfs_sha256": self.isRecovery ? tools.initramfs.sha256 : steam.initramfs.sha256,
                         "steam_network_consent": self.owner.steamNetworkConsent, "steam_device_verified": false]
                 } else if let gui {
                     self.report["debian_seed_sha256"] = gui.rootfs.sha256
@@ -777,9 +799,9 @@ private final class LinuxTerminalWorker {
                         disk: desktopDisk, serialFD: serial.qemu, controlFD: control.qemu, networkConsent: self.owner.steamNetworkConsent,
                         memoryMib: plan.guestMib, offlineCache: self.steamOfflineCache)
                 } else if let profile = gui, let recovery = self.recovery {
-                    args = try profile.recoveryArguments(probeAssets: probe, assets: assets, session: bootSession,
+                    args = try profile.recoveryArguments(probeAssets: probe, assets: guiAssets, session: bootSession,
                         transaction: recovery, serialFD: serial.qemu, controlFD: control.qemu)
-                    self.report["recovery_suffix_sha256"] = LinuxRecoveryGuest.sha256
+                    self.report["recovery_suffix_sha256"] = recovery.scope.suffixSHA256
                 } else if let profile = gui, let desktopDisk = disk as? LinuxDesktopDisk {
                     args = try profile.arguments(probeAssets: probe, assets: assets, session: bootSession,
                         disk: desktopDisk, serialFD: serial.qemu, controlFD: control.qemu)
@@ -787,7 +809,7 @@ private final class LinuxTerminalWorker {
                     args = try profile.arguments(probeAssets: probe, assets: assets, session: bootSession,
                         disk: desktopDisk, serialFD: serial.qemu, controlFD: control.qemu)
                 } else { throw LinuxTerminalProfile.Invalid.configuration }
-                if gui != nil, let index = args.firstIndex(of: "-initrd"), index + 1 < args.count {
+                if gui != nil, steam == nil || self.isRecovery, let index = args.firstIndex(of: "-initrd"), index + 1 < args.count {
                     self.report["desktop_runtime_initramfs_sha256"] = try self.digest(URL(fileURLWithPath: args[index + 1]))
                     self.report["desktop_runtime_suffix_sha256"] = LinuxRecoveryGuest.sha256
                 }
@@ -800,7 +822,7 @@ private final class LinuxTerminalWorker {
                 if let plan = self.steamMemoryPlan { self.report["profile_memory_mib"] = plan.guestMib }
                 if steam != nil, let i = args.firstIndex(of: "-initrd") {
                     self.report["steam_runtime_initramfs_sha256"] = try self.digest(URL(fileURLWithPath: args[i + 1]))
-                    self.report["steam_runtime_suffix_sha256"] = LinuxSteamCacheContract.suffixSHA256
+                    self.report["steam_runtime_suffix_sha256"] = self.isRecovery ? LinuxSteamRecoveryGuest.sha256 : LinuxSteamCacheContract.suffixSHA256
                 }
                 self.report.merge(["schema": 1, "status": "terminal_prepared", "argv": args,
                     "husk_commit": "0695248f491cda877f7969d1f0cc89aeede1482e",
@@ -886,6 +908,7 @@ private final class LinuxTerminalWorker {
                 self.checkpoint(cancelled ? .preparationCancelled : .preparationFailed,
                                 failure: cancelled ? nil : LinuxTerminalSession.failure(error))
                 self.preparation.finish()
+                self.environment.stop(); self.publishEnvironment()
                 if !cancelled { HuskLog.log("ideck-terminal", "terminal preparation failed: \(LinuxTerminalSession.failure(error).rawValue)") }
                 if error is LinuxTerminalDiagnostics.Problem { self.owner.publish { $0.diagnosticFailure() } }
                 self.serial?.closeUnused(); self.control?.closeUnused()
@@ -893,6 +916,10 @@ private final class LinuxTerminalWorker {
                 if !self.enteredQEMU { self.disk?.closeUnused() }
                 self.report["status"] = cancelled ? "terminal_prepare_cancelled" : "terminal_prepare_failed"
                 if cancelled { self.report["preparation_cancelled_before_qemu"] = true }
+                self.owner.publish {
+                    $0.preparationState = self.preparation.snapshot
+                    $0.startupEndedBeforeNative = true
+                }
                 if let failure = error as? LinuxDesktopDisk.Invalid { self.report["storage_failure"] = String(describing: failure) }
                 if let failure = error as? LinuxDesktopProfile.Invalid { self.report["storage_failure"] = String(describing: failure) }
                 if let failure = error as? LinuxGUIRecovery.Invalid { self.report["recovery_failure"] = String(describing: failure) }
@@ -934,9 +961,11 @@ private final class LinuxTerminalWorker {
                 self.owner.publish {
                     $0.preparationState = self.preparation.snapshot
                     $0.message = cancelled ? "Startup cancelled before Linux started. Completed copies were preserved. Close and reopen iDeck before another attempt."
-                        : error is LinuxGUIRecovery.Invalid ? "Recovery could not proceed safely (\(String(describing: error))). Original data was preserved. Share diagnostics; manual repair is not automatic. A new app process is required after any recovery VM."
+                        : error is LinuxGUIRecovery.Invalid ? (self.owner.isSteam
+                            ? "Восстановление Steam остановлено безопасно (\(String(describing: error))). Оригинал сохранён. Для первого восстановления нужно 24 GiB + 512 MiB свободного места. Сохраните отчёт; сброс и общий ремонт не выполнялись."
+                            : "Recovery could not proceed safely (\(String(describing: error))). Original data was preserved. Share diagnostics; manual repair is not automatic. A new app process is required after any recovery VM.")
                         : needsRecovery ? (self.owner.isSteam
-                            ? "Steam ext4 safety checks blocked startup. The disk was not mounted or replaced. GUI recovery does not support this separate 12 GiB disk. Share diagnostics and preserve it for offline review."
+                            ? "Запуск Steam остановлен проверкой состояния ext4. Linux не запущен; диск не монтировался и не заменялся. Причина состояния пока не установлена. Сохраните отчёт для проверки; не удаляйте и не сбрасывайте диск. Восстановление Steam доступно отдельным действием в диагностике после перезапуска iDeck; нужен запас места для копий."
                             : self.owner.isDesktop
                             ? "Ext4 safety checks blocked startup. The disk was not mounted or replaced. Share diagnostics before further recovery."
                             : "Ext4 safety checks blocked startup. The disk was not mounted or replaced. Share the recorded metadata and preserve the disk before offline review.")
@@ -1286,7 +1315,7 @@ private final class LinuxTerminalWorker {
             persist()
             owner.publish {
                 $0.cleanStopped = true; $0.running = false; $0.ready = false; $0.serialReady = false; $0.stopping = false; $0.canStop = false
-                $0.message = $0.recoveryMode ? "The recovery VM finished checking its copy. Fully close and reopen iDeck, then choose Start desktop to validate and activate it. Original backup is preserved; no disk is promoted in this process."
+                $0.message = $0.recoveryMode ? "The recovery VM finished checking its copy. Fully close and reopen iDeck, then explicitly start the environment to validate and activate the checked copy. Original backup is preserved; no disk is promoted in this process."
                     : "Guest unmount and data sync were confirmed. Close and reopen the app for the next session; the disk stays locked until this app exits."
             }
         } catch {
@@ -1308,7 +1337,7 @@ private final class LinuxTerminalWorker {
 
     private func scheduleStartupTimeout() {
         if isRecovery {
-            recoveryWatchdog = LinuxRecoveryWatchdog(started: ProcessInfo.processInfo.systemUptime)
+            recoveryWatchdog = LinuxRecoveryWatchdog(started: ProcessInfo.processInfo.systemUptime, scope: owner.isSteam ? .steam : .gui)
             armRecoveryTimeout()
             return
         }
@@ -1408,12 +1437,14 @@ private final class LinuxTerminalWorker {
     private var serialURL: URL { session.appendingPathComponent("linux-serial.log") }
     private var markdownURL: URL { session.appendingPathComponent(owner.isDebian ? "result.md" : LinuxProbeReport.filename) }
 
-    private func prepareRecovery(_ profile: LinuxGUIProfile) throws {
-        guard owner.isDesktop, !owner.isSteam, !enteredQEMU else { throw LinuxGUIRecovery.Invalid.relaunch }
+    private func prepareRecovery(_ profile: LinuxGUIProfile, target: LinuxDesktopDisk.Specification? = nil) throws {
+        guard owner.isDesktop, !enteredQEMU, !owner.isSteam || (isRecovery && target != nil) else { throw LinuxGUIRecovery.Invalid.relaunch }
         try preparationCheckpoint(.recoveryCopies)
         isRecovery = true; report["recovery_requested"] = true
         owner.publish { $0.recoveryMode = true }
-        let transaction = try LinuxGUIRecovery.prepare(directory: dataDirectory, specification: profile.image, observe: observeSuperblock) { stage in
+        let transaction = try LinuxGUIRecovery.prepare(directory: dataDirectory, specification: target ?? profile.image,
+            observe: observeSuperblock, scope: owner.isSteam ? .steam : .gui) { stage in
+            try self.preparation.advance(.recoveryCopies)
             self.checkpoint(stage == "backup" ? .recoveryBackup : (stage == "work_copy" ? .recoveryWorkCopy : .recoveryPrepared))
             self.report["recovery_phase"] = stage; self.persist()
             self.owner.publish {

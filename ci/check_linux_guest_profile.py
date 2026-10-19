@@ -58,7 +58,9 @@ def main():
         startup_failure = source.parent / "LinuxStartupFailure.swift"
         recovery = source.parent / "LinuxGUIRecovery.swift"
         recovery_guest = source.parent / "LinuxRecoveryGuest.swift"
+        steam_recovery_guest = source.parent / "LinuxSteamRecoveryGuest.swift"
         recovery_tests = source.parent / "tests/GUIRecoveryChecks.swift"
+        steam_recovery_tests = source.parent / "tests/SteamRecoveryChecks.swift"
         diagnostics_tests = source.parent / "tests/DiagnosticsChecks.swift"
         desktop = source.parent / "LinuxDesktopProfile.swift"
         desktop_disk = source.parent / "LinuxDesktopDisk.swift"
@@ -89,9 +91,9 @@ def main():
                                                     "LinuxDesktopInput.swift", "LinuxDesktopView.swift", "LinuxSteamControlsView.swift")]
         report["source_sha256"] = hashlib.sha256(source.read_bytes()).hexdigest()
         report["input_sha256"] = {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
-                                  for p in [source, evidence, markdown, markdown_tests, terminal, terminal_tests, diagnostics, startup_failure, recovery, recovery_guest, recovery_tests, diagnostics_tests, desktop, desktop_disk, desktop_tests, desktop_profile_tests, debian, lifecycle, lifecycle_tests, pointer, pointer_tests, gui, gui_tests, steam, steam_tests, steam_memory, steam_cache, steam_cache_contract, steam_offline_tests, environment_state, environment_tests, screen_state, screen_tests, bundled_tests, input_state, input_tests, *native]}
+                                  for p in [source, evidence, markdown, markdown_tests, terminal, terminal_tests, diagnostics, startup_failure, recovery, recovery_guest, steam_recovery_guest, recovery_tests, steam_recovery_tests, diagnostics_tests, desktop, desktop_disk, desktop_tests, desktop_profile_tests, debian, lifecycle, lifecycle_tests, pointer, pointer_tests, gui, gui_tests, steam, steam_tests, steam_memory, steam_cache, steam_cache_contract, steam_offline_tests, environment_state, environment_tests, screen_state, screen_tests, bundled_tests, input_state, input_tests, *native]}
         run("ios-typecheck", ["xcrun", "swiftc", "-typecheck", "-sdk", sdk, "-target", "arm64-apple-ios16.0",
-                              str(source), str(evidence), str(markdown), str(terminal), str(diagnostics), str(startup_failure), str(recovery), str(recovery_guest), str(desktop), str(desktop_disk), str(debian), str(lifecycle), str(gui), str(steam), str(steam_memory), str(steam_cache), str(steam_cache_contract), str(environment_state), str(screen_state), str(input_state)])
+                              str(source), str(evidence), str(markdown), str(terminal), str(diagnostics), str(startup_failure), str(recovery), str(recovery_guest), str(steam_recovery_guest), str(desktop), str(desktop_disk), str(debian), str(lifecycle), str(gui), str(steam), str(steam_memory), str(steam_cache), str(steam_cache_contract), str(environment_state), str(screen_state), str(input_state)])
         # Syntax-only for the Husk-integrated sources. No fake JIT/QEMU/UI types
         # are substituted to make a standalone typecheck appear to pass.
         run("native-syntax", ["xcrun", "swiftc", "-frontend", "-parse", *map(str, native)])
@@ -99,7 +101,7 @@ def main():
         macsdk = run("mac-sdk", ["xcrun", "--sdk", "macosx", "--show-sdk-path"])
         executable = out / "profile-tests"
         run("mac-compile", ["xcrun", "swiftc", "-sdk", macsdk, str(source), str(evidence), str(markdown), str(markdown_tests),
-                            str(terminal), str(terminal_tests), str(diagnostics), str(startup_failure), str(recovery), str(recovery_guest), str(recovery_tests), str(diagnostics_tests),
+                            str(terminal), str(terminal_tests), str(diagnostics), str(startup_failure), str(recovery), str(recovery_guest), str(steam_recovery_guest), str(recovery_tests), str(steam_recovery_tests), str(diagnostics_tests),
                             str(desktop), str(desktop_disk), str(desktop_tests), str(desktop_profile_tests),
                             str(debian), str(lifecycle), str(lifecycle_tests), str(pointer), str(pointer_tests), str(gui), str(gui_tests), str(steam), str(steam_tests), str(steam_memory), str(steam_cache), str(steam_cache_contract), str(steam_offline_tests), str(environment_state), str(environment_tests), str(screen_state), str(screen_tests), str(bundled_tests), str(input_state), str(input_tests),
                             str(source.parent / "tests/main.swift"), "-o", str(executable)])
@@ -108,7 +110,7 @@ def main():
         required = ("LINUX_CONSOLE_RUNTIME_REGRESSION_PASS", "LINUX_DESKTOP_DISK_CHECKS_PASS", "LINUX_DESKTOP_PROFILE_CHECKS_PASS",
                     "LINUX_QEMU_OWNER_LIFETIME_PASS", "LINUX_DISPLAY_POINTER_PASS", "LINUX_DESKTOP_INPUT_PASS", "LINUX_GUI_PROFILE_PASS", "LINUX_STEAM_PROFILE_PASS",
                     "LINUX_STARTUP_FAILURE_PASS", "LINUX_EXT4_DIAGNOSTICS_PASS", "LINUX_GUI_RECOVERY_PASS",
-                    "LINUX_STARTUP_PREPARATION_PASS", "LINUX_LAUNCHER_NAVIGATION_PASS", "LINUX_STEAM_READINESS_PASS", "LINUX_STEAM_OFFLINE_CACHE_PASS", "LINUX_STEAM_AUTO_MEMORY_PASS", "LINUX_STEAM_FRESH_HANDOFF_PASS", "LINUX_STEAM_SCREEN_CONTROLS_PASS", "LINUX_STEAM_BUNDLED_CACHE_PASS", "LINUX_UNIFIED_ENVIRONMENT_PASS")
+                    "LINUX_STARTUP_PREPARATION_PASS", "LINUX_LAUNCHER_NAVIGATION_PASS", "LINUX_STEAM_READINESS_PASS", "LINUX_STEAM_OFFLINE_CACHE_PASS", "LINUX_STEAM_AUTO_MEMORY_PASS", "LINUX_STEAM_FRESH_HANDOFF_PASS", "LINUX_STEAM_SCREEN_CONTROLS_PASS", "LINUX_STEAM_BUNDLED_CACHE_PASS", "LINUX_UNIFIED_ENVIRONMENT_PASS", "LINUX_STEAM_RECOVERY_SCOPE_PASS")
         if not all(marker in report["host_test_output"] for marker in required):
             raise RuntimeError("Mandatory Swift runtime/storage regression did not complete")
         report["swift_runtime_regression"] = "PASS"

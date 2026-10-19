@@ -298,7 +298,7 @@ struct LinuxProbeRoot: View {
                     showDiagnostics = true
                 }
                 Text("Экранная панель отправляет клавиши и мышь; Linux HID-геймпад она не создаёт.").font(.footnote)
-                Text("Recovery GUI-диска доступен в диагностике перед запуском. Steam-диск 12 GiB не поддерживает GUI recovery.").font(.footnote)
+                Text("Восстановление GUI или отдельного Steam-диска доступно в диагностике до запуска VM. Для Steam: только eligible journal replay на копиях, без сброса; после неудачного запуска нужен перезапуск iDeck.").font(.footnote)
                 ForEach([LinuxProbeRoute.Destination.desktop, .terminal, .debian, .linux], id: \.self) { target in
                     Button(target == .desktop ? "Прежний GUI-диск (без миграции)" : target == .linux ? "Boot / display / input test" : target == .debian ? "Debian console" : "Linux terminal") { route.choose(target) }.disabled(!route.canChoose(target))
                 }

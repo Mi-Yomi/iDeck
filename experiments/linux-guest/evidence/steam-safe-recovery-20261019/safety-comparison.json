@@ -1,0 +1,19 @@
+{
+  "baseline": "c1c3cc851c90fc4fe343cd8221eb887fe61dce85",
+  "byte_identical_recovery_safety_methods": [
+    "private func regular(",
+    "private func matches(",
+    "private func sourceIdentity()",
+    "func validateOwnership()",
+    "func synchronize()",
+    "private func hash(",
+    "private func save()",
+    "private func file(",
+    "private func copy(",
+    "func recordResult(",
+    "func recordFailure("
+  ],
+  "promotion_body": "Identical except explicit scope constructor and scope-specific suffix guard",
+  "normal_gui_argv": "byte-identical",
+  "normal_ext4_validator_lifecycle_payload_gui_runtime_and_ci": "byte-identical"
+}

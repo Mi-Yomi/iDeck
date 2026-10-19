@@ -131,6 +131,7 @@ func runSteamProfileChecks(root: URL) throws {
     let read = preserved.withUnsafeMutableBytes { pread(fd, $0.baseAddress!, $0.count, 1024) }
     precondition(read == preserved.count)
     precondition(preserved == header, "dirty Steam metadata must remain byte-for-byte intact")
+    try runSteamRecoveryChecks(directory: data, header: header, specification: profile.image)
     // Preview inspects only the bundle manifest. Even this existing dirty disk
     // is left alone: its ownership/recovery check belongs to the real Start path.
     let manifestBytes = try Data(contentsOf: profileFile)

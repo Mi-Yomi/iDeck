@@ -2,11 +2,26 @@ import Foundation
 import CryptoKit
 import Darwin
 
-/// GUI-only, clone-only transaction. No QEMU teardown or same-process promotion.
+/// Explicit GUI/Steam clone-only transaction. No same-process promotion.
 /// Every descriptor stays owned by the worker after native entry until app exit.
 final class LinuxGUIRecovery: LinuxConsoleDisk {
     enum Invalid: Error { case metadata, busy, io, space, changed, receipt, manualReview, relaunch }
     enum Phase: String, Codable { case copying, prepared, running, verified, promoting, promoted, manualReview }
+    enum Scope: Equatable {
+        case gui, steam
+        func accepts(_ specification: LinuxDesktopDisk.Specification) -> Bool {
+            switch self {
+            case .gui: return specification.uuid == LinuxGUIProfile.uuid && specification.sizeBytes == LinuxGUIProfile.size
+            case .steam: return specification.uuid == LinuxSteamProfile.uuid && specification.sizeBytes == LinuxSteamProfile.size
+            }
+        }
+        var suffixSHA256: String { self == .steam ? LinuxSteamRecoveryGuest.sha256 : LinuxRecoveryGuest.sha256 }
+        func permits(_ value: LinuxDesktopDisk.RecoveryObservation?) -> Bool {
+            if self == .gui { return true }
+            guard let value else { return false }
+            return value.recoverBit && value.state == 1 && value.lastOrphan == 0 && value.errorCount == 0
+        }
+    }
     struct Receipt: Codable {
         var schema = 1
         var id: String
@@ -33,6 +48,7 @@ final class LinuxGUIRecovery: LinuxConsoleDisk {
     static let process = UUID().uuidString.lowercased()
     let directory: URL
     let specification: LinuxDesktopDisk.Specification
+    let scope: Scope
     private(set) var receipt: Receipt?
     private var parent: Int32 = -1
     private var root: Int32 = -1
@@ -44,11 +60,11 @@ final class LinuxGUIRecovery: LinuxConsoleDisk {
     var url: URL { directory.appendingPathComponent(".recovery-v1/" + (receipt?.id ?? "INVALID") + "/work.raw") }
     private var rootURL: URL { directory.appendingPathComponent(".recovery-v1", isDirectory: true) }
 
-    private init(directory: URL, specification: LinuxDesktopDisk.Specification) throws {
-        self.directory = directory; self.specification = specification
+    private init(directory: URL, specification: LinuxDesktopDisk.Specification, scope: Scope) throws {
+        self.directory = directory; self.specification = specification; self.scope = scope
         do {
         try specification.validate()
-        guard specification.uuid == LinuxGUIProfile.uuid, specification.sizeBytes == LinuxGUIProfile.size else { throw Invalid.metadata }
+        guard scope.accepts(specification) else { throw Invalid.metadata }
         try LinuxDesktopDisk.validateDirectory(directory)
         parent = Darwin.open(directory.path, O_RDONLY | O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC)
         guard parent >= 0 else { throw Invalid.io }
@@ -171,10 +187,25 @@ final class LinuxGUIRecovery: LinuxConsoleDisk {
     static func prepare(directory: URL, specification: LinuxDesktopDisk.Specification,
                         availableBytes: ((URL) throws -> Int64)? = nil,
                         observe: ((LinuxDesktopDisk.RecoveryObservation) -> Void)? = nil,
-                        progress: ((String) -> Void)? = nil) throws -> LinuxGUIRecovery {
-        let transaction = try Self(directory: directory, specification: specification)
+                        scope: Scope = .gui, progress: ((String) throws -> Void)? = nil) throws -> LinuxGUIRecovery {
+        let transaction = try Self(directory: directory, specification: specification, scope: scope)
         // This method is called only before native entry under the process guard.
-        try LinuxDesktopDisk.validateForJournalRecovery(fd: transaction.source, specification: specification, observe: observe)
+        var observation: LinuxDesktopDisk.RecoveryObservation?
+        try LinuxDesktopDisk.validateForJournalRecovery(fd: transaction.source, specification: specification) { value in
+            observation = value; observe?(value)
+        }
+        guard scope.permits(observation) else { throw Invalid.manualReview }
+        if scope == .steam, transaction.receipt == nil {
+            let free: Int64
+            if let availableBytes { free = try availableBytes(directory) }
+            else {
+                let attributes = try FileManager.default.attributesOfFileSystem(forPath: directory.path)
+                guard let bytes = attributes[.systemFreeSize] as? NSNumber else { throw Invalid.space }
+                free = bytes.int64Value
+            }
+            // Refuse before hashing12 GiB when two complete copies cannot fit.
+            guard free >= specification.sizeBytes * 2 + 512 * 1024 * 1024 else { throw Invalid.space }
+        }
         let sourceHash = try transaction.hash(transaction.source)
         var state = stat(); guard fstat(transaction.source, &state) == 0 else { throw Invalid.io }
         if transaction.receipt?.phase == .verified || transaction.receipt?.phase == .promoting { throw Invalid.relaunch }
@@ -217,12 +248,12 @@ final class LinuxGUIRecovery: LinuxConsoleDisk {
         }
         let neededCopies: Int64 = backupVerified ? 1 : 2
         guard free >= specification.sizeBytes * neededCopies + 512 * 1024 * 1024 else { throw Invalid.space }
-        progress?("backup")
+        try progress?("backup")
         if !backupVerified {
             try transaction.copy(transaction.source, transaction.backup)
         }
         guard try transaction.hash(transaction.backup) == sourceHash else { throw Invalid.changed }
-        progress?("work_copy")
+        try progress?("work_copy")
         // Only the disposable work copy may be restarted after an interrupted VM.
         try transaction.copy(transaction.backup, transaction.work)
         guard try transaction.hash(transaction.work) == sourceHash,
@@ -230,12 +261,12 @@ final class LinuxGUIRecovery: LinuxConsoleDisk {
         receipt.phase = .prepared; receipt.process = process; receipt.assessment = nil; receipt.replay = nil; receipt.verification = nil; receipt.failure = nil
         receipt.recoveredSHA256 = nil; receipt.scanClean = nil; receipt.summaryReconciled = nil
         transaction.receipt = receipt; try transaction.save(); try transaction.validateOwnership()
-        progress?("prepared")
+        try progress?("prepared")
         return transaction
     }
     func markRunning(toolSeedSHA256: String) throws {
         guard receipt?.phase == .prepared, Self.digest(toolSeedSHA256) else { throw Invalid.receipt }
-        receipt?.toolSeedSHA256 = toolSeedSHA256; receipt?.suffixSHA256 = LinuxRecoveryGuest.sha256
+        receipt?.toolSeedSHA256 = toolSeedSHA256; receipt?.suffixSHA256 = scope.suffixSHA256
         receipt?.phase = .running; try save()
     }
     func recordResult(assessment: Int, replay: Int, verification: Int, scanClean: Bool, imageSHA256: String, summaryReconciled: Bool = false) throws {
@@ -257,16 +288,16 @@ final class LinuxGUIRecovery: LinuxConsoleDisk {
 
     /// Fresh process only, BEFORE its one native invocation. Old QEMU ownership
     /// must have ended: exclusive source/work locks are required in addition to ID.
-    static func promotePending(directory: URL, specification: LinuxDesktopDisk.Specification, toolSeedSHA256: String,
+    static func promotePending(directory: URL, specification: LinuxDesktopDisk.Specification, toolSeedSHA256: String, scope: Scope = .gui,
                                fault: ((String) -> Void)? = nil) throws -> Bool {
         guard FileManager.default.fileExists(atPath: directory.appendingPathComponent(".recovery-v1/current.json").path) else { return false }
-        let transaction = try Self(directory: directory, specification: specification)
+        let transaction = try Self(directory: directory, specification: specification, scope: scope)
         guard var receipt = transaction.receipt else { return false }
         guard receipt.phase == .verified || receipt.phase == .promoting else { return false }
         guard receipt.process != process else { throw Invalid.relaunch }
         guard [0,4].contains(receipt.assessment ?? -1), [0,1].contains(receipt.replay ?? -1), receipt.verification == 0,
               receipt.scanClean == true, receipt.toolSeedSHA256 == toolSeedSHA256,
-              receipt.suffixSHA256 == LinuxRecoveryGuest.sha256,
+              receipt.suffixSHA256 == scope.suffixSHA256,
               let checkedSHA256 = receipt.recoveredSHA256, Self.digest(checkedSHA256) else { throw Invalid.receipt }
         transaction.backup = try transaction.file("original.raw", create: false)
         guard try transaction.hash(transaction.backup) == receipt.sourceSHA256 else { throw Invalid.changed }
@@ -376,20 +407,25 @@ struct LinuxRecoveryWatchdog {
     static let progressSeconds: TimeInterval = 90
     static let totalSeconds: TimeInterval = 180
     let started: TimeInterval
+    let scope: LinuxGUIRecovery.Scope
     private(set) var lastProgress: TimeInterval
     private(set) var supervisorReady = false
-    init(started: TimeInterval) { self.started = started; self.lastProgress = started }
+    init(started: TimeInterval, scope: LinuxGUIRecovery.Scope = .gui) {
+        self.started = started; self.lastProgress = started; self.scope = scope
+    }
+    // Steam is9.6x the GUI image; round up once, retain a finite absolute cap.
+    private var scale: TimeInterval { scope == .steam ? 10 : 1 }
     mutating func advanced(at now: TimeInterval, supervisor: Bool = false) {
         lastProgress = max(lastProgress, now)
         supervisorReady = supervisorReady || supervisor
     }
     var nextDeadline: TimeInterval {
-        min(started + Self.totalSeconds, supervisorReady ? lastProgress + Self.progressSeconds : started + Self.supervisorSeconds)
+        min(started + Self.totalSeconds * scale, supervisorReady ? lastProgress + Self.progressSeconds * scale : started + Self.supervisorSeconds)
     }
     func timeout(at now: TimeInterval) -> Timeout? {
-        if now >= started + Self.totalSeconds { return .deadline }
+        if now >= started + Self.totalSeconds * scale { return .deadline }
         if !supervisorReady, now >= started + Self.supervisorSeconds { return .supervisor }
-        if supervisorReady, now >= lastProgress + Self.progressSeconds { return .progress }
+        if supervisorReady, now >= lastProgress + Self.progressSeconds * scale { return .progress }
         return nil
     }
 }

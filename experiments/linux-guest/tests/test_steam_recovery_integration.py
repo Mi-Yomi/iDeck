@@ -15,22 +15,28 @@ class SteamRecoveryIntegration(unittest.TestCase):
         self.assertIn('self.owner.isSteam ? "steam-profile.json" : self.owner.isDesktop ? "desktop-profile.json"', line)
         for filename in ('debian-profile.json', 'terminal-profile.json'):
             self.assertIn(filename, line)
-        self.assertIn('self.owner.isDesktop && !self.owner.isSteam ? (try LinuxGUIProfile.load', source)
+        self.assertIn('let guiAssets = self.owner.isSteam ? self.bundle.appendingPathComponent("iDeckLinuxDesktop") : assets', source)
+        self.assertIn('let gui = self.owner.isDesktop ? (try LinuxGUIProfile.load(from: guiAssets))', source)
         self.assertIn('isSteam ? "iDeckSteam-v1" : isDesktop ? "iDeckDebianGUI-v1"', source)
 
-    def test_explicit_and_automatic_gui_recovery_exclude_steam_and_native_entry(self):
+    def test_steam_recovery_is_explicit_scoped_and_one_native_attempt(self):
         source = (ROOT / 'ios/LinuxTerminalSession.swift').read_text()
         recovery = swift_block(source, 'func startRecovery()')
-        self.assertIn('guard isDesktop, !isSteam else', recovery)
+        self.assertIn('guard isDesktop else', recovery)
+        self.assertIn('if isSteam { steamMemoryMode = .fixed1536 }', recovery)
         self.assertIn('guard !attempted else', recovery)
         prepare = swift_block(source, 'private func prepareRecovery(')
-        self.assertIn('guard owner.isDesktop, !owner.isSteam, !enteredQEMU', prepare)
+        self.assertIn('guard owner.isDesktop, !enteredQEMU, !owner.isSteam || (isRecovery && target != nil)', prepare)
+        self.assertIn('scope: owner.isSteam ? .steam : .gui', prepare)
         self.assertIn('recoveryRequested = false; start()', swift_block(source, 'func startDesktop()'))
         view = (ROOT / 'ios/LinuxDesktopView.swift').read_text()
         self.assertIn('if session.isDesktop && !session.isSteam && !session.attempted', view)
         self.assertIn('Button("Recover GUI disk") { session.startRecovery() }', view)
         self.assertIn('"Start desktop") { session.startDesktop() }', view)
-        self.assertIn('GUI recovery does not support this separate 12 GiB disk', source)
+        self.assertIn('Восстановление Steam доступно отдельным действием', source)
+        steam = swift_block(source[source.index('private final class LinuxTerminalWorker'):], 'if let steam {')
+        self.assertNotIn('catch LinuxDesktopDisk.Invalid.needsRecovery', steam)
+        self.assertIn('if self.isRecovery', steam)
         self.assertIn('!LinuxTerminalSession.steam.attempted', source)
 
     def test_dirty_steam_observation_and_repeated_refusal_are_in_actual_apple_checks(self):

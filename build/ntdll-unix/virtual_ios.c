@@ -22573,21 +22573,28 @@ static void *get_host_addr_space_limit(void)
          * hint to be honoured. It is EXCLUSIVE, which is what is_beyond_limit()
          * wants, matching the ml122 note above.
          *
-         * Only ever RAISE the walk's answer, never lower it: the walk is proven
-         * on hardware, and a device reporting a small or bogus max_address must
-         * not shrink a limit that already works. Both values are logged so the
-         * two can be compared on any device. */
+         * Modified for iDeck-BCD, 2026-10-19: the hint walk can also OVERestimate
+         * a non-power-of-two map. A successful hint at 256 GiB does not prove
+         * that 512 GiB is mappable. Use a complete, sane kernel map range in
+         * either direction; keep the walk only when that range is unavailable.
+         * TASK_VM_INFO rev2 supplies min/max from the task's VM map. */
         void *walked = (void *)(addr << 1);
-        task_vm_info_data_t vmi;
+        task_vm_info_data_t vmi = {0};
         mach_msg_type_number_t cnt = TASK_VM_INFO_COUNT;
 
         if (task_info( mach_task_self(), TASK_VM_INFO, (task_info_t)&vmi, &cnt ) == KERN_SUCCESS)
         {
             void *kern = (void *)(uintptr_t)vmi.max_address;
 
-            dprintf( 2, "[va-limit] ml749 walk=%p kernel_max=%p -> %s\n",
-                     walked, kern, kern > walked ? "USING KERNEL (walk underestimated)" : "keeping walk" );
-            if (kern > walked && (uintptr_t)kern >= 0x100000000ULL) return kern;
+            int valid = cnt >= TASK_VM_INFO_REV2_COUNT &&
+                        (uintptr_t)kern >= 0x100000000ULL &&
+                        vmi.min_address < vmi.max_address &&
+                        !((uintptr_t)kern & host_page_mask);
+
+            dprintf( 2, "[va-limit] ideck-v1 walk=%p kernel_max=%p -> %s\n",
+                     walked, kern, valid ? "USING KERNEL (authoritative map range)"
+                                         : "incomplete/invalid kernel range, keeping walk" );
+            if (valid) return kern;
         }
         else dprintf( 2, "[va-limit] ml749 walk=%p kernel_max=UNAVAILABLE -> keeping walk\n", walked );
 

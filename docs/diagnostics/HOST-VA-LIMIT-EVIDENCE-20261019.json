@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-19",
+  "baseline_commit": "59a6dd81bc9c5bdae143c450b05b1dca5de56c69",
+  "evidence_kind": "sanitized derived facts from bounded authorized Library reads",
+  "full_byte_transfer": "BLOCKED: Tunnel connection failed: 403 Forbidden",
+  "independent_log_sha256": null,
+  "raw_logs_committed": false,
+  "current": {
+    "metadata_bytes": 3627603,
+    "metadata_lines": 35478,
+    "build": "v0.1.573 (573)",
+    "target_executable": "NoImNotAHuman.exe",
+    "engine": "UnityPlayer",
+    "kernel_map_exclusive_max": "0x7180000000",
+    "walk_and_selected_host_max_before_fix": "0x8000000000",
+    "installed_profile_extended_va": false,
+    "installed_profile_increased_memory": false,
+    "jit_pool_ready": true,
+    "jit_pool_mib": 560,
+    "terminal_reservation_request": "0x1ffff000",
+    "native_mapping_request": "0x20010000",
+    "largest_gap_mib_at_failure": 369,
+    "terminal_reservation_status": "c0000017",
+    "terminal_reservation_line": 10565,
+    "subsequent_exception": "c0000005 NULL write",
+    "unity_guest_fault_module_offset": "0x1236316"
+  },
+  "previous": {
+    "metadata_bytes": 3076857,
+    "metadata_lines": 31314,
+    "build": "v0.1.573 (573)",
+    "different_application": true,
+    "same_host_limit_overestimate": true,
+    "terminal_reservation_status": "c0000017",
+    "terminal_reservation_line": 11084,
+    "largest_gap_mib_at_failure": 389,
+    "successful_gameplay_verified": false
+  },
+  "verification": {
+    "python_ast": "PASS",
+    "extracted_fixture_c_syntax_only": "PASS",
+    "static_call_sites_and_guards": "PASS",
+    "git_diff_check": "PASS",
+    "host_regression_runtime": "NOT RUN",
+    "full_regressions": "NOT RUN",
+    "apple_native_build": "NOT RUN",
+    "packaging_and_signing": "NOT RUN",
+    "device_game_acceptance": "NOT RUN"
+  },
+  "remaining_constraints": [
+    "Observed largest contiguous gap is smaller than the failed reservation",
+    "Installed profile does not grant capabilities already requested by source",
+    "Inherited outbound services remain subject to static quarantine",
+    "Complete native source correspondence and LGPL relinking obligations remain as recorded by the import audit"
+  ]
+}

@@ -31,10 +31,10 @@ class DesktopDiagnosticsUI(unittest.TestCase):
             self.assertNotIn('session.ready', button)
             self.assertNotIn('disabled', button)
         # VM actions have their own guards; MD actions are outside input grids.
-        self.assertEqual(actions.count('.disabled('), 3)
+        self.assertEqual(actions.count('.disabled('), 2)
         self.assertIn('.disabled(!preparation.canCancel)', actions)
         self.assertIn('Button("Stop Linux") { session.stop() }.disabled(', actions)
-        self.assertNotIn('if let', actions.split('Button("Share report")')[0])
+        self.assertIn('session.attempted && !session.ready', actions)
         self.assertIn('ideck-desktop-startup-diagnostics', actions)
 
     def test_preboot_report_falls_back_to_current_journal_and_saved_md_is_explicit(self):
@@ -46,7 +46,7 @@ class DesktopDiagnosticsUI(unittest.TestCase):
         self.assertIn('diagnosticAttemptIDs[$0] == id', share)
         self.assertNotIn('shareFiles', share)
         view = (ROOT / "ios/LinuxDesktopView.swift").read_text()
-        diagnostics = swift_block(view, 'private struct LinuxDesktopDiagnosticsView:')
+        diagnostics = swift_block(view, 'struct LinuxDesktopDiagnosticsView:')
         for token in ('session.diagnosticReports.enumerated()', 'ShareLink("Startup report',
                       'session.exportError', 'session.diagnosticsError',
                       'session.exportNativeDiagnostics(for: file)', '.navigationViewStyle(.stack)'):

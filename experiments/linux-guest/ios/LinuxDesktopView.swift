@@ -62,6 +62,7 @@ struct LinuxDesktopView: View {
     @Environment(\.scenePhase) private var phase
     @State private var keyboard = false
     @State private var recovery = false
+    @State private var controlsExpanded = false
     @State private var command = ""
     @State private var showDiagnostics = false
     @State private var showShare = false
@@ -78,7 +79,7 @@ struct LinuxDesktopView: View {
                 Text(session.message).font(.caption).lineLimit(3).frame(maxWidth: .infinity, alignment: .leading)
                 if let preparation = session.preparationState, preparation.inProgress {
                     ProgressView(preparation.message).font(.caption)
-                    Text("Keep iDeck open. Leaving this screen cancels pending startup after the current file operation; completed copies are preserved.")
+                    Text("Keep iDeck open. Home preserves this preparation; Cancel start explicitly cancels before native entry.")
                         .font(.caption2).fixedSize(horizontal: false, vertical: true)
                 }
                 if jit.busy { ProgressView(jit.status ?? "Enabling JIT…") }
@@ -109,7 +110,7 @@ struct LinuxDesktopView: View {
         .onChange(of: showDiagnostics) { _ in refreshInputFocus() }
         .onChange(of: showShare) { _ in refreshInputFocus() }
         .onChange(of: jit.showSetup) { _ in refreshInputFocus() }
-        .onDisappear { input.setFocused(false); session.cancelPreparation() }
+        .onDisappear { keyboard = false; input.setFocused(false) }
         .onChange(of: phase) { value in
             if value == .active { session.recoverDiagnostics() }
             if value == .background { session.cancelPreparation() }
@@ -125,11 +126,13 @@ struct LinuxDesktopView: View {
     }
     private var persistentActions: some View {
         HStack(spacing: 8) {
-            Button("Share report") {
-                prepareDiagnostics()
-                if let file = session.reportForSharing() { shareItems = [file]; showShare = true }
-                else { showDiagnostics = true }
-            }.accessibilityIdentifier("ideck-desktop-share-report")
+            if session.attempted && !session.ready {
+                Button("Share report") {
+                    prepareDiagnostics()
+                    if let file = session.reportForSharing() { shareItems = [file]; showShare = true }
+                    else { showDiagnostics = true }
+                }.accessibilityIdentifier("ideck-desktop-share-report")
+            }
             Button("Diagnostics") { prepareDiagnostics(); session.recoverDiagnostics(); showDiagnostics = true }
                 .accessibilityLabel("Saved startup diagnostics, Markdown")
                 .accessibilityIdentifier("ideck-desktop-startup-diagnostics")
@@ -139,8 +142,6 @@ struct LinuxDesktopView: View {
                     .disabled(!preparation.canCancel).accessibilityIdentifier("ideck-desktop-cancel-start")
             } else if session.attempted {
                 Button("Stop Linux") { session.stop() }.disabled(!session.canStop || session.stopping)
-            } else if !session.isSteam {
-                Button("Recover disk") { session.startRecovery() }.disabled(jit.busy)
             }
         }
         .buttonStyle(.bordered).font(.caption).lineLimit(1).minimumScaleFactor(0.8)
@@ -153,11 +154,28 @@ struct LinuxDesktopView: View {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
     private var display: some View {
-        LinuxDesktopDisplay(input: input)
-            .aspectRatio(4.0 / 3.0, contentMode: .fit)
-            .allowsHitTesting(session.ready && !session.stopping && !recovery)
-            .accessibilityIdentifier("ideck-debian-desktop-display")
-            .background(Color.black)
+        ZStack {
+            LinuxDesktopDisplay(input: input)
+                .allowsHitTesting(session.ready && !session.stopping && !recovery)
+                .accessibilityIdentifier("ideck-debian-desktop-display")
+            if !session.ready || !session.displayHasFrame {
+                VStack(spacing: 10) {
+                    Image(systemName: session.displayTimedOut ? "exclamationmark.display" : "desktopcomputer").font(.largeTitle)
+                    if let preparation = session.preparationState, preparation.inProgress {
+                        ProgressView(preparation.message)
+                    } else {
+                        Text(session.message).multilineTextAlignment(.center)
+                    }
+                    if session.displayTimedOut {
+                        Text("Кадр гостя не получен за 60 секунд. Причина не установлена. Сохраните отчёт в Диагностике; Stop остаётся доступен после готовности supervisor.")
+                    } else {
+                        Text(session.recoveryMode ? "Recovery работает без графического дисплея. Оригинал и резервная копия сохраняются." : session.attempted ? "Ожидаем готовность Linux и кадр гостевого дисплея…" : "Экран настоящей сессии появится после запуска Linux.")
+                    }
+                    Button("Диагностика / отчёт") { prepareDiagnostics(); session.recoverDiagnostics(); showDiagnostics = true }
+                }.font(.callout).padding(20).frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Theme.surface.opacity(0.96))
+            }
+        }.aspectRatio(4.0 / 3.0, contentMode: .fit).background(Color.black)
     }
     private var controls: some View {
         VStack(spacing: 6) {
@@ -186,6 +204,7 @@ struct LinuxDesktopView: View {
             } else if !session.attempted && !session.isSteam {
                 Text("After a blocked unclean disk: Recover disk first. Requires space for two full copies plus 512 MiB reserve.").font(.caption2)
             }
+            DisclosureGroup("Управление и клавиатура", isExpanded: $controlsExpanded) {
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 5) {
                 Button("Keyboard") { keyboard.toggle() }
                 Button("Release keys") { input.releaseHeld() }
@@ -202,8 +221,11 @@ struct LinuxDesktopView: View {
                          ("PgUp","pgup"),("PgDn","pgdn")], id: \.1) { label, code in Button(label) { input.key(code) } }
                 ForEach(1...12, id: \.self) { n in Button("F\(n)") { input.key("f\(n)") } }
             }.disabled(!session.ready || session.stopping || recovery)
+            }
             Text(input.message).font(.caption2).foregroundStyle(.secondary)
-            Button(recovery ? "Hide recovery" : "Serial recovery") { recovery.toggle() }
+            DisclosureGroup("Дополнительно") {
+                Button(recovery ? "Hide recovery" : "Serial recovery") { recovery.toggle() }
+            }
         }
     }
     private var recoveryConsole: some View {
@@ -226,7 +248,7 @@ struct LinuxDesktopView: View {
 
 /// Independent of guest readiness/JIT and the clipped display/input layout.
 /// Only allowlisted MD exports are offered; raw disk/user files are not read.
-private struct LinuxDesktopDiagnosticsView: View {
+struct LinuxDesktopDiagnosticsView: View {
     @ObservedObject var session: LinuxTerminalSession
     @Environment(\.dismiss) private var dismiss
     @State private var shareItems: [URL] = []
@@ -238,6 +260,12 @@ private struct LinuxDesktopDiagnosticsView: View {
                     Text(session.message).textSelection(.enabled)
                     if let error = session.exportError { Text(error).foregroundStyle(.orange) }
                     if let error = session.diagnosticsError { Text(error).foregroundStyle(.orange) }
+                }
+                if session.isDesktop && !session.isSteam && !session.attempted {
+                    Section("GUI recovery") {
+                        Text("Preserves the original with verified backup/work copies. Requires two full copies plus 512 MiB reserve and a new process before activation.")
+                        Button("Recover GUI disk") { session.startRecovery() }
+                    }
                 }
                 Section("Session report (.md)") {
                     if let file = session.markdownFile { ShareLink("Share session report (.md)", item: file) }

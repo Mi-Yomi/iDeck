@@ -1,17 +1,37 @@
 import SwiftUI
 
-/// The route is shared by all windows and cannot be changed in this process.
-/// QEMU and the translation runtimes own global state and a shared JIT region.
+/// A shared screen route; native ownership lives in the existing static sessions.
 @MainActor
 final class LinuxProbeRoute: ObservableObject {
-    enum Destination { case choose, linux, terminal, debian, desktop, steam, library }
+    typealias Destination = LinuxLauncherNavigation.Destination
     static let shared = LinuxProbeRoute()
-    @Published private(set) var destination: Destination = .choose
-
-    func choose(_ route: Destination) {
-        guard destination == .choose, route != .choose else { return }
-        if route == .library {
-            // Original Husk maintenance, deferred until its library is chosen.
+    @Published private(set) var navigation = LinuxLauncherNavigation()
+    @Published private(set) var notice: String?
+    var destination: Destination { navigation.destination }
+    var runtimeOwner: Destination? {
+        if LinuxTerminalSession.steam.attempted { return .steam }
+        if LinuxTerminalSession.desktop.attempted { return .desktop }
+        if LinuxTerminalSession.debian.attempted { return .debian }
+        if LinuxTerminalSession.shared.attempted { return .terminal }
+        if LinuxProbeSession.shared.attempted { return .linux }
+        return navigation.owner
+    }
+    var current: Destination? { runtimeOwner ?? navigation.selected }
+    func canChoose(_ target: Destination) -> Bool { runtimeOwner == nil || !target.isEnvironment || runtimeOwner == target }
+    func home() {
+        navigation.reserve(runtimeOwner)
+        navigation.home()
+        NotificationCenter.default.post(name: Notification.Name("iDeck.releaseDisplayInput"), object: nil)
+    }
+    func resume() { navigation.reserve(runtimeOwner); navigation.resume() }
+    func choose(_ target: Destination) {
+        navigation.reserve(runtimeOwner)
+        let initializeLibrary = target == .library && navigation.owner != .library
+        guard navigation.open(target) else {
+            notice = "Другая среда уже использовала runtime. Вернитесь к текущей сессии. Новый запуск Linux требует полного перезапуска iDeck."; return
+        }
+        notice = nil
+        if initializeLibrary {
             _ = Downloads.shared
             let defaults = UserDefaults.standard
             if !defaults.bool(forKey: "husk.autoStart.offByDefault") {
@@ -21,73 +41,153 @@ final class LinuxProbeRoute: ObservableObject {
             IncomingFiles.clearLeftovers()
             HuskGamepads.shared.start()
         }
-        destination = route
     }
 }
 
 struct LinuxProbeRoot: View {
     @ObservedObject private var route = LinuxProbeRoute.shared
-
+    @ObservedObject private var desktop = LinuxTerminalSession.desktop
+    @ObservedObject private var steam = LinuxTerminalSession.steam
+    @ObservedObject private var terminal = LinuxTerminalSession.shared
+    @ObservedObject private var debian = LinuxTerminalSession.debian
+    @ObservedObject private var probe = LinuxProbeSession.shared
+    @ObservedObject private var jit = JITCoordinator.shared
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var showJIT = false
+    @State private var showDiagnostics = false
+    private var currentSession: LinuxTerminalSession {
+        switch route.current {
+        case .some(.steam): return steam
+        case .some(.desktop): return desktop
+        case .some(.debian): return debian
+        default: return terminal
+        }
+    }
     var body: some View {
-        #if IDECK_LINUX_PROBE_ONLY
-        // Both Linux modes remain isolated from the Android/PS4 library.
-        Group {
-            switch route.destination {
-            case .choose: chooser
-            case .linux: LinuxProbeView()
-            case .terminal: LinuxTerminalView()
-            case .debian: LinuxTerminalView(session: .debian)
-            case .desktop: LinuxDesktopView()
-            case .steam: LinuxDesktopView(session: .steam)
-            case .library: Text("Close and reopen the app to choose a Linux mode.")
+        ZStack {
+            Theme.bg.ignoresSafeArea()
+            // Keep the original library mounted if opened in a full Husk build.
+            // Its own view lifecycle must not stop a runtime when Home is shown.
+            #if !IDECK_LINUX_PROBE_ONLY
+            if route.navigation.owner == .library {
+                ContentView().opacity(route.destination == .library ? 1 : 0)
+                    .allowsHitTesting(route.destination == .library)
+                    .accessibilityHidden(route.destination != .library)
+            }
+            #endif
+            if route.destination != .library { screen }
+        }
+        .tint(Theme.accent)
+        .safeAreaInset(edge: .top, spacing: 0) {
+            HStack {
+                Button { route.home() } label: { Label("Домой", systemImage: "house.fill") }
+                    .accessibilityIdentifier("ideck-home")
+                Spacer()
+                if route.current != nil {
+                    Button { route.resume() } label: { Label("К сессии", systemImage: "play.rectangle") }
+                        .accessibilityIdentifier("ideck-resume")
+                }
+            }.buttonStyle(.bordered).padding(.horizontal).padding(.vertical, 6).background(.ultraThinMaterial)
+        }
+        .onAppear { LinuxTerminalSession.shared.recoverDiagnostics() }
+        .sheet(isPresented: $showJIT) { JITSetupFlow() }
+        .sheet(isPresented: $showDiagnostics) { LinuxDesktopDiagnosticsView(session: currentSession) }
+        .onChange(of: scenePhase) { phase in
+            if phase == .background {
+                for session in [terminal, debian, desktop, steam] { session.cancelPreparation() }
             }
         }
-        #else
-        Group {
-            switch route.destination {
-            case .choose:
-                chooser
-            case .linux:
-                LinuxProbeView()
-            case .terminal:
-                LinuxTerminalView()
-            case .debian:
-                LinuxTerminalView(session: .debian)
-            case .desktop:
-                LinuxDesktopView()
-            case .steam:
-                LinuxDesktopView(session: .steam)
-            case .library:
-                ContentView()
-            }
-        }
+        #if !IDECK_LINUX_PROBE_ONLY
         .onOpenURL { url in
-            // APK deep links must not activate another runtime in a Linux run.
             guard route.destination == .library else { return }
             if !AppClip.handle(url) { IncomingFiles.shared.receive(url) }
         }
         #endif
     }
-
-    private var chooser: some View {
-        VStack(spacing: 24) {
-            Text("iDeck Linux").font(.title)
-            Button("Linux terminal and saved files") { route.choose(.terminal) }
-                .buttonStyle(.borderedProminent)
-            Button("Boot, display and input diagnostic") { route.choose(.linux) }
-                .buttonStyle(.bordered)
-            Button("Debian desktop · windows and apps") { route.choose(.desktop) }
-                .buttonStyle(.borderedProminent)
-            Button("Steam · experimental installation") { route.choose(.steam) }.buttonStyle(.bordered)
-            Button("Debian ARM64 · persistent ext4") { route.choose(.debian) }
-                .buttonStyle(.bordered)
-            #if !IDECK_LINUX_PROBE_ONLY
-            Button("Open Husk library") { route.choose(.library) }.buttonStyle(.bordered)
-            #endif
-            Text("One environment per app launch. Shut Linux down before closing; reopen the app for another session.")
-                .font(.footnote).foregroundStyle(.secondary)
-        }.padding()
-            .onAppear { LinuxTerminalSession.shared.recoverDiagnostics() }
+    @ViewBuilder private var screen: some View {
+        switch route.destination {
+        case .choose: launcher
+        case .linux: LinuxProbeView()
+        case .terminal: LinuxTerminalView()
+        case .debian: LinuxTerminalView(session: .debian)
+        case .desktop: LinuxDesktopView()
+        case .steam: LinuxDesktopView(session: .steam)
+        case .settings: settings
+        case .advanced: advanced
+        case .library: EmptyView()
+        }
+    }
+    private var launcher: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("iDeck").font(.largeTitle.bold())
+                        Text("Ваша Linux-консоль").foregroundStyle(Theme.textDim)
+                    }
+                    Spacer()
+                    Image(systemName: "gamecontroller.fill").font(.largeTitle).foregroundStyle(Theme.accent)
+                }
+                if let current = route.current {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label("Текущая сессия · \(current.rawValue)", systemImage: "circle.fill").font(.headline)
+                        Text(current == .linux ? probe.message : current == .library ? "Библиотека сохраняет текущий runtime." : currentSession.message).font(.callout)
+                        if current == .steam { Text(steam.steamMessage).font(.footnote).foregroundStyle(Theme.textDim) }
+                        Button("Вернуться к сессии") { route.resume() }.buttonStyle(.borderedProminent)
+                        Text("Домой меняет только экран. Сессия и её диск остаются у текущего владельца.").font(.footnote).foregroundStyle(Theme.textDim)
+                    }.padding().background(Theme.surface, in: RoundedRectangle(cornerRadius: Theme.cardCorner))
+                }
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), spacing: 16)], spacing: 16) {
+                    launcherCard("Steam / Big Picture", icon: "gamecontroller", detail: "Настроить или открыть Steam в настоящей Linux-сессии. Установка клиента требует согласия на сеть.", target: .steam)
+                    launcherCard("Рабочий стол", icon: "desktopcomputer", detail: route.runtimeOwner == .steam ? "Экран текущей Steam/Linux-сессии без смены диска или перезапуска VM." : "Открыть экран Linux. Отдельный GUI-диск сохраняет ваши файлы.", target: route.runtimeOwner == .steam ? .steam : .desktop)
+                    launcherCard("Настройки", icon: "gearshape", detail: "JIT, подключение и параметры сессии", target: .settings)
+                }
+                if route.runtimeOwner != nil {
+                    Text("Смена среды заблокирована после попытки запуска, включая остановку и ошибку. Для другой VM нужен новый процесс iDeck.").font(.footnote).foregroundStyle(Theme.textDim)
+                }
+                if let notice = route.notice { Text(notice).foregroundStyle(.orange) }
+                Button { route.choose(.advanced) } label: { Label("Диагностика и дополнительно", systemImage: "wrench.and.screwdriver") }
+            }.padding(20).frame(maxWidth: 900).frame(maxWidth: .infinity)
+        }
+    }
+    private func launcherCard(_ title: String, icon: String, detail: String, target: LinuxProbeRoute.Destination) -> some View {
+        Button { route.choose(target) } label: {
+            VStack(alignment: .leading, spacing: 14) {
+                Image(systemName: icon).font(.title).foregroundStyle(Theme.accent)
+                Text(title).font(.title2.bold()).foregroundStyle(Theme.text)
+                Text(detail).font(.callout).foregroundStyle(Theme.textDim).fixedSize(horizontal: false, vertical: true)
+                Label(route.canChoose(target) ? "Открыть" : "Другая среда занята", systemImage: route.canChoose(target) ? "arrow.right" : "lock.fill").font(.footnote)
+            }.frame(maxWidth: .infinity, minHeight: 180, alignment: .leading).padding(20)
+                .background(Theme.surface, in: RoundedRectangle(cornerRadius: Theme.cardCorner))
+        }.buttonStyle(.plain).disabled(!route.canChoose(target))
+    }
+    private var settings: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                Text("Настройки").font(.largeTitle.bold())
+                Text("JIT включается только вашим действием. Возврат домой не сбрасывает JIT и не запускает Linux.")
+                Button("Настроить JIT") { jit.refreshPairingStatus(); showJIT = true }.buttonStyle(.borderedProminent)
+                    .disabled(route.runtimeOwner != nil || jit.busy)
+                if route.runtimeOwner != nil { Text("Настройки JIT заблокированы после попытки запуска. Текущая сессия сохраняет свой JIT.").font(.footnote) }
+                Text("Steam: отдельный диск 12 GiB, 1536 MiB RAM гостя. Согласие на сеть и официальный installer доступны перед запуском Steam-сессии.").foregroundStyle(Theme.textDim)
+                Button("Диагностика и сохранённые отчёты") { route.choose(.advanced) }
+            }.padding(20).frame(maxWidth: 700)
+        }
+    }
+    private var advanced: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 18) {
+                Text("Дополнительно").font(.largeTitle.bold())
+                Button("Диагностика / Share report") { currentSession.recoverDiagnostics(); showDiagnostics = true }
+                Text("Recovery GUI-диска доступен в диагностике перед запуском. Steam-диск 12 GiB не поддерживает GUI recovery.").font(.footnote)
+                ForEach([LinuxProbeRoute.Destination.terminal, .debian, .linux], id: \.self) { target in
+                    Button(target == .linux ? "Boot / display / input test" : target == .debian ? "Debian console" : "Linux terminal") { route.choose(target) }.disabled(!route.canChoose(target))
+                }
+                #if !IDECK_LINUX_PROBE_ONLY
+                Button("Husk library") { route.choose(.library) }.disabled(!route.canChoose(.library))
+                #endif
+            }.buttonStyle(.bordered).padding(20).frame(maxWidth: 700)
+        }
     }
 }
 

@@ -1,4 +1,34 @@
-> Current recovery IPA delivery, 19 October 2026: Apple CI **Build finished** for
+> Current launcher source update, 19 October 2026: **LAUNCHER-UX-20261019.md**.
+> The old one-way chooser had no Home path; view disappearance cancelled startup
+> preparation. Home/resume now navigate independently of the existing static
+> runtime owner. No QEMU restart, JIT reset, implicit Stop or disk-owner release.
+> Attempted profiles remain reserved after failure/recovery/Stop; a different VM
+> still requires a new process. Explicit Cancel start and background cancellation
+> before native entry remain. Leaving the screen releases input only.
+>
+> Main screen: existing Theme/adaptive launcher cards for Steam/Big Picture,
+> desktop/settings, actual session status and resume. Tests/console tools live in
+> Advanced; input controls collapse. Diagnostics and failure report export remain
+> accessible; GUI recovery, separate Steam disk, payload locks and all 23 Steam
+> source pins are preserved. No fabricated games/Steam UI or implicit installer.
+>
+> Black-window cause on the phone is NOT established. Real supervisor/GUI/Steam
+> state and bridge frame sequence now drive waiting UI. Missing frame at 60s and
+> unconfirmed Steam action completion at 180s are exported observations, without
+> killing/retrying operations or claiming rendered Steam. Report requested for
+> actual source/build/mode/status/storage/guest-stage evidence.
+>
+> **543 Python tests OK (538 PASS, 5 SKIP)**; generator/recovery gates, git attrs,
+> exact source overlay and real sealed Steam staging/repeat/package resource gate
+> PASS. Mandatory Apple checks now include LINUX_LAUNCHER_NAVIGATION_PASS for
+> production Home/resume/repeated-click/sticky-owner logic. New Apple/Swift/IPA,
+> visual portrait/landscape and physical Home/resume **NOT RUN**. No CI dispatch;
+> parent must check fresh quota and build the exact new pushed SHA. Evidence:
+> `experiments/linux-guest/evidence/launcher-ux-20261019/`.
+> Previously delivered recovery IPA below does not contain this UX update.
+> BusyBox source provenance remains **OPEN**.
+
+> Historical recovery IPA delivery, 19 October 2026: Apple CI **Build finished** for
 > built source **9018b9bfbaab7b50d6011ae1e29e5eba0995fd28**.
 > https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad570cd7550aed8108ffb95 .
 > Runtime link, Apple source/host checks, full app build and packaging **PASS**.

@@ -17,7 +17,7 @@ struct LinuxTerminalView: View {
                 Text(session.message).font(.callout).multilineTextAlignment(.center)
                 if let preparation = session.preparationState, preparation.inProgress {
                     ProgressView(preparation.message)
-                    Text("Keep iDeck open. Cancel waits for the current file operation; leaving this screen cancels pending startup.").font(.footnote)
+                    Text("Keep iDeck open. Cancel waits for the current file operation; Home preserves pending startup.").font(.footnote)
                     Button(preparation.canCancel ? "Cancel start" : "Cancelling…") { session.cancelPreparation() }
                         .disabled(!preparation.canCancel)
                 }
@@ -87,7 +87,6 @@ struct LinuxTerminalView: View {
         .sheet(isPresented: $showShare) { ShareSheet(items: shareItems) }
         .onAppear { session.recoverDiagnostics() }
         .onChange(of: jit.attachGeneration) { _ in claimJIT() }
-        .onDisappear { session.cancelPreparation() }
         .onChange(of: scenePhase) {
             if $0 == .active { session.recoverDiagnostics() }
             if $0 == .background { session.cancelPreparation() }

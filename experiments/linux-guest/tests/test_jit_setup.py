@@ -199,9 +199,10 @@ class JITSetupSourceGuards(unittest.TestCase):
         self.assertIn(".onChange(of: scenePhase) { if $0 == .active { claimJIT() } }", view)
         self.assertIn(".onAppear { claimJIT() }", view)
         self.assertEqual(view.count("session.start()"), 1)
-        isolated_root = view.split("#if IDECK_LINUX_PROBE_ONLY", 1)[1].split("#else", 1)[0]
-        self.assertIn("LinuxProbeView()", isolated_root)
-        self.assertNotIn("ContentView()", isolated_root)
+        library = view.split("#if !IDECK_LINUX_PROBE_ONLY", 1)[1].split("#endif", 1)[0]
+        self.assertIn("ContentView()", library)
+        self.assertEqual(view.count("ContentView()"), 1)
+        self.assertIn("LinuxProbeView()", view)
         self.assertNotIn("QemuRunner.shared.start()", view)
         self.assertIn("LinuxProbeRoot()", self.files["HuskApp.swift"])
 

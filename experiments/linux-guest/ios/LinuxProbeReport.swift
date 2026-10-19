@@ -83,6 +83,9 @@ enum LinuxProbeReport {
                 row(label, flag(report[key], yes: "REPORTED", no: "NONE REPORTED"))
             }
             row("Terminal ready", flag(report["terminal_ready"]))
+            row("Guest display frame observed", flag(report["display_frame_observed"]))
+            row("Guest display wait", flag(report["display_frame_timed_out"], yes: "TIMEOUT (60 seconds)", no: "NO TIMEOUT REPORTED"))
+            if steam { row("Steam action wait", flag(report["steam_action_wait_timed_out"], yes: "COMPLETION NOT CONFIRMED (180 seconds)", no: "NO TIMEOUT REPORTED")) }
             if desktop {
                 row("Guest X connection and mapped desktop windows", flag(report["desktop_gui_ready"]))
                 row("Graphical startup failure", flag(report["desktop_gui_failed"], yes: "REPORTED", no: "NONE REPORTED"))

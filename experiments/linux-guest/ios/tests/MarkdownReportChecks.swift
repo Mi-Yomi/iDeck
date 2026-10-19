@@ -5,9 +5,12 @@ import Foundation
 func runMarkdownReportChecks() throws {
     let steamFailure = LinuxProbeReport.render(report: ["mode": "steam-experimental", "status": "terminal_prepare_failed",
         "storage_failure": "needsRecovery", "import_status": "existing_steam_disk_preserved",
+        "display_frame_timed_out": true, "steam_action_wait_timed_out": true,
         "steam_seed_sha256": String(repeating: "a", count: 64), "ext4_recover_bit": true])
     precondition(steamFailure.contains("# iDeck Steam Experiment Report"))
     precondition(steamFailure.contains("| Mode | STEAM EXPERIMENT / EXT4 |"))
+    precondition(steamFailure.contains("TIMEOUT (60 seconds)"))
+    precondition(steamFailure.contains("COMPLETION NOT CONFIRMED (180 seconds)"))
     precondition(steamFailure.contains("needsRecovery") && steamFailure.contains("existing_steam_disk_preserved"))
     precondition(steamFailure.contains("RECOVER bit | SET") && steamFailure.contains("GUI recovery does not apply"))
     var assertions = 0

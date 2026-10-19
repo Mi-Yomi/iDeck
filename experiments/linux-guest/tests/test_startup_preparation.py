@@ -68,10 +68,13 @@ class StartupPreparationWiring(unittest.TestCase):
             self.assertIn('preparation.inProgress', view)
             self.assertIn('ProgressView(preparation.message)', view)
             self.assertIn('.disabled(!preparation.canCancel)', view)
-            self.assertIn('session.cancelPreparation()', swift_block(view, '.onDisappear'))
+            if '.onDisappear' in view:
+                self.assertNotIn('session.cancelPreparation()', swift_block(view, '.onDisappear'))
             change = swift_block(view, f'.onChange(of: {scene})')
             self.assertIn('.background { session.cancelPreparation() }', change)
             self.assertNotIn('session.stop()', change)
+        root = (ROOT / 'ios/LinuxProbeView.swift').read_text()
+        self.assertIn('for session in [terminal, debian, desktop, steam] { session.cancelPreparation() }', root)
 
     def test_actual_swift_races_and_cancelled_journal_are_mandatory(self):
         checks = (ROOT / 'ios/tests/ConsoleLifecycleChecks.swift').read_text()

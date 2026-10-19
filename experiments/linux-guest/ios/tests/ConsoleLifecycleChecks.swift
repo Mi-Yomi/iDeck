@@ -91,6 +91,7 @@ func runConsoleHostSyncFailureCheck(disk: LinuxConsoleDisk) throws {
 func runConsoleLifecycleChecks() throws {
     try runQEMUOwnerLifetimeChecks()
     try runStartupPreparationChecks()
+    runLauncherNavigationChecks()
     func prepared() -> LinuxConsoleLifecycle {
         var state = LinuxConsoleLifecycle()
         precondition(state.canStart && !state.mustRetainDisk)
@@ -173,4 +174,36 @@ func runStartupPreparationChecks() throws {
         precondition(preparation.snapshot.state == (entered ? .entered : .finished))
     }
     print("LINUX_STARTUP_PREPARATION_PASS (production lock/gate, repeated taps and concurrent entry/cancel; no QEMU/device run)")
+}
+
+func runLauncherNavigationChecks() {
+    for environment in [LinuxLauncherNavigation.Destination.steam, .desktop, .terminal, .debian, .linux, .library] {
+        var navigation = LinuxLauncherNavigation()
+        precondition(navigation.open(environment))
+        // Preparing, failed, recovery and stopped sessions keep the same owner.
+        navigation.reserve(environment)
+        for _ in 0..<20 {
+            navigation.home()
+            precondition(navigation.destination == .choose && navigation.owner == environment)
+            precondition(navigation.open(.settings))
+            precondition(navigation.open(.advanced))
+            navigation.home(); navigation.resume()
+            precondition(navigation.destination == environment)
+            precondition(navigation.open(environment))
+            for other in LinuxLauncherNavigation.Destination.allCases where other.isEnvironment && other != environment {
+                precondition(!navigation.open(other))
+                precondition(navigation.destination == environment)
+            }
+        }
+        navigation.reserve(nil)
+        precondition(navigation.owner == environment, "Stop/failure cannot grant a second native entry")
+    }
+    var beforeStart = LinuxLauncherNavigation()
+    precondition(beforeStart.open(.steam))
+    beforeStart.home()
+    precondition(beforeStart.open(.desktop), "profile choice can change before any attempt")
+    beforeStart.reserve(.desktop)
+    beforeStart.home(); beforeStart.resume()
+    precondition(beforeStart.destination == .desktop)
+    print("LINUX_LAUNCHER_NAVIGATION_PASS (Home/resume, repeated taps, sticky attempted owner; no VM entry)")
 }

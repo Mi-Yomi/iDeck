@@ -34,6 +34,8 @@ final class LinuxTerminalSession: ObservableObject {
     @Published fileprivate(set) var attempted = false
     @Published fileprivate(set) var running = false
     @Published fileprivate(set) var ready = false
+    @Published fileprivate(set) var displayHasFrame = false
+    @Published fileprivate(set) var displayTimedOut = false
     @Published fileprivate(set) var serialReady = false
     @Published fileprivate(set) var stopping = false
     @Published fileprivate(set) var canStop = false
@@ -705,6 +707,9 @@ private final class LinuxTerminalWorker {
                     husk_display_init()
                     self.checkpoint(.displayInitReturned)
                     self.queue.async {
+                        if self.owner.isDesktop && !self.isRecovery {
+                            self.observeDisplay(started: ProcessInfo.processInfo.systemUptime)
+                        }
                         self.report["qemu_init_returned"] = true
                         self.report["jit_available_after_init"] = jitAvailable
                         self.report["status"] = "terminal_running"
@@ -786,10 +791,22 @@ private final class LinuxTerminalWorker {
         }
     }
 
+    private var steamActionRevision: UInt64 = 0
+
     func steamAction(_ action: String) {
         queue.async {
             guard self.owner.isSteam, self.ready, !self.stopRequested, !self.loopReturned else { return }
-            do { try self.control?.enqueue(Data(("IDECK_STEAM_" + action + "\n").utf8)) }
+            do {
+                try self.control?.enqueue(Data(("IDECK_STEAM_" + action + "\n").utf8))
+                self.steamActionRevision &+= 1
+                self.report["steam_action_wait_timed_out"] = false; self.persist()
+                let revision = self.steamActionRevision
+                self.queue.asyncAfter(deadline: .now() + 180) {
+                    guard self.steamActionRevision == revision, !self.stopRequested, !self.loopReturned, !self.stopFailed else { return }
+                    self.report["steam_action_wait_timed_out"] = true; self.persist()
+                    self.owner.publish { $0.steamMessage = "Steam has not confirmed completion after 180 seconds. It may still be running. Open Diagnostics and share the report; no duplicate operation was started." }
+                }
+            }
             catch { self.channelDisconnected(control: true) }
         }
     }
@@ -864,6 +881,9 @@ private final class LinuxTerminalWorker {
             if line.last == 13 { line.removeLast() }
             if owner.isSteam, let status = String(data: line, encoding: .utf8), status.hasPrefix("IDECK_STEAM_") {
                 report["steam_guest_status"] = status
+                if ["IDECK_STEAM_INSTALLED", "IDECK_STEAM_CLIENT_RETURNED", "IDECK_STEAM_DESKTOP_READY"].contains(status) || status.hasPrefix("IDECK_STEAM_BLOCKER:") {
+                    steamActionRevision &+= 1
+                }
                 if status == "IDECK_STEAM_CPU_LSE_PASS" { report["steam_cpu_lse_passed"] = true }
                 if status == "IDECK_STEAM_INSTALLED" {
                     owner.publish { $0.steamInstalled = true; $0.steamBusy = false; $0.steamMessage = "Pinned client installed. Big Picture starts the real client; sign in and accept any terms yourself." }
@@ -1096,6 +1116,23 @@ private final class LinuxTerminalWorker {
                 $0.message = $0.isDesktop ? "Desktop readiness was not confirmed within 60 seconds. Serial recovery and Stop remain available once the supervisor is ready. Save the report; the disk remains locked until app exit." : "Linux terminal readiness was not confirmed within 60 seconds. No forced stop was attempted. Save the report; the disk remains locked until app exit."
             }
         }
+    }
+
+    /// The bridge sequence is an existing atomic counter, not proof of Steam UI
+    /// or non-black pixels. Never lock/copy a frame or touch BQL from this poll.
+    private func observeDisplay(started: TimeInterval) {
+        guard !loopReturned, !stopRequested, !stopFailed, !startupAborted else { return }
+        if husk_display_sequence() > 0 {
+            report["display_frame_observed"] = true; persist()
+            owner.publish { $0.displayHasFrame = true }
+            return
+        }
+        if ProcessInfo.processInfo.systemUptime - started >= 60, report["display_frame_timed_out"] as? Bool != true {
+            report["display_frame_timed_out"] = true; persist()
+            owner.publish { $0.displayTimedOut = true }
+            // Continue observing: a late real frame can replace the waiting UI.
+        }
+        queue.asyncAfter(deadline: .now() + 1) { self.observeDisplay(started: started) }
     }
 
     private func acceptRecoveryActivity() -> Bool {

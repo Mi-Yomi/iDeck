@@ -131,3 +131,30 @@ protocol LinuxConsoleDisk: AnyObject {
 }
 extension LinuxTerminalDisk: LinuxConsoleDisk { }
 extension LinuxDesktopDisk: LinuxConsoleDisk { }
+
+/// Screen navigation only. An attempted native environment stays reserved even
+/// after Stop/failure; returning Home never grants a second QEMU invocation.
+struct LinuxLauncherNavigation {
+    enum Destination: String, CaseIterable {
+        case choose, linux, terminal, debian, desktop, steam, library, settings, advanced
+        var isEnvironment: Bool { ![Self.choose, .settings, .advanced].contains(self) }
+    }
+    private(set) var destination = Destination.choose
+    private(set) var selected: Destination?
+    private(set) var owner: Destination?
+    mutating func reserve(_ environment: Destination?) {
+        if owner == nil, let environment, environment.isEnvironment { owner = environment }
+    }
+    func allows(_ target: Destination) -> Bool {
+        !target.isEnvironment || owner == nil || owner == target
+    }
+    @discardableResult mutating func open(_ target: Destination) -> Bool {
+        guard allows(target) else { return false }
+        if target.isEnvironment { selected = target }
+        if target == .library { reserve(target) }
+        destination = target
+        return true
+    }
+    mutating func home() { destination = .choose }
+    mutating func resume() { if let target = owner ?? selected { _ = open(target) } }
+}

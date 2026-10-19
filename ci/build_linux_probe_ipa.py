@@ -39,13 +39,13 @@ from gui_bundle import FetchError as GUIFetchError
 DOWNLOAD_MAX_ATTEMPTS = 3
 DOWNLOAD_TIMEOUT_SECONDS = 300
 DOWNLOAD_BACKOFF_SECONDS = (2, 4)
-NATIVE_BUILD_BUDGET_SECONDS = 30 * 60  # Provider cap35; recheck fresh free quota plus reserve after the current run, paid OFF.
+NATIVE_BUILD_BUDGET_SECONDS = 22 * 60  # Provider cap24; recheck fresh free quota plus reserve after the current run, paid OFF.
 NATIVE_PYTHON_REQUIREMENTS = EXPERIMENT / "ipa/python-requirements.lock.txt"
 NATIVE_PYYAML_VERSION = "6.0.2"
 
 
 class DownloadDeadlineExceeded(TimeoutError):
-    """The file/worker wall-clock budget expired; this must never be retried."""
+    """The download/preparation wall-clock budget expired; never retry it."""
 
 
 @contextlib.contextmanager
@@ -54,14 +54,14 @@ def download_deadline(seconds):
     # not bound a peer that keeps delivering a few bytes before each timeout.
     if (not hasattr(signal, "setitimer") or not hasattr(signal, "SIGALRM")
             or threading.current_thread() is not threading.main_thread()):
-        raise RuntimeError("A main-thread download wall-clock timer is required")
+        raise RuntimeError("A main-thread native IO wall-clock timer is required")
     if signal.getitimer(signal.ITIMER_REAL) != (0.0, 0.0):
         raise RuntimeError("Refusing to replace an active wall-clock timer")
     if seconds <= 0:
-        raise DownloadDeadlineExceeded("Source download wall-clock budget exhausted")
+        raise DownloadDeadlineExceeded("Native IO wall-clock budget exhausted")
 
     def expired(signum, frame):
-        raise DownloadDeadlineExceeded("Source download wall-clock budget exhausted")
+        raise DownloadDeadlineExceeded("Native IO wall-clock budget exhausted")
 
     previous = signal.signal(signal.SIGALRM, expired)
     try:
@@ -394,7 +394,7 @@ class Worker:
         def remaining():
             seconds = min(deadline - time.monotonic(), self.remaining())
             if seconds <= 0:
-                raise DownloadDeadlineExceeded("Source download wall-clock budget exhausted")
+                raise DownloadDeadlineExceeded("Native IO wall-clock budget exhausted")
             return seconds
 
         with download_deadline(remaining()):
@@ -455,7 +455,7 @@ def main():
         if os.environ.get("IDECK_WORKFLOW_ID") != "ideck-linux-probe-ipa":
             raise RuntimeError("Select the dedicated ideck-linux-probe-ipa workflow")
         if os.environ.get("NATIVE_BUILD_APPROVED") != "true":
-            raise RuntimeError("Native build/tool setup approval is required; this is a separate 35-minute workflow")
+            raise RuntimeError("Native build/tool setup approval is required; this is a separate 24-minute workflow")
         # Recheck here as well as in YAML: direct script execution is not a bypass.
         sys.path.insert(0, str(ROOT / "ci"))
         from check_build_request import main as check_request
@@ -467,8 +467,9 @@ def main():
         gui_lock = EXPERIMENT / "ipa/gui.lock.json"
         load_gui_lock(gui_lock)
         from steam_bundled_cache import prepare_for_build as prepare_steam_cache
-        report["steam_cache_assets"] = prepare_steam_cache(out / "steam-cache-assets", EXPERIMENT / "ipa/steam-cache.lock.json", out)
         worker = Worker(out, started=started)
+        with download_deadline(worker.remaining()):
+            report["steam_cache_assets"] = prepare_steam_cache(out / "steam-cache-assets", EXPERIMENT / "ipa/steam-cache.lock.json", out)
         report["steps"] = worker.steps
         report["downloads"] = worker.downloads
         report["commit"] = worker.run("checkout", ["git", "rev-parse", "HEAD"])
@@ -480,14 +481,15 @@ def main():
         debian_lock = EXPERIMENT / "ipa/debian.lock.json"
         debian_archive = out / "ideck-debian-console-v1.tar"
         report["debian_payload_fetch"] = {}
-        report["debian_payload"] = fetch_debian(debian_archive, debian_lock, diagnostic=report["debian_payload_fetch"])
-        debian_assets = out / "debian-assets"
-        report["debian_assets"] = restore_debian(debian_archive, debian_assets, debian_lock)
-        gui_archive = out / "ideck-debian-gui-v1.tar"
-        report["gui_payload_fetch"] = {}
-        report["gui_payload"] = fetch_gui(gui_archive, gui_lock, diagnostic=report["gui_payload_fetch"])
-        gui_assets = out / "gui-assets"
-        report["gui_assets"] = restore_gui(gui_archive, gui_assets, gui_lock)
+        with download_deadline(worker.remaining()):
+            report["debian_payload"] = fetch_debian(debian_archive, debian_lock, diagnostic=report["debian_payload_fetch"])
+            debian_assets = out / "debian-assets"
+            report["debian_assets"] = restore_debian(debian_archive, debian_assets, debian_lock)
+            gui_archive = out / "ideck-debian-gui-v1.tar"
+            report["gui_payload_fetch"] = {}
+            report["gui_payload"] = fetch_gui(gui_archive, gui_lock, diagnostic=report["gui_payload_fetch"])
+            gui_assets = out / "gui-assets"
+            report["gui_assets"] = restore_gui(gui_archive, gui_assets, gui_lock)
         lock = json.loads((EXPERIMENT / "ipa/native-sources.lock.json").read_text())
         if lock["husk_commit"] != PIN:
             raise ValueError("Native recipe and app source use different Husk commits")
@@ -509,17 +511,18 @@ def main():
         upstream = out / "husk-base"
         worker.clone("husk", "https://github.com/Leviidev/Husk.git", PIN, upstream)
         guest = out / "guest"
-        report["guest_assets"] = restore_guest(guest)
-        source = out / "husk"
-        report["source_stage"] = prepare(upstream, guest, source)
-        from debian_bundle import stage as stage_debian
-        stage_debian(debian_assets, source / "guests/ideck-debian", debian_lock)
-        from gui_bundle import stage as stage_gui
-        stage_gui(gui_assets, source / "guests/ideck-desktop", gui_lock)
-        from steam_bundle import prepare_for_build as prepare_steam
-        report["steam_assets"] = prepare_steam(source / "guests/ideck-steam", EXPERIMENT / "ipa/steam.lock.json", out)
-        from steam_bundled_cache import stage as stage_steam_cache
-        stage_steam_cache(out / "steam-cache-assets/owner-steam-cache.tar", source / "guests/ideck-steam-cache", EXPERIMENT / "ipa/steam-cache.lock.json")
+        with download_deadline(worker.remaining()):
+            report["guest_assets"] = restore_guest(guest)
+            source = out / "husk"
+            report["source_stage"] = prepare(upstream, guest, source)
+            from debian_bundle import stage as stage_debian
+            stage_debian(debian_assets, source / "guests/ideck-debian", debian_lock)
+            from gui_bundle import stage as stage_gui
+            stage_gui(gui_assets, source / "guests/ideck-desktop", gui_lock)
+            from steam_bundle import prepare_for_build as prepare_steam
+            report["steam_assets"] = prepare_steam(source / "guests/ideck-steam", EXPERIMENT / "ipa/steam.lock.json", out)
+            from steam_bundled_cache import stage as stage_steam_cache
+            stage_steam_cache(out / "steam-cache-assets/owner-steam-cache.tar", source / "guests/ideck-steam-cache", EXPERIMENT / "ipa/steam-cache.lock.json")
         worker.run("native-recipe-patch", ["git", "apply", "--check", EXPERIMENT / "ipa/0001-fail-closed-native-build.patch"], source)
         worker.run("native-recipe-apply", ["git", "apply", EXPERIMENT / "ipa/0001-fail-closed-native-build.patch"], source)
         downloads = source / "third_party/sources"
@@ -529,7 +532,8 @@ def main():
         for item in lock["archives"]:
             archive = downloads / item["filename"]
             worker.fetch(item, archive)
-            report["source_archives"].append(unpack_source(archive, unpacked, item))
+            with download_deadline(worker.remaining()):
+                report["source_archives"].append(unpack_source(archive, unpacked, item))
         for item in lock["git"]:
             dest = source / item["destination"]
             dest.parent.mkdir(parents=True, exist_ok=True)
@@ -560,23 +564,24 @@ def main():
         # Retain expensive native outputs even if the later app link fails.
         # A future importer must verify this manifest; it is not a cache hit by
         # itself and this workflow never substitutes it for a source build.
-        native_files = ["build/ios-arm64/lib/libqemu-aarch64-softmmu.dylib",
-                        "build/ios-arm64/sysroot/lib/libANGLE-shared.dylib",
-                        "build/ios-arm64/lib/libhusk_rppairing.a",
-                        "src/app/Husk/Resources/legal/LICENSES-rppairing-crates.txt"]
-        native_manifest = {"husk_commit": PIN, "transport_commit": report["commit"],
-                           "native_lock_sha256": report["native_lock_sha256"], "files": {}}
-        for name in native_files:
-            path = source / name
-            if not path.is_file() or path.stat().st_size == 0:
-                raise ValueError("Native build did not produce " + name)
-            native_manifest["files"][name] = {"size": path.stat().st_size, "sha256": sha(path)}
-        (source / "native-products.json").write_text(json.dumps(native_manifest, indent=2) + "\n")
-        native_archive = out / "native-products.tar.gz"
-        with tarfile.open(native_archive, "w:gz") as tar:
-            for name in ["native-products.json", *native_files]:
-                tar.add(source / name, arcname=name, recursive=False)
-        report["native_products_sha256"] = sha(native_archive)
+        with download_deadline(worker.remaining()):
+            native_files = ["build/ios-arm64/lib/libqemu-aarch64-softmmu.dylib",
+                            "build/ios-arm64/sysroot/lib/libANGLE-shared.dylib",
+                            "build/ios-arm64/lib/libhusk_rppairing.a",
+                            "src/app/Husk/Resources/legal/LICENSES-rppairing-crates.txt"]
+            native_manifest = {"husk_commit": PIN, "transport_commit": report["commit"],
+                               "native_lock_sha256": report["native_lock_sha256"], "files": {}}
+            for name in native_files:
+                path = source / name
+                if not path.is_file() or path.stat().st_size == 0:
+                    raise ValueError("Native build did not produce " + name)
+                native_manifest["files"][name] = {"size": path.stat().st_size, "sha256": sha(path)}
+            (source / "native-products.json").write_text(json.dumps(native_manifest, indent=2) + "\n")
+            native_archive = out / "native-products.tar.gz"
+            with tarfile.open(native_archive, "w:gz") as tar:
+                for name in ["native-products.json", *native_files]:
+                    tar.add(source / name, arcname=name, recursive=False)
+            report["native_products_sha256"] = sha(native_archive)
         project = source / "src/app/project-linux.json"
         shutil.copyfile(EXPERIMENT / "ipa/project.json", project)
         worker.run("xcodegen", ["xcodegen", "generate", "--spec", project.name], project.parent)
@@ -586,7 +591,9 @@ def main():
                    "CODE_SIGNING_ALLOWED=NO", "CODE_SIGNING_REQUIRED=NO", "CODE_SIGN_IDENTITY=", "build"], source)
         sys.path.insert(0, str(EXPERIMENT / "ipa"))
         from package_probe import package
-        report.update(package(worker, derived / "Build/Products/Release-iphoneos/Husk.app", source, report["commit"]))
+        with download_deadline(worker.remaining()):
+            report.update(package(worker, derived / "Build/Products/Release-iphoneos/Husk.app", source, report["commit"]))
+        worker.remaining()  # Expired staging/packaging cannot publish success.
         report["status"] = "linux_probe_ipa_built"
     except (FetchError, GUIFetchError) as error:
         report["failure"] = error.diagnostic["code"]

@@ -1146,6 +1146,10 @@ private final class LinuxTerminalWorker {
                     report["recovery_output_clean"] = recoveryProgress.scanClean
                     report["recovery_checked_image_sha256"] = recoveryProgress.imageSHA256
                     report["recovery_summary_reconciled"] = recoveryProgress.summaryReconciled
+                    if owner.isSteam {
+                        report["recovery_binding_accepted"] = recoveryProgress.bindingAccepted
+                        report["recovery_source_verified"] = recoveryProgress.sourceVerified
+                    }
                     let stage = recoveryProgress.phase
                     report["recovery_phase"] = stage
                     checkpoint(recoveryProgress.done ? .recoveryRelaunch : (recoveryProgress.imageSHA256 != nil ? .recoveryVerified : (recoveryProgress.replay != nil ? .recoveryReplay : .recoveryAssessment)))
@@ -1164,7 +1168,17 @@ private final class LinuxTerminalWorker {
                 persist(); continue
             }
             if owner.isDesktop, line == Data("IDECK_DESKTOP_RECOVERY_READY".utf8), !guestWasReady, !loopReturned, !stopRequested {
-                if isRecovery, acceptRecoveryActivity() {
+                if isRecovery {
+                    guard acceptRecoveryActivity() else { continue }
+                    guard recoveryProgress.bindingReady else {
+                        stopFailed = true; ready = false
+                        report["recovery_guest_failure"] = "control_receipt"; report["recovery_phase"] = "manual_review"
+                        report["terminal_clean_stop"] = false; report["status"] = "terminal_stop_failed"
+                        checkpoint(.stopFailed, failure: .recoveryFailed)
+                        do { try recovery?.recordFailure("control_receipt") } catch { owner.publish { $0.diagnosticFailure() } }
+                        owner.publish { $0.ready = false; $0.canStop = false; $0.message = "Recovery binding failed. Original and backup are preserved; share diagnostics." }
+                        persist(); continue
+                    }
                     recoveryWatchdog?.advanced(at: ProcessInfo.processInfo.systemUptime, supervisor: true)
                     armRecoveryTimeout()
                 }
@@ -1295,7 +1309,7 @@ private final class LinuxTerminalWorker {
                       let imageSHA256 = recoveryProgress.imageSHA256 else { throw LinuxGUIRecovery.Invalid.receipt }
                 try recovery.recordResult(assessment: assessment, replay: replay, verification: verification,
                                           scanClean: recoveryProgress.scanClean, imageSHA256: imageSHA256,
-                                          summaryReconciled: recoveryProgress.summaryReconciled)
+                                          summaryReconciled: recoveryProgress.summaryReconciled, binding: recoveryProgress.verifiedBinding)
                 report["recovery_phase"] = "relaunch_required"
             }
             finalized = true
@@ -1453,6 +1467,12 @@ private final class LinuxTerminalWorker {
             }
         }
         recovery = transaction; disk = transaction
+        recoveryProgress = LinuxRecoveryProgress(expectedBinding: transaction.steamBinding)
+        if let binding = transaction.steamBinding {
+            report["recovery_generation"] = binding.generation
+            report["recovery_run_nonce"] = binding.nonce
+            report["recovery_source_sha256"] = binding.sourceSHA256
+        }
     }
 
     private func preparationCheckpoint(_ phase: LinuxStartupPreparation.Phase) throws {

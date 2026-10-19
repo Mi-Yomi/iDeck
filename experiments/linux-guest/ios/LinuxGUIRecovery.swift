@@ -7,7 +7,7 @@ import Darwin
 final class LinuxGUIRecovery: LinuxConsoleDisk {
     enum Invalid: Error { case metadata, busy, io, space, changed, receipt, manualReview, relaunch }
     enum Phase: String, Codable { case copying, prepared, running, verified, promoting, promoted, manualReview }
-    enum Scope: Equatable {
+    enum Scope: String, Equatable {
         case gui, steam
         func accepts(_ specification: LinuxDesktopDisk.Specification) -> Bool {
             switch self {
@@ -21,6 +21,29 @@ final class LinuxGUIRecovery: LinuxConsoleDisk {
             guard let value else { return false }
             return value.recoverBit && value.state == 1 && value.lastOrphan == 0 && value.errorCount == 0
         }
+        func accepts(_ receipt: Receipt) -> Bool {
+            let target = self == .steam ? (LinuxSteamProfile.uuid, LinuxSteamProfile.size) : (LinuxGUIProfile.uuid, LinuxGUIProfile.size)
+            guard receipt.uuid == target.0, receipt.size == target.1 else { return false }
+            if self == .gui { return receipt.schema == 1 && receipt.scopeName == nil && receipt.runNonce == nil }
+            return receipt.schema == 2 && receipt.scopeName == rawValue && receipt.steamBinding != nil
+        }
+        func resultBound(_ receipt: Receipt) -> Bool {
+            if self == .gui { return true }
+            guard accepts(receipt), let binding = receipt.steamBinding else { return false }
+            return receipt.verifiedRunNonce == binding.nonce && receipt.verifiedSourceSHA256 == binding.sourceSHA256 && receipt.summaryReconciled != true
+        }
+    }
+    struct SteamBinding: Equatable {
+        let generation: String
+        let nonce: String
+        let sourceSHA256: String
+        init?(generation: String, nonce: String, sourceSHA256: String) {
+            guard UUID(uuidString: generation)?.uuidString.lowercased() == generation,
+                  UUID(uuidString: nonce)?.uuidString.lowercased() == nonce, LinuxGUIRecovery.digest(sourceSHA256) else { return nil }
+            self.generation = generation; self.nonce = nonce; self.sourceSHA256 = sourceSHA256
+        }
+        var marker: String { "IDECK_RECOVERY_BIND:\(generation):\(nonce):\(sourceSHA256)" }
+        var arguments: String { "ideck.recovery_id=\(generation) ideck.recovery_nonce=\(nonce) ideck.recovery_source_sha256=\(sourceSHA256)" }
     }
     struct Receipt: Codable {
         var schema = 1
@@ -44,11 +67,20 @@ final class LinuxGUIRecovery: LinuxConsoleDisk {
         var failure: String?
         var scanClean: Bool?
         var summaryReconciled: Bool?
+        var scopeName: String?
+        var runNonce: String?
+        var verifiedRunNonce: String?
+        var verifiedSourceSHA256: String?
+        var steamBinding: SteamBinding? {
+            guard schema == 2, scopeName == Scope.steam.rawValue, let runNonce else { return nil }
+            return SteamBinding(generation: id, nonce: runNonce, sourceSHA256: sourceSHA256)
+        }
     }
     static let process = UUID().uuidString.lowercased()
     let directory: URL
     let specification: LinuxDesktopDisk.Specification
     let scope: Scope
+    var steamBinding: SteamBinding? { receipt?.steamBinding }
     private(set) var receipt: Receipt?
     private var parent: Int32 = -1
     private var root: Int32 = -1
@@ -80,7 +112,7 @@ final class LinuxGUIRecovery: LinuxConsoleDisk {
         try sourceIdentity()
         receipt = try readReceipt()
         if let receipt {
-            guard receipt.schema == 1, UUID(uuidString: receipt.id)?.uuidString.lowercased() == receipt.id,
+            guard scope.accepts(receipt), UUID(uuidString: receipt.id)?.uuidString.lowercased() == receipt.id,
                   UUID(uuidString: receipt.process) != nil, receipt.size == specification.sizeBytes,
                   receipt.uuid == specification.uuid, Self.digest(receipt.sourceSHA256),
                   receipt.sourceMode <= 0o777, receipt.sourceUID == geteuid(),
@@ -219,6 +251,10 @@ final class LinuxGUIRecovery: LinuxConsoleDisk {
             transaction.receipt = Receipt(id: id, phase: .copying, process: process, sourceSHA256: sourceHash,
                 sourceInode: UInt64(state.st_ino), sourceDevice: Int64(state.st_dev), sourceMode: UInt32(state.st_mode & 0o777),
                 sourceUID: state.st_uid, sourceGID: state.st_gid, size: specification.sizeBytes, uuid: specification.uuid)
+            if scope == .steam {
+                transaction.receipt?.schema = 2; transaction.receipt?.scopeName = scope.rawValue
+                transaction.receipt?.runNonce = UUID().uuidString.lowercased()
+            }
             try transaction.save()
         }
         guard var receipt = transaction.receipt, receipt.sourceSHA256 == sourceHash,
@@ -260,6 +296,8 @@ final class LinuxGUIRecovery: LinuxConsoleDisk {
               try transaction.hash(transaction.source) == sourceHash else { throw Invalid.changed }
         receipt.phase = .prepared; receipt.process = process; receipt.assessment = nil; receipt.replay = nil; receipt.verification = nil; receipt.failure = nil
         receipt.recoveredSHA256 = nil; receipt.scanClean = nil; receipt.summaryReconciled = nil
+        receipt.verifiedRunNonce = nil; receipt.verifiedSourceSHA256 = nil
+        if scope == .steam { receipt.runNonce = UUID().uuidString.lowercased() }
         transaction.receipt = receipt; try transaction.save(); try transaction.validateOwnership()
         try progress?("prepared")
         return transaction
@@ -269,9 +307,14 @@ final class LinuxGUIRecovery: LinuxConsoleDisk {
         receipt?.toolSeedSHA256 = toolSeedSHA256; receipt?.suffixSHA256 = scope.suffixSHA256
         receipt?.phase = .running; try save()
     }
-    func recordResult(assessment: Int, replay: Int, verification: Int, scanClean: Bool, imageSHA256: String, summaryReconciled: Bool = false) throws {
+    func recordResult(assessment: Int, replay: Int, verification: Int, scanClean: Bool, imageSHA256: String, summaryReconciled: Bool = false,
+                      binding: SteamBinding? = nil) throws {
         guard receipt?.phase == .running, [0,4].contains(assessment), [0,1].contains(replay), verification == 0,
-              scanClean, Self.digest(imageSHA256) else { throw Invalid.manualReview }
+              receipt?.failure == nil, scanClean, Self.digest(imageSHA256) else { throw Invalid.manualReview }
+        if scope == .steam {
+            guard let binding, binding == steamBinding, !summaryReconciled else { throw Invalid.receipt }
+            receipt?.verifiedRunNonce = binding.nonce; receipt?.verifiedSourceSHA256 = binding.sourceSHA256
+        }
         // Receipt only. NEVER inspect/hash/promote a native-owned work image here.
         receipt?.assessment = assessment; receipt?.replay = replay; receipt?.verification = verification
         receipt?.scanClean = true
@@ -296,6 +339,7 @@ final class LinuxGUIRecovery: LinuxConsoleDisk {
         guard receipt.phase == .verified || receipt.phase == .promoting else { return false }
         guard receipt.process != process else { throw Invalid.relaunch }
         guard [0,4].contains(receipt.assessment ?? -1), [0,1].contains(receipt.replay ?? -1), receipt.verification == 0,
+              receipt.failure == nil, scope.resultBound(receipt),
               receipt.scanClean == true, receipt.toolSeedSHA256 == toolSeedSHA256,
               receipt.suffixSHA256 == scope.suffixSHA256,
               let checkedSHA256 = receipt.recoveredSHA256, Self.digest(checkedSHA256) else { throw Invalid.receipt }
@@ -337,6 +381,12 @@ final class LinuxGUIRecovery: LinuxConsoleDisk {
 
 /// Only the dedicated trusted control socket can advance these ordered receipts.
 struct LinuxRecoveryProgress {
+    private let expectedBinding: LinuxGUIRecovery.SteamBinding?
+    private(set) var bindingAccepted = false
+    private(set) var sourceVerified = false
+    init(expectedBinding: LinuxGUIRecovery.SteamBinding? = nil) { self.expectedBinding = expectedBinding }
+    var bindingReady: Bool { expectedBinding == nil || bindingAccepted }
+    var verifiedBinding: LinuxGUIRecovery.SteamBinding? { sourceVerified && bindingAccepted ? expectedBinding : nil }
     static let failures: Set<String> = ["proc", "sys", "dev", "applets", "module", "ext4", "control", "control_open",
         "duplicate_tools", "duplicate_work", "disk_identity", "extra_disk", "readonly", "size", "uuid", "tools_mount",
         "bind_dev", "bind_proc", "target_mode", "assessment", "replay", "manual_review", "sync", "unmount_proc",
@@ -358,6 +408,7 @@ struct LinuxRecoveryProgress {
     private(set) var summaryReconciled = false
     private(set) var done = false
     var phase: String {
+        if expectedBinding != nil, !sourceVerified { return "checking_source" }
         if done { return "awaiting_exit" }
         if imageSHA256 != nil { return "verified" }
         if verification != nil { return "checking_image" }
@@ -372,6 +423,17 @@ struct LinuxRecoveryProgress {
     }
     mutating func observe(_ line: String) throws {
         guard !done else { throw LinuxGUIRecovery.Invalid.receipt }
+        if let binding = expectedBinding {
+            if !bindingAccepted {
+                guard line == binding.marker else { throw LinuxGUIRecovery.Invalid.receipt }
+                bindingAccepted = true; return
+            }
+            if line.hasPrefix("IDECK_RECOVERY_SOURCE_SHA256:") {
+                guard !sourceVerified, assessment == nil, line == "IDECK_RECOVERY_SOURCE_SHA256:" + binding.sourceSHA256 else { throw LinuxGUIRecovery.Invalid.receipt }
+                sourceVerified = true; return
+            }
+            guard sourceVerified else { throw LinuxGUIRecovery.Invalid.receipt }
+        }
         if line == "IDECK_RECOVERY_ASSESS:0" || line == "IDECK_RECOVERY_ASSESS:4" {
             guard assessment == nil else { throw LinuxGUIRecovery.Invalid.receipt }
             assessment = line.hasSuffix(":0") ? 0 : 4
@@ -382,7 +444,7 @@ struct LinuxRecoveryProgress {
             guard replay != nil, verification == nil, !summaryEligible || summaryReconciled else { throw LinuxGUIRecovery.Invalid.receipt }
             verification = 0
         } else if line == "IDECK_RECOVERY_SUMMARY_ELIGIBLE" {
-            guard replay != nil, verification == nil, !summaryEligible else { throw LinuxGUIRecovery.Invalid.receipt }
+            guard expectedBinding == nil, replay != nil, verification == nil, !summaryEligible else { throw LinuxGUIRecovery.Invalid.receipt }
             summaryEligible = true
         } else if line == "IDECK_RECOVERY_SUMMARY_RECONCILED" {
             guard summaryEligible, !summaryReconciled, verification == nil else { throw LinuxGUIRecovery.Invalid.receipt }

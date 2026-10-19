@@ -324,6 +324,7 @@ class DebianFetchChecks(unittest.TestCase):
     def test_ci_failure_persists_safe_diagnostic_and_never_reaches_native_build(self):
         self.factory.return_value.open.side_effect = self.http_error(401)[0]
         worker = Mock(started=time.monotonic(), steps=[], downloads=[])
+        worker.remaining.return_value = build.NATIVE_BUILD_BUDGET_SECONDS
         worker.run.side_effect = lambda name, command: "a" * 40 if name == "checkout" else "offline gate fixture"
         output = io.StringIO()
         with patch.object(build, "ROOT", self.root), patch.object(build.platform, "system", return_value="Darwin"), \

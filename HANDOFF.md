@@ -1,4 +1,21 @@
-> CURRENT SOURCE CANDIDATE — RECOVER-only Steam recovery and terminal failure UI.
+> CURRENT REVIEWED SOURCE CANDIDATE — recovery remains unaccepted on device.
+> Critical review of0f413a85 added a full guest input hash BEFORE journal writes,
+> Steam schema2 generation/nonce/source binding and stale/mixed/failed receipt
+> rejection. Late READY cannot revive failed/timed-out recovery. Original GUI
+> guest/receipt compatibility and normal disk/lifecycle guards are retained.
+> **611 Python tests OK /5 SKIP**; full overlay and repeated real Linux/cache
+> staging PASS. Mandatory Apple executable adds `LINUX_STEAM_RECOVERY_BINDING_PASS`;
+> new Apple execution, positive12-GiB replay/promotion and phone acceptance **NOT RUN**.
+> A positive full-size recovery fixture is still an acceptance blocker; owner
+> recovery is not established as ready. First attempt needs24 GiB +512 MiB free.
+> Provider cap **24 minutes**, worker **22 minutes**, including bounded synchronous
+> preparation/packaging. Supplied26-free-minute/paid-OFF balance is a snapshot;
+> coordinator must freshly verify quota/reserve and billing before manual CI.
+> No CI started, no Release/payload/user-disk change. BusyBox provenance **OPEN**.
+> [Review, evidence, remaining risks and exact CI inputs](STEAM-RECOVERY-CRITICAL-REVIEW-20261019.md).
+> This block supersedes older source/budget statements below; CI#42 is unchanged.
+
+> Historical0f413a85 source candidate — RECOVER-only Steam recovery and terminal failure UI.
 > Coordinator-read device MD, Build119/source08978cd9: existing Steam disk,
 > `needsRecovery`, **RECOVER SET/state1/orphan0/error_count0**, failed at disk
 > preparation before native entry. The origin of RECOVER is unknown; neither

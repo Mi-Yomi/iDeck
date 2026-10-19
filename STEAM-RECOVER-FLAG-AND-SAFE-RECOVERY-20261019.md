@@ -1,3 +1,7 @@
+> Historical0f413a85 review. Its receipt protocol and35/30-minute budget are
+> superseded by [the critical recovery review](STEAM-RECOVERY-CRITICAL-REVIEW-20261019.md).
+> Its607-test results describe that earlier source; positive12-GiB acceptance remains NOT RUN.
+
 # Steam RECOVER refusal and copy-first recovery — source candidate
 
 Baseline `c1c3cc851c90fc4fe343cd8221eb887fe61dce85`, Steam branch only.

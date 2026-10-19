@@ -154,6 +154,10 @@ struct LinuxGUIProfile: Decodable {
             guard let index = args.firstIndex(of: option), index + 1 < args.count else { throw Invalid.configuration }
             args[index + 1] = value
         }
+        if transaction.scope == .steam {
+            guard let binding = transaction.steamBinding, let append = args.firstIndex(of: "-append") else { throw Invalid.configuration }
+            args[append + 1] += " " + binding.arguments
+        }
         func escaped(_ url: URL) -> String { url.path.replacingOccurrences(of: ",", with: ",,") }
         args += ["-chardev", "socket,id=control0,fd=\(controlFD)", "-device", "virtio-serial-pci",
                  "-device", "virtserialport,chardev=control0,name=\(controlPort)",

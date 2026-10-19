@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "baseline": "0f413a857c7b5273eef09c25d4746a7abe65e443",
+  "unchanged_production_methods": {
+    "ios/LinuxGUIRecovery.swift": [
+      "func closeUnused(",
+      "func regular(",
+      "func matches(",
+      "func sourceIdentity(",
+      "func validateOwnership(",
+      "func synchronize(",
+      "func hash(",
+      "func readReceipt(",
+      "func write(",
+      "func save(",
+      "func file(",
+      "func copy(",
+      "func markRunning(",
+      "func recordFailure("
+    ],
+    "ios/LinuxGUIProfile.swift": [
+      "func arguments(",
+      "func open(",
+      "func checked(",
+      "func openExisting(",
+      "func provision("
+    ]
+  },
+  "promotion_body_only_change": "additional failure==nil and scope.resultBound(receipt) guard before opening backup/full hashing; no rename/fsync/lock changes",
+  "normal_disk_lifecycle_steam_cache_and_gui_guest_generator": "PASS byte-identical",
+  "new_steam_suffix": {
+    "size": 14872,
+    "sha256": "646d9ade5f07dccf86504c86a0facad43218db2268247ba68c6d3d04b8fff862"
+  },
+  "host_capabilities": {
+    "swift": null,
+    "xcrun": null,
+    "qemu-system-aarch64": null,
+    "e2fsck": null
+  },
+  "filesystem_free_bytes": 1094365184,
+  "positive_12gib_guest_replay": "NOT RUN",
+  "apple_compilation_and_executable_new_swift_regressions": "NOT RUN",
+  "phone_recovery": "NOT RUN",
+  "ci_started": false
+}

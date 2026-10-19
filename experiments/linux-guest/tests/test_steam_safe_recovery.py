@@ -1,6 +1,7 @@
 """Actual generated shell/strict parser and wiring; no claimed repair or VM run."""
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -56,6 +57,50 @@ class SteamSafeRecovery(unittest.TestCase):
             self.assertIn(guard,promote)
         self.assertLess(promote.index('guard recoveredHash == checkedSHA256'),promote.index('renameat('))
 
+    def test_actual_binding_shell_accepts_only_one_complete_canonical_identity(self):
+        generation='11111111-1111-4111-8111-111111111111'
+        nonce='22222222-2222-4222-8222-222222222222'
+        digest='a'*64
+        fields=[f'ideck.recovery_id={generation}',f'ideck.recovery_nonce={nonce}',f'ideck.recovery_source_sha256={digest}']
+        prelude=steam_recovery_guest.binding_prelude().decode()
+        self.assertEqual(prelude.count('$(cat /proc/cmdline)'),1)
+        script='exec 3>&1\nfail() { echo "FAIL:$1"; exit 7; }\n'+prelude.replace('$(cat /proc/cmdline)', "$(printf '%s' \"$CASE_CMDLINE\")")
+        def execute(arguments):
+            return subprocess.run(['sh','-c',script],env={**os.environ,'CASE_CMDLINE':' '.join(arguments)},capture_output=True,text=True)
+        good=execute(['console=ttyAMA0',*fields])
+        self.assertEqual(good.returncode,0,good.stderr)
+        self.assertEqual(good.stdout,f'IDECK_RECOVERY_BIND:{generation}:{nonce}:{digest}\n')
+        cases=[fields[:2],fields[1:],fields+[fields[0]],fields+['ideck.recovery_nonce='],
+               ['ideck.recovery_id=',*fields],fields[:1]+['ideck.recovery_nonce=bad']+fields[2:],
+               fields[:2]+['ideck.recovery_source_sha256='+'A'*64],
+               [fields[0].replace('-','',1),*fields[1:]]]
+        for arguments in cases:
+            with self.subTest(arguments=arguments):
+                result=execute(arguments)
+                self.assertEqual(result.returncode,7,result.stdout+result.stderr)
+                self.assertNotIn('IDECK_RECOVERY_BIND:',result.stdout)
+
+    def test_full_input_hash_precedes_assessment_and_any_work_writes(self):
+        script=steam_recovery_guest.steam_script().decode()
+        self.assertLess(script.index('IDECK_RECOVERY_BIND:'),script.index('IDECK_DESKTOP_RECOVERY_READY'))
+        self.assertLess(script.index('set_target_mode ro 1\ninput_hash='),script.index('check -f -n\n'))
+        self.assertLess(script.index('[ "$1" = "$binding_source" ]'),script.index('check -f -n\n'))
+        self.assertLess(script.index('IDECK_RECOVERY_SOURCE_SHA256:'),script.index('set_target_mode rw 0'))
+        self.assertIn("awk '$1==12884901888 && $2==\"bytes\" {ok++} END {exit(ok!=1)}' /run/source-hash.log",script)
+        profile=(ROOT/'ios/LinuxGUIProfile.swift').read_text()
+        self.assertIn('args[append + 1] += " " + binding.arguments',swift_block(profile,'func recoveryArguments('))
+
+    def test_failed_or_timed_out_recovery_cannot_be_resurrected_by_late_ready(self):
+        source=(ROOT/'ios/LinuxTerminalSession.swift').read_text()
+        ready=swift_block(source,'if owner.isDesktop, line == Data("IDECK_DESKTOP_RECOVERY_READY".utf8)')
+        self.assertLess(ready.index('guard acceptRecoveryActivity()'),ready.index('checkpoint(.terminalReady)'))
+        self.assertLess(ready.index('guard recoveryProgress.bindingReady'),ready.index('checkpoint(.terminalReady)'))
+        self.assertIn('report["terminal_clean_stop"] = false; report["status"] = "terminal_stop_failed"',ready)
+        recovery=(ROOT/'ios/LinuxGUIRecovery.swift').read_text()
+        self.assertIn('receipt?.failure == nil',swift_block(recovery,'func recordResult('))
+        promote=swift_block(recovery,'static func promotePending(')
+        self.assertLess(promote.index('receipt.failure == nil, scope.resultBound(receipt)'),promote.index('transaction.backup ='))
+
     def test_ui_failure_latch_stops_waiting_and_exposes_report_without_vm_actions(self):
         source=(ROOT/'ios/LinuxTerminalSession.swift').read_text()
         self.assertEqual(source.count('startupEndedBeforeNative = true'),3)
@@ -77,10 +122,10 @@ class SteamSafeRecovery(unittest.TestCase):
 
     def test_actual_apple_negative_scope_fixtures_are_mandatory(self):
         ci=(ROOT.parents[1]/'ci/check_linux_guest_profile.py').read_text()
-        for text in ('LinuxSteamRecoveryGuest.swift','SteamRecoveryChecks.swift','"LINUX_STEAM_RECOVERY_SCOPE_PASS"'):
+        for text in ('LinuxSteamRecoveryGuest.swift','SteamRecoveryChecks.swift','"LINUX_STEAM_RECOVERY_SCOPE_PASS"','"LINUX_STEAM_RECOVERY_BINDING_PASS"'):
             self.assertIn(text,ci)
         self.assertIn('try runSteamRecoveryChecks(', (ROOT/'ios/tests/SteamProfileChecks.swift').read_text())
         checks=(ROOT/'ios/tests/SteamRecoveryChecks.swift').read_text()
         for text in ('scope: .steam','availableBytes: { _ in 0 }','observed == eligible','current == header',
-                     'Steam recovery accepted insufficient real-copy budget','scope.permits(nil)','watchdog.timeout(at: 1800) == .deadline'):
+                     'Steam recovery accepted insufficient real-copy budget','scope.permits(nil)','watchdog.timeout(at: 1800) == .deadline','try runSteamRecoveryBindingChecks(', 'try rejectPromotion(bad', 'try progress.observe(line)'):
             self.assertIn(text,checks)

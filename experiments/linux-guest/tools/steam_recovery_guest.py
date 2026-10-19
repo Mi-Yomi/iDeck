@@ -5,9 +5,40 @@ import recovery_guest
 
 SCRIPT = recovery_guest.SCRIPT
 
+def binding_prelude():
+    return b'''binding_id=
+binding_nonce=
+binding_source=
+seen_id=0
+seen_nonce=0
+seen_source=0
+for argument in $(cat /proc/cmdline); do
+    case "$argument" in
+        ideck.recovery_id=*) [ "$seen_id" = 0 ] || fail control_receipt; seen_id=1; binding_id=${argument#*=};;
+        ideck.recovery_nonce=*) [ "$seen_nonce" = 0 ] || fail control_receipt; seen_nonce=1; binding_nonce=${argument#*=};;
+        ideck.recovery_source_sha256=*) [ "$seen_source" = 0 ] || fail control_receipt; seen_source=1; binding_source=${argument#*=};;
+    esac
+done
+for value in "$binding_id" "$binding_nonce"; do
+    [ "${#value}" = 36 ] || fail control_receipt
+    case "$value" in *[!0-9a-f-]*) fail control_receipt;; esac
+    compact=$(printf '%s' "$value" | tr -d '-')
+    [ "${#compact}" = 32 ] || fail control_receipt
+    case "$value" in ????????-????-????-????-????????????) ;; *) fail control_receipt;; esac
+done
+[ "${#binding_source}" = 64 ] || fail control_receipt
+case "$binding_source" in *[!0-9a-f]*) fail control_receipt;; esac
+printf 'IDECK_RECOVERY_BIND:%s:%s:%s\n' "$binding_id" "$binding_nonce" "$binding_source" >&3
+'''
+
+
 def steam_script():
     # Steam is journal-only: no counter mount/reconciliation or general repair.
     script = SCRIPT.read_bytes()
+    script = script.replace(b"# Every fsck runs unmounted. A checked counter-only class may get an empty\n# kernel mount/unmount with no file access; full-body hashes constrain its writes.",
+                            b"# Every fsck runs unmounted. Steam permits journal-only replay on work;\n# no counter reconciliation or general repair is allowed.")
+    script = script.replace(b"# Same UUID in seed and clone is intentional. Never select either by UUID alone.",
+                            b"# Select tools/work by exact serial, then validate their distinct UUIDs.")
     old = b'[ "$(cat /sys/block/"$tools"/size)" = 2621440 ] && [ "$(cat /sys/block/"$work"/size)" = 2621440 ] || fail size'
     new = old.replace(b'"$work"/size)" = 2621440', b'"$work"/size)" = 25165824')
     if script.count(old) != 1: raise ValueError('Steam recovery source drift')
@@ -32,6 +63,20 @@ case "$(blkid "/dev/$work")" in *'UUID="c6a66b17-1b3e-4fe9-a07b-70c185fb2718"'*)
     begin = script.index(b'header_snapshot() {'); end = script.index(b'set_target_mode() {', begin)
     script = script[:begin] + script[end:]
     if b'/counter-sync' in script: raise ValueError('Steam recovery must not mount target')
+    ready = b'echo IDECK_DESKTOP_RECOVERY_READY >&3\n'
+    if script.count(ready) != 1: raise ValueError('Steam recovery supervisor drift')
+    script = script.replace(ready, binding_prelude() + ready)
+    before_check = b'set_target_mode ro 1\ncheck -f -n\n'
+    if script.count(before_check) != 1: raise ValueError('Steam recovery source check drift')
+    verify_input = b'''set_target_mode ro 1
+input_hash=$(image_hash 2>/run/source-hash.log) || fail image_hash
+awk '$1==12884901888 && $2=="bytes" {ok++} END {exit(ok!=1)}' /run/source-hash.log 3>&- || fail image_hash
+set -- $input_hash
+[ "$#" = 2 ] && [ "$2" = - ] && [ "$1" = "$binding_source" ] || fail control_receipt
+echo "IDECK_RECOVERY_SOURCE_SHA256:$1" >&3
+check -f -n
+'''
+    script = script.replace(before_check, verify_input)
     return script
 
 

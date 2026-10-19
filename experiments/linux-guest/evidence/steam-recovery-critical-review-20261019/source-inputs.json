@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "baseline": "0f413a857c7b5273eef09c25d4746a7abe65e443",
+  "source_files_sha256": {
+    "ci/build_linux_probe_ipa.py": "5d602554d5564e421a9972cd2a308661ccb37cd5e64bac7e2f71d80049c39d6f",
+    "ci/check_linux_guest_profile.py": "00e59b5dfcc288cfc0041a8b4895d2cfcc859e7f5b2c5466cf8d38386b9c38a4",
+    "codemagic.yaml": "46f9f298924f506df26607d6df84a076d9e6082eef1c639525f2dd1b1bb0a9af",
+    "experiments/linux-guest/husk/overlay.lock.json": "3d5351bbfa85c741a44ca61b8e435ac25ea709e6157cf92e0ba947a8b2b0db66",
+    "experiments/linux-guest/ios/LinuxGUIProfile.swift": "e631ae54c1c21327cd7f5c753f4d90c151c1d844311fb87ef30a13ce95308b4c",
+    "experiments/linux-guest/ios/LinuxGUIRecovery.swift": "01b965610565ba064c777d15dcd9dcc672be8ef30ceac567f1432e46b5ed2df6",
+    "experiments/linux-guest/ios/LinuxProbeReport.swift": "af0404fce5cfe40a457440d5e260a517648661fc99e4361c211f1fa0565e7320",
+    "experiments/linux-guest/ios/LinuxSteamRecoveryGuest.swift": "e458a725b57b40ab48fe24cf6f7a18254d2964730559b234299c7e9b0c4ecf97",
+    "experiments/linux-guest/ios/LinuxTerminalSession.swift": "66d278068c0aca69918ce318bb60c91ad8ddbb26a0b177b10c67f74e3bd5e085",
+    "experiments/linux-guest/ios/tests/SteamRecoveryChecks.swift": "af47487b28964cf7445a485f933c86598ccdbb14cbac6982b4975dffcabedb18",
+    "experiments/linux-guest/tests/test_ci_build.py": "003fe172be753d210924c46c8d87f8a431f88aa0dbcaef763cf825df27bdb6a8",
+    "experiments/linux-guest/tests/test_debian_fetch.py": "6f62978e0b50ba81401f3d3642cab6c0ceda252e068abc44d4c4fbab17b695e3",
+    "experiments/linux-guest/tests/test_steam_safe_recovery.py": "5d226391eb4723b17d60b9077266b6b0da3eee0845bac66738d0fc6bc6a9660d",
+    "experiments/linux-guest/tools/steam_recovery_guest.py": "687fde08bd1e5135e4b7c969df6f09c688b910168cb05c440cfd364af9d50e3a"
+  },
+  "tests": {
+    "total": 611,
+    "skipped": 5,
+    "result": "OK"
+  },
+  "apple_new_regressions": "NOT RUN",
+  "positive_12gib_recovery": "NOT RUN",
+  "ci_started": false
+}

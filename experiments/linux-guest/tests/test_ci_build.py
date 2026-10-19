@@ -2,6 +2,8 @@ import contextlib
 import hashlib
 import io
 import json
+import os
+import signal
 import sys
 import tarfile
 import tempfile
@@ -82,17 +84,17 @@ class IPAInputs(unittest.TestCase):
     def test_native_budget_fits_dedicated_provider_cap_with_cleanup_margin(self):
         import yaml
         workflow = yaml.safe_load((ROOT / "codemagic.yaml").read_text())["workflows"]["ideck-linux-probe-ipa"]
-        self.assertEqual(workflow["max_build_duration"], 35)
-        self.assertEqual(build_linux_probe_ipa.NATIVE_BUILD_BUDGET_SECONDS, 30 * 60)
-        self.assertEqual(workflow["max_build_duration"] * 60 - build_linux_probe_ipa.NATIVE_BUILD_BUDGET_SECONDS, 5 * 60)
+        self.assertEqual(workflow["max_build_duration"], 24)
+        self.assertEqual(build_linux_probe_ipa.NATIVE_BUILD_BUDGET_SECONDS, 22 * 60)
+        self.assertEqual(workflow["max_build_duration"] * 60 - build_linux_probe_ipa.NATIVE_BUILD_BUDGET_SECONDS, 2 * 60)
 
     def test_total_budget_counts_preparation_and_does_not_reset_between_steps(self):
         with tempfile.TemporaryDirectory() as tmp:
             worker = build_linux_probe_ipa.Worker(Path(tmp), started=1000)
             with patch.object(build_linux_probe_ipa.time, "monotonic", return_value=1120):
-                self.assertEqual(worker.remaining(), 30 * 60 - 120)
+                self.assertEqual(worker.remaining(), 22 * 60 - 120)
             with patch.object(build_linux_probe_ipa.time, "monotonic", return_value=1600):
-                self.assertEqual(worker.remaining(), 30 * 60 - 600)
+                self.assertEqual(worker.remaining(), 22 * 60 - 600)
             with patch.object(build_linux_probe_ipa.time, "monotonic", return_value=2800):
                 with self.assertRaises(TimeoutError): worker.remaining()
 
@@ -108,6 +110,31 @@ class IPAInputs(unittest.TestCase):
                 kill.assert_called_once_with(process.pid, build_linux_probe_ipa.signal.SIGKILL)
                 self.assertEqual(process.wait.call_count, 2)
             self.assertEqual(worker.steps, [])
+
+    @unittest.skipUnless(hasattr(signal, "setitimer"), "Apple worker requires POSIX timers")
+    def test_stalled_cache_preparation_is_interrupted_and_cannot_start_build_or_report_success(self):
+        import steam_bundled_cache
+        import gui_bundle
+        def stalled(*args):
+            time.sleep(1)
+            self.fail("stalled preparation escaped aggregate deadline")
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); (root / ".work").mkdir()
+            before = time.monotonic()
+            with patch.object(build_linux_probe_ipa, "ROOT", root), \
+                 patch.object(build_linux_probe_ipa.platform, "system", return_value="Darwin"), \
+                 patch.object(build_linux_probe_ipa, "NATIVE_BUILD_BUDGET_SECONDS", 0.03), \
+                 patch.dict(os.environ, IDECK_WORKFLOW_ID="ideck-linux-probe-ipa", NATIVE_BUILD_APPROVED="true"), \
+                 patch.object(check_build_request, "main"), patch.object(gui_bundle, "load_lock"), \
+                 patch.object(steam_bundled_cache, "prepare_for_build", side_effect=stalled), \
+                 patch.object(build_linux_probe_ipa.subprocess, "Popen") as spawned:
+                with self.assertRaises(build_linux_probe_ipa.DownloadDeadlineExceeded): build_linux_probe_ipa.main()
+            spawned.assert_not_called()
+            self.assertLess(time.monotonic() - before, 0.75)
+            result=json.loads((root / ".work/linux-ipa/result.json").read_text())
+            self.assertEqual(result["status"], "failed")
+            self.assertFalse(result["ipa_created"])
+            self.assertEqual(signal.getitimer(signal.ITIMER_REAL), (0.0, 0.0))
 
     def test_expired_total_budget_cannot_start_another_build_process(self):
         with tempfile.TemporaryDirectory() as tmp:

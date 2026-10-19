@@ -1,0 +1,25 @@
+{
+  "baseline": "4f8f70bdfabdf2a8f1dbedc589b7b70f1ed1a4a2",
+  "python_tests": {
+    "total": 602,
+    "result": "OK",
+    "skipped": 5
+  },
+  "provider_cap_minutes": 35,
+  "worker_seconds": 1800,
+  "provider_margin_minutes": 5,
+  "quota": "Unknown after current CI41; coordinator must freshly check remainder with reserve and paid OFF",
+  "workflow_comparison": "PASS only dedicated cap and quota text changed; other workflows/environment/secrets unchanged",
+  "overlay_validation": "PASS all source hashes; overlay lock byte-identical to baseline",
+  "functional_cache_and_payload": "PASS unchanged",
+  "serial_review": "PASS exact pinned QEMU archive size/full SHA; member serial property, GET_ID, RO feature and enumeration source verified; upstream Linux6.18.35 sysfs/RO/20-byte ID reviewed",
+  "serial_negative_regressions": "PASS missing/duplicate/prefix/partition/identity/RO/size refusal from unchanged current suite",
+  "budget_regressions": "PASS aggregate accounting, expired-before-child and timeout process-group cleanup/no success; no per-step reset",
+  "structural_budget_conflict": "None found; prior coordinator-supplied builds16-26min; cold-run timeout still possible and not bypassed",
+  "new_apple_native": "NOT RUN",
+  "host_qemu": "NOT RUN",
+  "device": "NOT RUN",
+  "ci_dispatched": false,
+  "ci_cancelled": false,
+  "busybox_provenance": "OPEN"
+}

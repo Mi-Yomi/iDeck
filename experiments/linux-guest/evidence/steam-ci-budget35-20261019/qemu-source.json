@@ -1,0 +1,27 @@
+{
+  "archive": {
+    "name": "QEMU",
+    "url": "https://github.com/utmapp/qemu/releases/download/v10.0.12-utm/qemu-10.0.12-utm.tar.xz",
+    "filename": "qemu-10.0.12-utm.tar.xz",
+    "size": 142836072,
+    "sha256": "7c9605290b34152debb842e965a55d2e4fbba4793e536ab677b4027e5dc0ba1a",
+    "omit_symlinks": [
+      {
+        "path": "qemu-10.0.12-utm/roms/edk2/EmulatorPkg/Unix/Host/X11IncludeHack",
+        "target": "/opt/X11/include",
+        "reason": "EDK2 Unix host emulator X11 headers; the iOS QEMU dylib recipe does not build this firmware emulator."
+      }
+    ]
+  },
+  "archive_verified": true,
+  "members": {
+    "hw/block/virtio-blk.c": {
+      "size": 64698,
+      "sha256": "1f485deddf49b6f0903231d2504dab66b638682abb62e869bf3c5366120d5430"
+    },
+    "hw/arm/virt.c": {
+      "size": 136773,
+      "sha256": "156ed8e06a7bb9276a7669afc6e6535246a1c8f173ccea41e4ee6dcfe71a1d40"
+    }
+  }
+}

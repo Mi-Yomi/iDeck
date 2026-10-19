@@ -1,3 +1,14 @@
+> CURRENT CI BUDGET — provider35 / worker30 minutes, 19 October 2026.
+> Cache identity code from4f8f70bd is unchanged. Exact locked QEMU10.0.12-utm
+> archive digest/size and serial/GET_ID/RO source support independently verified;
+> upstream Linux6.18.35 sysfs/20-byte ID support reviewed. **602 Python tests
+> OK /5 SKIP**, overlay/pins and timeout cleanup checks PASS.
+> CI#41 consumes the earlier62-minute balance. Coordinator must verify the fresh
+> remainder with reserve and paid OFF after it finishes before any manual run.
+> No CI started/cancelled here; old cap55/50 and larger limits are historical.
+> New Apple/phone/real QEMU verification **NOT RUN**; BusyBox provenance **OPEN**.
+> [Budget and serial review](STEAM-CI-BUDGET35-REVIEW-20261019.md).
+
 # Steam cache block-device identity — source correction
 
 Baseline `460d5f260089e0c9f0a62d0049a6ee04b9e78468`, Steam branch only.

@@ -79,6 +79,36 @@ class RequestGuards(unittest.TestCase):
 
 
 class IPAInputs(unittest.TestCase):
+    def test_native_budget_fits_dedicated_provider_cap_with_cleanup_margin(self):
+        import yaml
+        workflow = yaml.safe_load((ROOT / "codemagic.yaml").read_text())["workflows"]["ideck-linux-probe-ipa"]
+        self.assertEqual(workflow["max_build_duration"], 35)
+        self.assertEqual(build_linux_probe_ipa.NATIVE_BUILD_BUDGET_SECONDS, 30 * 60)
+        self.assertEqual(workflow["max_build_duration"] * 60 - build_linux_probe_ipa.NATIVE_BUILD_BUDGET_SECONDS, 5 * 60)
+
+    def test_total_budget_counts_preparation_and_does_not_reset_between_steps(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            worker = build_linux_probe_ipa.Worker(Path(tmp), started=1000)
+            with patch.object(build_linux_probe_ipa.time, "monotonic", return_value=1120):
+                self.assertEqual(worker.remaining(), 30 * 60 - 120)
+            with patch.object(build_linux_probe_ipa.time, "monotonic", return_value=1600):
+                self.assertEqual(worker.remaining(), 30 * 60 - 600)
+            with patch.object(build_linux_probe_ipa.time, "monotonic", return_value=2800):
+                with self.assertRaises(TimeoutError): worker.remaining()
+
+    def test_budget_timeout_kills_child_process_group_and_cannot_report_success(self):
+        from unittest.mock import Mock
+        with tempfile.TemporaryDirectory() as tmp:
+            worker = build_linux_probe_ipa.Worker(Path(tmp))
+            process = Mock(pid=12345)
+            process.wait.side_effect = [build_linux_probe_ipa.subprocess.TimeoutExpired("fixture", 1), 0]
+            with patch.object(build_linux_probe_ipa.subprocess, "Popen", return_value=process), \
+                 patch.object(build_linux_probe_ipa.os, "killpg") as kill:
+                with self.assertRaises(build_linux_probe_ipa.subprocess.TimeoutExpired): worker.run("timed-out", ["fixture"])
+                kill.assert_called_once_with(process.pid, build_linux_probe_ipa.signal.SIGKILL)
+                self.assertEqual(process.wait.call_count, 2)
+            self.assertEqual(worker.steps, [])
+
     def test_expired_total_budget_cannot_start_another_build_process(self):
         with tempfile.TemporaryDirectory() as tmp:
             worker = build_linux_probe_ipa.Worker(Path(tmp), started=time.monotonic() - build_linux_probe_ipa.NATIVE_BUILD_BUDGET_SECONDS - 1)

@@ -1,4 +1,29 @@
-> CURRENT DELIVERED RESULT — Apple CI#39 PASS, 19 October 2026.
+> CURRENT SOURCE CANDIDATE — one environment launcher, 19 October 2026.
+> Based on `7fdb81605c117fdc03dba8c7dd9fc4dc80beda77`; Steam branch only.
+> **Запустить среду** uses the existing Steam VM/disk/cache, then requests local
+> installation and Steam launch in order from actual guest completion receipts.
+> Home/Resume retain that VM; diagnostics and legacy modes are in Advanced
+> Settings. Explicit JIT, network consent, safe Stop and all disk guards remain.
+> The derived own-code runtime releases its install lock before INSTALLED;
+> sealed Linux payload, all23 source bindings and real bundled cache unchanged.
+> **591 Python tests OK /5 SKIP**, full overlay and real repeated staging PASS.
+> New Swift/UI/native/device/automatic Steam acceptance **NOT RUN**. CI#39 below
+> is the previously delivered IPA and predates this source change.
+>
+> Next manual CI is the coordinator's task after source review: dedicated
+> `ideck-linux-probe-ipa`, **cap70 / worker65 minutes**, `mac_mini_m2`, Xcode27.0.
+> Inputs: `expected_commit=<full reviewed remote HEAD>`, `free_quota_verified=true`,
+> `private_source_verified=true`, `native_build_approved=true`. Coordinator's
+> latest snapshot09:15 UTC:79 free minutes, paid OFF, no active CI; recheck fresh
+> quota with reserve and paid OFF before dispatch. No CI dispatched here.
+> Required new Apple marker: `LINUX_UNIFIED_ENVIRONMENT_PASS`; all previous
+> mandatory markers remain. Existing payload secret group/token unchanged.
+> BusyBox source provenance **OPEN**; Auto4096/device memory, rendered Steam and
+> gameplay unverified. Details/evidence: [unified launcher](UNIFIED-ENVIRONMENT-LAUNCHER-20261019.md).
+> Historical cap95/wait instructions and explicit separate install buttons below
+> describe earlier checkpoints and do not supersede this block.
+
+> PREVIOUSLY DELIVERED RESULT — Apple CI#39 PASS, 19 October 2026.
 > https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5d2987550aed810900dd2 . Duration25m41s.
 > **Built source: bcbb8db7c909d34f05ccdf6ec95675f26f29ed78.** LINUX_STEAM_BUNDLED_CACHE_PASS
 > and LINUX_STEAM_SCREEN_CONTROLS_PASS confirmed in mac-tests.log;

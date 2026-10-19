@@ -39,7 +39,7 @@ from gui_bundle import FetchError as GUIFetchError
 DOWNLOAD_MAX_ATTEMPTS = 3
 DOWNLOAD_TIMEOUT_SECONDS = 300
 DOWNLOAD_BACKOFF_SECONDS = (2, 4)
-NATIVE_BUILD_BUDGET_SECONDS = 90 * 60  # Provider cap95; authorized remaining quota106, paid OFF.
+NATIVE_BUILD_BUDGET_SECONDS = 65 * 60  # Provider cap70; latest quota79 leaves9 minutes, paid OFF.
 NATIVE_PYTHON_REQUIREMENTS = EXPERIMENT / "ipa/python-requirements.lock.txt"
 NATIVE_PYYAML_VERSION = "6.0.2"
 
@@ -455,7 +455,7 @@ def main():
         if os.environ.get("IDECK_WORKFLOW_ID") != "ideck-linux-probe-ipa":
             raise RuntimeError("Select the dedicated ideck-linux-probe-ipa workflow")
         if os.environ.get("NATIVE_BUILD_APPROVED") != "true":
-            raise RuntimeError("Native build/tool setup approval is required; this is a separate 95-minute workflow")
+            raise RuntimeError("Native build/tool setup approval is required; this is a separate 70-minute workflow")
         # Recheck here as well as in YAML: direct script execution is not a bypass.
         sys.path.insert(0, str(ROOT / "ci"))
         from check_build_request import main as check_request

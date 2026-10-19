@@ -104,7 +104,7 @@ def verify(path, rows=None):
     with open_regular(path) as stream: return cache.validate(stream, rows)
 
 
-def guest_suffix():
+def runtime_device_action():
     original = (ROOT / 'guest/steam/device-action.py').read_bytes()
     old = b'            installer.install()'
     new = b'''            offline_spec = importlib.util.spec_from_file_location('offline_cache', OPT / 'steam-offline-cache.py')
@@ -113,7 +113,15 @@ def guest_suffix():
             with offline.source(installer):
                 installer.install()'''
     if original.count(old) != 1: raise ValueError('device-action runtime overlay source drift')
-    files = [('ideck-steam/files/device-action.py', original.replace(old, new)),
+    original = original.replace(old, new)
+    receipt = b"            print('IDECK_STEAM_INSTALLED', flush=True)"
+    if original.count(receipt) != 1: raise ValueError('install completion receipt source drift')
+    # A following launch must observe that the installer already released its lock.
+    return original.replace(receipt, b'            resources.close()\n' + receipt)
+
+
+def guest_suffix():
+    files = [('ideck-steam/files/device-action.py', runtime_device_action()),
              ('ideck-steam/files/steam-offline-cache.py', (ROOT / 'guest/steam-offline-cache.py').read_bytes())]
     output = bytearray()
     for inode, (name, data) in enumerate([*files, ('TRAILER!!!', b'')], 1):

@@ -79,7 +79,7 @@ class Launcher(unittest.TestCase):
             self.assertNotIn(forbidden,poll)
         self.assertIn('self.owner.isDesktop && !self.isRecovery',source)
         worker=source[source.index('private final class LinuxTerminalWorker'):]
-        action=swift_block(worker,'func steamAction(')
+        action=swift_block(worker,'private func enqueueSteamAction(')
         self.assertIn('self.steamActionRevision == revision',action)
         self.assertIn('+ 180',action)
         self.assertNotIn('steamBusy = false',action)
@@ -90,13 +90,16 @@ class Launcher(unittest.TestCase):
     def test_launcher_only_offers_real_actions_and_collapsed_controls(self):
         source=(ROOT/'ios/LinuxProbeView.swift').read_text()
         launcher=swift_block(source,'private var launcher:')
-        for title in ('Steam / Big Picture','Рабочий стол','Настройки'):
+        for title in ('Запустить среду','Продолжить среду'):
             self.assertIn('"'+title+'"',launcher)
         for diagnostic in ('Send A','Start Linux','Boot / display / input test'):
             self.assertNotIn(diagnostic,launcher)
         for forbidden in ('session.start(', 'qemu_init', 'startRecovery', 'steamAction('):
             self.assertNotIn(forbidden,launcher)
         view=(ROOT/'ios/LinuxDesktopView.swift').read_text()
+        for obsolete in ('Steam / Big Picture','launcherCard(', 'Check Boot'):
+            self.assertNotIn(obsolete,launcher)
+        self.assertIn('route.choose(.settings)',launcher)
         self.assertIn('DisclosureGroup("Управление и клавиатура"',view)
         self.assertIn('if !session.ready || !session.displayHasFrame',view)
         self.assertIn('session.displayTimedOut',view)

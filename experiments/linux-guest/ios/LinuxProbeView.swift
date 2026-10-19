@@ -24,6 +24,7 @@ final class LinuxProbeRoute: ObservableObject {
         NotificationCenter.default.post(name: Notification.Name("iDeck.releaseDisplayInput"), object: nil)
     }
     func resume() { navigation.reserve(runtimeOwner); navigation.resume() }
+    func selectPrimary() { navigation.reserve(runtimeOwner); navigation.selectPrimary() }
     func choose(_ target: Destination) {
         navigation.reserve(runtimeOwner)
         let initializeLibrary = target == .library && navigation.owner != .library
@@ -55,12 +56,17 @@ struct LinuxProbeRoot: View {
     @Environment(\.scenePhase) private var scenePhase
     @State private var showJIT = false
     @State private var showDiagnostics = false
+    @State private var showNetworkConsent = false
+    @State private var launchIntent = LinuxEnvironmentLaunchIntent()
+    private var pendingLaunch: Bool { launchIntent.pending }
+    @State private var launchNotice: String?
     private var currentSession: LinuxTerminalSession {
         switch route.current {
         case .some(.steam): return steam
         case .some(.desktop): return desktop
         case .some(.debian): return debian
-        default: return terminal
+        case .some(.terminal): return terminal
+        default: return steam
         }
     }
     var body: some View {
@@ -79,18 +85,40 @@ struct LinuxProbeRoot: View {
         }
         .tint(Theme.accent)
         .safeAreaInset(edge: .top, spacing: 0) {
-            HStack {
-                Button { route.home() } label: { Label("Домой", systemImage: "house.fill") }
-                    .accessibilityIdentifier("ideck-home")
-                Spacer()
-                if route.current != nil {
-                    Button { route.resume() } label: { Label("К сессии", systemImage: "play.rectangle") }
-                        .accessibilityIdentifier("ideck-resume")
-                }
-            }.buttonStyle(.bordered).padding(.horizontal).padding(.vertical, 6).background(.ultraThinMaterial)
+            if route.destination != .choose {
+                HStack {
+                    Button { route.home() } label: { Label("Домой", systemImage: "house.fill") }
+                        .accessibilityIdentifier("ideck-home")
+                    Spacer()
+                    if route.runtimeOwner != nil, route.destination == .settings || route.destination == .advanced {
+                        Button { route.resume() } label: { Label("К среде", systemImage: "play.rectangle") }
+                            .accessibilityIdentifier("ideck-resume")
+                    }
+                    if route.destination != .settings {
+                        Button { route.choose(.settings) } label: { Image(systemName: "gearshape") }
+                            .accessibilityLabel("Настройки")
+                    }
+                }.buttonStyle(.bordered).padding(.horizontal).padding(.vertical, 6).background(.ultraThinMaterial)
+            }
         }
-        .onAppear { LinuxTerminalSession.shared.recoverDiagnostics(); steam.refreshSteamReadiness() }
-        .sheet(isPresented: $showJIT) { JITSetupFlow() }
+        .onAppear { steam.refreshSteamReadiness() }
+        .sheet(isPresented: $showJIT, onDismiss: {
+            if pendingLaunch, steam.jitExecutionReady { advanceLaunch() }
+            else { launchIntent.cancel() }
+        }) { JITSetupFlow() }
+        .confirmationDialog("Разрешить сеть для среды?", isPresented: $showNetworkConsent, titleVisibility: .visible) {
+            Button("Разрешить и продолжить") { steam.steamNetworkConsent = true; advanceLaunch() }
+            Button("Не сейчас", role: .cancel) { launchIntent.cancel(); launchNotice = "Запуск отменён до создания сессии." }
+        } message: {
+            Text("Установка использует встроенные пакеты. Steam может обращаться к сети для обновления и входа. Логин и соглашения остаются вашими действиями.")
+        }
+        .onChange(of: jit.attachGeneration) { _ in
+            if pendingLaunch, route.runtimeOwner == nil, scenePhase == .active { steam.claimJIT(); advanceLaunch() }
+        }
+        .onChange(of: jit.busy) { busy in if !busy, pendingLaunch { advanceLaunch() } }
+        .onChange(of: steam.jitExecutionReady) { ready in
+            if ready, pendingLaunch { showJIT = false; advanceLaunch() }
+        }
         .sheet(isPresented: $showDiagnostics) {
             if route.current == .linux {
                 LinuxProbeDiagnosticsView(session: probe)
@@ -99,7 +127,10 @@ struct LinuxProbeRoot: View {
             }
         }
         .onChange(of: scenePhase) { phase in
-            if phase == .active { steam.refreshSteamReadiness() }
+            if phase == .active {
+                steam.refreshSteamReadiness()
+                if pendingLaunch, route.runtimeOwner == nil { steam.claimJIT(); advanceLaunch() }
+            }
             if phase == .background {
                 for session in [terminal, debian, desktop, steam] { session.cancelPreparation() }
             }
@@ -118,7 +149,7 @@ struct LinuxProbeRoot: View {
         case .terminal: LinuxTerminalView()
         case .debian: LinuxTerminalView(session: .debian)
         case .desktop: LinuxDesktopView()
-        case .steam: LinuxDesktopView(session: .steam)
+        case .steam: LinuxDesktopView(session: .steam, unified: true)
         case .settings: settings
         case .advanced: advanced
         case .library: EmptyView()
@@ -126,60 +157,76 @@ struct LinuxProbeRoot: View {
     }
     private var launcher: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 24) {
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("iDeck").font(.largeTitle.bold())
-                        Text("Ваша Linux-консоль").foregroundStyle(Theme.textDim)
+                        Text("Ваша игровая среда").foregroundStyle(Theme.textDim)
                     }
                     Spacer()
-                    Image(systemName: "gamecontroller.fill").font(.largeTitle).foregroundStyle(Theme.accent)
+                    Button { route.choose(.settings) } label: { Image(systemName: "gearshape") }
+                        .accessibilityLabel("Настройки").buttonStyle(.bordered)
                 }
-                if let current = route.current {
-                    VStack(alignment: .leading, spacing: 12) {
-                        Label("Текущая сессия · \(current.rawValue)", systemImage: "circle.fill").font(.headline)
-                        Text(current == .linux ? probe.message : current == .library ? "Библиотека сохраняет текущий runtime." : currentSession.message).font(.callout)
-                        if current == .steam { Text(steam.steamMessage).font(.footnote).foregroundStyle(Theme.textDim) }
-                        Button("Вернуться к сессии") { route.resume() }.buttonStyle(.borderedProminent)
-                        Text("Домой меняет только экран. Сессия и её диск остаются у текущего владельца.").font(.footnote).foregroundStyle(Theme.textDim)
-                    }.padding().background(Theme.surface, in: RoundedRectangle(cornerRadius: Theme.cardCorner))
-                }
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), spacing: 16)], spacing: 16) {
-                    launcherCard("Steam / Big Picture", icon: "gamecontroller", detail: "Настроить или открыть Steam в настоящей Linux-сессии. Установка клиента требует согласия на сеть.", target: .steam)
-                    launcherCard("Рабочий стол", icon: "desktopcomputer", detail: route.runtimeOwner == .steam ? "Экран текущей Steam/Linux-сессии без смены диска или перезапуска VM." : "Открыть экран Linux. Отдельный GUI-диск сохраняет ваши файлы.", target: route.runtimeOwner == .steam ? .steam : .desktop)
-                    launcherCard("Настройки", icon: "gearshape", detail: "JIT, подключение и параметры сессии", target: .settings)
-                }
-                if let check = steam.steamReadiness { Text("Steam · \(check.summary)").font(.footnote).foregroundStyle(Theme.textDim) }
-                if route.runtimeOwner != nil {
-                    Text("Смена среды заблокирована после попытки запуска, включая остановку и ошибку. Для другой VM нужен новый процесс iDeck.").font(.footnote).foregroundStyle(Theme.textDim)
-                }
-                if let notice = route.notice { Text(notice).foregroundStyle(.orange) }
-                Button { route.choose(.advanced) } label: { Label("Диагностика и дополнительно", systemImage: "wrench.and.screwdriver") }
-            }.padding(20).frame(maxWidth: 900).frame(maxWidth: .infinity)
+                Image(systemName: "gamecontroller.fill").font(.system(size: 72)).foregroundStyle(Theme.accent)
+                    .frame(maxWidth: .infinity).padding(.vertical, 24)
+                Text(route.runtimeOwner == .steam ? steam.environmentSummary
+                    : route.runtimeOwner != nil ? currentSession.message
+                    : launchNotice ?? "Рабочий стол и Steam в одной среде. Подготовка начнётся после нажатия.")
+                    .font(.callout).frame(maxWidth: .infinity, alignment: .leading)
+                if let preparation = steam.preparationState, preparation.inProgress {
+                    ProgressView().accessibilityLabel(steam.environmentSummary)
+                } else if pendingLaunch || jit.busy { ProgressView(jit.status ?? "Подготовка запуска…") }
+                else if route.runtimeOwner == .steam, steam.environmentStage == .installingSteam { ProgressView("Подготовка Steam…") }
+                Button { launchPrimary() } label: {
+                    Label(route.runtimeOwner == nil ? "Запустить среду" : "Продолжить среду", systemImage: "play.fill")
+                        .font(.title3.bold()).frame(maxWidth: .infinity, minHeight: 64)
+                }.buttonStyle(.borderedProminent).disabled(jit.busy || pendingLaunch)
+                    .accessibilityIdentifier("ideck-launch-environment")
+                if let notice = route.notice { Text(notice).font(.footnote).foregroundStyle(.orange) }
+            }.padding(24).frame(maxWidth: 650).frame(maxWidth: .infinity)
         }
     }
-    private func launcherCard(_ title: String, icon: String, detail: String, target: LinuxProbeRoute.Destination) -> some View {
-        Button { route.choose(target) } label: {
-            VStack(alignment: .leading, spacing: 14) {
-                Image(systemName: icon).font(.title).foregroundStyle(Theme.accent)
-                Text(title).font(.title2.bold()).foregroundStyle(Theme.text)
-                Text(detail).font(.callout).foregroundStyle(Theme.textDim).fixedSize(horizontal: false, vertical: true)
-                Label(route.canChoose(target) ? "Открыть" : "Другая среда занята", systemImage: route.canChoose(target) ? "arrow.right" : "lock.fill").font(.footnote)
-            }.frame(maxWidth: .infinity, minHeight: 180, alignment: .leading).padding(20)
-                .background(Theme.surface, in: RoundedRectangle(cornerRadius: Theme.cardCorner))
-        }.buttonStyle(.plain).disabled(!route.canChoose(target))
+    private func launchPrimary() {
+        if route.runtimeOwner != nil { route.resume(); return }
+        guard !pendingLaunch, !jit.busy else { return }
+        route.selectPrimary()
+        launchNotice = nil
+        guard launchIntent.begin() else { return }
+        steam.claimJIT() // Explicit Start only; preview never performs JIT work.
+        advanceLaunch()
+    }
+    private func advanceLaunch() {
+        switch launchIntent.advance(owner: route.runtimeOwner != nil, foreground: scenePhase == .active,
+                                    busy: jit.busy, network: steam.steamNetworkConsent, jit: steam.jitExecutionReady) {
+        case .wait: return
+        case .resume: route.resume()
+        case .consent: showNetworkConsent = true
+        case .jit: showJIT = true
+        case .start:
+            showJIT = false
+            steam.startEnvironment()
+            if steam.attempted { route.choose(.steam) }
+            else { launchNotice = steam.message }
+        }
     }
     private var settings: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 18) {
                 Text("Настройки").font(.largeTitle.bold())
-                Text("JIT включается только вашим действием. Возврат домой не сбрасывает JIT и не запускает Linux.")
-                Button("Настроить JIT") { jit.refreshPairingStatus(); showJIT = true }.buttonStyle(.borderedProminent)
-                    .disabled(route.runtimeOwner != nil || jit.busy)
-                if route.runtimeOwner != nil { Text("Настройки JIT заблокированы после попытки запуска. Текущая сессия сохраняет свой JIT.").font(.footnote) }
-                Text("Steam: отдельный диск 12 GiB; RAM Auto с резервом или фиксированные 1536 MiB. Согласие на сеть и официальный installer доступны перед запуском Steam-сессии.").foregroundStyle(Theme.textDim)
-                Button("Диагностика и сохранённые отчёты") { route.choose(.advanced) }
-            }.padding(20).frame(maxWidth: 700)
+                Text("JIT включается только вашим действием. Домой и продолжение не перезапускают среду.")
+                Button("Настроить JIT") { jit.refreshPairingStatus(); showJIT = true }
+                    .buttonStyle(.bordered).disabled(route.runtimeOwner != nil || jit.busy)
+                Text(steam.jitExecutionMessage).font(.footnote).foregroundStyle(Theme.textDim)
+                Picker("Память среды", selection: $steam.steamMemoryMode) {
+                    Text("Auto · до 4096 MiB (эксперимент)").tag(LinuxSteamMemory.Mode.auto)
+                    Text("1536 MiB").tag(LinuxSteamMemory.Mode.fixed1536)
+                }.disabled(route.runtimeOwner != nil || pendingLaunch)
+                Toggle("Разрешить сеть Steam в этой сессии", isOn: $steam.steamNetworkConsent)
+                    .disabled(route.runtimeOwner != nil || pendingLaunch)
+                Text("Используется прежний диск среды 12 GiB. Существующие данные сохраняются. Для первого создания диска нужны 12 GiB и 1 GiB резерва; встроенный кэш проверяется отдельно.")
+                    .font(.footnote).foregroundStyle(Theme.textDim)
+                Button("Расширенные настройки") { route.choose(.advanced) }.buttonStyle(.bordered)
+            }.padding(24).frame(maxWidth: 700)
         }
     }
     private var advanced: some View {
@@ -190,9 +237,20 @@ struct LinuxProbeRoot: View {
                     if route.current != .linux { currentSession.recoverDiagnostics() }
                     showDiagnostics = true
                 }
+                Text("Экранная панель отправляет клавиши и мышь; Linux HID-геймпад она не создаёт.").font(.footnote)
                 Text("Recovery GUI-диска доступен в диагностике перед запуском. Steam-диск 12 GiB не поддерживает GUI recovery.").font(.footnote)
-                ForEach([LinuxProbeRoute.Destination.terminal, .debian, .linux], id: \.self) { target in
-                    Button(target == .linux ? "Boot / display / input test" : target == .debian ? "Debian console" : "Linux terminal") { route.choose(target) }.disabled(!route.canChoose(target))
+                ForEach([LinuxProbeRoute.Destination.desktop, .terminal, .debian, .linux], id: \.self) { target in
+                    Button(target == .desktop ? "Прежний GUI-диск (без миграции)" : target == .linux ? "Boot / display / input test" : target == .debian ? "Debian console" : "Linux terminal") { route.choose(target) }.disabled(!route.canChoose(target))
+                }
+                if route.runtimeOwner == .steam {
+                    Text(steam.steamCacheStatus).font(.footnote)
+                    Text(steam.steamMessage).font(.footnote).textSelection(.enabled)
+                    Button("Повторить подготовку Steam") { steam.retryEnvironmentSteam() }
+                        .disabled(!steam.ready || steam.steamBusy || steam.stopping || steam.environmentStage != .blocked)
+                    Button("Открыть Steam внутри среды") { steam.steamAction("BIG_PICTURE") }
+                        .disabled(!steam.ready || !steam.steamInstalled || steam.steamBusy || steam.stopping)
+                    Button("Завершить Steam, оставить рабочий стол") { steam.steamAction("DESKTOP") }
+                        .disabled(!steam.ready || !steam.steamInstalled || steam.stopping)
                 }
                 #if !IDECK_LINUX_PROBE_ONLY
                 Button("Husk library") { route.choose(.library) }.disabled(!route.canChoose(.library))
@@ -310,7 +368,7 @@ struct LinuxProbeView: View {
                 Text(error).font(.footnote).foregroundStyle(.orange)
                     .multilineTextAlignment(.center)
             }
-            Text("This checks Linux boot, display and input. Steam is not included yet.")
+            Text("Это отдельный boot/display/input тест. Основная среда запускается из лаунчера; её диск этот тест не использует.")
                 .font(.footnote).foregroundStyle(.secondary)
         }
         .padding()

@@ -11,6 +11,27 @@ final class LinuxTerminalSession: ObservableObject {
     static let desktop = LinuxTerminalSession(isDesktop: true)
     static let steam = LinuxTerminalSession(isSteam: true)
     let isSteam: Bool
+    @Published private(set) var unifiedEnvironment = false
+    @Published fileprivate(set) var environmentStage = LinuxEnvironmentStartup.Stage.idle
+    var environmentSummary: String {
+        if let state = preparationState, state.inProgress {
+            if !state.canCancel { return "Отменяем запуск после текущей файловой операции…" }
+            switch state.phase {
+            case .assets: return "Проверяем встроенные пакеты и ресурсы…"
+            case .disk: return "Проверяем сохранённый диск среды…"
+            case .importingSeed: return "Создаём и проверяем диск при первом запуске…"
+            case .arguments: return "Подключаем экран и управление…"
+            case .report: return "Сохраняем данные безопасного запуска…"
+            case .nativeEntry: return "Финальная проверка перед запуском среды…"
+            case .recoveryCopies: return state.message
+            }
+        }
+        if !ready || stopping || displayTimedOut {
+            if !stopping, environmentStage == .blocked { return environmentStage.message + " " + steamMessage }
+            return message
+        }
+        return environmentStage.message
+    }
     @Published var steamNetworkConsent = false
     @Published fileprivate(set) var steamInstalled = false
     @Published fileprivate(set) var steamBusy = false
@@ -215,6 +236,18 @@ final class LinuxTerminalSession: ObservableObject {
     func startDesktop() {
         guard !attempted else { return }
         recoveryRequested = false; start()
+    }
+    func startEnvironment() {
+        precondition(Thread.isMainThread)
+        guard isSteam, !attempted, !steamCacheImportBusy else { return }
+        unifiedEnvironment = true
+        recoveryRequested = false
+        start()
+    }
+    func retryEnvironmentSteam() {
+        precondition(Thread.isMainThread)
+        guard unifiedEnvironment, ready, !stopping, !steamBusy, environmentStage == .blocked else { return }
+        worker?.retryEnvironmentSteam()
     }
     func startRecovery() {
         guard isDesktop, !isSteam else {
@@ -464,6 +497,7 @@ private final class LinuxTerminalWorker {
     let preparation = LinuxStartupPreparation()
     var disk: LinuxConsoleDisk?
     var lifecycle = LinuxConsoleLifecycle()
+    private var environment = LinuxEnvironmentStartup()
     var serial: LinuxTerminalSocket?
     var control: LinuxTerminalSocket?
     var argv: UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>?
@@ -600,6 +634,7 @@ private final class LinuxTerminalWorker {
                 try FileManager.default.createDirectory(at: self.session, withIntermediateDirectories: true)
                 self.report = self.metadata
                 self.report["mode"] = self.owner.isSteam ? "steam-experimental" : self.owner.isDesktop ? "desktop" : (self.owner.isDebian ? "debian" : "terminal")
+                if self.owner.unifiedEnvironment { self.environment.begin(); self.publishEnvironment() }
                 self.report["status"] = "terminal_prepared"
                 self.report["terminal_clean_stop"] = false
                 self.report["qemu_block_layer_drained_verified"] = false
@@ -918,23 +953,48 @@ private final class LinuxTerminalWorker {
     }
 
     private var steamActionRevision: UInt64 = 0
+    private var pendingSteamCommand: String?
+    private var steamCommandInFlight: Bool { pendingSteamCommand != nil }
+
+    private func publishEnvironment() {
+        guard owner.unifiedEnvironment else { return }
+        let stage = environment.stage
+        report["environment_stage"] = stage.rawValue
+        owner.publish { $0.environmentStage = stage }
+    }
+    private func automaticSteam(_ command: LinuxEnvironmentStartup.Command) {
+        publishEnvironment()
+        owner.publish { $0.steamBusy = true }
+        enqueueSteamAction(command.rawValue)
+    }
+    func retryEnvironmentSteam() {
+        queue.async {
+            guard self.ready, !self.stopRequested, !self.loopReturned, !self.steamCommandInFlight,
+                  let command = self.environment.retry() else { return }
+            self.automaticSteam(command)
+        }
+    }
 
     func steamAction(_ action: String) {
-        queue.async {
-            guard self.owner.isSteam, self.ready, !self.stopRequested, !self.loopReturned else { return }
-            do {
-                try self.control?.enqueue(Data(("IDECK_STEAM_" + action + "\n").utf8))
-                self.steamActionRevision &+= 1
-                self.report["steam_action_wait_timed_out"] = false; self.persist()
-                let revision = self.steamActionRevision
-                self.queue.asyncAfter(deadline: .now() + 180) {
-                    guard self.steamActionRevision == revision, !self.stopRequested, !self.loopReturned, !self.stopFailed else { return }
-                    self.report["steam_action_wait_timed_out"] = true; self.persist()
-                    self.owner.publish { $0.steamMessage = "Steam has not confirmed completion after 180 seconds. It may still be running. Open Diagnostics and share the report; no duplicate operation was started." }
-                }
+        queue.async { self.enqueueSteamAction(action) }
+    }
+    private func enqueueSteamAction(_ action: String) {
+        guard self.owner.isSteam, self.ready, !self.stopRequested, !self.loopReturned,
+              !self.steamCommandInFlight || action == "DESKTOP" else { return }
+        do {
+            self.pendingSteamCommand = action
+            try self.control?.enqueue(Data(("IDECK_STEAM_" + action + "\n").utf8))
+            self.steamActionRevision &+= 1
+            self.report["steam_action_wait_timed_out"] = false; self.persist()
+            let revision = self.steamActionRevision
+            self.queue.asyncAfter(deadline: .now() + 180) {
+                guard self.steamActionRevision == revision, !self.stopRequested, !self.loopReturned, !self.stopFailed else { return }
+                self.environment.timedOut(); self.publishEnvironment()
+                self.report["steam_action_wait_timed_out"] = true; self.persist()
+                self.owner.publish { $0.steamMessage = "Steam has not confirmed completion after 180 seconds. It may still be running. Open Diagnostics and share the report; no duplicate operation was started." }
             }
-            catch { self.channelDisconnected(control: true) }
         }
+        catch { self.channelDisconnected(control: true) }
     }
 
     func stop() {
@@ -943,6 +1003,7 @@ private final class LinuxTerminalWorker {
                   let control = self.control, control.peer >= 0 else { return }
             self.checkpoint(.stopRequested)
             self.stopRequested = true
+            self.environment.stop(); self.publishEnvironment()
             self.lifecycle.record(.stop)
             self.report["status"] = "terminal_stopping"
             self.persist()
@@ -1007,20 +1068,32 @@ private final class LinuxTerminalWorker {
             if line.last == 13 { line.removeLast() }
             if owner.isSteam, let status = String(data: line, encoding: .utf8), status.hasPrefix("IDECK_STEAM_") {
                 report["steam_guest_status"] = status
-                if ["IDECK_STEAM_INSTALLED", "IDECK_STEAM_CLIENT_RETURNED", "IDECK_STEAM_DESKTOP_READY"].contains(status) || status.hasPrefix("IDECK_STEAM_BLOCKER:") {
+                if LinuxEnvironmentStartup.completes(command: pendingSteamCommand, status: status) {
+                    pendingSteamCommand = nil
                     steamActionRevision &+= 1
+                }
+                let remainsBusy = steamCommandInFlight
+                if LinuxEnvironmentStartup.acknowledgesLaunch(command: pendingSteamCommand, status: status) {
+                    // Long-running Steam is not expected to exit within180s.
+                    // This acknowledges the request, never a rendered window.
+                    steamActionRevision &+= 1
+                    report["steam_launch_request_acknowledged"] = true
                 }
                 if status == "IDECK_STEAM_CPU_LSE_PASS" { report["steam_cpu_lse_passed"] = true }
                 if status == "IDECK_STEAM_INSTALLED" {
-                    owner.publish { $0.steamInstalled = true; $0.steamBusy = false; $0.steamMessage = "Pinned client installed. Big Picture starts the real client; sign in and accept any terms yourself." }
+                    owner.publish { $0.steamInstalled = true; $0.steamBusy = remainsBusy; $0.steamMessage = "Локальная установка Steam подтверждена. Запуск обрабатывается средой; вход и соглашения — ваши действия." }
                 } else if status.hasPrefix("IDECK_STEAM_BLOCKER:") {
-                    owner.publish { $0.steamBusy = false; $0.steamMessage = status }
+                    owner.publish { $0.steamBusy = remainsBusy; $0.steamMessage = status }
                 } else if status == "IDECK_STEAM_CLIENT_RETURNED" {
-                    owner.publish { $0.steamBusy = false; $0.steamMessage = "Steam launcher returned. This does not confirm a rendered client window." }
+                    owner.publish { $0.steamBusy = remainsBusy; $0.steamMessage = "Steam launcher returned. This does not confirm a rendered client window." }
                 } else if status == "IDECK_STEAM_DESKTOP_READY" {
-                    owner.publish { $0.steamBusy = false; $0.steamMessage = "Steam and its private namespace writers exited. Linux Desktop stays open." }
+                    owner.publish { $0.steamBusy = remainsBusy; $0.steamMessage = "Steam and its private namespace writers exited. Linux Desktop stays open." }
                 } else if status == "IDECK_STEAM_LAUNCH_REQUESTED" || status == "IDECK_STEAM_DESKTOP_REQUESTED" {
                     owner.publish { $0.steamMessage = status == "IDECK_STEAM_LAUNCH_REQUESTED" ? "Real Big Picture launch requested. Rendering on this device is unverified." : "Steam shutdown requested. Waiting for client, namespace writers and launch owner to exit…" }
+                }
+                if owner.unifiedEnvironment, !stopRequested, !loopReturned {
+                    if let command = environment.observe(status) { automaticSteam(command) }
+                    else { publishEnvironment() }
                 }
                 persist()
                 continue
@@ -1101,10 +1174,13 @@ private final class LinuxTerminalWorker {
                         : "Local Linux console ready. User files are stored in /data; use Stop Linux before closing the app."))
                         : "The console channel is unavailable. Use Stop Linux to stop the guest through its separate control channel."
                 }
+                if owner.unifiedEnvironment, consoleReady, steamOfflineCache != nil,
+                   let command = environment.desktopReady() { automaticSteam(command) }
             } else if line == Data((prefix + "CLEAN_UNMOUNT").utf8) {
                 lifecycle.record(.unmounted)
                 ready = false
                 stopRequested = true
+                environment.stop(); publishEnvironment()
                 cleanUnmount = true
                 checkpoint(.guestCleanUnmount)
                 report["terminal_clean_unmount"] = true

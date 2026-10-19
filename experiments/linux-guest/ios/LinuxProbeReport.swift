@@ -106,6 +106,10 @@ enum LinuxProbeReport {
                 row("Storage failure", (report["storage_failure"] as? String).flatMap { failures.contains($0) ? $0 : nil } ?? "NONE RECORDED")
                 row("Seed SHA-256", hex(report[steam ? "steam_seed_sha256" : "debian_seed_sha256"], count: 64))
                 row("Production initramfs SHA-256", hex(report["terminal_initramfs_sha256"], count: 64))
+                if steam, report["environment_stage"] != nil {
+                    row("Environment setup stage", text(report["environment_stage"], allowed: [
+                        "idle", "waitingDesktop", "installingSteam", "openingSteam", "waitingConfirmation", "desktop", "blocked", "stopped"]))
+                }
                 if steam, report["steam_bundled_cache_status"] != nil {
                     row("Bundled package cache stage", text(report["steam_bundled_cache_status"], allowed: [
                         "verifying_or_importing_local_packages", "verified_local_packages_not_installed",

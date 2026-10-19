@@ -22,7 +22,7 @@ class DesktopDiagnosticsUI(unittest.TestCase):
         controls = swift_block(view, "private var controls:")
         self.assertIn('.safeAreaInset(edge: .top, spacing: 0) { persistentActions }', view)
         self.assertIn('.ignoresSafeArea(.keyboard, edges: .bottom)', view)
-        self.assertIn('Text(session.message).font(.caption).lineLimit(3)', view)
+        self.assertIn('Text(unified ? session.environmentSummary : session.message).font(.caption).lineLimit(3)', view)
         self.assertNotIn('ShareLink', controls)
         self.assertNotIn('Share report', controls)
         for label in ('Share report', 'Diagnostics'):
@@ -31,9 +31,15 @@ class DesktopDiagnosticsUI(unittest.TestCase):
             self.assertNotIn('session.ready', button)
             self.assertNotIn('disabled', button)
         # VM actions have their own guards; MD actions are outside input grids.
-        self.assertEqual(actions.count('.disabled('), 2)
+        self.assertIn('.disabled(!inputAvailable)', actions)
         self.assertIn('.disabled(!preparation.canCancel)', actions)
-        self.assertIn('Button("Stop Linux") { session.stop() }.disabled(', actions)
+        self.assertIn('Button(unified ? "Остановить" : "Stop Linux")', actions)
+        self.assertIn('.disabled(!session.canStop || session.stopping)', actions)
+        root = (ROOT / 'ios/LinuxProbeView.swift').read_text()
+        bar = swift_block(root, '.safeAreaInset(edge: .top, spacing: 0)')
+        self.assertIn('route.choose(.settings)', bar)
+        self.assertNotIn('session.ready', bar)
+        self.assertIn('showDiagnostics = true', swift_block(root, 'private var advanced:'))
         self.assertIn('session.attempted && !session.ready', actions)
         self.assertIn('ideck-desktop-startup-diagnostics', actions)
 

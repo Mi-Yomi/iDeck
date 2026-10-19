@@ -66,11 +66,14 @@ struct LinuxDesktopView: View {
     @State private var controlsExpanded = false
     @State private var command = ""
     @State private var showDiagnostics = false
+    @State private var showStopConfirmation = false
+    private let unified: Bool
     @State private var showCacheImporter = false
     @State private var showScreenControls = true
     @State private var showShare = false
     @State private var shareItems: [URL] = []
-    init(session: LinuxTerminalSession = .desktop) {
+    init(session: LinuxTerminalSession = .desktop, unified: Bool = false) {
+        self.unified = unified
         self.session = session
         input = session.desktopInput!
     }
@@ -78,16 +81,19 @@ struct LinuxDesktopView: View {
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 5) {
-                Text(session.isSteam ? "Steam · experimental" : "Debian desktop").font(.headline).frame(maxWidth: .infinity, alignment: .leading)
-                Text(session.message).font(.caption).lineLimit(3).frame(maxWidth: .infinity, alignment: .leading)
+                if !unified { Text(session.isSteam ? "Steam · experimental" : "Debian desktop").font(.headline).frame(maxWidth: .infinity, alignment: .leading) }
+                Text(unified ? session.environmentSummary : session.message).font(.caption).lineLimit(3).frame(maxWidth: .infinity, alignment: .leading)
                 if let preparation = session.preparationState, preparation.inProgress {
-                    ProgressView(preparation.message).font(.caption)
-                    Text("Keep iDeck open. Home preserves this preparation; Cancel start explicitly cancels before native entry.")
+                    if unified { ProgressView().accessibilityLabel(session.environmentSummary) }
+                    else { ProgressView(preparation.message).font(.caption) }
+                    Text(unified ? "Не закрывайте iDeck. Домой сохраняет подготовку; отмена дожидается текущей файловой операции." : "Keep iDeck open. Home preserves this preparation; Cancel start explicitly cancels before native entry.")
                         .font(.caption2).fixedSize(horizontal: false, vertical: true)
                 }
                 if jit.busy { ProgressView(jit.status ?? "Enabling JIT…") }
                 if let error = jit.error { Text(error).font(.caption).foregroundStyle(.orange) }
-                if geometry.size.width > geometry.size.height {
+                if unified {
+                    display.frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else if geometry.size.width > geometry.size.height {
                     HStack(alignment: .top, spacing: 8) {
                         display.frame(maxWidth: .infinity, maxHeight: .infinity)
                         ScrollView { controls }.frame(width: 190)
@@ -108,6 +114,10 @@ struct LinuxDesktopView: View {
         .fileImporter(isPresented: $showCacheImporter, allowedContentTypes: [.data]) { result in
             if case .success(let url) = result { session.importSteamCache(url) }
         }
+        .confirmationDialog("Остановить среду?", isPresented: $showStopConfirmation, titleVisibility: .visible) {
+            Button("Остановить безопасно", role: .destructive) { session.stop() }
+            Button("Продолжить работу", role: .cancel) { }
+        } message: { Text("Linux завершит процессы, синхронизирует и размонтирует диск. Дождитесь результата; следующий запуск требует перезапуска iDeck.") }
         .sheet(isPresented: $jit.showSetup) { JITSetupFlow() }
         .sheet(isPresented: $showDiagnostics) { LinuxDesktopDiagnosticsView(session: session) }
         .sheet(isPresented: $showShare) { ShareSheet(items: shareItems) }
@@ -118,6 +128,7 @@ struct LinuxDesktopView: View {
         .onChange(of: recovery) { _ in refreshInputFocus() }
         .onChange(of: showDiagnostics) { _ in refreshInputFocus() }
         .onChange(of: showShare) { _ in refreshInputFocus() }
+        .onChange(of: showStopConfirmation) { _ in refreshInputFocus() }
         .onChange(of: jit.showSetup) { _ in refreshInputFocus() }
         .onDisappear { keyboard = false; input.setFocused(false) }
         .onChange(of: phase) { value in
@@ -131,31 +142,62 @@ struct LinuxDesktopView: View {
     }
     private var inputAvailable: Bool {
         session.ready && !session.stopping && phase == .active && !recovery
-            && !showDiagnostics && !showShare && !jit.showSetup
+            && !showDiagnostics && !showShare && !jit.showSetup && !showStopConfirmation
     }
     private var persistentActions: some View {
         HStack(spacing: 8) {
-            if session.attempted && !session.ready {
-                Button("Share report") {
-                    prepareDiagnostics()
-                    if let file = session.reportForSharing() { shareItems = [file]; showShare = true }
-                    else { showDiagnostics = true }
-                }.accessibilityIdentifier("ideck-desktop-share-report")
+            if unified {
+                Menu {
+                    Button("Клавиатура") { keyboard.toggle() }
+                    Button("Отпустить все клавиши") { input.releaseHeld() }
+                    Button("Правая кнопка мыши") { input.rightClick() }
+                    Button("Прокрутка вверх") { input.scroll(3) }
+                    Button("Прокрутка вниз") { input.scroll(-3) }
+                    ForEach([("Esc","esc"),("Tab","tab"),("Enter","ret")], id: \.1) { label, key in
+                        Button(label) { input.key(key) }
+                    }
+                    Menu("Модификаторы") {
+                        ForEach([("Ctrl","ctrl"),("Alt","alt"),("Shift","shift"),("Super","meta_l")], id: \.1) { label, key in
+                            Button((input.latched.contains(key) ? "✓ " : "") + label) { input.toggle(key) }
+                        }
+                    }
+                    Menu("Дополнительные клавиши") {
+                        ForEach([("←","left"),("↑","up"),("→","right"),("↓","down"),("⌫","backspace"),("Del","delete"),
+                                 ("Home","home"),("End","end"),("PgUp","pgup"),("PgDn","pgdn")], id: \.1) { label, key in
+                            Button(label) { input.key(key) }
+                        }
+                        ForEach(1...12, id: \.self) { n in Button("F\(n)") { input.key("f\(n)") } }
+                    }
+                } label: { Image(systemName: "keyboard") }
+                .accessibilityLabel("Клавиатура и мышь")
+                .disabled(!inputAvailable)
+            } else {
+                if session.attempted && !session.ready {
+                    Button("Share report") {
+                        prepareDiagnostics()
+                        if let file = session.reportForSharing() { shareItems = [file]; showShare = true }
+                        else { showDiagnostics = true }
+                    }.accessibilityIdentifier("ideck-desktop-share-report")
+                }
+                Button("Diagnostics") { prepareDiagnostics(); session.recoverDiagnostics(); showDiagnostics = true }
+                    .accessibilityLabel("Saved startup diagnostics, Markdown")
+                    .accessibilityIdentifier("ideck-desktop-startup-diagnostics")
             }
-            Button("Diagnostics") { prepareDiagnostics(); session.recoverDiagnostics(); showDiagnostics = true }
-                .accessibilityLabel("Saved startup diagnostics, Markdown")
-                .accessibilityIdentifier("ideck-desktop-startup-diagnostics")
             Spacer(minLength: 0)
             if session.isSteam {
-                Button(showScreenControls ? "Hide controls" : "Show controls") {
+                Button {
                     input.releaseScreenControls(); showScreenControls.toggle()
-                }.accessibilityIdentifier("ideck-steam-screen-controls")
+                } label: { Image(systemName: showScreenControls ? "gamecontroller.fill" : "gamecontroller") }
+                .accessibilityLabel(showScreenControls ? "Скрыть экранное управление" : "Показать экранное управление")
+                .accessibilityIdentifier("ideck-steam-screen-controls")
             }
             if let preparation = session.preparationState, preparation.inProgress {
-                Button(preparation.canCancel ? "Cancel start" : "Cancelling…") { session.cancelPreparation() }
+                Button(preparation.canCancel ? (unified ? "Отменить" : "Cancel start") : (unified ? "Отмена…" : "Cancelling…")) { session.cancelPreparation() }
                     .disabled(!preparation.canCancel).accessibilityIdentifier("ideck-desktop-cancel-start")
             } else if session.attempted {
-                Button("Stop Linux") { session.stop() }.disabled(!session.canStop || session.stopping)
+                Button(unified ? "Остановить" : "Stop Linux") {
+                    if unified { input.releaseHeld(); showStopConfirmation = true } else { session.stop() }
+                }.disabled(!session.canStop || session.stopping)
             }
         }
         .buttonStyle(.bordered).font(.caption).lineLimit(1).minimumScaleFactor(0.8)
@@ -191,9 +233,14 @@ struct LinuxDesktopView: View {
                     }
                     .accessibilityIdentifier("ideck-session-waiting-text")
                     Divider()
-                    Button("Диагностика / отчёт") { prepareDiagnostics(); session.recoverDiagnostics(); showDiagnostics = true }
-                        .frame(maxWidth: .infinity, minHeight: 44).padding(.horizontal, 12).padding(.vertical, 6)
-                        .accessibilityIdentifier("ideck-session-waiting-diagnostics")
+                    if unified {
+                        Text("Подробности и отчёты — в расширенных настройках. Домой сохраняет текущую сессию.")
+                            .font(.caption).padding(12).frame(minHeight: 44)
+                    } else {
+                        Button("Диагностика / отчёт") { prepareDiagnostics(); session.recoverDiagnostics(); showDiagnostics = true }
+                            .frame(maxWidth: .infinity, minHeight: 44).padding(.horizontal, 12).padding(.vertical, 6)
+                            .accessibilityIdentifier("ideck-session-waiting-diagnostics")
+                    }
                 }.font(.callout).frame(maxWidth: .infinity, maxHeight: .infinity).clipped()
                     .background(Theme.surface.opacity(0.96))
             }

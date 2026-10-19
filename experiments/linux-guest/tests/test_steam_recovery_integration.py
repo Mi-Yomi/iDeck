@@ -50,7 +50,7 @@ class SteamRecoveryIntegration(unittest.TestCase):
 
     def test_all_modes_keep_fixed_failure_screen_exports_and_separate_assets(self):
         view = (ROOT / 'ios/LinuxDesktopView.swift').read_text()
-        self.assertIn('init(session: LinuxTerminalSession = .desktop)', view)
+        self.assertIn('init(session: LinuxTerminalSession = .desktop, unified: Bool = false)', view)
         actions = swift_block(view, 'private var persistentActions:')
         self.assertIn('Button("Share report")', actions)
         self.assertIn('Button("Diagnostics")', actions)

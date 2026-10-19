@@ -128,6 +128,7 @@ runDisplayPointerChecks()
 
 runDesktopInputChecks()
 runSteamControlsChecks()
+runEnvironmentStartupChecks()
 
 try runGUIProfileChecks(root: root)
 

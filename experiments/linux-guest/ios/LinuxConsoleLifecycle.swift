@@ -156,5 +156,6 @@ struct LinuxLauncherNavigation {
         return true
     }
     mutating func home() { destination = .choose }
+    mutating func selectPrimary() { if owner == nil { selected = .steam } }
     mutating func resume() { if let target = owner ?? selected { _ = open(target) } }
 }

@@ -1,4 +1,30 @@
-> CURRENT SOURCE CORRECTION — stable Steam cache device identity, 19 October 2026.
+> CURRENT DELIVERED RESULT — Apple CI#42 PASS, 19 October 2026.
+> https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5fa7a7550aed81090197b .
+> **Built source: 08978cd962e5c53818a287f41285d32a702ac5ad.**
+> IPA **1086788107 bytes**, SHA-256
+> **faaa7f32a6ade15e62c23ebbd15a57e8fac6c9d4517a9b36f5fc47189e0002c0**.
+> Coordinator independently checked real ZIP CRC, all7 Mach-O binaries as arm64
+> iPhoneOS/ad-hoc,19 resources/cache and25 Swift PASS markers. The delivered IPA
+> includes stable cache serial identity and launcher JIT/RAM feedback.
+> Owner-only Drive delivery is confirmed; no personal Drive URL is stored in Git.
+> These CI/artifact/inspection/delivery facts are coordinator supplied. This
+> docs-only update did not download/rebuild the IPA, alter code/pins/config,
+> dispatch/cancel CI or modify a Release. Its commit differs from built source.
+>
+> CI#41 PASS on460d5f26 was an intermediate JIT/RAM build without the cache fix.
+> The source correction is compiled in CI#42, but **device / actual cache fix,
+> JIT/RAM flow, Steam installation/rendering and gameplay on iPhone NOT RUN**.
+> Wait for owner feedback. Controls remain keyboard/mouse mapping, not Linux
+> HID; Auto4096 and disk12 GiB unchanged. BusyBox source provenance **OPEN**.
+>
+> Latest coordinator balance: **26 free minutes, paid OFF**. Current provider
+> cap35 / worker30 no longer fits: **do not start another CI**. A future run
+> requires a separately reviewed smaller limit, fresh quota with reserve,
+> paid OFF, exact reviewed source SHA and private/native approvals. No automatic
+> dispatch is authorized. Historical budget/NOT RUN/dispatch checkpoints below
+> describe their earlier source verification and do not supersede this block.
+
+> Historical cache identity source correction, 19 October 2026.
 > Based on `460d5f260089e0c9f0a62d0049a6ee04b9e78468`. Coordinator-inspected
 > device screenshot10:51 UTC shows `offline_cache_not_readonly`; this is separate
 > from RAM/JIT feedback. The old guest guessed `/dev/vdb`, although ARM virtio

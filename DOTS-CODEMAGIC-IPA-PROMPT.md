@@ -1,3 +1,22 @@
+> CURRENT SOURCE CORRECTION — launcher memory/JIT feedback, 19 October 2026.
+> Based on `c810b682601634920e8ff601b6832c08524896e9`. The coordinator inspected
+> the owner's screenshot: manifest/JIT/network PASS, **Auto memory preflight
+> BLOCKED** before native entry. This proves click handling reached preflight;
+> hit testing/JIT failure is not established. Actual numeric budget is unknown.
+> The new source shows measured process budget/minimum and offers the existing
+> fixed1536 mode with fresh checks. Reserves and native/disk safety are unchanged.
+> JIT off shows an inline setup action; returning rechecks real JIT and offers
+> explicit continuation, without auto-starting a VM or leaving a pending spinner.
+> **595 Python tests OK /5 SKIP**, exact full overlay/real repeated staging PASS.
+> New Apple/Swift/UI and phone behavior **NOT RUN**; CI#40 below predates this fix.
+>
+> Next manual CI: reviewed post-fix remote HEAD, `ideck-linux-probe-ipa`,
+> `mac_mini_m2`, Xcode27.0, **cap55 / worker50 minutes**. Supplied62-minute free
+> snapshot leaves7 minutes beyond cap; freshly verify quota/reserve and paid OFF
+> before dispatch with the existing four approval inputs. No CI started here.
+> BusyBox provenance **OPEN**. See [cause, changes and evidence](LAUNCHER-JIT-MEMORY-FEEDBACK-20261019.md).
+> Older wait/cap70/65/95 and JIT-return instructions below are historical.
+
 > CURRENT DELIVERED RESULT — unified launcher, Apple CI#40 PASS, 19 October 2026.
 > https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5e8747550aed8109013fd . Duration16m44s.
 > **Built source: cf773c48e4c11d9c341667cb55e5b40522655df8.**

@@ -223,7 +223,11 @@ final class LinuxTerminalSession: ObservableObject {
             let passed = JITBootstrap.prewarm() || JITBootstrap.isLive || JITBootstrap.mapJITResult == true
             try journal.record(.jitClaimReturned)
             recordJIT(passed)
-        } catch { diagnosticFailure() }
+        } catch {
+            recordJIT(false)
+            jitExecutionMessage = "Проверка JIT не выполнена: журнал диагностики недоступен. Откройте диагностику; VM не запущена."
+            diagnosticFailure()
+        }
     }
 
     private func recordJIT(_ passed: Bool) {

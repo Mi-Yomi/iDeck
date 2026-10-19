@@ -143,6 +143,18 @@ func runSteamProfileChecks(root: URL) throws {
     precondition(readiness(budget, jit: false).jit != .passed)
     precondition(readiness(budget, jit: true).jit == .passed)
     precondition(!readiness(budget, consent: false).canCheckAndStart)
+    let processBudget = UInt64(3000) * LinuxSteamMemory.mib
+    let autoRefusal = LinuxSteamProfile.readiness(assets: assets, jitVerified: true, networkConsent: true,
+        availableMemory: processBudget, memoryMode: .auto)
+    precondition(autoRefusal.manifest == .passed && autoRefusal.jit == .passed && autoRefusal.network == .passed)
+    precondition(autoRefusal.memory == .blocked("Недостаточно бюджета процесса с резервом; Auto не использует всю физическую RAM"))
+    precondition(!autoRefusal.canCheckAndStart && autoRefusal.memoryExplanation.contains("3000 MiB"))
+    let fixedReady = LinuxSteamProfile.readiness(assets: assets, jitVerified: true, networkConsent: true,
+        availableMemory: processBudget, memoryMode: .fixed1536)
+    precondition(fixedReady.canCheckAndStart && fixedReady.selectedMemoryMib == 1536)
+    let freshRefusal = LinuxSteamProfile.readiness(assets: assets, jitVerified: true, networkConsent: true,
+        availableMemory: 2559 * LinuxSteamMemory.mib, memoryMode: .fixed1536)
+    precondition(!freshRefusal.canCheckAndStart, "stale readiness cannot authorize fixed1536")
     let before = try FileManager.default.contentsOfDirectory(atPath: data.path)
     for _ in 0..<20 { precondition(readiness(budget).canCheckAndStart) }
     let after = try FileManager.default.contentsOfDirectory(atPath: data.path)

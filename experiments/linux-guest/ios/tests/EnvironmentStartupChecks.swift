@@ -11,13 +11,22 @@ func runEnvironmentStartupChecks() {
     precondition(intent.begin() && !intent.begin())
     precondition(intent.advance(owner:false,foreground:false,busy:false,network:true,jit:true) == .wait)
     precondition(intent.advance(owner:false,foreground:true,busy:true,network:true,jit:true) == .wait)
-    precondition(intent.advance(owner:false,foreground:true,busy:false,network:false,jit:false) == .consent)
+    // First launch with JIT off shows an actionable prompt, not a pending spinner.
+    precondition(intent.advance(owner:false,foreground:true,busy:false,network:false,jit:false) == .jit)
+    precondition(!intent.pending && intent.jitPrompt)
+    precondition(intent.begin())
     precondition(intent.advance(owner:false,foreground:true,busy:false,network:true,jit:false) == .jit)
+    intent.checkedJIT(false); precondition(intent.jitPrompt && !intent.pending)
+    // Returning from another app is not evidence of JIT; only the actual check is.
+    intent.checkedJIT(true); precondition(!intent.jitPrompt && !intent.pending)
+    precondition(intent.advance(owner:false,foreground:true,busy:false,network:true,jit:true) == .wait)
+    precondition(intent.begin()) // Explicit continue; no auto-start on return.
+    precondition(intent.advance(owner:false,foreground:true,busy:false,network:false,jit:true) == .consent)
     precondition(intent.advance(owner:false,foreground:true,busy:false,network:true,jit:true) == .start)
     precondition(intent.advance(owner:false,foreground:true,busy:false,network:true,jit:true) == .wait)
     precondition(intent.begin())
-    precondition(intent.advance(owner:true,foreground:true,busy:false,network:true,jit:true) == .resume)
-    precondition(!intent.pending)
+    precondition(intent.advance(owner:true,foreground:true,busy:false,network:false,jit:false) == .resume)
+    precondition(!intent.pending && !intent.jitPrompt)
     precondition(intent.begin()); intent.cancel()
     precondition(intent.advance(owner:false,foreground:true,busy:false,network:true,jit:true) == .wait)
 

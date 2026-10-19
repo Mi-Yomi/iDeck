@@ -102,23 +102,19 @@ struct LinuxProbeRoot: View {
             }
         }
         .onAppear { steam.refreshSteamReadiness() }
-        .sheet(isPresented: $showJIT, onDismiss: {
-            if pendingLaunch, steam.jitExecutionReady { advanceLaunch() }
-            else { launchIntent.cancel() }
-        }) { JITSetupFlow() }
+        .sheet(isPresented: $showJIT, onDismiss: { recheckLauncherJIT() }) { JITSetupFlow() }
         .confirmationDialog("Разрешить сеть для среды?", isPresented: $showNetworkConsent, titleVisibility: .visible) {
             Button("Разрешить и продолжить") { steam.steamNetworkConsent = true; advanceLaunch() }
             Button("Не сейчас", role: .cancel) { launchIntent.cancel(); launchNotice = "Запуск отменён до создания сессии." }
         } message: {
             Text("Установка использует встроенные пакеты. Steam может обращаться к сети для обновления и входа. Логин и соглашения остаются вашими действиями.")
         }
-        .onChange(of: jit.attachGeneration) { _ in
-            if pendingLaunch, route.runtimeOwner == nil, scenePhase == .active { steam.claimJIT(); advanceLaunch() }
+        .onChange(of: jit.attachGeneration) { _ in recheckLauncherJIT() }
+        .onChange(of: jit.busy) { busy in
+            if !busy, launchIntent.jitPrompt { recheckLauncherJIT() }
         }
-        .onChange(of: jit.busy) { busy in if !busy, pendingLaunch { advanceLaunch() } }
-        .onChange(of: steam.jitExecutionReady) { ready in
-            if ready, pendingLaunch { showJIT = false; advanceLaunch() }
-        }
+        .onChange(of: steam.steamMemoryMode) { _ in steam.refreshSteamReadiness() }
+        .onChange(of: steam.steamNetworkConsent) { _ in steam.refreshSteamReadiness() }
         .sheet(isPresented: $showDiagnostics) {
             if route.current == .linux {
                 LinuxProbeDiagnosticsView(session: probe)
@@ -129,9 +125,10 @@ struct LinuxProbeRoot: View {
         .onChange(of: scenePhase) { phase in
             if phase == .active {
                 steam.refreshSteamReadiness()
-                if pendingLaunch, route.runtimeOwner == nil { steam.claimJIT(); advanceLaunch() }
+                if launchIntent.jitPrompt { recheckLauncherJIT() }
             }
             if phase == .background {
+                if pendingLaunch { launchIntent.cancel(); launchNotice = "Запуск отложен. Вернитесь и нажмите «Запустить среду»." }
                 for session in [terminal, debian, desktop, steam] { session.cancelPreparation() }
             }
         }
@@ -175,33 +172,78 @@ struct LinuxProbeRoot: View {
                     .font(.callout).frame(maxWidth: .infinity, alignment: .leading)
                 if let preparation = steam.preparationState, preparation.inProgress {
                     ProgressView().accessibilityLabel(steam.environmentSummary)
-                } else if pendingLaunch || jit.busy { ProgressView(jit.status ?? "Подготовка запуска…") }
+                } else if pendingLaunch { ProgressView("Проверяем условия запуска…") }
                 else if route.runtimeOwner == .steam, steam.environmentStage == .installingSteam { ProgressView("Подготовка Steam…") }
                 Button { launchPrimary() } label: {
                     Label(route.runtimeOwner == nil ? "Запустить среду" : "Продолжить среду", systemImage: "play.fill")
                         .font(.title3.bold()).frame(maxWidth: .infinity, minHeight: 64)
-                }.buttonStyle(.borderedProminent).disabled(jit.busy || pendingLaunch)
+                }.buttonStyle(.borderedProminent)
                     .accessibilityIdentifier("ideck-launch-environment")
+                if route.runtimeOwner == nil {
+                    if launchIntent.jitPrompt {
+                        Text("Для запуска нужен JIT. Откройте настройку ниже; после возврата iDeck проверит выполнение кода. Само открытие другого приложения JIT не подтверждает.")
+                            .font(.callout).foregroundStyle(.orange)
+                        Text(steam.jitExecutionMessage).font(.footnote)
+                        if let error = jit.error { Text(error).font(.footnote).textSelection(.enabled) }
+                        if jit.busy { Text(jit.status ?? "JIT helper выполняет запрос. Если ожидание затянулось, откройте настройку и проверьте результат.").font(.footnote) }
+                        Button("Открыть настройку JIT") { openLauncherJIT() }.buttonStyle(.bordered)
+                            .accessibilityIdentifier("ideck-launcher-jit-setup")
+                    }
+                    if let readiness = steam.steamReadiness, readiness.memory != .passed {
+                        Text("Запуск остановлен проверкой памяти. " + readiness.memoryExplanation)
+                            .font(.callout).foregroundStyle(.orange)
+                            .accessibilityIdentifier("ideck-launcher-memory-blocker")
+                        if steam.steamMemoryMode == .auto {
+                            Text("Режим 1536 MiB требует меньше бюджета, но может быть тесен для Steam и игр. Резерв и повторная проверка сохраняются.").font(.footnote)
+                            Button("Проверить запуск с 1536 MiB") {
+                                steam.steamMemoryMode = .fixed1536
+                                launchPrimary()
+                            }.buttonStyle(.bordered).accessibilityIdentifier("ideck-launcher-fixed-memory")
+                        }
+                        Button("Обновить замер памяти") {
+                            steam.refreshSteamReadiness()
+                            launchNotice = "Замер обновлён. Если бюджета недостаточно, закройте другие приложения или перезапустите iDeck. Запуск остаётся заблокированным до свежей успешной проверки."
+                        }.buttonStyle(.bordered)
+                    }
+                }
                 if let notice = route.notice { Text(notice).font(.footnote).foregroundStyle(.orange) }
             }.padding(24).frame(maxWidth: 650).frame(maxWidth: .infinity)
         }
     }
     private func launchPrimary() {
         if route.runtimeOwner != nil { route.resume(); return }
-        guard !pendingLaunch, !jit.busy else { return }
+        guard !pendingLaunch else {
+            launchNotice = "Проверка запуска уже выполняется. Вторая сессия не создаётся."; return
+        }
         route.selectPrimary()
-        launchNotice = nil
         guard launchIntent.begin() else { return }
-        steam.claimJIT() // Explicit Start only; preview never performs JIT work.
-        advanceLaunch()
+        launchNotice = "Проверяем JIT и свежий бюджет памяти…"
+        // Give SwiftUI a frame to show feedback before the existing native check.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            guard pendingLaunch else { return }
+            guard scenePhase == .active else { launchIntent.cancel(); launchNotice = "Вернитесь в iDeck и повторите запуск."; return }
+            guard route.runtimeOwner == nil else { launchIntent.cancel(); route.resume(); return }
+            guard !jit.busy else {
+                launchIntent.checkedJIT(false)
+                launchNotice = "JIT helper занят. Откройте настройку JIT и проверьте результат; VM не запущена."; return
+            }
+            steam.claimJIT()
+            steam.refreshSteamReadiness()
+            advanceLaunch()
+        }
     }
     private func advanceLaunch() {
         switch launchIntent.advance(owner: route.runtimeOwner != nil, foreground: scenePhase == .active,
                                     busy: jit.busy, network: steam.steamNetworkConsent, jit: steam.jitExecutionReady) {
-        case .wait: return
+        case .wait:
+            launchIntent.cancel()
+            launchNotice = "Запуск ожидает активного iDeck и завершения JIT helper. Повторите проверку или откройте настройку JIT."
         case .resume: route.resume()
-        case .consent: showNetworkConsent = true
-        case .jit: showJIT = true
+        case .consent:
+            launchNotice = "Для продолжения нужно согласие на сеть."
+            showNetworkConsent = true
+        case .jit:
+            launchNotice = "JIT не прошёл проверку. Включите его через настройку прямо ниже; VM не запущена."
         case .start:
             showJIT = false
             steam.startEnvironment()
@@ -209,12 +251,30 @@ struct LinuxProbeRoot: View {
             else { launchNotice = steam.message }
         }
     }
+    private func openLauncherJIT() {
+        guard route.runtimeOwner == nil else { route.resume(); return }
+        launchIntent.checkedJIT(false)
+        launchNotice = "Настройте JIT, затем вернитесь для проверки и продолжения запуска."
+        jit.refreshPairingStatus()
+        if jit.method == .automatic, HuskBuiltInJIT.isAvailable { jit.method = .builtIn }
+        showJIT = true
+    }
+    private func recheckLauncherJIT() {
+        guard launchIntent.jitPrompt, route.runtimeOwner == nil, scenePhase == .active, !jit.busy else { return }
+        steam.claimJIT()
+        steam.refreshSteamReadiness()
+        let verified = steam.jitExecutionReady
+        launchIntent.checkedJIT(verified)
+        launchNotice = verified ? "JIT проверен. Нажмите «Запустить среду» для продолжения со свежей проверкой памяти."
+            : "JIT пока не прошёл проверку. Откройте настройку JIT и проверьте pairing и подключение; VM не запущена."
+        if verified { showJIT = false }
+    }
     private var settings: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
                 Text("Настройки").font(.largeTitle.bold())
                 Text("JIT включается только вашим действием. Домой и продолжение не перезапускают среду.")
-                Button("Настроить JIT") { jit.refreshPairingStatus(); showJIT = true }
+                Button("Настроить JIT") { openLauncherJIT() }
                     .buttonStyle(.bordered).disabled(route.runtimeOwner != nil || jit.busy)
                 Text(steam.jitExecutionMessage).font(.footnote).foregroundStyle(Theme.textDim)
                 Picker("Память среды", selection: $steam.steamMemoryMode) {

@@ -39,6 +39,9 @@ struct LinuxSteamProfile: Decodable {
         let network: Check
         let memory: Check
         let selectedMemoryMib: Int?
+        let availableMemory: UInt64?
+        let memoryMode: LinuxSteamMemory.Mode
+        var memoryExplanation: String { LinuxSteamMemory.explanation(available: availableMemory, mode: memoryMode) }
         var canCheckAndStart: Bool { manifest == .passed && network == .passed && memory == .passed }
         var summary: String {
             "Manifest: \(manifest.text) · JIT: \(jit.text) · Сеть (согласие): \(network.text) · Память: \(memory.text)"
@@ -62,7 +65,8 @@ struct LinuxSteamProfile: Decodable {
         else { memory = plan == nil ? .blocked("Недостаточно бюджета процесса с резервом; Auto не использует всю физическую RAM") : .passed }
         return Readiness(manifest: manifest,
             jit: jitVerified.map { $0 ? .passed : .blocked("Последняя проверка JIT не пройдена") } ?? .unknown,
-            network: networkConsent ? .passed : .blocked("Требуется согласие на сеть"), memory: memory, selectedMemoryMib: plan?.guestMib)
+            network: networkConsent ? .passed : .blocked("Требуется согласие на сеть"), memory: memory, selectedMemoryMib: plan?.guestMib,
+            availableMemory: availableMemory, memoryMode: memoryMode)
     }
 
     func validate() throws {

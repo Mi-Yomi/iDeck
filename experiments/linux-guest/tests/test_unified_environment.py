@@ -84,5 +84,63 @@ class UnifiedEnvironment(unittest.TestCase):
             self.assertIn(item,ci)
         self.assertIn('runEnvironmentStartupChecks()', (ROOT/'ios/tests/main.swift').read_text())
 
+    def test_launcher_click_gives_feedback_before_checks_and_is_not_silently_disabled(self):
+        source=(ROOT/'ios/LinuxProbeView.swift').read_text()
+        launcher=swift_block(source,'private var launcher:')
+        self.assertNotIn('.disabled(jit.busy || pendingLaunch)',launcher)
+        click=swift_block(source,'private func launchPrimary()')
+        self.assertLess(click.index('launchNotice = "Проверяем'),click.index('DispatchQueue.main.asyncAfter'))
+        self.assertLess(click.index('steam.claimJIT()'),click.index('steam.refreshSteamReadiness()'))
+        self.assertLess(click.index('steam.refreshSteamReadiness()'),click.index('advanceLaunch()'))
+        self.assertIn('Проверка запуска уже выполняется',click)
+        self.assertIn('route.runtimeOwner != nil { route.resume(); return }',click)
+        for guard in ('guard pendingLaunch','scenePhase == .active','guard route.runtimeOwner == nil','guard !jit.busy'):
+            self.assertIn(guard,click)
+
+    def test_inline_jit_prompt_uses_existing_flow_and_rechecks_without_auto_start(self):
+        source=(ROOT/'ios/LinuxProbeView.swift').read_text()
+        self.assertIn('ideck-launcher-jit-setup',source)
+        self.assertIn('JITSetupFlow()',source)
+        setup=swift_block(source,'private func openLauncherJIT()')
+        for text in ('jit.refreshPairingStatus()', 'HuskBuiltInJIT.isAvailable', 'jit.method = .builtIn', 'showJIT = true'):
+            self.assertIn(text,setup)
+        recheck=swift_block(source,'private func recheckLauncherJIT()')
+        self.assertLess(recheck.index('steam.claimJIT()'),recheck.index('let verified = steam.jitExecutionReady'))
+        self.assertIn('launchIntent.checkedJIT(verified)',recheck)
+        for forbidden in ('startEnvironment()', 'advanceLaunch()', 'requestTrollStoreAttach', 'apple-magnifier'):
+            self.assertNotIn(forbidden,recheck)
+        model=(ROOT/'ios/LinuxEnvironmentStartup.swift').read_text()
+        self.assertIn('guard jit else { checkedJIT(false); return .jit }',model)
+        self.assertIn('pending = false; jitPrompt = !verified',model)
+        session=(ROOT/'ios/LinuxTerminalSession.swift').read_text()
+        claim=swift_block(session,'func claimJIT()')
+        self.assertIn('recordJIT(false)',claim[claim.index('catch {'):])
+
+    def test_owner_memory_refusal_has_measured_budget_and_smaller_mode_action(self):
+        source=(ROOT/'ios/LinuxProbeView.swift').read_text()
+        launcher=swift_block(source,'private var launcher:')
+        for text in ('readiness.memory != .passed','readiness.memoryExplanation','steam.steamMemoryMode = .fixed1536','Обновить замер памяти'):
+            self.assertIn(text,launcher)
+        profile=(ROOT/'ios/LinuxSteamProfile.swift').read_text()
+        self.assertIn('Недостаточно бюджета процесса с резервом; Auto не использует всю физическую RAM',profile)
+        fixture=(ROOT/'ios/tests/SteamProfileChecks.swift').read_text()
+        for text in ('autoRefusal.memory == .blocked(', 'autoRefusal.jit == .passed','stale readiness cannot authorize fixed1536'):
+            self.assertIn(text,fixture)
+        memory=(ROOT/'ios/LinuxSteamMemory.swift').read_text()
+        policy=swift_block(memory,'static func plan(')
+        self.assertIn('let room = (available - retained) / mib',policy)
+        for forbidden in ('physicalMemory','resident','RSS'):
+            self.assertNotIn(forbidden,policy)
+
+    def test_fresh_worker_budget_checks_remain_after_cache_and_disk_io(self):
+        source=(ROOT/'ios/LinuxTerminalSession.swift').read_text()
+        worker=source[source.index('private final class LinuxTerminalWorker'):]
+        prepare=worker.index('LinuxSteamOfflineCache.prepareBundled(')
+        args=worker.index('let plan = try LinuxSteamMemory.plan(',prepare)
+        self.assertLess(prepare,args)
+        gate=swift_block(worker,'private func prepareNativeEntry(')
+        for text in ('LinuxSteamMemory.enterAfterIO', 'disk.validateOwnership()', 'os_proc_available_memory()'):
+            self.assertIn(text,gate)
+
 
 if __name__=='__main__':unittest.main()

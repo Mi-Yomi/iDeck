@@ -7,6 +7,16 @@ enum LinuxSteamMemory {
     static let mib: UInt64 = 1024 * 1024
     static let minimum = 1536
     static let ceiling = 4096 // Experimental capped ceiling; device acceptance pending.
+    static let hostOverheadBytes: UInt64 = 1024 * mib
+    static let safetyReserveBytes: UInt64 = 1024 * mib
+    static func minimumBudget(_ mode: Mode) -> UInt64 {
+        UInt64(minimum) * mib + safetyReserveBytes + (mode == .auto ? hostOverheadBytes : 0)
+    }
+    static func explanation(available: UInt64?, mode: Mode) -> String {
+        let measured = available.map { "\($0 / mib) MiB" } ?? "не измерен"
+        let selected = mode == .auto ? "Auto" : "1536 MiB"
+        return "Дополнительный бюджет процесса: \(measured). Для \(selected) нужно не менее \(minimumBudget(mode) / mib) MiB с резервом. Это не общий объём RAM телефона."
+    }
     struct Plan: Equatable {
         let guestMib: Int
         let overhead: UInt64
@@ -38,8 +48,8 @@ enum LinuxSteamMemory {
     /// H includes future JIT/TCG commitment and display/QEMU/IO growth. Keeping
     /// the full conservative H avoids inferring resident bytes from prewarmed VA.
     static func plan(available: UInt64?, mode: Mode,
-                     hostOverhead: UInt64 = 1024 * LinuxSteamMemory.mib,
-                     safetyReserve: UInt64 = 1024 * LinuxSteamMemory.mib) throws -> Plan {
+                     hostOverhead: UInt64 = LinuxSteamMemory.hostOverheadBytes,
+                     safetyReserve: UInt64 = LinuxSteamMemory.safetyReserveBytes) throws -> Plan {
         guard let available, available > 0 else { throw Failure.unavailable }
         let overhead = mode == .auto ? hostOverhead : 0
         let (retained, overflow) = overhead.addingReportingOverflow(safetyReserve)

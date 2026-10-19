@@ -2,16 +2,19 @@
 struct LinuxEnvironmentLaunchIntent {
     enum Decision { case wait, resume, consent, jit, start }
     private(set) var pending = false
+    private(set) var jitPrompt = false
     mutating func begin() -> Bool {
         guard !pending else { return false }
         pending = true; return true
     }
     mutating func cancel() { pending = false }
+    mutating func checkedJIT(_ verified: Bool) { pending = false; jitPrompt = !verified }
     mutating func advance(owner: Bool, foreground: Bool, busy: Bool, network: Bool, jit: Bool) -> Decision {
         guard pending, foreground, !busy else { return .wait }
-        if owner { pending = false; return .resume }
+        if owner { pending = false; jitPrompt = false; return .resume }
+        guard jit else { checkedJIT(false); return .jit }
+        jitPrompt = false
         guard network else { return .consent }
-        guard jit else { return .jit }
         pending = false; return .start
     }
 }

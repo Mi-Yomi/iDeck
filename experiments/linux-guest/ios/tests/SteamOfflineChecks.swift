@@ -18,6 +18,19 @@ func runSteamOfflineChecks(root: URL) throws {
     precondition(stepped.guestMib == 2048)
     let cap = try LinuxSteamMemory.plan(available: UInt64.max, mode: .auto)
     precondition(cap.guestMib == 4096)
+    precondition(LinuxSteamMemory.minimumBudget(.auto) == 3584 * mib)
+    precondition(LinuxSteamMemory.minimumBudget(.fixed1536) == 2560 * mib)
+    // Owner screenshot: Auto refuses a measured process budget, not a touch/JIT failure.
+    let measured = 3000 * mib
+    do { _ = try LinuxSteamMemory.plan(available: measured, mode: .auto); preconditionFailure("unsafe Auto fallback") }
+    catch LinuxSteamMemory.Failure.insufficient { }
+    let smaller = try LinuxSteamMemory.plan(available: measured, mode: .fixed1536)
+    precondition(smaller.guestMib == 1536 && smaller.reserve == 1024 * mib)
+    precondition(LinuxSteamMemory.explanation(available: measured, mode: .auto).contains("3000 MiB"))
+    precondition(LinuxSteamMemory.explanation(available: measured, mode: .auto).contains("3584 MiB"))
+    precondition(LinuxSteamMemory.explanation(available: nil, mode: .fixed1536).contains("не измерен"))
+    do { try smaller.recheck(2559 * mib); preconditionFailure("stale smaller-mode budget") }
+    catch LinuxSteamMemory.Failure.insufficient { }
     let manual = try LinuxSteamMemory.plan(available: UInt64(1536 + 1024) * mib, mode: .fixed1536)
     precondition(manual.guestMib == 1536 && manual.overhead == 0)
     let overhead = try LinuxSteamMemory.plan(available: UInt64(8192) * mib, mode: .auto, hostOverhead: 4096 * mib)

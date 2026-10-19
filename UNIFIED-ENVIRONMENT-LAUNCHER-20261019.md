@@ -1,3 +1,22 @@
+> CURRENT SOURCE CORRECTION — launcher memory/JIT feedback, 19 October 2026.
+> Based on `c810b682601634920e8ff601b6832c08524896e9`. The coordinator inspected
+> the owner's screenshot: manifest/JIT/network PASS, **Auto memory preflight
+> BLOCKED** before native entry. This proves click handling reached preflight;
+> hit testing/JIT failure is not established. Actual numeric budget is unknown.
+> The new source shows measured process budget/minimum and offers the existing
+> fixed1536 mode with fresh checks. Reserves and native/disk safety are unchanged.
+> JIT off shows an inline setup action; returning rechecks real JIT and offers
+> explicit continuation, without auto-starting a VM or leaving a pending spinner.
+> **595 Python tests OK /5 SKIP**, exact full overlay/real repeated staging PASS.
+> New Apple/Swift/UI and phone behavior **NOT RUN**; CI#40 below predates this fix.
+>
+> Next manual CI: reviewed post-fix remote HEAD, `ideck-linux-probe-ipa`,
+> `mac_mini_m2`, Xcode27.0, **cap55 / worker50 minutes**. Supplied62-minute free
+> snapshot leaves7 minutes beyond cap; freshly verify quota/reserve and paid OFF
+> before dispatch with the existing four approval inputs. No CI started here.
+> BusyBox provenance **OPEN**. See [cause, changes and evidence](LAUNCHER-JIT-MEMORY-FEEDBACK-20261019.md).
+> Older wait/cap70/65/95 and JIT-return instructions below are historical.
+
 # One environment launcher — delivered CI#40, 19 October 2026
 
 Implementation baseline: `7fdb81605c117fdc03dba8c7dd9fc4dc80beda77`, Steam branch.
@@ -19,8 +38,8 @@ The previously delivered CI#39 build predates this launcher.
 The launcher has one primary action, **Запустить среду**, and Settings. Start
 uses the existing Steam session, `iDeckSteam-v1` disk, verified bundled cache,
 fresh JIT/memory preflight and existing one-QEMU ownership guard. Network consent
-and JIT setup remain explicit owner actions; no preview starts a VM. Returning
-from setup continues only a pending explicit Start in the foreground. Repeat
+and JIT setup remain explicit owner actions; no preview starts a VM. The latest correction rechecks JIT after setup and asks for another explicit
+Start; it does not start a VM on return. Repeat
 presses cannot create another session. Steam login and agreements remain manual.
 
 After actual `IDECK_DESKTOP_READY`, with the console and readonly cache ready,
@@ -88,7 +107,7 @@ inspection do not establish these device results.
 Disk12 GiB and experimental Auto memory cap4096 remain unverified on device.
 Known incomplete BusyBox corresponding-source provenance remains **OPEN**.
 
-## Wait for owner feedback — no new CI
+## Historical CI#40 delivery budget checkpoint
 
 Latest coordinator snapshot after CI#40: **62 free minutes, paid OFF**.
 The current `ideck-linux-probe-ipa` provider cap is70 minutes and its internal

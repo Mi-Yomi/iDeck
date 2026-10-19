@@ -1,6 +1,31 @@
 # Steam readiness snapshot, 19 October 2026
 
-Update: the parent's actual readiness CI for `14d2ea33d75a7f14787e039a394f88ad6fa02e07`
+Delivered result: **CI #35 [Build finished](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5824c7550aed8108ffe54)** for built source
+**`209315cd8b330c0ba1b5a7a28f2cf2884a86dafa`**. The coordinating executor reports
+LINUX_STEAM_READINESS_PASS, LINUX_LAUNCHER_NAVIGATION_PASS,
+LINUX_GUI_RECOVERY_PASS, full upstream/integrated Swift typechecks and native
+build/package PASS. This confirms the signed-memory conversion fix passed the
+integrated Apple gate that failed in the previous run.
+
+IPA: **710808045 bytes**, SHA-256
+`ae6692c885c1200fcf1a86645c8c53dba6d61322d96af73c4fdd781ffe352231`.
+The coordinating executor independently checked the downloaded IPA: CRC,
+embedded commit/Bundle ID, seven arm64 iPhoneOS ad-hoc Mach-O files and all 19
+resource pins PASS. Private Drive delivery to the owner is confirmed. This
+repository contains no personal delivery link. Results are supplied by the
+coordinating executor; this docs-only update did not start CI or download IPA.
+The documentation commit is not the IPA's built source SHA.
+
+Device/visual/Steam checks remain **NOT RUN**. The phone's black Steam screen
+has not been diagnosed; a current device report is required. Build/typecheck
+success does not prove guest LSE, rendered GUI/Steam or game compatibility.
+The MaPC SystemCheck approach was adapted using our own code; no MaPC code or
+dependency was copied. **MetalFX is not implemented.** BusyBox corresponding-source
+provenance remains **OPEN**.
+
+The following records the original implementation and earlier validation stages.
+
+Historical failure: the parent's actual readiness CI for `14d2ea33d75a7f14787e039a394f88ad6fa02e07`
 [failed integrated Swift typecheck](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5804a7550aed8108ffdfb)
 at `LinuxTerminalSession.swift:29:44`: `Int?` could not convert to `UInt64?`.
 The parent reported Mac runtime markers (including LINUX_STEAM_READINESS_PASS)
@@ -62,8 +87,8 @@ attributes PASS. All 23 Steam source pins, existing payload locks, disk/recovery
 implementation and launcher ownership policy remain unchanged. Evidence:
 `experiments/linux-guest/evidence/steam-readiness-20261019/`.
 
-Next CI uses `ideck-linux-probe-ipa`, the same Steam branch, and
-`expected_commit=<full pushed readiness commit>`. The coordinating executor must
+For a future source change, CI uses `ideck-linux-probe-ipa`, the same Steam branch,
+and `expected_commit=<full reviewed source SHA>`. The coordinating executor must
 freshly verify at least 120 free macOS minutes and disabled paid billing before
 setting `free_quota_verified=true`, `private_source_verified=true`,
 `native_build_approved=true`. Existing `ideck-debian-payload` /

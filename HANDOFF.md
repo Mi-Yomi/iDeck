@@ -1,4 +1,33 @@
-> Current Apple type fix, 19 October 2026, based on readiness source
+> Current launcher + readiness IPA delivery, 19 October 2026: coordinating
+> executor confirmed **CI #35 Build finished**:
+> https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5824c7550aed8108ffe54 .
+> **Built source: 209315cd8b330c0ba1b5a7a28f2cf2884a86dafa.** Apple checks passed:
+> **LINUX_STEAM_READINESS_PASS**, **LINUX_LAUNCHER_NAVIGATION_PASS**,
+> **LINUX_GUI_RECOVERY_PASS**, full upstream and integrated Swift typechecks,
+> followed by successful native build and IPA packaging.
+>
+> Delivered IPA: **710808045 bytes**, SHA-256
+> **ae6692c885c1200fcf1a86645c8c53dba6d61322d96af73c4fdd781ffe352231**.
+> Coordinating executor independently downloaded and verified IPA CRC, embedded
+> commit/Bundle ID, **7 arm64 iPhoneOS ad-hoc Mach-O files** and **19 resource
+> pins**: PASS. Private Drive delivery to the owner is confirmed; no personal
+> delivery link belongs in this repository. These build/download/delivery results
+> were supplied by the coordinating executor; this docs-only step did not rerun
+> CI or download the IPA. This documentation commit is separate from built SHA.
+>
+> **Physical-device/visual/Home-resume/Steam checks NOT RUN.** The black Steam
+> screen has not been diagnosed on the phone; obtain the current device report
+> with source/build, mode, status, storage failure and Steam/GUI stage. Successful
+> Apple compilation and resource verification do not establish device readiness,
+> guest LSE support, rendered Steam or game compatibility.
+>
+> MaPC SystemCheck's status/check approach was adapted in **our own minimal
+> implementation**; no MaPC code/dependency was copied. **MetalFX is not
+> implemented.** Code, payload, overlay and fallback launcher source f7a89d2 are
+> unchanged in this docs-only update. BusyBox corresponding-source provenance
+> remains **OPEN**. See STEAM-READINESS-20261019.md and LAUNCHER-UX-20261019.md.
+
+> Historical Apple type fix, 19 October 2026, based on readiness source
 > **14d2ea33d75a7f14787e039a394f88ad6fa02e07**. Parent reported actual CI
 > https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5804a7550aed8108ffdfb
 > failed **integrated Swift typecheck** before native downloads:

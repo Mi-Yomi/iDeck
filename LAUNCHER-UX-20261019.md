@@ -1,5 +1,28 @@
 # iDeck launcher and session navigation
 
+Delivered launcher + readiness IPA: **CI #35 [Build finished](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5824c7550aed8108ffe54)**,
+built source **`209315cd8b330c0ba1b5a7a28f2cf2884a86dafa`**. The coordinating executor
+reports LINUX_LAUNCHER_NAVIGATION_PASS, LINUX_STEAM_READINESS_PASS,
+LINUX_GUI_RECOVERY_PASS, full upstream/integrated Swift typechecks and native
+build/package PASS.
+
+IPA **710808045 bytes**, SHA-256
+`ae6692c885c1200fcf1a86645c8c53dba6d61322d96af73c4fdd781ffe352231`.
+The coordinating executor independently verified downloaded IPA CRC, embedded
+commit/Bundle ID, seven arm64 iPhoneOS ad-hoc Mach-O files and all 19 resource
+pins. Private Drive delivery to the owner is confirmed; no personal link is
+stored here. This docs-only step records those supplied results and did not
+start CI or download IPA. The docs commit differs from the built source SHA.
+
+Visual portrait/landscape, physical Home/resume and Steam behavior remain
+**NOT RUN**. The black Steam screen is not diagnosed on the phone; the device
+report described below is still required. Successful Apple tests and packaging
+are not physical-device validation. The readiness status/check approach was
+adapted from MaPC SystemCheck using our own code, without copying code or adding
+a MaPC dependency. **MetalFX is not implemented.**
+
+The following describes the launcher changes and their original local checks.
+
 Baseline: `cd19729dee56f7e4294def4763fde451dca88cc6`, Steam branch only.
 The follow-up from `d1e9d20988599e3b06477421c14ed1b2a59f8811` corrects the two
 read-only review findings: active probe diagnostics now uses its own report,
@@ -53,8 +76,9 @@ Foundation Home/resume/repeated-tap/sticky-owner checks are added to the mandato
 Apple gate via `LINUX_LAUNCHER_NAVIGATION_PASS`. No new dependency, payload rebuild,
 Release, secret, main, phone disk or recovery/owner/fsync weakening.
 
-New Swift/Apple/native IPA, visual portrait/landscape and actual phone Home/resume
-are **NOT RUN** here; CI was not dispatched. Parent checks fresh free quota before
-one build for the exact new pushed SHA. The previously delivered recovery IPA was
-built at `9018b9bfbaab7b50d6011ae1e29e5eba0995fd28` and does not include this UX.
+The original Linux-only validation did not run Apple/Swift or produce an IPA.
+CI #35 subsequently passed Apple checks and packaged this launcher plus readiness
+at the built SHA above. Visual portrait/landscape and actual phone Home/resume
+remain **NOT RUN**. The older recovery IPA at
+`9018b9bfbaab7b50d6011ae1e29e5eba0995fd28` predates this UX.
 BusyBox provenance remains **OPEN**.

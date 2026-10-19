@@ -1,12 +1,36 @@
-Current source adds automatic bundled-cache preparation and original screen
-keyboard/mouse controls: see **STEAM-BUNDLED-CACHE-CONTROLS-20261019.md**.
-The real62-part TAR is now prepared and retained in the owner's private Library.
-The delivered IPA described below predates that source and still uses explicit
-import. No new IPA has been built here.
+> CURRENT DELIVERED RESULT — Apple CI#39 PASS, 19 October 2026.
+> https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5d2987550aed810900dd2 . Duration25m41s.
+> **Built source: bcbb8db7c909d34f05ccdf6ec95675f26f29ed78.** LINUX_STEAM_BUNDLED_CACHE_PASS
+> and LINUX_STEAM_SCREEN_CONTROLS_PASS confirmed in mac-tests.log;
+> native/link/signature/resources PASS. Ad-hoc arm64 iPhoneOS IPA:
+> **1086741944 bytes**, SHA-256
+> **84ec6d48c496fdaccb9ff02ceda11c1250d8eaefb58b431342f0217ceb2573c9**.
+> ZIP CRC and exact Info.plist SHA checks PASS. Actual embedded cache
+> **379228160 bytes**, SHA-256
+> **a75ea9bb8a19946cf81b2fb3d6cc4db97db6a1fe0938e4f23857c2c6e826adef**.
+> Owner-only Drive delivery and owner notification confirmed by the coordinator;
+> no personal Drive link is stored in this repository. All CI/artifact/readback/
+> delivery facts above are coordinator supplied. This docs-only update does not
+> rebuild/download the IPA, dispatch CI or change code/payload/overlay/source pins.
+> Its commit is distinct from the built source SHA above.
+>
+> **Device / Steam / gameplay NOT RUN.** Controls are keyboard/mouse mapping,
+> not a detected Linux HID gamepad. No manual cache import is needed in this
+> built IPA; local Install/resume and Launch Big Picture remain explicit.
+> Steam updater/login/agreements may need network and owner action; existing
+> guest/runtime errors are not declared fixed by predownload. Disk12 GiB and
+> experimental Auto cap4096 unchanged. BusyBox source provenance **OPEN**.
+>
+> **WAIT FOR DEVICE FEEDBACK.** Latest coordinator snapshot: **79 free macOS
+> minutes, paid OFF**. Current workflow cap95 exceeds79: **do not start CI**.
+> Any future build requires a separately reviewed smaller provider cap and
+> matching internal budget within fresh remaining quota with reserve, plus
+> private/native approvals and paid-OFF verification. No cap/code change now,
+> no new CI run/cancel here. Historical run instructions below are superseded.
 
 # Owner offline cache and experimental Auto RAM
 
-Delivered result: **[Apple CI finished](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad595967550aed810900168)** for built source
+Historical delivery before bundled cache: **[Apple CI finished](https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad595967550aed810900168)** for built source
 **`7782926dffb3ab513715518c18f8e667ca3c0c40`**. The coordinating executor confirms
 LINUX_STEAM_FRESH_HANDOFF_PASS, LINUX_STEAM_AUTO_MEMORY_PASS,
 LINUX_STEAM_OFFLINE_CACHE_PASS, typecheck/native build/link/resources PASS.
@@ -17,7 +41,7 @@ stored in this repository. These are coordinating-executor supplied results;
 this documentation update did not rebuild/download IPA or start CI. The docs
 commit differs from the built source SHA.
 
-**Device NOT RUN; real owner cache NOT PREPARED.** The delivered IPA contains
+**Historical boundary for that earlier IPA: device NOT RUN; real owner cache was NOT PREPARED then.** The delivered IPA contains
 code for import/offline source/Auto RAM, no bundled Valve bytes. Physical RAM,
 readonly guest-cache boot/import with actual packages and Steam behavior remain
 unverified. Disk remains12 GiB, no resize. The experimental4096 MiB ceiling is

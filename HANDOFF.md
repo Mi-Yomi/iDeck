@@ -1,4 +1,34 @@
-> CURRENT APPLE FIXTURE CORRECTION — based ona33d19ba0b4b10f4ea2c714d1ed311310c0ad598.
+> CURRENT DELIVERED RESULT — Apple CI#39 PASS, 19 October 2026.
+> https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5d2987550aed810900dd2 . Duration25m41s.
+> **Built source: bcbb8db7c909d34f05ccdf6ec95675f26f29ed78.** LINUX_STEAM_BUNDLED_CACHE_PASS
+> and LINUX_STEAM_SCREEN_CONTROLS_PASS confirmed in mac-tests.log;
+> native/link/signature/resources PASS. Ad-hoc arm64 iPhoneOS IPA:
+> **1086741944 bytes**, SHA-256
+> **84ec6d48c496fdaccb9ff02ceda11c1250d8eaefb58b431342f0217ceb2573c9**.
+> ZIP CRC and exact Info.plist SHA checks PASS. Actual embedded cache
+> **379228160 bytes**, SHA-256
+> **a75ea9bb8a19946cf81b2fb3d6cc4db97db6a1fe0938e4f23857c2c6e826adef**.
+> Owner-only Drive delivery and owner notification confirmed by the coordinator;
+> no personal Drive link is stored in this repository. All CI/artifact/readback/
+> delivery facts above are coordinator supplied. This docs-only update does not
+> rebuild/download the IPA, dispatch CI or change code/payload/overlay/source pins.
+> Its commit is distinct from the built source SHA above.
+>
+> **Device / Steam / gameplay NOT RUN.** Controls are keyboard/mouse mapping,
+> not a detected Linux HID gamepad. No manual cache import is needed in this
+> built IPA; local Install/resume and Launch Big Picture remain explicit.
+> Steam updater/login/agreements may need network and owner action; existing
+> guest/runtime errors are not declared fixed by predownload. Disk12 GiB and
+> experimental Auto cap4096 unchanged. BusyBox source provenance **OPEN**.
+>
+> **WAIT FOR DEVICE FEEDBACK.** Latest coordinator snapshot: **79 free macOS
+> minutes, paid OFF**. Current workflow cap95 exceeds79: **do not start CI**.
+> Any future build requires a separately reviewed smaller provider cap and
+> matching internal budget within fresh remaining quota with reserve, plus
+> private/native approvals and paid-OFF verification. No cap/code change now,
+> no new CI run/cancel here. Historical run instructions below are superseded.
+
+> Historical Apple fixture correction — based ona33d19ba0b4b10f4ea2c714d1ed311310c0ad598.
 > Coordinator reports Apple CI#38 failed at mac-tests, SteamBundledChecks.swift:30
 > (exit-5): https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5d0b17550aed810900d49 .
 > iOS typecheck, native syntax and Mac compile PASS; integrated Husk/native build
@@ -16,7 +46,7 @@
 > still fits with9 minutes below provider cap. Fresh check remains coordinator's
 > responsibility. No new CI dispatched here. BusyBox provenance OPEN.
 
-> CURRENT PINNING CHECKPOINT — based on1593537c7ae7e7fdada864afb1830cac83a91fa4.
+> Historical cache pinning checkpoint — based on1593537c7ae7e7fdada864afb1830cac83a91fa4.
 > Actual private cache payload_url and delivery metadata pinned; cache content,
 > source inputs and functional code unchanged. All587 Python tests OK /5 SKIP;
 > generators, full overlay, original/new real staging/resource gates PASS.
@@ -25,7 +55,7 @@
 > authorized remainder106, fresh quota/paid-OFF/private/native attestations needed.
 > No CI dispatched here. New Apple/device checks NOT RUN; BusyBox provenance OPEN.
 
-> CURRENT SOURCE CANDIDATE — bundled owner cache + screen controls, 19 October 2026.
+> Historical bundled-cache source candidate — bundled owner cache + screen controls, 19 October 2026.
 > Based on **52aa5b55d3c3466adf59ac2edac82a4b670f767f**, Steam branch only.
 > **No new IPA / Apple execution / device run / CI dispatch here.** The previously
 > delivered IPA below is still built at7782926 and does not contain this change.

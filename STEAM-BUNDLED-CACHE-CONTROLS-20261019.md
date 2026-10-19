@@ -1,22 +1,41 @@
-Latest Apple result (coordinator supplied): CI#38 on a33d19ba failed in
-`mac-tests` at `SteamBundledChecks.swift:30`, exit-5. iOS typecheck/native
-syntax/Mac compile PASS; integrated Husk/native build/new IPA were not reached.
-The new fixture expected raw `blocked: digest`, whereas the existing protected
-renderer intentionally outputs `blocked&#58; digest`. Only the fixture changed:
-it now requires exact escaped Markdown cells, rejects raw forms and verifies
-unknown/injected statuses are redacted. The production renderer/importer/input
-and all cache/payload pins are unchanged. Corrected Apple runtime NOT RUN here;
-no new CI dispatched. Full587 Python tests OK/5 SKIP and real resource gates PASS.
-Latest coordinator quota104 free, paid OFF;95/90 caps fit with9-minute provider
-reserve, subject to fresh coordinator checks. Evidence:
-`experiments/linux-guest/evidence/steam-bundled-fixture-fix-20261019/`.
+> CURRENT DELIVERED RESULT — Apple CI#39 PASS, 19 October 2026.
+> https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad5d2987550aed810900dd2 . Duration25m41s.
+> **Built source: bcbb8db7c909d34f05ccdf6ec95675f26f29ed78.** LINUX_STEAM_BUNDLED_CACHE_PASS
+> and LINUX_STEAM_SCREEN_CONTROLS_PASS confirmed in mac-tests.log;
+> native/link/signature/resources PASS. Ad-hoc arm64 iPhoneOS IPA:
+> **1086741944 bytes**, SHA-256
+> **84ec6d48c496fdaccb9ff02ceda11c1250d8eaefb58b431342f0217ceb2573c9**.
+> ZIP CRC and exact Info.plist SHA checks PASS. Actual embedded cache
+> **379228160 bytes**, SHA-256
+> **a75ea9bb8a19946cf81b2fb3d6cc4db97db6a1fe0938e4f23857c2c6e826adef**.
+> Owner-only Drive delivery and owner notification confirmed by the coordinator;
+> no personal Drive link is stored in this repository. All CI/artifact/readback/
+> delivery facts above are coordinator supplied. This docs-only update does not
+> rebuild/download the IPA, dispatch CI or change code/payload/overlay/source pins.
+> Its commit is distinct from the built source SHA above.
+>
+> **Device / Steam / gameplay NOT RUN.** Controls are keyboard/mouse mapping,
+> not a detected Linux HID gamepad. No manual cache import is needed in this
+> built IPA; local Install/resume and Launch Big Picture remain explicit.
+> Steam updater/login/agreements may need network and owner action; existing
+> guest/runtime errors are not declared fixed by predownload. Disk12 GiB and
+> experimental Auto cap4096 unchanged. BusyBox source provenance **OPEN**.
+>
+> **WAIT FOR DEVICE FEEDBACK.** Latest coordinator snapshot: **79 free macOS
+> minutes, paid OFF**. Current workflow cap95 exceeds79: **do not start CI**.
+> Any future build requires a separately reviewed smaller provider cap and
+> matching internal budget within fresh remaining quota with reserve, plus
+> private/native approvals and paid-OFF verification. No cap/code change now,
+> no new CI run/cancel here. Historical run instructions below are superseded.
 
 # Bundled Steam package cache and screen controls
 
-Source baseline: `52aa5b55d3c3466adf59ac2edac82a4b670f767f`, Steam branch only.
-This is a new source candidate, **not a new built/delivered IPA**. The preceding
-delivered IPA is still built at `7782926dffb3ab513715518c18f8e667ca3c0c40`.
-Apple compilation, actual touch UI and device behavior for this change **NOT RUN**.
+Implementation/cache preparation baseline: `52aa5b55d3c3466adf59ac2edac82a4b670f767f`.
+Delivered build source is now `bcbb8db7c909d34f05ccdf6ec95675f26f29ed78`.
+CI#38 failed on the fixture's raw-colon expectation; the fixture-only correction
+preserved renderer escaping and the subsequent CI#39 passed the required Apple
+checks and produced the delivered IPA. Actual touch UI/device/Steam/gameplay
+acceptance remains **NOT RUN**.
 
 ## Real cache and delivery
 
@@ -99,8 +118,8 @@ remains visible. Steam updater/login/agreements may require network and owner
 action. No automatic agreement acceptance, account copy or silent network
 fallback on cache failure. Advanced explicit cache import remains available.
 
-Expected IPA growth is about379 MB (362 MiB); from the prior710858044-byte IPA,
-roughly1.09 GB total before measuring actual packaging/compression. On phone,
+Measured IPA is1086741944 bytes:375883900 bytes larger than the preceding
+710858044-byte IPA (about358 MiB increase). On phone,
 the bundle and imported cache are separate copies. First cache import requires
 archive size +1 GiB free reserve. New userdata retains12 GiB +1 GiB provisioning
 gate separately; existing userdata does not reimport12 GiB. No resize/sparse/
@@ -153,9 +172,9 @@ Fixtures cover bundle auto-import/reuse, whole-pin refusal even with an existing
 cache, interruption/retry/publication recovery, preservation of a synthetic
 userdata sentinel, simultaneous controls, overlapping physical key/mouse
 ownership, neutral/nonfinite sticks and release-all. The integrated pinned Husk
-typecheck includes the actual new UIKit overlay. These Apple checks are
-**NOT RUN here**; no Apple SDK/compiler is available in this Linux environment.
-Device, graphics, games and new installed-client acceptance remain NOT RUN.
+typecheck includes the actual new UIKit overlay. These Apple checks were not executed in the Linux environment; the coordinator
+subsequently confirmed CI#39 PASS for the built SHA above. Device, graphics,
+games and new installed-client acceptance remain NOT RUN.
 
 The user explicitly authorized using the remaining106 free minutes; the former
 120-minute prerequisite is removed for this task. Only the dedicated
@@ -165,7 +184,7 @@ preparation. At the coordinator's106-minute snapshot this leaves11 minutes below
 the provider cap. Fresh quota with reserve, **paid OFF**, private source and
 native-build approval remain mandatory. No CI was dispatched/cancelled here.
 
-Coordinator continuation after reviewing the final pushed pinning commit:
+Historical CI#39 dispatch parameters (completed; do not reuse under the current79-minute balance):
 
 - Source branch `codex/steam-arm64-experiment-20261017`; workflow
   `ideck-linux-probe-ipa`; `expected_commit=<full final post-pin HEAD>`.

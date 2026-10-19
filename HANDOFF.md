@@ -1,4 +1,41 @@
-> Current Apple delivery result: **CI #30 PASSED** for built source commit
+> Current source fix, 19 October 2026: the reported Debian desktop recovery refusal
+> was traced to a **missing integration** of GUI recovery/accessible diagnostics
+> from GUI `7e3235e8a533112fb543855d7aded2502f50b5c9` into this Steam branch.
+> The exact `.needsRecovery` message diagnoses neither corruption nor the reason
+> for dirty ext4 state; the installed source SHA remains unconfirmed by screenshot.
+> No phone disk/dirty marker was changed. Full analysis and boundaries:
+> **STEAM-GUI-RECOVERY-20261019.md**.
+>
+> Restored the existing GUI-only clone transaction, strict journal-only/fsck output
+> and checked-image-digest gates, fresh-process promotion/owner locks/fsync, bounded
+> watchdog and preparation cancellation/late-callback guards. Existing GUI userdata
+> path is retained; no reseed/reset. Share report and Diagnostics are always in a
+> fixed top bar and can export the current/saved startup journal before Linux runs.
+> Ext4 observations are bounded numeric metadata, not user-file contents.
+>
+> Also fixed a separate real Steam startup bug: report hashing chose the missing
+> desktop-profile.json in the Steam bundle. It now selects steam-profile.json first;
+> Steam reports retain their actual mode/import/dirty observations. GUI recovery
+> remains restricted to its own UUID/1.25 GiB: Steam 12 GiB and Debian console dirty
+> disks still refuse safely with diagnostic export, never entering GUI recovery.
+>
+> **538 Python tests OK (533 PASS, 5 SKIP)**; generator/CPIO and strict AWK gates,
+> actual git check-attr, complete source overlay and real sealed Steam staging /
+> repeat / package resource verification PASS. Payload locks and all 23 Steam
+> source bindings are unchanged. New Swift IO/relaunch/dirty-Steam regressions are
+> mandatory in the next Apple gate; **Apple/IPA/guest/device execution NOT RUN**
+> for this source fix. No CI was started. Evidence:
+> `experiments/linux-guest/evidence/steam-gui-recovery-port-20261019/`.
+> Imported GUI historical receipts are not a new device acceptance. BusyBox
+> corresponding-source provenance remains **OPEN**.
+>
+> Parent alone checks fresh free quota/disabled billing and runs the next exact
+> pushed Steam SHA. The last delivered IPA below was built at 7421a2b6 and does
+> not include this fix; this source/docs commit is not a newly delivered IPA.
+> A device report is still needed to identify installed source/build/mode and
+> actual ext4/recovery state before claiming the user's problem is resolved.
+
+> Historical Apple delivery result: **CI #30 PASSED** for built source commit
 > **7421a2b61215df3fc8fcd74df75348f00574f2fc**.
 > Build: https://codemagic.io/app/6ad03ce9a8a969b53f3a4aa9/build/6ad553f47550aed8108ff6f4 .
 > Native QEMU/ANGLE, Swift/host checks, full Husk typecheck, app-build, signature

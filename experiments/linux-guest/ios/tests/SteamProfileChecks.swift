@@ -90,6 +90,29 @@ func runSteamProfileChecks(root: URL) throws {
         blockSize: 4096, features: .supported)
     do { try ordinary.validate(); preconditionFailure("global disk limit raised") }
     catch LinuxDesktopDisk.Invalid.specification { }
+    // Force-quit-shaped metadata on an existing Steam disk must be observable
+    // and refused on every reopen, never routed to the GUI-only recovery engine.
+    disk.closeUnused()
+    u32(0x60, 198)
+    u32(1020, LinuxDesktopDisk.crc32c(header[0..<1020]))
+    precondition(pwrite(fd, header, header.count, 1024) == header.count)
+    for _ in 0..<2 {
+        var observed: LinuxDesktopDisk.RecoveryObservation?
+        do {
+            _ = try profile.openExisting(in: data, observe: { observed = $0 })
+            preconditionFailure("dirty Steam disk mounted or recreated")
+        } catch LinuxDesktopDisk.Invalid.needsRecovery { }
+        precondition(observed?.recoverBit == true)
+    }
+    do {
+        _ = try LinuxGUIRecovery.prepare(directory: data, specification: profile.image)
+        preconditionFailure("Steam disk entered GUI recovery")
+    } catch LinuxGUIRecovery.Invalid.metadata { }
+    precondition(!FileManager.default.fileExists(atPath: data.appendingPathComponent(".recovery-v1").path))
+    var preserved = [UInt8](repeating: 0, count: 1024)
+    let read = preserved.withUnsafeMutableBytes { pread(fd, $0.baseAddress!, $0.count, 1024) }
+    precondition(read == preserved.count)
+    precondition(preserved == header, "dirty Steam metadata must remain byte-for-byte intact")
     valid["mode"] = "desktop"
     try JSONSerialization.data(withJSONObject: valid).write(to: profileFile)
     do { _ = try LinuxSteamProfile.load(from: assets); preconditionFailure("wrong Steam contract accepted") } catch { }

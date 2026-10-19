@@ -63,6 +63,9 @@ struct LinuxDesktopView: View {
     @State private var keyboard = false
     @State private var recovery = false
     @State private var command = ""
+    @State private var showDiagnostics = false
+    @State private var showShare = false
+    @State private var shareItems: [URL] = []
     init(session: LinuxTerminalSession = .desktop) {
         self.session = session
         input = session.desktopInput!
@@ -71,12 +74,13 @@ struct LinuxDesktopView: View {
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 5) {
-                HStack {
-                    Text(session.isSteam ? "Steam · experimental" : "Debian desktop").font(.headline)
-                    Spacer()
-                    if session.attempted { Button("Stop Linux") { session.stop() }.disabled(!session.canStop || session.stopping) }
+                Text(session.isSteam ? "Steam · experimental" : "Debian desktop").font(.headline).frame(maxWidth: .infinity, alignment: .leading)
+                Text(session.message).font(.caption).lineLimit(3).frame(maxWidth: .infinity, alignment: .leading)
+                if let preparation = session.preparationState, preparation.inProgress {
+                    ProgressView(preparation.message).font(.caption)
+                    Text("Keep iDeck open. Leaving this screen cancels pending startup after the current file operation; completed copies are preserved.")
+                        .font(.caption2).fixedSize(horizontal: false, vertical: true)
                 }
-                Text(session.message).font(.caption).frame(maxWidth: .infinity, alignment: .leading)
                 if jit.busy { ProgressView(jit.status ?? "Enabling JIT…") }
                 if let error = jit.error { Text(error).font(.caption).foregroundStyle(.orange) }
                 if geometry.size.width > geometry.size.height {
@@ -92,14 +96,61 @@ struct LinuxDesktopView: View {
             }
             .buttonStyle(.bordered).font(.caption).padding(8)
         }
-        .background(LinuxDesktopKeyboard(input: input, available: session.ready && !session.stopping && phase == .active && !recovery, show: keyboard).frame(width: 1,height: 1).opacity(0.01))
+        // Keep export actions outside the geometry/scroll/input subtree. The
+        // keyboard may cover guest controls, never this fixed top safe-area bar.
+        .safeAreaInset(edge: .top, spacing: 0) { persistentActions }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
+        .background(LinuxDesktopKeyboard(input: input, available: inputAvailable, show: keyboard).frame(width: 1,height: 1).opacity(0.01))
         .sheet(isPresented: $jit.showSetup) { JITSetupFlow() }
-        .onAppear { session.recoverDiagnostics(); input.setFocused(session.ready && phase == .active && !recovery) }
-        .onChange(of: recovery) { input.setFocused(!$0 && session.ready && phase == .active && !session.stopping) }
-        .onDisappear { input.setFocused(false) }
-        .onChange(of: phase) { input.setFocused($0 == .active && session.ready && !session.stopping && !recovery) }
-        .onChange(of: session.ready) { input.setFocused($0 && phase == .active && !session.stopping && !recovery) }
+        .sheet(isPresented: $showDiagnostics) { LinuxDesktopDiagnosticsView(session: session) }
+        .sheet(isPresented: $showShare) { ShareSheet(items: shareItems) }
+        .onAppear { session.recoverDiagnostics(); refreshInputFocus() }
+        .onChange(of: recovery) { _ in refreshInputFocus() }
+        .onChange(of: showDiagnostics) { _ in refreshInputFocus() }
+        .onChange(of: showShare) { _ in refreshInputFocus() }
+        .onChange(of: jit.showSetup) { _ in refreshInputFocus() }
+        .onDisappear { input.setFocused(false); session.cancelPreparation() }
+        .onChange(of: phase) { value in
+            if value == .active { session.recoverDiagnostics() }
+            if value == .background { session.cancelPreparation() }
+            refreshInputFocus()
+        }
+        .onChange(of: session.ready) { _ in refreshInputFocus() }
+        .onChange(of: session.stopping) { _ in refreshInputFocus() }
         .onChange(of: jit.attachGeneration) { _ in jit.refreshPairingStatus(); session.claimJIT() }
+    }
+    private var inputAvailable: Bool {
+        session.ready && !session.stopping && phase == .active && !recovery
+            && !showDiagnostics && !showShare && !jit.showSetup
+    }
+    private var persistentActions: some View {
+        HStack(spacing: 8) {
+            Button("Share report") {
+                prepareDiagnostics()
+                if let file = session.reportForSharing() { shareItems = [file]; showShare = true }
+                else { showDiagnostics = true }
+            }.accessibilityIdentifier("ideck-desktop-share-report")
+            Button("Diagnostics") { prepareDiagnostics(); session.recoverDiagnostics(); showDiagnostics = true }
+                .accessibilityLabel("Saved startup diagnostics, Markdown")
+                .accessibilityIdentifier("ideck-desktop-startup-diagnostics")
+            Spacer(minLength: 0)
+            if let preparation = session.preparationState, preparation.inProgress {
+                Button(preparation.canCancel ? "Cancel start" : "Cancelling…") { session.cancelPreparation() }
+                    .disabled(!preparation.canCancel).accessibilityIdentifier("ideck-desktop-cancel-start")
+            } else if session.attempted {
+                Button("Stop Linux") { session.stop() }.disabled(!session.canStop || session.stopping)
+            } else if !session.isSteam {
+                Button("Recover disk") { session.startRecovery() }.disabled(jit.busy)
+            }
+        }
+        .buttonStyle(.bordered).font(.caption).lineLimit(1).minimumScaleFactor(0.8)
+        .frame(minHeight: 44).padding(.horizontal, 8).padding(.vertical, 4)
+        .fixedSize(horizontal: false, vertical: true).background(.ultraThinMaterial)
+    }
+    private func refreshInputFocus() { input.setFocused(inputAvailable) }
+    private func prepareDiagnostics() {
+        keyboard = false; input.setFocused(false)
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
     private var display: some View {
         LinuxDesktopDisplay(input: input)
@@ -121,7 +172,7 @@ struct LinuxDesktopView: View {
                         Text("Blocker: sealed Steam seed/bootstrap/profile is missing from this IPA.").foregroundStyle(.orange)
                     }
                 }
-                Button(session.isSteam ? "Start Steam environment" : "Start desktop") { session.start() }
+                Button(session.isSteam ? "Start Steam environment" : "Start desktop") { session.startDesktop() }
                     .disabled(jit.busy || (session.isSteam && (!session.steamPayloadAvailable || !session.steamNetworkConsent)))
             }
             if session.isSteam, session.attempted {
@@ -129,6 +180,11 @@ struct LinuxDesktopView: View {
                 Button("Install / resume Steam") { session.steamAction("INSTALL") }.disabled(!session.ready || session.stopping || session.steamBusy)
                 Button("Launch Big Picture") { session.steamAction("BIG_PICTURE") }.disabled(!session.ready || !session.steamInstalled || session.steamBusy || session.stopping)
                 Button("Return to Desktop") { session.steamAction("DESKTOP") }.disabled(!session.ready || !session.steamInstalled || session.stopping)
+            }
+            if session.recoveryMode {
+                Text("Separate recovery VM. Creates verified backup/work copies; preserves the original. After completion, close/reopen iDeck before Start desktop.").font(.caption2)
+            } else if !session.attempted && !session.isSteam {
+                Text("After a blocked unclean disk: Recover disk first. Requires space for two full copies plus 512 MiB reserve.").font(.caption2)
             }
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 5) {
                 Button("Keyboard") { keyboard.toggle() }
@@ -148,7 +204,6 @@ struct LinuxDesktopView: View {
             }.disabled(!session.ready || session.stopping || recovery)
             Text(input.message).font(.caption2).foregroundStyle(.secondary)
             Button(recovery ? "Hide recovery" : "Serial recovery") { recovery.toggle() }
-            if let file = session.markdownFile { ShareLink(item: file) { Text("Share report") } }
         }
     }
     private var recoveryConsole: some View {
@@ -166,5 +221,46 @@ struct LinuxDesktopView: View {
         jit.refreshPairingStatus()
         if jit.method == .automatic, HuskBuiltInJIT.isAvailable { jit.method = .builtIn }
         jit.enable(); _ = session.noteJITEnable(dispatched: true)
+    }
+}
+
+/// Independent of guest readiness/JIT and the clipped display/input layout.
+/// Only allowlisted MD exports are offered; raw disk/user files are not read.
+private struct LinuxDesktopDiagnosticsView: View {
+    @ObservedObject var session: LinuxTerminalSession
+    @Environment(\.dismiss) private var dismiss
+    @State private var shareItems: [URL] = []
+    @State private var showShare = false
+    var body: some View {
+        NavigationView {
+            List {
+                Section("Startup status") {
+                    Text(session.message).textSelection(.enabled)
+                    if let error = session.exportError { Text(error).foregroundStyle(.orange) }
+                    if let error = session.diagnosticsError { Text(error).foregroundStyle(.orange) }
+                }
+                Section("Session report (.md)") {
+                    if let file = session.markdownFile { ShareLink("Share session report (.md)", item: file) }
+                    else { Text("No session report yet. Saved startup reports below can cover a blocked start.") }
+                }
+                Section("Saved startup diagnostics (.md)") {
+                    Button("Refresh saved reports") { session.recoverDiagnostics() }
+                    Text(session.diagnosticsMessage)
+                    ForEach(Array(session.diagnosticReports.enumerated()), id: \.element) { index, file in
+                        ShareLink("Startup report \(index + 1) (.md)", item: file)
+                        Button("Native log summary \(index + 1) (.md)") {
+                            guard let file = session.exportNativeDiagnostics(for: file) else { return }
+                            shareItems = [file]; showShare = true
+                        }
+                    }
+                }
+                Text("Reports contain known startup metadata and recognized log signatures. User-file contents and arbitrary log text are excluded.").font(.footnote)
+            }
+            .navigationTitle("Diagnostics").navigationBarTitleDisplayMode(.inline)
+            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() } } }
+        }
+        .navigationViewStyle(.stack)
+        .sheet(isPresented: $showShare) { ShareSheet(items: shareItems) }
+        .onAppear { session.recoverDiagnostics() }
     }
 }

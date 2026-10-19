@@ -1,0 +1,102 @@
+{
+  "schema": 2,
+  "status": "blocked_verified",
+  "host_only": true,
+  "owner_image_accessed": false,
+  "base_profile": {
+    "control_port": "org.ideck.control",
+    "image": {
+      "block_size": 4096,
+      "features": {
+        "compat": 44,
+        "incompat": 194,
+        "ro_compat": 1091
+      },
+      "size_bytes": 1342177280,
+      "uuid": "b66e1c8d-9cbf-45a7-b97b-dcc8f68efca7"
+    },
+    "initramfs": {
+      "file": "initramfs-desktop.gz",
+      "sha256": "f8d8f4cc92f3f8d49e68adb90ab50d901c54f115d6134ae7030526fdee3de8b4",
+      "size": 11319304
+    },
+    "kernel": {
+      "file": "vmlinuz-virt",
+      "sha256": "47970e0ee0478fe5c60824a89f162d5a353fa29466e5d3bddb0f9c506f1ed756",
+      "size": 10351104
+    },
+    "mode": "desktop",
+    "rootfs": {
+      "file": "gui-rootfs-v1.raw",
+      "sha256": "46fea0230963ca494a5adeef19f46668f559f77522e3b82215d5f543646b0791",
+      "size": 1342177280
+    },
+    "schema": 1
+  },
+  "acceptance": false,
+  "cycles": [
+    {
+      "attempt": 1,
+      "forcekill_exit": -9,
+      "gui_ready_observed": true,
+      "serial_receipts": [
+        {
+          "nonce": "22c64d79a0d1400e9b1b1977b3654436",
+          "exit_status": 0,
+          "complete_output_line": true,
+          "marker_absent_from_input": true,
+          "command_sha256": "12427f1ec639b936388d3770a65eda81581b86cb235251a1f3d5469dd74a77e3"
+        }
+      ],
+      "sync_completed_before_kill": true,
+      "original_sha256": "a0fbb5dd3fcc0bcc8b5cad51293f133f7f57d54f78ee7b9ccb79f813be36a0b3",
+      "original_preserved": true,
+      "backup_preserved": true,
+      "recovery_exit": 0,
+      "post_fsck_exit": 0,
+      "post_output_gate_exit": 1,
+      "readonly_control_file_verified": true,
+      "readonly_assessments_nonmutating": true,
+      "promoted": false,
+      "relaunch_acceptance": false,
+      "control_markers": "IDECK_DESKTOP_RECOVERY_READY\nIDECK_RECOVERY_ASSESS:0\nIDECK_RECOVERY_REPLAY:0\nIDECK_RECOVERY_VERIFY:0\nIDECK_RECOVERY_FAILED:verification_output\n"
+    },
+    {
+      "attempt": 2,
+      "forcekill_exit": -9,
+      "gui_ready_observed": true,
+      "serial_receipts": [
+        {
+          "nonce": "7b06d9b5511846438e0fc62a0e0d6c1b",
+          "exit_status": 0,
+          "complete_output_line": true,
+          "marker_absent_from_input": true,
+          "command_sha256": "0f869e7276250763bfa660dfb6b395292b9ef11d3348b437249b26dbd69a085b"
+        }
+      ],
+      "sync_completed_before_kill": true,
+      "original_sha256": "68b0207243b78af728b16bb7a803adb9d762932e10b5d91e98ad7bd071773eb7",
+      "original_preserved": true,
+      "backup_preserved": true,
+      "recovery_exit": 0,
+      "post_fsck_exit": 0,
+      "post_output_gate_exit": 1,
+      "readonly_control_file_verified": true,
+      "readonly_assessments_nonmutating": true,
+      "promoted": false,
+      "relaunch_acceptance": false,
+      "control_markers": "IDECK_DESKTOP_RECOVERY_READY\nIDECK_RECOVERY_ASSESS:0\nIDECK_RECOVERY_REPLAY:0\nIDECK_RECOVERY_VERIFY:0\nIDECK_RECOVERY_FAILED:verification_output\n"
+    }
+  ],
+  "suffix_sha256": "7afe0fedc10191d0760a6e03f143ba352bd3e108b14274a0ea452ca3084eb63c",
+  "runner_sha256": "46f43d9b60deccc118a6cb4a985bea5f366d6f9ce03a46c7c95b667cb9a60961",
+  "guest_script_sha256": "fe6a6d244d1c5888013c640848ee9c3de30c6913e1e86b0834cdb4acaceab1e3",
+  "scan_source_sha256": "ae95dd09dc791c380b66563adcd2924af46e3dc298a3b797b5e31c6eda118d35",
+  "pristine_positive_gate": true,
+  "scope": "Two independent real GUI force-kills on old cloud seed46fea with nonce-framed completed sync receipts, followed by correctly rejected recovery. NOT successful recovery/relaunch acceptance. Current published seed9c4d unavailable; no owner/device test.",
+  "remaining_blocker": "journal_only leaves free-block/free-inode summary mismatches; strict full-output gate refuses them even when e2fsck exits0. No general repair is enabled in app.",
+  "derived_initramfs": {
+    "size": 11329520,
+    "sha256": "def462a6237c11b3f34f2070dde1652eb44fefb24b0a3fa543b8588ca77f4030"
+  }
+}

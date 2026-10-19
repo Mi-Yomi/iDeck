@@ -7,7 +7,8 @@ enum LinuxProbeReport {
     static let filename = "iDeck-Linux-Probe-Report.md"
 
     static func render(report: [String: Any], serial: String? = nil) -> String {
-        let desktop = report["mode"] as? String == "desktop"
+        let steam = report["mode"] as? String == "steam-experimental"
+        let desktop = report["mode"] as? String == "desktop" || steam
         let debian = report["mode"] as? String == "debian" || desktop
         let console = debian || report["mode"] as? String == "terminal"
         let statuses: Set<String> = ["prepared", "booting", "guest_stopped", "prepare_failed", "report_write_failed",
@@ -15,7 +16,7 @@ enum LinuxProbeReport {
                                      "guest_frames_and_input_verified", "first_frame_not_observed",
                                      "terminal_prepared", "terminal_running", "terminal_stopping", "terminal_clean_stopped",
                                      "terminal_unclean_stopped", "terminal_prepare_failed", "terminal_stop_failed",
-                                     "terminal_startup_timeout", "terminal_stop_timeout"]
+                                     "terminal_startup_timeout", "terminal_stop_timeout", "terminal_recovery_timeout", "terminal_prepare_cancelled"]
         let status = (report["status"] as? String).flatMap { statuses.contains($0) ? $0 : nil }
         let summary: String
         switch status {
@@ -23,6 +24,8 @@ enum LinuxProbeReport {
             summary = "Reported outcome: Linux framebuffer and input probe completed; stage evidence follows."
         case .some("terminal_clean_stopped"):
             summary = "Reported outcome: terminal stopped after guest unmount, QEMU loop return and host disk sync. Close and reopen the app before the next session."
+        case .some("terminal_prepare_cancelled"):
+            summary = "Reported outcome: startup was cancelled before native entry. Completed copies were preserved. Close and reopen the app before another attempt."
         case .some("terminal_prepared"), .some("terminal_running"), .some("terminal_stopping"):
             summary = "Reported outcome: terminal session is active or stopping; the disk is not yet declared safe to close."
         case .some(let value) where value.hasPrefix("terminal_"):
@@ -34,7 +37,7 @@ enum LinuxProbeReport {
         case .none:
             summary = "Reported outcome: UNKNOWN; individual evidence fields follow."
         }
-        var lines = [desktop ? "# iDeck Debian Desktop Report" : (debian ? "# iDeck Debian Console Report" : "# iDeck Linux Probe Report"), "", summary, "", "## Snapshot", "", "| Field | Value |", "| --- | --- |"]
+        var lines = [steam ? "# iDeck Steam Experiment Report" : desktop ? "# iDeck Debian Desktop Report" : (debian ? "# iDeck Debian Console Report" : "# iDeck Linux Probe Report"), "", summary, "", "## Snapshot", "", "| Field | Value |", "| --- | --- |"]
         func row(_ label: String, _ value: String) { lines.append("| \(label) | \(value) |") }
         row("Version", text(report["app_version"]))
         row("Build", text(report["app_bundle_version"]))
@@ -43,7 +46,7 @@ enum LinuxProbeReport {
         row("Device class", text(report["device_class"]))
         row("OS", text(report["os"]))
         row("Schema", integer(report["schema"]))
-        row("Mode", desktop ? "DEBIAN DESKTOP / EXT4" : (debian ? "DEBIAN ARM64 / EXT4" : (console ? "TERMINAL" : "DIAGNOSTIC PROBE")))
+        row("Mode", steam ? "STEAM EXPERIMENT / EXT4" : desktop ? "DEBIAN DESKTOP / EXT4" : (debian ? "DEBIAN ARM64 / EXT4" : (console ? "TERMINAL" : "DIAGNOSTIC PROBE")))
         row("Status", status.map(escape) ?? "UNKNOWN")
         row("Started UTC", text(report["started_utc"]))
         row("Installed executable SHA-256", hex(report["app_executable_sha256"], count: 64))
@@ -69,6 +72,16 @@ enum LinuxProbeReport {
 
         if console {
             lines += ["", "## Persistent terminal", "", "| Check | Result |", "| --- | --- |"]
+            row("Preparation phase", text(report["preparation_phase"], allowed: ["assets", "disk", "importing_seed", "recovery_copies", "arguments", "report", "native_entry"]))
+            row("Startup cancellation requested", flag(report["preparation_cancel_requested"], yes: "REQUESTED", no: "NOT REQUESTED"))
+            row("Startup cancelled before native entry", flag(report["preparation_cancelled_before_qemu"], yes: "CANCELLED BEFORE NATIVE ENTRY", no: "NOT CONFIRMED"))
+            for (label, key) in [("Startup readiness timeout", "terminal_startup_timed_out"),
+                                 ("Orderly Stop timeout", "terminal_stop_timed_out"),
+                                 ("Control channel failure", "terminal_control_channel_failed"),
+                                 ("Serial channel failure", "terminal_serial_channel_failed"),
+                                 ("Serial log write failure", "serial_log_write_failed")] {
+                row(label, flag(report[key], yes: "REPORTED", no: "NONE REPORTED"))
+            }
             row("Terminal ready", flag(report["terminal_ready"]))
             if desktop {
                 row("Guest X connection and mapped desktop windows", flag(report["desktop_gui_ready"]))
@@ -84,14 +97,34 @@ enum LinuxProbeReport {
             row("QEMU block layer drained", flag(report["qemu_block_layer_drained_verified"], yes: "VERIFIED (reported)", no: "NOT VERIFIED"))
             row("Serial log truncated", flag(report["log_truncated"], yes: "YES (bounded capture)", no: "NO"))
             if debian {
-                let imports: Set<String> = ["not_started", "existing_disk_preserved", "copying_seed", "seed_hash_verified_and_published"]
-                let failures: Set<String> = ["needsRecovery", "insufficientSpace", "locked", "assetDigest", "assetSize", "checksum", "filesystem", "ownership", "metadata", "size", "directory", "open", "io", "inspection", "configuration", "uuid", "geometry", "features", "journal", "profile", "assetRead", "assetMetadata"]
+                let imports: Set<String> = ["not_started", "existing_disk_preserved", "copying_seed", "seed_hash_verified_and_published", "existing_steam_disk_preserved", "copying_steam_seed", "steam_seed_hash_verified_and_published"]
+                let failures: Set<String> = ["needsRecovery", "insufficientSpace", "locked", "assetDigest", "assetSize", "checksum", "filesystem", "ownership", "metadata", "size", "directory", "open", "io", "inspection", "configuration", "uuid", "geometry", "features", "journal", "profile", "assetRead", "assetMetadata", "specification", "headerRead", "alreadyExists", "asset"]
                 row("Import", (report["import_status"] as? String).flatMap { imports.contains($0) ? $0 : nil } ?? "UNKNOWN")
                 row("Storage failure", (report["storage_failure"] as? String).flatMap { failures.contains($0) ? $0 : nil } ?? "NONE RECORDED")
-                row("Seed SHA-256", hex(report["debian_seed_sha256"], count: 64))
+                row("Seed SHA-256", hex(report[steam ? "steam_seed_sha256" : "debian_seed_sha256"], count: 64))
                 row("Production initramfs SHA-256", hex(report["terminal_initramfs_sha256"], count: 64))
+                row("Ext4 RECOVER bit", flag(report["ext4_recover_bit"], yes: "SET", no: "CLEAR"))
+                row("Ext4 state (raw)", unsigned(report["ext4_state"], maximum: UInt32(UInt16.max)))
+                row("Ext4 last_orphan", unsigned(report["ext4_last_orphan"]))
+                row("Ext4 error_count", unsigned(report["ext4_error_count"]))
+                if desktop {
+                    row("Recovery phase", text(report["recovery_phase"], allowed: ["backup", "work_copy", "prepared", "assessed", "replayed", "summary_reconciling", "summary_reconciled", "checking_image", "verified", "awaiting_exit", "relaunch_required", "promoted", "manual_review"]))
+                    row("Recovery failure", text(report["recovery_failure"], allowed: ["metadata", "busy", "io", "space", "changed", "receipt", "manualReview", "relaunch"]))
+                    row("Recovery watchdog", text(report["recovery_watchdog_timeout"], allowed: ["supervisor", "progress", "deadline"]))
+                    row("Recovery guest failure", text(report["recovery_guest_failure"], allowed: ["proc", "sys", "dev", "applets", "module", "ext4", "control", "control_open", "duplicate_tools", "duplicate_work", "disk_identity", "extra_disk", "readonly", "size", "uuid", "tools_mount", "bind_dev", "bind_proc", "target_mode", "assessment", "replay", "manual_review", "sync", "unmount_proc", "unmount_dev", "unmount_tools", "final_sync", "cancelled", "poweroff_returned", "control_receipt", "verification_output", "scope_head", "scope_hash", "image_hash", "counter_scope", "counter_eligibility", "counter_directory", "counter_mount", "counter_sync", "counter_unmount"]))
+                    row("Read-only output gate", flag(report["recovery_output_clean"], yes: "CLEAN OUTPUT", no: "NOT ESTABLISHED"))
+                    row("Guest checked image SHA-256", hex(report["recovery_checked_image_sha256"], count: 64))
+                    row("Scoped summary reconciliation", flag(report["recovery_summary_reconciled"], yes: "BODY HASH / HEADER SCOPE VERIFIED", no: "NOT USED"))
+                    row("Recovery assessment exit", unsigned(report["recovery_assessment_exit"]))
+                    row("Journal-only replay exit", unsigned(report["recovery_replay_exit"]))
+                    row("Read-only verification exit", unsigned(report["recovery_verification_exit"]))
+                    row("Recovery init suffix SHA-256", hex(report["recovery_suffix_sha256"], count: 64))
+                    row("Runtime initramfs SHA-256", hex(report["desktop_runtime_initramfs_sha256"], count: 64))
+                    row("Runtime init suffix SHA-256", hex(report["desktop_runtime_suffix_sha256"], count: 64))
+                }
+                lines += ["", "Ext4 fields are numeric startup observations from the locked superblock check. They do not diagnose why a state arose or replace offline filesystem review. No user-file contents are included."]
             }
-            lines += ["", desktop ? "Local Debian graphical desktop. /home/ideck persists on the separate GUI ext4 disk. Metal presents software scanout; guest GPU acceleration is not established." : (debian ? "Debian runs through chroot from Alpine initramfs. Its ext4 root is persistent; /run is temporary. This is a line console."
+            lines += ["", steam ? "Separate experimental Steam ext4 disk. Valve client download requires network consent. Device Steam/game acceptance is not established; GUI recovery does not apply to this disk." : desktop ? "Local Debian graphical desktop. /home/ideck persists on the separate GUI ext4 disk. Metal presents software scanout; guest GPU acceleration is not established." : (debian ? "Debian runs through chroot from Alpine initramfs. Its ext4 root is persistent; /run is temporary. This is a line console."
                       : "Files in /data use the persistent VFAT volume. The initramfs root is temporary."),
                       "Orderly stop records guest unmount, QEMU loop return and host sync. It does not establish QEMU block-layer teardown; the disk lock stays held until this app exits.",
                       "The framebuffer/input diagnostic checks below are not run in terminal mode.",
@@ -137,6 +170,14 @@ enum LinuxProbeReport {
         return result ? yes : no
     }
 
+    private static func unsigned(_ value: Any?, maximum: UInt32 = .max) -> String {
+        guard let value, type(of: value) != Bool.self, let number = value as? NSNumber,
+              CFGetTypeID(number) != CFBooleanGetTypeID() else { return "UNKNOWN" }
+        let result = number.doubleValue
+        guard result.isFinite, result >= 0, result <= Double(maximum), result.rounded() == result else { return "UNKNOWN" }
+        return String(UInt32(result))
+    }
+
     private static func number(_ value: Any?) -> Double? {
         guard let value, type(of: value) != Bool.self, let number = value as? NSNumber,
               CFGetTypeID(number) != CFBooleanGetTypeID() else { return nil }
@@ -164,6 +205,10 @@ enum LinuxProbeReport {
         return result
     }
 
+    private static func text(_ value: Any?, allowed: Set<String>) -> String {
+        guard let value = value as? String, allowed.contains(value) else { return "UNKNOWN" }
+        return escape(value)
+    }
     private static func text(_ value: Any?) -> String {
         guard let string = value as? String, !string.isEmpty else { return "UNKNOWN" }
         return escape(string)

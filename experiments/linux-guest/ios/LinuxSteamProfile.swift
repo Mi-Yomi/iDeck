@@ -107,9 +107,9 @@ struct LinuxSteamProfile: Decodable {
         guard rawHash.finalize().map({ String(format: "%02x", $0) }).joined() == digest else { throw Invalid.assetDigest }
     }
 
-    func openExisting(in directory: URL) throws -> LinuxDesktopDisk {
+    func openExisting(in directory: URL, observe: ((LinuxDesktopDisk.RecoveryObservation) -> Void)? = nil) throws -> LinuxDesktopDisk {
         try validate()
-        return try LinuxDesktopDisk.openExisting(directory: directory, specification: image)
+        return try LinuxDesktopDisk.openExisting(directory: directory, specification: image, observe: observe)
     }
 
     func provision(in directory: URL, assets: URL) throws -> LinuxDesktopDisk {

@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "base_remote_sha": "ff39aaf43afa4a6805c7e05d2d1a754a2865c901",
+  "gui_reference": "7e3235e8a533112fb543855d7aded2502f50b5c9",
+  "gui_last_head_reviewed": "3718c9f627c7d5791988aa47108513ae895b1167",
+  "common_ancestor": "27e9736f35ffb7c572e2fa81c75458ee1d1b8ff9",
+  "exact_gui_core_imports": {
+    "ios/LinuxGUIRecovery.swift": {
+      "size": 25378,
+      "sha256": "259ffb5b152db34d9e99c01cf2e1db9850d11e4d36c84dcd31c327814b9d6bd9"
+    },
+    "ios/LinuxRecoveryGuest.swift": {
+      "size": 23155,
+      "sha256": "f3052e0294239da5f3f851ed99b029739c4cb65b4f13342455570ca1000b7e79"
+    },
+    "tools/recovery_guest.py": {
+      "size": 4904,
+      "sha256": "d7508ae3181229dd3485260abd7ea938de21ede87f5e39fa7815401de8560bec"
+    },
+    "tools/check_gui_recovery.py": {
+      "size": 19384,
+      "sha256": "49317df78449d234eefcf91997eb54deacc5771946ae41d9d16ab4786a0f28e0"
+    },
+    "guest/recovery/ideck-recovery-init": {
+      "size": 7924,
+      "sha256": "d014ddd17798897f82a3528425e9318d1c74a812d2a0a53ff065af8672f3619f"
+    },
+    "guest/recovery/fsck-clean.awk": {
+      "size": 1468,
+      "sha256": "2669aafe762c0c6c05cf692d85d7337f94967db06604cc00b809eaef2b5eee1a"
+    },
+    "guest/recovery/scope-head.awk": {
+      "size": 1071,
+      "sha256": "473cd7589b83113ec8db80a03f2414ebf767ce1ff088c0d02e165bccfe7de856"
+    }
+  },
+  "unchanged_payload_locks": {
+    "ipa/steam.lock.json": {
+      "size": 4667,
+      "sha256": "bc3dfe7b7c78a897503eb5e1f17cd67a245b6d2e7bd61ead705e6435d3c30741"
+    },
+    "ipa/gui.lock.json": {
+      "size": 3102,
+      "sha256": "fef0bf4c5b72cad5ee921616639f6e28bec73bce7b1e689c95c3734aed82c7eb"
+    },
+    "ipa/debian.lock.json": {
+      "size": 2982,
+      "sha256": "45f3985e5ca35e95849f56a658811601b923168abc714bbdadaa329d81e1e9bd"
+    },
+    "ipa/terminal.lock.json": {
+      "size": 1733,
+      "sha256": "e39514b53a2ae33de96b300b2578c760fb95b2b2685bb7a99502f0f2d0c6a98e"
+    },
+    "ipa/gui-inputs.lock.json": {
+      "size": 142686,
+      "sha256": "8b3ee6d1f255c7486e7226c65ab304036363edccea4e145b472fe7df1cf6ed98"
+    },
+    "ipa/steam-client.lock.json": {
+      "size": 4757,
+      "sha256": "9b8bc9fe5e8074ae4d798f645d259066e968b8bc5512183c0aca34e1f54a8bdd"
+    },
+    "ipa/steam-dependencies.lock.json": {
+      "size": 17731,
+      "sha256": "0d153bbb2a9a39c32fb650d189cc972355fc1d94da39297cf0b9830fdbd922f6"
+    }
+  },
+  "steam_source_bindings": "PASS; all 23 remain unchanged",
+  "recovery_generator": "PASS; exact generated Swift matches source",
+  "python_ast_files": 131,
+  "sh_syntax": "PASS",
+  "git_check_attr": "/workspace/iDeck/experiments/linux-guest/vendor/alpine-3.24.1-aarch64/modloop-virt: text: unset",
+  "husk_source_files": 81,
+  "overlay_patches": 5,
+  "copied_swift_additions": 22,
+  "all_overlay_copies_exact": "PASS",
+  "actual_steam_asset_stage_and_repeat_without_file_digest": "PASS",
+  "steam_package_resource_verifier": "PASS",
+  "screenshot_source": "Exact text supplied by coordinating executor; installed source SHA not established; no image materialized or phone disk accessed",
+  "device_report_needed": "Source commit/build/executable SHA, mode, storage_failure, bounded ext4 observations and recovery phase/failure; failure UI now offers current/saved report export",
+  "gui_recovery_scope": "Existing GUI UUID/1.25 GiB only; clone-only, full original backup, journal-only replay + strict read-only output and checked image digest, fresh-process promotion with exclusive locks/fsync",
+  "steam_debian_console_dirty_disks": "Safe refusal with report export; no GUI recovery on Steam 12 GiB or Debian console",
+  "new_apple_swift_checks": "NOT RUN; mandatory CI includes actual IO/relaunch and dirty Steam checks",
+  "new_guest_boot": "NOT RUN",
+  "device_validation": "NOT RUN",
+  "ci_started": false,
+  "busybox_provenance": "OPEN; no new provenance/distribution acceptance",
+  "python_regression": {
+    "tests_run": 538,
+    "passed": 533,
+    "skipped": 5,
+    "failures": 0,
+    "errors": 0
+  },
+  "current_overlay_sha256": "56a0c3033980f3508be976a0fce309bd0d918be93354b4eafe814e30900eaf71"
+}

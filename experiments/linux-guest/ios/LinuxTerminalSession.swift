@@ -18,6 +18,8 @@ final class LinuxTerminalSession: ObservableObject {
     var steamPayloadAvailable: Bool { FileManager.default.fileExists(atPath: Bundle.main.bundleURL.appendingPathComponent("iDeckLinuxSteam/steam-profile.json").path) }
     let isDebian: Bool
     let isDesktop: Bool
+    @Published fileprivate(set) var recoveryMode = false
+    private var recoveryRequested = false
     let desktopInput: LinuxDesktopInput?
     init(isDebian: Bool = false, isDesktop: Bool = false, isSteam: Bool = false) {
         self.isSteam = isSteam
@@ -36,6 +38,7 @@ final class LinuxTerminalSession: ObservableObject {
     @Published fileprivate(set) var stopping = false
     @Published fileprivate(set) var canStop = false
     @Published fileprivate(set) var cleanStopped = false
+    @Published fileprivate(set) var preparationState: LinuxStartupPreparation.Snapshot?
     @Published fileprivate(set) var transcript = ""
     @Published fileprivate(set) var shareFiles: [URL] = []
     @Published fileprivate(set) var markdownFile: URL?
@@ -81,6 +84,16 @@ final class LinuxTerminalSession: ObservableObject {
             diagnosticsMessage = files.isEmpty ? "No saved startup attempt yet. Linux has not been started by this action."
                 : "Saved startup reports are available. An interrupted previous process is not a diagnosed crash cause."
         } catch { diagnosticFailure() }
+    }
+
+    /// Session MD when available; otherwise the CURRENT startup journal MD.
+    /// Never silently substitute a previous attempt for the current report.
+    func reportForSharing() -> URL? {
+        precondition(Thread.isMainThread)
+        recoverDiagnostics()
+        if let markdownFile { return markdownFile }
+        guard let id = diagnosticJournal?.id else { return nil }
+        return diagnosticReports.first { diagnosticAttemptIDs[$0] == id }
     }
 
     /// Owner selects one saved attempt explicitly. Never open rotating logs,
@@ -155,6 +168,19 @@ final class LinuxTerminalSession: ObservableObject {
             : "JIT execution has not been verified. Open JIT setup."
     }
 
+    func startDesktop() {
+        guard !attempted else { return }
+        recoveryRequested = false; start()
+    }
+    func startRecovery() {
+        guard isDesktop, !isSteam else {
+            message = "This recovery supports only the separate Debian GUI disk. Share diagnostics and preserve this disk for offline review."; return
+        }
+        guard !attempted else {
+            message = "Close and reopen the app, then choose Recover disk before starting a VM. Recovery uses a separate one-use VM."; return
+        }
+        recoveryRequested = true; start()
+    }
     func start() {
         precondition(Thread.isMainThread)
         guard !attempted else { return }
@@ -192,6 +218,7 @@ final class LinuxTerminalSession: ObservableObject {
             diagnosticFailure(); message = "Startup journal is unavailable. Export existing diagnostics before trying again."; return
         }
         attempted = true
+        recoveryMode = isDesktop && !isSteam && recoveryRequested
         let documents: URL
         do {
             // Resolve only the system-provided existing prefix. The userdata
@@ -221,19 +248,26 @@ final class LinuxTerminalSession: ObservableObject {
         let next = LinuxTerminalWorker(owner: self, bundle: Bundle.main.bundleURL, session: session,
                                        dataDirectory: root, metadata: metadata, diagnostic: diagnostic)
         worker = next
+        preparationState = next.preparation.snapshot
         message = isDebian ? "Checking Debian assets and importing or opening the separate ext4 disk…"
             : "Checking terminal assets and the persistent user-data disk…"
         next.start()
     }
 
+    /// Safe on repeated taps, leaving the route or moving to the background.
+    /// It never sends Stop, closes a disk or resets the one-use attempt guard.
+    func cancelPreparation() {
+        precondition(Thread.isMainThread)
+        guard let worker, worker.requestPreparationCancellation() else { return }
+        let state = worker.preparation.snapshot
+        preparationState = state
+        message = state.message + " Keep iDeck open. Completed copies are preserved; reopen the app before retrying."
+        do { try diagnosticJournal?.record(.preparationCancelRequested) }
+        catch { diagnosticFailure() }
+    }
+
     fileprivate static func failure(_ error: Error) -> LinuxTerminalDiagnostics.Failure {
-        if let value = error as? LinuxTerminalProfile.Invalid {
-            return LinuxTerminalDiagnostics.Failure(rawValue: String(describing: value)) ?? .unknown
-        }
-        if let value = error as? LinuxGuestProfile.Invalid {
-            return LinuxTerminalDiagnostics.Failure(rawValue: String(describing: value)) ?? .unknown
-        }
-        return .unknown
+        LinuxStartupFailure.classify(error)
     }
 
     func send(_ text: String) {
@@ -374,6 +408,7 @@ private final class LinuxTerminalWorker {
     let metadata: [String: Any]
     let queue = DispatchQueue(label: "ideck.linux.terminal", qos: .userInitiated)
     let diagnostic: LinuxTerminalDiagnostics.Journal
+    let preparation = LinuxStartupPreparation()
     var disk: LinuxConsoleDisk?
     var lifecycle = LinuxConsoleLifecycle()
     var serial: LinuxTerminalSocket?
@@ -399,11 +434,18 @@ private final class LinuxTerminalWorker {
     var logTruncated = false
     var transcriptPublishScheduled = false
     var transcriptRevision: UInt64 = 0
+    var recovery: LinuxGUIRecovery?
+    var recoveryProgress = LinuxRecoveryProgress()
+    var recoveryWatchdog: LinuxRecoveryWatchdog?
+    var recoveryWatchdogRevision: UInt64 = 0
+    var recoveryTimedOut = false
+    var isRecovery: Bool
 
     init(owner: LinuxTerminalSession, bundle: URL, session: URL, dataDirectory: URL, metadata: [String: Any],
          diagnostic: LinuxTerminalDiagnostics.Journal) {
         self.owner = owner; self.bundle = bundle; self.session = session
         self.dataDirectory = dataDirectory; self.metadata = metadata; self.diagnostic = diagnostic
+        self.isRecovery = owner.recoveryMode
     }
 
     /// Called synchronously on the thread reaching the boundary, including the
@@ -412,6 +454,15 @@ private final class LinuxTerminalWorker {
     private func checkpoint(_ stage: LinuxTerminalDiagnostics.Stage, failure: LinuxTerminalDiagnostics.Failure? = nil) {
         do { try diagnostic.record(stage, failure: failure) }
         catch { owner.publish { $0.diagnosticFailure() } }
+    }
+
+    func requestPreparationCancellation() -> Bool {
+        guard preparation.requestCancellation() else { return false }
+        queue.async {
+            self.report["preparation_cancel_requested"] = true
+            self.persist()
+        }
+        return true
     }
 
     /// Before C has adopted either socket or touched the disk, a journal
@@ -424,27 +475,37 @@ private final class LinuxTerminalWorker {
                 try disk.validateOwnership()
             }
             try diagnostic.record(.qemuInitBegin)
+            guard preparation.enterNative() else { throw LinuxStartupPreparation.Cancelled.beforeNativeEntry }
         }
         catch {
             let failure = LinuxTerminalSession.failure(error)
             let journalFailed = error is LinuxTerminalDiagnostics.Problem
+            let cancelled = error is LinuxStartupPreparation.Cancelled
             queue.async {
-                self.checkpoint(.preparationFailed, failure: failure)
+                self.checkpoint(cancelled ? .preparationCancelled : .preparationFailed, failure: cancelled ? nil : failure)
                 self.startupAborted = true
+                self.preparation.finish()
                 serial.closeUnused(); control.closeUnused()
                 try? self.logHandle?.close(); self.logHandle = nil
                 self.disk?.closeUnused()
-                self.report["status"] = "terminal_prepare_failed"
+                self.report["status"] = cancelled ? "terminal_prepare_cancelled" : "terminal_prepare_failed"
+                if cancelled { self.report["preparation_cancelled_before_qemu"] = true }
                 self.persist()
                 self.owner.publish {
                     if journalFailed { $0.diagnosticFailure() }
-                    $0.message = "Startup disk ownership or journal check failed. Linux was not started. Existing user data was preserved; close and reopen the app."
+                    $0.preparationState = self.preparation.snapshot
+                    $0.message = cancelled ? "Startup cancelled before Linux started. Completed copies were preserved. Close and reopen iDeck before another attempt."
+                        : "Startup disk ownership or journal check failed. Linux was not started. Existing user data was preserved; close and reopen the app."
                 }
             }
             return false
         }
         queue.sync {
             self.enteredQEMU = true
+            self.owner.publish {
+                $0.preparationState = self.preparation.snapshot
+                $0.message = "Starting Linux. Keep iDeck open; Stop becomes available when the guest supervisor is ready."
+            }
             self.lifecycle.record(.entered)
             self.report["userdata_lock_retained_until_process_exit"] = true
             self.persist()
@@ -467,6 +528,7 @@ private final class LinuxTerminalWorker {
                 self.persist()
                 let assets = self.bundle.appendingPathComponent(self.owner.isSteam ? "iDeckLinuxSteam" : self.owner.isDesktop ? "iDeckLinuxDesktop" : (self.owner.isDebian ? "iDeckDebian" : "iDeckLinuxTerminal"))
                 let probe = self.bundle.appendingPathComponent("iDeckLinuxProbe")
+                try self.preparationCheckpoint(.assets)
                 try self.diagnostic.record(.assetsBegin)
                 let terminal = self.owner.isDebian ? nil : (try LinuxTerminalProfile.load(from: assets))
                 let steam = self.owner.isSteam ? (try LinuxSteamProfile.load(from: assets)) : nil
@@ -479,17 +541,19 @@ private final class LinuxTerminalWorker {
                 let debian = self.owner.isDebian && !self.owner.isDesktop ? (try LinuxDebianProfile.load(from: assets)) : nil
                 let desktop = self.owner.isDebian && !self.owner.isDesktop ? (try LinuxDesktopProfile.load(from: assets)) : nil
                 try self.diagnostic.record(.assetsReturned)
+                try self.preparationCheckpoint(.disk)
                 try self.diagnostic.record(.diskBegin)
-                var preparedMetadata: [String: Any]
+                let preparedMetadata: [String: Any]
                 if let steam {
                     let path = self.dataDirectory.appendingPathComponent("rootfs-v1.raw")
                     var state = stat()
                     if lstat(path.path, &state) == 0 {
                         self.report["import_status"] = "existing_steam_disk_preserved"; self.persist()
-                        self.disk = try steam.openExisting(in: self.dataDirectory)
+                        self.disk = try steam.openExisting(in: self.dataDirectory, observe: self.observeSuperblock)
                     } else {
                         guard errno == ENOENT else { throw LinuxDesktopDisk.Invalid.inspection }
                         self.report["import_status"] = "copying_steam_seed"; self.persist()
+                        try self.preparationCheckpoint(.importingSeed)
                         self.disk = try steam.provision(in: self.dataDirectory, assets: assets)
                         self.report["import_status"] = "steam_seed_hash_verified_and_published"; self.persist()
                     }
@@ -501,16 +565,31 @@ private final class LinuxTerminalWorker {
                 } else if let gui {
                     self.report["debian_seed_sha256"] = gui.rootfs.sha256
                     self.report["terminal_initramfs_sha256"] = gui.initramfs.sha256
-                    let path = self.dataDirectory.appendingPathComponent("rootfs-v1.raw")
-                    var state = stat()
-                    if lstat(path.path, &state) == 0 {
-                        self.report["import_status"] = "existing_disk_preserved"; self.persist()
-                        self.disk = try gui.openExisting(in: self.dataDirectory)
+                    if self.isRecovery {
+                        try self.prepareRecovery(gui)
                     } else {
-                        guard errno == ENOENT else { throw LinuxDesktopDisk.Invalid.inspection }
-                        self.report["import_status"] = "copying_seed"; self.persist()
-                        self.disk = try gui.provision(in: self.dataDirectory, assets: assets)
-                        self.report["import_status"] = "seed_hash_verified_and_published"; self.persist()
+                        if try LinuxGUIRecovery.promotePending(directory: self.dataDirectory, specification: gui.image, toolSeedSHA256: gui.rootfs.sha256) {
+                            self.report["recovery_phase"] = "promoted"
+                        }
+                        let path = self.dataDirectory.appendingPathComponent("rootfs-v1.raw")
+                        var state = stat()
+                        if lstat(path.path, &state) == 0 {
+                            self.report["import_status"] = "existing_disk_preserved"; self.persist()
+                            do { self.disk = try gui.openExisting(in: self.dataDirectory, observe: self.observeSuperblock) }
+                            catch LinuxDesktopDisk.Invalid.needsRecovery {
+                                // Original boot gate refused BEFORE native entry.
+                                // Use this process's ONE VM for a clone-only repair;
+                                // desktop activation is deferred to a fresh process.
+                                self.report["storage_failure"] = "needsRecovery"
+                                try self.prepareRecovery(gui)
+                            }
+                        } else {
+                            guard errno == ENOENT else { throw LinuxDesktopDisk.Invalid.inspection }
+                            self.report["import_status"] = "copying_seed"; self.persist()
+                            try self.preparationCheckpoint(.importingSeed)
+                            self.disk = try gui.provision(in: self.dataDirectory, assets: assets)
+                            self.report["import_status"] = "seed_hash_verified_and_published"; self.persist()
+                        }
                     }
                     preparedMetadata = ["profile_cpu": "cortex-a72", "profile_memory_mib": 1024, "profile_vcpus": 4,
                         "profile_width": 800, "profile_height": 600, "requested_tcg_mib": 256,
@@ -525,10 +604,11 @@ private final class LinuxTerminalWorker {
                     // lstat distinguishes absent from a dangling link or IO error.
                     if lstat(path.path, &state) == 0 {
                         self.report["import_status"] = "existing_disk_preserved"; self.persist()
-                        self.disk = try desktop.openExisting(in: self.dataDirectory)
+                        self.disk = try desktop.openExisting(in: self.dataDirectory, observe: self.observeSuperblock)
                     } else {
                         guard errno == ENOENT else { throw LinuxDesktopDisk.Invalid.inspection }
                         self.report["import_status"] = "copying_seed"; self.persist()
+                        try self.preparationCheckpoint(.importingSeed)
                         self.disk = try desktop.provision(in: self.dataDirectory, assets: assets)
                         self.report["import_status"] = "seed_hash_verified_and_published"; self.persist()
                     }
@@ -544,6 +624,7 @@ private final class LinuxTerminalWorker {
                         "terminal_initramfs_sha256": profile.initramfs.sha256]
                 } else { throw LinuxTerminalProfile.Invalid.configuration }
                 try self.diagnostic.record(.diskReturned)
+                try self.preparationCheckpoint(.arguments)
                 try self.diagnostic.record(.socketsBegin)
                 self.serial = try LinuxTerminalSocket(queue: self.queue)
                 self.control = try LinuxTerminalSocket(queue: self.queue)
@@ -558,6 +639,10 @@ private final class LinuxTerminalWorker {
                 } else if let profile = steam, let desktopDisk = disk as? LinuxDesktopDisk {
                     args = try profile.arguments(probeAssets: probe, assets: assets, session: bootSession,
                         disk: desktopDisk, serialFD: serial.qemu, controlFD: control.qemu, networkConsent: self.owner.steamNetworkConsent)
+                } else if let profile = gui, let recovery = self.recovery {
+                    args = try profile.recoveryArguments(probeAssets: probe, assets: assets, session: bootSession,
+                        transaction: recovery, serialFD: serial.qemu, controlFD: control.qemu)
+                    self.report["recovery_suffix_sha256"] = LinuxRecoveryGuest.sha256
                 } else if let profile = gui, let desktopDisk = disk as? LinuxDesktopDisk {
                     args = try profile.arguments(probeAssets: probe, assets: assets, session: bootSession,
                         disk: desktopDisk, serialFD: serial.qemu, controlFD: control.qemu)
@@ -565,7 +650,12 @@ private final class LinuxTerminalWorker {
                     args = try profile.arguments(probeAssets: probe, assets: assets, session: bootSession,
                         disk: desktopDisk, serialFD: serial.qemu, controlFD: control.qemu)
                 } else { throw LinuxTerminalProfile.Invalid.configuration }
+                if gui != nil, let index = args.firstIndex(of: "-initrd"), index + 1 < args.count {
+                    self.report["desktop_runtime_initramfs_sha256"] = try self.digest(URL(fileURLWithPath: args[index + 1]))
+                    self.report["desktop_runtime_suffix_sha256"] = LinuxRecoveryGuest.sha256
+                }
                 try self.diagnostic.record(.argumentsReturned)
+                try self.preparationCheckpoint(.report)
                 try self.diagnostic.record(.reportBegin)
                 guard FileManager.default.createFile(atPath: self.serialURL.path, contents: Data()) else { throw LinuxTerminalProfile.Invalid.io }
                 self.logHandle = try FileHandle(forWritingTo: self.serialURL)
@@ -577,7 +667,7 @@ private final class LinuxTerminalWorker {
                     "elapsed_scope": "terminal_session_including_preparation",
                     "qemu_block_layer_drained_verified": false,
                     "steam_executed": false, "physical_screen_verified": false, "accelerated_guest_gpu_verified": false]) { _, next in next }
-                self.report["terminal_profile_sha256"] = try self.digest(assets.appendingPathComponent(self.owner.isDesktop ? "desktop-profile.json" : (self.owner.isDebian ? "debian-profile.json" : "terminal-profile.json")))
+                self.report["terminal_profile_sha256"] = try self.digest(assets.appendingPathComponent(self.owner.isSteam ? "steam-profile.json" : self.owner.isDesktop ? "desktop-profile.json" : (self.owner.isDebian ? "debian-profile.json" : "terminal-profile.json")))
                 if let executable = Bundle.main.executableURL { self.report["app_executable_sha256"] = try self.digest(executable) }
                 try self.saveReport()
                 try self.diagnostic.record(.reportReturned)
@@ -586,6 +676,7 @@ private final class LinuxTerminalWorker {
                 serial.disconnected = { [weak self] in self?.channelDisconnected(control: false) }
                 control.disconnected = { [weak self] in self?.channelDisconnected(control: true) }
                 serial.beginReading(); control.beginReading()
+                try self.preparationCheckpoint(.nativeEntry)
                 try self.diagnostic.record(.argvBegin)
                 let pointers = UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>.allocate(capacity: args.count + 1)
                 pointers.initialize(repeating: nil, count: args.count + 1)
@@ -639,17 +730,27 @@ private final class LinuxTerminalWorker {
                 thread.name = "ideck.linux.terminal.qemu"
                 thread.qualityOfService = .userInteractive
                 thread.stackSize = 16 * 1024 * 1024
+                if let recovery = self.recovery, let gui { try recovery.markRunning(toolSeedSHA256: gui.rootfs.sha256) }
                 thread.start()
             } catch {
-                self.checkpoint(.preparationFailed, failure: LinuxTerminalSession.failure(error))
-                HuskLog.log("ideck-terminal", "terminal preparation failed: \(LinuxTerminalSession.failure(error).rawValue)")
+                // A timer may already be queued while receipt/file fsync was
+                // blocking this queue. Preserve the original preparation error
+                // before releasing unused resources or running that callback.
+                self.startupAborted = true
+                let cancelled = error is LinuxStartupPreparation.Cancelled
+                self.checkpoint(cancelled ? .preparationCancelled : .preparationFailed,
+                                failure: cancelled ? nil : LinuxTerminalSession.failure(error))
+                self.preparation.finish()
+                if !cancelled { HuskLog.log("ideck-terminal", "terminal preparation failed: \(LinuxTerminalSession.failure(error).rawValue)") }
                 if error is LinuxTerminalDiagnostics.Problem { self.owner.publish { $0.diagnosticFailure() } }
                 self.serial?.closeUnused(); self.control?.closeUnused()
                 try? self.logHandle?.close(); self.logHandle = nil
                 if !self.enteredQEMU { self.disk?.closeUnused() }
-                self.report["status"] = "terminal_prepare_failed"
+                self.report["status"] = cancelled ? "terminal_prepare_cancelled" : "terminal_prepare_failed"
+                if cancelled { self.report["preparation_cancelled_before_qemu"] = true }
                 if let failure = error as? LinuxDesktopDisk.Invalid { self.report["storage_failure"] = String(describing: failure) }
                 if let failure = error as? LinuxDesktopProfile.Invalid { self.report["storage_failure"] = String(describing: failure) }
+                if let failure = error as? LinuxGUIRecovery.Invalid { self.report["recovery_failure"] = String(describing: failure) }
                 self.persist()
                 if let blocker = error as? LinuxSteamProfile.Blocker {
                     self.report["steam_blocker"] = String(describing: blocker); self.persist()
@@ -661,7 +762,14 @@ private final class LinuxTerminalWorker {
                 let busy = (error as? LinuxDesktopDisk.Invalid) == .locked
                 let badSeed = (error as? LinuxDesktopProfile.Invalid) == .assetDigest
                 self.owner.publish {
-                    $0.message = needsRecovery ? "The Debian disk needs offline ext4 recovery after an unclean shutdown. It was not recreated or mounted. Export the report and preserve the disk before repair."
+                    $0.preparationState = self.preparation.snapshot
+                    $0.message = cancelled ? "Startup cancelled before Linux started. Completed copies were preserved. Close and reopen iDeck before another attempt."
+                        : error is LinuxGUIRecovery.Invalid ? "Recovery could not proceed safely (\(String(describing: error))). Original data was preserved. Share diagnostics; manual repair is not automatic. A new app process is required after any recovery VM."
+                        : needsRecovery ? (self.owner.isSteam
+                            ? "Steam ext4 safety checks blocked startup. The disk was not mounted or replaced. GUI recovery does not support this separate 12 GiB disk. Share diagnostics and preserve it for offline review."
+                            : self.owner.isDesktop
+                            ? "Ext4 safety checks blocked startup. The disk was not mounted or replaced. Share diagnostics before further recovery."
+                            : "Ext4 safety checks blocked startup. The disk was not mounted or replaced. Share the recorded metadata and preserve the disk before offline review.")
                         : noSpace ? (self.owner.isSteam ? "Not enough space for the separate 12 GiB Steam disk and 1 GiB reserve. Existing disks were preserved." : self.owner.isDesktop ? "Not enough space for the GUI disk and 512 MiB reserve. Existing disks were preserved." : "Not enough free space to import Debian (512 MiB plus 32 MiB reserve). Existing disks were preserved. Free space and reopen the app to retry.")
                         : busy ? "The Debian disk or import is busy. It was not replaced. Close the owning session before retrying."
                         : badSeed ? "The Debian seed failed its SHA-256 check. No disk was published. Restore the correct app payload before retrying; existing disks were preserved."
@@ -702,6 +810,7 @@ private final class LinuxTerminalWorker {
     }
 
     private func receiveSerial(_ bytes: Data) {
+        guard !startupAborted else { return }
         if let logHandle {
             let remaining = max(0, 2 * 1024 * 1024 - loggedBytes)
             do {
@@ -745,7 +854,7 @@ private final class LinuxTerminalWorker {
     }
 
     private func receiveControl(_ bytes: Data) {
-        guard !finalized else { return }
+        guard !finalized, !startupAborted else { return }
         guard controlLines.count + bytes.count <= 4096 else { control?.closePeer(); channelDisconnected(control: true); return }
         controlLines.append(bytes)
         while let newline = controlLines.firstIndex(of: 10) {
@@ -773,14 +882,53 @@ private final class LinuxTerminalWorker {
             // Only this independent guest supervisor port can acknowledge
             // readiness/unmount. A shell echo in the serial transcript cannot.
             let prefix = owner.isDesktop ? "IDECK_DESKTOP_" : (owner.isDebian ? "IDECK_DEBIAN_" : "IDECK_TERMINAL_")
+            if isRecovery, let text = String(data: line, encoding: .utf8), text.hasPrefix("IDECK_RECOVERY_") {
+                guard acceptRecoveryActivity() else { continue }
+                do {
+                    try recoveryProgress.observe(text)
+                    recoveryWatchdog?.advanced(at: ProcessInfo.processInfo.systemUptime)
+                    armRecoveryTimeout()
+                    report["recovery_assessment_exit"] = recoveryProgress.assessment
+                    report["recovery_replay_exit"] = recoveryProgress.replay
+                    report["recovery_verification_exit"] = recoveryProgress.verification
+                    report["recovery_output_clean"] = recoveryProgress.scanClean
+                    report["recovery_checked_image_sha256"] = recoveryProgress.imageSHA256
+                    report["recovery_summary_reconciled"] = recoveryProgress.summaryReconciled
+                    let stage = recoveryProgress.phase
+                    report["recovery_phase"] = stage
+                    checkpoint(recoveryProgress.done ? .recoveryRelaunch : (recoveryProgress.imageSHA256 != nil ? .recoveryVerified : (recoveryProgress.replay != nil ? .recoveryReplay : .recoveryAssessment)))
+                    if recoveryProgress.done { lifecycle.record(.stop); stopRequested = true; scheduleStopTimeout() }
+                    let message = recoveryProgress.message
+                    owner.publish { $0.message = message }
+                } catch {
+                    let reason = LinuxRecoveryProgress.failure(text) ?? "control_receipt"
+                    stopFailed = true; ready = false; report["recovery_phase"] = "manual_review"
+                    report["recovery_guest_failure"] = reason
+                    report["terminal_clean_stop"] = false; report["status"] = "terminal_stop_failed"
+                    checkpoint(.stopFailed, failure: .recoveryFailed)
+                    do { try recovery?.recordFailure(reason) } catch { owner.publish { $0.diagnosticFailure() } }
+                    owner.publish { $0.ready = false; $0.canStop = false; $0.message = "Recovery stopped (\(reason)). Original and backup are preserved; no replacement was activated. Share diagnostics. General or destructive repair requires a separate decision." }
+                }
+                persist(); continue
+            }
             if owner.isDesktop, line == Data("IDECK_DESKTOP_RECOVERY_READY".utf8), !guestWasReady, !loopReturned, !stopRequested {
+                if isRecovery, acceptRecoveryActivity() {
+                    recoveryWatchdog?.advanced(at: ProcessInfo.processInfo.systemUptime, supervisor: true)
+                    armRecoveryTimeout()
+                }
                 checkpoint(.terminalReady)
                 lifecycle.record(.ready)
                 guestWasReady = true
                 report["terminal_ready"] = true
                 report["desktop_gui_ready"] = false
                 persist()
-                owner.publish { $0.serialReady = true; $0.canStop = true; $0.message = "Recovery console is ready. Starting Xorg and the desktop…" }
+                let timedOut = recoveryTimedOut
+                owner.publish {
+                    $0.serialReady = !$0.recoveryMode; $0.canStop = true
+                    $0.message = timedOut ? "Recovery timed out; no copy can be activated. Stop is available now. Original data remains preserved."
+                        : $0.recoveryMode ? "Offline recovery is checking the unmounted work copy. Keep iDeck open until completion. Original data is preserved."
+                        : "Recovery console is ready. Starting Xorg and the desktop…"
+                }
                 continue
             }
             if owner.isDesktop, line == Data("IDECK_DESKTOP_GUI_FAILED".utf8), !stopRequested, !loopReturned {
@@ -790,7 +938,7 @@ private final class LinuxTerminalWorker {
                 owner.publish { $0.ready = false; $0.desktopInput?.setFocused(false); $0.message = "Graphical startup failed. Serial recovery and Stop remain available; save the report." }
                 continue
             }
-            if line == Data((prefix + "READY").utf8), !ready, !loopReturned, !stopRequested {
+            if !isRecovery, line == Data((prefix + "READY").utf8), !ready, !loopReturned, !stopRequested {
                 if !guestWasReady { checkpoint(.terminalReady) }
                 lifecycle.record(.ready)
                 guestWasReady = true
@@ -814,7 +962,12 @@ private final class LinuxTerminalWorker {
                 cleanUnmount = true
                 checkpoint(.guestCleanUnmount)
                 report["terminal_clean_unmount"] = true
-                owner.publish { $0.ready = false; $0.serialReady = false; $0.canStop = false; $0.message = "User data was unmounted. Waiting for Linux to stop…" }
+                let timedOut = recoveryTimedOut
+                owner.publish {
+                    $0.ready = false; $0.serialReady = false; $0.canStop = false
+                    $0.message = timedOut ? "The recovery guest unmounted after timeout. Recovery is not accepted; original data remains preserved. Save diagnostics."
+                        : "User data was unmounted. Waiting for Linux to stop…"
+                }
                 persist()
                 // Parse the rest of this control batch before considering a
                 // pass: poweroff may have returned and emitted STOP_FAILED.
@@ -838,7 +991,7 @@ private final class LinuxTerminalWorker {
     }
 
     private func channelDisconnected(control controlClosed: Bool) {
-        guard !finalized, !stopFailed else { return }
+        guard !finalized, !stopFailed, !startupAborted else { return }
         ready = false
         let canStop = !controlClosed && guestWasReady && !stopRequested && !loopReturned && (control?.peer ?? -1) >= 0
         report[controlClosed ? "terminal_control_channel_failed" : "terminal_serial_channel_failed"] = true
@@ -859,7 +1012,7 @@ private final class LinuxTerminalWorker {
         lifecycle.record(.loopReturned)
         ready = false
         report["qemu_main_loop_returned"] = true
-        report["status"] = stopFailed ? "terminal_stop_failed" : "terminal_unclean_stopped"
+        report["status"] = recoveryTimedOut ? "terminal_recovery_timeout" : (stopFailed ? "terminal_stop_failed" : "terminal_unclean_stopped")
         if !cleanUnmount { checkpoint(.uncleanStopped) }
         persist()
         owner.publish { $0.running = false; $0.ready = false; $0.serialReady = false; $0.stopping = false; $0.canStop = false }
@@ -881,6 +1034,15 @@ private final class LinuxTerminalWorker {
             checkpoint(.hostSyncBegin)
             guard try lifecycle.synchronizeForCleanStop({ try disk.synchronize() }) else { return }
             checkpoint(.hostDiskSynced)
+            if let recovery {
+                guard recoveryProgress.done, let assessment = recoveryProgress.assessment,
+                      let replay = recoveryProgress.replay, let verification = recoveryProgress.verification,
+                      let imageSHA256 = recoveryProgress.imageSHA256 else { throw LinuxGUIRecovery.Invalid.receipt }
+                try recovery.recordResult(assessment: assessment, replay: replay, verification: verification,
+                                          scanClean: recoveryProgress.scanClean, imageSHA256: imageSHA256,
+                                          summaryReconciled: recoveryProgress.summaryReconciled)
+                report["recovery_phase"] = "relaunch_required"
+            }
             finalized = true
             report["host_disk_fsync_passed"] = true
             report["terminal_clean_stop"] = true
@@ -898,7 +1060,8 @@ private final class LinuxTerminalWorker {
             persist()
             owner.publish {
                 $0.cleanStopped = true; $0.running = false; $0.ready = false; $0.serialReady = false; $0.stopping = false; $0.canStop = false
-                $0.message = "Guest unmount and data sync were confirmed. Close and reopen the app for the next session; the disk stays locked until this app exits."
+                $0.message = $0.recoveryMode ? "The recovery VM finished checking its copy. Fully close and reopen iDeck, then choose Start desktop to validate and activate it. Original backup is preserved; no disk is promoted in this process."
+                    : "Guest unmount and data sync were confirmed. Close and reopen the app for the next session; the disk stays locked until this app exits."
             }
         } catch {
             // The lifecycle already latched failure before rethrowing. Keep
@@ -918,8 +1081,13 @@ private final class LinuxTerminalWorker {
     }
 
     private func scheduleStartupTimeout() {
+        if isRecovery {
+            recoveryWatchdog = LinuxRecoveryWatchdog(started: ProcessInfo.processInfo.systemUptime)
+            armRecoveryTimeout()
+            return
+        }
         queue.asyncAfter(deadline: .now() + 60) {
-            guard !self.ready, !self.stopRequested, !self.loopReturned, !self.finalized, !self.startupAborted else { return }
+            guard !self.isRecovery, !self.ready, !self.stopRequested, !self.loopReturned, !self.finalized, !self.startupAborted else { return }
             self.checkpoint(.startupTimeout)
             self.report["terminal_startup_timed_out"] = true
             self.report["status"] = "terminal_startup_timeout"
@@ -927,6 +1095,46 @@ private final class LinuxTerminalWorker {
             self.owner.publish {
                 $0.message = $0.isDesktop ? "Desktop readiness was not confirmed within 60 seconds. Serial recovery and Stop remain available once the supervisor is ready. Save the report; the disk remains locked until app exit." : "Linux terminal readiness was not confirmed within 60 seconds. No forced stop was attempted. Save the report; the disk remains locked until app exit."
             }
+        }
+    }
+
+    private func acceptRecoveryActivity() -> Bool {
+        guard !recoveryTimedOut, !stopFailed else { return false }
+        if !stopRequested, let reason = recoveryWatchdog?.timeout(at: ProcessInfo.processInfo.systemUptime) {
+            recoveryTimeout(reason); return false
+        }
+        return true
+    }
+
+    private func armRecoveryTimeout() {
+        guard isRecovery, !recoveryProgress.done, !recoveryTimedOut, !stopFailed, !stopRequested,
+              !loopReturned, !finalized, !startupAborted, let watchdog = recoveryWatchdog else { return }
+        recoveryWatchdogRevision &+= 1
+        let revision = recoveryWatchdogRevision
+        let delay = max(0, watchdog.nextDeadline - ProcessInfo.processInfo.systemUptime)
+        queue.asyncAfter(deadline: .now() + delay) {
+            guard revision == self.recoveryWatchdogRevision, !self.recoveryProgress.done, !self.recoveryTimedOut,
+                  !self.stopFailed, !self.stopRequested, !self.loopReturned, !self.finalized, !self.startupAborted else { return }
+            if let reason = self.recoveryWatchdog?.timeout(at: ProcessInfo.processInfo.systemUptime) { self.recoveryTimeout(reason) }
+            else { self.armRecoveryTimeout() }
+        }
+    }
+
+    private func recoveryTimeout(_ reason: LinuxRecoveryWatchdog.Timeout) {
+        guard !recoveryTimedOut, !stopFailed, !stopRequested, !loopReturned, !finalized, !startupAborted else { return }
+        recoveryTimedOut = true; stopFailed = true; ready = false
+        recoveryWatchdogRevision &+= 1
+        lifecycle.record(.failed)
+        checkpoint(.recoveryTimeout, failure: .recoveryFailed)
+        report["recovery_watchdog_timeout"] = reason.rawValue
+        report["terminal_clean_stop"] = false; report["status"] = "terminal_recovery_timeout"
+        do { try recovery?.recordFailure("watchdog_" + reason.rawValue) } catch { owner.publish { $0.diagnosticFailure() } }
+        persist()
+        let canStop = guestWasReady && (control?.peer ?? -1) >= 0
+        owner.publish {
+            $0.ready = false; $0.serialReady = false; $0.desktopInput?.setFocused(false)
+            $0.canStop = canStop
+            $0.message = "Recovery exceeded its \(reason.rawValue) time limit. No copy can be activated from this attempt. Original and backup remain preserved; save diagnostics and use Stop when available. The disk stays locked until app exit."
         }
     }
 
@@ -956,6 +1164,47 @@ private final class LinuxTerminalWorker {
     private var resultURL: URL { session.appendingPathComponent("result.json") }
     private var serialURL: URL { session.appendingPathComponent("linux-serial.log") }
     private var markdownURL: URL { session.appendingPathComponent(owner.isDebian ? "result.md" : LinuxProbeReport.filename) }
+
+    private func prepareRecovery(_ profile: LinuxGUIProfile) throws {
+        guard owner.isDesktop, !owner.isSteam, !enteredQEMU else { throw LinuxGUIRecovery.Invalid.relaunch }
+        try preparationCheckpoint(.recoveryCopies)
+        isRecovery = true; report["recovery_requested"] = true
+        owner.publish { $0.recoveryMode = true }
+        let transaction = try LinuxGUIRecovery.prepare(directory: dataDirectory, specification: profile.image, observe: observeSuperblock) { stage in
+            self.checkpoint(stage == "backup" ? .recoveryBackup : (stage == "work_copy" ? .recoveryWorkCopy : .recoveryPrepared))
+            self.report["recovery_phase"] = stage; self.persist()
+            self.owner.publish {
+                $0.preparationState = self.preparation.snapshot
+                if self.preparation.snapshot.canCancel { $0.message = "Recovery: \(stage). Preserving the original and verifying a separate work copy…" }
+            }
+        }
+        recovery = transaction; disk = transaction
+    }
+
+    private func preparationCheckpoint(_ phase: LinuxStartupPreparation.Phase) throws {
+        try preparation.advance(phase)
+        report["preparation_phase"] = phase.rawValue
+        persist()
+        owner.publish {
+            let state = self.preparation.snapshot
+            $0.preparationState = state
+            if state.inProgress { $0.message = state.message + " Keep iDeck open; cancellation waits for the current file operation." }
+        }
+    }
+
+    /// Called synchronously by the existing locked preboot header validator.
+    /// No second disk open, file-content read, mount or repair is performed.
+    private func observeSuperblock(_ value: LinuxDesktopDisk.RecoveryObservation) {
+        report["ext4_recover_bit"] = value.recoverBit
+        report["ext4_state"] = value.state
+        report["ext4_last_orphan"] = value.lastOrphan
+        report["ext4_error_count"] = value.errorCount
+        let state = LinuxTerminalDiagnostics.Ext4State(recoverBit: value.recoverBit, state: value.state,
+                                                      lastOrphan: value.lastOrphan, errorCount: value.errorCount)
+        do { try diagnostic.record(.diskInspected, ext4: state) }
+        catch { owner.publish { $0.diagnosticFailure() } }
+        persist()
+    }
 
     private func refreshExports() {
         let files = [resultURL, serialURL].filter { FileManager.default.fileExists(atPath: $0.path) }

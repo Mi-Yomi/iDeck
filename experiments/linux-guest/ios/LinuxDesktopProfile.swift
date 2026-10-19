@@ -53,11 +53,11 @@ struct LinuxDesktopProfile: Decodable {
         return result
     }
 
-    func openExisting(in directory: URL) throws -> LinuxDesktopDisk {
+    func openExisting(in directory: URL, observe: ((LinuxDesktopDisk.RecoveryObservation) -> Void)? = nil) throws -> LinuxDesktopDisk {
         try validate()
         // Mutable disk identity/FS contract, not original seed hash. Reopen
         // therefore preserves legitimate package/home/free-count changes.
-        return try LinuxDesktopDisk.openExisting(directory: directory, specification: image)
+        return try LinuxDesktopDisk.openExisting(directory: directory, specification: image, observe: observe)
     }
 
     func provision(in directory: URL, assets: URL) throws -> LinuxDesktopDisk {

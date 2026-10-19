@@ -3,6 +3,13 @@ import Foundation
 /// Runs the app's actual Foundation renderer on the Apple host. These fixtures
 /// test report export only; they do not execute QEMU, pair a device or prove JIT.
 func runMarkdownReportChecks() throws {
+    let steamFailure = LinuxProbeReport.render(report: ["mode": "steam-experimental", "status": "terminal_prepare_failed",
+        "storage_failure": "needsRecovery", "import_status": "existing_steam_disk_preserved",
+        "steam_seed_sha256": String(repeating: "a", count: 64), "ext4_recover_bit": true])
+    precondition(steamFailure.contains("# iDeck Steam Experiment Report"))
+    precondition(steamFailure.contains("| Mode | STEAM EXPERIMENT / EXT4 |"))
+    precondition(steamFailure.contains("needsRecovery") && steamFailure.contains("existing_steam_disk_preserved"))
+    precondition(steamFailure.contains("RECOVER bit | SET") && steamFailure.contains("GUI recovery does not apply"))
     var assertions = 0
     func expect(_ condition: @autoclosure () -> Bool, _ message: String) {
         precondition(condition(), "Markdown report: " + message)
@@ -166,5 +173,75 @@ func runMarkdownReportChecks() throws {
     expect(cell(debian, "QEMU block layer drained") == "NOT VERIFIED", "loop return cannot imply backend cleanup")
     let rejected = LinuxProbeReport.render(report: ["mode": "debian", "storage_failure": secret, "import_status": secret])
     expect(!rejected.contains(secret), "Debian failure/import fields remain allowlisted")
+    for failure in ["specification", "headerRead", "alreadyExists", "assetMetadata"] {
+        expect(cell(LinuxProbeReport.render(report: ["mode": "desktop", "storage_failure": failure]), "Storage failure") == failure,
+               "recognized storage failure is not reported as absent")
+    }
+    var ext4: [String: Any] = ["mode": "desktop", "status": "terminal_prepare_failed",
+        "storage_failure": "needsRecovery", "ext4_recover_bit": true, "ext4_state": 2,
+        "ext4_last_orphan": UInt32.max, "ext4_error_count": UInt32.max,
+        "user_file_contents": secret]
+    let ext4Rows = [("ext4_state", "Ext4 state (raw)", "2"),
+                    ("ext4_last_orphan", "Ext4 last_orphan", "4294967295"),
+                    ("ext4_error_count", "Ext4 error_count", "4294967295")]
+    let ext4MD = LinuxProbeReport.render(report: ext4)
+    expect(cell(ext4MD, "Ext4 RECOVER bit") == "SET", "recover bit is not inferred from a failed start")
+    for (_, label, expected) in ext4Rows { expect(cell(ext4MD, label) == expected, "full unsigned ext4 value preserved") }
+    expect(!ext4MD.contains(secret), "file contents excluded from desktop MD")
+    expect(ext4MD.contains("do not diagnose why"), "ext4 cause is not guessed")
+    ext4["ext4_recover_bit"] = false
+    expect(cell(LinuxProbeReport.render(report: ext4), "Ext4 RECOVER bit") == "CLEAR", "explicit clear differs from missing")
+    let invalidUnsigned: [Any] = [true, "1", -1, 1.5, Double.nan, UInt64(UInt32.max) + 1, NSNull()]
+    for (key, label, _) in ext4Rows {
+        for bad in invalidUnsigned {
+            var invalid = ext4; invalid[key] = bad
+            expect(cell(LinuxProbeReport.render(report: invalid), label) == "UNKNOWN", "invalid unsigned ext4 metadata rejected")
+        }
+    }
+    ext4["ext4_state"] = 65536
+    expect(cell(LinuxProbeReport.render(report: ext4), "Ext4 state (raw)") == "UNKNOWN", "16bit state bound preserved")
+    expect(cell(debian, "Ext4 RECOVER bit") == "UNKNOWN", "old report does not synthesize ext4 observations")
+    let recoveryMD = LinuxProbeReport.render(report: ["mode": "desktop", "recovery_phase": "prepared",
+        "recovery_failure": "space", "recovery_assessment_exit": 4, "recovery_replay_exit": 0,
+        "recovery_verification_exit": 0, "recovery_checked_image_sha256": String(repeating: "b", count: 64),
+        "recovery_watchdog_timeout": "progress",
+        "recovery_private_file_contents": secret])
+    expect(cell(recoveryMD, "Recovery phase") == "prepared", "known phase is explicit")
+    expect(cell(recoveryMD, "Recovery failure") == "space", "space refusal is retained")
+    expect(cell(recoveryMD, "Recovery assessment exit") == "4", "nonmutating assessment can report an error")
+    expect(cell(recoveryMD, "Guest checked image SHA-256") == String(repeating: "b", count: 64), "checked image is explicit")
+    expect(cell(recoveryMD, "Recovery watchdog") == "progress", "recovery timeout is distinct from graphical readiness")
+    expect(!recoveryMD.contains(secret), "recovery exports exclude contents")
+    let unknownRecovery = LinuxProbeReport.render(report: ["mode": "desktop", "recovery_phase": secret, "recovery_failure": secret,
+        "recovery_checked_image_sha256": secret, "recovery_watchdog_timeout": secret])
+    expect(!unknownRecovery.contains(secret), "unknown recovery strings remain excluded")
+    let failures = [("terminal_startup_timed_out", "Startup readiness timeout"),
+                    ("terminal_stop_timed_out", "Orderly Stop timeout"),
+                    ("terminal_control_channel_failed", "Control channel failure"),
+                    ("terminal_serial_channel_failed", "Serial channel failure"),
+                    ("serial_log_write_failed", "Serial log write failure")]
+    let invalidFailureValues: [Any] = [NSNull(), NSNumber(value: 1), "true", secret]
+    for mode in ["terminal", "debian", "desktop"] {
+        for (key, label) in failures {
+            expect(cell(LinuxProbeReport.render(report: ["mode": mode, key: true]), label) == "REPORTED", "known failure survives MD export")
+            expect(cell(LinuxProbeReport.render(report: ["mode": mode, key: false]), label) == "NONE REPORTED", "explicit false remains separate")
+            for bad in invalidFailureValues {
+                expect(cell(LinuxProbeReport.render(report: ["mode": mode, key: bad]), label) == "UNKNOWN", "failure rejects non-boolean values")
+            }
+            expect(cell(LinuxProbeReport.render(report: ["mode": mode]), label) == "UNKNOWN", "legacy report never invents missing failure observations")
+        }
+    }
+    for phase in LinuxStartupPreparation.Phase.allCases {
+        let md = LinuxProbeReport.render(report: ["mode": "desktop", "preparation_phase": phase.rawValue])
+        expect(cell(md, "Preparation phase") != "UNKNOWN", "production phase is allowlisted")
+    }
+    let cancelled = LinuxProbeReport.render(report: ["mode": "desktop", "status": "terminal_prepare_cancelled",
+        "preparation_cancel_requested": true, "preparation_cancelled_before_qemu": true,
+        "terminal_clean_stop": false, "preparation_phase": secret])
+    expect(cancelled.contains("startup was cancelled before native entry"), "cancellation is distinct from an unclean VM exit")
+    expect(cell(cancelled, "Startup cancellation requested") == "REQUESTED", "request alone is not completion")
+    expect(cell(cancelled, "Startup cancelled before native entry") == "CANCELLED BEFORE NATIVE ENTRY", "completion has its own receipt")
+    expect(cell(cancelled, "Orderly stop") != "PASS", "cancel is never a clean-stop receipt")
+    expect(!cancelled.contains(secret), "preparation strings are allowlisted")
     print("LINUX_MARKDOWN_REPORT_CHECKS_PASS (\(assertions) assertions; actual Foundation renderer, no device/runtime execution)")
 }

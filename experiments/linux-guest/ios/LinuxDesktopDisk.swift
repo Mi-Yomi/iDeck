@@ -8,10 +8,17 @@ import Glibc
 /// Separate ext4 storage contract. Existing terminal FAT16 handling is untouched.
 /// No QEMU entry, mounting, recovery, formatting or legacy-data mutation here.
 final class LinuxDesktopDisk {
-    enum Invalid: Error, Equatable {
+    enum Invalid: Error, Equatable, CaseIterable {
         case specification, directory, inspection, open, locked, metadata, size
         case headerRead, checksum, filesystem, uuid, geometry, features, journal
         case needsRecovery, ownership, alreadyExists, insufficientSpace, io
+    }
+    /// Only four numeric/boolean superblock fields; never file or inode contents.
+    struct RecoveryObservation: Equatable {
+        let recoverBit: Bool
+        let state: UInt32
+        let lastOrphan: UInt32
+        let errorCount: UInt32
     }
     struct Features: Codable, Equatable {
         let compat: UInt32
@@ -76,7 +83,8 @@ final class LinuxDesktopDisk {
         }
     }
 
-    static func openExisting(directory: URL, specification: Specification) throws -> LinuxDesktopDisk {
+    static func openExisting(directory: URL, specification: Specification,
+                             observe: ((RecoveryObservation) -> Void)? = nil) throws -> LinuxDesktopDisk {
         try specification.validate()
         try validateDirectory(directory)
         let url = directory.appendingPathComponent("rootfs-v1.raw")
@@ -100,11 +108,11 @@ final class LinuxDesktopDisk {
            fstatat(directoryFD, temporary, &partial, AT_SYMLINK_NOFOLLOW) == 0,
            target.st_dev == opened.st_dev, target.st_ino == opened.st_ino,
            partial.st_dev == opened.st_dev, partial.st_ino == opened.st_ino {
-            try validateSuperblock(fd: descriptor, specification: specification)
+            try validateSuperblock(fd: descriptor, specification: specification, observe: observe)
             guard unlinkat(directoryFD, temporary, 0) == 0, fsync(directoryFD) == 0 else { throw Invalid.io }
         }
         try validateIdentity(fd: descriptor, url: url, specification: specification)
-        try validateSuperblock(fd: descriptor, specification: specification)
+        try validateSuperblock(fd: descriptor, specification: specification, observe: observe)
         accepted = true
         return LinuxDesktopDisk(url: url, specification: specification, fd: descriptor)
     }
@@ -209,7 +217,8 @@ final class LinuxDesktopDisk {
         guard opened.st_size == off_t(specification.sizeBytes), named.st_size == opened.st_size else { throw Invalid.size }
     }
 
-    static func validateSuperblock(fd: Int32, specification: Specification) throws {
+    static func validateSuperblock(fd: Int32, specification: Specification,
+                                   observe: ((RecoveryObservation) -> Void)? = nil) throws {
         try specification.validate()
         var header = [UInt8](repeating: 0, count: 1024)
         var count = 0
@@ -222,11 +231,12 @@ final class LinuxDesktopDisk {
             guard result > 0 else { throw Invalid.headerRead }
             count += result
         }
-        try validateHeader(header, specification: specification)
+        try validateHeader(header, specification: specification, observe: observe)
     }
 
     /// Only superblock contract validation, not an fsck/inode-tree integrity claim.
-    static func validateHeader(_ h: [UInt8], specification s: Specification) throws {
+    static func validateHeader(_ h: [UInt8], specification s: Specification,
+                               observe: ((RecoveryObservation) -> Void)? = nil) throws {
         try s.validate()
         guard h.count == 1024 else { throw Invalid.headerRead }
         func u16(_ n: Int) -> UInt32 { UInt32(h[n]) | UInt32(h[n + 1]) << 8 }
@@ -238,6 +248,10 @@ final class LinuxDesktopDisk {
         let incompat = u32(0x60)
         guard u32(0x5c) == s.features.compat, incompat & ~UInt32(4) == s.features.incompat,
               u32(0x64) == s.features.roCompat else { throw Invalid.features }
+        // Observe the SAME bounded read only after magic/checksum/UUID/features
+        // checks, while the startup caller owns the lock. The refusal is intact.
+        observe?(RecoveryObservation(recoverBit: incompat & 4 != 0, state: u16(0x3a),
+                                     lastOrphan: u32(0xe8), errorCount: u32(0x194)))
         guard incompat & 4 == 0, u16(0x3a) == 1, u32(0xe8) == 0,
               u32(0x194) == 0 else { throw Invalid.needsRecovery }
         let blocks = UInt64(u32(4)) | UInt64(u32(0x150)) << 32
@@ -253,6 +267,27 @@ final class LinuxDesktopDisk {
     }
 
     /// ext4 stores raw CRC32C(~0, superblock[0..<1020]), without a final XOR.
+    /// Recovery eligibility only: never used by the normal desktop boot gate.
+    /// All immutable checks still apply even when normal validation stops at dirty.
+    static func validateForJournalRecovery(fd: Int32, specification s: Specification,
+                                          observe: ((RecoveryObservation) -> Void)? = nil) throws {
+        var header = [UInt8](repeating: 0, count: 1024)
+        let count = header.withUnsafeMutableBytes { pread(fd, $0.baseAddress!, $0.count, 1024) }
+        guard count == 1024 else { throw Invalid.headerRead }
+        do { try validateHeader(header, specification: s, observe: observe); return }
+        catch Invalid.needsRecovery { }
+        func u16(_ n: Int) -> UInt32 { UInt32(header[n]) | UInt32(header[n+1]) << 8 }
+        func u32(_ n: Int) -> UInt32 { u16(n) | u16(n+2) << 16 }
+        let blocks = UInt64(u32(4)) | UInt64(u32(0x150)) << 32
+        let groups = (blocks + 32767) / 32768
+        let inodes = UInt64(u32(0x28))
+        guard u32(0x14) == 0, u32(0x18) == 2, u32(0x1c) == 2,
+              blocks == UInt64(s.sizeBytes / 4096), u32(0x20) == 32768, u32(0x24) == 32768,
+              inodes > 0, inodes <= 32768, UInt64(u32(0)) == groups * inodes,
+              u16(0x58) == 256, u16(0xfe) == 64 else { throw Invalid.geometry }
+        guard u32(0xe0) == 8, u32(0xe4) == 0, header[0xd0..<0xe0].allSatisfy({ $0 == 0 }) else { throw Invalid.journal }
+    }
+
     static func crc32c<C: Collection>(_ bytes: C) -> UInt32 where C.Element == UInt8 {
         var value: UInt32 = 0xffffffff
         for byte in bytes {

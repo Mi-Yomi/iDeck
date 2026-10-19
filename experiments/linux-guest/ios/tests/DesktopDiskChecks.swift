@@ -73,6 +73,7 @@ func runDesktopDiskChecks(fixture: URL, afterSync: ((LinuxDesktopDisk) throws ->
         (0x64, UInt8(header[0x64] | 0x20), .features),
         (0x60, UInt8(header[0x60] | 4), .needsRecovery),
         (0x3a, UInt8(0), .needsRecovery),
+        (0xe8, UInt8(1), .needsRecovery),
         (0x194, UInt8(1), .needsRecovery),
         (0x18, UInt8(3), .geometry),
         (0xe0, UInt8(9), .journal),
@@ -82,7 +83,11 @@ func runDesktopDiskChecks(fixture: URL, afterSync: ((LinuxDesktopDisk) throws ->
         expect(error) { try LinuxDesktopDisk.validateHeader(changed, specification: spec) }
     }
     var corrupt = header; corrupt[0x80] ^= 1
-    expect(.checksum) { try LinuxDesktopDisk.validateHeader(corrupt, specification: spec) }
+    expect(.checksum) {
+        try LinuxDesktopDisk.validateHeader(corrupt, specification: spec) { _ in
+            preconditionFailure("unvalidated metadata was observed")
+        }
+    }
     var huge = header
     for i in 4..<8 { huge[i] = 255 }
     for i in 0x150..<0x154 { huge[i] = 255 }
@@ -217,10 +222,17 @@ func runDesktopDiskChecks(fixture: URL, afterSync: ((LinuxDesktopDisk) throws ->
     let dirtyDirectory = root.appendingPathComponent("needs-recovery")
     let dirtyDisk = try LinuxDesktopDisk.provision(directory: dirtyDirectory, specification: spec, validatedCopy: copyFixture)
     dirtyDisk.closeUnused()
-    var dirty = header; dirty[0x60] |= 4; checksum(&dirty)
+    var dirty = header; dirty[0x60] |= 4; dirty[0x3a] = 2
+    for byte in 0..<4 { dirty[0xe8 + byte] = 255; dirty[0x194 + byte] = 255 }
+    checksum(&dirty)
     let dirtyWriter = try FileHandle(forWritingTo: dirtyDisk.url)
     try dirtyWriter.seek(toOffset: 1024); try dirtyWriter.write(contentsOf: Data(dirty)); try dirtyWriter.close()
-    expect(.needsRecovery) { _ = try LinuxDesktopDisk.openExisting(directory: dirtyDirectory, specification: spec) }
+    var observed: [LinuxDesktopDisk.RecoveryObservation] = []
+    expect(.needsRecovery) {
+        _ = try LinuxDesktopDisk.openExisting(directory: dirtyDirectory, specification: spec) { observed.append($0) }
+    }
+    precondition(observed == [.init(recoverBit: true, state: 2, lastOrphan: UInt32.max, errorCount: UInt32.max)],
+                 "the refused locked header supplies all four exact fields")
     expect(.alreadyExists) { _ = try LinuxDesktopDisk.provision(directory: dirtyDirectory, specification: spec, validatedCopy: copyFixture) }
     let dirtyReader = try FileHandle(forReadingFrom: dirtyDisk.url)
     try dirtyReader.seek(toOffset: 1024)

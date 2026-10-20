@@ -223,7 +223,10 @@ int main( void )
         process_job( d, job_of( 1, 200, 2 ) );
         process_job( d, job_of( 2, 202, 2 ) );
         process_job( d, job_of( 3, 204, 2 ) );
-        if (now_ms() - t0 > 30) fail( "on: the fence worker does not wait for the retires" );
+        /* iDeck-BCD, 2026-10-20: 60 ms, not 30: GitHub's 3-core macOS runner pauses threads for
+         * tens of ms (fence-poll-backoff, run 39397138229). Waiting for the six 20 ms retires
+         * still takes at least 120 ms, twice the bound. */
+        if (now_ms() - t0 > 60) fail( "on: the fence worker does not wait for the retires" );
     }
     if (idx( 's', 1 ) != 0 || idx( 's', 2 ) != 1 || idx( 's', 3 ) != 2) fail( "on: fences advance first, in order" );
     stop( d );

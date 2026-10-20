@@ -52,8 +52,15 @@ def check(what, cond, detail=""):
 
 core = (R / "app/Madeira/LogUploadCore.swift").read_text()
 app = (R / "app/Madeira/LogUpload.swift").read_text()
-worker = (R / "bcd-logs/worker/worker.js").read_text()
-toml = (R / "bcd-logs/worker/wrangler.toml").read_text()
+# Modified for iDeck-BCD, 2026-10-20: the intake Worker (bcd-logs/) and tools/pull-logs.py are
+# upstream's private tooling; tools/export-public.py leaves them out of the public tree this fork
+# imports, and this fork sends to no intake of upstream's. Without them the Worker-side checks are
+# skipped (said so below); every check of the app's own code still runs.
+HAS_WORKER = (R / "bcd-logs/worker/worker.js").is_file()
+worker = (R / "bcd-logs/worker/worker.js").read_text() if HAS_WORKER else ""
+toml = (R / "bcd-logs/worker/wrangler.toml").read_text() if HAS_WORKER else ""
+if not HAS_WORKER:
+    print("SKIP the intake Worker's checks: bcd-logs/ is not in this tree (upstream's private tooling)")
 
 spec = importlib.util.spec_from_file_location("fixture", R / "tools/autotune-fixture.py")
 fx = importlib.util.module_from_spec(spec)
@@ -66,7 +73,7 @@ check("LogUploadCore's rules are SCRUB's, in its order",
       [(p, r.replace("$1", "\\1")) for p, r in swift_rules] == [(p.pattern.replace('\\"', '"'), r) for p, r in fx.SCRUB],
       swift_rules)
 check("the app sends with the intake header",
-      'static let intake = "madeira-bcd/2"' in app and 'export const INTAKE = "madeira-bcd/2";' in worker)
+      'static let intake = "madeira-bcd/2"' in app and (not HAS_WORKER or 'export const INTAKE = "madeira-bcd/2";' in worker))
 # Modified for iDeck-BCD, 2026-10-20: BCD's intake is not used; ours comes from Info.plist, empty here: off.
 app_lines = "\n".join(l for l in app.split("\n") if not l.lstrip().startswith("//"))
 endpoints = plistlib.loads((R / "app/Madeira/Info.plist").read_bytes()).get("IDeckEndpoints", {})
@@ -109,16 +116,21 @@ for f in ("LogUpload.swift", "LogUploadCore.swift"):
     check(f"the Xcode project builds {f}", pbx.count(f"/* {f} in Sources */") == 2 and pbx.count(f"path = {f};") == 1)
 for f in ("app/Madeira/LogUpload.swift", "app/Madeira/LogUploadCore.swift", "bcd-logs/worker/worker.js",
           "bcd-logs/worker/wrangler.toml", "bcd-logs/worker/worker.test.mjs", "tools/pull-logs.py"):
+    if not (R / f).is_file() and not f.startswith("app/"):
+        continue   # iDeck-BCD: upstream's private tooling, absent here (see HAS_WORKER)
     check(f"{f} is marked FORK-ONLY", "FORK-ONLY" in (R / f).read_text()[:800])
-check("the Worker's R2 binding is its own bucket, with an hourly trim",
-      'bucket_name = "bcd-logs"' in toml and 'crons = ["17 * * * *"]' in toml and "macosvm" not in toml)
+if HAS_WORKER:
+    check("the Worker's R2 binding is its own bucket, with an hourly trim",
+          'bucket_name = "bcd-logs"' in toml and 'crons = ["17 * * * *"]' in toml and "macosvm" not in toml)
 CI = R / ".github/workflows/build-ipa.yml"
 if CI.exists():
     check("CI runs this check", "run: python3 tests/host/check-log-upload.py --require-swift" in CI.read_text())
 
 # ---- the Worker under node ---------------------------------------------------------------
 node = shutil.which("node") or str(Path.home() / "madeira-local/tools/node/bin/node")
-if Path(node).exists():
+if not HAS_WORKER:
+    print("SKIP the Worker's node tests: no bcd-logs/ in this tree")
+elif Path(node).exists():
     r = subprocess.run([node, "--test", str(R / "bcd-logs/worker/worker.test.mjs")], capture_output=True, text=True)
     check("the intake Worker's tests pass under node", r.returncode == 0, (r.stdout + r.stderr)[-2000:])
 else:

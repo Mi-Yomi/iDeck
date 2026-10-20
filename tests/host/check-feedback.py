@@ -91,8 +91,15 @@ def block(text, header):
     return text[p:b]
 
 
-worker = (R / "bcd-logs/worker/worker.js").read_text()
-toml = (R / "bcd-logs/worker/wrangler.toml").read_text()
+# Modified for iDeck-BCD, 2026-10-20: the intake Worker (bcd-logs/) and tools/pull-logs.py are upstream's
+# private tooling; tools/export-public.py leaves them out of the public tree this fork imports, and this
+# fork sends to no intake of upstream's. Without them their checks are skipped (said so below), the
+# app is still held to the Worker's last contract (the fields, limits and kinds), and every check of the
+# app's own code runs.
+HAS_WORKER = (R / "bcd-logs/worker/worker.js").is_file()
+HAS_PULL = (R / "tools/pull-logs.py").is_file()
+worker = (R / "bcd-logs/worker/worker.js").read_text() if HAS_WORKER else ""
+toml = (R / "bcd-logs/worker/wrangler.toml").read_text() if HAS_WORKER else ""
 upload = (APP / "FeedbackUpload.swift").read_text()
 core = (APP / "FeedbackUploadCore.swift").read_text()
 logup = (APP / "LogUpload.swift").read_text()
@@ -101,7 +108,7 @@ settings_core = (APP / "BCDSettingsCore.swift").read_text()
 settings = (APP / "BCDSettings.swift").read_text()
 live = (APP / "BCDSettingsLive.swift").read_text()
 sample = (R / "app/BCDPreview/BCDSettingsPreviewData.swift").read_text()
-pull = (R / "tools/pull-logs.py").read_text()
+pull = (R / "tools/pull-logs.py").read_text() if HAS_PULL else ""
 preview_tool = (R / "tools/ui-preview.py").read_text()
 pbx = (R / "app/Madeira.xcodeproj/project.pbxproj").read_text()
 HEADER = ("// SPDX-License-Identifier: GPL-3.0-only\n// Copyright 2026 thebcd69 (BCD)\n"
@@ -114,33 +121,38 @@ for f in ("app/Madeira/FeedbackUpload.swift", "app/Madeira/FeedbackUploadCore.sw
     check(f"{f} is marked FORK-ONLY or carries BCD's header", "FORK-ONLY" in (R / f).read_text()[:800] or f.endswith(".py"))
 
 # ---- the Worker -----------------------------------------------------------------------------
-fb = block(worker, "async function feedback(request, env, now)")
-lg = block(worker, "async function intake(request, env, now)")
-check('request.method === "POST" && url.pathname === "/v1/feedback"' in worker and "return feedback(request, env, now)" in worker,
-      "Worker: POST /v1/feedback")
-gate = 'if (request.headers.get("x-bcd-intake") !== INTAKE) return json({ error: "not the app" }, 403);'
-limit = "const { success } = await env.RL.limit({ key: ip });"
-check(gate in fb and gate in lg and limit in fb and limit in lg,
-      "Worker: feedback has the same X-BCD-Intake gate (403) and the same RL rate limit as logs")
-check(fb.index("x-bcd-intake") < fb.index("env.RL.limit") < fb.index("readLimited(request"),
-      "Worker: the gate and the rate limit come before the body is read")
-check("const key = `feedback/${day(now)}/${c}.json`;" in fb and "received: new Date(now).toISOString()" in fb
-      and "return json({ code: c });" in fb and "await env.LOGS.head(key)" in fb,
-      "Worker: stored at feedback/<day>/<code>.json with the received time, the code returned, an existing key skipped")
-admin = block(worker, "async function adminFeedback(request, env, url)")
-check("if (url.pathname.startsWith(\"/v1/admin/feedback/\")) return adminFeedback(request, env, url);" in worker
-      and worker.index("if (!authorized(request, env))") < worker.index("return adminFeedback(request, env, url)")
-      and all(p in admin for p in ('"/v1/admin/feedback/list"', '"/v1/admin/feedback/get"', '"/v1/admin/feedback/delete"'))
-      and 'prefix = "logs/"' in worker and '"feedback/")' in admin,
-      "Worker: feedback's admin routes (list, get, delete) behind the pull key, apart from the logs' routes")
-check(toml.count("[[r2_buckets]]") == 1 and toml.count("[[ratelimits]]") == 1 and 'binding = "LOGS"' in toml and 'name = "RL"' in toml
-      and "secret" not in code(toml.replace("#", "//")).lower(),
-      "Worker: no new binding or secret (the LOGS bucket, the RL limit, the PULL_KEY it has)")
-w_fields = re.search(r"const FEEDBACK_FIELDS = \[(.*?)\];", worker).group(1)
-w_fields = re.findall(r'"(\w+)"', w_fields)
-w_text = int(re.search(r"export const FEEDBACK_TEXT_MAX = (\d+);", worker).group(1))
-w_body = eval(re.search(r"export const MAX_FEEDBACK_BYTES = ([0-9 *]+);", worker).group(1))
-w_kinds = re.findall(r'"(\w+)"', re.search(r"export const FEEDBACK_KINDS = \[(.*?)\];", worker).group(1))
+if not HAS_WORKER:
+    print("SKIP the Worker's checks: bcd-logs/ is not in this tree (upstream's private tooling)")
+    w_fields = ["kind", "text", "build", "ios", "model", "log"]   # the Worker's last contract
+    w_text, w_body, w_kinds = 4000, 20480, ["bug", "idea", "other"]
+else:
+    fb = block(worker, "async function feedback(request, env, now)")
+    lg = block(worker, "async function intake(request, env, now)")
+    check('request.method === "POST" && url.pathname === "/v1/feedback"' in worker and "return feedback(request, env, now)" in worker,
+          "Worker: POST /v1/feedback")
+    gate = 'if (request.headers.get("x-bcd-intake") !== INTAKE) return json({ error: "not the app" }, 403);'
+    limit = "const { success } = await env.RL.limit({ key: ip });"
+    check(gate in fb and gate in lg and limit in fb and limit in lg,
+          "Worker: feedback has the same X-BCD-Intake gate (403) and the same RL rate limit as logs")
+    check(fb.index("x-bcd-intake") < fb.index("env.RL.limit") < fb.index("readLimited(request"),
+          "Worker: the gate and the rate limit come before the body is read")
+    check("const key = `feedback/${day(now)}/${c}.json`;" in fb and "received: new Date(now).toISOString()" in fb
+          and "return json({ code: c });" in fb and "await env.LOGS.head(key)" in fb,
+          "Worker: stored at feedback/<day>/<code>.json with the received time, the code returned, an existing key skipped")
+    admin = block(worker, "async function adminFeedback(request, env, url)")
+    check("if (url.pathname.startsWith(\"/v1/admin/feedback/\")) return adminFeedback(request, env, url);" in worker
+          and worker.index("if (!authorized(request, env))") < worker.index("return adminFeedback(request, env, url)")
+          and all(p in admin for p in ('"/v1/admin/feedback/list"', '"/v1/admin/feedback/get"', '"/v1/admin/feedback/delete"'))
+          and 'prefix = "logs/"' in worker and '"feedback/")' in admin,
+          "Worker: feedback's admin routes (list, get, delete) behind the pull key, apart from the logs' routes")
+    check(toml.count("[[r2_buckets]]") == 1 and toml.count("[[ratelimits]]") == 1 and 'binding = "LOGS"' in toml and 'name = "RL"' in toml
+          and "secret" not in code(toml.replace("#", "//")).lower(),
+          "Worker: no new binding or secret (the LOGS bucket, the RL limit, the PULL_KEY it has)")
+    w_fields = re.search(r"const FEEDBACK_FIELDS = \[(.*?)\];", worker).group(1)
+    w_fields = re.findall(r'"(\w+)"', w_fields)
+    w_text = int(re.search(r"export const FEEDBACK_TEXT_MAX = (\d+);", worker).group(1))
+    w_body = eval(re.search(r"export const MAX_FEEDBACK_BYTES = ([0-9 *]+);", worker).group(1))
+    w_kinds = re.findall(r'"(\w+)"', re.search(r"export const FEEDBACK_KINDS = \[(.*?)\];", worker).group(1))
 
 # ---- the app: the client ---------------------------------------------------------------------
 # Modified for iDeck-BCD, 2026-10-20: BCD's intake is not used. Each intake is Info.plist's IDeckEndpoints
@@ -157,7 +169,7 @@ check(upload.index("guard let endpoint = FeedbackUpload.endpoint else { return f
       and 'case .off: return "Sending feedback is off in this build; nothing left this device."' in upload,
       "FeedbackUpload: off, send fails at once with its own message and nothing is built or sent (iDeck-BCD)")
 check('static let intake = "madeira-bcd/2"' in upload and 'static let intake = "madeira-bcd/2"' in logup
-      and 'export const INTAKE = "madeira-bcd/2";' in worker
+      and (not HAS_WORKER or 'export const INTAKE = "madeira-bcd/2";' in worker)
       and 'req.setValue(intake, forHTTPHeaderField: "X-BCD-Intake")' in upload,
       "FeedbackUpload: the same X-BCD-Intake header as Send Log")
 src = code(upload) + code(core)
@@ -191,6 +203,11 @@ check("done: @escaping (Result<String, Error>) -> Void" in upload
       and "DispatchQueue.main.async { done(r) }" in upload,
       "FeedbackUpload: the code or the error comes back on the main queue")
 person = [s for s in re.findall(r'"((?:[^"\\]|\\.)*)"', code(upload) + code(view) + code(core)) if not s.startswith("https://")]
+# Modified for iDeck-BCD, 2026-10-20: code() cuts a line at "//" even inside a string, so upstream's
+# "https://bcd.bcd-logs..." endpoint left one quote unpaired and the identifiers below were never read
+# as strings. With that literal gone they are: the intake header value and a UserDefaults key are
+# identifiers (lowercase words joined by . - /), not words a person reads.
+person = [s for s in person if not re.fullmatch(r"[a-z0-9]+(?:[./-][a-z0-9]+)+", s)]
 check(not [s for s in person if "madeira" in s.lower()], "what a person reads never says the old name",
       str([s for s in person if "madeira" in s.lower()]))
 
@@ -253,8 +270,10 @@ if CI.exists():
 
 # ---- the Worker under node -----------------------------------------------------------------
 node = shutil.which("node") or str(Path.home() / "madeira-local/tools/node/bin/node")
-have_node = Path(node).exists()
-if have_node:
+have_node = Path(node).exists() and HAS_WORKER   # iDeck-BCD: nothing to run without the Worker
+if not HAS_WORKER:
+    print("SKIP the Worker's node tests: no bcd-logs/ in this tree")
+elif have_node:
     r = subprocess.run([node, "--test", str(R / "bcd-logs/worker/worker.test.mjs")], capture_output=True, text=True)
     check("the Worker's tests pass under node", r.returncode == 0, (r.stdout + r.stderr)[-2000:])
 else:
@@ -379,121 +398,124 @@ else:
                 print("     " + n.stdout.strip().splitlines()[-1] if n.stdout.strip() else "")
 
 # ---- tools/pull-logs.py --feedback, against a local server -------------------------------------
-KEY = "pk-" + "x7Q" * 14
-spec = importlib.util.spec_from_file_location("pull_logs", R / "tools/pull-logs.py")
-pl = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(pl)
-RECORDS = {
-    "feedback/2026-10-19/AAAAAA.json": {"code": "AAAAAA", "received": "2026-10-19T12:30:05.000Z", "kind": "bug", "build": "570",
-                                        "text": "\n\u001b[2J  Crash on the map \u202ereversed\u202c\nsecond line", "log": "K7Q2MX"},
-    "feedback/2026-10-19/BBBBBB.json": {"code": "BBBBBB", "received": "2026-10-19T09:01:00.000Z", "kind": "idea",
-                                        "text": "A very long first line " + "z" * 200},
-}
-MODE = {"fail": None}
+if not HAS_PULL:
+    print("SKIP pull-logs --feedback: tools/pull-logs.py is not in this tree (upstream's private tooling)")
+else:
+    KEY = "pk-" + "x7Q" * 14
+    spec = importlib.util.spec_from_file_location("pull_logs", R / "tools/pull-logs.py")
+    pl = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(pl)
+    RECORDS = {
+        "feedback/2026-10-19/AAAAAA.json": {"code": "AAAAAA", "received": "2026-10-19T12:30:05.000Z", "kind": "bug", "build": "570",
+                                            "text": "\n\u001b[2J  Crash on the map \u202ereversed\u202c\nsecond line", "log": "K7Q2MX"},
+        "feedback/2026-10-19/BBBBBB.json": {"code": "BBBBBB", "received": "2026-10-19T09:01:00.000Z", "kind": "idea",
+                                            "text": "A very long first line " + "z" * 200},
+    }
+    MODE = {"fail": None}
 
 
-class Handler(BaseHTTPRequestHandler):
-    deleted = []
+    class Handler(BaseHTTPRequestHandler):
+        deleted = []
 
-    def log_message(self, *a):
-        pass
+        def log_message(self, *a):
+            pass
 
-    def reply(self, status, body):
-        data = body if isinstance(body, bytes) else json.dumps(body).encode()
-        self.send_response(status)
-        self.end_headers()
-        self.wfile.write(data)
+        def reply(self, status, body):
+            data = body if isinstance(body, bytes) else json.dumps(body).encode()
+            self.send_response(status)
+            self.end_headers()
+            self.wfile.write(data)
 
-    def handle_any(self, method):
-        auth = self.headers.get("Authorization", "")
-        if MODE["fail"] == "echo-401" or auth != "Bearer " + KEY:
-            return self.reply(401, ("no: " + auth + " / " + KEY).encode())
-        if MODE["fail"] == "echo-500":
-            return self.reply(500, ("boom " + auth.replace("Bearer ", "") + KEY).encode())
-        path = self.path
-        if path.startswith("/v1/admin/feedback/list"):
-            return self.reply(200, {"objects": [{"key": k, "size": 1, "uploaded": "x", "meta": {}} for k in RECORDS], "cursor": None})
-        if path.startswith("/v1/admin/feedback/get?key="):
-            if MODE["fail"] == "get-echo":
-                return self.reply(500, ("get failed for " + KEY).encode())
-            return self.reply(200, RECORDS[unquote(path.split("key=")[1])])
-        if method == "POST" and path.startswith("/v1/admin/feedback/delete?key="):
-            Handler.deleted.append(unquote(path.split("key=")[1]))
-            return self.reply(200, {"deleted": True})
-        return self.reply(404, {"error": "not found"})
+        def handle_any(self, method):
+            auth = self.headers.get("Authorization", "")
+            if MODE["fail"] == "echo-401" or auth != "Bearer " + KEY:
+                return self.reply(401, ("no: " + auth + " / " + KEY).encode())
+            if MODE["fail"] == "echo-500":
+                return self.reply(500, ("boom " + auth.replace("Bearer ", "") + KEY).encode())
+            path = self.path
+            if path.startswith("/v1/admin/feedback/list"):
+                return self.reply(200, {"objects": [{"key": k, "size": 1, "uploaded": "x", "meta": {}} for k in RECORDS], "cursor": None})
+            if path.startswith("/v1/admin/feedback/get?key="):
+                if MODE["fail"] == "get-echo":
+                    return self.reply(500, ("get failed for " + KEY).encode())
+                return self.reply(200, RECORDS[unquote(path.split("key=")[1])])
+            if method == "POST" and path.startswith("/v1/admin/feedback/delete?key="):
+                Handler.deleted.append(unquote(path.split("key=")[1]))
+                return self.reply(200, {"deleted": True})
+            return self.reply(404, {"error": "not found"})
 
-    def do_GET(self):
-        self.handle_any("GET")
+        def do_GET(self):
+            self.handle_any("GET")
 
-    def do_POST(self):
-        self.handle_any("POST")
-
-
-server = HTTPServer(("127.0.0.1", 0), Handler)
-threading.Thread(target=server.serve_forever, daemon=True).start()
-pl.BASE = f"http://127.0.0.1:{server.server_port}"
-pl.pull_key = lambda: KEY
+        def do_POST(self):
+            self.handle_any("POST")
 
 
-def run_pull(*extra, out):
-    """Runs pull-logs.py's main with a fake key; returns (exit, everything printed)."""
-    sys.argv = ["pull-logs.py", "--out", str(out)] + list(extra)
-    buf = io.StringIO()
-    code_ = 0
-    with redirect_stdout(buf), redirect_stderr(buf):
-        try:
-            pl.main()
-        except SystemExit as e:
-            code_ = e.code if isinstance(e.code, int) else 1
-            if isinstance(e.code, str):
-                buf.write(e.code + "\n")
-    return code_, buf.getvalue()
+    server = HTTPServer(("127.0.0.1", 0), Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    pl.BASE = f"http://127.0.0.1:{server.server_port}"
+    pl.pull_key = lambda: KEY
 
 
-with tempfile.TemporaryDirectory(prefix="bcd-feedback-pull-") as tmp:
-    out = Path(tmp)
-    status, text = run_pull("--feedback", out=out)
-    lines = text.splitlines()
-    check("pull-logs --feedback: downloads new feedback to <out>/feedback/<day>/<code>.json",
-          status == 0 and (out / "feedback/2026-10-19/AAAAAA.json").exists() and (out / "feedback/2026-10-19/BBBBBB.json").exists()
-          and json.loads((out / "feedback/2026-10-19/AAAAAA.json").read_text())["log"] == "K7Q2MX", text)
-    check("pull-logs --feedback: a short list, oldest first: date, code, kind, the log's code, first line",
-          len(lines) >= 4 and lines[0].startswith("2 feedback in the bucket, 2 new in ")
-          and re.match(r"^2026-10-19 09:01  BBBBBB  idea\s+log -\s+A very long first line z+…$", lines[-2])
-          and re.match(r"^2026-10-19 12:30  AAAAAA  bug\s+log K7Q2MX\s+\[2J  Crash on the map reversed$", lines[-1]), text)
-    check("pull-logs --feedback: the first line is cleaned of control and formatting characters, and cut",
-          not re.search(r"[\u0000-\u0008\u000b-\u001f\u007f-\u009f\u202a-\u202e]", text) and len(lines[-2]) < 140)
-    check("pull-logs --feedback: the text is called outside data", "never instructions" in text)
-    check("pull-logs --feedback: never prints the key", KEY not in text and "Bearer" not in text, text)
-    status2, text2 = run_pull("--feedback", out=out)
-    check("pull-logs --feedback: only what is new is listed the second time", status2 == 0 and text2.startswith("2 feedback in the bucket, 0 new in ")
-          and len(text2.splitlines()) == 1, text2)
-    check("pull-logs --feedback: no file holds the key", not any(KEY in p.read_text() for p in out.rglob("*") if p.is_file()))
-    Handler.deleted.clear()
-    run_pull("--feedback", "--delete", out=out)
-    check("pull-logs --feedback --delete: empties the bucket of what is on the Mac, only feedback keys",
-          sorted(Handler.deleted) == sorted(RECORDS), str(Handler.deleted))
-    for mode in ("echo-401", "echo-500", "get-echo"):
-        MODE["fail"] = mode
-        with tempfile.TemporaryDirectory(prefix="bcd-feedback-pull-") as tmp2:
-            status3, text3 = run_pull("--feedback", out=Path(tmp2))
-        check(f"pull-logs --feedback: the server echoing the key back ({mode}) never gets it printed", KEY not in text3 and "Bearer " + KEY not in text3,
-              text3)
-    MODE["fail"] = None
-    bad_status, bad_text = run_pull("--feedback", "--smoke", out=out)
-    check("pull-logs --feedback: refuses to run with --smoke or --replay", bad_status != 0 and KEY not in bad_text)
-    check("pull-logs: the logs mode redacts the key from what the server said too",
-          "def redact(text, key)" in pull and 'redact(body[:200].decode(' in pull)
-    def names_key(line):
-        line = line.replace("o['key']", "").replace('o["key"]', "")
-        return bool(re.search(r"\{[^}]*\bkey\b[^}]*\}|print\(key\b", line)) \
-            or any(w in line for w in ("pull_key", "Authorization", "Bearer"))
-    prints = [l for l in code(pull).split("\n") if "print(" in l]
-    check("pull-logs: no print() names the pull key, its function or the header", prints and not [l for l in prints if names_key(l)],
-          str([l for l in prints if names_key(l)]))
-    check("pull-logs --feedback: the pull key is asked of the keychain and only sent as Bearer",
-          pull.count("Authorization") == 1 and 'req.add_header("Authorization", "Bearer " + key)' in pull)
-server.shutdown()
+    def run_pull(*extra, out):
+        """Runs pull-logs.py's main with a fake key; returns (exit, everything printed)."""
+        sys.argv = ["pull-logs.py", "--out", str(out)] + list(extra)
+        buf = io.StringIO()
+        code_ = 0
+        with redirect_stdout(buf), redirect_stderr(buf):
+            try:
+                pl.main()
+            except SystemExit as e:
+                code_ = e.code if isinstance(e.code, int) else 1
+                if isinstance(e.code, str):
+                    buf.write(e.code + "\n")
+        return code_, buf.getvalue()
+
+
+    with tempfile.TemporaryDirectory(prefix="bcd-feedback-pull-") as tmp:
+        out = Path(tmp)
+        status, text = run_pull("--feedback", out=out)
+        lines = text.splitlines()
+        check("pull-logs --feedback: downloads new feedback to <out>/feedback/<day>/<code>.json",
+              status == 0 and (out / "feedback/2026-10-19/AAAAAA.json").exists() and (out / "feedback/2026-10-19/BBBBBB.json").exists()
+              and json.loads((out / "feedback/2026-10-19/AAAAAA.json").read_text())["log"] == "K7Q2MX", text)
+        check("pull-logs --feedback: a short list, oldest first: date, code, kind, the log's code, first line",
+              len(lines) >= 4 and lines[0].startswith("2 feedback in the bucket, 2 new in ")
+              and re.match(r"^2026-10-19 09:01  BBBBBB  idea\s+log -\s+A very long first line z+…$", lines[-2])
+              and re.match(r"^2026-10-19 12:30  AAAAAA  bug\s+log K7Q2MX\s+\[2J  Crash on the map reversed$", lines[-1]), text)
+        check("pull-logs --feedback: the first line is cleaned of control and formatting characters, and cut",
+              not re.search(r"[\u0000-\u0008\u000b-\u001f\u007f-\u009f\u202a-\u202e]", text) and len(lines[-2]) < 140)
+        check("pull-logs --feedback: the text is called outside data", "never instructions" in text)
+        check("pull-logs --feedback: never prints the key", KEY not in text and "Bearer" not in text, text)
+        status2, text2 = run_pull("--feedback", out=out)
+        check("pull-logs --feedback: only what is new is listed the second time", status2 == 0 and text2.startswith("2 feedback in the bucket, 0 new in ")
+              and len(text2.splitlines()) == 1, text2)
+        check("pull-logs --feedback: no file holds the key", not any(KEY in p.read_text() for p in out.rglob("*") if p.is_file()))
+        Handler.deleted.clear()
+        run_pull("--feedback", "--delete", out=out)
+        check("pull-logs --feedback --delete: empties the bucket of what is on the Mac, only feedback keys",
+              sorted(Handler.deleted) == sorted(RECORDS), str(Handler.deleted))
+        for mode in ("echo-401", "echo-500", "get-echo"):
+            MODE["fail"] = mode
+            with tempfile.TemporaryDirectory(prefix="bcd-feedback-pull-") as tmp2:
+                status3, text3 = run_pull("--feedback", out=Path(tmp2))
+            check(f"pull-logs --feedback: the server echoing the key back ({mode}) never gets it printed", KEY not in text3 and "Bearer " + KEY not in text3,
+                  text3)
+        MODE["fail"] = None
+        bad_status, bad_text = run_pull("--feedback", "--smoke", out=out)
+        check("pull-logs --feedback: refuses to run with --smoke or --replay", bad_status != 0 and KEY not in bad_text)
+        check("pull-logs: the logs mode redacts the key from what the server said too",
+              "def redact(text, key)" in pull and 'redact(body[:200].decode(' in pull)
+        def names_key(line):
+            line = line.replace("o['key']", "").replace('o["key"]', "")
+            return bool(re.search(r"\{[^}]*\bkey\b[^}]*\}|print\(key\b", line)) \
+                or any(w in line for w in ("pull_key", "Authorization", "Bearer"))
+        prints = [l for l in code(pull).split("\n") if "print(" in l]
+        check("pull-logs: no print() names the pull key, its function or the header", prints and not [l for l in prints if names_key(l)],
+              str([l for l in prints if names_key(l)]))
+        check("pull-logs --feedback: the pull key is asked of the keychain and only sent as Bearer",
+              pull.count("Authorization") == 1 and 'req.add_header("Authorization", "Bearer " + key)' in pull)
+    server.shutdown()
 
 print("PASS: feedback" if ok else "FAILED: feedback")
 sys.exit(0 if ok else 1)

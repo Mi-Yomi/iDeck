@@ -140,7 +140,8 @@ check('readback-swap: on by default (as before); off keeps only READBACK buffers
 configs = [rule_config(recs, r['id']) for r in recs['rules']]
 check('typed-view-shadow is on in the Horizon games\' and Ghost of Tsushima\'s lists only (Forbidden West\'s since v2, build 526); '
       'the experiments in none',
-      len(configs) == 18 and sum('typed-view-shadow = 1' in c for c in configs) == 3 and   # sixteen lists: Crysis Remastered's since 529, Rift Apart's since 535, MSFS 2024's since 538, Crysis 2/3 Remastered's since 544, GTA V Legacy's since 546, Counter-Strike 2's since 559, Warcraft II's since 561, Breakneck's since 563
+      len(configs) == 19 and sum('typed-view-shadow = 1' in c for c in configs) == 3 and   # iDeck-BCD, 2026-10-19: + "unity"
+      # sixteen lists: Crysis Remastered's since 529, Rift Apart's since 535, MSFS 2024's since 538, Crysis 2/3 Remastered's since 544, GTA V Legacy's since 546, Counter-Strike 2's since 559, Warcraft II's since 561, Breakneck's since 563
       sum('typed-view-shadow = 0' in c for c in configs) == 0 and
       not any(k in c for c in configs for k in ('vis-trace', 'readback-far', 'fence-strict', 'desc-guard', 'readback-swap')))
 

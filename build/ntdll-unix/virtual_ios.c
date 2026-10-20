@@ -27238,7 +27238,7 @@ static UINT64 ios_vm_watch(void)
  * One session's log was 3.5 MB / 35,000 lines; the largest shares were the
  * ordinary per-allocation [valloc] / [vfree] lines (about 4,100) and one
  * [bigres] line per 512 MB reservation (2,438 in an exception loop). None of
- * them is a signal auto-tune reads (build/tools/autotune_rules.py). Quiet keeps
+ * them is a signal the app's after-a-crash rules read (build/tools/). Quiet keeps
  * every special case -- the vmwatch address, a limited or violating allocation,
  * the first 64 [bigres] lines and every 256th after -- and drops the rest.
  * Combine with env.MADEIRA_LEAN_DIAG = 1 and env.MADEIRA_PROBES = light for the

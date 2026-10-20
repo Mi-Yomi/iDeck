@@ -4,4 +4,5 @@
 # run.sh, "Build N (GitHub)" from a cloud session before it dispatches);
 # build-ipa.yml's "Build number" step reads it, and the app's version is
 # 0.1.<number>. GitHub's run_number does not follow it.
-569
+# iDeck-BCD, 2026-10-20: the first build of this fork, from BCD 0.1.574's source: 575.
+575

@@ -13508,6 +13508,21 @@ bus_fatal:
     }
     { static unsigned long ml1055_bus; unsigned long k = __sync_add_and_fetch( &ml1055_bus, 1 );   /* 20,764 lines a run */
       if (k <= 40 || !(k % 1000)) ERR("BUS at pc=%p addr=%p exec=%d (#%lu, sampled) rev=ml345\n", pc, siginfo->si_addr, is_exec_fault, k); }
+    /* Modified for iDeck-BCD, 2026-10-20: an access violation in Unix code during a
+     * system call goes back to that call's __TRY, or to its caller as an error, as
+     * segv_handler does. Darwin reports a read of a PROT_NONE page as SIGBUS, so
+     * NtReadVirtualMemory's __TRY never caught it: S.T.A.L.K.E.R. (ReadProcessMemory
+     * on its own process) died with "Exception frame is not in stack limits". */
+    if (!is_exec_fault && rec.ExceptionCode == EXCEPTION_ACCESS_VIOLATION &&
+        handle_syscall_fault( bus_ctx, &rec ))
+    {
+        static unsigned long bus_syscall_logs;
+        if (bus_syscall_logs++ < 16)
+            ERR("[bus-syscall] AV at pc=%p addr=%p inside a system call: returned to the call\n",
+                pc, siginfo->si_addr);
+        ios_fixup_x18_for_return( bus_ctx );
+        return;
+    }
 #endif
     setup_exception( sigcontext, &rec );
 }

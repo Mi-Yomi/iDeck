@@ -57,6 +57,14 @@
 //
 //  Log tag: [recs].
 //
+//  Modified for iDeck-BCD, 2026-10-20: the online list is OFF unless Info.plist's IDeckEndpoints
+//  names both files (RecommendationsJSON, RecommendationsSignature, https only); BCD's two
+//  addresses above are not used. Off, only the built-in list is used: refresh() asks nothing and
+//  answers .off, start() starts no check, and a download kept by an earlier build is not read.
+//  On, everything above holds unchanged; a list from our own address must be signed by the key
+//  IDeckEndpoints' RecommendationsPublicKey names (raw 32 bytes, base64), else by BCD's key below.
+//  See docs/ideck/NETWORK-OFF-20261020.md.
+//
 
 import Foundation
 import CryptoKit
@@ -88,8 +96,26 @@ enum RecommendationsSignature {
 // MARK: - The files
 
 enum RecommendationsStore {
-    static let jsonURL = URL(string: "https://raw.githubusercontent.com/thebcd69/bcd-games/main/recommended/recommendations.json")!
-    static let signatureURL = URL(string: "https://raw.githubusercontent.com/thebcd69/bcd-games/main/recommended/recommendations.json.sig")!
+    // Modified for iDeck-BCD, 2026-10-20: the two addresses come from Info.plist (IDeckEndpoints),
+    // nil (the online list off) unless both are set. The host checks set their own.
+    static var jsonURL: URL? = iDeckEndpoint("RecommendationsJSON")
+    static var signatureURL: URL? = iDeckEndpoint("RecommendationsSignature")
+    /// iDeck-BCD: whether this build asks online at all; false: the built-in list only.
+    static var online: Bool { jsonURL != nil && signatureURL != nil }
+
+    /// iDeck-BCD: Info.plist's IDeckEndpoints[name], trimmed; nil when absent or empty.
+    static func iDeckSetting(_ name: String, in bundle: Bundle = .main) -> String? {
+        guard let text = (bundle.object(forInfoDictionaryKey: "IDeckEndpoints") as? [String: Any])?[name] as? String else { return nil }
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty ? nil : trimmed
+    }
+
+    /// iDeck-BCD: Info.plist's IDeckEndpoints[name] when it is an https address, else nil (off).
+    static func iDeckEndpoint(_ name: String, in bundle: Bundle = .main) -> URL? {
+        guard let text = iDeckSetting(name, in: bundle), let url = URL(string: text),
+              url.scheme == "https", url.host != nil else { return nil }
+        return url
+    }
 
     // Set by the host checks before the first use; the app keeps these.
     static var builtInURL: URL? = Bundle.main.url(forResource: "recommendations", withExtension: "json")
@@ -97,7 +123,9 @@ enum RecommendationsStore {
         .appendingPathComponent("Recommendations", isDirectory: true)
     /// This build's number (CFBundleVersion): a rule's or a line's minBuild / maxBuild compare with it.
     static var build: Int? = (Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String).flatMap { Int($0) }
-    static var publicKey = RecommendationsSignature.publicKey
+    /// iDeck-BCD: Info.plist's IDeckEndpoints RecommendationsPublicKey when set (our own key for our
+    /// own address; a key that does not read rejects every download), else BCD's.
+    static var publicKey = iDeckSetting("RecommendationsPublicKey") ?? RecommendationsSignature.publicKey
 
     /// What a download may set: the settings catalog's game settings and the allowed environment lines.
     static var policy: RecommendationsPolicy {
@@ -158,10 +186,14 @@ enum RecommendationsStore {
 
     /// The list at the first use (GameRecommendations.active): the built-in one, or the kept
     /// download when it still checks out and is newer.
+    /// iDeck-BCD: with the online list off, the built-in one only (a kept download is left unread).
     static func initialList() -> GameRecommendationList {
         let builtIn = builtInFile()?.list(build: build, origin: .builtIn)
         var chosen = builtIn ?? .empty
-        if let download = kept() {
+        if !online {
+            LogStore.shared.log("[recs] the online list is off in this build: built-in list only")
+        }
+        if online, let download = kept() {
             do {
                 let file = try check(json: download.json, signature: download.signature)
                 let list = try self.list(file, against: builtIn.map { [$0] } ?? [])
@@ -206,12 +238,16 @@ enum RecommendationsHTTP {
     }()
 
     static func fetch() async -> RecommendationsFetch {
+        // iDeck-BCD: no address, no request (refresh() does not get here while the list is off).
+        guard let jsonURL = RecommendationsStore.jsonURL, let signatureURL = RecommendationsStore.signatureURL else {
+            return .offline("the online list is off in this build")
+        }
         let json: Data
-        switch await get(RecommendationsStore.jsonURL, limit: maxJSONBytes) {
+        switch await get(jsonURL, limit: maxJSONBytes) {
         case .success(let data): json = data
         case .failure(let failure): return failure.fetch
         }
-        switch await get(RecommendationsStore.signatureURL, limit: maxSignatureBytes) {
+        switch await get(signatureURL, limit: maxSignatureBytes) {
         case .success(let signature): return .ok(json: json, signature: signature)
         case .failure(let failure): return failure.fetch
         }
@@ -248,6 +284,9 @@ enum RecommendationsRefreshResult: Equatable {
     case offline(version: Int, origin: GameRecommendationList.Origin, notPublished: Bool)
     /// A list came and was not used; the list in use stays.
     case rejected(reason: String, version: Int)
+    /// iDeck-BCD, 2026-10-20: this build has no online list (Info.plist's IDeckEndpoints); nothing
+    /// was asked, the list in use (the built-in one: a kept download is not read) stays.
+    case off(version: Int)
 
     var message: String {
         switch self {
@@ -262,6 +301,8 @@ enum RecommendationsRefreshResult: Equatable {
             return (notPublished ? "No online list yet" : "Offline") + ": using \(kind) (list \(version))."
         case .rejected(let reason, let version):
             return "Rejected: \(reason). Still using list \(version)."
+        case .off(let version):
+            return "Online updates are off in this build: list \(version) stays."
         }
     }
 }
@@ -314,6 +355,7 @@ final class RecommendationsSource: ObservableObject {
             started = true
             shared.idle = idle
             shared.onChange = onChange
+            guard RecommendationsStore.online else { return }   // iDeck-BCD: the online list is off: no check
             guard backgroundCheckDue(lastChecked: shared.lastChecked) else { return }
             Task { @MainActor in _ = await shared.refresh() }
         }
@@ -327,8 +369,15 @@ final class RecommendationsSource: ObservableObject {
     }
 
     /// Asks online now; a check already running is joined.
+    /// iDeck-BCD: with the online list off, asks nothing and answers .off; the list in use stays.
     @MainActor
     func refresh() async -> RecommendationsRefreshResult {
+        guard RecommendationsStore.online else {
+            LogStore.shared.log("[recs] the online list is off in this build; \(origin.rawValue) list v\(version) stays")
+            let result = RecommendationsRefreshResult.off(version: version)
+            lastResult = result
+            return result
+        }
         if let running { return await running.value }
         let task = Task { @MainActor () -> RecommendationsRefreshResult in
             isRefreshing = true

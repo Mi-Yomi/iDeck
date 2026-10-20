@@ -18,13 +18,19 @@
 //  sending would bring far too many logs, working sessions included, and an older log must
 //  not be one tap away from being sent: "Yoksa çok suistimal edilir").
 //
+//  Modified for iDeck-BCD, 2026-10-20: BCD's intake (bcd.bcd-logs.workers.dev) is not used. Send Log
+//  is OFF unless Info.plist's IDeckEndpoints names our own intake (LogIntake, https only); off, send
+//  fails at once with UploadError.off, before anything is packed. Export BCD's log (Settings › Logs,
+//  the share sheet) does not use this file and keeps working. See docs/ideck/NETWORK-OFF-20261020.md.
+//
 
 import Foundation
 import SwiftUI
 import UIKit
 
 enum LogUpload {
-    static let endpoint = URL(string: "https://bcd.bcd-logs.workers.dev/v1/logs")!
+    /// iDeck-BCD: our own intake from Info.plist (IDeckEndpoints › LogIntake); nil: sending is off.
+    static let endpoint: URL? = iDeckEndpoint("LogIntake")
     static let intake = "madeira-bcd/2"
     static let maxPacked = 25 << 20
     /// The newest logs the list offers; nothing older can be sent.
@@ -49,10 +55,19 @@ enum LogUpload {
         if let d = try? JSONEncoder().encode(list) { UserDefaults.standard.set(d, forKey: historyKey) }
     }
 
+    /// iDeck-BCD: Info.plist's IDeckEndpoints[name] when it is an https address, else nil (off).
+    static func iDeckEndpoint(_ name: String, in bundle: Bundle = .main) -> URL? {
+        guard let text = (bundle.object(forInfoDictionaryKey: "IDeckEndpoints") as? [String: Any])?[name] as? String,
+              let url = URL(string: text.trimmingCharacters(in: .whitespacesAndNewlines)),
+              url.scheme == "https", url.host != nil else { return nil }
+        return url
+    }
+
     enum UploadError: LocalizedError {
-        case tooLarge(Int), refused(Int, String), noCode, notRecent
+        case tooLarge(Int), refused(Int, String), noCode, notRecent, off
         var errorDescription: String? {
             switch self {
+            case .off: return "Sending logs is off in this build; nothing left this device. Export BCD's log to save or share it yourself."
             case .notRecent: return "Only the \(LogUpload.listed) newest logs can be sent."
             case .tooLarge(let n): return "The compressed log is \(n >> 20) MB; the limit is \(LogUpload.maxPacked >> 20) MB."
             case .refused(let status, let why): return "The server refused it (\(status)\(why.isEmpty ? "" : ": " + why))."
@@ -94,6 +109,8 @@ enum LogUpload {
         }
         let say: (String) -> Void = { text in if let progress { DispatchQueue.main.async { progress(text) } } }
         queue.async {
+            // iDeck-BCD: no intake in this build: nothing is packed or sent.
+            guard let endpoint = LogUpload.endpoint else { return finish(.failure(UploadError.off)) }
             guard recentLogs().contains(where: { $0.standardizedFileURL == log.standardizedFileURL }) else {
                 return finish(.failure(UploadError.notRecent))
             }

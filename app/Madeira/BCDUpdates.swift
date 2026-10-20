@@ -13,15 +13,22 @@ import UIKit
 // this copy's version. It never downloads anything: "Go to update" opens the release's page.
 // A failed check (offline, no release published yet, an answer it cannot read) is one quiet
 // line in Settings › Updates, never an alert. Engine-free: the preview app builds it too.
+//
+// Modified for iDeck-BCD, 2026-10-20: BCD's releases (api.github.com/repos/thebcd69/bcd-games) are
+// not asked. Checking is OFF unless Info.plist's IDeckEndpoints names our own address
+// (ReleasesLatest, https only, answering as GitHub's releases/latest API does); off, a check asks
+// nothing and Settings › Updates shows BCDUpdateFailure.off's line. See
+// docs/ideck/NETWORK-OFF-20261020.md.
 
 // MARK: - Rules and checker (Foundation and Combine only; tests/host/check-bcd-settings.py compiles this part)
 
 /// Why a check did not give an answer, in one short line.
 enum BCDUpdateFailure: Error, Equatable {
-    case offline, noRelease, refused(Int), unreadable
+    case offline, noRelease, refused(Int), unreadable, off
 
     var line: String {
         switch self {
+        case .off: return "Update checks are off in this build. Nothing is asked online."
         case .offline: return "BCD couldn't reach GitHub. Try again later."
         case .noRelease: return "No release is published yet."
         case .refused(let status): return "GitHub didn't answer this time (\(status))."
@@ -79,7 +86,14 @@ enum BCDUpdateRules {
         return checker
     }()
     static let autoCheckKey = "bcd.updates.autoCheck"
-    static let endpoint = URL(string: "https://api.github.com/repos/thebcd69/bcd-games/releases/latest")!
+
+    /// iDeck-BCD: Info.plist's IDeckEndpoints › ReleasesLatest when it is an https address, else nil (off).
+    static func configuredEndpoint(in bundle: Bundle) -> URL? {
+        guard let text = (bundle.object(forInfoDictionaryKey: "IDeckEndpoints") as? [String: Any])?["ReleasesLatest"] as? String,
+              let url = URL(string: text.trimmingCharacters(in: .whitespacesAndNewlines)),
+              url.scheme == "https", url.host != nil else { return nil }
+        return url
+    }
 
     @Published private(set) var state = State.idle
     /// The newest release GitHub named, once a check succeeded.
@@ -91,6 +105,9 @@ enum BCDUpdateRules {
     /// This copy's version and build (the preview app and the host check give their own).
     var version: String
     var build: String
+    /// iDeck-BCD: where a check asks (Info.plist's IDeckEndpoints › ReleasesLatest); nil: checks are
+    /// off (the preview app and the host check give their own).
+    var endpoint: URL?
     /// Asks a URL and returns the answer's body and HTTP status (the preview app and the host
     /// check give their own answers).
     var fetch: (URL) async throws -> (Data, Int)
@@ -102,6 +119,7 @@ enum BCDUpdateRules {
         autoCheck = defaults.object(forKey: Self.autoCheckKey) as? Bool ?? true
         version = bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0"
         build = bundle.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "0"
+        endpoint = Self.configuredEndpoint(in: bundle)
         fetch = { url in
             var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 15)
             request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
@@ -127,9 +145,14 @@ enum BCDUpdateRules {
 
     func check() async {
         guard state != .checking else { return }
+        // iDeck-BCD: no address in this build: nothing is asked, one quiet line says so.
+        guard let endpoint else {
+            state = .failed(BCDUpdateFailure.off.line)
+            return
+        }
         state = .checking
         do {
-            let (data, status) = try await fetch(Self.endpoint)
+            let (data, status) = try await fetch(endpoint)
             switch BCDUpdateRules.release(from: data, status: status) {
             case .success(let release):
                 latest = release

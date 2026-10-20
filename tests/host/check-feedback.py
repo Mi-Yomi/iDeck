@@ -11,9 +11,11 @@ Static contracts:
   - the Worker: POST /v1/feedback behind the same X-BCD-Intake gate and the same RL rate limit as
     logs, checked before the body is read; the key feedback/<day>/<code>.json; admin routes under
     /v1/admin/feedback/ behind the pull key; no new binding in wrangler.toml;
-  - the app: FeedbackUpload.swift sends to the same host and header as LogUpload, path
-    /v1/feedback; the body's fields are exactly the Worker's (kind, text, build, ios, model, log)
-    and no source of a name, an account, a device name or an address is read; the model is the
+  - the app: FeedbackUpload.swift sends with the same header as LogUpload (Modified for
+    iDeck-BCD, 2026-10-20: to Info.plist's IDeckEndpoints › FeedbackIntake, empty in this
+    fork, so it fails at once with UploadError.off; the live backend sends nothing, not even
+    the attached log; BCD's intake is not used); the body's fields are exactly the Worker's
+    (kind, text, build, ios, model, log) and no source of a name, an account, a device name or an address is read; the model is the
     identifier from uname, not UIDevice; the limits agree in the Worker, the client and the view
     (4000 characters, 20 KB); the last 20 sent are kept as code, kind, date and first line;
   - Settings: the Feedback section sits right after Logs, with a symbol; its page has the three
@@ -40,6 +42,7 @@ import importlib.util
 import io
 import json
 import os
+import plistlib
 import re
 import shutil
 import subprocess
@@ -140,10 +143,19 @@ w_body = eval(re.search(r"export const MAX_FEEDBACK_BYTES = ([0-9 *]+);", worker
 w_kinds = re.findall(r'"(\w+)"', re.search(r"export const FEEDBACK_KINDS = \[(.*?)\];", worker).group(1))
 
 # ---- the app: the client ---------------------------------------------------------------------
-host = lambda text: re.search(r'URL\(string: "https://([^/"]+)(/[^"]*)"\)!', text).groups()
-check(host(upload)[0] == host(logup)[0] and host(upload)[1] == "/v1/feedback" and host(logup)[1] == "/v1/logs"
-      and host(upload)[0] == "bcd.bcd-logs.workers.dev",
-      "FeedbackUpload: the same host as Send Log, path /v1/feedback")
+# Modified for iDeck-BCD, 2026-10-20: BCD's intake is not used. Each intake is Info.plist's IDeckEndpoints
+# (FeedbackIntake beside Send Log's LogIntake, https only), empty in this fork: feedback is off.
+lines_of = lambda text: "\n".join(l for l in text.split("\n") if not l.lstrip().startswith("//"))
+endpoints = plistlib.loads((APP / "Info.plist").read_bytes()).get("IDeckEndpoints", {})
+check('static let endpoint: URL? = LogUpload.iDeckEndpoint("FeedbackIntake")' in upload
+      and 'static let endpoint: URL? = iDeckEndpoint("LogIntake")' in logup
+      and not [t for t in ("bcd-logs.workers.dev", "https://") if t in lines_of(upload) + lines_of(logup)]
+      and endpoints.get("FeedbackIntake") == "" and endpoints.get("LogIntake") == "",
+      "FeedbackUpload: its own intake beside Send Log's, both from Info.plist's IDeckEndpoints and empty: off (iDeck-BCD)")
+check(upload.index("guard let endpoint = FeedbackUpload.endpoint else { return finish(.failure(UploadError.off)) }")
+      < upload.index("body = try FeedbackCore.body(") < upload.index("var req = URLRequest(url: endpoint)")
+      and 'case .off: return "Sending feedback is off in this build; nothing left this device."' in upload,
+      "FeedbackUpload: off, send fails at once with its own message and nothing is built or sent (iDeck-BCD)")
 check('static let intake = "madeira-bcd/2"' in upload and 'static let intake = "madeira-bcd/2"' in logup
       and 'export const INTAKE = "madeira-bcd/2";' in worker
       and 'req.setValue(intake, forHTTPHeaderField: "X-BCD-Intake")' in upload,
@@ -220,6 +232,9 @@ check(lf.index("LogUpload.send(url") < lf.index("post(kind, text, log: code)") <
       and "guard draft.attachLog, let url = newest else { return post(kind, text, log: nil) }" in lf
       and "LogUpload.recentLogs()" in lf,
       "live: with Attach my newest log on, the newest log goes first through LogUpload.send and its code goes into the message")
+check(lf.index("guard FeedbackUpload.endpoint != nil else {") < lf.index("guard draft.attachLog, let url = newest")
+      < lf.index("LogUpload.send(url"),
+      "live (iDeck-BCD): with no feedback intake nothing is sent, not even the attached log")
 check("draft.text = \"\"" in lf and "Your message is still here" in lf,
       "live: a sent message clears the field; a failure keeps the words")
 engine = ["LibraryModel", "LogUpload", "LogStore", "MadeiraConfig", "FeedbackUpload", "FeedbackCore", "UIDevice"]

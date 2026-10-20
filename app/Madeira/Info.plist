@@ -40,6 +40,21 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>GCSupportsGameMode</key>
 	<true/>
+	<key>IDeckEndpoints</key>
+	<dict>
+		<key>FeedbackIntake</key>
+		<string></string>
+		<key>LogIntake</key>
+		<string></string>
+		<key>RecommendationsJSON</key>
+		<string></string>
+		<key>RecommendationsPublicKey</key>
+		<string></string>
+		<key>RecommendationsSignature</key>
+		<string></string>
+		<key>ReleasesLatest</key>
+		<string></string>
+	</dict>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.games</string>
 	<key>LSApplicationQueriesSchemes</key>

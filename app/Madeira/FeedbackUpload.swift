@@ -15,11 +15,16 @@
 //  sent with it, that log's code. Nothing else leaves: no name, no account, no device name,
 //  no address.
 //
+//  Modified for iDeck-BCD, 2026-10-20: BCD's intake (bcd.bcd-logs.workers.dev) is not used. Feedback
+//  is OFF unless Info.plist's IDeckEndpoints names our own intake (FeedbackIntake, https only); off,
+//  send fails at once with UploadError.off and nothing leaves. See docs/ideck/NETWORK-OFF-20261020.md.
+//
 
 import Foundation
 
 enum FeedbackUpload {
-    static let endpoint = URL(string: "https://bcd.bcd-logs.workers.dev/v1/feedback")!
+    /// iDeck-BCD: our own intake from Info.plist (IDeckEndpoints › FeedbackIntake); nil: feedback is off.
+    static let endpoint: URL? = LogUpload.iDeckEndpoint("FeedbackIntake")
     static let intake = "madeira-bcd/2"
     private static let historyKey = "madeira.bcd.feedback.sent"
     private static let kept = 20
@@ -47,9 +52,10 @@ enum FeedbackUpload {
 
     /// What went wrong, in plain words.
     enum UploadError: LocalizedError {
-        case problem(FeedbackCore.Problem), refused(Int, String), noCode
+        case problem(FeedbackCore.Problem), refused(Int, String), noCode, off
         var errorDescription: String? {
             switch self {
+            case .off: return "Sending feedback is off in this build; nothing left this device."
             case .problem(.empty): return "Write something first."
             case .problem(.tooLong): return "That message is too long. The most is \(FeedbackCore.maxCharacters) characters."
             case .problem(.bodyTooLarge): return "That message is too long to send. Shorten it a little."
@@ -80,6 +86,8 @@ enum FeedbackUpload {
             }
             DispatchQueue.main.async { done(r) }
         }
+        // iDeck-BCD: no intake in this build: nothing is sent.
+        guard let endpoint = FeedbackUpload.endpoint else { return finish(.failure(UploadError.off)) }
         let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
         let os = ProcessInfo.processInfo.operatingSystemVersion
         let body: Data

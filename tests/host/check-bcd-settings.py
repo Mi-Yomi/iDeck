@@ -34,7 +34,9 @@
      answers are one quiet line, never an alert; a release page must be on github.com; Check
      automatically is on unless turned off and checks once per start; the home screen's chip
      shows only while it is on and a newer release exists, and opens Settings › Updates; no
-     address is ever drawn as text, and nothing is downloaded.
+     address is ever drawn as text, and nothing is downloaded. Modified for iDeck-BCD,
+     2026-10-20: BCD's releases are never asked; the address is Info.plist's IDeckEndpoints ›
+     ReleasesLatest, empty in this fork, and with none a check asks nothing and says it is off.
  11. Nothing stays reachable only through the classic screens (owner, 2026-10-18: they are
      deleted in the cleanup wave): every function of the classic settings form and the
      developer screen's settings has its place here (listed below with the engine call each
@@ -44,6 +46,7 @@
     tests/host/check-bcd-settings.py [--no-preview]
 """
 import json
+import plistlib
 import re
 import shutil
 import subprocess
@@ -298,6 +301,12 @@ check(checker.autoCheck, "updates: Check automatically is on unless turned off")
 checker.version = "0.1.570"
 checker.build = "570"
 var asked = 0
+// iDeck-BCD, 2026-10-20: no address (Info.plist's IDeckEndpoints › ReleasesLatest) is the default: off.
+checker.fetch = { _ in asked += 1; return (answer("v0.1.580"), 200) }
+await checker.check()
+check(checker.endpoint == nil && asked == 0 && checker.state == .failed(BCDUpdateFailure.off.line) && !checker.showsChip,
+      "updates: with no address a check asks nothing and says it is off")
+checker.endpoint = URL(string: "https://updates.test/releases/latest")   // a stand-in, never asked: fetch answers
 checker.fetch = { _ in asked += 1; throw URLError(.notConnectedToInternet) }
 await checker.check()
 check(checker.state == .failed(BCDUpdateFailure.offline.line) && !checker.showsChip, "updates: offline is one quiet line, no chip")
@@ -477,9 +486,19 @@ updates = read(APP / "BCDUpdates.swift")
 updates_view = block(views["BCDSettingsSections.swift"], "struct BCDUpdatesSettings: View")
 front = read(APP / "BCDFrontEnd.swift")
 chip = block(updates, "struct BCDUpdateChip: View")
-check('static let endpoint = URL(string: "https://api.github.com/repos/thebcd69/bcd-games/releases/latest")!' in updates
+# Modified for iDeck-BCD, 2026-10-20: BCD's releases are not asked; the address is Info.plist's IDeckEndpoints ›
+# ReleasesLatest (https only), empty in this fork, so checks are off (docs/ideck/NETWORK-OFF-20261020.md).
+updates_lines = "\n".join(l for l in updates.split("\n") if not l.lstrip().startswith("//"))
+endpoints = plistlib.loads((APP / "Info.plist").read_bytes()).get("IDeckEndpoints", {})
+check("api.github.com" not in updates_lines and "thebcd69" not in updates_lines and "https://" not in updates_lines
+      and 'bundle.object(forInfoDictionaryKey: "IDeckEndpoints") as? [String: Any])?["ReleasesLatest"]' in updates
+      and 'url.scheme == "https"' in updates and "endpoint = Self.configuredEndpoint(in: bundle)" in updates
+      and updates.index("guard let endpoint else {") < updates.index("state = .checking\n")
+      < updates.index("try await fetch(endpoint)")
+      and endpoints.get("ReleasesLatest") == ""
       and "Authorization" not in updates and "token" not in code(updates).lower(),
-      "updates: GitHub's public API for thebcd69/bcd-games, no token")
+      "updates: BCD's releases are never asked; Info.plist's IDeckEndpoints › ReleasesLatest is empty, so a check "
+      "asks nothing (iDeck-BCD); no token")
 check(not re.search(r"\.alert\(|\.sheet\(|fullScreenCover|download\(|downloadTask", code(updates) + code(updates_view)),
       "updates: no alert or sheet of its own, nothing downloaded")
 shown_text = re.findall(r"(?:Text|Label|Link)\(([^\n]*)", code(chip) + code(updates_view))

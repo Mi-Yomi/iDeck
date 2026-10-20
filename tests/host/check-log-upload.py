@@ -19,13 +19,17 @@ Checks:
     compressed copy when the upload ends, sends by hand only (no automatic sending, no
     session hooks: owner, 2026-10-17) and only one of the 20 newest logs, which is all
     the list shows; the Xcode project builds both files; every file is marked FORK-ONLY;
-    CI runs this check.
+    CI runs this check;
+  - Modified for iDeck-BCD, 2026-10-20: BCD's intake is not used; the intake is Info.plist's
+    IDeckEndpoints › LogIntake (https only), empty in this fork, so Send Log fails at once
+    with UploadError.off before anything is packed, and auto-tune offers no Send Log.
 The Swift part is skipped when swiftc is missing (--require-swift makes that a failure).
 """
 import argparse
 import gzip
 import importlib.util
 import os
+import plistlib
 import re
 import shutil
 import subprocess
@@ -61,9 +65,24 @@ check("LogUploadCore's rules are SCRUB's, in its order",
       # \" in a Python raw string is the regex's escaped quote; Swift's raw string writes it plain.
       [(p, r.replace("$1", "\\1")) for p, r in swift_rules] == [(p.pattern.replace('\\"', '"'), r) for p, r in fx.SCRUB],
       swift_rules)
-check("the app sends to the deployed intake with the intake header",
-      'URL(string: "https://bcd.bcd-logs.workers.dev/v1/logs")' in app
-      and 'static let intake = "madeira-bcd/2"' in app and 'export const INTAKE = "madeira-bcd/2";' in worker)
+check("the app sends with the intake header",
+      'static let intake = "madeira-bcd/2"' in app and 'export const INTAKE = "madeira-bcd/2";' in worker)
+# Modified for iDeck-BCD, 2026-10-20: BCD's intake is not used; ours comes from Info.plist, empty here: off.
+app_lines = "\n".join(l for l in app.split("\n") if not l.lstrip().startswith("//"))
+endpoints = plistlib.loads((R / "app/Madeira/Info.plist").read_bytes()).get("IDeckEndpoints", {})
+check("iDeck-BCD: no built-in intake; Info.plist's IDeckEndpoints › LogIntake (https only) is empty, so sending is off",
+      "bcd-logs.workers.dev" not in app_lines and "https://" not in app_lines
+      and 'static let endpoint: URL? = iDeckEndpoint("LogIntake")' in app
+      and 'bundle.object(forInfoDictionaryKey: "IDeckEndpoints") as? [String: Any])?[name] as? String' in app
+      and 'url.scheme == "https"' in app and endpoints.get("LogIntake") == "")
+check("iDeck-BCD: off, send fails at once with its own message, before the log is checked or packed",
+      app.index("guard let endpoint = LogUpload.endpoint else { return finish(.failure(UploadError.off)) }")
+      < app.index("guard recentLogs().contains(") < app.index("LogUploadCore.pack(log, to: gz)")
+      and "case .off: return \"Sending logs is off in this build;" in app)
+autotune_views = (R / "app/Madeira/AutoTuneViews.swift").read_text()
+check("iDeck-BCD: auto-tune offers Send Log only while there is an intake",
+      'if LogUpload.endpoint != nil, ["stuck", "gave-up", "known"].contains(offer.state.status),' in autotune_views
+      and autotune_views.count("LogUpload.send(") == 1)
 up = app[app.index("session.uploadTask(with: req, fromFile: gz)"):]
 check("the compressed copy is deleted as soon as the upload ends, sent or not",
       up.index("try? FileManager.default.removeItem(at: gz)") < up.index("if let error"))

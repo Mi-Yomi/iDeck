@@ -889,6 +889,8 @@ import UniformTypeIdentifiers
         switch result {
         case .offline(_, let origin, let notPublished):
             return .offline(builtIn: origin == .builtIn, nothingOnline: notPublished)
+        case .off:   // Modified for iDeck-BCD, 2026-10-20: this build has no online list (GameRecommendationsSource.swift)
+            return .offline(builtIn: true, nothingOnline: true)
         case .rejected:
             return .rejected
         case .upToDate, .updated:

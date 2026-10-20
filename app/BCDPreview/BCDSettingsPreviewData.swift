@@ -417,6 +417,9 @@ extension BCDUpdateChecker {
     func usePreviewSample() {
         version = "0.1.570"
         build = "570"
+        // Modified for iDeck-BCD, 2026-10-20: checks are off without an address (BCDUpdates.swift); the
+        // sample's stand-in is a reserved, never-resolving name and is never asked (fetch answers).
+        endpoint = URL(string: "https://preview.invalid/releases/latest")
         fetch = { _ in
             (Data(#"{"tag_name": "v0.1.580", "html_url": "https://github.com/thebcd69/bcd-games/releases/tag/v0.1.580"}"#.utf8), 200)
         }

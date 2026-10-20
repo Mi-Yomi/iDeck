@@ -33,7 +33,8 @@ struct AutoTuneAlert: ViewModifier {
                     }
                 }
                 // madeira-bcd FORK-ONLY: a search that ended without a fix sends its log in one tap.
-                if ["stuck", "gave-up", "known"].contains(offer.state.status),
+                // Modified for iDeck-BCD, 2026-10-20: only while this build has a log intake (LogUpload.endpoint).
+                if LogUpload.endpoint != nil, ["stuck", "gave-up", "known"].contains(offer.state.status),
                    let name = offer.state.attempts.last?.log, let log = LogUpload.log(named: name) {
                     Button("Send Log") {
                         offers.offer = nil

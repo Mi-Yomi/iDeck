@@ -30,6 +30,11 @@ tools/publish-recommendations.py signs it). This check proves:
     check waits 6 hours after an answer, two refreshes share one fetch;
   - the wiring: the Xcode project (the two Swift files, the JSON as a resource), LibraryModel's
     start hook, the CI step, the URLs, the public key, and no "Madeira" in what the model says.
+  - Modified for iDeck-BCD, 2026-10-20: BCD's two addresses are gone; the online list's addresses
+    (and an optional key of our own) are Info.plist's IDeckEndpoints, empty in this fork, so the
+    online list is off: the built-in list only, refresh() asks nothing and answers .off, start()
+    starts no check, a kept download is not read. The pipeline above runs with stand-in addresses
+    (never asked: the fixture's network is its own).
 
 --require-swift turns a missing compiler into a failure (macOS CI).
 """
@@ -39,6 +44,7 @@ import hashlib
 import importlib.util
 import json
 import os
+import plistlib
 import re
 import shutil
 import subprocess
@@ -125,10 +131,35 @@ workflow = (ROOT / '.github/workflows/build-ipa.yml').read_text()
 check('build-ipa.yml runs this check next to the recommended-settings one',
       'run: python3 tests/host/check-remote-recommendations.py --require-swift' in workflow
       and workflow.index('check-game-recommendations.py') < workflow.index('check-remote-recommendations.py') < workflow.index('check-autotune.py'))
-check('the two addresses: the public repository, raw, main',
-      'URL(string: "https://raw.githubusercontent.com/thebcd69/bcd-games/main/recommended/recommendations.json")!' in source
-      and 'URL(string: "https://raw.githubusercontent.com/thebcd69/bcd-games/main/recommended/recommendations.json.sig")!' in source
-      and source.count('https://') == 4)   # the two above and the two in the header comment
+# Modified for iDeck-BCD, 2026-10-20: no built-in address; Info.plist's IDeckEndpoints names them, empty here: off.
+source_lines = '\n'.join(l for l in source.split('\n') if not l.lstrip().startswith('//'))
+endpoints = plistlib.loads((APP / 'Info.plist').read_bytes()).get('IDeckEndpoints', {})
+check('iDeck-BCD: no address in the code (the header comment keeps BCD\'s two); both come from Info.plist\'s IDeckEndpoints, '
+      'https only',
+      'https://' not in source_lines and 'thebcd69' not in source_lines and source.count('https://') == 2
+      and 'static var jsonURL: URL? = iDeckEndpoint("RecommendationsJSON")' in source
+      and 'static var signatureURL: URL? = iDeckEndpoint("RecommendationsSignature")' in source
+      and 'static var online: Bool { jsonURL != nil && signatureURL != nil }' in source
+      and 'bundle.object(forInfoDictionaryKey: "IDeckEndpoints") as? [String: Any])?[name] as? String' in source
+      and 'url.scheme == "https", url.host != nil' in source)
+check('iDeck-BCD: Info.plist\'s IDeckEndpoints leaves the online list off (both addresses and the key empty)',
+      all(endpoints.get(k) == '' for k in ('RecommendationsJSON', 'RecommendationsSignature', 'RecommendationsPublicKey')))
+check('iDeck-BCD: a key of our own may replace BCD\'s; the check itself is unchanged',
+      'static var publicKey = iDeckSetting("RecommendationsPublicKey") ?? RecommendationsSignature.publicKey' in source
+      and 'guard RecommendationsSignature.isValid(signature, for: json, publicKey: publicKey) else {' in source)
+initial = block(source, '    static func initialList() -> GameRecommendationList {', '\n    }\n')
+starting = block(source, '    static func start(idle: @escaping () -> Bool, onChange: @escaping () -> Void) {', '\n    }\n')
+refreshing = block(source, '    func refresh() async -> RecommendationsRefreshResult {', '\n    }\n')
+fetching = block(source, '    static func fetch() async -> RecommendationsFetch {', '\n    }\n')
+check('iDeck-BCD: off, the first list is the built-in one (a kept download is not read), the start starts no check, '
+      'refresh() asks nothing, and fetch() has no address to ask',
+      'if online, let download = kept() {' in initial and initial.count('kept()') == 1
+      and starting.index('guard RecommendationsStore.online else { return }') < starting.index('backgroundCheckDue(')
+      and refreshing.index('guard RecommendationsStore.online else {') < refreshing.index('if let running')
+      < refreshing.index('await fetch()')
+      and 'RecommendationsRefreshResult.off(version: version)' in refreshing
+      and fetching.index('guard let jsonURL = RecommendationsStore.jsonURL, let signatureURL = RecommendationsStore.signatureURL else {')
+      < fetching.index('await get(jsonURL'))
 key = re.search(r'static let publicKey = "([A-Za-z0-9+/=]+)"', source)
 check('the app carries a 32-byte Ed25519 public key', bool(key) and len(base64.b64decode(key.group(1))) == 32)
 app_key = base64.b64decode(key.group(1)) if key else b''
@@ -519,6 +550,34 @@ func source(_ answer: RecommendationsFetch) -> RecommendationsSource {
 func kept() -> Bool { FileManager.default.fileExists(atPath: RecommendationsStore.keptURL!.path) }
 let v1 = builtInFile.version
 
+// iDeck-BCD, 2026-10-20: off by default. This binary's Info.plist names no address: the built-in list
+// only, a kept download (valid and newer) is not read, refresh() and fetch() ask nothing.
+check(RecommendationsStore.jsonURL == nil && RecommendationsStore.signatureURL == nil && !RecommendationsStore.online,
+      "off by default: no address")
+fresh()
+let keptJSON = bumped(v1 + 1)
+try! RecommendationsStore.keep(json: keptJSON, signature: sign(keptJSON))
+GameRecommendations.reload()
+check(GameRecommendations.active.origin == .builtIn && GameRecommendations.active.version == v1
+      && LogStore.shared.last("[recs] the online list is off in this build: built-in list only") != nil,
+      "off: a kept download is not read, the built-in list is in use")
+fetches = 0
+let offSource = source(signed(bumped(v1 + 2)))
+let offResult = await offSource.refresh()
+check(offResult == .off(version: v1) && offSource.lastResult == .off(version: v1) && fetches == 0 && offSource.lastChecked == nil
+      && GameRecommendations.active.origin == .builtIn && LogStore.shared.last("[recs] the online list is off in this build; ") != nil,
+      "off: refresh() asks nothing, the built-in list stays")
+check(offResult.message == "Online updates are off in this build: list \(v1) stays.", offResult.message)
+let offFetch = await RecommendationsHTTP.fetch()
+check(offFetch == .offline("the online list is off in this build"), "off: fetch() has no address to ask")
+// On: stand-in addresses, never asked (every source below brings its own network). The same kept file is read.
+RecommendationsStore.jsonURL = URL(string: "https://recs.test/recommendations.json")
+RecommendationsStore.signatureURL = URL(string: "https://recs.test/recommendations.json.sig")
+GameRecommendations.reload()
+check(RecommendationsStore.online && GameRecommendations.active.origin == .downloaded && GameRecommendations.active.version == v1 + 1,
+      "on: the next start reads the kept download")
+print("PASS: iDeck-BCD: off by default (built-in list only, nothing asked, a kept download unread); on with addresses")
+
 fresh()
 var s = source(.offline("The Internet connection appears to be offline."))
 var r = await s.refresh()
@@ -657,7 +716,7 @@ try? await Task.sleep(nanoseconds: 300_000_000)
 check(fetches == 0, "an answer an hour ago: the start does not ask")
 check(![RecommendationsRefreshResult.upToDate(version: 1), .updated(version: 2, changed: ["X", "Y"]), .updated(version: 2, changed: []),
         .offline(version: 1, origin: .builtIn, notPublished: true), .offline(version: 1, origin: .downloaded, notPublished: false),
-        .rejected(reason: "x", version: 1)].contains { $0.message.contains("Madeira") }, "no message names Madeira")
+        .rejected(reason: "x", version: 1), .off(version: 1)].contains { $0.message.contains("Madeira") }, "no message names Madeira")
 print("PASS: offline and 404 keep the list (quietly), bad signatures, changed bytes, other keys, bad JSON, unknown keys, removed or "
       + "lowered rules are rejected, older lists are up to date, a newer one is used, kept and read again (while a game runs: "
       + "kept for the next start), a broken kept file falls back, a newer build wins, one fetch at a time, 6 hours between "

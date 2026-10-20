@@ -770,6 +770,11 @@ struct BCDLiveSwitch {
         if case .sending = state { return }
         let kind = draft.kind.rawValue, text = draft.text
         guard !FeedbackCore.clean(text).isEmpty else { state = .failed(FeedbackUpload.UploadError.problem(.empty).localizedDescription); return }
+        // Modified for iDeck-BCD, 2026-10-20: no feedback intake in this build: nothing is sent, not even the log.
+        guard FeedbackUpload.endpoint != nil else {
+            state = .failed("Not sent: \(FeedbackUpload.UploadError.off.localizedDescription) Your message is still here.")
+            return
+        }
         guard draft.attachLog, let url = newest else { return post(kind, text, log: nil) }
         let file = (path: url.path, date: LogUpload.modified(url), bytes: LogUpload.size(url))
         if let done = attached, done.path == file.path, done.date == file.date, done.bytes == file.bytes {

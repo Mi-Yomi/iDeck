@@ -12,6 +12,11 @@ This folder holds what the app needs from Apple's Metal Shader Converter.
   agreement, reproduced in full in METAL-SHADER-CONVERTER-AGREEMENT.txt.
   build/madeira-d3d12/fetch-converter.sh re-extracts and re-verifies it
   from Apple's installer package after a converter update.
+  iDeck-BCD (2026-10-20): this public fork does not track the library; its
+  build workflow takes the copy inside BCD's public v0.1.574 IPA (the same
+  library, ad-hoc re-signed there, SHA-256
+  4865c8ec999833d8df0df69b8a52eb819adf452b0b12df7651c409425d311e3b), and the
+  built app carries it under the same Apple agreement.
 - Metal Shader Converter headers (metal_irconverter*, compiled into the
   runtime): Apache License 2.0, Copyright Apple Inc.
   See LICENSE-metal-shader-converter-headers.txt. The source tree carries

@@ -151,6 +151,9 @@ research/remote-metal/host/rmetald.*
 # Apple Metal Shader Converter dynamic library: TRACKED (decision 2026-09-16).
 # Apple's installer agreement 2.B permits distributing it solely for shader
 # conversion, which is its only use here; see app/Madeira/d3d12/NOTICE.txt.
+# iDeck-BCD (2026-10-20): NOT tracked in this public fork; the build workflow
+# fetches it from BCD's public release and checks its hash (build/madeira-d3d12/deps.sh).
+app/Madeira/d3d12/libmetalirconverter.dylib
 
 # Licence copies generated into the bundle by build/stage-licenses.sh (from COPYING and LICENSE-EXCEPTION.md)
 app/Madeira/licenses/LICENSE-MADEIRA-GPL-3.0.txt

@@ -1184,6 +1184,31 @@ jobs:
       # (Apple's agreement, app/Madeira/d3d12/NOTICE.txt); build/madeira-d3d12/deps.sh
       # checks both against their pinned hashes. A missing or mismatched converter
       # would build the stub that draws nothing in any D3D12 game, so fail instead.
+      # iDeck-BCD (2026-10-20, owner's decision): this public fork does not track Apple's
+      # converter library. It is taken from BCD's public v0.1.574 release IPA -- the same
+      # Metal Shader Converter 4.0 beta 2 library, ad-hoc re-signed inside that package -- and
+      # must match a hash pinned in build/madeira-d3d12/deps.sh before anything uses it. The
+      # app's build signs it again (the project's licence/signing build phase).
+      - name: Fetch the Metal Shader Converter iOS library from BCD's public release
+        shell: bash
+        run: |
+          set -euo pipefail
+          LIB=app/Madeira/d3d12/libmetalirconverter.dylib
+          if [ ! -f "$LIB" ]; then
+            curl -fsSL --retry 3 -o "$RUNNER_TEMP/BCD-0.1.574.ipa" \
+              https://github.com/thebcd69/bcd-games/releases/download/v0.1.574/BCD.ipa
+            unzip -p "$RUNNER_TEMP/BCD-0.1.574.ipa" Payload/Madeira.app/d3d12/libmetalirconverter.dylib > "$LIB"
+            rm -f "$RUNNER_TEMP/BCD-0.1.574.ipa"
+          fi
+          HAVE=$(shasum -a 256 "$LIB" | cut -d' ' -f1)
+          case "$HAVE" in
+            4865c8ec999833d8df0df69b8a52eb819adf452b0b12df7651c409425d311e3b|073f903be98e973ff38f4d79f2c48d61ef938754a77b1caedda79c9f05a068c2)
+              echo "::notice::Metal Shader Converter iOS library ready ($HAVE)" ;;
+            *)
+              echo "::error::$LIB ($HAVE) is not a pinned Metal Shader Converter 4.0 beta 2 library"
+              rm -f "$LIB"; exit 1 ;;
+          esac
+
       - name: Locate Metal Shader Converter headers
         shell: bash
         run: |

@@ -44,10 +44,15 @@ _msc_resolve() {
         { _msc_fail "vendored converter headers do not match $vend/SHA256SUMS"; return 1; }
     MSC_INCLUDE="$vend/include"
 
+    # Modified for iDeck-BCD, 2026-10-20 (owner's decision): this public fork does not track the
+    # library; .github/workflows/build-ipa.yml takes it from BCD's public v0.1.574 IPA
+    # (Payload/Madeira.app/d3d12/). That copy is the same 4.0 beta 2 library, ad-hoc re-signed
+    # inside BCD's package, so it has its own pinned hash; the app's build signs it again either way.
+    local ios_lib_sha_release="4865c8ec999833d8df0df69b8a52eb819adf452b0b12df7651c409425d311e3b"
     [[ -f "$ios_lib" ]] || { _msc_fail "missing $ios_lib"; return 1; }
     have="$(shasum -a 256 "$ios_lib" | cut -d' ' -f1)"
-    [[ "$have" == "$ios_lib_sha" ]] ||
-        { _msc_fail "$ios_lib hash mismatch (expected $ios_lib_sha, found $have)"; return 1; }
+    [[ "$have" == "$ios_lib_sha" || "$have" == "$ios_lib_sha_release" ]] ||
+        { _msc_fail "$ios_lib hash mismatch (expected $ios_lib_sha or $ios_lib_sha_release, found $have)"; return 1; }
     MSC_LIB_IOS="$ios_lib"
 
     MSC_HAVE_PKG=0 MSC_ROOT="" MSC_PAYLOAD="" MSC_LIB_MACOS=""

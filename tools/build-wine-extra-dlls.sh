@@ -3,7 +3,9 @@
 # games import (and, since ml2106, xinput1_1-1_4 with host rumble; see below): older VC++ runtimes (Crysis's Bin64\Crysis64.exe needs
 # msvcr80), D3DX9/10/11, d3d10, avifil32, XAudio2, dinput, RichEdit (the
 # Rockstar Games SDK / Launcher installers load Msftedit.dll and gdiplus.dll), srvcli (forwarders to
-# netapi32: Microsoft Flight Simulator 2024's program imports it). Configured the way
+# netapi32: Microsoft Flight Simulator 2024's program imports it), wintypes (iDeck-BCD, 2026-10-20:
+# api-ms-win-core-winrt-robuffer-l1-1-0 resolves to it, and Unity IL2CPP's GameAssembly.dll imports
+# that apiset -- without it "Failed to load il2cpp", No, I'm not a Human on build 575). Configured the way
 # upstream's build/wine-pe/build-ntdll.sh configures wine/build-arm64ec;
 # stripped and padded by 64 KB past SizeOfImage like the shipped builtins.
 # Also ucrtbase-x64math.dll, an opt-in variant of ucrtbase (see UCX below), and
@@ -28,6 +30,7 @@ WANT="msvcr70 msvcr71 msvcr80 msvcr90 msvcr100 msvcr110 msvcrt20 msvcrt40 msvcir
       wbemprox wbemdisp wmiutils
       riched20 riched32 msftedit gdiplus mlang usp10 cabinet sspicli msxml3 msxml6
       msasn1 wldp hnetcfg msctf xmllite netprofm d2d1 wmvcore winegstreamer srvcli
+      wintypes
       xaudio2_0 xaudio2_1 xaudio2_2 xaudio2_3 xaudio2_4 xaudio2_5 xaudio2_6 xaudio2_7 xaudio2_8 xaudio2_9
       x3daudio1_0 x3daudio1_1 x3daudio1_2 x3daudio1_3 x3daudio1_4 x3daudio1_5 x3daudio1_6 x3daudio1_7
       xapofx1_1 xapofx1_2 xapofx1_3 xapofx1_4 xapofx1_5

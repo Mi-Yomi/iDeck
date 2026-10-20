@@ -183,8 +183,13 @@ with tempfile.TemporaryDirectory(prefix="madeira-ota-contracts-") as directory:
 subprocess.run(["bash", "-n", str(ROOT / "tools/sign-and-publish-ota.sh")], check=True)
 workflow = (ROOT / ".github/workflows/build-ipa.yml").read_text()
 assert workflow.count("xcodebuild -project app/Madeira.xcodeproj") == 1
-assert workflow.count("run: bash tools/sign-and-publish-ota.sh") == 1
-assert "build-out/Madeira2-0.1.${{ steps.bn.outputs.n }}-unsigned.ipa" in workflow
+# Modified for iDeck-BCD, 2026-10-20: this fork's workflow never signs or uploads (no secrets anywhere);
+# it packages both unsigned IPAs and keeps them as a short-lived Actions artifact. The signing script is
+# still checked below against local doubles; CI simply never runs it here.
+assert workflow.count("run: bash tools/sign-and-publish-ota.sh") == 0 and "secrets." not in workflow
+assert workflow.count("run: python3 tools/ota-variants.py package build-out/Madeira.xcarchive/Products/Applications/"
+                      "Madeira.app build-out ${{ steps.bn.outputs.n }}") == 1
+assert "path: build-out/*-unsigned.ipa" in workflow and "retention-days: 14" in workflow
 # madeira-bcd FORK-ONLY: the version is the fork's one build-number sequence
 # (docs/local-build/BUILD-NUMBER), read once before anything is built; GitHub's
 # run_number appears only in that step's notice.

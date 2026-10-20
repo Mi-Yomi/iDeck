@@ -392,6 +392,12 @@ enum MadeiraDock {
     }
 
     /// Removes an unconsumed transfer (session end, sign-out, app start).
+    /// Modified for iDeck-BCD, 2026-10-20: a Dock start is between its Play and its session
+    /// (ContentView.startDock's task). While it is, another Play is ignored: it used to pass the
+    /// session check, fail after the first start had written its transfer, and run cleanup() under
+    /// it (owner's log, build 574: the host then ended with code 30, session-account-input-invalid).
+    @MainActor static var startPending = false
+
     @MainActor static func cleanup() {
         if let url = transferURL { try? FileManager.default.removeItem(at: url) }
         unsetenv("MADEIRA_DOCK_AUTH_FILE")

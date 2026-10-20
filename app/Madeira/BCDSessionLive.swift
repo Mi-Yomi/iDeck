@@ -85,7 +85,7 @@ struct BCDSessionLiveLayer: View {
     private func refresh() {
         let running = model.current != nil
         hud.message = running ? model.sessionMessage : ""
-        hud.showsMenuButton = running && !model.launching
+        hud.showsMenuButton = running   // Modified for iDeck-BCD, 2026-10-20: from Play on, the starting screen included
         if running && model.launching { startStarting() } else { stopStarting() }
         if running && model.menu { openMenuModel() } else { closeMenuModel(save: true) }
         if running && !model.launching && model.performance { startOverlay() } else { stopOverlay() }

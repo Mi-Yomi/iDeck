@@ -2149,6 +2149,11 @@ struct ContentView: View {
     /// `profile` is a Steam game's library entry (its Game details page): the
     /// session then takes that entry's display, performance and on-screen settings.
     private func startDock(_ game: DockGame, compactPool: Bool, profile: LibraryEntry? = nil) {
+        // Modified for iDeck-BCD, 2026-10-20: one Dock start at a time (MadeiraDock.startPending).
+        guard !MadeiraDock.startPending else {
+            logStore.log("[madeira-dock] a start is already getting ready: this Play is ignored")
+            return
+        }
         guard jitReadyForLaunch(entry: profile?.id,
                                 then: { startDock(game, compactPool: compactPool, profile: profile) }) else { return }
         guard cloudClear(game.id, name: game.name, retry: { startDock(game, compactPool: compactPool, profile: profile) }) else { return }
@@ -2178,7 +2183,9 @@ struct ContentView: View {
         // (library, playtime, downloads) logs off and its socket closes before the sign-in
         // is handed to Valve's client, and it stays off until the Dock session has ended
         // (SteamOwnedLibrary.prepareDock / dockEnded, SteamConnectionGate).
+        MadeiraDock.startPending = true   // iDeck-BCD: until this start has its session or has failed
         Task { @MainActor in
+            defer { MadeiraDock.startPending = false }
             // Resolve the original config.launch key before closing the native connection.
             // A filtered launch array can start at 1 (or have gaps); its offset is not the key.
             // Without a choice (no configuration to be had, or no entry whose .exe is on disk:

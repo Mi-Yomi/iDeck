@@ -25,6 +25,8 @@ Source checks (every host):
      (MADEIRA_SESSION_DIAGNOSTICS), the live log, sharing the logs; the touch controls only through
      BCD's touch section (BCDTouchMenuSectionLive, ui-touch), with no rows of the menu's own; the starting screen's Show desktop, Show the game, Close session and
      live log; Back + Start, and the opt-in Home hold, open and close it; B and Menu close it.
+     Modified for iDeck-BCD, 2026-10-20: the menu button shows from Play on, over the starting
+     screen too.
   5. Nothing is alive while it is closed: the menu exists only while open, the starting screen's
      and the overlay's timers only while they are shown, the overlay samples at most twice a
      second; no blur, no material, no spinner and no animation that runs on its own.
@@ -247,6 +249,12 @@ check("w.windowLevel = .normal + 102" in host and "if framesSeen >= 2 { BCDStart
 layer = block(src["BCDSession.swift"], "struct BCDSessionLayer: View {")
 check("if let menu = hud.menu {" in layer and "if let starting = hud.starting {" in layer
       and "if hud.starting == nil, let overlay = hud.overlay {" in layer, "the menu, the starting screen and the overlay exist only while shown")
+# Modified for iDeck-BCD, 2026-10-20: the menu button from Play on, over the starting screen too (a start that never
+# shows a game window left no way to Share logs or Touch controls without a controller).
+check("if hud.showsMenuButton {" in layer and "hud.starting == nil && hud.showsMenuButton" not in layer
+      and layer.index("if let starting = hud.starting {") < layer.index("if hud.showsMenuButton {") < layer.index("if let menu = hud.menu {")
+      and re.search(r"hud\.showsMenuButton = running\s*\n", session) is not None,
+      "the menu button shows from Play on: over the starting screen, under the open menu (iDeck-BCD)")
 check("hud.menu = nil" in block(session, "private func closeMenuModel(save: Bool) {")
       and "startingTimer?.invalidate()" in block(session, "private func stopStarting() {")
       and "if running && model.launching { startStarting() } else { stopStarting() }" in session,

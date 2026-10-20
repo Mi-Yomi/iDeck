@@ -18,7 +18,9 @@ Source checks, each pinned to the classic library's own code:
   - launchLibraryEntry, once, for both: the device gate, the recommended settings, BCD Dock or
     "The game", Steam Cloud, one session, JIT (Play turns it on and starts the game once it is),
     the profile's checks, the session; BCD Dock: JIT, Steam Cloud, the one-time installs, the
-    session. BCD's interface runs with the library engine on (the JIT prompt is the library's);
+    session. BCD's interface runs with the library engine on (the JIT prompt is the library's).
+    Modified for iDeck-BCD, 2026-10-20: one BCD Dock start at a time; a Play while one gets
+    ready is ignored (MadeiraDock.startPending), so it cannot clean up that start's transfer;
   - GOG: its hook (BCDLiveStoreGOG.gogPlayEntry) hands the installed game's library entry, made
     from its program, arguments and working folder as a game added from Files, to the same Play;
     its download queue holds while a game runs. Epic: listed nowhere, started by nothing;
@@ -207,6 +209,15 @@ check(ordered(dock, "jitReadyForLaunch(entry: profile?.id,",
               "DockInstallers.prepare(game, drive: MadeiraDock.drive, prefix: MadeiraDock.prefix,",
               "if let profile { library.begin(profile, dock: game) }", "runWineFullSequence(profile: profile)"),
       "BCD Dock: JIT (the library's prompt), Steam Cloud, the checks, the one-time installs, the game's session")
+# Modified for iDeck-BCD, 2026-10-20: owner's log (build 574) had three Plays in 3 s start two Dock starts; the
+# second failed after the first wrote its one-use transfer, and its fail() -> MadeiraDock.cleanup() deleted it
+# (the host ended with code 30, session-account-input-invalid).
+check(ordered(dock, "guard !MadeiraDock.startPending else {", "jitReadyForLaunch(entry: profile?.id,",
+              "try MadeiraDock.validate(game, drive: MadeiraDock.drive)", "MadeiraDock.startPending = true",
+              "Task { @MainActor in", "defer { MadeiraDock.startPending = false }", "try MadeiraDock.writeHandoff(")
+      and dock.count("MadeiraDock.startPending = true") == 1 and dock.count("MadeiraDock.startPending = false") == 1
+      and "@MainActor static var startPending = false" in (APP / "MadeiraDock.swift").read_text(),
+      "BCD Dock: one start at a time; a Play while one gets ready is ignored and cannot clean up its transfer (iDeck-BCD)")
 jit = code(block(content, "private func jitReadyForLaunch("))
 check(ordered(jit, "if StikJITHelper.ready { return true }", "if let launch {", "launchAfterJIT = launch",
               "library.startingJIT = entry", "if jitStatus != .testing { enableJIT() }"),

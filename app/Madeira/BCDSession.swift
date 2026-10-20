@@ -246,7 +246,11 @@ struct BCDSessionLayer: View {
                         .padding(.top, insets.top + 12)
                         .allowsHitTesting(false)
                 }
-                if hud.starting == nil && hud.showsMenuButton {
+                // Modified for iDeck-BCD, 2026-10-20: also over the starting screen (its top right is
+                // empty). A start that never shows a game window (a Unity game that crashes before its
+                // first frame, a BCD Dock start that stopped) kept the screen up with no way to the
+                // menu's Share logs or Touch controls without a controller.
+                if hud.showsMenuButton {
                     // The top right corner, at the screen's own edge (owner, 2026-10-19: it sat on the
                     // touch controls' RT). See BCDDraggable's `edge`.
                     BCDDraggable(key: "bcdMenuButton", start: CGPoint(x: 1, y: 0), viewport: geo.size,

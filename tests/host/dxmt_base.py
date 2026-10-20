@@ -14,6 +14,19 @@ import subprocess
 
 OVERLAY_BASE = 'db546ee466ad50ec6463edb5fa183de11db43761'
 PIN_MARKER = 'madeira_rp_lean_on'   # willfaust/dxmt#26, in the wave's pin and later
+# Modified for iDeck-BCD, 2026-10-20: the submodule's origin (thebcd69/bcd-dxmt) does not serve
+# OVERLAY_BASE by its hash ("not our ref"); the public DXMT forks the pin came from do. origin
+# is still tried first.
+FALLBACK_REMOTES = ('https://github.com/willfaust/dxmt.git', 'https://github.com/3Shain/dxmt.git')
+
+
+def fetch_commit(repo, sha, fallbacks):
+    """Fetch one commit by its hash into a (shallow) checkout: origin, then each fallback URL."""
+    for src in ('origin',) + tuple(fallbacks):
+        if subprocess.run(['git', '-C', str(repo), 'fetch', '-q', '--depth=1', src, sha],
+                          capture_output=True).returncode == 0:
+            return
+    raise SystemExit(f'{sha} could not be fetched into {repo} from origin or {", ".join(fallbacks)}')
 
 
 def rev(dxmt):
@@ -23,5 +36,5 @@ def rev(dxmt):
         return 'HEAD'
     have = subprocess.run(['git', '-C', str(dxmt), 'cat-file', '-e', OVERLAY_BASE + '^{commit}'], capture_output=True)
     if have.returncode:
-        subprocess.run(['git', '-C', str(dxmt), 'fetch', '-q', '--depth=1', 'origin', OVERLAY_BASE], check=True)
+        fetch_commit(dxmt, OVERLAY_BASE, FALLBACK_REMOTES)
     return OVERLAY_BASE

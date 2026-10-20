@@ -21,6 +21,19 @@ OVERLAY_TREES = ('FEXCore/Source', 'FEXCore/include', 'Source/Windows', 'Externa
 # chain's own input: the pin the overlays were written against, OVERLAY_BASE.
 OVERLAY_BASE = '3bec2ac498bf78156ab47c0c194b0e8cb2849756'
 PIN_MARKER = 'ec-ret-direct-v1 madeira-bcd'
+# Modified for iDeck-BCD, 2026-10-20: the submodule's origin (thebcd69/bcd-fex) does not serve
+# OVERLAY_BASE by its hash ("not our ref"); the public FEX trees the pin came from do. origin is
+# still tried first.
+FALLBACK_REMOTES = ('https://github.com/willfaust/FEX.git', 'https://github.com/FEX-Emu/FEX.git')
+
+
+def fetch_commit(repo, sha, fallbacks):
+    """Fetch one commit by its hash into a (shallow) checkout: origin, then each fallback URL."""
+    for src in ('origin',) + tuple(fallbacks):
+        if subprocess.run(['git', '-C', str(repo), 'fetch', '-q', '--depth=1', src, sha],
+                          capture_output=True).returncode == 0:
+            return
+    raise SystemExit(f'{sha} could not be fetched into {repo} from origin or {", ".join(fallbacks)}')
 
 
 def overlay_chain(root):
@@ -50,7 +63,7 @@ def overlay_base(root, tmp):
     base = Path(tmp) / 'base'
     have = subprocess.run(['git', '-C', str(fex), 'cat-file', '-e', OVERLAY_BASE + '^{commit}'], capture_output=True)
     if have.returncode:
-        subprocess.run(['git', '-C', str(fex), 'fetch', '-q', '--depth=1', 'origin', OVERLAY_BASE], check=True)
+        fetch_commit(fex, OVERLAY_BASE, FALLBACK_REMOTES)
     trees = [rel for rel in OVERLAY_TREES if not rel.startswith('External/')]
     archive = subprocess.run(['git', '-C', str(fex), 'archive', OVERLAY_BASE] + trees, check=True, capture_output=True)
     base.mkdir(parents=True)

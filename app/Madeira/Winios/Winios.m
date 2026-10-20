@@ -1263,6 +1263,23 @@ void winios_session_reset(void) {
     });
 }
 
+/* main thread only. Modified for iDeck-BCD, 2026-10-20: the window of the
+ * presented layer's host view (MetalHostView, in the app's own window, whose
+ * coordinates winios_set_compositor_frame uses), and the key window only when
+ * there is none yet. A tap makes a window key, so the key window could be the
+ * touch-controls window (+101) or the key bar's (+102), and a compositor
+ * attached there covered the session's menu button: no way out of a running
+ * game without a controller. */
+extern CAMetalLayer *madeira_display_layer(void);
+static UIWindow *winios_host_window(void) {
+    id host = madeira_display_layer().delegate;
+    if ([host isKindOfClass:UIView.class] && ((UIView *)host).window) return ((UIView *)host).window;
+    for (UIWindow *w in UIApplication.sharedApplication.windows) {
+        if (w.isKeyWindow) return w;
+    }
+    return UIApplication.sharedApplication.windows.firstObject;
+}
+
 /* main thread only */
 static void winios_ensure_compositor(void) {
     BOOL desk = winios_desktop_session();
@@ -1276,11 +1293,7 @@ static void winios_ensure_compositor(void) {
      * Metal layer (2026-07-06 Thumper regression). */
     if (!desk && !winios_game_windows_enabled()) return;
     if (!desk) {
-        UIWindow *win = nil;
-        for (UIWindow *w in UIApplication.sharedApplication.windows) {
-            if (w.isKeyWindow) { win = w; break; }
-        }
-        if (!win) win = UIApplication.sharedApplication.windows.firstObject;
+        UIWindow *win = winios_host_window();
         if (!win) return;
         if (!g_layers) g_layers = [NSMutableDictionary new];
         if (!g_px_rects) g_px_rects = [NSMutableDictionary new];
@@ -1293,7 +1306,8 @@ static void winios_ensure_compositor(void) {
         g_comp_game = YES;
         [win addSubview:g_compositor_view];
         winios_layout_compositor();
-        fprintf(stderr, "[winios] game-mode window overlay attached (MADEIRA_GAME_WINDOWS=0 disables)\n");
+        fprintf(stderr, "[winios] game-mode window overlay attached (MADEIRA_GAME_WINDOWS=0 disables) level=%.0f key=%d\n",
+                (double)win.windowLevel, win.isKeyWindow ? 1 : 0);
         fflush(stderr);
         static id game_mode_observer;
         if (!game_mode_observer) {
@@ -1304,11 +1318,7 @@ static void winios_ensure_compositor(void) {
         }
         return;
     }
-    UIWindow *win = nil;
-    for (UIWindow *w in UIApplication.sharedApplication.windows) {
-        if (w.isKeyWindow) { win = w; break; }
-    }
-    if (!win) win = UIApplication.sharedApplication.windows.firstObject;
+    UIWindow *win = winios_host_window();
     if (!win) return;
     g_layers = [NSMutableDictionary new];
     g_px_rects = [NSMutableDictionary new];
@@ -1326,7 +1336,8 @@ static void winios_ensure_compositor(void) {
     [g_compositor_view.layer addSublayer:g_desk_bg];
     [win addSubview:g_compositor_view];
     winios_layout_compositor();
-    fprintf(stderr, "[winios] compositor attached inside presentation frame\n");
+    fprintf(stderr, "[winios] compositor attached inside presentation frame level=%.0f key=%d\n",
+            (double)win.windowLevel, win.isKeyWindow ? 1 : 0);
     fflush(stderr);
     /* A guest display-mode change moves the desktop's size without moving
      * the presentation frame, so winios_set_compositor_frame (which skips a

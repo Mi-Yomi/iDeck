@@ -2643,6 +2643,19 @@ enum TouchControlsHost {
             host.view.backgroundColor = .clear
             w.rootViewController = host
             window = w
+            // Modified for iDeck-BCD, 2026-10-20: which window a tap made key, for the log
+            // (Winios.m hosts its compositor in the bottom window, never in this one).
+            NotificationCenter.default.addObserver(forName: UIWindow.didBecomeKeyNotification, object: nil, queue: .main) { note in
+                MainActor.assumeIsolated {
+                    guard let key = note.object as? UIWindow else { return }
+                    fputs("[controls] key window=\(type(of: key)) level=\(Int(key.windowLevel.rawValue))\n", stderr)
+                }
+            }
+        } else if window?.windowScene !== scene {
+            // Modified for iDeck-BCD, 2026-10-20: a scene that came back new would keep this
+            // window on the old one, unseen, and the session's menu button with it.
+            window?.windowScene = scene
+            window?.isHidden = false
         }
         window?.frame = scene.coordinateSpace.bounds
         fputs("[controls] ml644 overlay attached frame=\(window?.frame ?? .zero) " +

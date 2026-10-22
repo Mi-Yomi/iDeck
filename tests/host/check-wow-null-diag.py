@@ -77,6 +77,7 @@ wine = Path(os.environ.get('WINE_SRC', root / 'wine'))
 if (wine / 'include/winternl.h').exists() and shutil.which('xcrun'):
     src = r'''
 #include <stddef.h>
+#include <stdarg.h>   /* Modified for iDeck-BCD, 2026-10-22: winternl.h's __ms_va_list needs va_list (run 39762502941) */
 #include "windef.h"
 #include "winternl.h"
 _Static_assert(offsetof(TEB32, Tib.Self) == 0x18, "teb self");

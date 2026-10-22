@@ -259,8 +259,14 @@ enum MadeiraDock {
                 case 10: return "Steam is still busy with this game, updating or running it. Wait a moment, then try again."
                 case -4: return "Steam couldn't prepare this game's executable because the Windows service manager it needs didn't start."
                 case -5: return "Steam couldn't prepare this game's executable: its Windows service isn't installed in BCD's Windows setup."
-                default: return "Steam couldn't get this game's executable ready for your account (code \(fields["ceg-result"] ?? "?"))."
+                default: return "Steam's copy protection couldn't start the game: Steam couldn't get this game's executable ready for your account (code \(fields["ceg-result"] ?? "?"))."
                 }
+            }
+            // The host sets the Steam client's discovery entries in the Windows registry (HKCU Software\Valve\Steam\ActiveProcess and
+            // HKLM Software\Valve\Steam) before it asks Steam to start the game; 42 is its answer when one of those cannot be
+            // opened or written (madeira-dock src/launch.c). Steam was never asked, so no game ran (Firewatch GSDQM2, CEEP3E).
+            if result == 42 {
+                return "BCD Dock couldn't open or write the Steam client entries it needs in BCD's Windows registry, so it never asked Steam to start this game (code 42). Export the log, then try again."
             }
             if result == 45 || result == 48, fields["launch-option-missing"] != nil || fields["launch-option-invalid"] != nil {
                 return "Steam won't accept this game's launch option. Refresh the Steam library, then try again."
@@ -328,6 +334,13 @@ enum MadeiraDock {
         "ceg-finished-jobs", "ceg-result", "ceg-disabled", "ceg-unsupported-client",
         "ceg-scm", "ceg-scm-started", "ceg-scm-error", "ceg-service-registered", "ceg-service-install", "ceg-service-stop", "ceg-scm-stopped",
         "game-scm", "game-scm-timeout", "launch-keep-alive",
+        // The host's own account of the launch (madeira-dock src/launch.c): when it published the Steam client
+        // for the game to find, asked Valve's client to start it, saw it run, saw it end, and gave the
+        // registry values back. A Rockstar launcher that says "Steam failed to initialize" while the host
+        // reported a launch without error (20 of 40 sessions, 2026-10-19/20) needs these to be told apart.
+        "launch-install-directory-verified", "launch-install-directory-mismatch",
+        "launch-client-discovery-published", "launch-request-submitted", "launch-game-running",
+        "launch-game-ended", "launch-discovery-restored", "launch-host-result",
         "shutdown-begin", "shutdown-complete", "probe-result"]
     /// The host's report rounds (madeira-dock src/main.c).
     static let reportRounds: Set<String> = ["ml1820", "ml1830", "ml1860", "ml1870", "ml1970", "ml1990", "ml2000", "ml2011", "ml2015", "ml2016"]
@@ -392,12 +405,6 @@ enum MadeiraDock {
     }
 
     /// Removes an unconsumed transfer (session end, sign-out, app start).
-    /// Modified for iDeck-BCD, 2026-10-20: a Dock start is between its Play and its session
-    /// (ContentView.startDock's task). While it is, another Play is ignored: it used to pass the
-    /// session check, fail after the first start had written its transfer, and run cleanup() under
-    /// it (owner's log, build 574: the host then ended with code 30, session-account-input-invalid).
-    @MainActor static var startPending = false
-
     @MainActor static func cleanup() {
         if let url = transferURL { try? FileManager.default.removeItem(at: url) }
         unsetenv("MADEIRA_DOCK_AUTH_FILE")

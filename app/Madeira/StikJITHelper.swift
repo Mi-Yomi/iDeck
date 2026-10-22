@@ -163,6 +163,13 @@ enum StikJITHelper {
     /// Why the last allocatePool() returned nil, in words for the person playing
     /// (the library shows it); nil after a success.
     private(set) static var poolFailure: String?
+    /// madeira-bcd (round 580): the game's `exe-window-mb` (in MB) when this run tried to widen the executable window
+    /// and could not (something already held the range above it, DBKP8Z: a libmalloc region inside the range); nil
+    /// when it was not asked or it worked. A program that needs the wider window then ends with c0000018 (0xC0000018,
+    /// "failed to create main module"); a program that fits in 128 MB runs (Darksiders II, FFRS demo, builds 576:
+    /// the line was there and the window stayed 128 MB), so the session is never held back. Text only: the library
+    /// says so when the game ends with that status (LibraryModel.exitReport).
+    private(set) static var exeWindowWidenFailedMB: Int?
     /// JIT is on (CS_DEBUGGED) but nothing can make the pool: what to do on this device
     /// (madeira-bcd ios18-jit: StikDebug's Always Run Scripts where it treats the device as
     /// non-TXM, Built-in on iOS 26 TXM devices; iOS 27 keeps the text it had).
@@ -315,6 +322,7 @@ enum StikJITHelper {
     static func allocatePool(poolSize requestedPoolSize: Int = 128 * 1024 * 1024) -> (rx: UnsafeMutableRawPointer, rw: UnsafeMutableRawPointer, size: Int)? {
         var poolSize = requestedPoolSize      // ml1036: may shrink to fit, see the hole census below
         poolFailure = nil
+        exeWindowWidenFailedMB = nil
         // madeira-bcd ios18-jit (2026-10-18): P_TRACED, not CS_DEBUGGED, says whether anything
         // can answer the pool request's BRK. With no debugger attached the pool is built without
         // one where TXM does not police code (JITNoDebuggerPool, after its one-page self-test);
@@ -457,7 +465,7 @@ enum StikJITHelper {
         // hole above it ~628MB contiguous. The largest fixed-base image we ship
         // against ends at +117MB; ntdll hands the window to the first fixed map
         // of >=64MB that fits, and reads the size from WINE_IOS_EXE_WINDOW.
-        let exeWinSize: vm_address_t = 0x8000000           // 128MB
+        var exeWinSize: vm_address_t = 0x8000000           // 128MB (exe-window-mb may widen it, below)
         func overlapsExeWindow(_ base: vm_address_t, _ len: vm_address_t) -> Bool {
             return base < exeWinBase + exeWinSize && base + len > exeWinBase
         }
@@ -579,6 +587,29 @@ enum StikJITHelper {
                 LogStore.shared.log(String(format: "ml1135: the placeholder was blocked at image load by a mapping at 0x%lx+%luMB (VM tag %u, prot %u) -- this is what shrinks the JIT pool",
                                            Int(madeira_early_intruder_base), Int(madeira_early_intruder_size >> 20),
                                            madeira_early_intruder_tag, madeira_early_intruder_prot), level: .error)
+            }
+        }
+        // madeira-bcd exe-window-mb (the game's own file): a main program with its relocations stripped
+        // runs at 0x140000000 or not at all, and one larger than the 128MB window ran into the pool:
+        // "failed to create main module ... c0000018" for Hogwarts Legacy (445MB),
+        // Metal Gear Solid V, Stellar Blade's demo and Star Wars Galactic Racer (testers' logs, builds
+        // 565-574). With the line the window grows to that size before the hole census, so the pool is
+        // placed around it (it may be smaller). Without the line nothing changes.
+        if windowHeld, reservePlan == nil,
+           let mb = Int((MadeiraConfig.gameValue("exe-window-mb") ?? "").trimmingCharacters(in: .whitespaces)),
+           mb > Int(exeWinSize >> 20), mb <= 1024 {
+            let want = vm_address_t(mb) << 20
+            var extra: vm_address_t = exeWinBase + exeWinSize
+            let kr = vm_allocate(mach_task_self_, &extra, vm_size_t(want - exeWinSize), 0 /* VM_FLAGS_FIXED */)
+            if kr == KERN_SUCCESS && extra == exeWinBase + exeWinSize {
+                exeWinSize = want
+                setenv("WINE_IOS_EXE_WINDOW", String(format: "%lx:%lx", Int(exeWinBase), Int(exeWinSize)), 1)
+                LogStore.shared.log("[exe-window] executable window widened to [0x140000000,+\(mb)MB) for this game (exe-window-mb)", level: .success)
+            } else {
+                if kr == KERN_SUCCESS { vm_deallocate(mach_task_self_, extra, vm_size_t(want - exeWinSize)) }
+                exeWindowWidenFailedMB = mb
+                LogStore.shared.log("[exe-window] could not widen the executable window to \(mb)MB (kr=\(kr)): something holds the range above it; the window stays 128MB. "
+                    + "A game whose program needs more than that stops with c0000018: quit BCD and open it again for a new memory layout", level: .error)
             }
         }
         if reservePlan == nil {   // madeira-bcd pool-reserve: no census or plugs for a pool placed in the reservation

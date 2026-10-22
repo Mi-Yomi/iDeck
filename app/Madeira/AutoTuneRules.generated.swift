@@ -31,6 +31,394 @@ enum AutoTuneBuiltInRules {
   "all": [
    {
     "has": [
+     "identical redeliveries"
+    ]
+   }
+  ],
+  "any": [
+   {
+    "has": [
+     "[guest-bytes]",
+     "6b 01 0a 0a 0b fd 0c 88"
+    ]
+   },
+   {
+    "has": [
+     "[store-undecoded]",
+     "insn=0x880cfd0b"
+    ]
+   }
+  ],
+  "evidence": [
+   "graveyard-keeper-2-2026-10-19-19-06-53",
+   "tevi-2026-10-19 (J75807)",
+   "Cult of the Lamb Q2MJ7N, Mafia II DE 8KJGTX, Caves of Qud PZYMXY",
+   "tests/host/check-excl-rmw.py (build 575)"
+  ],
+  "fixedIn": 575,
+  "id": "excl-logical-rwx-page",
+  "lines": [],
+  "priority": 1,
+  "reason": "A locked bit-clear in memory BCD keeps writable only through an alias was not emulated, and the same fault came back until BCD ended the game."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[exec-recover] pg=",
+     "mprotect_rx=-1",
+     "pool-rx"
+    ]
+   },
+   {
+    "has": [
+     "[av-detail] ml613",
+     "p0=EXECUTE",
+     "p1_in_carve=1"
+    ]
+   },
+   {
+    "has": [
+     "[fault_rip]",
+     "PROTECTION_FAILURE",
+     "entryprot=3 nowprot=3"
+    ]
+   },
+   {
+    "has": [
+     "BUS EXEC in JIT .data"
+    ]
+   }
+  ],
+  "evidence": [
+   "dead-space-2026-10-20 (97E8JF)",
+   "star-wars-the-force-unleashed 81A30H, R10XKS, 5EAVVG",
+   "tests/host/check-tail-carve-exec.py (build 576)"
+  ],
+  "fixedIn": 576,
+  "id": "tail-carve-lost-exec",
+  "lines": [],
+  "priority": 1,
+  "reason": "Part of the JIT pool had lost the right to run code, and the 128 MB buffer the emulator asked for was placed on it; from this build on BCD refuses such a buffer and the emulator takes a smaller one."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[pool-poison] HANDED OUT NON-EXEC"
+    ]
+   },
+   {
+    "has": [
+     "[copy-verify]",
+     ".text pages BORN NON-EXEC"
+    ]
+   },
+   {
+    "has": [
+     "[exec-recover] pg=",
+     "mprotect_rx=-1",
+     "pool-rx"
+    ]
+   },
+   {
+    "has": [
+     "[redeliv] terminating process"
+    ]
+   }
+  ],
+  "evidence": [
+   "vice-city-2026-10-21 (AE6NQZ, build 576)",
+   "S0TH0N (build 574, same offsets)",
+   "tests/host/check-pool-dead-range.py (build 577)"
+  ],
+  "fixedIn": 577,
+  "id": "child-ntdll-copy-lost-exec",
+  "lines": [],
+  "priority": 1,
+  "reason": "The private copy of a system library that a helper process needs was placed on JIT-pool memory that had lost the right to run code; from this build on BCD takes the next range that can."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[wow-window] small address map"
+    ]
+   },
+   {
+    "has": [
+     "[laa] ml1070 SPILL"
+    ]
+   },
+   {
+    "has": [
+     "[map-sec] virtual_map_section",
+     "-> 0xc0000017"
+    ]
+   },
+   {
+    "has": [
+     "failed to initialize, aborting"
+    ]
+   }
+  ],
+  "evidence": [
+   "small-map-window-2026-10-21 (Shade 39Z345, C534F0, Z5F6MG, build 576)",
+   "tests/host/check-reserved-area-retry.py (build 577)"
+  ],
+  "fixedIn": 577,
+  "id": "small-map-window-no-place",
+  "lines": [],
+  "priority": 1,
+  "reason": "On this device's smaller address map a 32-bit program's memory request found no place in its 4 GB window although space was free; from this build on BCD tries the next free range when the system refuses one."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[wow-window] small address map"
+    ]
+   },
+   {
+    "has": [
+     "[reserved-area] #",
+     "small address map retry on"
+    ]
+   },
+   {
+    "has": [
+     "[alloc-fail]",
+     "STAGE=fixed-map"
+    ]
+   },
+   {
+    "has": [
+     "[va-scan] window room",
+     "range(s) that fit"
+    ]
+   }
+  ],
+  "evidence": [
+   "shade-2026-10-21 (6NE7KH, build 578)",
+   "tests/host/check-reserved-area-retry.py (build 579)"
+  ],
+  "fixedIn": 579,
+  "id": "small-map-window-refusals",
+  "lines": [],
+  "none": [
+   {
+    "has": [
+     "[va-scan] window room",
+     "holds 0 range(s) that fit"
+    ]
+   }
+  ],
+  "priority": 1,
+  "reason": "On this device's smaller address map the system kept refusing BCD's memory placements inside a 32-bit program's window and a larger request found none; from this build on BCD makes one more attempt when every candidate was refused."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[dock-installers] start"
+    ]
+   }
+  ],
+  "any": [
+   {
+    "has": [
+     "[dock-installers] app=",
+     "status=pending",
+     "file=DotNetFx"
+    ]
+   },
+   {
+    "has": [
+     "[dock-installers] app=",
+     "status=pending",
+     "file=dotNetFx"
+    ]
+   },
+   {
+    "has": [
+     "[dock-installers] app=",
+     "status=pending",
+     "file=dotnetfx"
+    ]
+   },
+   {
+    "has": [
+     "[dock-installers] app=",
+     "status=pending",
+     "file=NDP"
+    ]
+   },
+   {
+    "has": [
+     "[dock-installers] app=",
+     "status=pending",
+     "file=ndp"
+    ]
+   },
+   {
+    "has": [
+     "[dock-installers] app=",
+     "status=pending",
+     "file=NetFx"
+    ]
+   },
+   {
+    "has": [
+     "[dock-installers] app=",
+     "status=pending",
+     "file=netfx"
+    ]
+   }
+  ],
+  "evidence": [
+   "arkham-city-dotnet-2026-10-21 (log-83643051, build 576)",
+   "PTKASZ (build 574, same game)",
+   "tests/host/check-dock-installers.py (build 578)"
+  ],
+  "fixedIn": 578,
+  "id": "dotnet-setup-never-finishes",
+  "lines": [],
+  "none": [
+   {
+    "has": [
+     "[dock-installers] end succeeded"
+    ]
+   }
+  ],
+  "priority": 1,
+  "reason": "The game's one-time install of Microsoft's .NET Framework never finished under Wine and kept the start from going on; from this build on BCD does not run it (Wine Mono provides .NET) and starts the game.",
+  "session": "dock"
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[x18-emul3] UNRECOGNIZED insn="
+    ]
+   }
+  ],
+  "any": [
+   {
+    "has": [
+     "Unhandled exception"
+    ]
+   },
+   {
+    "has": [
+     "ACCEPTING terminal root frame"
+    ]
+   },
+   {
+    "has": [
+     "Runtime error!"
+    ]
+   }
+  ],
+  "evidence": [
+   "left-4-dead-2-2026-10-20 (RTTGKM)",
+   "FFXIV TY3K5R (same instruction, same offset)",
+   "tests/host/check-x18-signed-load.py (build 576)"
+  ],
+  "fixedIn": 576,
+  "id": "x18-repair-unrecognized-load",
+  "lines": [],
+  "priority": 1,
+  "reason": "iOS cleared a register the emulator relies on, and BCD could not repair the access that followed; from this build on it can."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[mach_exc] UNHANDLED"
+    ]
+   }
+  ],
+  "any": [
+   {
+    "has": [
+     "[mach_exc] sym pc=",
+     "req_cancel_async"
+    ]
+   },
+   {
+    "has": [
+     "NATIVE-THREAD DECLINE",
+     "req_cancel_async"
+    ]
+   }
+  ],
+  "evidence": [
+   "beamng-drive-2026-10-21 (SYDJDY, build 576)",
+   "BeamNG VV1FQ4, SRWY27, DZ6BN4 (build 574)",
+   "tests/host/check-wineserver-async-cancel.py (build 577)"
+  ],
+  "fixedIn": 577,
+  "id": "wineserver-cancel-async-freed",
+  "lines": [],
+  "priority": 1,
+  "reason": "BCD's own Windows server released an I/O request while it was still cancelling it, and iOS closed the app; from this build on it keeps the request until it is done."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[mach_exc] pc PE: libwow64fex.dll+"
+    ]
+   },
+   {
+    "has": [
+     "[x86_seg]",
+     "TEB[0x58]=0x0"
+    ]
+   },
+   {
+    "has": [
+     "[jit-nodebug] debugger-less JIT pool: allowed"
+    ]
+   }
+  ],
+  "evidence": [
+   "half-life-2-2026-10-20 (TCKWZY, iPad16,3, iOS 18.5)",
+   "Duck Game QDH12X (iPhone13,1, iOS 18.6): [x18-emul3] #1 pc=0x3ffac10a8 = libwow64fex base 0x3ffac0000 + _CRT_INIT+0xa8",
+   "pes2013 4GQK0Y, 853B78, 7Y599P, B39EXN, KF01JG, TYAKAG; Dead Space DVXWGA, E05X42; Stick Fight KDY8E6; Terraria 9VGQVC; Yume Nikki E69NBH; You Have 10 Seconds TTHVRF; speed.exe BFRJ1Z; S67X5G",
+   "docs/research/ios18-2026-10-18/runtime.md section 3.4 (PE images may execute in place on iOS 18)",
+   "tests/host/check-wow-cpu-pool.py, tests/host/check-fex-wow-threads-ctor.py (build 576)"
+  ],
+  "fixedIn": 576,
+  "id": "wow64-thread-map-uninitialised",
+  "lines": [],
+  "priority": 1,
+  "reason": "BCD ran the 32-bit emulator's start-up code from a different copy of the module than the one it then used, so every 32-bit program stopped before its first instruction; from this build on both use the same copy."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[dock-report] ceg-result=-5"
+    ]
+   }
+  ],
+  "evidence": [
+   "ceg-service-not-installed-2026-10-21 (Call of Duty: Black Ops codbo-prev, build 576)",
+   "Just Cause 2 JYFG4D (build 574): same RPC 1726, exit 1",
+   "tests/host/check-dock-ceg-service.py (build 578)"
+  ],
+  "fixedIn": 578,
+  "id": "ceg-service-not-installed",
+  "lines": [],
+  "priority": 1,
+  "reason": "Valve's client service, which Steam needs to prepare this game's executable, was not installed in BCD's Windows setup, and Valve's installer for it failed inside the session; from this build on BCD installs it before the game starts.",
+  "session": "dock"
+ },
+ {
+  "all": [
+   {
+    "has": [
      "Debugger failed to allocate RX memory"
     ]
    },
@@ -172,6 +560,112 @@ enum AutoTuneBuiltInRules {
   "all": [
    {
     "has": [
+     "[store-noalias]",
+     "prot=1 max=3"
+    ]
+   },
+   {
+    "has": [
+     "[wr-strip-declined]",
+     "SEC_IMAGE"
+    ]
+   }
+  ],
+  "any": [
+   {
+    "has": [
+     "[redeliv]",
+     "identical redeliveries"
+    ]
+   },
+   {
+    "has": [
+     "[mach_exc] UNHANDLED #200"
+    ]
+   }
+  ],
+  "evidence": [
+   "mad-max-2026-10-20 (VZKCF3, KK9H24, 6DB55D)",
+   "dark-souls-iii-2026-10-21 (A3V7SV, build 579: the same storm, no redelivery line yet)",
+   "virtual_ios.c ml1030 / ios_x64_image_nocopy_enabled (the same symptom for 32-bit images)",
+   "Dark Souls II, one iPhone, 2026-10-19: with the line (DN5QSB, E6G3RQ) 379 s of play after the same 256-delivery warning; without it (72R0CG, P9C7DG) the session ended 34 s in"
+  ],
+  "id": "x64-image-smc-nocopy",
+  "lines": [
+   "env.MADEIRA_X64_IMAGE_NOCOPY = 1"
+  ],
+  "none": [
+   {
+    "has": [
+     "[x64-image]",
+     "mapped without a pool copy"
+    ]
+   }
+  ],
+  "priority": 14,
+  "reason": "The game rewrites its own code and the emulator's write permission never reached the program's memory, so one store faulted until BCD ended the game; the line lets the program's image take writes the way the emulator's trap expects."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[guest-rip-sec]",
+     "'' rva",
+     "(RWX)"
+    ]
+   },
+   {
+    "has": [
+     "[guest-code] rev=ml333 pool_rip=",
+     "): "
+    ]
+   }
+  ],
+  "any": [
+   {
+    "has": [
+     "Unhandled exception"
+    ]
+   },
+   {
+    "has": [
+     "ACCEPTING terminal root frame"
+    ]
+   },
+   {
+    "has": [
+     "Runtime error!"
+    ]
+   }
+  ],
+  "evidence": [
+   "monster-hunter-stories-3-trial-2026-10-21 (owner, build 576)",
+   "MKPN2N (Monster Hunter Rise, build 574)",
+   "virtual_ios.c ios_x64_image_is_host_data; docs/madeira-bcd-421-sonrasi.md 7e"
+  ],
+  "id": "x64-image-rwx-protector-nocopy",
+  "lines": [
+   "env.MADEIRA_X64_IMAGE_NOCOPY = 1"
+  ],
+  "noRetry": true,
+  "none": [
+   {
+    "has": [
+     "[x64-image]",
+     "mapped without a pool copy"
+    ]
+   }
+  ],
+  "outcomes": [
+   "crashed"
+  ],
+  "priority": 14,
+  "reason": "The game's protector rewrites its own code at start and the emulator did not follow the rewrite; the line runs the program from its loaded image, where the emulator's trap for rewritten code works."
+ },
+ {
+  "all": [
+   {
+    "has": [
      "[wow-rwx] ml1279 MADEIRA_WOW_RWX_PLAIN=(unset)"
     ]
    },
@@ -248,6 +742,124 @@ enum AutoTuneBuiltInRules {
   "all": [
    {
     "has": [
+     "[fault-host]",
+     "9e620282 6ee19842 4ee1b842"
+    ]
+   }
+  ],
+  "evidence": [
+   "arkham-city-skip (a tester's iPad16,5, build 576), PTKASZ (build 574)",
+   "G5HGVV, ND8YNB (Injustice, build 574)",
+   "FEX WOW64 Module.cpp ml950 (X87ReducedPrecision on for 32-bit guests)",
+   "tests/host/check-x87-int64-diag.py (build 578)"
+  ],
+  "id": "x87-int64-roundtrip",
+  "lines": [
+   "env.FEX_X87REDUCEDPRECISION = 0"
+  ],
+  "noRetry": true,
+  "none": [
+   {
+    "has": [
+     "[x87-int64]",
+     "verdict: EXACT"
+    ]
+   }
+  ],
+  "outcomes": [
+   "crashed"
+  ],
+  "priority": 16,
+  "reason": "The game reads an 8-byte list head through the old x87 unit and BCD's fast x87 mode rounds it to 53 bits, which can send the next load to memory that is not there; the line turns on exact x87 math for this game (slower)."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[vdcfg] QueryDisplayConfig",
+     "-> 0, 0 paths 0 modes"
+    ]
+   },
+   {
+    "has": [
+     "[av-args]",
+     "NULL-class fault addr=0x10"
+    ]
+   },
+   {
+    "has": [
+     "[av-args]",
+     "sora_deploy_steam.exe+"
+    ]
+   }
+  ],
+  "evidence": [
+   "trails-in-the-sky-1st-chapter-2026-10-21 (24VADD, build 578)",
+   "X56ZXZ, YTMNEK (build 573)",
+   "tests/host/check-vdcfg-path.py (build 579)"
+  ],
+  "id": "vdcfg-virtual-path",
+  "lines": [
+   "env.MADEIRA_VDCFG_PATH = 1"
+  ],
+  "noRetry": true,
+  "none": [
+   {
+    "has": [
+     "[vdcfg] QueryDisplayConfig",
+     "-> 0, 1 paths 2 modes"
+    ]
+   }
+  ],
+  "outcomes": [
+   "crashed"
+  ],
+  "priority": 20,
+  "reason": "The game builds its fullscreen window from the display paths and BCD answered with none, so it made a one-pixel window and then used a screen it never created; the line lists the virtual monitor's path as Windows does.",
+  "session": "dock"
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[mono-cfg]",
+     "libmono-2.0-x86.dll",
+     "HOOKS ARMED"
+    ]
+   },
+   {
+    "has": [
+     "[wow-window] reserved B=",
+     "(slot 1)"
+    ]
+   },
+   {
+    "has": [
+     "wine: Unhandled page fault on",
+     "access to 0000"
+    ]
+   }
+  ],
+  "evidence": [
+   "C7DGSN (Batman: Arkham City GOTY, build 578, a tester's iPad16,5)",
+   "build/ntdll-unix/virtual_ios.c virtual_clear_tls_index (teb_list is every pseudo-process's threads)",
+   "tests/host/check-tls-clear-process.py, tests/host/check-wow-null-diag.py (build 579)"
+  ],
+  "id": "mono-child-tls-null",
+  "lines": [
+   "env.MADEIRA_TLS_CLEAR_OWN_PROCESS = 1"
+  ],
+  "noRetry": true,
+  "outcomes": [
+   "crashed"
+  ],
+  "priority": 17,
+  "reason": "A program the game started (a .NET launcher) died on an empty thread slot while the game was shutting down; the line stops one program's thread-slot cleanup from reaching into other programs' threads, the suspected cause."
+ },
+ {
+  "all": [
+   {
+    "has": [
      "[va-scan] FAILED",
      "gaps-exhausted"
     ]
@@ -316,6 +928,176 @@ enum AutoTuneBuiltInRules {
   "all": [
    {
     "has": [
+     "[alloc-fail] ml798 FEXAlloc could not allocate",
+     "band=0x7c00000000..0x7fffffffff"
+    ]
+   },
+   {
+    "count": 3,
+    "has": [
+     "[steer] #",
+     "above ceiling 0x7c"
+    ]
+   }
+  ],
+  "evidence": [
+   "no-rest-for-the-wicked-2026-10-20 (0M4SJD, build 574)",
+   "tests/host/check-fex-band-keep.py (build 576)"
+  ],
+  "id": "fex-band-steer-keep",
+  "lines": [
+   "env.MADEIRA_FEX_BAND_KEEP_MB = 6144"
+  ],
+  "none": [
+   {
+    "has": [
+     "[fex-keep] madeira-bcd:"
+    ]
+   }
+  ],
+  "outcomes": [
+   "crashed"
+  ],
+  "priority": 20,
+  "reason": "The game's own reservations filled the memory range BCD keeps for the emulator, and the emulator ran out of room and stopped; the line keeps the lowest 6 GB of that range for the emulator, and the game's reservations that no longer fit go elsewhere."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "CLR: Assert failure",
+     "m_pRegionToGenTableImmediate"
+    ]
+   }
+  ],
+  "evidence": [
+   "quaver-2026-10-20 (DKEQ3C, build 574)"
+  ],
+  "id": "dotnet-wx-off",
+  "lines": [
+   "env.DOTNET_EnableWriteXorExecute = 0"
+  ],
+  "noRetry": true,
+  "none": [
+   {
+    "has": [
+     "[madeira-env] game DOTNET_EnableWriteXorExecute=0"
+    ]
+   }
+  ],
+  "outcomes": [
+   "crashed"
+  ],
+  "priority": 10,
+  "reason": "The game's .NET runtime keeps its code in two views of one memory section, and BCD cannot keep the two views the same; the line makes the runtime use plain executable memory."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "GC heap initialization failed with error 0x8007000E",
+     "ReportEventW"
+    ]
+   }
+  ],
+  "evidence": [
+   "unrailed-2-2026-10-21 (CR8H6H, build 576)",
+   "learn.microsoft.com/dotnet/core/runtime-config/garbage-collector (Region range)",
+   "fortune-mill-2026-10-22 (NMDFT1: the 454 GB map of an install without memory rights has no such gap; no match)"
+  ],
+  "id": "dotnet-gc-region-range",
+  "lines": [
+   "env.DOTNET_GCRegionRange = 400000000"
+  ],
+  "noRetry": true,
+  "none": [
+   {
+    "has": [
+     "[madeira-env] game DOTNET_GCRegionRange="
+    ]
+   },
+   {
+    "has": [
+     "[device] address-map=",
+     " 454GB",
+     "increased-memory=0"
+    ]
+   }
+  ],
+  "priority": 10,
+  "reason": "The game's .NET runtime tried to reserve 256 GB of address space for its heap and BCD's address map has no such gap; the line gives the runtime a 16 GB range."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[madeira-d3d12] unimplemented: ID3D12Device10::CreatePipelineLibrary"
+    ]
+   },
+   {
+    "has": [
+     "LowLevelFatalError",
+     "CreatePipelineLibrary"
+    ]
+   }
+  ],
+  "evidence": [
+   "returnal-2026-10-20 (CWKVD7, build 574)",
+   "tests/host/check-d3d12-pipeline-library.py (build 576)"
+  ],
+  "id": "d3d12-pipeline-library-fatal",
+  "lines": [
+   "d3d12-pipeline-library = 1"
+  ],
+  "none": [
+   {
+    "has": [
+     "[madeira-d3d12] d3d12-pipeline-library = 1"
+    ]
+   }
+  ],
+  "priority": 12,
+  "reason": "The game's engine insists that Direct3D 12 can make a pipeline library and stops when the call fails; the line makes BCD answer it with a library that keeps nothing."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[mip0]",
+     "GetDesc answers 0"
+    ]
+   },
+   {
+    "has": [
+     "_mtlValidateArgumentsForTextureViewOnDevice",
+     "failed assertion"
+    ]
+   },
+   {
+    "has": [
+     "newLevelRange.location",
+     "mipmapLevelCount"
+    ]
+   }
+  ],
+  "api": "d3d12",
+  "evidence": [
+   "miles-morales-2026-10-21 (iPad16,5, build 576)",
+   "PD7S1E (2026-10-19, iPad16,5, build 574): the same assertion",
+   "docs/arsiv/HFW-DURUM.md (mip0-full, build 533)"
+  ],
+  "id": "mip0-texture-view-beyond-levels",
+  "lines": [
+   "mip0-full = 1"
+  ],
+  "noRetry": true,
+  "priority": 12,
+  "reason": "The game made a texture with the full chain of mip levels and used a level this build did not make, and the graphics driver ended the game; the line gives such textures all their levels."
+ },
+ {
+  "all": [
+   {
+    "has": [
      "[nls-getptr] type=11 id=857"
     ]
    }
@@ -349,6 +1131,50 @@ enum AutoTuneBuiltInRules {
   ],
   "priority": 12,
   "reason": "Wine used the phone's Turkish locale and the game failed right after loading its code page; the line gives Wine an English locale for this game."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[nls-getptr] type=11 id=1254"
+    ]
+   },
+   {
+    "has": [
+     "[win-name] #",
+     "text=\"Dying Light\""
+    ]
+   }
+  ],
+  "any": [
+   {
+    "has": [
+     "Unhandled exception"
+    ]
+   },
+   {
+    "has": [
+     "ACCEPTING terminal root frame"
+    ]
+   },
+   {
+    "has": [
+     "Runtime error!"
+    ]
+   }
+  ],
+  "evidence": [
+   "dying-light-owner-2026-10-20 (SAHIP4, SAHIP5, SAHIP6; MXXHZK, 8VB504)",
+   "rift-apart-2026-10-16-10-43-45 (same phone, same kind of event, LC_ALL fixed it)",
+   "UNPROVEN: the first session with the line decides"
+  ],
+  "id": "locale-en-us-ansi",
+  "lines": [
+   "env.LC_ALL = en_US.UTF-8"
+  ],
+  "noRetry": true,
+  "priority": 12,
+  "reason": "The game asked for the phone's Turkish code page and ended at start-up; Rift Apart did the same and ran with an English locale, so this attempt gives Wine one for this game."
  },
  {
   "all": [
@@ -440,6 +1266,129 @@ enum AutoTuneBuiltInRules {
   "all": [
    {
     "has": [
+     "BUS->AV: unreadable target",
+     "rw=0"
+    ]
+   },
+   {
+    "count": 8,
+    "has": [
+     "[rb-tex] madeira-bcd new readback"
+    ]
+   }
+  ],
+  "evidence": [
+   "batman-arkham-asylum-2026-10-19 (1Q05G8)",
+   "brutal-legend 82BAXZ, dishonored 0RA62D/5B06QT",
+   "tests/host/check-probe-safe-read.py"
+  ],
+  "id": "readback-probe-freed-buffer",
+  "lines": [
+   "env.MADEIRA_LUM_PROBE = 0"
+  ],
+  "noRetry": true,
+  "none": [
+   {
+    "has": [
+     "identical redeliveries"
+    ]
+   }
+  ],
+  "priority": 5,
+  "reason": "A logging probe read GPU readback memory the game had already freed; turning the probe off avoids it (build 575 reads it safely)."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[jit-pool] EXHAUSTED"
+    ]
+   }
+  ],
+  "evidence": [
+   "counter-strike-2-owner-2026-10-20 (pool-split by hand started it)",
+   "albion-launcher BYBFCH/PGKTDD, spelunky-2 J2YJF8 (2026-10-20)",
+   "stellar-blade-demo-2026-10-21 (YBX2WT), ffrs-demo-2026-10-21 (EJDV7Z): the guard"
+  ],
+  "id": "pool-split-exhausted",
+  "imageMaxMB": 300,
+  "lines": [
+   "pool-split = 1"
+  ],
+  "noRetry": true,
+  "priority": 11,
+  "reason": "The JIT pool was smaller than usual and filled up while the game loaded; a split pool is about 880 MB."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[svc] Unable to open SC manager! (1722)"
+    ]
+   }
+  ],
+  "evidence": [
+   "gta-san-andreas-de-2026-10-21 (MM0DAY)",
+   "gta-iv-launcher-2026-10-21 (4GAWSA)",
+   "FMWZC5 (GTA V Legacy, game-scm=2: no 1722, the Launcher's window stayed 6.9 min)"
+  ],
+  "id": "dock-game-scm",
+  "lines": [
+   "env.MADEIRA_DOCK_GAME_SCM = 1"
+  ],
+  "noRetry": true,
+  "none": [
+   {
+    "has": [
+     "[dock-report] game-scm=2"
+    ]
+   },
+   {
+    "has": [
+     "[dock-report] game-scm=1"
+    ]
+   }
+  ],
+  "priority": 12,
+  "reason": "The game's launcher (Rockstar's) could not reach a Windows service manager, because a Steam game's session starts none; the line starts Wine's before the game.",
+  "session": "dock"
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[tiny-win]",
+     "would size it to the screen"
+    ]
+   }
+  ],
+  "evidence": [
+   "american-truck-simulator-2026-10-21 (iPad16,10, build 576; the [tiny-win] line is 578's)",
+   "tests/host/check-tiny-window.py (build 578)"
+  ],
+  "id": "tiny-swapchain-window",
+  "lines": [
+   "env.MADEIRA_TINY_WINDOW_FIX = 1"
+  ],
+  "none": [
+   {
+    "has": [
+     "[tiny-win]",
+     "sized to the virtual screen"
+    ]
+   }
+  ],
+  "outcomes": [
+   "hung",
+   "exited-early"
+  ],
+  "priority": 13,
+  "reason": "The game drew into a window far smaller than its picture and never sized it; the line sizes such a window to the screen after three seconds."
+ },
+ {
+  "all": [
+   {
+    "has": [
      "[jit-pool] EXHAUSTED (image"
     ]
    }
@@ -452,6 +1401,7 @@ enum AutoTuneBuiltInRules {
   "lines": [
    "env.MADEIRA_X64_IMAGE_NOCOPY = 1"
   ],
+  "noRetry": true,
   "priority": 10,
   "reason": "The JIT pool ran out while DLLs were copied into it; pure x64 DLLs can run without a copy."
  },
@@ -542,6 +1492,444 @@ enum AutoTuneBuiltInRules {
   "all": [
    {
     "has": [
+     "err:module:import_dll Library",
+     "not found"
+    ]
+   }
+  ],
+  "any": [
+   {
+    "has": [
+     "err:module:import_dll Library api-ms-win-core-winrt-robuffer-l1-1-0.dll",
+     "not found"
+    ]
+   },
+   {
+    "has": [
+     "err:module:import_dll Library wintypes.dll",
+     "not found"
+    ]
+   }
+  ],
+  "evidence": [
+   "megabonk-2026-10-20 (J7VAJV), No, I'm not a Human TZB1JX, Over the Hill HXQQN1 (c0000135 at once)"
+  ],
+  "id": "wintypes-dll-optin",
+  "lines": [
+   "env.MADEIRA_WINTYPES = 1"
+  ],
+  "noRetry": true,
+  "none": [
+   {
+    "has": [
+     "MADEIRA_WINTYPES=1: wintypes.dll -> wintypes-optin.dll"
+    ]
+   }
+  ],
+  "priority": 10,
+  "reason": "The game imports wintypes.dll (Windows Runtime types), which BCD does not ship for every game; the line gives this game Wine's wintypes.dll."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "err:module:import_dll Library dxva2.dll",
+     "not found"
+    ]
+   }
+  ],
+  "evidence": [
+   "fort-solis-2026-10-20 (94MSWJ), DRAGON BALL Sparking! ZERO H6XVPV (c0000135 at once)"
+  ],
+  "id": "dxva2-dll-optin",
+  "lines": [
+   "env.MADEIRA_OPTIN_DLLS = dxva2"
+  ],
+  "noRetry": true,
+  "none": [
+   {
+    "has": [
+     "MADEIRA_OPTIN_DLLS: dxva2.dll -> dxva2-optin.dll"
+    ]
+   }
+  ],
+  "priority": 10,
+  "reason": "The game imports dxva2.dll, which BCD does not ship for every game; the line gives this game Wine's dxva2.dll."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "loader_init Importing dlls for",
+     "failed, status c0000135"
+    ]
+   }
+  ],
+  "any": [
+   {
+    "has": [
+     "err:module:import_dll Library sfc.dll",
+     "not found"
+    ]
+   },
+   {
+    "has": [
+     "err:module:import_dll Library tbs.dll",
+     "not found"
+    ]
+   }
+  ],
+  "evidence": [
+   "d2r-2026-10-20 (synthetic: the import lines quoted in bcd-games issue #3, in the Fort Solis build 574 session frame; no Send Log of the game yet)"
+  ],
+  "id": "sfc-tbs-dll-optin",
+  "lines": [
+   "env.MADEIRA_OPTIN_DLLS = sfc,sfc_os,tbs"
+  ],
+  "noRetry": true,
+  "none": [
+   {
+    "has": [
+     "MADEIRA_OPTIN_DLLS: sfc.dll -> sfc-optin.dll"
+    ]
+   },
+   {
+    "has": [
+     "MADEIRA_OPTIN_DLLS: tbs.dll -> tbs-optin.dll"
+    ]
+   }
+  ],
+  "priority": 10,
+  "reason": "The game imports sfc.dll or tbs.dll, which BCD does not ship for every game; the line gives this game Wine's sfc, sfc_os and tbs."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[gdi-shared] 32-bit program in a session whose GDI table is private host memory"
+    ]
+   }
+  ],
+  "evidence": [
+   "battlenet-setup-2026-10-21 (synthetic: the build 579 Desktop session of Battle.net-Setup.exe with build 580's signal line added where the session was armed)",
+   "owner's next session (explorer.exe 21:01:40, the line in the Desktop's Game config): the setup window opened"
+  ],
+  "id": "gdi-table-32bit-child",
+  "lines": [
+   "env.MADEIRA_GDI_SHARED_SECTION = 1"
+  ],
+  "noRetry": true,
+  "none": [
+   {
+    "has": [
+     "[gdi-shared] session table",
+     "section-backed"
+    ]
+   }
+  ],
+  "priority": 10,
+  "reason": "A 32-bit program this game started could not reach Windows' GDI table, which the session made for 64-bit programs only; the line makes it a table 32-bit programs can map."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[WineProc] Target exe: C:\\windows\\system32\\cmd.exe (bundle=arm64ec-windows)"
+    ]
+   },
+   {
+    "has": [
+     "wine: could not load kernel32.dll, status c000007b"
+    ]
+   }
+  ],
+  "evidence": [
+   "bat-cmd-arm64ec-core-2026-10-21 (VSWVB0, build 576)",
+   "JFFRDP, H579EM, ZSRKW7 (build 574)",
+   "tests/host/check-cmd-bundle.py (build 579)"
+  ],
+  "fixedIn": 579,
+  "id": "cmd-exe-arm64ec-core",
+  "lines": [],
+  "priority": 1,
+  "reason": "The batch file's command interpreter (cmd.exe) was started in the wrong set of Windows files, so it stopped before it read your file; from this build on BCD starts it in the right one.",
+  "session": "library"
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "err:module:fixup_imports_ilonly mscoree.dll not found, IL-only binary"
+    ]
+   }
+  ],
+  "evidence": [
+   "dishwasher-ilonly-2026-10-21 (SSXDRW, build 576)",
+   "tests/host/check-ilonly-machine.py (build 579)"
+  ],
+  "fixedIn": 579,
+  "id": "ilonly-native-no-mscoree",
+  "lines": [],
+  "none": [
+   {
+    "has": [
+     "[ilonly-machine]"
+    ]
+   }
+  ],
+  "priority": 1,
+  "reason": "The game is a .NET program that Wine started in a mode BCD has no .NET runtime for, so it stopped at once; from this build on BCD starts it the way its 32-bit .NET programs run (Wine Mono, from Settings, is needed)."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "err:module:import_dll Library api-ms-win-core-psm-appnotify",
+     "not found"
+    ]
+   }
+  ],
+  "evidence": [
+   "hellblade-2-2026-10-21 (XJ7Z6Y, build 576)"
+  ],
+  "id": "twinapi-appcore-dll-optin",
+  "lines": [
+   "env.MADEIRA_OPTIN_DLLS = twinapi.appcore"
+  ],
+  "noRetry": true,
+  "none": [
+   {
+    "has": [
+     "MADEIRA_OPTIN_DLLS: twinapi.appcore.dll -> twinapi.appcore-optin.dll"
+    ]
+   }
+  ],
+  "priority": 10,
+  "reason": "The game imports an API set that Wine serves from twinapi.appcore.dll, which BCD does not ship for every game; the line gives this game Wine's twinapi.appcore.dll."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "loader_init Importing dlls for",
+     ".arm64.exe",
+     "failed, status c0000135"
+    ]
+   }
+  ],
+  "evidence": [
+   "beamng-arm64-launcher-2026-10-21 (SYDJDY); BeamNG VV1FQ4, DZ6BN4, PEVMEQ (build 574)",
+   "tests/host/check-x64-machine.py (build 577)"
+  ],
+  "id": "x64-machine-arm64-launcher",
+  "lines": [
+   "env.MADEIRA_X64_MACHINE = 1"
+  ],
+  "noRetry": true,
+  "none": [
+   {
+    "has": [
+     "[x64-machine] IsWow64Process2"
+    ]
+   }
+  ],
+  "priority": 10,
+  "reason": "The game's launcher took BCD for an ARM machine and started its ARM64 program, which BCD cannot load yet; the line tells it the machine is x64, so it starts the x64 program."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "err:module:load_dll [dll-missing]",
+     "mfasfsrcsnk.dll",
+     "status=c0000135"
+    ]
+   }
+  ],
+  "evidence": [
+   "re2-ipadm4-579 (Resident Evil 2, Discord, build 579)",
+   "5MXS1S (Resident Evil 7, build 576, the same chain)"
+  ],
+  "id": "asf-wmv-media-source",
+  "lines": [
+   "env.MADEIRA_WG_64BIT = 1",
+   "env.MADEIRA_OPTIN_DLLS = mfasfsrcsnk,wmvdecod,wmadmod"
+  ],
+  "noRetry": true,
+  "none": [
+   {
+    "has": [
+     "MADEIRA_OPTIN_DLLS: mfasfsrcsnk.dll -> mfasfsrcsnk-optin.dll"
+    ]
+   }
+  ],
+  "priority": 10,
+  "reason": "The game plays a Windows Media Video cutscene through Media Foundation and BCD ships no ASF source; the lines give this game Wine's ASF source and WMV and WMA decoders, and BCD's media decoders for a 64-bit game."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "err:module:import_dll Library XPSPRINT.DLL",
+     "not found"
+    ]
+   }
+  ],
+  "evidence": [
+   "animal-well NWHG8J (build 565, c0000135 at once)"
+  ],
+  "id": "xpsprint-dll-optin",
+  "lines": [
+   "env.MADEIRA_OPTIN_DLLS = xpsprint"
+  ],
+  "noRetry": true,
+  "none": [
+   {
+    "has": [
+     "MADEIRA_OPTIN_DLLS: xpsprint.dll -> xpsprint-optin.dll"
+    ]
+   }
+  ],
+  "priority": 10,
+  "reason": "The game imports XpsPrint.dll, which BCD does not ship for every game; the line gives this game Wine's xpsprint.dll."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[mach_exc] pc PE: setupapi.dll+"
+    ]
+   },
+   {
+    "has": [
+     "[av-args]",
+     "NULL-class fault"
+    ]
+   },
+   {
+    "has": [
+     "[av-args]",
+     "\"HID\\"
+    ]
+   }
+  ],
+  "evidence": [
+   "dying-light-2026-10-21 (log 1c807435, build 576)",
+   "tests/host/check-setupapi-devinst-lock.py (build 577)"
+  ],
+  "id": "setupapi-devinst-race",
+  "lines": [
+   "env.MADEIRA_OPTIN_DLLS = setupapi"
+  ],
+  "noRetry": true,
+  "none": [
+   {
+    "has": [
+     "MADEIRA_OPTIN_DLLS: setupapi.dll -> setupapi-optin.dll"
+    ]
+   }
+  ],
+  "outcomes": [
+   "crashed"
+  ],
+  "priority": 10,
+  "reason": "The game's controller library and its main thread listed devices at the same moment, and Wine's device list code read a table that was not made yet; the line gives this game a copy of that library with a lock round the table."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "failed to create main module",
+     "c0000018"
+    ]
+   }
+  ],
+  "evidence": [
+   "hogwarts-legacy-2026-10-20 (D67PYY)",
+   "3HWREK, XDCPK7, 6E40B4, WNDRGF",
+   "saints-row-the-third-directx-helper-2026-10-21 (T3P8HK: the DirectX installer's helper is not the game; no match)",
+   "persona-4-golden-2026-10-21 (QK7BQP: an 888 MiB program no window holds; no match)",
+   "yakuza-like-a-dragon-2026-10-21 (F4V6BQ: a 397 MiB program keeps the rule)"
+  ],
+  "exeMaxMB": 511,
+  "id": "exe-window-fixed-base",
+  "lines": [
+   "exe-window-mb = 512"
+  ],
+  "noRetry": true,
+  "none": [
+   {
+    "has": [
+     "[exe-window]",
+     "gets the window"
+    ]
+   },
+   {
+    "has": [
+     "failed to create main module",
+     "\\\\Temp\\\\"
+    ]
+   },
+   {
+    "has": [
+     "failed to create main module",
+     "infinst.exe"
+    ]
+   }
+  ],
+  "priority": 6,
+  "reason": "The game's program must load at a fixed address that BCD's JIT pool partly held; the line keeps 512 MB there for it (the pool may be smaller)."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "Redistributable (arm64)",
+     "[win-name] #"
+    ]
+   }
+  ],
+  "evidence": [
+   "MKT2TW, BEB3XY (Denshattack, builds 574, 565), 4AW8BN, Q5KWDW (FINAL FANTASY RESONANCE demo, build 573)",
+   "ajan-vcarm64 report 2026-10-20"
+  ],
+  "id": "vcrt-arm64-marker",
+  "lines": [
+   "env.MADEIRA_VCRT_ARM64_KEY = 1"
+  ],
+  "noRetry": true,
+  "none": [
+   {
+    "has": [
+     "[vcrt-arm64] madeira-bcd:"
+    ]
+   }
+  ],
+  "priority": 7,
+  "reason": "The game's start-up program asked for Microsoft's ARM64 Visual C++ runtime, which the Windows prefix does not list; the line adds that entry for the session."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "unimplemented function d3dx9_",
+     "D3DXCreateVolumeTextureFromResourceEx"
+    ]
+   }
+  ],
+  "evidence": [
+   "gta-iv-2026-10-19 (2934SV)"
+  ],
+  "fixedIn": 576,
+  "id": "d3dx9-volume-resource-stub",
+  "lines": [],
+  "priority": 1,
+  "reason": "The game called a Direct3D 9 helper Wine had not implemented (D3DXCreateVolumeTextureFromResourceEx)."
+ },
+ {
+  "all": [
+   {
+    "has": [
      "[bcd] library launch",
      "avx=0"
     ]
@@ -560,7 +1948,10 @@ enum AutoTuneBuiltInRules {
    }
   ],
   "evidence": [
-   "HANDOFF: Crysis 2 Remastered 540 (c000001d, DISABLEAVX expected), HFW, GoT, Rift Apart 531"
+   "HANDOFF: Crysis 2 Remastered 540 (c000001d, DISABLEAVX expected), HFW, GoT, Rift Apart 531",
+   "not for an invalid opcode: Age of Empires IV 7DXVSK/34WSPP died the same with AVX on",
+   "not for the Rockstar Games Launcher's games: GBY65K, Y5MEB6, A50T0Q (AVX on: service connection fails) against 8JXT6Q, DGNRT5 (AVX off: connects, GTA5.exe plays); gta-v-legacy-2026-10-20 (DR83Z9)",
+   "not after a store the emulator could not do (Jetboard Joust N4F8JR, 5QQ3XX: AVX on, the same end) or a host SIGILL on a data word (Portal Q3SG8T); the proven case, The Last of Us Part I JP833A (build 576), keeps the rule"
   ],
   "id": "fex-avx-on",
   "lines": [
@@ -570,6 +1961,51 @@ enum AutoTuneBuiltInRules {
    {
     "has": [
      "\" failed to initialize, aborting"
+    ]
+   },
+   {
+    "has": [
+     "[guest-code] rev=ml333",
+     "): d5 "
+    ]
+   },
+   {
+    "has": [
+     "[bcd] library launch Grand Theft Auto V"
+    ]
+   },
+   {
+    "has": [
+     "[bcd] library launch Red Dead Redemption 2"
+    ]
+   },
+   {
+    "has": [
+     "[phase] spawn:",
+     "RockstarService.exe"
+    ]
+   },
+   {
+    "has": [
+     "[phase] spawn:",
+     "Rockstar-Games-Launcher.exe"
+    ]
+   },
+   {
+    "has": [
+     "[phase] spawn:",
+     "Rockstar Games\\\\Launcher\\\\Launcher.exe"
+    ]
+   },
+   {
+    "has": [
+     "[store-undecoded]"
+    ]
+   },
+   {
+    "has": [
+     "[mach_exc] insn_stream PC-12..PC+8:",
+     "[0000"
     ]
    }
   ],
@@ -585,11 +2021,19 @@ enum AutoTuneBuiltInRules {
    }
   ],
   "evidence": [
-   "HANDOFF: Ghost of Tsushima 515, RDR2 460"
+   "HANDOFF: Ghost of Tsushima 515, RDR2 460",
+   "shade-wow64-stack-2026-10-21 (6NE7KH: a WoW64 32-bit stack refused inside the window; no match)"
   ],
   "id": "thread-stack-spill",
   "lines": [
    "env.MADEIRA_THREAD_STACK_SPILL = 1"
+  ],
+  "none": [
+   {
+    "has": [
+     "[thr-create] FAILED at WoW64 32-bit stack"
+    ]
+   }
   ],
   "priority": 20,
   "reason": "A thread could not get its stack in the game's address range; the line lets stacks take the kernel's placement."
@@ -691,10 +2135,16 @@ enum AutoTuneBuiltInRules {
      "[alloc-fail]",
      "status=c0000018"
     ]
+   },
+   {
+    "has": [
+     "[free-delay] #"
+    ]
    }
   ],
   "evidence": [
-   "HANDOFF: Horizon Forbidden West 517"
+   "HANDOFF: Horizon Forbidden West 517",
+   "minecraft-dungeons-2026-10-21 (CYDN1E: 200+ refused probes and no [free-delay] line; no match)"
   ],
   "id": "free-delay-off",
   "lines": [
@@ -766,6 +2216,331 @@ enum AutoTuneBuiltInRules {
   ],
   "priority": 45,
   "reason": "iOS refused GPU work the game submitted while BCD was in the background, which can leave textures black or the device lost; the line holds the game's GPU work while BCD is not active."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[Wine ntdll/server] process_exit_wrapper("
+    ]
+   },
+   {
+    "has": [
+     "[srv-kill] kill_process pid=0020 violent=0"
+    ]
+   }
+  ],
+  "evidence": [
+   "gta-iv-2026-10-21 (gta4-freeze, build 576)",
+   "Stranglehold RVBE4K (build 569)",
+   "tests/host/check-session-end.py (build 578)"
+  ],
+  "fixedIn": 578,
+  "id": "program-exit-off-boot-thread",
+  "lines": [],
+  "none": [
+   {
+    "has": [
+     "[WineProc] stopping wineserver"
+    ]
+   }
+  ],
+  "priority": 1,
+  "reason": "The game ended on a thread BCD was not watching, so BCD stayed on its last frame; from this build on BCD notices, says that the game closed and returns to the library.",
+  "session": "library"
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[dock-report] launch-game-ended=1"
+    ]
+   },
+   {
+    "has": [
+     "[Wine ntdll/server] process_exit_wrapper(-10737",
+     "closing child"
+    ]
+   }
+  ],
+  "evidence": [
+   "dying-light-dock-game-end-2026-10-21 (32FEAT, build 578)",
+   "Isaac VV5NHZ (build 576)",
+   "tests/host/check-dock-game-end.py (build 579)"
+  ],
+  "fixedIn": 579,
+  "id": "dock-game-died-session-open",
+  "lines": [],
+  "none": [
+   {
+    "has": [
+     "[dock-game-end]"
+    ]
+   },
+   {
+    "has": [
+     "[frontend] returned to library"
+    ]
+   }
+  ],
+  "priority": 13,
+  "reason": "The game's process crashed and Valve's client and the Dock host finished, but BCD kept the session open on its dead desktop; from this build on BCD ends the session, says which Windows error the game closed with, and auto-tune goes on from there.",
+  "session": "dock"
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[wow-window] main-process reserve FAILED"
+    ]
+   }
+  ],
+  "evidence": [
+   "tomb-raider-underworld-main-window-2026-10-21 (ZWAA2K, build 576)",
+   "tests/host/check-dock-game-end.py (build 579)"
+  ],
+  "fixedIn": 579,
+  "id": "wow-window-main-image-hang",
+  "lines": [],
+  "none": [
+   {
+    "has": [
+     "[WineProc] Wine exited with code"
+    ]
+   },
+   {
+    "has": [
+     "[frontend] returned to library"
+    ]
+   }
+  ],
+  "priority": 14,
+  "reason": "A 32-bit game could not get the address space it needs on this install, and BCD stayed on 'running' for minutes; from this build on the session ends at once and says so (the lack of address space is the cause, and it is the install's).",
+  "session": "library"
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[store-undecoded]",
+     "ADD THIS ENCODING"
+    ]
+   }
+  ],
+  "any": [
+   {
+    "has": [
+     "[store-undecoded]",
+     "insn=0xc8a"
+    ]
+   },
+   {
+    "has": [
+     "[store-undecoded]",
+     "insn=0xc8b"
+    ]
+   },
+   {
+    "has": [
+     "[store-undecoded]",
+     "insn=0xc8e"
+    ]
+   },
+   {
+    "has": [
+     "[store-undecoded]",
+     "insn=0xc8f"
+    ]
+   },
+   {
+    "has": [
+     "[store-undecoded]",
+     "insn=0x88a"
+    ]
+   },
+   {
+    "has": [
+     "[store-undecoded]",
+     "insn=0x88b"
+    ]
+   },
+   {
+    "has": [
+     "[store-undecoded]",
+     "insn=0x88e"
+    ]
+   },
+   {
+    "has": [
+     "[store-undecoded]",
+     "insn=0x88f"
+    ]
+   }
+  ],
+  "evidence": [
+   "jetboard-joust-2026-10-21 (N4F8JR; 5QQ3XX, 5WG4FG)",
+   "tests/host/check-anon-cas.py (build 580)"
+  ],
+  "fixedIn": 580,
+  "id": "anon-alias-cas",
+  "lines": [],
+  "priority": 1,
+  "reason": "The game patches its own code in memory BCD keeps writable only through an alias, with an atomic compare-and-swap BCD did not emulate, and the program ended on the failed write."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[stp-emul] ml629",
+     "REFUSING: 32B span leaves the alias",
+     "addr=0x7"
+    ]
+   },
+   {
+    "has": [
+     "identical redeliveries"
+    ]
+   }
+  ],
+  "evidence": [
+   "need-for-speed-underground-2-2026-10-21 (7F9ZRF)",
+   "tests/host/check-stp-straddle.py (build 580)"
+  ],
+  "fixedIn": 580,
+  "id": "stp-q-page-straddle",
+  "lines": [],
+  "priority": 1,
+  "reason": "A 32-byte store into the game's own code buffer crossed a memory page boundary, BCD refused to complete it and the same write was repeated until BCD ended the game."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[dock-report] launch-game-ended=1"
+    ]
+   },
+   {
+    "has": [
+     "[Wine ntdll/server] process_exit_wrapper(-10737",
+     "closing child"
+    ]
+   },
+   {
+    "has": [
+     "[phase] spawn:",
+     "\\\\Crash"
+    ]
+   }
+  ],
+  "evidence": [
+   "crash-bandicoot-nsane-trilogy-2026-10-22 (3CH670, build 579)",
+   "tests/host/check-dock-game-end.py (build 580)"
+  ],
+  "fixedIn": 580,
+  "id": "dock-game-named-crash-session-open",
+  "lines": [],
+  "none": [
+   {
+    "has": [
+     "[dock-game-end]"
+    ]
+   },
+   {
+    "has": [
+     "[frontend] returned to library"
+    ]
+   }
+  ],
+  "priority": 12,
+  "reason": "The game's name starts with 'Crash', so BCD took it for a crash reporter and kept the session open after the game had died; from this build on BCD tells them apart.",
+  "session": "dock"
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "MTLTextureDescriptor has width of zero"
+    ]
+   }
+  ],
+  "api": "d3d12",
+  "evidence": [
+   "spider-man-remastered-2026-10-21 (T3EXJB)",
+   "Miles Morales X1TNT2",
+   "tests/host/check-d3d12-zero-extent.py (build 580)"
+  ],
+  "fixedIn": 580,
+  "id": "d3d12-zero-extent-texture",
+  "lines": [],
+  "priority": 1,
+  "reason": "The game asked for a texture with no size and Metal ended the program; from this build on BCD answers that request with an error, as Windows does."
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[dock-report] probe-result="
+    ]
+   }
+  ],
+  "evidence": [
+   "spec-ops-the-line-dock-launch-failed-2026-10-21 (NEXHHM, build 579)",
+   "2FRXXM (build 579), Risen 2 9DBDZ6 (build 579)",
+   "tests/host/check-dock-game-end.py (build 580)"
+  ],
+  "fixedIn": 580,
+  "id": "dock-launch-failed-session-open",
+  "lines": [],
+  "none": [
+   {
+    "has": [
+     "[dock-report] probe-result=0"
+    ]
+   },
+   {
+    "has": [
+     "[dock-report] launch-game-running=1"
+    ]
+   },
+   {
+    "has": [
+     "[dock-game-end]"
+    ]
+   },
+   {
+    "has": [
+     "[frontend] returned to library"
+    ]
+   }
+  ],
+  "priority": 15,
+  "reason": "The Dock host reported that the game's launch failed and the game never ran, but BCD kept the session open on its desktop; from this build on BCD ends the session after 20 seconds and shows the reason (the cause, for a game with Steam's per-account copy protection, is Steam's own and is not changed by this).",
+  "session": "dock"
+ },
+ {
+  "all": [
+   {
+    "has": [
+     "[native-bt]",
+     "udat_open"
+    ]
+   },
+   {
+    "has": [
+     "[native-bt]",
+     "Madeira`$s7Madeira"
+    ]
+   }
+  ],
+  "evidence": [
+   "synthetic-bcd-date-formatter-crash (the backtraces of A7V9T2 and DFSTWB, builds 576)",
+   "tests/host/check-bcd-game-page.py (build 580)"
+  ],
+  "fixedIn": 580,
+  "id": "bcd-date-formatter-crash",
+  "lines": [],
+  "priority": 2,
+  "reason": "BCD's own screen closed the app while it was making a date for display; this is in BCD, not in the game, and no setting changes it."
  },
  {
   "all": [

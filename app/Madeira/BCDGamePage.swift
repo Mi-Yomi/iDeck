@@ -182,7 +182,7 @@ struct BCDCloudConflict: Identifiable, Equatable {
 
     /// "Steam Cloud: 18 Oct 2026 at 14:05 · 2 MB · newer", and the same for this device.
     var lines: (cloud: String, device: String) {
-        func when(_ date: Date?) -> String { date.map { $0.formatted(date: .abbreviated, time: .shortened) } ?? "date unknown" }
+        func when(_ date: Date?) -> String { date.map { BCDFormat.dateTime($0) } ?? "date unknown" }
         let cloudNewer = deviceDate != nil && (cloudDate ?? .distantPast) > (deviceDate ?? .distantPast)
         let deviceNewer = deviceDate != nil && (deviceDate ?? .distantPast) > (cloudDate ?? .distantPast)
         let cloud = "Steam Cloud: \(when(cloudDate)) · \(BCDFormat.bytes(cloudBytes))" + (cloudNewer ? " · newer" : "")
@@ -264,7 +264,7 @@ struct BCDGameRecommendation: Equatable {
     /// "List 3 of 18 Oct 2026, built into this version of BCD. Checked online 2 h ago."
     var source: String {
         var line = version.map { "List \($0)" } ?? "The list"
-        if let made { line += " of " + made.formatted(date: .abbreviated, time: .omitted) }
+        if let made { line += " of " + BCDFormat.fullDate(made) }
         line += downloaded ? ", downloaded." : ", built into this version of BCD."
         if let checked { line += " Checked online \(BCDFormat.ago(checked))." }
         return line
@@ -332,6 +332,8 @@ struct BCDGameDetails: Equatable {
     var shortcut = false
     var saves = false
     var report = false
+    /// Said before a log is sent: on an install without the increased memory limit, what fixes it (MemoryRights.swift).
+    var sendLogAdvice: String? = nil
     var removal: BCDGameRemoval = .none
     /// A download runs for a game that is installed: an update, which Stop only stops.
     var updating = false
@@ -339,6 +341,9 @@ struct BCDGameDetails: Equatable {
     var storePage: URL? = nil
     /// What the store says the game may need that BCD does not install for it (GOG's runtimes).
     var storeNote: String? = nil
+    /// The game's last start failed because a .NET program found no Wine Mono, and this device
+    /// still has none: the page says where to download it.
+    var needsWineMono = false
 
     /// Check and repair files for this game: what the backend offers, and never for a GOG game
     /// (its file check comes with a later version of BCD, as its updates do).
@@ -506,7 +511,8 @@ extension BCDGameAction {
                                    confirm: "Restore", destructive: true)
         case .sendLog(let log):
             return BCDGameQuestion(title: "Send the log of \(game.title)?",
-                                   message: "\(log.name), \(BCDFormat.ago(log.date)), \(BCDFormat.bytes(Int64(log.bytes))). Folder paths, names and addresses are removed on this device before it goes. You get a code to quote when you describe the problem.",
+                                   message: "\(log.name), \(BCDFormat.ago(log.date)), \(BCDFormat.bytes(Int64(log.bytes))). Folder paths, names and addresses are removed on this device before it goes. You get a code to quote when you describe the problem."
+                                    + (details.sendLogAdvice.map { "\n\n" + $0 } ?? ""),   // the setup first (MemoryRights.swift, set by the live page)
                                    confirm: "Send", destructive: false)
         case .set(let id, let value):
             guard let found = details.setting(id)?.setting else { return nil }
@@ -800,11 +806,22 @@ struct BCDGamePagePlan: Equatable {
             } else if system.jit == .waiting {
                 notes.append(Note(text: "Turning on JIT…", warning: false))
             }
+            // The last start died for want of Wine Mono: the cause is known, so it comes before the guesses below.
+            if details.needsWineMono {
+                notes.append(Note(text: "This game needs Wine Mono (.NET). Download it in Settings › .NET Framework.", warning: true))
+            }
+            // Before the Cloud note: only two notes show, and on an install without the increased memory
+            // limit most failures come from it (2026-10-20: 54 of 257 logs, none of the large games played).
+            // Without extended virtual addressing the address map is about 63 GB, too small for large games
+            // (2026-10-20: logs DCWTGJ, R138Z4, KDY8E6, DVXWGA, 4GQK0Y crashed in the game, then the app).
+            if let limit = system.memoryLimitBytes, !system.increasedMemoryLimit {
+                let both = system.extendedAddressing ? "" : " and extended virtual addressing"
+                notes.append(Note(text: "iOS gives BCD only \(BCDFormat.bytes(limit)) here: this install lacks the increased memory limit\(both), so large games close early. Add \(system.extendedAddressing ? "it" : "them") with GetMoreRam, or sign BCD with a paid developer account.", warning: true))
+            } else if system.memoryLimitBytes != nil, !system.extendedAddressing {
+                notes.append(Note(text: "This install lacks extended virtual addressing, which large games need. Add it with GetMoreRam, or sign BCD with a paid developer account.", warning: true))
+            }
             if case .differ(let count)? = details.cloud {
                 notes.append(Note(text: "Steam Cloud and this device disagree on \(BCDGameText.saves(count)). Pick the copies to keep in Options.", warning: true))
-            }
-            if let limit = system.memoryLimitBytes, !system.increasedMemoryLimit {
-                notes.append(Note(text: "iOS gives BCD \(BCDFormat.bytes(limit)) here, without the increased memory limit. Large games can run out.", warning: true))
             }
             if let note = details.storeNote { notes.append(Note(text: note, warning: false)) }
             if otherDownloads {

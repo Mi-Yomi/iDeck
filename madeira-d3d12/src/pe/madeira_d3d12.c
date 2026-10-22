@@ -12008,7 +12008,8 @@ static D3D12_RESOURCE_ALLOCATION_INFO * STDMETHODCALLTYPE device_GetResourceAllo
                         (d->Dimension == D3D12_RESOURCE_DIMENSION_TEXTURE3D ? 1 : (d->DepthOrArraySize ? d->DepthOrArraySize : 1));
             device_GetCopyableFootprints(This, d, 0, subs, 0, NULL, NULL, NULL, &bytes);
             if (d->SampleDesc.Count > 1) a = D3D12_DEFAULT_MSAA_RESOURCE_PLACEMENT_ALIGNMENT;
-            if (mad_texinfo_from_desc(d, &ti, &pf, &isd)) MTLDevice_heapTextureSizeAndAlign(md->mtl_device, &ti, &msz, &mal);   /* ml1145 */
+            if (mad_texinfo_from_desc(d, &ti, &pf, &isd) && ti.width && ti.height)   /* build 580: Metal aborts on a zero extent */
+                MTLDevice_heapTextureSizeAndAlign(md->mtl_device, &ti, &msz, &mal);   /* ml1145 */
         }
         /* ml1145: a placed resource is really placed now, so the application must
          * plan its heap with the size and alignment Metal needs, not the linear
@@ -12991,6 +12992,11 @@ static int mad_raw_typed_sibling(struct mad_device *d, struct mad_resource *r, U
 /* ml918: pf = 0 keeps the texture's own format; swz packs four
  * WMTTextureSwizzle values (r | g<<8 | b<<16 | a<<24), 0 = identity. */
 /* MAD_SWZ_IDENTITY (the identity swizzle) is defined at the top (madeira-bcd: the capture walker uses it too). */
+/* mip0-view-test:begin */
+/* True when a view that starts at lvl0 cannot fit in a texture of tex_mips levels, whatever its length: the one case the clamp below
+ * leaves invalid (it only shortens the length). tests/host/check-mip0-view-diag.py runs this against the clamp. */
+static int mad_view_level_beyond(UINT lvl0, UINT tex_mips) { return tex_mips && lvl0 >= tex_mips; }
+/* mip0-view-test:end */
 static UINT64 mad_texture_view_id(struct mad_device *d, struct mad_resource *r, enum WMTTextureType want,
                                   UINT lvl0, UINT nlvl, UINT sl0, UINT nsl, enum WMTPixelFormat pf, UINT swz) {
     unsigned k; UINT64 id = 0; obj_handle_t tex;
@@ -13001,6 +13007,19 @@ static UINT64 mad_texture_view_id(struct mad_device *d, struct mad_resource *r, 
     if (!pf || (r->is_depth && pf != WMTPixelFormatX32_Stencil8)) pf = r->tex_pf;   /* depth textures keep their format: sampled as depth; ml1101: unless a stencil view */
     if (nlvl == 0 || nlvl == ~0u || lvl0 + nlvl > r->tex_mips) nlvl = r->tex_mips > lvl0 ? r->tex_mips - lvl0 : 1;
     if (nsl == 0 || nsl == ~0u || sl0 + nsl > r->tex_layers) nsl = r->tex_layers > sl0 ? r->tex_layers - sl0 : 1;
+    /* madeira-bcd mip0-view: a log line on the failure path only, nothing else changes. A view whose first level lies beyond the
+     * texture's levels is refused by Metal's own validation ("(newLevelRange.location + newLevelRange.length)(2) must be <=
+     * [texture mipmapLevelCount](1)"), which ends the process. Marvel's Spider-Man: Miles Morales: a 256x256 RGBA32F UAV texture
+     * made with MipLevels 0 (one level here unless mip0-full = 1), then a UAV of level 1 (build 576 log 2026-10-21, L83617-83627;
+     * PD7S1E, build 574). The call below is unchanged; this names the resource before it. */
+    if (mad_view_level_beyond(lvl0, r->tex_mips)) {
+        static LONG said_beyond;
+        if (InterlockedIncrement(&said_beyond) <= 8)
+            d3d12_log("[mip0-view] r#%u %s %ux%u: a view of level %u of a texture with %u level(s) (made with MipLevels %u): Metal refuses it "
+                      "and ends the game%s\n", r->serial, r->name ? r->name : "?", r->width, r->height, lvl0, r->tex_mips,
+                      (unsigned)r->desc.MipLevels,
+                      r->desc.MipLevels ? "" : "; bcd.cfg mip0-full = 1 gives a MipLevels 0 texture its full chain");
+    }
     if (want == r->tex_type && lvl0 == 0 && nlvl == r->tex_mips && sl0 == 0 && nsl == r->tex_layers && pf == r->tex_pf && swz == MAD_SWZ_IDENTITY)
         return r->gpu_resource_id;
     if (want == WMTTextureTypeCube) nsl = 6;
@@ -14545,6 +14564,11 @@ static HRESULT mad_create_resource_at(struct mad_device *d, D3D12_HEAP_TYPE heap
         enum WMTPixelFormat pf;
         int is_depth;
         if (!mad_texinfo_from_desc(desc, &ti, &pf, &is_depth)) { free(r); mad_refuse_log(desc, heap_type, "texture format has no Metal mapping"); return E_NOTIMPL; }
+        /* build 580 (Marvel's Spider-Man Remastered T3EXJB L21972, Miles Morales X1TNT2 L18933): a texture with a zero
+         * width and height ("MTLTextureDescriptor has width of zero") aborts the whole process in Metal's descriptor
+         * validation. Direct3D 12 refuses such a description with E_INVALIDARG; so does this now, with the game's own
+         * description in the log. Only a zero extent reaches here, i.e. only what ended the process before. */
+        if (!ti.width || !ti.height) { free(r); mad_refuse_log(desc, heap_type, "zero-size texture (Metal aborts the process on it)"); return E_INVALIDARG; }
         if (ph && ph->mtl) {   /* ml1145: inside the application's heap, at its offset */
             UINT64 psz = 0, pal = 0;
             MTLDevice_heapTextureSizeAndAlign(d->mtl_device, &ti, &psz, &pal);
@@ -20348,6 +20372,131 @@ static HRESULT STDMETHODCALLTYPE device_SetEventOnMultipleFenceCompletion(ID3D12
     }
 }
 
+/* ---- ID3D12PipelineLibrary (ID3D12Device1::CreatePipelineLibrary) ------------
+ * madeira-bcd, opt-in: bcd.cfg / game file d3d12-pipeline-library = 1. Off (the default) the call is
+ * the generated stub, E_NOTIMPL, as before.
+ *
+ * Returnal (Unreal; Send Log CWKVD7, build 574, iPhone18,2) makes the library while the RHI starts
+ * and ends in a LowLevelFatalError when the call fails ("pDevice1->CreatePipelineLibrary(nullptr, 0,
+ * ...) failed", L16518 / L16524). GTA V Enhanced and Red Dead Redemption 2 call it too and carry on
+ * with the failure, which is why the default stays. With the key on the library is an object that
+ * keeps nothing: the loads answer E_INVALIDARG, what D3D12 returns for a name that is not in the
+ * library, so the engine compiles the pipeline itself; StorePipeline accepts and forgets; the
+ * serialized form is 16 bytes (a magic and reserved zeros), so an engine that writes the library to
+ * disk and hands it back at the next start finds a blob it can use. A blob of anything else is
+ * D3D12_ERROR_DRIVER_VERSION_MISMATCH, which engines answer by starting an empty library. */
+#define MAD_D3D12_ERROR_DRIVER_VERSION_MISMATCH ((HRESULT)0x887E0002L)
+/* piplib-test:begin */
+#define MAD_PIPLIB_MAGIC "MADPLIB1"
+#define MAD_PIPLIB_BLOB_SIZE 16
+/* 1: nothing, or the blob Serialize writes (the library keeps no pipeline, so both mean an empty library). */
+static int mad_piplib_blob_ok(const void *blob, SIZE_T size) {
+    if (!size) return 1;
+    return blob && size == MAD_PIPLIB_BLOB_SIZE && !memcmp(blob, MAD_PIPLIB_MAGIC, 8);
+}
+static HRESULT mad_piplib_serialize(void *data, SIZE_T size) {
+    if (!data || size < MAD_PIPLIB_BLOB_SIZE) return E_INVALIDARG;
+    memset(data, 0, MAD_PIPLIB_BLOB_SIZE);
+    memcpy(data, MAD_PIPLIB_MAGIC, 8);
+    return S_OK;
+}
+/* piplib-test:end */
+static int mad_piplib_on(void) {
+    static int v = -1;
+    if (v < 0) {
+        v = mad_cfg_int_pe("d3d12-pipeline-library", 0) ? 1 : 0;   /* 1: CreatePipelineLibrary makes an empty library (loads say "not found", stores are forgotten); 0: E_NOTIMPL, as before */
+        if (v) d3d12_log("[madeira-d3d12] d3d12-pipeline-library = 1 (opt-in): CreatePipelineLibrary makes a library that keeps "
+                         "no pipeline (loads answer not-found, stores are accepted and forgotten)\n");
+    }
+    return v;
+}
+struct mad_piplib {
+    ID3D12PipelineLibrary1Vtbl *vtbl;
+    LONG refs;
+    const IID *iid;
+    const char *name;
+    struct mad_device *device;
+};
+static ID3D12PipelineLibrary1Vtbl g_piplib_vtbl;
+
+static HRESULT STDMETHODCALLTYPE piplib_QI(ID3D12PipelineLibrary1 *This, REFIID riid, void **out) {
+    struct mad_obj *o = (struct mad_obj *)This;
+    if (!out) return E_POINTER;
+    /* ID3D12PipelineLibrary is the object's iid (mad_qi); ID3D12PipelineLibrary1 is the same object with one more method */
+    if (IsEqualGUID(riid, &IID_ID3D12PipelineLibrary1)) { InterlockedIncrement(&o->refs); *out = This; return S_OK; }
+    return mad_qi(o, riid, out, 1);
+}
+static ULONG STDMETHODCALLTYPE piplib_AddRef(ID3D12PipelineLibrary1 *This) { return mad_addref((struct mad_obj *)This); }
+static ULONG STDMETHODCALLTYPE piplib_Release(ID3D12PipelineLibrary1 *This) { return mad_release((struct mad_obj *)This); }
+static HRESULT STDMETHODCALLTYPE piplib_GetPrivateData(ID3D12PipelineLibrary1 *This, REFGUID g, UINT *n, void *d) {
+    return mad_pd_get(This, g, n, d);
+}
+static HRESULT STDMETHODCALLTYPE piplib_SetPrivateData(ID3D12PipelineLibrary1 *This, REFGUID g, UINT n, const void *d) {
+    return mad_pd_set(This, g, n, d);
+}
+static HRESULT STDMETHODCALLTYPE piplib_SetPrivateDataInterface(ID3D12PipelineLibrary1 *This, REFGUID g, const IUnknown *d) {
+    return mad_pd_set_iface(This, g, d);
+}
+static HRESULT STDMETHODCALLTYPE piplib_SetName(ID3D12PipelineLibrary1 *This, const WCHAR *name) { (void)This; (void)name; return S_OK; }
+static HRESULT STDMETHODCALLTYPE piplib_GetDevice(ID3D12PipelineLibrary1 *This, REFIID riid, void **out) {
+    struct mad_piplib *l = (struct mad_piplib *)This;
+    return l->device->vtbl->QueryInterface((ID3D12Device10 *)l->device, riid, out);
+}
+static HRESULT STDMETHODCALLTYPE piplib_StorePipeline(ID3D12PipelineLibrary1 *This, const WCHAR *name, ID3D12PipelineState *pso) {
+    (void)This;
+    if (!name || !pso) return E_INVALIDARG;
+    return S_OK;   /* accepted and forgotten */
+}
+static HRESULT STDMETHODCALLTYPE piplib_LoadGraphicsPipeline(ID3D12PipelineLibrary1 *This, const WCHAR *name,
+        const D3D12_GRAPHICS_PIPELINE_STATE_DESC *desc, REFIID riid, void **pso) {
+    (void)This; (void)name; (void)desc; (void)riid;
+    if (pso) *pso = NULL;
+    return E_INVALIDARG;   /* D3D12's answer for a name the library does not hold */
+}
+static HRESULT STDMETHODCALLTYPE piplib_LoadComputePipeline(ID3D12PipelineLibrary1 *This, const WCHAR *name,
+        const D3D12_COMPUTE_PIPELINE_STATE_DESC *desc, REFIID riid, void **pso) {
+    (void)This; (void)name; (void)desc; (void)riid;
+    if (pso) *pso = NULL;
+    return E_INVALIDARG;
+}
+static HRESULT STDMETHODCALLTYPE piplib_LoadPipeline(ID3D12PipelineLibrary1 *This, const WCHAR *name,
+        const D3D12_PIPELINE_STATE_STREAM_DESC *desc, REFIID riid, void **pso) {
+    (void)This; (void)name; (void)desc; (void)riid;
+    if (pso) *pso = NULL;
+    return E_INVALIDARG;
+}
+static SIZE_T STDMETHODCALLTYPE piplib_GetSerializedSize(ID3D12PipelineLibrary1 *This) { (void)This; return MAD_PIPLIB_BLOB_SIZE; }
+static HRESULT STDMETHODCALLTYPE piplib_Serialize(ID3D12PipelineLibrary1 *This, void *data, SIZE_T size) {
+    (void)This;
+    return mad_piplib_serialize(data, size);
+}
+static HRESULT STDMETHODCALLTYPE device_CreatePipelineLibrary(ID3D12Device10 *This, const void *blob, SIZE_T blob_size,
+        REFIID riid, void **out) {
+    struct mad_piplib *l;
+    HRESULT hr;
+    if (!mad_piplib_on()) return stub_ID3D12Device10_CreatePipelineLibrary(This, blob, blob_size, riid, out);
+    if (!mad_piplib_blob_ok(blob, blob_size)) {
+        d3d12_log("[madeira-d3d12] CreatePipelineLibrary: a blob of %llu bytes that is not this runtime's: DRIVER_VERSION_MISMATCH\n",
+                  (unsigned long long)blob_size);
+        return MAD_D3D12_ERROR_DRIVER_VERSION_MISMATCH;
+    }
+    if (!out) return S_FALSE;   /* the documented capability test: valid arguments, nothing created */
+    *out = NULL;
+    l = calloc(1, sizeof *l);
+    if (!l) return E_OUTOFMEMORY;
+    l->vtbl = &g_piplib_vtbl; l->refs = 1; l->iid = &IID_ID3D12PipelineLibrary; l->name = "PipelineLibrary";
+    l->device = (struct mad_device *)This;
+    hr = piplib_QI((ID3D12PipelineLibrary1 *)l, riid, out);
+    piplib_Release((ID3D12PipelineLibrary1 *)l);
+    {
+        static LONG said;
+        if (InterlockedIncrement(&said) <= 4)
+            d3d12_log("[madeira-d3d12] CreatePipelineLibrary(%llu bytes) -> an empty library, hr %#lx\n",
+                      (unsigned long long)blob_size, (unsigned long)hr);
+    }
+    return hr;
+}
+
 /* Pipeline-state stream (ID3D12Device2). Each subobject is a UINT type tag
  * followed by its payload at the payload's own alignment, and the next
  * subobject starts pointer-aligned -- the layout of D3DX12's
@@ -20557,6 +20706,7 @@ static void build_vtables(void) {
     g_device_vtbl.RemoveDevice                       = device_RemoveDevice;
     g_device_vtbl.SetBackgroundProcessingMode        = device_SetBackgroundProcessingMode;
     g_device_vtbl.SetEventOnMultipleFenceCompletion  = device_SetEventOnMultipleFenceCompletion;
+    g_device_vtbl.CreatePipelineLibrary              = device_CreatePipelineLibrary;   /* madeira-bcd: d3d12-pipeline-library (the stub when off) */
     g_device_vtbl.QueryInterface = (void *)device_QI;
     g_device_vtbl.GetAdapterLuid = device_GetAdapterLuid;   /* madeira-bcd */
     g_device_vtbl.GetDeviceRemovedReason = device_GetDeviceRemovedReason;   /* madeira-bcd */
@@ -20603,6 +20753,21 @@ static void build_vtables(void) {
     g_cmdsig_vtbl.SetPrivateDataInterface = cmdsig_SetPrivateDataInterface;
     g_cmdsig_vtbl.SetName                 = cmdsig_SetName;
     g_cmdsig_vtbl.GetDevice               = cmdsig_GetDevice;
+
+    g_piplib_vtbl.QueryInterface          = piplib_QI;   /* madeira-bcd: d3d12-pipeline-library */
+    g_piplib_vtbl.AddRef                  = piplib_AddRef;
+    g_piplib_vtbl.Release                 = piplib_Release;
+    g_piplib_vtbl.GetPrivateData          = piplib_GetPrivateData;
+    g_piplib_vtbl.SetPrivateData          = piplib_SetPrivateData;
+    g_piplib_vtbl.SetPrivateDataInterface = piplib_SetPrivateDataInterface;
+    g_piplib_vtbl.SetName                 = piplib_SetName;
+    g_piplib_vtbl.GetDevice               = piplib_GetDevice;
+    g_piplib_vtbl.StorePipeline           = piplib_StorePipeline;
+    g_piplib_vtbl.LoadGraphicsPipeline    = piplib_LoadGraphicsPipeline;
+    g_piplib_vtbl.LoadComputePipeline     = piplib_LoadComputePipeline;
+    g_piplib_vtbl.GetSerializedSize       = piplib_GetSerializedSize;
+    g_piplib_vtbl.Serialize               = piplib_Serialize;
+    g_piplib_vtbl.LoadPipeline            = piplib_LoadPipeline;
     g_device_vtbl.CreateCommittedResource = (void *)device_CreateCommittedResource;
     g_device_vtbl.CreateRootSignature = (void *)device_CreateRootSignature;
     g_device_vtbl.CreateDescriptorHeap = (void *)device_CreateDescriptorHeap;

@@ -145,6 +145,7 @@ import UniformTypeIdentifiers
         d.shortcut = !desktop
         d.saves = !desktop
         d.report = true
+        d.sendLogAdvice = MemoryRights.lacking ? MemoryRights.sendLogAdvice : nil
         return d
     }
 
@@ -190,12 +191,7 @@ import UniformTypeIdentifiers
     }
 
     /// "2026-10-18" as a date.
-    private static func day(_ text: String) -> Date? {
-        let format = DateFormatter()
-        format.locale = Locale(identifier: "en_US_POSIX")
-        format.dateFormat = "yyyy-MM-dd"
-        return format.date(from: text)
-    }
+    private static func day(_ text: String) -> Date? { BCDFormat.day(text) }
 
     // MARK: Display
 
@@ -498,7 +494,7 @@ import UniformTypeIdentifiers
                 switch DockOffline.mark(appID, preparedOnline: custom) {
                 case .ready(let saved):
                     state = "Ready: Steam can sign in without a connection"
-                    why = "Steam signed in online on this device on \(saved.formatted(date: .abbreviated, time: .omitted)), so it can sign this account in offline. With no internet, BCD asks Steam to start the game offline, and Steam checks its saved sign-in and licenses each time. The saved sign-in runs out after a while: start a game online now and then. Games that need their own servers still need them."
+                    why = "Steam signed in online on this device on \(BCDFormat.fullDate(saved)), so it can sign this account in offline. With no internet, BCD asks Steam to start the game offline, and Steam checks its saved sign-in and licenses each time. The saved sign-in runs out after a while: start a game online now and then. Games that need their own servers still need them."
                 case .needsFirstStart:
                     state = "Needs one online start of this game"
                     why = "Steam can sign in offline, but this game sets up its program for your account on its first start, and that needs a connection. Start it once online."
@@ -627,6 +623,9 @@ import UniformTypeIdentifiers
         let tuned = AutoTune.enabled && AutoTune.eligible(entry) ? (on: AutoTune.isOn(path), state: AutoTune.state(path), most: AutoTuneEngine.maxAttempts) : nil
         guard let tuned else { return }
         let state = tuned.state
+        // The last start failed because a .NET program found no Wine Mono (AutoTuneState.monoMissing), and nothing has
+        // been downloaded since: the page says where to get it. Read here, so only while auto-tune is on.
+        d.needsWineMono = state.monoMissing == true && !WineMonoModel.available
         let history = !state.attempts.isEmpty || !state.kept.isEmpty
         let steps = state.attempts.reversed().map { step -> (title: String, detail: String) in
             var words = [Self.said(step.outcome), "stage \(step.stage)", "\(Int(step.seconds)) s", "\(step.presents) frames"]
@@ -645,8 +644,8 @@ import UniformTypeIdentifiers
             }
         case "found": status = "Found: " + state.kept.joined(separator: "; ")
         case "ok": status = "It played without changes."
-        case "stuck": status = "No known fix fits the last failure. Share the report to send it."
-        case "gave-up": status = "Stopped after \(tuned.most) attempts. Share the report to send it."
+        case "stuck": status = "No known fix fits the last failure (tried: \(state.triedSummary)). " + Self.reportAdvice
+        case "gave-up": status = "Stopped after \(tuned.most) attempts. " + Self.reportAdvice
         case "known":
             status = "A crash in BCD itself, not a setting: \(state.knownReason ?? state.known ?? "a known problem")."
             if let fixed = state.knownFixedIn {
@@ -661,6 +660,12 @@ import UniformTypeIdentifiers
         d.tuning = BCDGameTuning(on: tuned.on, status: tuned.on || history ? status : nil, canUndo: history, found: state.kept, history: steps)
         if tuned.on && history { d.settings = "Auto-tune on" }   // on for every game now: the label says so only once it has a search or kept lines, so "Recommended" and "Your own" stay visible
     }
+
+    /// Without the increased memory limit the setup, not BCD, is the usual cause, and a report
+    /// cannot fix it: say what can (2026-10-20: 54 of 257 logs came from such installs).
+    private static let reportAdvice: String = EntitlementStatus.check().increasedMemory
+        ? "Share the report to send it."
+        : "This install lacks the increased memory limit, the usual cause on it: add it with GetMoreRam, or sign BCD with a paid developer account, before sending a report."
 
     /// How a start ended, in auto-tune's words.
     private static func said(_ outcome: String) -> String { AutoTune.enabled ? AutoTuneOffer.outcomeText(outcome) : outcome }
@@ -941,9 +946,6 @@ import UniformTypeIdentifiers
         guard let entry = entry(for: game) else { return nil }
         let path = entry.windowsPath
         guard let state = AutoTune.enabled ? AutoTune.state(path) : nil else { return nil }
-        let time = DateFormatter()
-        time.locale = Locale(identifier: "en_US_POSIX")
-        time.dateFormat = "yyyy-MM-dd HH:mm"
         var out = ["BCD auto-tune report: \(entry.title)", "status: \(state.status)"]
         if state.status == "known" { out.append("known crash: \(state.known ?? "-") (\(state.knownReason ?? "-"))") }
         if !state.kept.isEmpty { out.append("kept lines:"); out += state.kept.map { "  " + $0 } }
@@ -954,7 +956,7 @@ import UniformTypeIdentifiers
         out.append("starts:")
         for step in state.attempts {
             let kept = step.kept.map { $0 ? "kept" : "taken back" } ?? "-"
-            out.append("  \(time.string(from: step.date)) \(step.rule ?? "first run") [\(step.lines.joined(separator: "; "))] -> "
+            out.append("  \(BCDFormat.reportTime(step.date)) \(step.rule ?? "first run") [\(step.lines.joined(separator: "; "))] -> "
                        + "\(step.outcome), stage \(step.stage), \(Int(step.seconds)) s, \(step.presents) frames, \(kept) \(step.log ?? "")")
         }
         if let evidence = state.best?.evidence, !evidence.isEmpty { out.append("signature lines:"); out += evidence.map { "  " + $0 } }

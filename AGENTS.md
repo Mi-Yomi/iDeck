@@ -14,7 +14,7 @@ history. Keep the two in step: push the same commits to both.
   Never add signing, OTA, bucket, mail or any other upload step, a push/schedule
   trigger, or a secret. Dispatching it is the owner's call: one run can take up
   to 6 hours of a macOS runner. The upstream original stays byte-identical at
-  `docs/upstream-workflows/build-ipa.yml.disabled`, for reading only.
+  `docs/upstream-workflows/build-ipa.yml.disabled` (and `altsource.yml.disabled`), for reading only.
 - Host checks (`tests/host/check-*.py`) may be run to verify a change. Checks
   that need cc/swiftc/xcrun, Mach or the full submodules only pass on the macOS
   runner; say which ones were not run. Do not run upstream's install, signing,

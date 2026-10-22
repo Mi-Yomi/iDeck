@@ -1389,6 +1389,107 @@ static int ios_fault_read_insn( uint64_t fault_pc, uint32_t *out )
     return 1;
 }
 
+/* madeira-bcd: the instructions an exclusive pair holds between its LDXR/LDAXR and its
+ * STXR/STLXR, as operations on the loaded value (ml1284's emulation below).
+ *
+ *   add:  ADD/SUB immediate, Rd == Rn == the loaded register (arg = what it adds, two's complement)
+ *   and/orr/eor: AND, ORR, EOR, BIC, ORN, EON (shifted register, no shift), Rd == Rn == the loaded
+ *                register, Rm another register (arg = its value, inverted for BIC/ORN/EON)
+ * Anything else that writes the loaded register is not understood (the caller refuses). A pair
+ * with a logical operation cannot be replayed as a compare-and-swap on the value the load
+ * saw (AND loses it), so the emulation applies the operations to the memory's current value
+ * instead, in a compare-and-swap loop: the result a retry of the guest's loop would reach. */
+enum { IOS_EXCL_ADD, IOS_EXCL_AND, IOS_EXCL_ORR, IOS_EXCL_EOR };
+typedef struct { int kind; uint64_t arg; int rm; } ios_excl_op;
+
+static int ios_excl_decode_op( uint32_t insn, int ld_rt, int size, const uint64_t *x, ios_excl_op *op )
+{
+    const int rd = insn & 0x1f, rn = (insn >> 5) & 0x1f, rm = (insn >> 16) & 0x1f;
+
+    if (rd != ld_rt || rn != ld_rt || (insn >> 31) != (size == 3)) return 0;
+    if ((insn & 0x1f800000) == 0x11000000)             /* ADD/SUB(S) immediate */
+    {
+        uint64_t imm = (insn >> 10) & 0xfff;
+        if (insn & 0x400000) imm <<= 12;
+        op->kind = IOS_EXCL_ADD; op->rm = -1;
+        op->arg = (insn & 0x40000000) ? (uint64_t)0 - imm : imm;
+        return 1;
+    }
+    if ((insn & 0x1f000000) == 0x0a000000)             /* logical, shifted register */
+    {
+        const unsigned opc = (insn >> 29) & 3;
+        if (opc == 3 || ((insn >> 22) & 3) != 0 || ((insn >> 10) & 0x3f) != 0 || rm == ld_rt) return 0;   /* ANDS; shifted; Rm is the loaded register */
+        op->kind = opc == 0 ? IOS_EXCL_AND : opc == 1 ? IOS_EXCL_ORR : IOS_EXCL_EOR;
+        op->arg = rm == 31 ? 0 : x[rm];
+        if (insn & 0x200000) op->arg = ~op->arg;       /* BIC / ORN / EON */
+        op->rm = rm;
+        return 1;
+    }
+    return 0;
+}
+
+static uint64_t ios_excl_apply( const ios_excl_op *ops, int n, uint64_t v, uint64_t mask )
+{
+    int i;
+    for (i = 0; i < n; i++)
+    {
+        switch (ops[i].kind)
+        {
+        case IOS_EXCL_ADD: v += ops[i].arg; break;
+        case IOS_EXCL_AND: v &= ops[i].arg; break;
+        case IOS_EXCL_ORR: v |= ops[i].arg; break;
+        default:           v ^= ops[i].arg; break;
+        }
+        v &= mask;
+    }
+    return v;
+}
+
+/* The compare-and-swap loop: *result = the value written. size is the access size's log2. */
+static void ios_excl_rmw( void *p, unsigned size, const ios_excl_op *ops, int n, uint64_t mask, uint64_t *result )
+{
+    switch (size)
+    {
+    case 0: { uint8_t  c = __atomic_load_n( (uint8_t  *)p, __ATOMIC_SEQ_CST ), w;
+              do w = (uint8_t) ios_excl_apply( ops, n, c, mask ); while (!__atomic_compare_exchange_n( (uint8_t  *)p, &c, w, 0, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST ));
+              *result = w; break; }
+    case 1: { uint16_t c = __atomic_load_n( (uint16_t *)p, __ATOMIC_SEQ_CST ), w;
+              do w = (uint16_t)ios_excl_apply( ops, n, c, mask ); while (!__atomic_compare_exchange_n( (uint16_t *)p, &c, w, 0, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST ));
+              *result = w; break; }
+    case 2: { uint32_t c = __atomic_load_n( (uint32_t *)p, __ATOMIC_SEQ_CST ), w;
+              do w = (uint32_t)ios_excl_apply( ops, n, c, mask ); while (!__atomic_compare_exchange_n( (uint32_t *)p, &c, w, 0, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST ));
+              *result = w; break; }
+    default:{ uint64_t c = __atomic_load_n( (uint64_t *)p, __ATOMIC_SEQ_CST ), w;
+              do w = ios_excl_apply( ops, n, c, mask ); while (!__atomic_compare_exchange_n( (uint64_t *)p, &c, w, 0, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST ));
+              *result = w; break; }
+    }
+}
+
+/* madeira-bcd: sign-extending loads off a zeroed x18.
+ *
+ * iOS zeroes x18 when it preempts a thread, and the Mach handler repairs a TEB access that
+ * faults on the small offset by doing the load itself (the "[x18-emul3]" cases in
+ * ios_mach_exception_thread). It decoded the zero-extending unsigned-offset loads (LDR X, LDR W,
+ * LDRB, LDRH) but not the sign-extending ones, so the access was declined as "UNRECOGNIZED" and
+ * the thread died: `ldrsw x28, [x18, #0x180c]` (0xb9980e5c) is FEX's read of the 64-bit TEB's
+ * WowTebOffset in the WOW64 entry code, and it ended a Left 4 Dead 2 session after 200 s of play
+ * (RTTGKM, build 574, L34541) and FFXIV's WebView2 installer process (TY3K5R, same instruction at
+ * the same offset). LDRSB/LDRSH take the same step. Returns 1 and the value for Rt when insn is
+ * one of these five encodings (unsigned immediate offset), else 0; the caller has ea = TEB + offset
+ * and writes Rt unless it is 31 (XZR). A W destination is zero-extended to 64 bits, as the CPU does. */
+static int ios_x18_signed_load( uint32_t insn, uintptr_t ea, uint64_t *val )
+{
+    switch (insn & 0xffc00000)
+    {
+    case 0xb9800000: *val = (uint64_t)(int64_t)*(int32_t *)ea; return 1;            /* LDRSW Xt */
+    case 0x39800000: *val = (uint64_t)(int64_t)*(int8_t *)ea; return 1;             /* LDRSB Xt */
+    case 0x39c00000: *val = (uint32_t)(int32_t)*(int8_t *)ea; return 1;             /* LDRSB Wt */
+    case 0x79800000: *val = (uint64_t)(int64_t)*(int16_t *)ea; return 1;            /* LDRSH Xt */
+    case 0x79c00000: *val = (uint32_t)(int32_t)*(int16_t *)ea; return 1;            /* LDRSH Wt */
+    default: return 0;
+    }
+}
+
 /* x18-derived base register.
  *
  * Wine's EC kernelbase TlsGetValue is `add x8, x18, w0, uxtw #3;
@@ -1511,6 +1612,460 @@ done:
     close( fd );
     dprintf( 2, "[jit-dump] ml1242 %s: wrote %zu of %zu pool bytes to %s (untouched pages left as holes)\n",
              why, written, total, path );
+}
+
+/* ajan3-dyinglight: [av-args], failure path only, capped (see ios_av_args_diag.h). It needs
+ * ios_pe_module_name (declared at the top) and ios_jit_low_contains (declared above). */
+#include "ios_av_args_diag.h"
+
+/* ajan5-mhs3: [rwx-fault], failure path only, capped (see ios_rwx_fault_diag.h). It uses the helpers of
+ * ios_av_args_diag.h above (ios_av_args_pc_is_jit, ios_av_args_read). */
+#include "ios_rwx_fault_diag.h"
+
+/* ajan6-arkham: [x87-int64], failure path only, capped (see ios_x87_int64_diag.h): a 32-bit guest's 64-bit integer read
+ * through FILD/FISTP that the emulator's 64-bit x87 rounds (Batman: Arkham City GOTY, Injustice). It uses the helpers
+ * of ios_av_args_diag.h above (ios_av_args_pc_is_jit, ios_av_args_read). */
+#include "ios_x87_int64_diag.h"
+/* ajan7-arkham: [wow-null32], a 32-bit guest's use of the NULL page: registers, stack and the thread's TLS cells with module+RVA
+ * (see ios_wow_null_diag.h). Failure path only, capped. Uses the helpers of ios_av_args_diag.h. */
+#include "ios_wow_null_diag.h"
+
+/* build 580 (NFS Underground 2 7F9ZRF): a 32-byte STP Q that crosses a 16 KB page boundary is stored page by page
+ * (see ios_store_split.h). The two callbacks below are the production lookups; the host test compiles the header
+ * against fake ones. Only the anonymous-alias branch of the Q-pair emulation uses them. */
+#include "ios_store_split.h"
+extern uintptr_t ios_jit_anon_alias_lookup(uintptr_t fault_addr);
+
+/* A part is aliased when the alias run that holds its first byte also holds its last; otherwise the guest address
+ * itself is offered as a direct part, and ios_store_split_direct_write decides whether it is writable. */
+static uintptr_t ios_store_split_resolve_anon( void *ctx, uintptr_t guest, unsigned len, int *direct )
+{
+    uintptr_t rw = ios_jit_anon_alias_lookup( guest );
+    (void)ctx;
+    if (rw)
+    {
+        if (ios_jit_anon_alias_lookup( guest + len - 1 ) != rw + len - 1) return 0;
+        *direct = 0;
+        return rw;
+    }
+    *direct = 1;
+    return guest;
+}
+
+/* mach_vm_write reports a page that cannot be written instead of faulting (this runs on the Mach exception
+ * thread) and checks the whole range before it writes any of it. */
+static int ios_store_split_direct_write( void *ctx, uintptr_t guest, const void *src, unsigned len )
+{
+    (void)ctx;
+    return mach_vm_write( mach_task_self(), (mach_vm_address_t)guest, (vm_offset_t)(uintptr_t)src, len ) == KERN_SUCCESS;
+}
+
+/* ajan2-tani (2026-10-21): FAILURE-PATH DIAGNOSTICS for guest control flow that dies in the JIT.
+ *
+ * Log only: every read goes through mach_vm_read_overwrite, nothing is written, and each
+ * report prints at most 5 lines, 2 reports per process (a repeat of the same guest RIP is
+ * not a new report). Called only from the UNHANDLED branch of ios_mach_exception_thread,
+ * i.e. for a fault that every earlier handler already declined.
+ *
+ *  [entry-fail] AGE OF EMPIRES IV (34WSPP, 7DXVSK, 9Y8TCC, 22VWKA, EG43GA) dies on "Invalid
+ *  instruction in entry block: 127DE24F0" (guest bytes d5 dc ca a3 bc ...). FEX turns such a
+ *  block into Break(FAULT_SIGILL) -> `br GuestSignal_SIGILL`, a thunk that is `SpillStaticRegs;
+ *  hlt #0` (Dispatcher.cpp), shared by every block of the thread. So the host pc and LR of the
+ *  fault name nothing; the only caller evidence is the SPILLED guest state (CpuStateFrame at
+ *  x28: rip +0x18, rsp +0x40). The old terminate-time dumps read State.rip too late (by then it
+ *  is the ntdll exception path, "no registered x64 text window") and the branch-history
+ *  recorder is only emitted for Launcher.exe. Dump the fault-time guest RIP with its module,
+ *  the return address on the guest stack with its module, the 32 bytes before the target (is a
+ *  patch slot / hook stub half-written?), the target, and the 32 bytes before the return
+ *  address (the call instruction itself: `call rel32` vs `call [rip+x]` vs `call reg`).
+ *  The same thunk family's GuestSignal_SIGSEGV (a NoExec block: `mov w1,#0; ldr x1,[x1]`, the
+ *  "deliberate read of address 0" FEX describes in Core.cpp) is reported the same way
+ *  (GARRY'S MOD T14SYR, 32-bit: [iOS-noexec] GuestRIP=0xffede3e8), plus the session's
+ *  LdrSystemDllInitBlock dispatcher addresses, because that RIP is the i386 ntdll
+ *  KiUserExceptionDispatcher of a DIFFERENT i386 process (image #3 at 0xffe90000; the thread
+ *  belongs to the process whose ntdll is at 0xfff40000).
+ *
+ *  [badrip] VAMPIRE SURVIVORS (MSQJWT) and ART OF RALLY (6TGCE6) fault in the ARM64EC code-bitmap
+ *  check (`ldr x10,[x10,x11,lsl #3]` with an unmasked index) because the guest RIP in the frame
+ *  is not a canonical address (0xb800000071eafb37, 0xa20000007037fe6d). Dump LR, the 8 host
+ *  instructions before it (the block that fetched the call target), x0-x3/x16/x17, and decode
+ *  which load put the bad value into the register that holds it, with its effective address
+ *  from the CURRENT registers and the aligned words around it. Both logs already show an odd
+ *  vtable word (RAX = [RCX] = 0x70637be991 / 0x7050b04381): a load at (odd pointer + slot
+ *  offset) returns (slot >> 8) | (next slot << 56), which is exactly this RIP; the effective
+ *  address printed here proves or kills that reading on the next log. */
+static void ios_ajan2_hexdump( char *out, size_t outsz, uint64_t addr, unsigned len )
+{
+    unsigned i;
+    size_t o = 0;
+
+    if (!outsz) return;
+    out[0] = 0;
+    for (i = 0; i < len && o + 4 <= outsz; i++)
+    {
+        unsigned char b = 0;
+        mach_vm_size_t got = 0;
+
+        if (mach_vm_read_overwrite( mach_task_self(), (mach_vm_address_t)(addr + i), 1,
+                                    (mach_vm_address_t)&b, &got ) == KERN_SUCCESS && got == 1)
+            snprintf( out + o, 4, "%02x ", b );
+        else
+            snprintf( out + o, 4, "?? " );
+        o += 3;
+    }
+}
+
+static void ios_ajan2_name( char *out, size_t outsz, uint64_t va )
+{
+    extern unsigned long long ios_jit_module_base_for_va( unsigned long long va, unsigned long long *size_out );
+    unsigned long long msz = 0, base = va >= 0x10000 ? ios_jit_module_base_for_va( va, &msz ) : 0;
+
+    if (base)
+        snprintf( out, outsz, "%.32s+0x%llx (base 0x%llx)", ios_pe_module_name( base ),
+                  (unsigned long long)(va - base), base );
+    else
+        snprintf( out, outsz, "(no registered 64-bit module)" );
+}
+
+/* 1 for an address inside the JIT pool or region C: the places FEX's generated code and its
+ * dispatcher thunks live, so x28 is the CpuStateFrame there. */
+static int ios_ajan2_pc_is_jit( uint64_t pc )
+{
+    extern void *ios_jit_rx_base_global;
+    extern size_t ios_jit_pool_size_global;
+    uint64_t rx = (uint64_t)(uintptr_t)ios_jit_rx_base_global;
+
+    return (rx && pc >= rx && pc < rx + ios_jit_pool_size_global) || ios_jit_low_contains( (uintptr_t)pc );
+}
+
+static int ios_ajan2_read( uint64_t addr, void *buf, size_t len )
+{
+    mach_vm_size_t got = 0;
+
+    return addr >= 0x10000 && mach_vm_read_overwrite( mach_task_self(), (mach_vm_address_t)addr, len,
+                                                     (mach_vm_address_t)buf, &got ) == KERN_SUCCESS && got == len;
+}
+
+/* kind 1: FEX's GuestSignal_SIGILL thunk (`hlt #0`); kind 2: GuestSignal_SIGSEGV (`mov w1,#0; ldr x1,[x1]`). */
+static void ios_ajan2_entry_fail( const arm_thread_state64_t *st, uintptr_t teb, int kind )
+{
+    static volatile int reports;
+    static volatile uint64_t last_rip;
+    uint64_t frame = st->__x[28], rip = 0, rsp = 0, gbase = 0, ret = 0, pc = __darwin_arm_thread_state64_get_pc( *st );
+    char nrip[120], nret[120], before[112], at[112], call[112];
+    int n;
+
+    if (reports >= 2 || !ios_ajan2_pc_is_jit( pc )) return;
+    if (frame < 0x100000 || frame >= 0x800000000000ULL ||
+        !ios_ajan2_read( frame + 0x18, &rip, 8 ) || !ios_ajan2_read( frame + 0x40, &rsp, 8 )) return;
+    if (rip == last_rip) return;
+    if ((n = __sync_add_and_fetch( &reports, 1 )) > 2) return;
+    last_rip = rip;
+
+    if (rip <= 0xffffffffULL)
+    {
+        /* a 32-bit (WoW64) guest: guest addresses are offsets into this process's window */
+        uint64_t peb = 0;
+
+        if (teb && ios_ajan2_read( teb + offsetof(TEB, Peb), &peb, 8 ) && peb)
+            gbase = ios_wow_base_for_peb( (void *)(uintptr_t)peb );
+        snprintf( nrip, sizeof(nrip), "(32-bit guest, window base 0x%llx)", (unsigned long long)gbase );
+        snprintf( nret, sizeof(nret), "(32-bit guest)" );
+        if (gbase)
+        {
+            uint32_t r32 = 0;
+            if (ios_ajan2_read( gbase + rsp, &r32, 4 )) ret = r32;
+        }
+    }
+    else
+    {
+        ios_ajan2_name( nrip, sizeof(nrip), rip );
+        if (ios_ajan2_read( rsp, &ret, 8 )) ios_ajan2_name( nret, sizeof(nret), ret );
+        else snprintf( nret, sizeof(nret), "(stack unreadable)" );
+    }
+
+    dprintf( STDERR_FILENO,
+             "[entry-fail] rev=ajan2-tani #%d %s: guest RIP=0x%llx %s RSP=0x%llx host pc=0x%llx lr=0x%llx\n",
+             n, kind == 1 ? "invalid instruction (hlt thunk)" : "NoExec block (null-read thunk)",
+             (unsigned long long)rip, nrip, (unsigned long long)rsp,
+             (unsigned long long)pc, (unsigned long long)st->__lr );
+    if (rip <= 0xffffffffULL && !gbase)
+    {
+        dprintf( STDERR_FILENO, "[entry-fail]   32-bit guest but this thread's window is not resolved: no guest bytes dumped\n" );
+    }
+    else
+    {
+        ios_ajan2_hexdump( before, sizeof(before), gbase + rip - 32, 32 );
+        ios_ajan2_hexdump( at, sizeof(at), gbase + rip, 16 );
+        dprintf( STDERR_FILENO, "[entry-fail]   guest bytes -32..-1: %s| +0..+15: %s\n", before, at );
+        if (ret >= 32)
+        {
+            ios_ajan2_hexdump( call, sizeof(call), gbase + ret - 32, 32 );
+            dprintf( STDERR_FILENO, "[entry-fail]   [RSP]=0x%llx %s  bytes before it (the call): %s\n",
+                     (unsigned long long)ret, nret, call );
+        }
+        else
+            dprintf( STDERR_FILENO, "[entry-fail]   [RSP] not readable (RSP=0x%llx)\n", (unsigned long long)rsp );
+    }
+    if (kind == 2)
+    {
+        SYSTEM_DLL_INIT_BLOCK blk;
+        const char *which = "none of its dispatcher fields";
+
+        if (pLdrSystemDllInitBlock && ios_ajan2_read( (uint64_t)(uintptr_t)pLdrSystemDllInitBlock, &blk, sizeof(blk) ))
+        {
+            if (rip == blk.pKiUserExceptionDispatcher) which = "pKiUserExceptionDispatcher";
+            else if (rip == blk.pKiUserApcDispatcher) which = "pKiUserApcDispatcher";
+            else if (rip == blk.pKiUserCallbackDispatcher) which = "pKiUserCallbackDispatcher";
+            else if (rip == blk.pLdrInitializeThunk) which = "pLdrInitializeThunk";
+            else if (rip == blk.pRtlUserThreadStart) which = "pRtlUserThreadStart";
+            dprintf( STDERR_FILENO,
+                     "[entry-fail]   session LdrSystemDllInitBlock: ntdll_handle=0x%llx KiUserExceptionDispatcher=0x%llx "
+                     "KiUserApcDispatcher=0x%llx KiUserCallbackDispatcher=0x%llx LdrInitializeThunk=0x%llx; RIP equals %s\n",
+                     (unsigned long long)blk.ntdll_handle, (unsigned long long)blk.pKiUserExceptionDispatcher,
+                     (unsigned long long)blk.pKiUserApcDispatcher, (unsigned long long)blk.pKiUserCallbackDispatcher,
+                     (unsigned long long)blk.pLdrInitializeThunk, which );
+        }
+    }
+}
+
+/* A64 64-bit loads that can fetch a call target: LDR Xt,[Xn,#uimm], LDUR Xt,[Xn,#simm9],
+ * LDP Xt,Xt2,[Xn,#simm7*8] (signed offset form). Returns the mnemonic, or NULL for any other
+ * word. rt2 is 32 when the word has no second destination. Pure: reads nothing. */
+static const char *ios_ajan2_load_decode( uint32_t insn, unsigned *rt, unsigned *rt2, unsigned *rn, int64_t *imm )
+{
+    *rt = insn & 31;
+    *rn = (insn >> 5) & 31;
+    *rt2 = 32;
+    if ((insn & 0xffc00000) == 0xf9400000) { *imm = (int64_t)((insn >> 10) & 0xfff) << 3; return "ldr"; }
+    if ((insn & 0xffe00c00) == 0xf8400000) { *imm = (int64_t)(((insn >> 12) & 0x1ff) ^ 0x100) - 0x100; return "ldur"; }
+    if ((insn & 0xffc00000) == 0xa9400000)
+    {
+        *rt2 = (insn >> 10) & 31;
+        *imm = ((int64_t)(((insn >> 15) & 0x7f) ^ 0x40) - 0x40) * 8;
+        return "ldp";
+    }
+    return NULL;
+}
+
+/* register value for an A64 register number in a load's base field (31 = SP) */
+static uint64_t ios_ajan2_xreg( const arm_thread_state64_t *st, unsigned r )
+{
+    return r < 29 ? st->__x[r] : r == 29 ? st->__fp : r == 30 ? st->__lr
+                                : (uint64_t)__darwin_arm_thread_state64_get_sp( *st );
+}
+
+/* madeira-bcd (round 579, Vampire Survivors RJHZRT, build 576; the same registers as MSQJWT, build 573): a wider look, called by
+ * ios_ajan2_badrip after its own report (so: the same signature, a non-canonical RIP at a pc inside the JIT, the same cap of two
+ * reports), failure path only.
+ *
+ * RJHZRT (L16057-16103): the call `call [rax+off]` at x86 0x71eafefeb7 (return address 0x71eafefebc on the stack) read its target
+ * from a vtable whose address is ODD (RAX = [RCX] = 0x70637be991, the object at RCX = 0x72490a27b0, both the same in the two
+ * logs), so the 8-byte load straddled two slots and the host's x6 / x12 hold 0xb800000071eaff37. The 576 report looked only
+ * 8 host instructions back, and the producer (the load of the target) is earlier; nothing named WHO made the klass word odd. Added:
+ *  - 64 host instructions before LR, all loads that wrote a register equal to the RIP (immediate and register-offset forms), newest
+ *    first, with the effective address from the CURRENT registers;
+ *  - the x86 registers by the ARM64EC mapping (RAX x8, RCX x0, RSP x23), the return address on the x86 stack with its module and
+ *    the 64 bytes before it and 8 after (the call instruction: which vtable offset), and which host registers hold the RIP;
+ *  - the object at RCX (0x100 bytes from RCX-0x40: are its neighbours odd too, a freed-object pattern, or only this one) and, when
+ *    RAX is odd, the byte offset in RAX's table or in the object where the RIP's 8 bytes sit (an unaligned read at RAX+off);
+ *  - the 0x60 bytes of RAX's table from RAX-0x10 (the true vtable).
+ * Reads only through ios_ajan2_read; writes nothing; about 25 lines per report, 2 reports. */
+static void ios_ajan2_badrip_wide( const arm_thread_state64_t *st, uint64_t rip, uint64_t lr )
+{
+    uint32_t w[64];
+    char hex[8 * 3 * 9 + 8], words[16 * 9 + 1], name[160];
+    uint64_t rax = st->__x[8], rcx = st->__x[0], rsp = st->__x[23], ret = 0, q[8];
+    unsigned i, j, shown = 0;
+
+    /* 1. the host instructions before LR and the loads among them that wrote a register equal to the RIP */
+    if (lr >= 0x100000 + 256 && ios_ajan2_read( lr - 256, w, sizeof(w) ))
+    {
+        for (i = 0; i < 4; i++)
+        {
+            for (j = 0; j < 16; j++) snprintf( words + j * 9, 10, "%08x ", w[i * 16 + j] );
+            dprintf( STDERR_FILENO, "[badrip]   host insns LR-%u..LR-%u: %s\n", 256 - i * 64, 256 - i * 64 - 60, words );
+        }
+        for (i = 64; i-- > 0 && shown < 4; )
+        {
+            uint32_t insn = w[i];
+            unsigned rt, rt2, rn, rm = 0, opt = 0, sh = 0;
+            int64_t imm = 0;
+            uint64_t ea, base, idx;
+            const char *kind = ios_ajan2_load_decode( insn, &rt, &rt2, &rn, &imm );
+
+            if (!kind && (insn & 0xffe00800) == 0xf8600800 && ((insn >> 13) & 3) != 0)
+            {   /* LDR Xt,[Xn,Xm{,extend {#3}}] (option UXTW 010, LSL 011, SXTW 110, SXTX 111) */
+                kind = "ldr(reg)"; rt = insn & 31; rt2 = 32; rn = (insn >> 5) & 31; rm = (insn >> 16) & 31;
+                opt = (insn >> 13) & 7; sh = (insn >> 12) & 1;
+            }
+            if (!kind) continue;
+            if (!((rt < 31 && ios_ajan2_xreg( st, rt ) == rip) || (rt2 < 31 && ios_ajan2_xreg( st, rt2 ) == rip))) continue;
+            base = ios_ajan2_xreg( st, rn );
+            if (kind[3] == '(')
+            {
+                idx = rm < 31 ? ios_ajan2_xreg( st, rm ) : 0;
+                if (opt == 2) idx = (uint32_t)idx;
+                else if (opt == 6) idx = (uint64_t)(int64_t)(int32_t)idx;
+                ea = base + (idx << (sh ? 3 : 0));
+                dprintf( STDERR_FILENO, "[badrip]   producer at LR-%u: %08x = ldr x%u,[x%u,x%u,%s%s]; effective address from the CURRENT registers = 0x%llx (mod 8 = %u)\n",
+                         (64 - i) * 4, insn, rt, rn, rm, opt == 3 ? "lsl" : opt == 2 ? "uxtw" : opt == 6 ? "sxtw" : "sxtx",
+                         sh ? " #3" : "", (unsigned long long)ea, (unsigned)(ea & 7) );
+            }
+            else
+            {
+                ea = base + (uint64_t)imm;
+                dprintf( STDERR_FILENO, "[badrip]   producer at LR-%u: %08x = %s x%u%s,[x%u,#%lld]; effective address from the CURRENT x%u = 0x%llx (mod 8 = %u)\n",
+                         (64 - i) * 4, insn, kind, rt, rt2 < 32 ? ",x.." : "", rn, (long long)imm, rn, (unsigned long long)ea, (unsigned)(ea & 7) );
+            }
+            shown++;
+        }
+        if (!shown) dprintf( STDERR_FILENO, "[badrip]   no load among the 64 insns wrote a register equal to the RIP\n" );
+    }
+    else dprintf( STDERR_FILENO, "[badrip]   the 64 host instructions before LR are not readable\n" );
+
+    /* 2. the x86 side */
+    dprintf( STDERR_FILENO, "[badrip]   x86 RAX=0x%llx RCX=0x%llx RSP=0x%llx (ARM64EC register mapping); the RIP is also in host x6=%s x12=%s x7=%s\n",
+             (unsigned long long)rax, (unsigned long long)rcx, (unsigned long long)rsp,
+             st->__x[6] == rip ? "yes" : "no", st->__x[12] == rip ? "yes" : "no", st->__x[7] == rip ? "yes" : "no" );
+    if (rsp >= 0x10000 && ios_ajan2_read( rsp, &ret, 8 ) && ret >= 0x10000)
+    {
+        ios_ajan2_name( name, sizeof(name), ret );
+        dprintf( STDERR_FILENO, "[badrip]   x86 return address [RSP]=0x%llx %s\n", (unsigned long long)ret, name );
+        ios_ajan2_hexdump( hex, sizeof(hex), ret - 32, 40 );
+        dprintf( STDERR_FILENO, "[badrip]   x86 bytes ret-32..ret+7 (the call is what ends at ret): %s\n", hex );
+    }
+    else dprintf( STDERR_FILENO, "[badrip]   x86 return address: RSP 0x%llx not readable\n", (unsigned long long)rsp );
+
+    /* 3. the object at RCX, then RAX's table */
+    if (rcx >= 0x10000 + 0x40)
+        for (i = 0; i < 8; i++)
+        {
+            if (!ios_ajan2_read( rcx - 0x40 + i * 32, q, 32 ))
+            {
+                dprintf( STDERR_FILENO, "[badrip]   RCX%+d: not readable\n", (int)(i * 32) - 0x40 );
+                continue;
+            }
+            dprintf( STDERR_FILENO, "[badrip]   RCX%+d: %016llx %016llx %016llx %016llx\n", (int)(i * 32) - 0x40,
+                     (unsigned long long)q[0], (unsigned long long)q[1], (unsigned long long)q[2], (unsigned long long)q[3] );
+        }
+    else dprintf( STDERR_FILENO, "[badrip]   RCX 0x%llx: no object to dump\n", (unsigned long long)rcx );
+    if (rax >= 0x10000 + 0x10)
+    {
+        uint64_t base = (rax & ~7ULL) - 0x10;
+
+        for (i = 0; i < 3; i++)
+        {
+            if (!ios_ajan2_read( base + i * 32, q, 32 )) { dprintf( STDERR_FILENO, "[badrip]   RAX table %+d: not readable\n", (int)(i * 32) - 0x10 ); continue; }
+            dprintf( STDERR_FILENO, "[badrip]   RAX&~7 %+d: %016llx %016llx %016llx %016llx\n", (int)(i * 32) - 0x10,
+                     (unsigned long long)q[0], (unsigned long long)q[1], (unsigned long long)q[2], (unsigned long long)q[3] );
+        }
+    }
+    /* where do the RIP's eight bytes sit? (an unaligned read at RAX+off gives the RIP when RAX is odd) */
+    for (j = 0; j < 2; j++)
+    {
+        uint64_t at = j ? rcx : rax;
+        unsigned char tbl[0x400];
+        int found = -1;
+
+        if (at < 0x10000 || !ios_ajan2_read( at, tbl, sizeof(tbl) )) continue;
+        for (i = 0; i + 8 <= sizeof(tbl) && found < 0; i++)
+        {
+            unsigned k;
+
+            for (k = 0; k < 8; k++) if (tbl[i + k] != (unsigned char)(rip >> (8 * k))) break;
+            if (k == 8) found = (int)i;
+        }
+        if (found >= 0)
+            dprintf( STDERR_FILENO, "[badrip]   the RIP's 8 bytes sit at %s+0x%x (%s): a call through [%s+0x%x] reads it\n",
+                     j ? "RCX" : "RAX", found, (at + found) & 7 ? "misaligned" : "aligned", j ? "RCX" : "RAX", found );
+        else
+            dprintf( STDERR_FILENO, "[badrip]   the RIP's 8 bytes are not in the first 0x400 bytes at %s\n", j ? "RCX" : "RAX" );
+    }
+}
+
+static void ios_ajan2_badrip( const arm_thread_state64_t *st )
+{
+    static volatile int reports;
+    uint64_t frame = st->__x[28], rip = 0, lr = st->__lr & 0x0000007fffffffffULL;
+    uint64_t pc = __darwin_arm_thread_state64_get_pc( *st );
+    uint32_t w[8];
+    char words[8 * 9 + 1];
+    unsigned i, found = 0;
+    int n;
+
+    if (reports >= 2 || !ios_ajan2_pc_is_jit( pc )) return;
+    if (frame < 0x100000 || frame >= 0x800000000000ULL || !ios_ajan2_read( frame + 0x18, &rip, 8 )) return;
+    if (rip < 0x0000800000000000ULL) return;    /* a canonical user address: not this failure */
+    if ((n = __sync_add_and_fetch( &reports, 1 )) > 2) return;
+
+    dprintf( STDERR_FILENO,
+             "[badrip] rev=ajan2-tani #%d guest RIP=0x%llx is not a canonical user address; host pc=0x%llx lr=0x%llx\n"
+             "[badrip]   x0=0x%llx x1=0x%llx x2=0x%llx x3=0x%llx x16=0x%llx x17=0x%llx\n",
+             n, (unsigned long long)rip, (unsigned long long)pc, (unsigned long long)st->__lr,
+             (unsigned long long)st->__x[0], (unsigned long long)st->__x[1], (unsigned long long)st->__x[2],
+             (unsigned long long)st->__x[3], (unsigned long long)st->__x[16], (unsigned long long)st->__x[17] );
+    if (lr < 0x100000 || !ios_ajan2_read( lr - 32, w, sizeof(w) ))
+    {
+        dprintf( STDERR_FILENO, "[badrip]   host instructions before LR: LR 0x%llx not readable\n", (unsigned long long)lr );
+        ios_ajan2_badrip_wide( st, rip, lr );   /* madeira-bcd (round 579): the x86 side does not need LR */
+        return;
+    }
+    for (i = 0; i < 8; i++) snprintf( words + i * 9, 10, "%08x ", w[i] );
+    dprintf( STDERR_FILENO, "[badrip]   host insns LR-32..LR-4: %s\n", words );
+
+    /* which load wrote the register that now holds the bad RIP? newest first, at most 2 shown */
+    for (i = 8; i-- > 0 && found < 2; )
+    {
+        uint32_t insn = w[i];
+        unsigned rt, rt2, rn;
+        int64_t imm = 0;
+        uint64_t ea, slots[2] = { 0, 0 };
+        const char *name = ios_ajan2_load_decode( insn, &rt, &rt2, &rn, &imm );
+        char dest[16], base[8];
+
+        if (!name) continue;
+        if (!((rt < 31 && ios_ajan2_xreg( st, rt ) == rip) || (rt2 < 31 && ios_ajan2_xreg( st, rt2 ) == rip))) continue;
+        ea = ios_ajan2_xreg( st, rn ) + (uint64_t)imm;
+        found++;
+        if (rt2 < 32) snprintf( dest, sizeof(dest), "x%u,x%u", rt, rt2 );
+        else snprintf( dest, sizeof(dest), "x%u", rt );
+        if (rn == 31) snprintf( base, sizeof(base), "sp" );
+        else snprintf( base, sizeof(base), "x%u", rn );
+        dprintf( STDERR_FILENO,
+                 "[badrip]   candidate producer at LR-%u: %08x = %s %s,[%s,#%lld]; effective address from the CURRENT %s = 0x%llx (mod 8 = %u)%s",
+                 (8 - i) * 4, insn, name, dest, base, (long long)imm, base, (unsigned long long)ea,
+                 (unsigned)(ea & 7), (ea & 7) ? " MISALIGNED" : "" );
+        if (ios_ajan2_read( ea & ~7ULL, slots, sizeof(slots) ))
+            dprintf( STDERR_FILENO, "; aligned words there: %016llx %016llx\n",
+                     (unsigned long long)slots[0], (unsigned long long)slots[1] );
+        else
+            dprintf( STDERR_FILENO, "; not readable\n" );
+    }
+    if (!found)
+        dprintf( STDERR_FILENO, "[badrip]   no load among those 8 insns wrote a register that equals the RIP (the producer is earlier)\n" );
+    ios_ajan2_badrip_wide( st, rip, lr );   /* madeira-bcd (round 579): the wider look, same report, same cap */
+}
+
+/* Entry point from the UNHANDLED branch: classify the fault and call the matching dump. */
+static void ios_ajan2_fault_diag( const arm_thread_state64_t *st, uintptr_t teb, int exception, uintptr_t fault_addr )
+{
+    uint32_t insn = 0, prev = 0;
+    uint64_t pc = __darwin_arm_thread_state64_get_pc( *st );
+
+    if (exception == EXC_BAD_INSTRUCTION)
+    {
+        if (fault_addr == 0xd4400000UL) ios_ajan2_entry_fail( st, teb, 1 );   /* hlt #0 */
+        return;
+    }
+    if (exception != EXC_BAD_ACCESS) return;
+    if (fault_addr == 0 && ios_ajan2_pc_is_jit( pc ) && ios_ajan2_read( pc - 4, &prev, 4 ) &&
+        ios_ajan2_read( pc, &insn, 4 ) && prev == 0x52800001 /* mov w1,#0 */ && insn == 0xf9400021 /* ldr x1,[x1] */)
+    {
+        ios_ajan2_entry_fail( st, teb, 2 );
+        return;
+    }
+    ios_ajan2_badrip( st );
 }
 
 static void *ios_mach_exception_thread( void *arg )
@@ -2547,6 +3102,17 @@ static void *ios_mach_exception_thread( void *arg )
                         default: break;
                         }
 
+                        /* madeira-bcd: LDRSW/LDRSB/LDRSH, unsigned offset (ios_x18_signed_load). */
+                        if (!emulated)
+                        {
+                            uint64_t sv;
+                            if (ios_x18_signed_load( insn, ea, &sv ))
+                            {
+                                if (rt != 31) state.__x[rt] = sv;
+                                emulated = 1;
+                            }
+                        }
+
                         /* LDP/STP Xt,Xt2,[x18,#imm] signed-offset (no writeback) */
                         if (!emulated && (insn & 0xffc00000) == 0xa9400000)
                         {
@@ -3425,7 +3991,9 @@ static void *ios_mach_exception_thread( void *arg )
                         uintptr_t rw_end = in_jit ? ((in_low && !ios_jit_low_contains( (uintptr_t)fault_addr + 31 ))
                                                      ? 0 : (uintptr_t)(rw + ((fault_addr + 31) - rx)))
                                                   : (uintptr_t)ios_jit_anon_alias_lookup( fault_addr + 31 );
-                        if (!rw_end || rw_end != (uintptr_t)rw_addr + 31)
+                        const int stp_whole = rw_end && rw_end == (uintptr_t)rw_addr + 31;
+                        int stp_split = 0;
+                        if (!stp_whole)
                         {
                             static int stp_span_n;
                             if (stp_span_n < 4)
@@ -3434,16 +4002,56 @@ static void *ios_mach_exception_thread( void *arg )
                                     "(insn=0x%08x addr=0x%llx rw=0x%llx rw_end=0x%llx)\n",
                                     ++stp_span_n, insn, (unsigned long long)fault_addr,
                                     (unsigned long long)rw_addr, (unsigned long long)rw_end);
+                            /* build 580 (NFS Underground 2 7F9ZRF): the refusal above never completed the store, so
+                             * it faulted again 2000 times until the redelivery guard ended the process. Only for an
+                             * anonymous alias (not the JIT pool), and only the refused case: take the store page by
+                             * page (ios_store_split.h). A part in a page with an alias goes through that alias; a
+                             * part in a page without one is written only if the page is writable (mach_vm_write
+                             * checks, and nothing at all is written when it is not), so a page that cannot be
+                             * written is refused as before. */
+                            if (!in_jit)
+                            {
+                                ios_store_part sp[2];
+                                uint8_t sbytes[32];
+                                int sn;
+                                memcpy(sbytes, &neon_state.__v[rt], 16);
+                                memcpy(sbytes + 16, &neon_state.__v[rt2], 16);
+                                sn = ios_store_split_plan( (uintptr_t)fault_addr, 32, ios_store_split_resolve_anon, NULL, sp );
+                                if (sn && ios_store_split_commit( sp, sn, sbytes, ios_store_split_direct_write, NULL ))
+                                {
+                                    static int stp_split_n;
+                                    stp_split = 1;
+                                    if (stp_split_n < 8)
+                                        dprintf(STDERR_FILENO,
+                                            "[stp-split] build580 #%d insn=0x%08x addr=0x%llx parts=%d "
+                                            "(%u@%s + %u@%s) - the 32B store crossed a 16 KB page, stored page by page\n",
+                                            ++stp_split_n, insn, (unsigned long long)fault_addr, sn,
+                                            sp[0].len, sp[0].direct ? "direct" : "alias",
+                                            sn > 1 ? sp[1].len : 0u, sn > 1 ? (sp[1].direct ? "direct" : "alias") : "-");
+                                }
+                                else
+                                {
+                                    static int stp_split_fail_n;
+                                    if (stp_split_fail_n < 4)
+                                        dprintf(STDERR_FILENO,
+                                            "[stp-split] build580 #%d insn=0x%08x addr=0x%llx REFUSED: %s\n",
+                                            ++stp_split_fail_n, insn, (unsigned long long)fault_addr,
+                                            sn ? "the page without an alias is not writable" : "a part has no usable alias");
+                                }
+                            }
                         }
-                        else
+                        if (stp_whole || stp_split)
                         {
                             uint64_t base_old = (mode == 3) ? (uint64_t)fault_addr - (uint64_t)off
                                                             : (uint64_t)fault_addr;
                             uint64_t base_new = base_old;
                             int wb = (mode == 1 || mode == 3);
 
-                            memcpy((void *)rw_addr, &neon_state.__v[rt], 16);
-                            memcpy((void *)(rw_addr + 16), &neon_state.__v[rt2], 16);
+                            if (!stp_split)
+                            {
+                                memcpy((void *)rw_addr, &neon_state.__v[rt], 16);
+                                memcpy((void *)(rw_addr + 16), &neon_state.__v[rt2], 16);
+                            }
 
                             if (wb)
                             {
@@ -3967,8 +4575,9 @@ static void *ios_mach_exception_thread( void *arg )
                         const int rs = (insn >> 16) & 0x1f, rn = (insn >> 5) & 0x1f, rt = insn & 0x1f;
                         const uint64_t mask = size == 3 ? ~0ull : ((1ull << (8u << size)) - 1);
                         const uint64_t ea = rn == 31 ? state.__sp : state.__x[rn];
-                        int ld_rt = -1, k, clobbered = 0;
+                        int ld_rt = -1, k, clobbered = 0, nops = 0, nlogical = 0, rmw = 0;
                         uint64_t delta = 0;   /* what in-place ADD/SUB immediates added to it */
+                        ios_excl_op ops[8];   /* the instructions between, in order (ios_excl_decode_op) */
                         uint32_t prev;
 
                         for (k = 1; k <= 8 && ld_rt < 0 && !clobbered; k++)
@@ -3983,19 +4592,23 @@ static void *ios_mach_exception_thread( void *arg )
                             for (k = k - 2; k >= 1 && !clobbered; k--)  /* the instructions between */
                             {
                                 if (!ios_fault_read_insn( (uint64_t)(uintptr_t)fault_pc - 4u * k, &prev )) { clobbered = 1; break; }
+                                { int j; for (j = 0; j < nops; j++) if (ops[j].rm >= 0 && (int)(prev & 0x1f) == ops[j].rm) clobbered = 1; }   /* an earlier operation's Rm written after it */
+                                if (clobbered) break;
                                 if ((int)(prev & 0x1f) != ld_rt) continue;
                                 if ((prev & 0x7e000000) == 0x34000000          /* CBZ / CBNZ */
                                     || (prev & 0x7e000000) == 0x36000000       /* TBZ / TBNZ */
                                     || (prev & 0xff000010) == 0x54000000)      /* B.cond */
                                     continue;
-                                /* ADD/SUB(S) immediate, Rd == Rn == the loaded register, at the
-                                 * load's width: sf op S 100010 sh imm12 Rn Rd */
-                                if ((prev & 0x1f800000) == 0x11000000 && (int)((prev >> 5) & 0x1f) == ld_rt
-                                    && (prev >> 31) == (size == 3))
+                                /* ADD/SUB(S) immediate (sf op S 100010 sh imm12 Rn Rd) or, since
+                                 * Graveyard Keeper 2 on build 574 (RtlpInterlockedClearBit-shaped
+                                 * LDAXR W11; AND W11, W11, W10; STLXR W12, W11 on a critical-section
+                                 * word in the RWX memory of its Mono runtime, refused here until
+                                 * the redelivery guard ended the app), AND/ORR/EOR/BIC/ORN/EON of
+                                 * another register: Rd == Rn == the loaded register, at its width. */
+                                if (nops < 8 && ios_excl_decode_op( prev, ld_rt, size, (const uint64_t *)state.__x, &ops[nops] ))
                                 {
-                                    uint64_t imm = (prev >> 10) & 0xfff;
-                                    if (prev & 0x400000) imm <<= 12;
-                                    delta += (prev & 0x40000000) ? (uint64_t)0 - imm : imm;
+                                    if (ops[nops].kind == IOS_EXCL_ADD) delta += ops[nops].arg; else nlogical++;
+                                    nops++;
                                     continue;
                                 }
                                 clobbered = 1;
@@ -4006,6 +4619,21 @@ static void *ios_mach_exception_thread( void *arg )
                         {
                             const uint64_t expect = (state.__x[ld_rt] - delta) & mask, val = IOS_STORE_SRC(rt) & mask;
                             int ok = 0;
+                            if (nlogical)
+                            {
+                                /* A logical operation lost the loaded value: apply the operations to what
+                                 * the memory holds now, atomically. Only when the stored register is the
+                                 * loaded one (AND W11, W11, W10; STLXR W12, W11): another register's value
+                                 * was computed from the old load and cannot be recomputed. */
+                                if (rt == ld_rt)
+                                {
+                                    uint64_t written = 0;
+                                    ios_excl_rmw( rw_addr, size, ops, nops, mask, &written );
+                                    state.__x[ld_rt] = written;
+                                    ok = 1; rmw = 1;
+                                }
+                            }
+                            else
                             switch (size)
                             {
                             case 0: { uint8_t  e = (uint8_t)expect;  ok = __atomic_compare_exchange_n( (uint8_t  *)rw_addr, &e, (uint8_t)val,  0, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST ); break; }
@@ -4013,8 +4641,12 @@ static void *ios_mach_exception_thread( void *arg )
                             case 2: { uint32_t e = (uint32_t)expect; ok = __atomic_compare_exchange_n( (uint32_t *)rw_addr, &e, (uint32_t)val, 0, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST ); break; }
                             default:{ uint64_t e = expect;           ok = __atomic_compare_exchange_n( (uint64_t *)rw_addr, &e, val,           0, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST ); break; }
                             }
-                            if (rs != 31) state.__x[rs] = ok ? 0 : 1;
-                            emulated = 1;
+                            if (nlogical && !rmw) emulated = 0;          /* refused: see above */
+                            else
+                            {
+                                if (rs != 31) state.__x[rs] = ok ? 0 : 1;
+                                emulated = 1;
+                            }
                         }
                         {
                             static int excl_n;
@@ -4023,7 +4655,8 @@ static void *ios_mach_exception_thread( void *arg )
                                     "[excl-store] ml1284 #%d insn=0x%08x size=%u ea=0x%llx load-reg=%d delta=%lld%s %s\n",
                                     ++excl_n, insn, 1u << size, (unsigned long long)ea, ld_rt,
                                     (long long)delta, clobbered ? " (overwritten)" : "",
-                                    emulated ? (rs != 31 && state.__x[rs] ? "emulated: value changed, retry" : "emulated")
+                                    emulated ? (rmw ? "emulated: read-modify-write on the current value"
+                                                    : rs != 31 && state.__x[rs] ? "emulated: value changed, retry" : "emulated")
                                              : "REFUSED: no matching LDXR/LDAXR");
                         }
                     }
@@ -4143,6 +4776,35 @@ static void *ios_mach_exception_thread( void *arg )
                             if (cas_mach_logs++ < 16)
                                 dprintf(STDERR_FILENO,
                                         "[mach-cas] insn=%08x pc=%llx addr=%llx rw=%llx width=%u\n",
+                                        insn, (unsigned long long)fault_pc,
+                                        (unsigned long long)fault_addr,
+                                        (unsigned long long)rw_addr, cas_width);
+                        }
+                    }
+                    /* build 580 (Jetboard Joust 5QQ3XX/5WG4FG/N4F8JR, CoreCLR with RWX code pages):
+                     * CASAL X8,X0,[X27] (0xc8e8ff60) is FEX's translation of the x86 `lock cmpxchg`
+                     * the runtime uses to patch its own code in an RWX allocation. The page's alias
+                     * resolved (rw_addr) but no case above decoded a CAS for the anonymous alias
+                     * (the SWP comment above deliberately left the family out until it appeared), so
+                     * the process fell into [store-undecoded] and died with the unhandled fault. The
+                     * same genuinely atomic emulation as the pool case, reached ONLY here: an
+                     * anon-alias store that nothing above emulated, i.e. one that ended in
+                     * [store-undecoded] before. Full width, naturally aligned, and the last byte
+                     * must lie in the same alias run as the first, so the atomic cannot touch
+                     * memory the lookup did not vouch for. */
+                    if (!emulated && !in_jit &&
+                        (insn & 0xbfa07c00u) == 0x88a07c00u)
+                    {
+                        unsigned cas_width = (insn & 0x40000000u) ? 8 : 4;
+                        if (!((uintptr_t)fault_addr & (cas_width - 1)) &&
+                            ios_jit_anon_alias_lookup( fault_addr + cas_width - 1 ) == rw_addr + cas_width - 1 &&
+                            ios_mach_emulate_cas(insn, rw_addr, state.__x))
+                        {
+                            static unsigned cas_anon_logs;
+                            emulated = 1;
+                            if (cas_anon_logs++ < 16)
+                                dprintf(STDERR_FILENO,
+                                        "[anon-cas] build580 insn=%08x pc=%llx addr=%llx rw=%llx width=%u\n",
                                         insn, (unsigned long long)fault_pc,
                                         (unsigned long long)fault_addr,
                                         (unsigned long long)rw_addr, cas_width);
@@ -5383,6 +6045,20 @@ skip_reclaim_band: ;
                             (void*)(uintptr_t)state.__x[0], (void*)(uintptr_t)state.__x[2],
                             (void *)thread_teb, peb_p, peb_ecbm);
                     }
+                    /* ajan2-tani: [entry-fail] / [badrip], failure path only, capped (see
+                     * ios_ajan2_fault_diag above). */
+                    ios_ajan2_fault_diag( &state, thread_teb, req->exception, fault_addr );
+                    /* ajan3-dyinglight: [av-args], NULL-class faults only (see ios_av_args_diag.h). */
+                    ios_av_args_diag( &state, req->exception, fault_addr );
+                    /* ajan5-mhs3: [rwx-fault], a fault in code translated from a page that may have been rewritten
+                     * under the emulator (Monster Hunter Stories 3 Trial, Monster Hunter Rise); see ios_rwx_fault_diag.h. */
+                    ios_rwx_fault_diag( &state, req->exception );
+                    /* ajan6-arkham: [x87-int64], a load in code that follows a 64-bit FILD/FISTP (the emulator's 64-bit
+                     * x87 rounds the integer to a double); see ios_x87_int64_diag.h. */
+                    ios_x87_int64_diag( &state, req->exception, fault_addr );
+                    /* ajan7-arkham: [wow-null32], the NULL page of a 32-bit guest (Wine Mono in BmLauncher.exe, Batman: Arkham City GOTY);
+                     * see ios_wow_null_diag.h. */
+                    ios_wow_null_diag( &state, thread_teb, req->exception, fault_addr );
                     /* madeira-bcd [fault-full]: every register, and the host code
                      * that led up to the faulting instruction (JIT blocks compute
                      * the address a few instructions earlier), for the first two
@@ -7769,6 +8445,22 @@ static int ios_mach_deliver_guest_exception_inner( thread_t thread, arm_thread_s
                                         else dprintf( 2, "[native-bt] ml1155 x%d=%llx is not among the last 16384 objects our NSObject_release freed\n",
                                                       r ? 8 : 0, (unsigned long long)v );
                                     }
+                            }
+                            {   /* madeira-bcd (round 577, GTA IV freeze): is the string this thread reads the program name?
+                                 * setprogname() keeps the pointer it is given; Wine's set_process_name gave it a file name
+                                 * inside a local of the boot thread's start function, and that thread's stack is unmapped
+                                 * when it ends (GTA IV 0x16d621a87, Dead Space DVXWGA, Tomb Raider TXPQM1, PES 2013 B39EXN).
+                                 * Build 578 gives the app's own name back when the program ends
+                                 * (WineProcessBridge.m "Session end"); a line saying "== x0" in a later log means this
+                                 * is not fixed for that path. */
+                                uint64_t name = (uint64_t)(uintptr_t)getprogname();
+                                int r, hit = -1;
+                                for (r = 0; r < 8; r++) if (state->__x[r] == name && name) { hit = r; break; }
+                                if (hit >= 0)
+                                    dprintf( 2, "[native-bt] progname ptr=0x%llx == x%d: the faulting string is the program name, "
+                                                "a pointer setprogname() kept into a stack that is gone\n", (unsigned long long)name, hit );
+                                else
+                                    dprintf( 2, "[native-bt] progname ptr=0x%llx is not in x0..x7\n", (unsigned long long)name );
                             }
                         }
                     }

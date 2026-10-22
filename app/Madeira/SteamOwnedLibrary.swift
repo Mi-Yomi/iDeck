@@ -69,9 +69,9 @@ struct SteamPlaytime: Codable, Equatable, Sendable {
         return hours < 10 ? String(format: "%.1f hrs played", hours) : "\(Int(hours.rounded())) hrs played"
     }
 
-    func lastPlayedText(formatter: DateFormatter = SteamPlaytime.dayFormatter) -> String? {
+    func lastPlayedText(now: Date = Date()) -> String? {
         guard lastPlayed > 0 else { return nil }
-        return "Last played " + formatter.string(from: Date(timeIntervalSince1970: TimeInterval(lastPlayed)))
+        return "Last played " + BCDFormat.dayWord(Date(timeIntervalSince1970: TimeInterval(lastPlayed)), now: now)
     }
 
     /// "12.5 hrs played · Last played Yesterday"
@@ -79,12 +79,6 @@ struct SteamPlaytime: Codable, Equatable, Sendable {
         let parts = [played, lastPlayedText()].compactMap { $0 }
         return parts.isEmpty ? nil : parts.joined(separator: " · ")
     }
-
-    static let dayFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium; formatter.timeStyle = .none; formatter.doesRelativeDateFormatting = true
-        return formatter
-    }()
 
     /// CPlayer_GetOwnedGames_Response: games = 2 { appid = 1, playtime_forever = 4, rtime_last_played = 11 }.
     static func parse(_ data: Data) throws -> [Int: SteamPlaytime] {
@@ -250,7 +244,7 @@ final class SteamOwnedLibrary: ObservableObject {
         }
         SteamDownloadBackground.shared.attach(self)
         signedIn = SteamSignIn.isSignedIn
-        if signedIn { loadCaches() }
+        if signedIn { loadCaches(); restorePartialDownloads() }
         SteamLog.event("[steam-library] start signed-in=\(signedIn ? 1 : 0) cached=\(owned.count)")
         if signedIn { refreshIfStale() }
     }
@@ -413,7 +407,7 @@ final class SteamOwnedLibrary: ObservableObject {
         let name = SteamGamesModel.shared.games.first { $0.id == appID }?.name ?? ""
         let safe = String(name.map { "/\\:*?\"<>|".contains($0) ? "-" : $0 }.prefix(80))
             .trimmingCharacters(in: .whitespacesAndNewlines.union(CharacterSet(charactersIn: ".")))
-        let stamp = ISO8601DateFormatter().string(from: Date()).replacingOccurrences(of: ":", with: "-")
+        let stamp = BCDFormat.utcFolderStamp(Date())
         return cloudBackupsFolder.appendingPathComponent(safe.isEmpty ? "\(appID)" : "\(safe) (\(appID))", isDirectory: true)
             .appendingPathComponent(stamp, isDirectory: true)
     }
@@ -967,6 +961,28 @@ final class SteamOwnedLibrary: ObservableObject {
 
     func hasPartialDownload(_ appID: Int) -> Bool {
         DepotDownloader.hasPartialDownload(appID: UInt32(appID), steamApps: Self.steamApps)
+    }
+
+    /// The download list lives in memory, so a first-time install paused (or
+    /// running) when the app was closed looked never started, although its
+    /// chunks and journals were on disk. It comes back paused at its last
+    /// percentage; Resume continues from the journals. Only games without an
+    /// install record: a cancelled update of an installed game keeps its
+    /// journals and must not come back on its own.
+    /// Off with `env.MADEIRA_STEAM_RESTORE_PAUSED = 0` (the list starts empty, as before).
+    private func restorePartialDownloads() {
+        guard SteamSignIn.flag("MADEIRA_STEAM_RESTORE_PAUSED", default: true) else { return }
+        let apps = Self.steamApps
+        var restored = 0
+        for (appID, progress) in DepotDownloader.partialDownloads(steamApps: apps) {
+            let id = Int(appID)
+            guard downloads[id] == nil,
+                  !FileManager.default.fileExists(atPath: apps.appendingPathComponent("appmanifest_\(id).acf").path)
+            else { continue }
+            downloads[id] = Download(state: .paused, progress: progress)
+            restored += 1
+        }
+        if restored > 0 { SteamLog.event("[steam-depot] restored paused downloads count=\(restored)") }
     }
 
     /// Installs or updates a game: queues it and starts when nothing else downloads.

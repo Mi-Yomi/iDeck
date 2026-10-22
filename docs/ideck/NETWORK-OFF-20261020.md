@@ -91,3 +91,14 @@ rule unity`). Но тогда форк не получал бы новых пр�
 - Другие исходящие пути (Steam, обложки, JIT, Dock) в этом изменении не
   смотрели. Фраза в `AGENTS.md` «endpoints are STILL present» для этих
   четырёх путей устарела; сам `AGENTS.md` не менялся.
+
+## Слияние с BCD 0.1.580 (22.10)
+
+Апстрим добавил пятый исходящий путь: ежедневную проверку новой версии
+(`BCDUpdateCheck.swift`, `UpdateNotice.swift`, адрес
+`thebcd69.github.io/bcd-games/source.json`). В этой сборке она по умолчанию
+выключена: `SteamSignIn.flag("MADEIRA_UPDATE_CHECK", default: false)`, в
+каталоге настроек значение `0`. Её источник называет сборки апстрима, а не
+этого форка. `env.MADEIRA_UPDATE_CHECK = 1` включает её вручную. Новый
+workflow апстрима `altsource.yml` лежит отключённым в
+`docs/upstream-workflows/altsource.yml.disabled`.

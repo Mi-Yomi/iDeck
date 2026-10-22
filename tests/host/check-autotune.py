@@ -204,12 +204,14 @@ mod = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(mod)
 rules = mod.RULES
 catalog = (APP / "ConfigCatalog.generated.swift").read_text()
-known = set(re.findall(r'ConfigOption\(key: "([^"]+)"', catalog))
+known = set(re.findall(r'ConfigOption\(key: "([^"]+)"', catalog)) | set(cat.OVERLAY)
+# (cat.OVERLAY: build/tools/gen-config-catalog.py always emits these, so a key added there is in the catalog the full tree
+# regenerates; the committed copy may lag until then, as it does for every new key, 2026-10-21.)
 # Read by Swift from the game's own file only, or only from bcd.cfg: a layer line would do nothing.
 NOT_FROM_LAYER = {"metalfx-upscale", "fps-limit", "env.MADEIRA_PAD_MODE", "pool", "wx", "usd-time", "d3d9", "metal-validation"}
 LINE = re.compile(r"^([A-Za-z0-9._-]+) = (\S.*)$")
 FIELDS = {"id", "lines", "priority", "all", "any", "none", "outcomes", "session", "api", "ramMinMB", "ramMaxMB",
-          "minStage", "maxStage", "upgrade", "reason", "evidence", "fixedIn"}
+          "minStage", "maxStage", "imageMaxMB", "exeMaxMB", "upgrade", "noRetry", "reason", "evidence", "fixedIn"}
 ids = [r["id"] for r in rules]
 check("rule ids are unique", len(ids) == len(set(ids)))
 for r in rules:
@@ -251,7 +253,9 @@ logs = sorted(FIX.glob("*.log"))
 expects = {p.stem for p in FIX.glob("*.expect")}
 check(f"{len(logs)} fixtures, each with its .expect", logs and {p.stem for p in logs} == expects,
       "without: %s; orphaned: %s" % (sorted({p.stem for p in logs} - expects), sorted(expects - {p.stem for p in logs})))
-SCRUB = re.compile(r"/var/mobile/Containers/(?:Data|Shared)/[^ ]*[0-9A-F]{8}-|(?i:\\users\\(?!public\\|mobile\\|<user>))|"
+# users\NAME, also in Wine's own spelling of a path (doubled backslashes: L"C:\\users\\<user>\\AppData"): the name is the part that
+# may not stay; tools/autotune-fixture.py's scrub reads both spellings the same way.
+SCRUB = re.compile(r"/var/mobile/Containers/(?:Data|Shared)/[^ ]*[0-9A-F]{8}-|(?i:\\users\\{1,2}(?!public\b|mobile\b|<user>)[^\\/ ]+)|"
                    r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}|/Users/(?!<user>)")
 dirty = [p.name for p in logs if SCRUB.search(p.read_text(errors="ignore"))]
 check("fixtures are scrubbed (no container path, user name or e-mail address)", not dirty, str(dirty))
@@ -301,8 +305,11 @@ with tempfile.TemporaryDirectory(prefix="madeira-autotune-") as tmp:
                                    capture_output=True, text=True)
                 runs[chunk] = json.loads(r.stdout) if r.returncode == 0 else {"error": r.stderr}
             got = runs[0]
-            same = all(runs[c].get(k) == got.get(k) for c in (4093, 7) for k in KEYS + ("facts",))
+            same = all(runs[c].get(k) == got.get(k) for c in (4093, 7) for k in KEYS + ("facts", "monoMissing"))
             diff = {k: (exp.get(k), got.get(k)) for k in KEYS if exp.get(k) != got.get(k)}
+            # Wine Mono missing (the game page's hint): only a fixture whose .expect says so may show it.
+            if bool(exp.get("monoMissing")) != bool(got.get("monoMissing")):
+                diff["monoMissing"] = (bool(exp.get("monoMissing")), bool(got.get("monoMissing")))
             check(f"{p.stem}: {got.get('outcome')}, stage {got.get('stage')}, next {got.get('next') or '-'}",
                   not diff and same, "expected/got: %s; chunk sizes agree: %s" % (diff, same))
             # A crash read from the log alone (the app never came back) reads the same when the
@@ -327,7 +334,9 @@ with tempfile.TemporaryDirectory(prefix="madeira-autotune-") as tmp:
                        AUTOTUNE_TEST_CONFIGS=str(t / "configs"), AUTOTUNE_TEST_DOCS=str(t / "docs"),
                        AUTOTUNE_TEST_LOG=str(t / "docs/bcd-log.txt"),
                        AUTOTUNE_TEST_CRASH=str(FIX / "rift-apart-2026-10-15-23-02-21.log"),
-                       AUTOTUNE_TEST_SILENT=str(FIX / "synthetic-silent-end.log"))
+                       AUTOTUNE_TEST_SILENT=str(FIX / "synthetic-silent-end.log"),
+                       AUTOTUNE_TEST_INSTALLS=str(FIX / "gta-v-legacy-installs-only-2026-10-21.log"),
+                       AUTOTUNE_TEST_INSTALLS_FAILED=str(FIX / "saints-row-the-third-installs-only-2026-10-21.log"))
             extra = {"on": ["-madeira.autotune", "YES"], "off": ["-madeira.autotune", "NO"]}.get(mode, [])
             r = subprocess.run([str(glue_exe), mode] + extra, capture_output=True, text=True, env=env, timeout=300)
             check(f"the app side with auto-tune {mode}", r.returncode == 0,

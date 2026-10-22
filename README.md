@@ -6,17 +6,20 @@
 
 <p align="center">
   <b>Windows games on iPhone and iPad.</b><br>
-  A fast, controller-friendly launcher with Steam and GOG built in.
+  A fast, controller-friendly launcher with Steam and GOG built in.<br>
+  <sub>Alpha: early development, before beta. Many games run, many do not yet.</sub>
 </p>
 
 <p align="center">
   <a href="https://github.com/thebcd69/bcd-games/releases/latest/download/BCD.ipa"><b>Download the IPA</b></a>
   &nbsp;·&nbsp; <a href="#install">Install</a>
   &nbsp;·&nbsp; <a href="#games">Games</a>
+  &nbsp;·&nbsp; <a href="https://discord.gg/43TmupTVug">Discord</a>
   &nbsp;·&nbsp; <a href="#credits">Credits</a>
 </p>
 
 <p align="center">
+  <img src="https://img.shields.io/badge/status-alpha-orange" alt="Alpha">
   <img src="https://img.shields.io/badge/iOS-18%2B-blue" alt="iOS 18+">
   <img src="https://img.shields.io/badge/license-GPL--3.0-green" alt="GPL-3.0">
   <img src="https://img.shields.io/badge/graphics-Metal-lightgrey" alt="Metal">
@@ -32,6 +35,14 @@
     <td><img src="assets/readme/controllers.jpg" alt="Controllers"></td>
   </tr>
 </table>
+
+<a href="https://thebcd69.github.io/bcd-media/368b91fe3eed2ec6.html"><img src="assets/readme/4be504c431c8.jpg" alt="Crysis 2 Remastered running in BCD on an iPhone 17 Pro Max" width="100%"></a>
+
+*Crysis 2 Remastered (Steam), recorded on an iPhone 17 Pro Max.*
+
+<a href="https://thebcd69.github.io/bcd-media/cf75ecb03de188bb.html"><img src="assets/readme/908d936c7497.jpg" alt="Grand Theft Auto V Legacy running in BCD on an iPhone 17 Pro Max" width="100%"></a>
+
+*Grand Theft Auto V Legacy (Steam), recorded on an iPhone 17 Pro Max.*
 
 BCD runs Windows PC games on iOS and iPadOS. Wine provides Windows, FEX runs x86 and
 x64 code on Apple's chips, and DXMT plus BCD's Direct3D 12 runtime draw with Metal. BCD
@@ -109,10 +120,15 @@ How well a game runs varies a lot; many games do not start yet.
 
 ## Install
 
-1. Download [`BCD.ipa`](https://github.com/thebcd69/bcd-games/releases/latest/download/BCD.ipa)
-   from the latest [release](https://github.com/thebcd69/bcd-games/releases).
-2. Install it with SideStore, AltStore or LiveContainer.
-3. Open BCD. Setup walks you through JIT, LocalDevVPN, Steam and the extra runtimes.
+1. Get BCD one of two ways:
+   - **From the AltStore / SideStore source** (installs BCD and keeps it updated): in AltStore
+     Classic or SideStore, add `https://thebcd69.github.io/bcd-games/source.json` under Sources,
+     or open the [source page](https://thebcd69.github.io/bcd-games/) on your iPhone or iPad for
+     one-tap Add buttons. The source is by [le0-VV](https://github.com/le0-VV).
+   - **From the IPA:** download [`BCD.ipa`](https://github.com/thebcd69/bcd-games/releases/latest/download/BCD.ipa)
+     from the latest [release](https://github.com/thebcd69/bcd-games/releases) and install it with
+     SideStore, AltStore or LiveContainer.
+2. Open BCD. Setup walks you through JIT, LocalDevVPN, Steam and the extra runtimes.
 
 ## Reporting a problem
 
@@ -122,6 +138,7 @@ How well a game runs varies a lot; many games do not start yet.
 2. When auto-tune gives up, its message offers **Send Log**. Send that log: it has what is needed
    to look into the game.
 3. For ideas and everything else, use **Settings › Feedback**.
+4. Install help, game reports and ideas are also welcome on the [BCD-Games Discord](https://discord.gg/43TmupTVug).
 
 ## What is not in the package
 
@@ -152,7 +169,8 @@ There is no warranty.
 Steam is a trademark of Valve Corporation. Windows, DirectX, Direct3D and Visual C++ are
 trademarks of the Microsoft group of companies. Apple, iPhone, iPad, iOS, iPadOS and Metal
 are trademarks of Apple Inc. BCD is an independent project, not affiliated with or endorsed
-by Valve, Microsoft, Apple or the authors of Madeira.
+by Valve, Microsoft, Apple or the authors of Madeira. Game titles named here belong to their
+respective owners; BCD is not affiliated with or endorsed by them.
 
 ## Credits
 
@@ -180,4 +198,4 @@ David Acevedo (dacevedo12), rpmalloc by Mattias Jansson, StikDebug, StikJIT, ide
 FreeType, and every library listed in THIRD-PARTY-NOTICES.md. Thank you to everyone who
 works on them.
 
-**BCD** by thebcd69.
+**BCD** by thebcd69, with the AltStore and SideStore source by **le0-VV** ([le0-VV](https://github.com/le0-VV)).

@@ -4417,11 +4417,24 @@ void ios_jit_add_mapping(void *pe_base, void *jit_base, size_t size)
  * leaves FEX's table empty and the fallback inert. Checked here because getenv
  * is safe on this side; it is NOT safe in FEX's early init (see the
  * ios_fex_band_base comment in libarm64ecfex.def). */
+static int ios_fex_fixed_window_abi( void *owner );
+
 void ios_push_subfloor_window( unsigned long long low_base, unsigned long long real_base,
                                unsigned long long size, void *owner )
 {
     static int disabled = -1;
 
+    /* High guest windows have an explicit tag; old FEX must never mistake one
+     * for an executable PE-to-pool alias. Zero length retires the window. */
+    if (low_base >= 0x100000000ull)
+    {
+        ios_alias_cb_t cb = ios_alias_cb_for( owner );
+        if (cb && ios_fex_fixed_window_abi( owner ))
+            cb( low_base, real_base, size | 0x8000000000000000ull );
+        return;
+    }
+
+    /* Stops only the legacy below-4GB window push to FEX. */
     if (disabled < 0) disabled = (getenv( "MADEIRA_NO_SUBFLOOR_XQUERY" ) != NULL);
     if (disabled)
     {
@@ -4532,6 +4545,31 @@ static void *ios_pe_find_export( const unsigned char *base, const char *want )
         if (!strcmp( (const char *)(base + names[i]), want ))
             return (void *)(base + funcs[ords[i]]);
     return NULL;
+}
+
+static int ios_fex_fixed_window_abi( void *owner )
+{
+    int i;
+    if (!owner) return 0;
+    for (i = 0; i < ios_jit_mapping_count; ++i)
+    {
+        uintptr_t base = (uintptr_t)ios_jit_mappings[i].pe_base, data;
+        size_t size = ios_jit_mappings[i].size;
+        uint64_t abi[3];
+        mach_vm_size_t got = 0;
+        const char *name;
+        if (!base || size < sizeof(abi) ||
+            (ios_jit_mappings[i].map_peb != owner && ios_jit_mappings[i].owner_peb != owner)) continue;
+        name = ios_pe_module_name( (void *)base, size );
+        if (!name || (!strstr( name, "xtajit64" ) && !strstr( name, "arm64ecfex" ))) continue;
+        data = (uintptr_t)ios_pe_find_export( (const void *)base, "IosGuestWindowAbi" );
+        if (data < base || data - base > size - sizeof(abi)) continue;
+        if (mach_vm_read_overwrite( mach_task_self(), data, sizeof(abi),
+                                   (mach_vm_address_t)abi, &got ) != KERN_SUCCESS || got != sizeof(abi)) continue;
+        if (abi[0] == 0x314e49574744494dull && abi[1] == 0x8000000000000000ull && abi[2] >= 128)
+            return 1;
+    }
+    return 0;
 }
 
 /* Versioned DATA from the rebuilt module. Offsets are compiler-produced;
@@ -4795,6 +4833,18 @@ NTSTATUS unixcall_ios_push_jit_aliases(void *args)
     /* madeira-bcd: the process registering is the one running this unix call
      * (PE ntdll's arm64ec_process_init_dispatchers, on its first thread). */
     self = ios_jit_current_peb();
+    {
+        extern int ios_subfloor_enum( int, unsigned long long *, unsigned long long *,
+                                     unsigned long long *, void ** );
+        unsigned long long lo, re, sz;
+        void *owner;
+        for (i = 0; ios_subfloor_enum( i, &lo, &re, &sz, &owner ); ++i)
+            if (sz && lo >= 0x100000000ull && owner == self && !ios_fex_fixed_window_abi( self ))
+            {
+                dprintf( 2, "[fixed-image] refusing incompatible FEX guest-window ABI\n" );
+                return STATUS_NOT_SUPPORTED;
+            }
+    }
     own = ios_child_own_ntdll_enabled() ? self : NULL;
     prev_peb = ios_jit_alias_pushback_peb;
     ios_jit_alias_pushback_peb = self;
@@ -9725,12 +9775,21 @@ static int ios_fixed_base_guard(void)
     return on;
 }
 
+/* Modified for iDeck-BCD, 2026-10-22: keep guest fixed addresses inaccessible;
+ * each pseudo-process owns a different backing image behind this reservation. */
+static int ios_fixed_image_isolation(void)
+{
+    const char *e = getenv( "MADEIRA_FIXED_IMAGE_ISOLATION" );
+    return e && e[0] == '1' && !e[1];
+}
+
 /* Returns 1 if the reservation was released for this request. */
 static int ios_exe_win_claim( const void *addr, size_t size )
 {
     uintptr_t a = (uintptr_t)addr;
 
     if (ios_exe_win_state < 0) ios_exe_win_init();
+    if (ios_fixed_image_isolation()) return 0;
     /* ml983: the bounds and floor tests now run before the held/released test --
      * a released window still has to answer a matching request. */
     if (!ios_exe_win_base) return 0;
@@ -16963,7 +17022,7 @@ static int ios_x64_image_is_host_data( const void *base, size_t size )
 #ifdef WINE_IOS
     struct file_view *view;
 
-    if (!ios_x64_image_nocopy_enabled()) return 0;
+    if (!ios_x64_image_nocopy_enabled() && !ios_fixed_image_isolation()) return 0;
     if (!(view = find_view( base, 0 ))) return 0;
     if (!(view->protect & VPROT_X64DATA)) return 0;
     return ios_x64_image_view_covers( (uintptr_t)view->base, view->size, (uintptr_t)base, size );
@@ -23729,6 +23788,94 @@ static BOOL ios_subfloor_window_held( ULONG_PTR low, ULONG_PTR real )
     return FALSE;
 }
 
+/* Fixed guest ranges never become host mappings, including for the first
+ * process. Otherwise a child's absolute load silently reads its parent. */
+static BOOL ios_fixed_image_candidate( const struct pe_image_info *info )
+{
+    return ios_fixed_image_isolation() && ios_alias_per_process_enabled() && !ios_exe_win_resource_request &&
+           !info->wine_builtin && !info->is_hybrid && !info->map_addr &&
+           info->machine == IMAGE_FILE_MACHINE_AMD64 && info->base >= 0x100000000ull &&
+           (info->image_charact & IMAGE_FILE_RELOCS_STRIPPED);
+}
+
+static void *ios_fixed_image_buffer( const void *addr, size_t size )
+{
+    extern int ios_fixed_image_translate( unsigned long long, unsigned long long,
+                                          void *, unsigned long long * );
+    unsigned long long real;
+    if (ios_fixed_image_translate( (ULONG_PTR)addr, size, ios_jit_current_peb(), &real ))
+        return (void *)(ULONG_PTR)real;
+    return (void *)addr;
+}
+
+static struct { ULONG_PTR base; SIZE_T size; } ios_fixed_guards[32];
+static unsigned ios_fixed_guard_count;
+
+static BOOL ios_fixed_reserved_overlap( ULONG_PTR base, SIZE_T size )
+{
+    struct reserved_area *area;
+    LIST_FOR_EACH_ENTRY( area, &reserved_areas, struct reserved_area, entry )
+    {
+        ULONG_PTR lo = (ULONG_PTR)area->base;
+        if (lo >= base + size) break;
+        if (base < lo + area->size) return TRUE;
+    }
+    return FALSE;
+}
+
+/* virtual_mutex held; VM_FLAGS_FIXED without OVERWRITE never evicts live data.
+ * Reservations survive process exit so a later generation cannot expose bytes
+ * at another process's guest address. They cost VA, not committed image pages. */
+static NTSTATUS ios_fixed_image_reserve( ULONG_PTR base, SIZE_T size )
+{
+    mach_vm_address_t at;
+    kern_return_t kr;
+    unsigned i;
+
+    if (!size || size >= (1ull << 40) || base < 0x100000000ull || base >= (1ull << 47) - host_page_mask ||
+        (base & host_page_mask) ||
+        size > (1ull << 47) - base - host_page_mask) return STATUS_INVALID_PARAMETER;
+    size = (size + host_page_mask) & ~host_page_mask;
+    for (i = 0; i < ios_fixed_guard_count; ++i)
+    {
+        ULONG_PTR lo = ios_fixed_guards[i].base;
+        SIZE_T len = ios_fixed_guards[i].size;
+        if (base >= lo && base - lo <= len && size <= len - (base - lo)) return STATUS_SUCCESS;
+        if (base < lo + len && lo < base + size) return STATUS_CONFLICTING_ADDRESSES;
+    }
+    if (ios_fixed_guard_count == ARRAY_SIZE(ios_fixed_guards)) return STATUS_NO_MEMORY;
+    if (find_view_range( (void *)base, size ) || ios_fixed_reserved_overlap( base, size ))
+        return STATUS_CONFLICTING_ADDRESSES;
+    if (ios_exe_win_state < 0) ios_exe_win_init();
+    if (ios_exe_win_state == 1 && base >= ios_exe_win_base &&
+        base - ios_exe_win_base <= ios_exe_win_size &&
+        size <= ios_exe_win_size - (base - ios_exe_win_base))
+    {
+        /* The helper's vm_allocate fallback can leave this reservation RW.
+         * Close current AND maximum access before publishing any window. */
+        base = ios_exe_win_base;
+        size = ios_exe_win_size;
+        if (base < 0x100000000ull || base >= (1ull << 47) ||
+            size > (1ull << 47) - base || find_view_range( (void *)base, size ) ||
+            ios_fixed_reserved_overlap( base, size ))
+            return STATUS_CONFLICTING_ADDRESSES;
+        kr = mach_vm_protect( mach_task_self(), base, size, TRUE, VM_PROT_NONE );
+        if (kr != KERN_SUCCESS) return STATUS_CONFLICTING_ADDRESSES;
+    }
+    else
+    {
+        at = base;
+        kr = mach_vm_map( mach_task_self(), &at, size, 0, VM_FLAGS_FIXED,
+                          MEMORY_OBJECT_NULL, 0, 0, VM_PROT_NONE, VM_PROT_NONE, VM_INHERIT_NONE );
+        if (kr != KERN_SUCCESS) return STATUS_CONFLICTING_ADDRESSES;
+    }
+    ios_fixed_guards[ios_fixed_guard_count].base = base;
+    ios_fixed_guards[ios_fixed_guard_count++].size = size;
+    dprintf( 2, "[fixed-image] reserved guest %p+%#lx; backing is private per process\n",
+             (void *)base, (unsigned long)size );
+    return STATUS_SUCCESS;
+}
+
 /* madeira-bcd: bcd.cfg ignore-volatile-metadata = 1 (opt-in). FEX runs an
  * image that carries PE volatile metadata (MSVC's /volatileMetadata, on by
  * default for x64 since VS 2019) without TSO ordering for every instruction the
@@ -24185,7 +24332,8 @@ static NTSTATUS map_image_into_view( struct file_view *view, const UNICODE_STRIN
      * the section pass and the eager copy loop below see the mark (see
      * ios_x64_image_is_host_data). update_arm64ec_ranges has run: a hybrid
      * image carries VPROT_ARM64EC by now. */
-    if (ios_x64_image_nocopy_enabled() && !ios_map_resource_view && !ios_wow_base() &&
+    if ((ios_x64_image_nocopy_enabled() || ios_fixed_image_candidate( image_info )) &&
+        !ios_map_resource_view && !ios_wow_base() &&
         nt->FileHeader.Machine == IMAGE_FILE_MACHINE_AMD64 &&
         nt->OptionalHeader.Magic == IMAGE_NT_OPTIONAL_HDR64_MAGIC &&
         !(view->protect & VPROT_ARM64EC) && !image_info->is_hybrid && !image_info->wine_builtin)
@@ -24452,6 +24600,14 @@ static NTSTATUS map_image_view( struct file_view **view_ret, struct pe_image_inf
                                                : (ULONG_PTR)user_space_limit;
     }
 
+    if (!is_builtin && !wow_image && ios_fixed_image_candidate( image_info ))
+    {
+        if (!ios_jit_current_peb()) return STATUS_NOT_SUPPORTED;
+        if ((status = ios_fixed_image_reserve( image_info->base, size ))) return status;
+        return map_view( view_ret, NULL, size, MEM_TOP_DOWN, vprot,
+                         max( limit_low, (ULONG_PTR)limit_4g ), limit_high, 0 );
+    }
+
     /* first try the specified base */
 
     if (image_info->map_addr)
@@ -24571,6 +24727,10 @@ static NTSTATUS virtual_map_image( HANDLE mapping, void **addr_ptr, SIZE_T *size
     struct file_view *view;
     unsigned int status;
     sigset_t sigset;
+    ULONG_PTR fixed_guest = ios_fixed_image_candidate( image_info ) ? image_info->base : 0;
+    extern int ios_register_fixed_image_window( unsigned long long, unsigned long long,
+                                                unsigned long long, void * );
+    extern void ios_fixed_image_release( unsigned long long, void * );
 
     if (offset >= size)
         return STATUS_INVALID_PARAMETER;
@@ -24614,6 +24774,12 @@ static NTSTATUS virtual_map_image( HANDLE mapping, void **addr_ptr, SIZE_T *size
         goto done;
     }
     status = map_image_into_view( view, nt_name, unix_fd, image_info, machine, shared_fd, needs_close );
+    if (status == STATUS_SUCCESS && fixed_guest)
+    {
+        if (offset || !ios_register_fixed_image_window( fixed_guest, size, (ULONG_PTR)view->base,
+                                                        ios_jit_current_peb() ))
+            status = STATUS_CONFLICTING_ADDRESSES;
+    }
     if (status == STATUS_SUCCESS)
     {
         if (offset)
@@ -24622,7 +24788,7 @@ static NTSTATUS virtual_map_image( HANDLE mapping, void **addr_ptr, SIZE_T *size
             size -= offset;
         }
 
-        image_info->base = wine_server_client_ptr( view->base );
+        image_info->base = fixed_guest ? fixed_guest : wine_server_client_ptr( view->base );
         SERVER_START_REQ( map_image_view )
         {
             req->mapping = wine_server_obj_handle( mapping );
@@ -24678,11 +24844,15 @@ static NTSTATUS virtual_map_image( HANDLE mapping, void **addr_ptr, SIZE_T *size
             }
         }
 #endif
-        *addr_ptr = view->base;
+        *addr_ptr = fixed_guest ? (void *)fixed_guest : view->base;
         *size_ptr = size;
         VIRTUAL_DEBUG_DUMP_VIEW( view );
     }
-    else delete_view( view );
+    else
+    {
+        if (fixed_guest) ios_fixed_image_release( (ULONG_PTR)view->base, ios_jit_current_peb() );
+        delete_view( view );
+    }
 
 done:
     server_leave_uninterrupted_section( &virtual_mutex, &sigset );
@@ -27442,8 +27612,8 @@ unsigned int virtual_locked_server_call( void *req_ptr )
 {
     struct __server_request_info * const req = req_ptr;
     sigset_t sigset;
-    void *addr = req->reply_data;
     data_size_t size = req->u.req.request_header.reply_size;
+    void *addr = ios_fixed_image_buffer( req->reply_data, size );
     BOOL has_write_watch = FALSE;
     unsigned int ret;
 
@@ -27470,6 +27640,8 @@ ssize_t virtual_locked_read( int fd, void *addr, size_t size )
     BOOL has_write_watch = FALSE;
     int err = EFAULT;
 
+    addr = ios_fixed_image_buffer( addr, size );
+
     ssize_t ret = read( fd, addr, size );
     if (ret != -1 || use_kernel_writewatch || errno != EFAULT) return ret;
 
@@ -27494,6 +27666,8 @@ ssize_t virtual_locked_pread( int fd, void *addr, size_t size, off_t offset )
     sigset_t sigset;
     BOOL has_write_watch = FALSE;
     int err = EFAULT;
+
+    addr = ios_fixed_image_buffer( addr, size );
 
     ssize_t ret = pread( fd, addr, size, offset );
     if (ret != -1 || use_kernel_writewatch || errno != EFAULT) return ret;
@@ -27551,6 +27725,8 @@ BOOL virtual_is_valid_code_address( const void *addr, SIZE_T size )
     BOOL ret = FALSE;
     sigset_t sigset;
 
+    addr = ios_fixed_image_buffer( addr, size );
+
     server_enter_uninterrupted_section( &virtual_mutex, &sigset );
     if ((view = find_view( addr, size )))
         ret = !(view->protect & VPROT_SYSTEM);  /* system views are not visible to the app */
@@ -27568,6 +27744,7 @@ BOOL virtual_check_buffer_for_read( const void *ptr, SIZE_T size )
 {
     if (!size) return TRUE;
     if (!ptr) return FALSE;
+    ptr = ios_fixed_image_buffer( ptr, size );
 
     __TRY
     {
@@ -27602,6 +27779,7 @@ BOOL virtual_check_buffer_for_write( void *ptr, SIZE_T size )
 {
     if (!size) return TRUE;
     if (!ptr) return FALSE;
+    ptr = ios_fixed_image_buffer( ptr, size );
 
     __TRY
     {
@@ -28518,12 +28696,17 @@ static int ios_lowalias_enabled(void)
 static int ios_subfloor_image_translate( unsigned long long addr, unsigned long long len,
                                          unsigned long long *real_out )
 {
+    extern int ios_fixed_image_translate( unsigned long long, unsigned long long,
+                                          void *, unsigned long long * );
     extern int ios_subfloor_enum( int idx, unsigned long long *low, unsigned long long *real,
                                   unsigned long long *size, void **owner );
     static int on = -1;
     unsigned long long lo, re, sz;
     void *peb, *own;
     int i;
+
+    if (addr >= 0x100000000ull)
+        return ios_fixed_image_translate( addr, len, ios_jit_current_peb(), real_out );
 
     if (on < 0)
     {
@@ -28538,11 +28721,25 @@ static int ios_subfloor_image_translate( unsigned long long addr, unsigned long 
         /* ml1205: another process's window. The KUSER_SHARED_DATA window (ml952,
          * owner NULL) is no image: 0x7ffe0000 keeps its own answer. */
         if (own ? own != peb : lo == 0x7ffe0000ull) continue;
-        if (!sz || !re || addr < lo || addr + len > lo + sz) continue;
+        if (!sz || !re || addr < lo || addr - lo >= sz || len > sz - (addr - lo)) continue;
         *real_out = re + (addr - lo);
         return 1;
     }
     return 0;
+}
+
+static void *ios_fixed_image_guest( const void *real )
+{
+    extern int ios_subfloor_enum( int, unsigned long long *, unsigned long long *,
+                                 unsigned long long *, void ** );
+    unsigned long long lo, re, sz, address = (ULONG_PTR)real;
+    void *owner, *self = ios_jit_current_peb();
+    int i;
+    if (!self) return (void *)real;
+    for (i = 0; ios_subfloor_enum( i, &lo, &re, &sz, &owner ); ++i)
+        if (lo >= 0x100000000ull && sz && owner == self && address >= re && address - re < sz)
+            return (void *)(ULONG_PTR)(lo + address - re);
+    return (void *)real;
 }
 
 /* iOS-Madeira ml1206: start a RELOCS_STRIPPED sub-floor main image at its LOW
@@ -32687,7 +32884,8 @@ NTSTATUS WINAPI NtProtectVirtualMemory( HANDLE process, PVOID *addr_ptr, SIZE_T 
             addr = (LPVOID)(ULONG_PTR)lo_real;
             *addr_ptr = addr;
         }
-        else if (ios_subfloor_image_translate( (unsigned long long)(ULONG_PTR)addr, size, &lo_real ))
+        else if (process == NtCurrentProcess() &&
+                 ios_subfloor_image_translate( (unsigned long long)(ULONG_PTR)addr, size, &lo_real ))
         {
             static int sp_n;
             if (sp_n++ < 16)
@@ -33334,6 +33532,7 @@ NTSTATUS WINAPI NtProtectVirtualMemory( HANDLE process, PVOID *addr_ptr, SIZE_T 
     /* After the existing IAT sync, observe both copies without touching them. */
 #ifdef WINE_IOS
     ios_trace_image_patch( ios_patch_requested, ios_patch_length, new_prot, status );
+    if (!status && process == NtCurrentProcess()) *addr_ptr = ios_fixed_image_guest( *addr_ptr );
 #endif
     return status;
 }
@@ -33788,7 +33987,7 @@ static NTSTATUS get_working_set_ex( HANDLE process, LPCVOID addr,
     for (i = 0; i < count; ++i)
     {
         ref[i].orig_index = i;
-        ref[i].addr = ROUND_ADDR( info[i].VirtualAddress, page_mask );
+        ref[i].addr = ios_fixed_image_buffer( ROUND_ADDR( info[i].VirtualAddress, page_mask ), page_size );
         info[i].VirtualAttributes.Flags = 0;
     }
     qsort( ref, count, sizeof(*ref), compare_working_set_info_ref );
@@ -33919,6 +34118,7 @@ NTSTATUS WINAPI NtQueryVirtualMemory( HANDLE process, LPCVOID addr,
                                       PVOID buffer, SIZE_T len, SIZE_T *res_len )
 {
     NTSTATUS status;
+    const void *fixed_guest = NULL;
 
 #ifdef WINE_IOS
     if (info_class == MemoryWineIosSubfloorWindow)
@@ -33967,11 +34167,13 @@ NTSTATUS WINAPI NtQueryVirtualMemory( HANDLE process, LPCVOID addr,
             }
             addr = (LPCVOID)(ULONG_PTR)lo_real;
         }
-        else if (ios_subfloor_image_translate( (unsigned long long)(ULONG_PTR)addr, 1, &lo_real ))
+        else if (process == NtCurrentProcess() &&
+                 ios_subfloor_image_translate( (unsigned long long)(ULONG_PTR)addr, 1, &lo_real ))
         {
             static int sq_n;   /* ml1201: describe the sub-floor image's real mapping */
             if (sq_n++ < 16)
                 dprintf( 2, "ml1201: QUERY on sub-floor image %p -> real %#llx\n", addr, lo_real );
+            if ((ULONG_PTR)addr >= 0x100000000ull) fixed_guest = addr;
             addr = (LPCVOID)(ULONG_PTR)lo_real;
         }
     }
@@ -33983,19 +34185,32 @@ NTSTATUS WINAPI NtQueryVirtualMemory( HANDLE process, LPCVOID addr,
     switch(info_class)
     {
         case MemoryBasicInformation:
-            return get_basic_memory_info( process, addr, buffer, len, res_len );
+            status = get_basic_memory_info( process, addr, buffer, len, res_len );
+            if (!status && fixed_guest)
+            {
+                MEMORY_BASIC_INFORMATION *info = buffer;
+                info->BaseAddress = ios_fixed_image_guest( info->BaseAddress );
+                info->AllocationBase = ios_fixed_image_guest( info->AllocationBase );
+            }
+            return status;
 
         case MemoryWorkingSetExInformation:
             return get_working_set_ex( process, addr, buffer, len, res_len );
 
         case MemoryMappedFilenameInformation:
-            return get_memory_section_name( process, addr, buffer, len, res_len );
+            return get_memory_section_name( process, fixed_guest ? fixed_guest : addr, buffer, len, res_len );
 
         case MemoryRegionInformation:
-            return get_memory_region_info( process, addr, buffer, len, res_len );
+            status = get_memory_region_info( process, addr, buffer, len, res_len );
+            if (!status && fixed_guest)
+            {
+                MEMORY_REGION_INFORMATION *info = buffer;
+                info->AllocationBase = ios_fixed_image_guest( info->AllocationBase );
+            }
+            return status;
 
         case MemoryImageInformation:
-            return get_memory_image_info( process, addr, buffer, len, res_len );
+            return get_memory_image_info( process, fixed_guest ? fixed_guest : addr, buffer, len, res_len );
 
         case MemoryWineLoadUnixLib:
         case MemoryWineLoadUnixLibWow64:
@@ -34148,7 +34363,8 @@ NTSTATUS WINAPI NtLockVirtualMemory( HANDLE process, PVOID *addr, SIZE_T *size, 
     *size = ROUND_SIZE( *addr, *size, page_mask );
     *addr = ROUND_ADDR( *addr, page_mask );
 
-    if (mlock( ROUND_ADDR( *addr, host_page_mask ), ROUND_SIZE( *addr, *size, host_page_mask ) ))
+    if (mlock( ROUND_ADDR( ios_fixed_image_buffer( *addr, *size ), host_page_mask ),
+               ROUND_SIZE( *addr, *size, host_page_mask ) ))
     {
         dprintf(2, "[vmem-denied] mlock failed: addr=%p size=%p errno=%d\n",
                 *addr, (void *)*size, errno);
@@ -34190,7 +34406,8 @@ NTSTATUS WINAPI NtUnlockVirtualMemory( HANDLE process, PVOID *addr, SIZE_T *size
     *size = ROUND_SIZE( *addr, *size, page_mask );
     *addr = ROUND_ADDR( *addr, page_mask );
 
-    if (munlock( ROUND_ADDR( *addr, host_page_mask ), ROUND_SIZE( *addr, *size, host_page_mask ) ))
+    if (munlock( ROUND_ADDR( ios_fixed_image_buffer( *addr, *size ), host_page_mask ),
+                 ROUND_SIZE( *addr, *size, host_page_mask ) ))
         status = STATUS_ACCESS_DENIED;
     return status;
 }
@@ -34391,6 +34608,7 @@ static NTSTATUS unmap_view_of_section( HANDLE process, PVOID addr, ULONG flags )
     struct file_view *view;
     unsigned int status = STATUS_NOT_MAPPED_VIEW;
     sigset_t sigset;
+    unsigned long long fixed_real = 0;
 
     if (process != NtCurrentProcess())
     {
@@ -34408,7 +34626,10 @@ static NTSTATUS unmap_view_of_section( HANDLE process, PVOID addr, ULONG flags )
     }
 
     server_enter_uninterrupted_section( &virtual_mutex, &sigset );
-    if (!(view = find_view( addr, 0 )) || is_view_valloc( view )) goto done;
+    if ((ULONG_PTR)addr >= 0x100000000ull)
+        ios_subfloor_image_translate( (ULONG_PTR)addr, 1, &fixed_real );
+    if (!(view = find_view( fixed_real ? (void *)(ULONG_PTR)fixed_real : addr, 0 )) ||
+        is_view_valloc( view )) goto done;
 
     if (flags & MEM_PRESERVE_PLACEHOLDER && !(view->protect & VPROT_PLACEHOLDER))
     {
@@ -34430,12 +34651,17 @@ static NTSTATUS unmap_view_of_section( HANDLE process, PVOID addr, ULONG flags )
 
     SERVER_START_REQ( unmap_view )
     {
-        req->base = wine_server_client_ptr( view->base );
+        req->base = wine_server_client_ptr( fixed_real ? ios_fixed_image_guest( view->base ) : view->base );
         status = wine_server_call( req );
     }
     SERVER_END_REQ;
     if (!status)
     {
+        if (fixed_real)
+        {
+            extern void ios_fixed_image_release( unsigned long long, void * );
+            ios_fixed_image_release( (ULONG_PTR)view->base, ios_jit_current_peb() );
+        }
         if (view->protect & SEC_IMAGE) release_builtin_module( view->base );
         if (flags & MEM_PRESERVE_PLACEHOLDER) free_pages_preserve_placeholder( view, view->base, view->size );
         else delete_view( view );
@@ -34488,6 +34714,22 @@ void ios_retire_own_fixed_base_image( void *dying_peb )
     unsigned gen;
     unsigned int status;
 
+    if (dying_peb && dying_peb == ios_jit_current_peb())
+    {
+        extern int ios_subfloor_enum( int, unsigned long long *, unsigned long long *,
+                                     unsigned long long *, void ** );
+        unsigned long long guest, real, length;
+        void *owner;
+        int i;
+        for (i = 0; ios_subfloor_enum( i, &guest, &real, &length, &owner ); ++i)
+            if (length && guest >= 0x100000000ull && owner == dying_peb)
+            {
+                status = NtUnmapViewOfSection( NtCurrentProcess(), (void *)(ULONG_PTR)guest );
+                if (status) dprintf( 2, "[fixed-image] teardown refused guest %#llx status=%#x\n", guest, status );
+            }
+    }
+
+    /* Disables the legacy fixed-base generation handoff; private-image cleanup remains required. */
     if (disabled < 0) disabled = getenv( "MADEIRA_NO_IMAGE_RETIRE" ) ? 1 : 0;
     if (disabled || !dying_peb) return;
 
@@ -34893,11 +35135,12 @@ NTSTATUS WINAPI NtFlushVirtualMemory( HANDLE process, LPCVOID *addr_ptr,
     }
 
     server_enter_uninterrupted_section( &virtual_mutex, &sigset );
+    addr = ios_fixed_image_buffer( addr, *size_ptr );
     if (!(view = find_view( addr, *size_ptr ))) status = STATUS_INVALID_PARAMETER;
     else
     {
         if (!*size_ptr) *size_ptr = view->size;
-        *addr_ptr = addr;
+        *addr_ptr = ios_fixed_image_guest( addr );
 #ifdef MS_ASYNC
         if (msync( ROUND_ADDR( addr, host_page_mask ), ROUND_SIZE( addr, *size_ptr, host_page_mask ), MS_ASYNC ))
             status = STATUS_NOT_MAPPED_DATA;
@@ -35084,8 +35327,8 @@ NTSTATUS WINAPI NtAreMappedFilesTheSame(PVOID addr1, PVOID addr2)
 
     server_enter_uninterrupted_section( &virtual_mutex, &sigset );
 
-    view1 = find_view( addr1, 0 );
-    view2 = find_view( addr2, 0 );
+    view1 = find_view( ios_fixed_image_buffer( addr1, 1 ), 0 );
+    view2 = find_view( ios_fixed_image_buffer( addr2, 1 ), 0 );
 
     if (!view1 || !view2)
         status = STATUS_INVALID_ADDRESS;
@@ -35099,8 +35342,8 @@ NTSTATUS WINAPI NtAreMappedFilesTheSame(PVOID addr1, PVOID addr2)
     {
         SERVER_START_REQ( is_same_mapping )
         {
-            req->base1 = wine_server_client_ptr( view1->base );
-            req->base2 = wine_server_client_ptr( view2->base );
+            req->base1 = wine_server_client_ptr( ios_fixed_image_guest( view1->base ) );
+            req->base2 = wine_server_client_ptr( ios_fixed_image_guest( view2->base ) );
             status = wine_server_call( req );
         }
         SERVER_END_REQ;
@@ -35219,7 +35462,7 @@ NTSTATUS WINAPI NtFlushInstructionCache( HANDLE handle, const void *addr, SIZE_T
      * of a sub-floor image or low allocation; skip any other low address. FEX's
      * translations are dropped by the PE-side wrapper, which still gets the
      * guest's own address. */
-    if (handle == GetCurrentProcess() && addr && (ULONG_PTR)addr < 0x100000000ull)
+    if (handle == GetCurrentProcess() && addr)
     {
         unsigned long long real = 0;
         static int fl_n;
@@ -35232,7 +35475,7 @@ NTSTATUS WINAPI NtFlushInstructionCache( HANDLE handle, const void *addr, SIZE_T
                          addr, (unsigned long)size, real );
             addr = (const void *)(ULONG_PTR)real;
         }
-        else
+        else if ((ULONG_PTR)addr < 0x100000000ull)
         {
             if (fl_n++ < 16)
                 dprintf( 2, "ml1202: FLUSH-ICACHE on unmapped low %p size=%#lx skipped\n",

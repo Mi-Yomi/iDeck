@@ -88,6 +88,7 @@ code = r'''
 typedef int NTSTATUS;
 #define STATUS_SUCCESS 0
 #define STATUS_INVALID_PARAMETER ((NTSTATUS)0xC000000D)
+#define STATUS_NOT_SUPPORTED ((NTSTATUS)0xC00000BB)
 #define ERR(...) do { } while (0)
 static void *cur_peb;
 void *ios_jit_current_peb(void) { return cur_peb; }
@@ -99,6 +100,8 @@ int ios_subfloor_enum( int idx, unsigned long long *low, unsigned long long *rea
 void ios_push_subfloor_window( unsigned long long a, unsigned long long b, unsigned long long c, void *owner )
 { (void)a; (void)b; (void)c; (void)owner; }
 static void ios_resolve_fex_exports( void ) { }
+/* This fixture models ordinary EC aliases and publishes no fixed-image windows. */
+static int ios_fex_fixed_window_abi( void *owner ) { (void)owner; return 0; }
 '''
 code += between(native, '#define IOS_JIT_MAX_MAPPINGS', '\n};')
 code += 'static struct ios_jit_mapping ios_jit_mappings[IOS_JIT_MAX_MAPPINGS];\n'

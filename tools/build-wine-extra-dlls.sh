@@ -131,6 +131,8 @@ fi
 # iDeck-BCD, 2026-10-22: Wine's msiexec.exe for the 64-bit set, shipped only together with msi.dll (built
 # above). Library.swift starts a .msi with C:\windows\system32\msiexec.exe when the bundle has it, else with the
 # i386 set's msiexec.exe through WoW64. MADEIRA_MSIEXEC_BUILD=0 skips it.
+# shortcut: not counted by the "nothing to build" guard below (several checks pin that line); msiexec.exe needs
+# msi.dll, which is in WANT, so a set without msi.dll always has work. Count MSX there once msi.dll ships upstream.
 MSX=""
 if [ "${MADEIRA_MSIEXEC_BUILD:-1}" != 0 ] && [ -d "$R/wine/programs/msiexec" ] && [ ! -f "$SHIP/msiexec.exe" ]; then
     targets="$targets programs/msiexec/arm64ec-windows/msiexec.exe"; MSX=msiexec
@@ -175,7 +177,7 @@ SDL=""
 if [ "${MADEIRA_SETUPAPI_BUILD:-1}" != 0 ] && [ -f "$R/wine/dlls/setupapi/devinst.c" ] && [ -f "$SHIP/setupapi.dll" ]; then
     SDL=setupapi
 fi
-[ -n "$todo$XI$WGI$UCX$NTS$FBT$WER$WTY$OPT$SDL$MSX" ] || { echo "nothing to build"; exit 0; }
+[ -n "$todo$XI$WGI$UCX$NTS$FBT$WER$WTY$OPT$SDL" ] || { echo "nothing to build"; exit 0; }
 
 # The cached tree may have disabled winegstreamer because macOS has no
 # GStreamer headers. Only its real PE frontend is needed here; the iOS unix

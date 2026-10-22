@@ -350,6 +350,7 @@ static void reset(void)
 {
     memset(ios_subfloor, 0, sizeof(ios_subfloor));
     ios_subfloor_count = 0;
+    __atomic_store_n(&ios_fixed_image_ever_registered, 0, __ATOMIC_RELEASE);
     pushes = 0;
 }
 static void boundaries(void)
@@ -499,6 +500,7 @@ static void native_io(void)
     current_owner = A;
     assert(!pipe(pipefd));
     /* Before the feature has ever been used, ordinary buffers go unchanged. */
+    assert(!ios_fixed_image_io_active());
     assert(ios_fixed_write(pipefd[1], "plain", 5) == 5);
     assert(ios_fixed_read(pipefd[0], readback, 5) == 5 && !memcmp(readback, "plain", 5));
     strcpy(parent.source, "parent"); strcpy(child.source, "child!");
@@ -527,7 +529,11 @@ static void native_io(void)
     assert(ios_fixed_readv(pipefd[0], FIELD(iov), 2) == 7);
     assert(!memcmp(parent.target, "abcd", 4) && !memcmp(native_part, "XYZ", 3));
     assert(!memcmp(saved_iov, parent.iov, sizeof(saved_iov)));
-    assert(ios_fixed_writev(pipefd[1], NULL, 0) == 0);
+    errno = 0;
+    ssize_t empty_result = writev(pipefd[1], NULL, 0);
+    int empty_errno = errno;
+    errno = 0;
+    assert(ios_fixed_writev(pipefd[1], NULL, 0) == empty_result && errno == empty_errno);
     errno = 0;
     assert(ios_fixed_writev(-1, FIELD(iov), 2) == -1 && errno == EBADF);
     errno = 0;

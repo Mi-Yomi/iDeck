@@ -135,7 +135,21 @@ int ios_jit_low_contains( uintptr_t a ) { (void)a; return 0; }
 '''
 
 MAIN = r'''
-#define WIN 0x5000000000ULL
+/* Modified for iDeck-BCD, 2026-10-22: as in check-x87-int64-diag.py, the fixed host addresses (0x5000000000,
+ * 0x300000000 + ...) can be taken in the process on GitHub's macos-15 runner; one free 8 GB range, 4 GB aligned. */
+static uint64_t host_base(void)
+{
+    static uint64_t b;
+    if (!b) {
+        mach_vm_address_t m = 0;
+        if (mach_vm_allocate(mach_task_self(), &m, 3ULL << 32, VM_FLAGS_ANYWHERE) != KERN_SUCCESS) { puts("alloc-failed"); exit(3); }
+        mach_vm_deallocate(mach_task_self(), m, 3ULL << 32);
+        b = (m + 0xffffffffULL) & ~0xffffffffULL;
+    }
+    return b;
+}
+#define WIN host_base()
+#define LOW (host_base() + (1ULL << 32))
 #define TEB64_G 0x300000u      /* the 64-bit TEB, guest-relative: the host TEB64 is WIN + this */
 #define TEB32_G 0x302000u
 #define PEB32_G 0x311000u
@@ -172,7 +186,7 @@ static struct world make(int with_ldr, int with_stack, int with_tls)
     if (!built)
     {
         built = 1;
-        pool = alloc_at(0x300000000ULL + 0x1000000, 0x10000);
+        pool = alloc_at(LOW + 0x1000000, 0x10000);
         alloc_at(WIN + 0x300000, 0x20000);          /* TEB64 page(s), TEB32 at +0x2000, PEB32 at 0x311000 */
         alloc_at(WIN + 0x350000, 0x10000);          /* PEB_LDR_DATA32, entries, names */
         alloc_at(WIN + 0x14fc000, 0x8000);          /* the stack around ESP 0x14ff0a0 */
@@ -240,7 +254,7 @@ int main(int argc, char **argv)
         w.st.__x[24] = WIN + 0x20000; ios_wow_null_diag(&w.st, w.teb64, EXC_BAD_ACCESS, WIN + 0x20000);   /* not the NULL page */
         w.st.__x[24] = WIN + 0x10c;
         ios_wow_null_diag(&w.st, w.teb64, EXC_BAD_ACCESS, WIN + 0x10d);               /* x24 does not match the fault address */
-        w.st.__x[19] = 0x5000000010ULL; ios_wow_null_diag(&w.st, w.teb64, EXC_BAD_ACCESS, w.st.__x[19] + 0x10c); /* x19 not a window base */
+        w.st.__x[19] = WIN + 0x10; ios_wow_null_diag(&w.st, w.teb64, EXC_BAD_ACCESS, w.st.__x[19] + 0x10c); /* x19 not a window base */
         w.st.__x[19] = WIN; w.st.__x[24] = WIN + 0x10c;
         w.st.__pc = 0x10000000ULL;                                                       /* a pc outside the pool */
         ios_wow_null_diag(&w.st, w.teb64, EXC_BAD_ACCESS, WIN + 0x10c);

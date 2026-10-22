@@ -142,7 +142,21 @@ def words_c(rows):
 
 
 MAIN = r'''
-#define WIN 0x5000000000ULL
+/* Modified for iDeck-BCD, 2026-10-22: the fixed host addresses (0x5000000000, 0x300000000 + ...) were taken in the
+ * process on GitHub's macos-15 runner (alloc-failed, build 581); one free 8 GB range, 4 GB aligned, holds them all. */
+static uint64_t host_base(void)
+{
+    static uint64_t b;
+    if (!b) {
+        mach_vm_address_t m = 0;
+        if (mach_vm_allocate(mach_task_self(), &m, 3ULL << 32, VM_FLAGS_ANYWHERE) != KERN_SUCCESS) { puts("alloc-failed"); exit(3); }
+        mach_vm_deallocate(mach_task_self(), m, 3ULL << 32);
+        b = (m + 0xffffffffULL) & ~0xffffffffULL;
+    }
+    return b;
+}
+#define WIN host_base()
+#define LOW (host_base() + (1ULL << 32))
 static uint64_t alloc_at(uint64_t a, size_t n)
 {
     mach_vm_address_t m = a;
@@ -164,7 +178,7 @@ static struct world make(const uint32_t *code, size_t words, uint32_t eax, uint3
     static uint64_t pool;
     struct world w;
     memset(&w, 0, sizeof(w));
-    if (!pool) pool = alloc_at(0x300000000ULL + 0x1000000, 0x10000);
+    if (!pool) pool = alloc_at(LOW + 0x1000000, 0x10000);
     w.pool = pool;
     ios_jit_rx_base_global = (void *)pool; ios_jit_pool_size_global = 0x10000;
     memcpy((void *)(pool + 0x1000 - words * 4), code, words * 4);
@@ -216,7 +230,7 @@ int main(int argc, char **argv)
     }
     if (!strcmp(s, "pair")) {
         unsigned a = 0, b = 0;
-        uint64_t base = alloc_at(0x300000000ULL + 0x2000000, 0x4000);
+        uint64_t base = alloc_at(LOW + 0x2000000, 0x4000);
         memcpy((void *)(base + 0x100), batman, sizeof(batman));
         printf("batman=%d\n", ios_x87i_find_pair(base + 0x100 + sizeof(batman) - 0x20, &a, &b));
         printf("a=%x b=%x\n", a, b);

@@ -85,6 +85,7 @@ code = r'''
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <pthread.h>
 typedef int NTSTATUS;
 #define STATUS_SUCCESS 0
 #define STATUS_INVALID_PARAMETER ((NTSTATUS)0xC000000D)
@@ -177,12 +178,55 @@ static void add_child_copy( uint64_t jit, size_t size, void *owner )
     ios_jit_mappings[s].pe_base = (void *)NT_PE;
 }
 
+static char race_owner_a, race_owner_b;
+static void race_callback_a( unsigned long long p, unsigned long long j, unsigned long long s )
+{
+    (void)j; (void)s;
+    assert( p == (uintptr_t)&race_owner_a );
+    assert( ios_alias_cb_for( &race_owner_a ) == race_callback_a );
+}
+static void race_callback_b( unsigned long long p, unsigned long long j, unsigned long long s )
+{
+    (void)j; (void)s;
+    assert( p == (uintptr_t)&race_owner_b );
+    assert( ios_alias_cb_for( &race_owner_b ) == race_callback_b );
+}
+struct callback_race { void *owner, *other; ios_alias_cb_t callback, other_callback; };
+static void *race_callbacks( void *opaque )
+{
+    struct callback_race *race = opaque;
+    for (unsigned i = 0; i < 20000; ++i)
+    {
+        ios_alias_cb_set( race->owner, race->callback );
+        ios_alias_cb_t own = ios_alias_cb_for( race->owner );
+        ios_alias_cb_t other = ios_alias_cb_for( race->other );
+        assert( own == race->callback && (!other || other == race->other_callback) );
+        own( (uintptr_t)race->owner, 0, 0 ); /* callback may reenter after the snapshot */
+        ios_alias_cb_drop( race->owner );
+        assert( !ios_alias_cb_for( race->owner ) );
+    }
+    return NULL;
+}
+static void callback_concurrency(void)
+{
+    struct callback_race races[] = {
+        { &race_owner_a, &race_owner_b, race_callback_a, race_callback_b },
+        { &race_owner_b, &race_owner_a, race_callback_b, race_callback_a }
+    };
+    pthread_t threads[2];
+    for (unsigned i = 0; i < 2; ++i) assert( !pthread_create( &threads[i], NULL, race_callbacks, &races[i] ) );
+    for (unsigned i = 0; i < 2; ++i) assert( !pthread_join( threads[i], NULL ) );
+    assert( !ios_alias_cb_for( &race_owner_a ) && !ios_alias_cb_for( &race_owner_b ) );
+    puts( "PASS: concurrent sibling callback registration, snapshot, drop and slot reuse preserve ownership" );
+}
+
 int main( int argc, char **argv )
 {
     const int own_on = argc > 1 && !strcmp( argv[1], "on" );
     const int pp = argc > 2 && !strcmp( argv[2], "pp" );   /* per-process pushes */
     struct ios_push_jit_aliases_args reg;
 
+    if (pp) callback_concurrency();
     /* Session boot: ntdll and two images, then the main emulator registers. */
     cur_peb = MAIN_PEB;
     ios_jit_add_mapping( (void *)NT_PE, (void *)NT_MAIN, NT_SIZE );
@@ -322,7 +366,7 @@ with tempfile.TemporaryDirectory(prefix='madeira-child-ntdll-alias-') as directo
     executable = folder / 'check'
     cc = os.environ.get('CC', 'cc')
     flags = [cc, '-std=gnu11', '-Wall', '-Wextra', '-Wno-unused-function', '-Wno-unused-parameter',
-             '-Werror', '-g', str(source), '-o', str(executable)]
+             '-Werror', '-g', '-pthread', str(source), '-o', str(executable)]
     sanitize = ['-fsanitize=address,undefined', '-fno-sanitize-recover=all']
     if subprocess.run(flags[:1] + sanitize + flags[1:], capture_output=True).returncode == 0:
         print('built with AddressSanitizer/UBSan')

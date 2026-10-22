@@ -71,8 +71,12 @@ jobs:
 
       - name: Check isolated fixed-image memory and FEX windows
         run: |
+          set +e
           python3 tests/host/check-fixed-image-isolation.py
+          native_status=$?
           python3 tests/host/check-fex-guest-windows.py
+          fex_status=$?
+          test "$native_status:$fex_status" = 0:0
 
       - name: Check generated settings catalog
         run: python3 tests/host/check-config-catalog.py

@@ -4214,29 +4214,36 @@ static int ios_jit_alias_has_emulator( void *peb )
 #define IOS_ALIAS_DRAIN_RESERVE 96
 typedef void (*ios_alias_cb_t)(unsigned long long, unsigned long long, unsigned long long);
 static struct { void *peb; ios_alias_cb_t cb; } ios_alias_cbs[IOS_ALIAS_REG_MAX];
+static pthread_mutex_t ios_alias_cb_lock = PTHREAD_MUTEX_INITIALIZER;
 
 static int ios_alias_per_process_enabled(void)
 {
     static int enabled = -1;
-    if (enabled < 0)
+    int value = __atomic_load_n( &enabled, __ATOMIC_ACQUIRE );
+    if (value < 0)
     {
         /* Default on. 0 restores the old pushes: every image goes to the emulator
          * that registered last, and a registration drains every process's images. */
         const char *env = getenv( "MADEIRA_ALIAS_PER_PROCESS" );
-        enabled = !(env && env[0] == '0' && !env[1]);
+        value = !(env && env[0] == '0' && !env[1]);
+        __atomic_store_n( &enabled, value, __ATOMIC_RELEASE );
     }
-    return enabled;
+    return value;
 }
 
 static ios_alias_cb_t ios_alias_cb_for( void *peb )
 {
+    ios_alias_cb_t cb = NULL;
     int i;
 
     if (!peb || !ios_alias_per_process_enabled()) return NULL;
-    /* acquire: ios_alias_cb_set writes the callback before the PEB */
+    /* Sibling processes can initialize together; snapshot the pair, then
+     * release the lock before any caller invokes the PE callback. */
+    pthread_mutex_lock( &ios_alias_cb_lock );
     for (i = 0; i < IOS_ALIAS_REG_MAX; i++)
-        if (__atomic_load_n( &ios_alias_cbs[i].peb, __ATOMIC_ACQUIRE ) == peb) return ios_alias_cbs[i].cb;
-    return NULL;
+        if (ios_alias_cbs[i].peb == peb) { cb = ios_alias_cbs[i].cb; break; }
+    pthread_mutex_unlock( &ios_alias_cb_lock );
+    return cb;
 }
 
 static void ios_alias_cb_set( void *peb, ios_alias_cb_t cb )
@@ -4244,6 +4251,7 @@ static void ios_alias_cb_set( void *peb, ios_alias_cb_t cb )
     int i, slot = -1;
 
     if (!peb) return;
+    pthread_mutex_lock( &ios_alias_cb_lock );
     for (i = 0; i < IOS_ALIAS_REG_MAX; i++)
     {
         if (ios_alias_cbs[i].peb == peb) { slot = i; break; }
@@ -4251,13 +4259,14 @@ static void ios_alias_cb_set( void *peb, ios_alias_cb_t cb )
     }
     if (slot < 0)
     {
+        pthread_mutex_unlock( &ios_alias_cb_lock );
         dprintf(2, "[alias-push] madeira-bcd peb=%p: no free per-process callback slot (%d), "
                 "its images go to the last registrant\n", peb, IOS_ALIAS_REG_MAX);
         return;
     }
     ios_alias_cbs[slot].cb = cb;
-    __sync_synchronize();
     ios_alias_cbs[slot].peb = peb;
+    pthread_mutex_unlock( &ios_alias_cb_lock );
 }
 
 static void ios_alias_cb_drop( void *peb )
@@ -4265,13 +4274,14 @@ static void ios_alias_cb_drop( void *peb )
     int i;
 
     if (!peb) return;
+    pthread_mutex_lock( &ios_alias_cb_lock );
     for (i = 0; i < IOS_ALIAS_REG_MAX; i++)
         if (ios_alias_cbs[i].peb == peb)
         {
             ios_alias_cbs[i].peb = NULL;
-            __sync_synchronize();
             ios_alias_cbs[i].cb = NULL;
         }
+    pthread_mutex_unlock( &ios_alias_cb_lock );
 }
 
 void ios_jit_add_mapping(void *pe_base, void *jit_base, size_t size)

@@ -9,6 +9,7 @@ compilation; --pe-dir additionally validates the two device regression PEs.
 from pathlib import Path
 import argparse
 import os
+import re
 import struct
 import subprocess
 import tempfile
@@ -66,8 +67,11 @@ def check_pes(directory):
 
 
 def function(source, signature):
-    start = source.index(signature)
-    return source[start:source.index('\n}', start) + 2] + '\n'
+    # These sources put the function's closing brace alone in column zero;
+    # an in-function macro can also start with `}`, followed by `while (0)`.
+    start = re.search(re.escape(signature) + r'[^;{}]*\n\{', source).start()
+    end = re.search(r'^}$', source[start:], re.MULTILINE).end()
+    return source[start:start + end] + '\n'
 
 
 def reservation_harness(source):
@@ -224,6 +228,7 @@ static void reservations(void)
 
 def ordered_harness(source):
     helper = function(source, 'static int ios_emulate_fixed_ordered(').replace('ucontext_t', 'fixed_test_context')
+    assert '#undef IOS_FIXED_ATOMIC' in helper and helper.endswith('    return 1;\n}\n')
     return r'''
 typedef struct { uint64_t regs[32]; } fixed_test_context;
 static uint64_t ios_get_reg(fixed_test_context *ctx, int r) { return r == 31 ? 0 : ctx->regs[r]; }

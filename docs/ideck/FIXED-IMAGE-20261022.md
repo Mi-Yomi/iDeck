@@ -1,4 +1,4 @@
-# iDeck-BCD 584: process-private fixed x64 images
+# iDeck-BCD: process-private fixed x64 images
 
 Fork-local change, 2026-10-22. Opt-in: `env.MADEIRA_FIXED_IMAGE_ISOLATION = 1`.
 Set it on the launcher entry before starting a fresh Wine session. It requires
@@ -44,8 +44,8 @@ Actions runs compiled host tests for the actual native window registry, guard
 reservation and I/O helper, plus extracted production FEX callback/address IR.
 It rebuilds FEX, verifies `IosGuestWindowAbi` in the resulting DLL, and builds
 two distinct executables at the identical fixed address. A separate
-`fixed-image-test-584` artifact includes these executables and their instructions
-in `FIXED-IMAGE.md`; the two IPAs remain in `unsigned-ipa-584`.
+`fixed-image-test-<build>` artifact includes these executables and their instructions
+in `FIXED-IMAGE.md`; the two IPAs remain in `unsigned-ipa-<build>`.
 
 See `tests/proc/FIXED-IMAGE.md` for the simultaneous parent/child device test.
 Device test and actual 1C launcher/client: **NOT RUN**. Host tests and a successful

@@ -14,6 +14,9 @@
 # Also (2026-10-22, Resident Evil 2) winedmo.dll, the demuxer DLL nothing shipped imports, and the opt-in
 # mfasfsrcsnk-optin.dll, wmvdecod-optin.dll and wmadmod-optin.dll: Wine's ASF byte stream handler (built with
 # tools/patch-wine-mfasfsrcsnk-winedmo.py) and the WMV and WMA decoder MFTs behind it (see OPTIN_WANT below).
+# Modified for iDeck-BCD, 2026-10-22: 64-bit Windows Installer, msi.dll with the DLLs it imports that the set
+# lacks (sxs, mspatcha, odbccp32) and msiexec.exe (see MSX below), for an x86-64 .msi (owner's request:
+# 1C:Enterprise's official x86-64 package). The set had only the i386 msiexec.exe.
 # A DLL upstream already ships is never replaced. Run from the repository
 # root; needs llvm-mingw on PATH (or MINGW) and the native wine tools.
 #   usage: build-wine-extra-dlls.sh [native tools dir]
@@ -33,6 +36,7 @@ WANT="msvcr70 msvcr71 msvcr80 msvcr90 msvcr100 msvcr110 msvcrt20 msvcrt40 msvcir
       wbemprox wbemdisp wmiutils
       riched20 riched32 msftedit gdiplus mlang usp10 cabinet sspicli msxml3 msxml6
       msasn1 wldp hnetcfg msctf xmllite netprofm d2d1 wmvcore winegstreamer srvcli winedmo
+      msi sxs mspatcha odbccp32
       xaudio2_0 xaudio2_1 xaudio2_2 xaudio2_3 xaudio2_4 xaudio2_5 xaudio2_6 xaudio2_7 xaudio2_8 xaudio2_9
       x3daudio1_0 x3daudio1_1 x3daudio1_2 x3daudio1_3 x3daudio1_4 x3daudio1_5 x3daudio1_6 x3daudio1_7
       xapofx1_1 xapofx1_2 xapofx1_3 xapofx1_4 xapofx1_5
@@ -124,6 +128,13 @@ WTY=""
 if [ "${MADEIRA_WTY_BUILD:-1}" != 0 ] && [ -d "$R/wine/dlls/wintypes" ] && ! shipped wintypes; then
     targets="$targets dlls/wintypes/arm64ec-windows/wintypes.dll"; WTY=wintypes
 fi
+# iDeck-BCD, 2026-10-22: Wine's msiexec.exe for the 64-bit set, shipped only together with msi.dll (built
+# above). Library.swift starts a .msi with C:\windows\system32\msiexec.exe when the bundle has it, else with the
+# i386 set's msiexec.exe through WoW64. MADEIRA_MSIEXEC_BUILD=0 skips it.
+MSX=""
+if [ "${MADEIRA_MSIEXEC_BUILD:-1}" != 0 ] && [ -d "$R/wine/programs/msiexec" ] && [ ! -f "$SHIP/msiexec.exe" ]; then
+    targets="$targets programs/msiexec/arm64ec-windows/msiexec.exe"; MSX=msiexec
+fi
 # madeira-bcd: more DLLs a game's program imports that the set lacks, each shipped as <name>-optin.dll
 # and linked as <name>.dll only for a game whose file lists it in env.MADEIRA_OPTIN_DLLS (comma or
 # semicolon separated; app/Madeira/WineProcessBridge.m), so no program that loads one optionally today
@@ -164,7 +175,7 @@ SDL=""
 if [ "${MADEIRA_SETUPAPI_BUILD:-1}" != 0 ] && [ -f "$R/wine/dlls/setupapi/devinst.c" ] && [ -f "$SHIP/setupapi.dll" ]; then
     SDL=setupapi
 fi
-[ -n "$todo$XI$WGI$UCX$NTS$FBT$WER$WTY$OPT$SDL" ] || { echo "nothing to build"; exit 0; }
+[ -n "$todo$XI$WGI$UCX$NTS$FBT$WER$WTY$OPT$SDL$MSX" ] || { echo "nothing to build"; exit 0; }
 
 # The cached tree may have disabled winegstreamer because macOS has no
 # GStreamer headers. Only its real PE frontend is needed here; the iOS unix
@@ -443,6 +454,25 @@ PY
     mv "$SHIP/$d.dll.tmp" "$SHIP/$d.dll"
     built=$((built + 1))
 done
+if [ -n "$MSX" ]; then
+    f="$B/programs/msiexec/arm64ec-windows/msiexec.exe"
+    if [ -f "$f" ] && [ -f "$SHIP/msi.dll" ]; then
+        cp "$f" "$SHIP/msiexec.exe.tmp"
+        "$MINGW/llvm-strip" "$SHIP/msiexec.exe.tmp"
+        python3 - "$SHIP/msiexec.exe.tmp" <<'PY'
+import struct, sys
+p = sys.argv[1]; d = open(p, 'rb').read()
+pe = struct.unpack_from('<I', d, 0x3c)[0]
+target = struct.unpack_from('<I', d, pe + 24 + 56)[0] + 0x10000
+if len(d) < target:
+    open(p, 'ab').write(b'\0' * (target - len(d)))
+PY
+        mv "$SHIP/msiexec.exe.tmp" "$SHIP/msiexec.exe"
+        echo "::notice::msiexec.exe (64-bit Windows Installer, with msi.dll): built"
+    else
+        echo "::warning::msiexec.exe or msi.dll did not build; a .msi starts with the i386 msiexec.exe"
+    fi
+fi
 if [ -n "$WER" ]; then
     f="$B/dlls/wer/arm64ec-windows/wer.dll"
     if [ -f "$f" ]; then

@@ -39,7 +39,11 @@ struct BCDProgramInfo: Equatable {
 
     /// "32-bit · Direct3D 9", "A batch file".
     var summary: String {
-        guard bits != 0 else { return "A batch file, started through cmd.exe" }
+        guard bits != 0 else {
+            // Modified for iDeck-BCD, 2026-10-22: a Windows Installer package has no PE header either.
+            return windowsPath.lowercased().hasSuffix(".msi") ? "A Windows Installer package, started through msiexec.exe"
+                                                              : "A batch file, started through cmd.exe"
+        }
         var parts = ["\(bits)-bit"]
         if let api, !api.isEmpty { parts.append(api.replacingOccurrences(of: "D3D", with: "Direct3D ")) }
         return parts.joined(separator: " · ")

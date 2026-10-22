@@ -274,6 +274,20 @@ expect(env("MADEIRA_EXE") == "C:\\windows\\system32\\cmd.exe" && env("MADEIRA_AR
        && env("MADEIRA_DESKTOP") == nil && env("MADEIRA_WORKDIR") == "C:\\Games\\Tool", "direct .bat: cmd.exe /c, in its folder")
 bat.launchMode = "desktop"; bat.configureLaunch()
 expect(env("MADEIRA_ARGS") == "/desktop=shell,1280x720 cmd /c \"C:\\Games\\Tool\\run game.bat\" fast", "desktop .bat: cmd /c inside the desktop")
+// iDeck-BCD, 2026-10-22: a Windows Installer package runs through msiexec.exe /i, in its folder: the 64-bit
+// set's msiexec.exe when the bundle has it, else the bare name the bridge runs as the i386 one through WoW64.
+var msi = LibraryEntry(title: "Setup", relativePath: "Setup/1C Enterprise.MSI", bits: 0)
+msi.resolution = "1280x720"
+expect(msi.isPackage && !msi.isBatch && !game.isPackage, ".msi is a package, not a batch file")
+LibraryEntry.bundledMsiexec64 = false; msi.configureLaunch()
+expect(env("MADEIRA_EXE") == "msiexec.exe" && env("MADEIRA_ARGS") == "/i \"C:\\Setup\\1C Enterprise.MSI\""
+       && env("MADEIRA_WORKDIR") == "C:\\Setup", "direct .msi, i386 msiexec only: the bare name, in its folder (\(env("MADEIRA_ARGS") ?? "nil"))")
+LibraryEntry.bundledMsiexec64 = true; msi.configureLaunch()
+expect(env("MADEIRA_EXE") == "C:\\windows\\system32\\msiexec.exe" && env("MADEIRA_WORKDIR") == "C:\\Setup",
+       "direct .msi with the 64-bit msiexec.exe: system32 (the arm64ec core)")
+msi.launchMode = "desktop"; msi.configureLaunch()
+expect(env("MADEIRA_ARGS") == "/desktop=shell,1280x720 C:\\windows\\syswow64\\msiexec.exe /i \"C:\\Setup\\1C Enterprise.MSI\"",
+       "desktop .msi: the i386 msiexec.exe inside the desktop (explorer runs on the aarch64 core)")
 var svc = inDesk; svc.startServices = true
 let script = svc.servicesScript ?? ""
 expect(script.hasPrefix("@echo off\r\n") && script.contains("start \"\" \"C:\\windows\\system32\\services.exe\"\r\n")
@@ -527,7 +541,7 @@ check('runWineFullSequence(profile: entry)' in content and 'profile.applyEnviron
 # (The developer interface and its Switch to the Library button are deleted in wave 3.)
 loop = bridge.index('for (NSString *raw in [text componentsSeparatedByCharactersInSet:')
 snap = bridge.find('game_set[i] = getenv(per_launch[i]) != NULL;')
-bat_add = lib[lib.index('if ["bat", "cmd"].contains(url.pathExtension.lowercased())'):]
+bat_add = lib[lib.index('if ["bat", "cmd", "msi"].contains(url.pathExtension.lowercased())'):]   # iDeck-BCD: + msi
 bat_add = bat_add[:bat_add.index('let h = try FileHandle(forReadingFrom: url)')]
 check('launchMode' not in bat_add, 'an added .bat/.cmd starts directly by default, like every entry (upstream has no other mode)')
 check(0 <= snap < loop and 'getenv(per_launch[i])' not in bridge[loop:bridge.index('setenv(k.UTF8String, v.UTF8String, 1);', loop)],
@@ -586,8 +600,8 @@ check('id: "start"' in page and 'case "start": change(game) { $0.launchMode = va
       'game page: start mode, working folder and services')
 check('settings.append(BCDGameSetting(id: "command", title: "What starts", kind: .info, value: entry.commandPreview))' in page,
       'game page: the command line shows what the next start runs, launch mode included')
-check('programExtensions: Set<String> = ["exe", "bat", "cmd"]' in model and 'programExtensions.contains(url.pathExtension.lowercased())' in lib,
-      'the launch check accepts .bat and .cmd')
+check('programExtensions: Set<String> = ["exe", "bat", "cmd", "msi"]' in model and 'programExtensions.contains(url.pathExtension.lowercased())' in lib,
+      'the launch check accepts .bat, .cmd and (iDeck-BCD) .msi')
 check('GameSurfaceLayout.rect(' in content and 'GameSurfaceLayout.map(' in content and 'effectiveDisplayMode()' in content
       and '* 1024 / r.width' not in content, 'the game view lays out and maps touches through GameSurfaceLayout')
 check('if touchPointerMode { touchModeBegan(touches); return }' in content, 'the game view handles the Touch pointer mode')

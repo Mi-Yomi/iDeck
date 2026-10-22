@@ -294,6 +294,13 @@ struct LibraryEntry: Codable, Identifiable {
         return launchCommand.args
     }
 
+    /// Modified for iDeck-BCD, 2026-10-22 (owner's request: 1C:Enterprise's installer): a Windows
+    /// Installer package (.msi) runs through msiexec.exe /i, as a .bat runs through cmd.exe.
+    var isPackage: Bool { launchRelativePath.lowercased().hasSuffix(".msi") }
+    /// The 64-bit set's msiexec.exe (tools/build-wine-extra-dlls.sh), which installs x86-64 and x86
+    /// packages. Without it the i386 set's: a bare "msiexec.exe" the bridge runs through WoW64
+    /// (WineProcessBridge.m madeira_target_machine), and only x86 packages install.
+    static var bundledMsiexec64 = FileManager.default.fileExists(atPath: Bundle.main.bundlePath + "/arm64ec-windows/msiexec.exe")
     /// ml1163: a .bat or .cmd target runs through cmd.exe. For "The game" (a Steam
     /// game started as its own program) the target is that program.
     var isBatch: Bool {
@@ -387,10 +394,18 @@ struct LibraryEntry: Codable, Identifiable {
         var batch = isBatch
         if servicesScript != nil { path = servicesScriptPath; extra = ""; batch = true }
         func withExtra(_ s: String) -> String { extra.isEmpty ? s : s + " " + extra }
+        let package = isPackage && !batch   // with the services batch, the batch STARTs the .msi itself
         if runsInDesktop {
-            return ("explorer.exe", "/desktop=shell,\(resolution) " + withExtra(batch ? "cmd /c \(quoted(path))" : quoted(path)))
+            // The Wine desktop's explorer.exe runs on the aarch64 core, which has no msiexec.exe of its own.
+            let target = batch ? "cmd /c \(quoted(path))"
+                : package ? "C:\\windows\\syswow64\\msiexec.exe /i \(quoted(path))" : quoted(path)
+            return ("explorer.exe", "/desktop=shell,\(resolution) " + withExtra(target))
         }
         if batch { return ("C:\\windows\\system32\\cmd.exe", withExtra("/c \(quoted(path))")) }
+        if package {
+            // A system32 path picks the arm64ec core, where the 64-bit msiexec.exe lives.
+            return (Self.bundledMsiexec64 ? "C:\\windows\\system32\\msiexec.exe" : "msiexec.exe", withExtra("/i \(quoted(path))"))
+        }
         return (path, programArguments)   // upstream's direct launch, arguments verbatim
     }
     /// The details page's "command that runs" line: the program's file name and
@@ -883,13 +898,14 @@ final class LibraryModel: ObservableObject {
         LogStore.shared.log("[steam-games] metadata app=\(game.id) bits=\(updated.bits) api=\(api ?? "unknown")")
     }
 
-    /// What an entry can start: an executable, or (ml1163) a batch file run through cmd.exe.
-    static let programExtensions: Set<String> = ["exe", "bat", "cmd"]
+    /// What an entry can start: an executable, or (ml1163) a batch file run through cmd.exe,
+    /// or (iDeck-BCD, 2026-10-22) a Windows Installer package run through msiexec.exe.
+    static let programExtensions: Set<String> = ["exe", "bat", "cmd", "msi"]
     static func executable(_ relative: String) throws -> URL {
         let url = drive.appendingPathComponent(relative).resolvingSymlinksInPath().standardizedFileURL
         guard url.path.hasPrefix(drive.path + "/"), programExtensions.contains(url.pathExtension.lowercased()),
               FileManager.default.fileExists(atPath: url.path) else {
-            throw LibraryError.message("Pick a program in drive_c: an .exe, .bat or .cmd file.")
+            throw LibraryError.message("Pick a program in drive_c: an .exe, .bat, .cmd or .msi file.")
         }
         return url
     }
@@ -897,7 +913,7 @@ final class LibraryModel: ObservableObject {
         guard url.resolvingSymlinksInPath().path.hasPrefix(drive.path + "/") else {
             throw LibraryError.message("Only programs inside drive_c can be added.")
         }
-        if ["bat", "cmd"].contains(url.pathExtension.lowercased()) {
+        if ["bat", "cmd", "msi"].contains(url.pathExtension.lowercased()) {   // iDeck-BCD: + msi, no PE header either
             // ml1163: a batch file has no PE header. Like every entry it starts
             // directly by default, as upstream starts every game; the details page
             // warns that Wine then stops when cmd.exe, its first process, exits.

@@ -76,7 +76,9 @@ jobs:
           native_status=$?
           python3 tests/host/check-fex-guest-windows.py
           fex_status=$?
-          test "$native_status:$fex_status" = 0:0
+          python3 tests/host/check-child-ntdll-alias.py
+          alias_status=$?
+          test "$native_status:$fex_status:$alias_status" = 0:0:0
 
       - name: Check generated settings catalog
         run: python3 tests/host/check-config-catalog.py

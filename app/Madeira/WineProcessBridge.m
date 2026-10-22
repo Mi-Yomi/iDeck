@@ -961,6 +961,30 @@ static void madeira_seed_winsxs_x86(NSFileManager *fm, NSString *prefix, NSStrin
             seeded, count, skipped);
 }
 
+/* Modified for iDeck-BCD, 2026-10-22: Common-Controls 6.0 for 64-bit processes, identity only.
+ * ntdll (actctx.c parse_depend_manifests) gives up the WHOLE activation context at the first
+ * dependency it cannot find, and a 64-bit (ARM64EC, "arm64") process found no Common-Controls
+ * in winsxs: every other dependency of its manifest went with it. Blender (Steam 365670) lists
+ * Common-Controls before its private blender.shared assembly, so none of its DLLs in
+ * blender.shared\ were found (tbb12.dll ... c0000135). No <file>: no 64-bit comctl32_v6 is
+ * shipped, so comctl32.dll keeps loading from system32 exactly as before; only the dependency
+ * is met. */
+static void madeira_seed_winsxs_arm64_comctl(NSFileManager *fm, NSString *prefix)
+{
+    NSString *manifests = [prefix stringByAppendingPathComponent:@"drive_c/windows/winsxs/manifests"];
+    NSString *manifest = [manifests stringByAppendingPathComponent:
+        @"arm64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.2600.2982_none_deadbeef.manifest"];
+    NSString *text =
+        @"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n"
+        @"<assembly xmlns=\"urn:schemas-microsoft-com:asm.v1\" manifestVersion=\"1.0\">\n"
+        @"  <assemblyIdentity type=\"win32\" name=\"Microsoft.Windows.Common-Controls\" version=\"6.0.2600.2982\" "
+        @"processorArchitecture=\"arm64\" publicKeyToken=\"6595b64144ccf1df\"/>\n"
+        @"</assembly>\n";
+    [fm createDirectoryAtPath:manifests withIntermediateDirectories:YES attributes:nil error:nil];
+    BOOL ok = [[text dataUsingEncoding:NSUTF8StringEncoding] writeToFile:manifest atomically:YES];
+    dprintf(STDERR_FILENO, "[WineProc] winsxs: arm64 Common-Controls 6.0 identity %s\n", ok ? "seeded" : "FAILED");
+}
+
 /* FEX's WOW64 module cannot call sysctl, and without an answer it assumes the
  * newest cores' feature set. A wrong "present" is silent corruption, not a
  * crash (FEAT_AFP claimed on a core without it leaves FPCR.NEP RES0, so every
@@ -1790,6 +1814,7 @@ static void *wine_process_thread(void *arg) {
                 madeira_link_syswow64_wbem(fm, prefix, bundlePath);
                 madeira_seed_winsxs_x86(fm, prefix, bundlePath);
             }
+            madeira_seed_winsxs_arm64_comctl(fm, prefix);
             madeira_link_wine_mono(fm, prefix, bundlePath);
 
             /* madeira-bcd: the AVX opt-in lives in a separately built FEX module

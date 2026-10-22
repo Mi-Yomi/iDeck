@@ -23818,6 +23818,11 @@ static void *ios_fixed_image_buffer( const void *addr, size_t size )
     return (void *)addr;
 }
 
+static BOOL ios_fixed_image_fits( ULONG_PTR guest, SIZE_T size, ULONG_PTR low, ULONG_PTR high )
+{
+    return size && guest >= low && guest <= high && size - 1 <= high - guest;
+}
+
 static struct { ULONG_PTR base; SIZE_T size; } ios_fixed_guards[32];
 static unsigned ios_fixed_guard_count;
 
@@ -24613,9 +24618,13 @@ static NTSTATUS map_image_view( struct file_view **view_ret, struct pe_image_inf
     if (!is_builtin && !wow_image && ios_fixed_image_candidate( image_info ))
     {
         if (!ios_jit_current_peb()) return STATUS_NOT_SUPPORTED;
+        if (!ios_fixed_image_fits( image_info->base, size, limit_low, limit_high ))
+            return STATUS_CONFLICTING_ADDRESSES;
         if ((status = ios_fixed_image_reserve( image_info->base, size ))) return status;
+        /* The caller constrains guest addresses. A precise fixed-address
+         * request must not also force its private backing into that guard. */
         return map_view( view_ret, NULL, size, MEM_TOP_DOWN, vprot,
-                         max( limit_low, (ULONG_PTR)limit_4g ), limit_high, 0 );
+                         (ULONG_PTR)limit_4g, 0, 0 );
     }
 
     /* first try the specified base */

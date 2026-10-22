@@ -77,6 +77,7 @@ def function(source, signature):
 def reservation_harness(source):
     helpers = function(source, 'static int ios_fixed_image_isolation(void)')
     helpers += function(source, 'static BOOL ios_fixed_image_candidate(')
+    helpers += function(source, 'static BOOL ios_fixed_image_fits(')
     start = source.index('static struct { ULONG_PTR base; SIZE_T size; } ios_fixed_guards[')
     end = source.index('static NTSTATUS ios_fixed_image_reserve(', start)
     helpers += source[start:end] + function(source, 'static NTSTATUS ios_fixed_image_reserve(')
@@ -148,6 +149,17 @@ static void reservations(void)
 {
     struct pe_image_info info = { .base = 0x140000000ULL, .machine = IMAGE_FILE_MACHINE_AMD64,
                                   .image_charact = IMAGE_FILE_RELOCS_STRIPPED };
+    assert(ios_fixed_image_fits(0x140000000ULL, 0x4000, 0x140000000ULL, 0x140003fffULL));
+    assert(ios_fixed_image_fits(0x140000001ULL, 0x3fff, 0x140000000ULL, 0x140003fffULL));
+    assert(!ios_fixed_image_fits(0x13fffffffULL, 1, 0x140000000ULL, 0x140003fffULL));
+    assert(!ios_fixed_image_fits(0x140004000ULL, 1, 0x140000000ULL, 0x140003fffULL));
+    assert(!ios_fixed_image_fits(0x140000000ULL, 0x4001, 0x140000000ULL, 0x140003fffULL));
+    assert(!ios_fixed_image_fits(0x140000000ULL, 0, 0x140000000ULL, 0x140003fffULL));
+    assert(!ios_fixed_image_fits(0x140000000ULL, SIZE_MAX, 0, UINTPTR_MAX));
+    assert(!ios_fixed_image_fits(UINTPTR_MAX - 15, 32, 0, UINTPTR_MAX));
+    assert(ios_fixed_image_fits(UINTPTR_MAX, 1, 0, UINTPTR_MAX));
+    assert(!ios_fixed_image_fits(UINTPTR_MAX, 2, 0, UINTPTR_MAX));
+    assert(!ios_fixed_image_fits(0x140000000ULL, 1, 0x140000001ULL, 0x140000000ULL));
     unsetenv("MADEIRA_FIXED_IMAGE_ISOLATION");
     assert(!ios_fixed_image_isolation() && !ios_fixed_image_candidate(&info));
     const char *disabled[] = { "", "0", "true", "11", "1 " };
@@ -603,8 +615,16 @@ def main():
     parser.add_argument('--pe-dir', type=Path)
     args = parser.parse_args()
     source = (ROOT / 'build/ntdll-unix/signal_arm64_ios.c').read_text()
-    code = harness(source, (ROOT / 'build/ntdll-unix/virtual_ios.c').read_text(),
+    virtual = (ROOT / 'build/ntdll-unix/virtual_ios.c').read_text()
+    code = harness(source, virtual,
                    (ROOT / 'build/wineserver/mach_ios.c').read_text())
+    mapping = function(virtual, 'static NTSTATUS map_image_view(')
+    start = mapping.index('if (!is_builtin && !wow_image && ios_fixed_image_candidate( image_info ))')
+    isolated = mapping[start:mapping.index('\n    }', start)]
+    assert isolated.index('ios_fixed_image_fits( image_info->base, size, limit_low, limit_high )') \
+        < isolated.index('ios_fixed_image_reserve( image_info->base, size )') < isolated.index('return map_view(')
+    assert re.search(r'return map_view\( view_ret, NULL, size, MEM_TOP_DOWN, vprot,\s*'
+                     r'\(ULONG_PTR\)limit_4g, 0, 0 \);', isolated), 'backing must not inherit guest address bounds'
     server = (ROOT / 'build/ntdll-unix/server_ios.c').read_text()
     assert 'ios_subfloor_release_owner( dead_peb );' in server, 'exit must retire the process windows'
     for name in ('ios_register_fixed_image_window', 'ios_unregister_fixed_image_window', 'ios_fixed_image_translate'):

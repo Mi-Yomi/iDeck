@@ -77,6 +77,12 @@ with tempfile.TemporaryDirectory(prefix='madeira-media-pe-') as tmp:
     dialogs = ('OleUIInsertObjectW', 'OleUIEditLinksW', 'OleUIPasteSpecialW')
     rejected(lambda: check(folder), 'missing required oledlg.dll')
     oledlg.write_bytes(image(dialogs))
+    odbc = folder / 'odbc32.dll'
+    sql = ('SQLAllocHandle', 'SQLDriverConnectW', 'SQLExecDirectW')
+    rejected(lambda: check(folder), 'missing required odbc32.dll')
+    odbc.write_bytes(image(sql[:-1]))
+    rejected(lambda: check(folder), 'odbc32.dll: missing implemented reader exports')
+    odbc.write_bytes(image(sql))
     with redirect_stdout(io.StringIO()): check(folder)
     oledlg.write_bytes(image(dialogs, ('not-packaged.dll',)))
     rejected(lambda: check(folder), 'missing imports not-packaged.dll')

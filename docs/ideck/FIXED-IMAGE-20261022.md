@@ -71,7 +71,18 @@ all PE metadata. Process retirement drops the owning emulator callback before
 unmapping its fixed image. Host regressions cover inaccessible PE pages, every
 failed read, malformed export bounds and callback removal before unmapping.
 
-Build 591 device test and actual 1C launcher/client: **NOT RUN**. The separate
+Build 591 device evidence: `frame.dll` and `oledlg.dll` load and the desktop
+stays responsive. `1cv8s.exe` then loads `backbas.dll`, which fails with
+`c0000135` because `odbc32.dll` is missing; `core83.dll` reads a null pointer
+and the process ends with `c0000005`. Repeated launches of the shortcut then
+ran several 1C clients at once and exhausted the 576 MB JIT pool, so later
+clients could not map `frame.dll` or `WebKit.dll` (`c0000017`).
+
+Build 592 adds Wine's `odbc32.dll` the same way and requires it in the
+packaging gate. Its DllMain succeeds without the unix-side library, so only
+Windows ODBC drivers are available.
+
+Build 592 device test and actual 1C launcher/client: **NOT RUN**. The separate
 fixed-image device fixture has not been run on iOS either. Host tests and a
 successful IPA build cannot establish that 1C runs on a device. Unknown fault
 paths during guest exception handling remain possible. The repository contains

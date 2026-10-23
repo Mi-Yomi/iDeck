@@ -80,6 +80,21 @@ jobs:
           alias_status=$?
           test "$native_status:$fex_status:$alias_status" = 0:0:0
 
+      - name: Check JIT pool image placement contracts
+        run: |
+          result=0
+          python3 tests/host/check-pool-low-images.py || result=1
+          python3 tests/host/check-x64-image-nocopy.py || result=1
+          python3 tests/host/check-swap-images.py || result=1
+          python3 tests/host/check-ec-hook.py || result=1
+          python3 tests/host/check-x64-graphics-entry.py || result=1
+          python3 tests/host/check-pool-startup-budget.py --require-swift || result=1
+          python3 tests/host/check-pool-placement.py || result=1
+          python3 tests/host/check-pool-split.py || result=1
+          python3 tests/host/check-pool-low.py || result=1
+          python3 tests/host/check-pool-code-exit.py || result=1
+          exit "$result"
+
       - name: Check generated settings catalog
         run: python3 tests/host/check-config-catalog.py
 
@@ -624,19 +639,6 @@ jobs:
         run: |
           python3 tests/host/check-launch-routing.py
           python3 tests/host/check-cmd-bundle.py
-
-      - name: Check JIT pool image placement contracts
-        run: |
-          python3 tests/host/check-pool-low-images.py
-          python3 tests/host/check-x64-image-nocopy.py
-          python3 tests/host/check-swap-images.py
-          python3 tests/host/check-ec-hook.py
-          python3 tests/host/check-x64-graphics-entry.py
-          python3 tests/host/check-pool-startup-budget.py --require-swift
-          python3 tests/host/check-pool-placement.py
-          python3 tests/host/check-pool-split.py
-          python3 tests/host/check-pool-low.py
-          python3 tests/host/check-pool-code-exit.py
 
       # ajan2-tani: failure-path-only guest diagnostics ([entry-fail] for FEX's hlt / NoExec thunks,
       # [badrip] for a non-canonical guest RIP, [wow-initblock] when an i386 boot replaces another

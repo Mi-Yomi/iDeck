@@ -80,6 +80,9 @@ jobs:
           alias_status=$?
           test "$native_status:$fex_status:$alias_status" = 0:0:0
 
+      - name: Check required Wine DLL packaging gate
+        run: python3 tests/host/check-wine-media-dlls.py
+
       - name: Check JIT pool image placement contracts
         run: |
           result=0
@@ -2223,7 +2226,7 @@ jobs:
       # Launcher error117 in406: WMVCORE.DLL was never packaged. Its genuine
       # Wine reader imports winegstreamer; both must build despite the optional
       # handling of unrelated extra DLLs above. Do not ship another missing farm.
-      - name: Verify Wine media reader DLLs
+      - name: Verify Wine media and 1C dialog DLLs
         run: python3 tools/check-wine-media-dlls.py app/Madeira/arm64ec-windows
 
       - name: Save wine arm64ec build

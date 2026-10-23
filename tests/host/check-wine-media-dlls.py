@@ -73,7 +73,16 @@ with tempfile.TemporaryDirectory(prefix='madeira-media-pe-') as tmp:
     wmv, wg = folder / 'WMVCORE.DLL', folder / 'winegstreamer.dll'
     wmv.write_bytes(image(reader, ('winegstreamer.dll',)))
     wg.write_bytes(image(backend))
+    oledlg = folder / 'oledlg.dll'
+    dialogs = ('OleUIInsertObjectW', 'OleUIEditLinksW', 'OleUIPasteSpecialW')
+    rejected(lambda: check(folder), 'missing required oledlg.dll')
+    oledlg.write_bytes(image(dialogs))
     with redirect_stdout(io.StringIO()): check(folder)
+    oledlg.write_bytes(image(dialogs, ('not-packaged.dll',)))
+    rejected(lambda: check(folder), 'missing imports not-packaged.dll')
+    oledlg.write_bytes(image(dialogs[:-1]))
+    rejected(lambda: check(folder), 'missing implemented reader exports')
+    oledlg.write_bytes(image(dialogs))
     wg.unlink()
     rejected(lambda: check(folder), 'missing imports winegstreamer.dll')
     wg.write_bytes(image(backend, ('not-packaged.dll',)))

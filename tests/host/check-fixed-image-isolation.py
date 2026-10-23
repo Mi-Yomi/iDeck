@@ -652,6 +652,14 @@ def main():
                         str(ROOT / 'tests/host/fixed_exclusive.c'),
                         '-o', str(exclusive)], check=True)
         subprocess.run([str(exclusive)], check=True)
+        abi = folder / 'abi'
+        (folder / 'fixed-abi.inc').write_text(''.join(function(virtual, signature) for signature in (
+            'static int ios_safe_read(', 'static int ios_fixed_pe_read(',
+            'static int ios_fixed_pe_abi(', 'static int ios_fex_fixed_window_abi(')))
+        subprocess.run([os.environ.get('CC', 'cc'), '-std=gnu11', '-O1', '-g', '-Wall', '-Wextra', '-Werror',
+                        '-fsanitize=address,undefined', '-fno-sanitize-recover=all', '-I', str(folder),
+                        str(ROOT / 'tests/host/fixed_abi.c'), '-o', str(abi)], check=True)
+        subprocess.run([str(abi)], check=True)
 
 
 if __name__ == '__main__':

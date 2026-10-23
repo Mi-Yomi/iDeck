@@ -4557,27 +4557,66 @@ static void *ios_pe_find_export( const unsigned char *base, const char *want )
     return NULL;
 }
 
+static int ios_safe_read( uintptr_t addr, void *out, size_t len );
+
+/* Teardown can leave unreadable PE entries while virtual_mutex is held.
+ * Every ABI probe must copy through Mach, never fault into that same lock. */
+static int ios_fixed_pe_read( uintptr_t base, size_t size, size_t rva, void *out, size_t len )
+{
+    return base && size <= UINTPTR_MAX - base && rva <= size && len <= size - rva &&
+           ios_safe_read( base + rva, out, len );
+}
+
+static int ios_fixed_pe_abi( uintptr_t base, size_t size )
+{
+    IMAGE_DOS_HEADER dos;
+    IMAGE_NT_HEADERS64 nt;
+    IMAGE_EXPORT_DIRECTORY exp;
+    IMAGE_DATA_DIRECTORY dir;
+    char module[64], name[sizeof("IosGuestWindowAbi")];
+    uint64_t abi[3];
+    DWORD i, rva;
+    WORD ordinal;
+
+    if (!ios_fixed_pe_read( base, size, 0, &dos, sizeof(dos) ) || dos.e_magic != IMAGE_DOS_SIGNATURE ||
+        dos.e_lfanew < 0 || !ios_fixed_pe_read( base, size, dos.e_lfanew, &nt, sizeof(nt) ) ||
+        nt.Signature != IMAGE_NT_SIGNATURE || nt.OptionalHeader.Magic != IMAGE_NT_OPTIONAL_HDR64_MAGIC ||
+        nt.OptionalHeader.NumberOfRvaAndSizes <= IMAGE_DIRECTORY_ENTRY_EXPORT) return 0;
+    dir = nt.OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_EXPORT];
+    if (!dir.VirtualAddress || dir.Size < sizeof(exp) || dir.VirtualAddress > size ||
+        dir.Size > size - dir.VirtualAddress ||
+        !ios_fixed_pe_read( base, size, dir.VirtualAddress, &exp, sizeof(exp) ) ||
+        !ios_fixed_pe_read( base, size, exp.Name, module, sizeof(module) ) ||
+        !memchr( module, 0, sizeof(module) ) ||
+        (!strstr( module, "xtajit64" ) && !strstr( module, "arm64ecfex" )) ||
+        exp.NumberOfNames > exp.NumberOfFunctions || exp.NumberOfFunctions > 65536) return 0;
+    for (i = 0; i < exp.NumberOfNames; ++i)
+    {
+        if (!ios_fixed_pe_read( base, size, (size_t)exp.AddressOfNames + i * sizeof(DWORD), &rva, sizeof(rva) ) ||
+            !ios_fixed_pe_read( base, size, rva, name, sizeof(name) )) return 0;
+        if (memcmp( name, "IosGuestWindowAbi", sizeof(name) )) continue;
+        if (!ios_fixed_pe_read( base, size, (size_t)exp.AddressOfNameOrdinals + i * sizeof(WORD),
+                               &ordinal, sizeof(ordinal) ) || ordinal >= exp.NumberOfFunctions ||
+            !ios_fixed_pe_read( base, size, (size_t)exp.AddressOfFunctions + ordinal * sizeof(DWORD),
+                               &rva, sizeof(rva) ) || !rva ||
+            (rva >= dir.VirtualAddress && rva - dir.VirtualAddress < dir.Size) ||
+            !ios_fixed_pe_read( base, size, rva, abi, sizeof(abi) )) return 0;
+        return abi[0] == 0x314e49574744494dull && abi[1] == 0x8000000000000000ull && abi[2] >= 128;
+    }
+    return 0;
+}
+
 static int ios_fex_fixed_window_abi( void *owner )
 {
     int i;
     if (!owner) return 0;
     for (i = 0; i < ios_jit_mapping_count; ++i)
     {
-        uintptr_t base = (uintptr_t)ios_jit_mappings[i].pe_base, data;
+        uintptr_t base = (uintptr_t)ios_jit_mappings[i].pe_base;
         size_t size = ios_jit_mappings[i].size;
-        uint64_t abi[3];
-        mach_vm_size_t got = 0;
-        const char *name;
-        if (!base || size < sizeof(abi) ||
+        if (!base || !size || ios_jit_mappings[i].unmapped ||
             (ios_jit_mappings[i].map_peb != owner && ios_jit_mappings[i].owner_peb != owner)) continue;
-        name = ios_pe_module_name( (void *)base, size );
-        if (!name || (!strstr( name, "xtajit64" ) && !strstr( name, "arm64ecfex" ))) continue;
-        data = (uintptr_t)ios_pe_find_export( (const void *)base, "IosGuestWindowAbi" );
-        if (data < base || data - base > size - sizeof(abi)) continue;
-        if (mach_vm_read_overwrite( mach_task_self(), data, sizeof(abi),
-                                   (mach_vm_address_t)abi, &got ) != KERN_SUCCESS || got != sizeof(abi)) continue;
-        if (abi[0] == 0x314e49574744494dull && abi[1] == 0x8000000000000000ull && abi[2] >= 128)
-            return 1;
+        if (ios_fixed_pe_abi( base, size )) return 1;
     }
     return 0;
 }
@@ -34743,6 +34782,8 @@ void ios_retire_own_fixed_base_image( void *dying_peb )
         for (i = 0; ios_subfloor_enum( i, &guest, &real, &length, &owner ); ++i)
             if (length && guest >= 0x100000000ull && owner == dying_peb)
             {
+                /* Its PE modules may already be gone; never call a dying emulator. */
+                ios_alias_cb_drop( dying_peb );
                 status = NtUnmapViewOfSection( NtCurrentProcess(), (void *)(ULONG_PTR)guest );
                 if (status) dprintf( 2, "[fixed-image] teardown refused guest %#llx status=%#x\n", guest, status );
             }

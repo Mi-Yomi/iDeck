@@ -57,9 +57,25 @@ ntdll critical-section entry, accessing image data at `0x14005fa00`. No child
 launcher execution was reached. This is a confirmed gap in 589, not an installer
 or configuration failure. Build 590 adds the bounded LL/SC path and a device
 fixture using a global critical section, recursive entry and competing threads.
-Build 590 device test and actual 1C launcher/client: **NOT RUN**. Host tests and a successful
-IPA build cannot establish that 1C runs on a device. The repository contains no
-1C binaries or business databases.
+Build 590 device evidence: native LL/SC service succeeds and `1cestart.exe`
+starts `1cv8s.exe`. Its `frame.dll` then fails with `c0000135` because
+`oledlg.dll` is missing. Error cleanup faults in `core83.dll`, then repeatedly
+calls into unmapped modules. Later process retirement stops in
+`ios_fex_fixed_window_abi` while holding the virtual-memory lock; the Mach
+exception thread waits for that lock and the desktop stops responding.
+
+Build 591 adds Wine's `oledlg.dll` to the existing extra-DLL build and requires
+its exports and regular imports in the packaging gate. The fixed-image ABI
+probe now skips retired mappings and uses bounded, fault-safe Mach reads for
+all PE metadata. Process retirement drops the owning emulator callback before
+unmapping its fixed image. Host regressions cover inaccessible PE pages, every
+failed read, malformed export bounds and callback removal before unmapping.
+
+Build 591 device test and actual 1C launcher/client: **NOT RUN**. The separate
+fixed-image device fixture has not been run on iOS either. Host tests and a
+successful IPA build cannot establish that 1C runs on a device. Unknown fault
+paths during guest exception handling remain possible. The repository contains
+no 1C binaries or business databases.
 
 For 1C, enable the switch for the installed launcher and start `1cestart.exe`
 from a fresh session. Reinstallation is not part of this change. A useful device

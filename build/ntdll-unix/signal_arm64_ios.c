@@ -13074,6 +13074,49 @@ static int ios_subfloor_backing_probe( uintptr_t real, unsigned bytes, int need_
     return 1;
 }
 
+#include "ios_fixed_exclusive.h"
+
+static int ios_service_fixed_exclusive( ucontext_t *ctx, uintptr_t guest, uintptr_t backing )
+{
+    struct ios_fixed_exclusive plan;
+    uint32_t code[4], flags = PSTATE_sig(ctx), target;
+    uint64_t regs[31];
+    uintptr_t pc = (uintptr_t)PC_sig(ctx), branch;
+    mach_vm_size_t got;
+    unsigned i;
+    int64_t advance;
+
+    for (i = 0; i < 4; ++i)
+    {
+        got = 0;
+        if (pc > UINTPTR_MAX - i * 4 ||
+            mach_vm_read_overwrite( mach_task_self(), pc + i * 4, 4,
+                                    (mach_vm_address_t)&code[i], &got ) != KERN_SUCCESS || got != 4)
+            return 0;
+    }
+    if (!ios_fixed_exclusive_decode( code, &plan ) ||
+        (backing & ((1u << plan.size) - 1))) return 0;
+    for (i = 0; i < 29; ++i) regs[i] = REGn_sig(i, ctx);
+    regs[29] = FP_sig(ctx); regs[30] = LR_sig(ctx);
+    if (regs[plan.base] != guest) return 0;
+    if (plan.mismatch)
+    {
+        if (plan.mismatch < 0 ? pc < (uint64_t)-plan.mismatch :
+                               pc > UINTPTR_MAX - (uint64_t)plan.mismatch) return 0;
+        branch = pc + plan.mismatch;
+        got = 0;
+        if (mach_vm_read_overwrite( mach_task_self(), branch, 4,
+                                    (mach_vm_address_t)&target, &got ) != KERN_SUCCESS || got != 4 ||
+            (target & 0xfffff0ff) != 0xd503305f) return 0; /* CLREX */
+    }
+    advance = ios_fixed_exclusive_run( &plan, backing, regs, &flags );
+    for (i = 0; i < 29; ++i) REGn_sig(i, ctx) = regs[i];
+    FP_sig(ctx) = regs[29]; LR_sig(ctx) = regs[30];
+    PSTATE_sig(ctx) = flags;
+    PC_sig(ctx) = pc + advance - 4; /* Both service callers advance by four. */
+    return 1;
+}
+
 static int ios_subfloor_service( ucontext_t *ctx, void *fault_addr, const char *via, void *peb )
 {
     uint64_t addr = (uint64_t)(uintptr_t)fault_addr;
@@ -13179,6 +13222,11 @@ static int ios_subfloor_service( ucontext_t *ctx, void *fault_addr, const char *
         }
     }
 
+    /* Native LL/SC is serviced as a complete RMW, even though the trap is on
+     * its load. Prove write permission before the helper can issue its CAS. */
+    int fixed_exclusive = addr >= IOS_SUBFLOOR_FLOOR &&
+        ((insn & 0x3ffffc00) == 0x085ffc00 || (insn & 0x3ffffc00) == 0x085f7c00);
+    if (fixed_exclusive) is_write = 1;
     if (cls &&
         !ios_subfloor_backing_probe( real, bytes, is_write, &rb, &rs, &cur, &mx, &kr ))
     {
@@ -13213,6 +13261,15 @@ static int ios_subfloor_service( ucontext_t *ctx, void *fault_addr, const char *
                      (unsigned long long)(pool_copy == (void *)real ? 0 : (uintptr_t)pool_copy) );
         }
         return 0;
+    }
+
+    if (fixed_exclusive)
+    {
+        static unsigned serviced;
+        if (!ios_service_fixed_exclusive( ctx, addr, real )) return 0;
+        if (__atomic_fetch_add( &serviced, 1, __ATOMIC_RELAXED ) < 8)
+            dprintf( 2, "[fixed-image] native LL/SC serviced via=%s insn=%08x\n", via, insn );
+        return 1;
     }
 
     /* ml1000: the emulator chain tries LOAD first and never consults is_write,

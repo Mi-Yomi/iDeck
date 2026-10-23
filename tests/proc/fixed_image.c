@@ -22,6 +22,43 @@ static volatile unsigned long cookie = INITIAL_COOKIE;
 static volatile unsigned long *volatile cookie_pointer = &cookie;
 static volatile unsigned role = FIXED_TEST_ROLE;
 
+/* A native Wine critical section in fixed image data reproduces the 1C fault. */
+static CRITICAL_SECTION image_lock;
+static unsigned locked_count;
+
+static DWORD WINAPI lock_worker(void *unused)
+{
+    unsigned i;
+    (void)unused;
+    for (i = 0; i < 128; ++i)
+    {
+        EnterCriticalSection(&image_lock);
+        ++locked_count;
+        LeaveCriticalSection(&image_lock);
+    }
+    return 0;
+}
+
+static int check_image_lock(void)
+{
+    HANDLE worker;
+    DWORD status;
+    if (!InitializeCriticalSectionAndSpinCount(&image_lock, 4000)) return 0;
+    EnterCriticalSection(&image_lock);
+    if (!TryEnterCriticalSection(&image_lock)) return 0;
+    LeaveCriticalSection(&image_lock);
+    worker = CreateThread(NULL, 0, lock_worker, NULL, 0, NULL);
+    LeaveCriticalSection(&image_lock);
+    if (!worker) return 0;
+    lock_worker(NULL);
+    if (WaitForSingleObject(worker, TIMEOUT_MS) != WAIT_OBJECT_0 ||
+        !GetExitCodeThread(worker, &status) || status || locked_count != 256) return 0;
+    CloseHandle(worker);
+    DeleteCriticalSection(&image_lock);
+    printf("[fixed-image-test] PASS: image critical section, recursive entry and 256 threaded updates\n");
+    return 1;
+}
+
 __declspec(noinline) unsigned fixed_code_identity(void)
 {
     return FIXED_TEST_ROLE;
@@ -128,6 +165,11 @@ cleanup:
 
 int main(int argc, char **argv)
 {
+    if (!check_image_lock())
+    {
+        printf("[fixed-image-test] FAIL: native critical section in fixed image\n");
+        return 55;
+    }
     if (argc == 2)
     {
         char *end;

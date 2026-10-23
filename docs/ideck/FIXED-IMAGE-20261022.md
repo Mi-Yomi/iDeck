@@ -31,9 +31,12 @@ The feature is limited to non-hybrid, non-builtin, non-resource AMD64 images
 with stripped relocations and a preferred base at or above 4 GiB. It does not
 implement a separate address space for arbitrary heaps or every Windows mapping.
 The switch defaults to off. Existing relocatable images follow the existing path.
-Unknown native fault encodings, unaligned native atomics and native exclusive
-monitor sequences on a guest guard are refused rather than emulated with
-non-atomic copies. A device log can reveal whether an application needs one of
+Unknown native fault encodings and unaligned native atomics are refused rather
+than emulated with non-atomic copies. Build 590 handles bounded native LL/SC
+sequences (load, optional register-only ALU/comparison, optional mismatch branch
+to CLREX, store) as a hardware CAS on the current owner's backing. Native retry
+branches, status registers and NZCV are preserved; other exclusive sequences
+still fail closed. A device log can reveal whether an application needs one of
 these additional native paths; the supported FEX atomics translate before access.
 Native pins and the shipped PE ntdll ABI are unchanged; FEX changes are applied
 by a checked fork-local build overlay and restored after the build.
@@ -48,7 +51,13 @@ two distinct executables at the identical fixed address. A separate
 in `FIXED-IMAGE.md`; the two IPAs remain in `unsigned-ipa-<build>`.
 
 See `tests/proc/FIXED-IMAGE.md` for the simultaneous parent/child device test.
-Device test and actual 1C launcher/client: **NOT RUN**. Host tests and a successful
+Build 589 device evidence: the fixed-image switch was active and the guard was
+reserved, but `1cestart.exe` faulted on `LDAXR W9,[X8]` (`885ffd09`) inside native
+ntdll critical-section entry, accessing image data at `0x14005fa00`. No child
+launcher execution was reached. This is a confirmed gap in 589, not an installer
+or configuration failure. Build 590 adds the bounded LL/SC path and a device
+fixture using a global critical section, recursive entry and competing threads.
+Build 590 device test and actual 1C launcher/client: **NOT RUN**. Host tests and a successful
 IPA build cannot establish that 1C runs on a device. The repository contains no
 1C binaries or business databases.
 

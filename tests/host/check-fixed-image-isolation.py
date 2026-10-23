@@ -644,6 +644,14 @@ def main():
                         '-pthread', '-I', str(ROOT / 'build/ntdll-unix'), str(c_file),
                         str(ROOT / 'build/ntdll-unix/ios_fixed_image_io.c'), '-o', str(executable)], check=True)
         subprocess.run([str(executable)], check=True)
+        exclusive = folder / 'exclusive'
+        (folder / 'fixed-service.inc').write_text(function(source, 'static int ios_service_fixed_exclusive('))
+        subprocess.run([os.environ.get('CC', 'cc'), '-std=gnu11', '-O1', '-g', '-Wall', '-Wextra', '-Werror',
+                        '-fsanitize=address,undefined', '-fno-sanitize-recover=all', '-pthread',
+                        '-I', str(ROOT / 'build/ntdll-unix'), '-I', str(folder),
+                        str(ROOT / 'tests/host/fixed_exclusive.c'),
+                        '-o', str(exclusive)], check=True)
+        subprocess.run([str(exclusive)], check=True)
 
 
 if __name__ == '__main__':

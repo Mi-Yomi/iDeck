@@ -28,3 +28,10 @@ the existing shared-address-space implementation should refuse the child.
 A host helper check and successful PE compilation do not establish that Wine,
 FEX, or 1C works on iOS. Record the device run separately; this fixture contains
 no 1C files and is not a substitute for launching the installed 1C client.
+# Native synchronization regression (build 590)
+
+Both executables first exercise a critical section stored in their fixed image:
+recursive entry, try-entry, and 256 updates by two threads. This reproduces the
+native ntdll LL/SC access that stopped 1C on build 589. Look for the separate
+`PASS: image critical section` line before the simultaneous parent/child result.
+Windows validates the fixture; only an iOS run validates the guarded-memory path.

@@ -182,7 +182,20 @@ static kern_return_t counting_read( vm_map_t t, mach_vm_address_t a, mach_vm_siz
 
 # the window of the 592 log of Most Wanted: speed.exe 0x400000 (block at 0x81ab75), ntdll 0xfff40000, TEB32 0x302000, PEB32 0x311000
 MAIN = r'''
-#define WIN 0x5000000000ULL
+/* Modified for iDeck-BCD, 2026-10-26: the fixed host address 0x5000000000 is taken in the process on GitHub's
+ * macos-15 runner (alloc-failed, build 605), as in check-x87-int64-diag.py; one free 4 GB aligned range holds the window. */
+static uint64_t host_base(void)
+{
+    static uint64_t b;
+    if (!b) {
+        mach_vm_address_t m = 0;
+        if (mach_vm_allocate(mach_task_self(), &m, 3ULL << 32, VM_FLAGS_ANYWHERE) != KERN_SUCCESS) { puts("alloc-failed"); exit(3); }
+        mach_vm_deallocate(mach_task_self(), m, 3ULL << 32);
+        b = (m + 0xffffffffULL) & ~0xffffffffULL;
+    }
+    return b;
+}
+#define WIN host_base()
 #define TEB64_G 0x300000u
 #define TEB32_G 0x302000u
 #define PEB32_G 0x311000u
@@ -321,9 +334,9 @@ int main(int argc, char **argv)
         return 0;
     }
     if (!strcmp(s, "benign")) {
-        ios_x86_fault_av(&w.st, w.teb64, BLOCK, 0x7000000000ULL + 0x1000, -1);                  /* an address outside this window */
+        ios_x86_fault_av(&w.st, w.teb64, BLOCK, WIN + 0x200001000ULL, -1);                       /* an address outside this window */
         ios_x86_fault_av(&w.st, w.teb64, 0x140001000ULL, WIN + 0xb514ab6a, -1);                   /* a 64-bit rip */
-        w.st.__x[19] = 0x5000000010ULL; ios_x86_fault_av(&w.st, w.teb64, BLOCK, WIN + 0x1000, -1);   /* x19 is no window base */
+        w.st.__x[19] = WIN + 0x10; ios_x86_fault_av(&w.st, w.teb64, BLOCK, WIN + 0x1000, -1);   /* x19 is no window base */
         w.st.__x[19] = 0; ios_x86_fault_av(&w.st, w.teb64, BLOCK, 0x1000, -1);
         w.st.__x[19] = WIN; w.st.__x[18] = 0;
         ios_x86_fault_av(&w.st, 0, BLOCK, WIN + 0xb514ab6a, -1);                                  /* no TEB (x18 and the lookup both empty) */
@@ -355,7 +368,10 @@ else:
             def run(scn, **env):
                 e = {k: v for k, v in os.environ.items() if k != 'MADEIRA_X86_FAULT_DUMP'}
                 e.update(env)
-                return subprocess.run([str(d / 'h'), scn], capture_output=True, text=True, env=e)
+                r = subprocess.run([str(d / 'h'), scn], capture_output=True, text=True, env=e)
+                # iDeck-BCD: the window lies wherever host_base() found room; it reads as upstream's fixed one below.
+                r.stderr = re.sub(r'window 0x[0-9a-f]+00000000\b', 'window 0x5000000000', r.stderr)
+                return r
 
             def lines(r):
                 return [l for l in r.stderr.splitlines() if l.startswith('[x86-fault]')]

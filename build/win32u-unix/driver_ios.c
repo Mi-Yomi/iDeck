@@ -1266,20 +1266,25 @@ static void winios_drv_window_pos_changed( HWND hwnd, HWND insert_after, HWND ow
              * from the log. Static controls carry a message box's body. */
             {
                 WCHAR clsW[64], txtW[200];
-                char cls[64], txt[200];
+                char cls[64], txt[600];
                 UNICODE_STRING us = { 0, sizeof(clsW), clsW };
-                int j, tn;
+                int j, cn, tn;
                 cls[0] = 0;
-                if (NtUserGetClassName( hwnd, FALSE, &us ) > 0)
+                /* iDeck-BCD, 2026-10-26: the call returns the length it copied and leaves us.Length 0 (every class was '') */
+                if ((cn = NtUserGetClassName( hwnd, FALSE, &us )) > 0)
                 {
-                    for (j = 0; j < us.Length / (int)sizeof(WCHAR) && j < 63; j++)
+                    for (j = 0; j < cn && j < 63; j++)
                         cls[j] = (clsW[j] >= 32 && clsW[j] < 127) ? (char)clsW[j] : '?';
                     cls[j] = 0;
                 }
+                /* iDeck-BCD, 2026-10-26: UTF-8, so a message in another language (1C's Russian errors) reads in the log;
+                 * control characters (a message box's line breaks) become spaces to keep it one line. */
                 tn = NtUserInternalGetWindowText( hwnd, txtW, ARRAY_SIZE(txtW) );
-                for (j = 0; j < tn && j < 199; j++)
-                    txt[j] = (txtW[j] >= 32 && txtW[j] < 127) ? (char)txtW[j] : '?';
-                txt[j] = 0;
+                tn = tn > 0 ? ntdll_wcstoumbs( txtW, tn < 199 ? tn : 199, txt, sizeof(txt) - 1, FALSE ) : 0;
+                if (tn < 0) tn = 0;
+                for (j = 0; j < tn; j++)
+                    if ((unsigned char)txt[j] < 32) txt[j] = ' ';
+                txt[tn] = 0;
                 if (cls[0] || txt[0])
                     dprintf( 2, "[win-name] #%u hwnd=%p class='%s' text=\"%s\" rev=ml853\n", n, hwnd, cls, txt );
             }

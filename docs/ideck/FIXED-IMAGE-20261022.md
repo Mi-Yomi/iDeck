@@ -108,6 +108,15 @@ For 1C, start the Wine desktop with these lines in its own file, then start
     env.MADEIRA_FIXED_IMAGE_ISOLATION = 1
     env.MADEIRA_X64_IMAGE_NOCOPY = 1
     pool-split = 1
+    env.MADEIRA_TLS_CLEAR_OWN_PROCESS = 1
+
+The last line is why the launcher crashed after a written infobase (build 608
+log, 2026-10-26): at its exit `1cv8.exe`'s TlsFree cleared cells 9, 12, 13,
+20, 24, 30 and 31 in the launcher's live threads as well (`[tls-cross-clear]`:
+every process of a session shares one thread list), and `1cv8s.exe` then read
+its context through core83's `TlsGetValue` (core83.dll 8.3.18.1208, RVA 0x646d0,
+called from `core::URL` at 0x22a406) as NULL. With the line a TlsFree clears
+the calling process's threads only, as on Windows.
 
 A useful device log contains `[fixed-image] reserved guest ...; backing is
 private per process`, `[pool-split] JIT pool = ...` and, from build 609, the

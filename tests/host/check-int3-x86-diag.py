@@ -529,6 +529,7 @@ wine0 = Path(os.environ.get('WINE_SRC', root / 'wine'))
 if (wine0 / 'include/winternl.h').exists() and shutil.which('xcrun'):
     off_src = r'''
 #include <stddef.h>
+#include <stdarg.h>   /* Modified for iDeck-BCD, 2026-10-26: winternl.h's __ms_va_list needs va_list (build 606), as in check-wow-null-diag.py */
 #include "windef.h"
 #include "winternl.h"
 _Static_assert(offsetof(TEB32, Tib.StackBase) == 0x04, "stack base");

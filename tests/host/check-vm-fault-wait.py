@@ -80,9 +80,13 @@ static BOOL process_exiting;
 static pthread_mutex_t virtual_mutex;
 ''' + block + r'''
 static double now(void) { struct timespec t; clock_gettime(CLOCK_MONOTONIC, &t); return t.tv_sec + t.tv_nsec / 1e9; }
+/* Modified for iDeck-BCD, 2026-10-26: wait until the holder has the mutex instead of a fixed 20 ms; on a busy runner
+ * the holder started late, the fault took the free mutex and printed nothing (build 607). */
+static int held;
 static void *holder(void *arg)
 {
     pthread_mutex_lock(&virtual_mutex);
+    __atomic_store_n(&held, 1, __ATOMIC_RELEASE);
     usleep((useconds_t)(long)arg * 1000);
     pthread_mutex_unlock(&virtual_mutex);
     return NULL;
@@ -90,8 +94,9 @@ static void *holder(void *arg)
 static double wait_for_busy(long ms, unsigned long err, TEB *teb, void *addr)
 {
     pthread_t t;
+    __atomic_store_n(&held, 0, __ATOMIC_RELEASE);
     pthread_create(&t, NULL, holder, (void *)ms);
-    usleep(20000);                                  /* the holder has the mutex */
+    while (!__atomic_load_n(&held, __ATOMIC_ACQUIRE)) usleep(100);   /* the holder has the mutex */
     double t0 = now();
     ios_vm_fault_lock(addr, err, teb);
     double dt = now() - t0;

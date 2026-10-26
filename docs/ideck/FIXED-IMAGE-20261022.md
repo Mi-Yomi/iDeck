@@ -82,14 +82,33 @@ Build 592 adds Wine's `odbc32.dll` the same way and requires it in the
 packaging gate. Its DllMain succeeds without the unix-side library, so only
 Windows ODBC drivers are available.
 
-Build 592 device test and actual 1C launcher/client: **NOT RUN**. The separate
-fixed-image device fixture has not been run on iOS either. Host tests and a
-successful IPA build cannot establish that 1C runs on a device. Unknown fault
-paths during guest exception handling remain possible. The repository contains
-no 1C binaries or business databases.
+Build 608 device evidence (BCD 0.1.600 merged; iPhone17,2, iOS 27, the Wine
+desktop): `1cestart.exe` and `1cv8s.exe` run and the "Запуск 1С:Предприятия"
+window opens. Adding an infobase starts `1cv8.exe CREATEINFOBASE`, which first
+failed to map `WebKit.dll`, `CFLite.dll` and then `frame.dll` itself
+(`c0000017`): the session's JIT pool had shrunk to 560 MB and every pure x64
+DLL of each 1C process was copied into it (1C's "Ошибка загрузки компоненты
+frame: 126" and ": 8"). With `env.MADEIRA_X64_IMAGE_NOCOPY = 1` and
+`pool-split = 1` in the desktop's own file the pool is 885 MB, no image is
+copied and the first `CREATEINFOBASE` in a fresh session wrote the file
+infobase and exited with 0. The launcher then read a NULL pointer in
+`core83.dll`, so the base never reached its list; in the same session a second
+launcher and a second `CREATEINFOBASE` threw during `frame.dll`'s start-up
+(after the first 91 modules, before `richui.dll`), showed a message box and
+ended with 1. The message's text was not readable: `[win-name]` printed
+non-ASCII characters as `?` until build 609.
 
-For 1C, enable the switch for the installed launcher and start `1cestart.exe`
-from a fresh session. Reinstallation is not part of this change. A useful device
-log should contain `[fixed-image] reserved guest ...; backing is private per
-process` and show both launcher processes reaching execution. Record the device,
-iOS version, build and result separately before treating this as a verified fix.
+Build 609 device test: **NOT RUN**. The separate fixed-image device fixture has
+not been run on iOS either. The repository contains no 1C binaries or business
+databases.
+
+For 1C, start the Wine desktop with these lines in its own file, then start
+`1cestart.exe` once from a fresh session:
+
+    env.MADEIRA_FIXED_IMAGE_ISOLATION = 1
+    env.MADEIRA_X64_IMAGE_NOCOPY = 1
+    pool-split = 1
+
+A useful device log contains `[fixed-image] reserved guest ...; backing is
+private per process`, `[pool-split] JIT pool = ...` and, from build 609, the
+text of every 1C message box in its `[win-name]` lines.

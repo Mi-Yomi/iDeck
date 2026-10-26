@@ -319,7 +319,9 @@ static void ordered_atomics(void)
 def harness(source, virtual, mach):
     start = source.index('#define IOS_SUBFLOOR_MAX ')
     end = source.index('/* Read `size` bytes at `a`', start)
-    production = source[start:end]
+    # Upstream's IOSB probes (build 596) follow the window code; they call Mach, which this harness does not include.
+    iosb = source.find('/* madeira-bcd (ajan16, build 596)', start, end)
+    production = source[start:end if iosb < 0 else iosb]
     return r'''
 #define _GNU_SOURCE
 #include <assert.h>

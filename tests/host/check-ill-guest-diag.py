@@ -99,6 +99,22 @@ uintptr_t ios_jit_anon_alias_lookup(uintptr_t a)
 '''
 
 MAIN = r'''
+/* Modified for iDeck-BCD, 2026-10-26: fixed host addresses can be taken in the process on GitHub's macos-15 runner
+ * (0x5000000000 was, build 605); the pages go into one free 4 GB aligned range: the guest view at its start, the alias
+ * 4 GB above, the edge page 8 GB above and nothing 7 GB above. */
+static uint64_t host_base(void)
+{
+    static uint64_t b;
+    if (!b) {
+        mach_vm_address_t m = 0;
+        if (mach_vm_allocate(mach_task_self(), &m, 3ULL << 32, VM_FLAGS_ANYWHERE) != KERN_SUCCESS) { puts("alloc-failed"); exit(3); }
+        mach_vm_deallocate(mach_task_self(), m, 3ULL << 32);
+        b = (m + 0xffffffffULL) & ~0xffffffffULL;
+    }
+    return b;
+}
+#define GBASE host_base()
+
 static uint8_t *page(uint64_t at, size_t n)
 {
     mach_vm_address_t m = at;
@@ -109,30 +125,30 @@ static uint8_t *page(uint64_t at, size_t n)
 int main(int argc, char **argv)
 {
     const char *s = argc > 1 ? argv[1] : "";
-    uint8_t *g = page(0x6000000000ULL, 0x8000), *a = page(0x6100000000ULL, 0x8000);
+    uint8_t *g = page(GBASE, 0x8000), *a = page(GBASE + 0x100000000ULL, 0x8000);
     /* the guest view: the block's address 0x6000001e0 sits 0x1e0 into the first page; bytes ramp 0,1,2,... so every row is checkable */
     for (unsigned i = 0; i < 0x4000; i++) { g[i] = (uint8_t)i; a[i] = (uint8_t)i; }
-    g_guest_lo = 0x6000000000ULL; g_alias_lo = 0x6100000000ULL;
+    g_guest_lo = GBASE; g_alias_lo = GBASE + 0x100000000ULL;
     if (!strcmp(s, "plain")) {
         g_guest_lo = 0;                                                      /* no alias covers it */
-        ios_ill_guest_bytes(0x60000001e0ULL, 0x169ff84e8ULL);
+        ios_ill_guest_bytes(GBASE + 0x1e0, 0x169ff84e8ULL);
     } else if (!strcmp(s, "same")) {
-        ios_ill_guest_bytes(0x60000001e0ULL, 0x169ff84e8ULL);
+        ios_ill_guest_bytes(GBASE + 0x1e0, 0x169ff84e8ULL);
     } else if (!strcmp(s, "diff")) {
         a[0x1e0 + 5] = 0xff;                                                 /* the alias differs five bytes into the block */
-        ios_ill_guest_bytes(0x60000001e0ULL, 0x169ff84e8ULL);
+        ios_ill_guest_bytes(GBASE + 0x1e0, 0x169ff84e8ULL);
     } else if (!strcmp(s, "diff-before")) {
         a[0x1e0 - 3] = 0xee;                                                 /* ...or three bytes before it */
-        ios_ill_guest_bytes(0x60000001e0ULL, 0x169ff84e8ULL);
+        ios_ill_guest_bytes(GBASE + 0x1e0, 0x169ff84e8ULL);
     } else if (!strcmp(s, "edge")) {
         /* the block is at the very start of a mapped range: the 16 bytes before it are not there */
-        uint8_t *e = page(0x6300000000ULL, 0x4000);
+        uint8_t *e = page(GBASE + 0x200000000ULL, 0x4000);
         for (unsigned i = 0; i < 0x4000; i++) e[i] = (uint8_t)(i + 1);
         g_guest_lo = 0;
-        ios_ill_guest_bytes(0x6300000000ULL, 0x169ff84e8ULL);
+        ios_ill_guest_bytes(GBASE + 0x200000000ULL, 0x169ff84e8ULL);
     } else if (!strcmp(s, "cap")) {
         g_guest_lo = 0;
-        for (int i = 0; i < 5; i++) ios_ill_guest_bytes(0x60000001e0ULL, 0x169ff84e8ULL);
+        for (int i = 0; i < 5; i++) ios_ill_guest_bytes(GBASE + 0x1e0, 0x169ff84e8ULL);
     } else if (!strcmp(s, "bad")) {
         ios_ill_guest_bytes(0, 0x169ff84e8ULL);
         ios_ill_guest_bytes(0x1000, 0x169ff84e8ULL);
@@ -142,7 +158,7 @@ int main(int argc, char **argv)
         puts("bad-done");
     } else if (!strcmp(s, "unmapped")) {
         g_guest_lo = 0;
-        ios_ill_guest_bytes(0x6f00000000ULL, 0x169ff84e8ULL);                  /* nothing there: all ?? */
+        ios_ill_guest_bytes(GBASE + 0x1c0000000ULL, 0x169ff84e8ULL);                  /* nothing there: all ?? */
     }
     return 0;
 }
@@ -160,7 +176,13 @@ else:
         check('the production header compiles (host cc, -Wall -Wextra -Werror)', c.returncode == 0, c.stderr[-3000:])
         if c.returncode == 0:
             def run(scn):
-                return subprocess.run([str(d / 'h'), scn], capture_output=True, text=True)
+                r = subprocess.run([str(d / 'h'), scn], capture_output=True, text=True)
+                # iDeck-BCD: the pages lie wherever host_base() found room; they read as upstream's fixed ones below.
+                m = re.search(r'at guest 0x([0-9a-f]+) ', r.stderr)
+                if m and (int(m.group(1), 16) - 0x1e0) & 0xffffffff == 0:
+                    b = int(m.group(1), 16) - 0x1e0
+                    r.stderr = r.stderr.replace('0x%x' % (b + (1 << 32) + 0x1e0), '0x61000001e0').replace('0x%x' % (b + 0x1e0), '0x60000001e0')
+                return r
 
             def lines(r):
                 return [l for l in r.stderr.splitlines() if l.startswith('[ill-guest]')]

@@ -184,7 +184,20 @@ static kern_return_t counting_read( vm_map_t t, mach_vm_address_t a, mach_vm_siz
 
 # the window of the 596 log: Battle.net.exe 0x400000, ntdll 0xfff40000, libcef.dll 0x6c7b0000 (size 0x9f84000), TEB32 0x302000, PEB32 0x311000
 MAIN = r'''
-#define WIN 0x5000000000ULL
+/* Modified for iDeck-BCD, 2026-10-26: the fixed host address 0x5000000000 is taken in the process on GitHub's
+ * macos-15 runner (alloc-failed, build 605), as in check-x87-int64-diag.py; one free 4 GB aligned range holds the window. */
+static uint64_t host_base(void)
+{
+    static uint64_t b;
+    if (!b) {
+        mach_vm_address_t m = 0;
+        if (mach_vm_allocate(mach_task_self(), &m, 3ULL << 32, VM_FLAGS_ANYWHERE) != KERN_SUCCESS) { puts("alloc-failed"); exit(3); }
+        mach_vm_deallocate(mach_task_self(), m, 3ULL << 32);
+        b = (m + 0xffffffffULL) & ~0xffffffffULL;
+    }
+    return b;
+}
+#define WIN host_base()
 #define TEB64_G 0x300000u
 #define TEB32_G 0x302000u
 #define PEB32_G 0x311000u
@@ -354,7 +367,7 @@ int main(int argc, char **argv)
     if (!strcmp(s, "benign")) {
         w = make(1);
         w.grip = 0x140001001ULL; ios_int3_x86_diag(&w.st, w.teb64, w.gregs, w.grip);                /* a 64-bit guest */
-        w.grip = EIP_INT3 + 1; w.st.__x[19] = 0x5000000010ULL; ios_int3_x86_diag(&w.st, w.teb64, w.gregs, w.grip);   /* x19 is no window base */
+        w.grip = EIP_INT3 + 1; w.st.__x[19] = WIN + 0x10; ios_int3_x86_diag(&w.st, w.teb64, w.gregs, w.grip);   /* x19 is no window base */
         w.st.__x[19] = 0; ios_int3_x86_diag(&w.st, w.teb64, w.gregs, w.grip);
         w.st.__x[19] = WIN; ios_int3_x86_diag(&w.st, 0, w.gregs, w.grip);                           /* no TEB */
         ios_int3_x86_diag(&w.st, w.teb64, NULL, w.grip);                                            /* no registers */
@@ -371,7 +384,7 @@ int main(int argc, char **argv)
     }
     if (!strcmp(s, "x18-other-window")) {
         w = make(1);
-        w.st.__x[18] = 0x6000000000ULL + TEB64_G;        /* x18 in another window: the caller's TEB is used */
+        w.st.__x[18] = WIN + 0x100000000ULL + TEB64_G;   /* x18 in another window: the caller's TEB is used */
         ios_int3_x86_diag(&w.st, w.teb64, w.gregs, w.grip);
         return 0;
     }

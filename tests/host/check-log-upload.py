@@ -84,7 +84,7 @@ check("iDeck-BCD: no built-in intake; Info.plist's IDeckEndpoints › LogIntake 
       and 'url.scheme == "https"' in app and endpoints.get("LogIntake") == "")
 check("iDeck-BCD: off, send fails at once with its own message, before the log is checked or packed",
       app.index("guard let endpoint = LogUpload.endpoint else { return finish(.failure(UploadError.off)) }")
-      < app.index("guard recentLogs().contains(") < app.index("LogUploadCore.pack(log, to: gz)")
+      < app.index("guard recentLogs().contains(") < app.index("LogUploadCore.pack(log, to: gz, comment: comment)")
       and "case .off: return \"Sending logs is off in this build;" in app)
 autotune_views = (R / "app/Madeira/AutoTuneViews.swift").read_text()
 check("iDeck-BCD: auto-tune offers Send Log only while there is an intake",

@@ -93,6 +93,10 @@ static int mach_task_self(void) { return 0; }
 static int mach_vm_region(int task, mach_vm_address_t *q, mach_vm_size_t *rs,
                          int f, vm_region_info_t r, mach_msg_type_number_t *rc, mach_port_t *ro)
 { (void)task; (void)q; (void)rs; (void)f; (void)r; (void)rc; (void)ro; return 1; }
+/* iDeck-BCD, 2026-10-26: the macOS SDK's <stdlib.h> already defines these three (mach/arm/_structs.h, Xcode 26.3) */
+#undef __darwin_arm_thread_state64_get_sp
+#undef __darwin_arm_thread_state64_set_sp
+#undef __darwin_arm_thread_state64_set_pc_fptr
 static uint64_t __darwin_arm_thread_state64_get_sp(arm_thread_state64_t s) { return s.sp; }
 #define __darwin_arm_thread_state64_set_sp(s, v) ((s).sp = (v))
 #define __darwin_arm_thread_state64_set_pc_fptr(s, v) ((s).pc = (uintptr_t)(v))

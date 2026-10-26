@@ -31,6 +31,9 @@ import UniformTypeIdentifiers
     /// "The game's own program": the install folder's programs, by App ID, once listed.
     private var programs: [Int: [String]] = [:]
     private var resolving = Set<Int>()
+    /// BCD Dock's Steam launch option (2026-10-24): the entries Steam's launch configuration lists for the game that a Dock
+    /// start can run (SteamDirectStart.dockOptions), by App ID, read from the cached library once the page opens.
+    private var dockOptions: [Int: [SteamDirectStart.DockOption]] = [:]
 
     nonisolated override init() { super.init() }
 
@@ -60,6 +63,8 @@ import UniformTypeIdentifiers
                 guard BCDGOG.enabled, let id = BCDGOG.shared.installs[product]?.entryID else { return nil }
                 return library.entries.first { $0.id == id }
             }
+            // An installed Epic game is the library entry its install made (BCDLiveStoreEpic).
+            if let id = BCDLiveStore.shared.epicEntryID(game.id) { return library.entries.first { $0.id == id } }
             guard game.store == .local else { return nil }
             return library.entries.first { $0.desktop != true && $0.steamAppID == nil && $0.title == game.title }
         }
@@ -96,6 +101,11 @@ import UniformTypeIdentifiers
         if let id, steam.downloads[id] != nil, SteamGamesModel.shared.games.contains(where: { $0.id == id && $0.installed }) {
             d.updating = true
         }
+        dlcOffer(game, into: &d)   // BCD's DLC support (BCDSteamDLC/BCDGamePageLiveDLC.swift): the question before a first install
+        // An Epic game BCD cannot install says why, and one that may not start says so, before Install.
+        let advice = BCDLiveStore.shared.epicInstallAdvice(game.id)
+        d.installBlocker = advice.blocker
+        d.installWarning = advice.warning
         guard game.state.isInstalled, let entry = entry(for: game) else { return d }
         let desktop = entry.desktop == true
         let path = entry.windowsPath
@@ -105,14 +115,15 @@ import UniformTypeIdentifiers
         if d.lastPlayed == nil { d.lastPlayed = entry.lastPlayed }
         d.blockers = blockers(entry, appID: id)
         // GOG's runtimes the game's build names that BCD does not install yet.
-        d.storeNote = BCDLiveStore.shared.gogNote(game.id)
+        d.storeNote = BCDLiveStore.shared.gogNote(game.id) ?? BCDLiveStore.shared.epicNote(game.id)
         // The sections only while Options is open: nothing is built for what is not on screen.
         if settings {
             d.groups = [display(entry, profile), direct3D(entry, profile), compatibility(entry), controls(entry, profile)]
             if let binds = binds(entry) { d.groups.append(binds) }
             if let launch = launch(entry) { d.groups.append(launch) }
             if let id { d.groups.append(steamGroup(entry, id)) }
-            if !desktop { d.groups.append(libraryGroup(entry, gog: game.store == .gog)) }
+            if let dlc = dlcGroup(game) { d.groups.append(dlc) }
+            if !desktop { d.groups.append(libraryGroup(entry, gog: game.store == .gog || game.store == .epic)) }
         }
         if let id {
             let installed = SteamGamesModel.shared.games.first { $0.id == id }
@@ -122,8 +133,8 @@ import UniformTypeIdentifiers
             if SteamOwnedLibrary.cloudEnabled { cloud(id, into: &d) }
             d.canRepair = SteamOwnedLibrary.enabled && managed && !downloading && steam.signedIn
             if managed && !downloading { d.removal = .uninstall(frees: entry.folderBytes ?? game.size) }
-        } else if game.store == .gog {
-            // Uninstall deletes a GOG game's files through the store (BCDLiveStoreGOG).
+        } else if game.store == .gog || game.store == .epic {
+            // Uninstall deletes a GOG or Epic game's files through the store (BCDLiveStoreGOG, BCDLiveStoreEpic).
             d.removal = .uninstall(frees: entry.folderBytes ?? game.size)
         } else if !desktop {
             d.removal = .removeFromLibrary
@@ -214,6 +225,11 @@ import UniformTypeIdentifiers
         rates += [BCDGameChoice(value: "1", label: "60 FPS"), BCDGameChoice(value: "0", label: "The screen's maximum"),
                   BCDGameChoice(value: "2", label: "No limit")]
         let fps = rates.first { $0.value == String(entry.fpsMode) }?.label ?? "\(entry.fpsMode)"
+        // The game's own screen orientation (BCDOrientation.swift): "" follows Settings; a value this build does not know stays listed.
+        var orientations = BCDOrientationRules.gameChoices(global: BCDOrientationLive.global).map { BCDGameChoice(value: $0.value, label: $0.label) }
+        if let saved = entry.orientationLock, !saved.isEmpty, !orientations.contains(where: { $0.value == saved }) {
+            orientations.append(BCDGameChoice(value: saved, label: saved))
+        }
         var settings = [
             BCDGameSetting(id: "resolution", title: "Resolution", kind: .choice(sizes), value: entry.resolution,
                            defaultValue: ResolutionChoices.defaultValue,
@@ -222,6 +238,8 @@ import UniformTypeIdentifiers
                            kind: .choice(DisplayMode.allCases.map { BCDGameChoice(value: $0.rawValue, label: Self.scaling[$0.rawValue] ?? $0.label) }),
                            value: entry.displayMode.rawValue, defaultValue: DisplayMode.fit.rawValue,
                            note: "Fit shows the whole picture, with bars where its shape differs from the screen's. Fill and crop covers the screen. Stretch fills it and bends the shape. The game's own shape fits what the game really draws, so a 4:3 picture stays 4:3."),
+            BCDGameSetting(id: "orientation", title: "Screen orientation", kind: .choice(orientations), value: entry.orientationLock ?? "", defaultValue: "",
+                           note: "How the screen turns while this game runs. Landscape keeps it in landscape however you hold the device, lying down, say; it goes back to following the device when the game ends. Settings has the choice for every game."),
             BCDGameSetting(id: "fps", title: "Frame-rate limit", kind: .choice(rates), value: String(entry.fpsMode), defaultValue: "1",
                            note: "The most frames a second the game shows. 30 and 40 keep the device cooler; No limit lets the game run as fast as it can."),
             Self.line("metalfx-upscale", "MetalFX upscaling", profile, Self.named(GameProfile.metalFXChoices, ["": "Off"]),
@@ -486,6 +504,19 @@ import UniformTypeIdentifiers
                                                defaultValue: entry.steamProgram ?? "", note: source))
             }
         } else {
+            // A Steam game with more than one launch entry Valve's client could start lets you pick which one; one that never
+            // picked starts as it always did (SteamDirectStart.dockLaunch). Nothing is shown for a game with a single entry.
+            let listed = dockOptions[appID] ?? []
+            if listed.count > 1 || entry.steamLaunchOption != nil {
+                var list = [BCDGameChoice(value: "", label: "Steam's choice")]
+                list += listed.map { BCDGameChoice(value: String($0.index), label: $0.label) }
+                let chosen = entry.steamLaunchOption.map(String.init) ?? ""
+                let known = chosen.isEmpty || listed.contains { String($0.index) == chosen }
+                settings.append(BCDGameSetting(id: "launchoption", title: "Steam launch option", kind: .choice(list),
+                                               value: known ? chosen : "", defaultValue: "",
+                                               note: known ? "Which of the game's launch entries Steam starts. Steam's choice is the first one that runs here, as before."
+                                                           : "The entry chosen earlier is not in Steam's list for this install any more, so Steam's choice starts."))
+            }
             settings.append(Self.toggle("smallpool", "Smaller JIT pool (512 MB)", dock.compactPool,
                                         note: "Starts through BCD Dock get a 512 MB JIT pool instead of the usual one, for every Steam game, until BCD closes."))
             if DockOffline.enabled {
@@ -549,7 +580,7 @@ import UniformTypeIdentifiers
 
     // MARK: Library
 
-    /// `gog`: a GOG game's name and pictures are GOG's, so it has no Name or Find on Steam row.
+    /// `gog`: a GOG or Epic game's name and pictures are the store's, so it has no Name or Find on Steam row.
     private func libraryGroup(_ entry: LibraryEntry, gog: Bool) -> BCDGameSettingGroup {
         let steamGame = entry.steamAppID != nil
         var settings: [BCDGameSetting] = []
@@ -647,8 +678,8 @@ import UniformTypeIdentifiers
         case "stuck": status = "No known fix fits the last failure (tried: \(state.triedSummary)). " + Self.reportAdvice
         case "gave-up": status = "Stopped after \(tuned.most) attempts. " + Self.reportAdvice
         case "known":
-            status = "A crash in BCD itself, not a setting: \(state.knownReason ?? state.known ?? "a known problem")."
-            if let fixed = state.knownFixedIn {
+            status = "\(state.knownLead): \(state.knownReason ?? state.known ?? "a known problem")."
+            if state.knownNoFix != true, let fixed = state.knownFixedIn {
                 if let ran = state.knownBuild, ran >= fixed {
                     status += " Build \(fixed) was to fix it, yet build \(ran) still crashed: share the report."
                 } else {
@@ -677,6 +708,8 @@ import UniformTypeIdentifiers
     /// once, the install records and BCD Dock's per-game state are read again, a Steam game not
     /// yet compared with Steam Cloud in this run is, and "The game's own program" finds its program.
     func opened(_ game: BCDGame) {
+        dlcOpened(game)
+        BCDLiveStore.shared.epicOpened(game.id)
         guard game.state.isInstalled else { return }
         if var entry = entry(for: game) {
             var changed = moveOldFields(&entry)
@@ -693,6 +726,21 @@ import UniformTypeIdentifiers
             Task { await steam.syncCloud(id) }
         }
         resolveProgram(game)
+        readDockOptions(game)
+    }
+
+    /// The entries of Steam's launch configuration a Dock start can run, for "Steam launch option": from the cached library
+    /// only (no connection is opened for it), off the main thread. A game with no more than one such entry shows no choice.
+    private func readDockOptions(_ game: BCDGame) {
+        guard let entry = entry(for: game), let appID = entry.steamAppID,
+              let launches = SteamOwnedLibrary.shared.game(appID)?.launches, launches.allSatisfy({ $0.index != nil }) else { return }
+        let folder = LibraryModel.drive.appendingPathComponent(entry.relativePath, isDirectory: true)
+        Task { [weak self] in
+            let found = await Task.detached(priority: .userInitiated) { SteamDirectStart.dockOptions(launches, installFolder: folder) }.value
+            guard let self, self.dockOptions[appID] != found else { return }
+            self.dockOptions[appID] = found
+            self.onChange?()
+        }
     }
 
     /// The Direct3D version (or other API) a game's program imports, read off the main thread
@@ -746,6 +794,7 @@ import UniformTypeIdentifiers
     }
 
     func set(_ setting: String, to value: String, for game: BCDGame) {
+        if dlcSet(setting, to: value, for: game) { return }
         let on = value == "1"
         switch setting {
         case "resolution": change(game) { $0.resolution = value }
@@ -753,6 +802,9 @@ import UniformTypeIdentifiers
         case "fps":
             guard let mode = Int(value) else { return }
             change(game) { $0.fpsMode = mode }
+        case "orientation":
+            guard value.isEmpty || BCDOrientationChoice(rawValue: value) != nil else { return }
+            change(game) { $0.orientationLock = value.isEmpty ? nil : value }
         case "metalfx-upscale", "dxil-tess-max-factor", "async-submit", "fence-chain", GamepadInput.padModeKey:
             setLine(game, setting, value)
         case "framegen":
@@ -816,6 +868,11 @@ import UniformTypeIdentifiers
                 entry.steamProgramSource = "choice"
             }
             LogStore.shared.log("[steam-start] app=\(appID(game) ?? 0) program=choice")
+        case "launchoption":
+            let key = Int(value)
+            guard value.isEmpty || (key != nil && key! >= 0), let id = appID(game) else { return }
+            change(game) { $0.steamLaunchOption = key }
+            LogStore.shared.log("[steam-start] app=\(id) launch-option=\(key == nil ? "default" : "choice")")
         case "smallpool": MadeiraDockModel.shared.compactPool = on
         case "installs": if let id = appID(game) { MadeiraDockModel.shared.setRunsInstallers(id, on) }
         case "installrequest": if let id = appID(game) { MadeiraDockModel.shared.setInstallRequest(id, DockInstallRequest(rawValue: value)) }
@@ -996,10 +1053,16 @@ import UniformTypeIdentifiers
         return BCDGameLog(file: found, name: found.lastPathComponent, date: LogUpload.modified(found), bytes: LogUpload.size(found))
     }
 
+    func logComment() async -> String? {
+        await withCheckedContinuation { continuation in
+            BCDLogComment.ask({ continuation.resume(returning: $0) }, cancelled: { continuation.resume(returning: nil) })
+        }
+    }
+
     /// Send Log, by hand, as Settings › Send Log sends one (LogUpload.send).
-    func send(_ log: BCDGameLog, of game: BCDGame, progress: @escaping (String) -> Void) async throws -> String {
+    func send(_ log: BCDGameLog, of game: BCDGame, comment: String, progress: @escaping (String) -> Void) async throws -> String {
         try await withCheckedThrowingContinuation { continuation in
-            LogUpload.send(log.file, game: LogUpload.game(of: log.file), progress: progress) { result in
+            LogUpload.send(log.file, game: LogUpload.game(of: log.file), comment: comment, progress: progress) { result in
                 continuation.resume(with: result)
             }
         }
@@ -1107,6 +1170,8 @@ import UniformTypeIdentifiers
             dock.$status.dropFirst().map { _ in () }.eraseToAnyPublisher(),
             lists.$version.dropFirst().map { _ in () }.eraseToAnyPublisher(),
             lists.$lastChecked.dropFirst().map { _ in () }.eraseToAnyPublisher(),
+            dlcChanges,
+            BCDLiveStore.shared.epicDetailChanges,
         ]
         Publishers.MergeMany(changes)
             .debounce(for: .milliseconds(250), scheduler: RunLoop.main)

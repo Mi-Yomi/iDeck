@@ -25,6 +25,7 @@
 #include <errno.h>
 #include <dirent.h>
 #include "../../build/madeira_cfg.h"   /* ml1095: one config file */
+#include "../../build/bcd_epic_mask.h"   /* madeira-bcd (2026-10-22): Epic's sign-in arguments masked in the argv lines */
 #include <sys/stat.h>
 #include <pwd.h>
 #include <limits.h>
@@ -38,6 +39,7 @@
 #include "WineProcessBridge.h"
 #include "WineServerBridge.h"
 #include "PrefixExtractor.h"
+#include "BCDStartMenu.h"   /* madeira-bcd: the Start menu entries of the Wine desktop */
 #include "FEXBridge.h"  // fex_get_jit_write_offset()
 
 // Thread-local globals for wine_ios_exit longjmp (used by wine_ios_exit.h shim in ntdll)
@@ -805,6 +807,107 @@ static NSString *madeira_vcruntime_dir(NSString *bundle, NSString *support)
     return dir;
 }
 
+/* BCD (2026-10-23, bcd-games issue #13): env.MADEIRA_VCRT_ARM64_KEY = 1 writes the ARM64 VC++ "Installed" marker
+ * (server_ios.c, ios_vcrt_arm64_key_publish) with a fixed version, 14.44.35211.0. Unreal's bootstrap programs compare
+ * that version with the one they were built against, so a newer game wants a newer number (Dead as Disco refused
+ * 14.42.34433.0 and started with 14.44.35211.0). When the VC++ runtime this session uses (the bundle's, else the
+ * download) is newer than the fixed version, the marker takes the runtime's own file version instead: the value "1"
+ * is replaced by that version for this session (the switch is cleared at the end of every session). Any other value
+ * (an explicit version, 0, unset) is left as it is. The version is VS_FIXEDFILEINFO's file version of vcruntime140.dll,
+ * found by its signature; a file that has none, or not a 14.x one, keeps the fixed version. Logs one line. */
+static void madeira_vcrt_arm64_version(NSString *bundle, NSString *support)
+{
+    const char *sw = getenv("MADEIRA_VCRT_ARM64_KEY");
+    if (!sw || strcmp(sw, "1")) return;
+    NSString *dll = [madeira_vcruntime_dir(bundle, support) stringByAppendingPathComponent:@"vcruntime140.dll"];
+    NSData *data = [NSData dataWithContentsOfFile:dll options:NSDataReadingMappedIfSafe error:nil];
+    const uint8_t *p = data.bytes;
+    NSUInteger n = data.length;
+    unsigned v[4] = { 0, 0, 0, 0 };
+    BOOL found = NO;
+    for (NSUInteger i = 0; p && i + 16 <= n && n <= 16u * 1024 * 1024; i += 4) {
+        uint32_t sig, ms, ls;
+        memcpy(&sig, p + i, 4);
+        if (sig != 0xFEEF04BDu) continue;            /* VS_FIXEDFILEINFO.dwSignature */
+        memcpy(&ms, p + i + 8, 4);                   /* dwFileVersionMS, dwFileVersionLS */
+        memcpy(&ls, p + i + 12, 4);
+        v[0] = ms >> 16; v[1] = ms & 0xffff; v[2] = ls >> 16; v[3] = ls & 0xffff;
+        found = (v[0] == 14 && v[1] < 100);
+        break;
+    }
+    static const unsigned fixed[4] = { 14, 44, 35211, 0 };   /* server_ios.c's version for "1" */
+    BOOL newer = NO;
+    if (found)
+        for (int k = 0; k < 4; k++)
+            if (v[k] != fixed[k]) { newer = v[k] > fixed[k]; break; }
+    if (newer) {
+        char version[32];
+        snprintf(version, sizeof(version), "%u.%u.%u.%u", v[0], v[1], v[2], v[3]);
+        setenv("MADEIRA_VCRT_ARM64_KEY", version, 1);
+        dprintf(STDERR_FILENO, "[vcrt-arm64] MADEIRA_VCRT_ARM64_KEY=1: the marker takes this session's VC++ runtime version %s\n", version);
+    } else if (found) {
+        dprintf(STDERR_FILENO, "[vcrt-arm64] MADEIRA_VCRT_ARM64_KEY=1: VC++ runtime %u.%u.%u.%u is not newer than 14.44.35211.0: the marker keeps 14.44.35211.0\n",
+                v[0], v[1], v[2], v[3]);
+    } else {
+        dprintf(STDERR_FILENO, "[vcrt-arm64] MADEIRA_VCRT_ARM64_KEY=1: no VC++ runtime version found (%s): the marker keeps 14.44.35211.0\n",
+                data ? "no 14.x file version in vcruntime140.dll" : "vcruntime140.dll not there");
+    }
+}
+
+/* madeira-bcd (round 591): env.MADEIRA_MFC_DOCK = 1 puts Microsoft's MFC (mfc140.dll, mfc140u.dll) where a BCD Dock
+ * session's 64-bit game looks for it. A Dock session runs Valve's client in an aarch64 session (explorer.exe is the target),
+ * so the VC++ overlay in the session setup, which links MFC into system32, never runs for it. The game Valve's client starts
+ * is an x64 program with its own ARM64EC ntdll: it searches system32 (the aarch64 farm, no MFC in it) and, for a name it does
+ * not find there, C:\windows\sysx64 (ntdll loader.c, "mixed-arch fallback"). So the two MFC DLLs are linked into sysx64, from
+ * the folder the overlay uses (the bundle's, else the app's download), and nothing else of the VC++ runtime: the rest stays
+ * Wine's builtins, as in a Dock session today. Horizon Zero Dawn and Age of Empires II HD stopped at once with c0000135
+ * ("import_dll Library mfc140.dll ... not found") without them. Off by default: with the switch unset nothing is linked and the
+ * VC++ folder is not even looked at. An ARM64EC session (a direct start) changes nothing either: its system32 already has MFC.
+ * env.MADEIRA_MFC = 0 keeps MFC out here too. A link an earlier session made for this switch is removed when the session does
+ * not ask for it, so one game's line never leaves MFC in the next game's sysx64 (the prefix is shared). Logs one line. */
+static void madeira_mfc_dock(NSFileManager *fm, NSString *sysx64, NSString *bundle, NSString *support, BOOL ec_session)
+{
+    NSString *const names[] = { @"mfc140.dll", @"mfc140u.dll" };
+    const char *dockEnv = getenv("MADEIRA_MFC_DOCK");
+    const char *allEnv = getenv("MADEIRA_MFC");   /* the system32 switch; 0 keeps MFC out */
+    const BOOL asked = dockEnv && dockEnv[0] == '1';
+    const BOOL mfcOff = allEnv && allEnv[0] == '0';
+    const BOOL link = asked && !ec_session && !mfcOff;
+    NSString *dir = link ? madeira_vcruntime_dir(bundle, support) : nil;
+    NSMutableArray<NSString *> *linked = [NSMutableArray array];
+    for (size_t i = 0; i < sizeof(names) / sizeof(names[0]); i++) {
+        NSString *dst = [sysx64 stringByAppendingPathComponent:names[i]];
+        NSString *src = dir ? [dir stringByAppendingPathComponent:names[i]] : nil;
+        NSString *type = [[fm attributesOfItemAtPath:dst error:nil] fileType];   /* the link itself, not its target */
+        if (src && access(src.fileSystemRepresentation, R_OK) == 0) {
+            if (type && ![type isEqualToString:NSFileTypeSymbolicLink]) {
+                dprintf(STDERR_FILENO, "[WineProc] MADEIRA_MFC_DOCK=1: %s in sysx64 is a file, not a link: left as it is\n", names[i].UTF8String);
+                continue;
+            }
+            [fm removeItemAtPath:dst error:nil];   /* self-heal a stale link on reinstall */
+            if ([fm createSymbolicLinkAtPath:dst withDestinationPath:src error:nil]) [linked addObject:names[i]];
+            continue;
+        }
+        /* Not asked for, or not there: only a link into the VC++ folders (what this switch makes) goes. */
+        NSString *target = [type isEqualToString:NSFileTypeSymbolicLink] ? [fm destinationOfSymbolicLinkAtPath:dst error:nil] : nil;
+        if (target && ([target containsString:@"/VCRuntime/x86_64/"] || [target containsString:@"/x86_64-vcruntime/"])) {
+            [fm removeItemAtPath:dst error:nil];
+            dprintf(STDERR_FILENO, "[WineProc] MADEIRA_MFC_DOCK: %s removed from sysx64 (a link of an earlier session; this one does not ask for it)\n",
+                    names[i].UTF8String);
+        }
+    }
+    if (!asked) return;
+    if (ec_session)
+        dprintf(STDERR_FILENO, "[WineProc] MADEIRA_MFC_DOCK=1: an ARM64EC session already links MFC into system32: nothing linked into sysx64\n");
+    else if (mfcOff)
+        dprintf(STDERR_FILENO, "[WineProc] MADEIRA_MFC_DOCK=1 but MADEIRA_MFC=0: MFC stays out\n");
+    else if (linked.count)
+        dprintf(STDERR_FILENO, "[WineProc] MADEIRA_MFC_DOCK=1: %s linked into sysx64 (from the %s VC++ runtime)\n",
+                [linked componentsJoinedByString:@" "].UTF8String, [dir hasPrefix:bundle] ? "bundled" : "downloaded");
+    else
+        dprintf(STDERR_FILENO, "[WineProc] MADEIRA_MFC_DOCK=1: no mfc140.dll / mfc140u.dll in the VC++ runtime folder (not downloaded): nothing linked\n");
+}
+
 /* C:\windows\winsxs for 32-bit processes: the x86 side-by-side assemblies Wine
  * ships. Re-seeded every session, because the links name the bundle path.
  *
@@ -1400,7 +1503,18 @@ static void *wine_process_thread(void *arg) {
         const char *dock_session = getenv("MADEIRA_DOCK_SESSION");
         const char *direct_app = getenv("MADEIRA_STEAM_APPID");    /* set by the library for one direct Steam start (Start with: The game); not a setting */
         const char *direct_path = getenv("MADEIRA_STEAM_APPPATH"); /* that game's install folder, with MADEIRA_STEAM_APPID; not a setting */
-        if (dock_session && dock_session[0] == '1') {
+        /* madeira-bcd (lead, 2026-10-24): env.MADEIRA_STEAM_IDENTITY = none in a game's file publishes no Steam identity at all.
+         * The fixed one above made Rockstar's launcher of the Epic GTA V and RDR2 think it was the Steam version: every Epic start
+         * of the launcher in the testers' logs (8 of 9; YZZFYA, DJAMF2, VX8ZZ0, ...) carried SteamAppId=356400 and ended in
+         * "LAUNCHER_ERR_STEAM_FAILED" (113, "Steam failed to initialize"). Opt-in (the app adds it after that error in an Epic
+         * session); unset or any other value keeps the branches below exactly as they were. */
+        const char *steam_identity = getenv("MADEIRA_STEAM_IDENTITY");
+        if (steam_identity && strcmp(steam_identity, "none") == 0) {
+            unsetenv("SteamAppPath");
+            unsetenv("SteamGameId");
+            unsetenv("SteamAppId");
+            dprintf(STDERR_FILENO, "[steam-env] MADEIRA_STEAM_IDENTITY=none: no Steam game identity published\n");
+        } else if (dock_session && dock_session[0] == '1') {
             unsetenv("SteamAppPath");
             unsetenv("SteamGameId");
             unsetenv("SteamAppId");
@@ -1817,14 +1931,44 @@ static void *wine_process_thread(void *arg) {
             madeira_seed_winsxs_arm64_comctl(fm, prefix);
             madeira_link_wine_mono(fm, prefix, bundlePath);
 
+            /* madeira-bcd (2026-10-22): MADEIRA_MSIEXEC_SYSTEM32=1 (set for an Epic game's session by ContentView, or by a
+             * game's own env line) links the bundle's msiexec.exe, which exists only as i386, into the 64-bit system32 for
+             * this session: a 64-bit program that runs "msiexec" from PATH then finds it, and Wine starts it as WoW64
+             * (Paradox's launcher stub, build 585: "exec: msiexec: executable file not found in %PATH%"). Without the
+             * variable a link BCD made earlier is removed. A real file or any other link named msiexec.exe is left alone. */
+            {
+                NSString *msiDst = [sys32Dir stringByAppendingPathComponent:@"msiexec.exe"];
+                NSString *msiSrc = [[bundlePath stringByAppendingPathComponent:@"i386-windows"] stringByAppendingPathComponent:@"msiexec.exe"];
+                const char *msiWant = getenv("MADEIRA_MSIEXEC_SYSTEM32");
+                struct stat msiSt;
+                const BOOL msiThere = lstat(msiDst.fileSystemRepresentation, &msiSt) == 0;
+                NSString *msiCur = (msiThere && S_ISLNK(msiSt.st_mode)) ? [fm destinationOfSymbolicLinkAtPath:msiDst error:nil] : nil;
+                const BOOL msiOurs = msiCur != nil && [msiCur hasSuffix:@"/i386-windows/msiexec.exe"];
+                if (msiWant && strcmp(msiWant, "1") == 0 && has_i386_set && [fm fileExistsAtPath:msiSrc]) {
+                    if (!msiThere || msiOurs) {
+                        [fm removeItemAtPath:msiDst error:nil];
+                        const BOOL ok = [fm createSymbolicLinkAtPath:msiDst withDestinationPath:msiSrc error:nil];
+                        dprintf(STDERR_FILENO, "[msiexec64] system32\\msiexec.exe -> i386 msiexec: %s\n", ok ? "linked" : "link FAILED");
+                    } else {
+                        dprintf(STDERR_FILENO, "[msiexec64] system32\\msiexec.exe exists and is not BCD's: left alone\n");
+                    }
+                } else if (msiOurs) {
+                    [fm removeItemAtPath:msiDst error:nil];
+                    dprintf(STDERR_FILENO, "[msiexec64] removed BCD's system32\\msiexec.exe link (not asked for this session)\n");
+                }
+            }
+
             /* madeira-bcd: the AVX opt-in lives in a separately built FEX module
              * (tools/build-xtajit64.sh ships it as xtajit64-avx.dll). Only a
              * game whose settings ask for AVX gets it; everything else keeps
              * upstream's xtajit64.dll. Wine loads the emulator as
-             * C:\windows\system32\xtajit64.dll, one of the links made above. */
+             * C:\windows\system32\xtajit64.dll, one of the links made above.
+             * BCD (2026-10-23): the value 2 (the game's own line env.MADEIRA_FEX_AVX = 2) takes the same module;
+             * the module then reports AVX without AVX2 (FEX CPUID, HideAVX2). 1 and unset are unchanged. */
             {
                 const char *avxEnv = getenv("MADEIRA_FEX_AVX");
-                if (use_arm64ec && avxEnv && avxEnv[0] == '1') {
+                if (use_arm64ec && avxEnv && (avxEnv[0] == '1' || (avxEnv[0] == '2' && avxEnv[1] == '\0'))) {
+                    const char *avxMode = avxEnv[0] == '2' ? "2" : "1";
                     NSString *avxDll = [[bundlePath stringByAppendingPathComponent:@"arm64ec-windows"]
                                         stringByAppendingPathComponent:@"xtajit64-avx.dll"];
                     if ([fm fileExistsAtPath:avxDll]) {
@@ -1833,9 +1977,10 @@ static void *wine_process_thread(void *arg) {
                             [fm removeItemAtPath:dst error:nil];
                             [fm createSymbolicLinkAtPath:dst withDestinationPath:avxDll error:nil];
                         }
-                        dprintf(STDERR_FILENO, "[WineProc] MADEIRA_FEX_AVX=1: xtajit64.dll -> xtajit64-avx.dll\n");
+                        dprintf(STDERR_FILENO, "[WineProc] MADEIRA_FEX_AVX=%s: xtajit64.dll -> xtajit64-avx.dll%s\n", avxMode,
+                                avxEnv[0] == '2' ? " (AVX reported, AVX2 not)" : "");
                     } else {
-                        dprintf(STDERR_FILENO, "[WineProc] MADEIRA_FEX_AVX=1 but this build has no xtajit64-avx.dll -- AVX stays off\n");
+                        dprintf(STDERR_FILENO, "[WineProc] MADEIRA_FEX_AVX=%s but this build has no xtajit64-avx.dll -- AVX stays off\n", avxMode);
                     }
                 }
             }
@@ -1899,6 +2044,38 @@ static void *wine_process_thread(void *arg) {
                                 use_arm64ec ? "system32 + sysx64" : "sysx64 only");
                     } else {
                         dprintf(STDERR_FILENO, "[WineProc] MADEIRA_D3D11_SRC=1 but this build has no d3d11-src.dll -- upstream's d3d11.dll stays\n");
+                    }
+                }
+            }
+
+            /* madeira-bcd (2026-10-23): env.MADEIRA_D3D9_X64 = dxmt (the game's own file) runs the 64-bit
+             * d3d9.dll built from the dxmt submodule (tools/build-d3d9-x64-dll.sh ships it as d3d9-dxmt.dll):
+             * DXMT's Direct3D 9 frontend, the one the 32-bit games already run as d3d9-emulated.dll,
+             * compiled for arm64ec. A 64-bit Direct3D 9 game loads Wine's own d3d9.dll, which draws through
+             * wined3d's OpenGL backend, and BCD has none ("Direct3DCreate9 called -> d3d9_init FAILED":
+             * Darksiders II Deathinitive Edition, PICO PARK). Off by default: every other game keeps Wine's
+             * d3d9.dll byte for byte, and dropping the line restores it at the next start (the farms above
+             * are relinked from the bundle every session). Linked like dxgi-src.dll: sysx64 in any session
+             * (an x64 child of an aarch64 session loads from there), system32 too in an ARM64EC one. Only
+             * the value "dxmt" counts; the 32-bit d3d9.dll (the shim, in syswow64) is not touched. */
+            {
+                const char *d3d9X64 = getenv("MADEIRA_D3D9_X64");
+                if (d3d9X64 && strcmp(d3d9X64, "dxmt") == 0) {
+                    NSString *ecDir = [bundlePath stringByAppendingPathComponent:@"arm64ec-windows"];
+                    NSString *dxmtDll = [ecDir stringByAppendingPathComponent:@"d3d9-dxmt.dll"];
+                    if ([fm fileExistsAtPath:dxmtDll]) {
+                        NSMutableArray *dirs = [NSMutableArray arrayWithObject:
+                            [prefix stringByAppendingPathComponent:@"drive_c/windows/sysx64"]];
+                        if (use_arm64ec) [dirs addObject:sys32Dir];
+                        for (NSString *dir in dirs) {
+                            NSString *dst = [dir stringByAppendingPathComponent:@"d3d9.dll"];
+                            [fm removeItemAtPath:dst error:nil];
+                            [fm createSymbolicLinkAtPath:dst withDestinationPath:dxmtDll error:nil];
+                        }
+                        dprintf(STDERR_FILENO, "[WineProc] MADEIRA_D3D9_X64=dxmt: d3d9.dll -> d3d9-dxmt.dll (DXMT's Direct3D 9 for 64-bit programs; %s)\n",
+                                use_arm64ec ? "system32 + sysx64" : "sysx64 only");
+                    } else {
+                        dprintf(STDERR_FILENO, "[WineProc] MADEIRA_D3D9_X64=dxmt but this build has no d3d9-dxmt.dll -- Wine's d3d9.dll stays\n");
                     }
                 }
             }
@@ -2131,6 +2308,33 @@ static void *wine_process_thread(void *arg) {
                 }
             }
 
+            /* madeira-bcd, from thebcd69/bcd-games#4 and thebcd69/bcd-wine#1 by mckenna654 (modified 2026-10-24): ntdll-xsec.dll
+             * (tools/patch-wine-ntdll-xsec.py, built by tools/build-wine-extra-dlls.sh next to the shipped ntdll.dll) is the
+             * ARM64EC ntdll the unix loader maps when env.MADEIRA_NTDLL_XSEC = 1 (build/ntdll-unix/loader_ios.c,
+             * ios_ec_ntdll_name; it wins over ntdll-sync.dll, so this block comes after that one). Linked the same way: system32
+             * (ARM64EC sessions) and sysx64 (x64 children) name the file the session runs. Unset or 0: nothing here, and the
+             * links above are what they were. */
+            {
+                const char *xsec = getenv("MADEIRA_NTDLL_XSEC");
+                BOOL xsecOn = xsec && xsec[0] == '1' && !xsec[1];
+                NSString *xsecDll = [[bundlePath stringByAppendingPathComponent:@"arm64ec-windows"]
+                                     stringByAppendingPathComponent:@"ntdll-xsec.dll"];
+                if (xsecOn && [fm fileExistsAtPath:xsecDll]) {
+                    NSMutableArray *dirs = [NSMutableArray arrayWithObject:
+                        [prefix stringByAppendingPathComponent:@"drive_c/windows/sysx64"]];
+                    if (use_arm64ec) [dirs addObject:sys32Dir];
+                    for (NSString *dir in dirs) {
+                        NSString *dst = [dir stringByAppendingPathComponent:@"ntdll.dll"];
+                        [fm removeItemAtPath:dst error:nil];
+                        [fm createSymbolicLinkAtPath:dst withDestinationPath:xsecDll error:nil];
+                    }
+                    dprintf(STDERR_FILENO, "[WineProc] ntdll.dll -> ntdll-xsec.dll (opt-in MADEIRA_NTDLL_XSEC=1; %s)\n",
+                            use_arm64ec ? "system32 + sysx64" : "sysx64 only");
+                } else if (xsecOn) {
+                    dprintf(STDERR_FILENO, "[WineProc] MADEIRA_NTDLL_XSEC=1 but this build has no ntdll-xsec.dll: the shipped ntdll.dll\n");
+                }
+            }
+
             /* ml719: REPAIR THE SHELL FOLDERS. They ship as symlinks to the BUILD
              * MACHINE's home directory.
              *
@@ -2193,7 +2397,15 @@ static void *wine_process_thread(void *arg) {
              * missing or a dangling link. Ghost of Tsushima then stops with
              * "Unable to create the game's save folder" before touching the
              * filesystem. Make every folder games write to a real directory
-             * (Saved Games and AppData too), for both names. */
+             * (Saved Games and AppData too), for both names.
+             *
+             * madeira-bcd (2026-10-24, build 598): the user's own Start Menu\Programs too. The template ships it
+             * for its own user only (users/mythic); the registry's User Shell Folders map "Start Menu" to
+             * %USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu, which did not exist for "mobile". Wine's
+             * explorer (the desktop of every session) then had no folder for the user's half of the Start menu,
+             * and once the public half had entries (BCD's own, an installer's) pressing the Start button read
+             * address 0 (explorer.exe 0x1400192cc) and the whole session ended: Battle.net, build 597, at its
+             * sign-in. Every Windows profile has this folder; an existing one is left alone. */
             {
                 NSMutableOrderedSet *names = [NSMutableOrderedSet orderedSetWithObject:@"madeira"];
                 struct passwd *pw = getpwuid(getuid());
@@ -2202,7 +2414,7 @@ static void *wine_process_thread(void *arg) {
                 if (envUser && envUser[0]) [names addObject:@(envUser)];
                 NSArray *rels = @[ @"Documents", @"Desktop", @"Downloads", @"Music", @"Pictures",
                                    @"Videos", @"Saved Games", @"AppData/Local", @"AppData/LocalLow",
-                                   @"AppData/Roaming" ];
+                                   @"AppData/Roaming", @"AppData/Roaming/Microsoft/Windows/Start Menu/Programs" ];
                 int made = 0;
                 for (NSString *name in names) {
                     NSString *home = [prefix stringByAppendingPathComponent:
@@ -2219,8 +2431,27 @@ static void *wine_process_thread(void *arg) {
                                            attributes:nil error:nil]) made++;
                     }
                 }
-                dprintf(STDERR_FILENO, "[shell-dir] user folders for %s: %d created\n",
+                dprintf(STDERR_FILENO, "[shell-dir] user folders for %s: %d created (Start Menu included)\n",
                         [[names.array componentsJoinedByString:@", "] UTF8String], made);
+            }
+
+            /* madeira-bcd (2026-10-23): the Wine desktop's Start menu gets an Explorer entry and one test program per
+             * Direct3D 9, 10, 11 and 12 (BCDStartMenu.c): shortcut files in the prefix's public Start Menu folder, which
+             * Wine's explorer lists when the Start button is pressed. Only a desktop session (the Windows desktop, a
+             * program started in a Wine desktop) has such a menu, so only those sessions get the files; every other
+             * launch, a BCD Dock session included, does not touch the folder. A file is written when missing or when
+             * it is BCD's own and outdated, never over a file of a person's own. env.MADEIRA_START_MENU = 0 leaves
+             * them out. */
+            {
+                const char *desk = getenv("MADEIRA_DESKTOP");
+                const char *dockSession = getenv("MADEIRA_DOCK_SESSION");
+                const char *menuOff = getenv("MADEIRA_START_MENU");
+                if (desk && desk[0] == '1' && !(dockSession && dockSession[0] == '1') && !(menuOff && menuOff[0] == '0')) {
+                    bcd_start_result sm = bcd_startmenu_install(prefix.fileSystemRepresentation, bundlePath.fileSystemRepresentation);
+                    dprintf(STDERR_FILENO, "[start-menu] BCD entries: %d written, %d current, %d left alone, %d without a program, %d failed%s "
+                            "(MADEIRA_START_MENU=0 leaves them out)\n", sm.written, sm.current, sm.foreign, sm.missing, sm.failed,
+                            sm.no_menu ? "; the prefix has no public Start Menu folder" : "");
+                }
             }
 
             // Layer Microsoft's real VC++ Runtime DLLs ON TOP of the ARM64EC
@@ -2317,6 +2548,17 @@ static void *wine_process_thread(void *arg) {
                 LOG("Symlinked %d MS VC++ Runtime DLLs (x86_64 native) over arm64ec builtins, skipped %d", vcrtLinked, vcrtSkipped);
                 dprintf(STDERR_FILENO, "[WineProc] Symlinked %d MS VC++ Runtime DLLs over arm64ec builtins (skipped %d for native EC SEH)\n", vcrtLinked, vcrtSkipped);
             }
+
+            /* madeira-bcd (round 591): env.MADEIRA_MFC_DOCK = 1 (the game's own line; the game's file was exported above, a Dock
+             * start from the library included) links MFC into sysx64 for a session that is not ARM64EC, see madeira_mfc_dock. */
+            madeira_mfc_dock(fm, [prefix stringByAppendingPathComponent:@"drive_c/windows/sysx64"], bundlePath,
+                             NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES).firstObject,
+                             use_arm64ec);
+
+            /* BCD (issue #13): env.MADEIRA_VCRT_ARM64_KEY = 1 takes the session's VC++ runtime version when it is newer than
+             * the marker's fixed one; the marker itself is written by the first Wine process (loader_ios.c). */
+            madeira_vcrt_arm64_version(bundlePath,
+                             NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES).firstObject);
         }
 
         // Build the launch path for Wine's PE loader.
@@ -2370,7 +2612,12 @@ static void *wine_process_thread(void *arg) {
         argv[argc] = NULL;
         dprintf(STDERR_FILENO, "[WineProc] argv[1] = %s\n", exe_path);
         for (int i = 0; i < extra_argc; i++) {
-            dprintf(STDERR_FILENO, "[WineProc] argv[%d] = %s\n", 2 + i, extra_argv[i]);
+            /* madeira-bcd (2026-10-22, Epic Games milestone 2): Epic's sign-in code, account ID and name print as "*" (build/bcd_epic_mask.h);
+             * a signed-in start passes none of them here (BCD Host reads them from a one-use file), so this is a second line of defence. */
+            char masked[sizeof(args_buf) + 1];
+            long masked_len = bcd_epic_mask_a(extra_argv[i], strlen(extra_argv[i]), masked);
+            if (masked_len >= 0) masked[masked_len] = 0;
+            dprintf(STDERR_FILENO, "[WineProc] argv[%d] = %s\n", 2 + i, masked_len >= 0 ? masked : extra_argv[i]);
         }
 
         /* iOS-Madeira: chdir to the unix path that maps to the exe's Wine
@@ -2536,12 +2783,16 @@ static void wine_session_end(void)
      * of this app run (GTA V Enhanced runs without them). */
     unsetenv("MADEIRA_UCRT_X64_MATH"); unsetenv("MADEIRA_SRV_FGETPATH");
     unsetenv("MADEIRA_NTDLL_SYNC");   /* madeira-bcd: a game's switch is its own */
+    /* madeira-bcd: Diablo II: Resurrected's executable-section switches (thebcd69/bcd-games#4), likewise */
+    unsetenv("MADEIRA_NTDLL_XSEC"); unsetenv("MADEIRA_SHARED_SECTION_EXEC"); unsetenv("MADEIRA_NTDLL_DATA_SYNC_RANGE");
+    unsetenv("MADEIRA_FAULT_LOOP_GUEST_PROGRESS"); unsetenv("MADEIRA_D2R_PROBE_RECOVERY");
     unsetenv("MADEIRA_FIBER_TRACE");  /* madeira-bcd: likewise */
     unsetenv("MADEIRA_WER");          /* madeira-bcd: likewise */
     unsetenv("MADEIRA_WINTYPES");     /* madeira-bcd: likewise */
     unsetenv("MADEIRA_X64_MACHINE");  /* madeira-bcd: likewise (BeamNG.drive's launcher) */
     unsetenv("MADEIRA_TINY_WINDOW_FIX"); /* madeira-bcd: likewise (American Truck Simulator's tiny window) */
     unsetenv("MADEIRA_OPTIN_DLLS");   /* madeira-bcd: likewise */
+    unsetenv("MADEIRA_NLS_EXTRA");    /* madeira-bcd: likewise (env_ios.c reads it at every code page request) */
     unsetenv("MADEIRA_WG_64BIT");     /* madeira-bcd: likewise (Resident Evil 2's decoders; a later game keeps the stub table) */
     unsetenv("MADEIRA_VCRT_ARM64_KEY"); /* madeira-bcd: likewise (the Runtimes\\arm64 marker is per game) */
     unsetenv("MADEIRA_TAIL_CARVE_EXEC_CHECK"); /* madeira-bcd: likewise */

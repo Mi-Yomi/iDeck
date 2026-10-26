@@ -132,7 +132,29 @@ check("Library.autoTuneSessionEnded starts with the gate and reads the session f
 views = VIEWS.read_text()
 alert = views[views.index("struct AutoTuneAlert: ViewModifier {"):]
 check("the offer's alert shows only while auto-tune is on and after the exit report and any restart notice",
-      "Binding(get: { AutoTune.enabled && offers.offer != nil && library.error == nil && library.restartNotice == nil }" in alert)
+      "Binding(get: { AutoTune.enabled && offers.offer != nil && library.error == nil && library.restartNotice == nil\n"
+      "                       && gate.mayShow(offers.offer != nil) }" in alert)
+# 2026-10-24 (the owner): the alert hangs on ContentView, under every page and sheet; shown while a game's page was open, iOS took
+# the page down and the library's first screen came back whatever was pressed. It now waits while anything is presented over the
+# root screen, comes up once nothing is, and stays up until answered.
+gate = views[views.index("final class AutoTuneAlertGate: ObservableObject {"):]
+check("the alert waits while a page, sheet or other alert is presented over the root screen, and stays up once shown",
+      "guard pending else { showing = false; return false }" in gate and "if showing { return true }" in gate
+      and "return root.presentedViewController == nil" in gate and "if Self.nothingPresented() {" in gate)
+check("nothing runs while it waits: it looks again when one of BCD's pages or sheets closes",
+      "BCDPresentation.closed = { AutoTuneAlertGate.shared.lookAgain() }" in gate
+      and "guard AutoTuneOffers.shared.offer != nil, !showing else { return }" in gate)
+comp = (APP / "BCDComponents.swift").read_text()
+check("BCDPresentation.didClose looks again a moment after a close, only when someone waits",
+      "guard let closed else { return }" in comp and "DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { closed() }" in comp)
+hooks = {"BCDGamePage.swift": ["content.fullScreenCover(item: $game, onDismiss: BCDPresentation.didClose)"],
+         "BCDFrontEnd.swift": ["onDismiss: { installButtons(); BCDPresentation.didClose() }"],
+         "BCDLiveFrontEnd.swift": [".fullScreenCover(isPresented: $onboarding.presented, onDismiss: BCDPresentation.didClose)",
+                                   ".sheet(item: sheetShown, onDismiss: BCDPresentation.didClose)",
+                                   ".fullScreenCover(item: pageShown, onDismiss: BCDPresentation.didClose)"]}
+for name, wants in hooks.items():
+    text = (APP / name).read_text()
+    check(f"{name}: its pages and sheets call BCDPresentation.didClose when they close", all(w in text for w in wants))
 check("its Close BCD is the only way an attempt restarts the app (no relaunch by itself)",
       alert.count("exit(0)") == 1 and "Button(\"Close BCD\")" in alert and "exit(" not in GLUE.read_text()
       and views.count("exit(") == 1)
@@ -211,7 +233,8 @@ known = set(re.findall(r'ConfigOption\(key: "([^"]+)"', catalog)) | set(cat.OVER
 NOT_FROM_LAYER = {"metalfx-upscale", "fps-limit", "env.MADEIRA_PAD_MODE", "pool", "wx", "usd-time", "d3d9", "metal-validation"}
 LINE = re.compile(r"^([A-Za-z0-9._-]+) = (\S.*)$")
 FIELDS = {"id", "lines", "priority", "all", "any", "none", "outcomes", "session", "api", "ramMinMB", "ramMaxMB",
-          "minStage", "maxStage", "imageMaxMB", "exeMaxMB", "upgrade", "noRetry", "reason", "evidence", "fixedIn"}
+          "minStage", "maxStage", "imageMaxMB", "exeMaxMB", "exeMinMB", "memoryMinPct", "upgrade", "listUpgrade", "noRetry", "reason",
+          "evidence", "fixedIn", "noFix"}
 ids = [r["id"] for r in rules]
 check("rule ids are unique", len(ids) == len(set(ids)))
 for r in rules:
@@ -220,10 +243,19 @@ for r in rules:
         bad.append("unknown fields %s" % sorted(set(r) - FIELDS))
     if "fixedIn" in r:
         # A crash only a change in Madeira fixes: no lines, the build that fixed it.
-        if r.get("lines") != [] or not isinstance(r["fixedIn"], int) or r["fixedIn"] < 1 or r.get("upgrade"):
+        if r.get("lines") != [] or not isinstance(r["fixedIn"], int) or r["fixedIn"] < 1 or r.get("upgrade") or r.get("noFix"):
             bad.append("a fixedIn rule has \"lines\": [], a build number and no upgrade")
+    elif r.get("noFix"):
+        # A failure no setting and no known build changes: no lines, no build, no upgrade.
+        if r.get("lines") != [] or r["noFix"] is not True or r.get("upgrade") or r.get("listUpgrade") or r.get("noRetry"):
+            bad.append("a noFix rule has \"lines\": [], noFix true and no upgrade or retry flag")
     elif not r.get("lines"):
         bad.append("no lines")
+    if r.get("exeMinMB") is not None and r.get("exeMaxMB") is not None and r["exeMinMB"] > r["exeMaxMB"]:
+        bad.append("exeMinMB above exeMaxMB")
+    for k in ("memoryMinPct",):
+        if r.get(k) is not None and not (isinstance(r[k], int) and 1 <= r[k] <= 100):
+            bad.append("%s is a percentage" % k)
     for line in r.get("lines", []):
         m = LINE.match(line)
         if not m:

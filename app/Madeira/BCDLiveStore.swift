@@ -72,6 +72,7 @@ import os
             account.$playtime.map { _ in () }.eraseToAnyPublisher(),
             SteamSignInModel.shared.$accountName.map { _ in () }.eraseToAnyPublisher(),
             gogChanges,
+            epicChanges,
         ]
         // @Published sends before the value is stored: the rebuild runs a moment later, and at
         // most a few times a second while a download reports its progress.
@@ -126,6 +127,7 @@ import os
         rebuild()
         refreshSystem()
         refreshMetadata()
+        BCDLauncherModel.shared.refresh()   // the launchers' cards: is each one's program in drive_c now (an installer may have just run)?
         LogStore.shared.log("[bcd-ui] shown games=\(store.games.count) downloads=\(store.downloads.count)")
     }
 
@@ -174,6 +176,7 @@ import os
         var steamPositions: [Int: Int] = [:]
         var desktop = false
         for (position, entry) in library.entries.enumerated() {
+            if BCDLauncherSpec.hidesEntry(entry.id) { continue }   // build 600: Battle.net and the EA app are hidden (BCDLaunchers.swift)
             if let appID = entry.steamAppID {
                 if steamEntries[appID] == nil { steamEntries[appID] = entry; steamPositions[appID] = position }
                 continue
@@ -198,17 +201,17 @@ import os
             games.append(game)
         }
         gogMerge(&games)
+        epicMerge(&games)
         games.sort { $0.title.localizedStandardCompare($1.title) == .orderedAscending }
         if store.games != games { store.games = games }
 
-        let downloads = downloadList(names: names) + gogDownloads()
+        let downloads = downloadList(names: names) + gogDownloads() + epicDownloads()
         if store.downloads != downloads { store.downloads = downloads }
         let today = finished.filter { Calendar.current.isDateInToday($0.finished) }
         if store.finishedToday != today { store.finishedToday = today }
         let accounts = [
             BCDAccount(store: .steam, name: SteamSignInModel.shared.accountName, available: SteamSignIn.isEnabled || MadeiraDock.enabled),
-            // Not in this build yet.
-            BCDAccount(store: .epic, name: nil, available: false),
+            epicAccount(),
             gogAccount(),
         ]
         if store.accounts != accounts { store.accounts = accounts }
@@ -231,6 +234,8 @@ import os
                            store: .local, state: .ready, size: entry.folderBytes)
         game.lastPlayed = entry.lastPlayed
         game.thirtyTwoBit = entry.bits == 32
+        // A game on the SSD folder chosen in Settings > Storage (C:\External).
+        if entry.relativePath.hasPrefix("External/"), ExternalGameStorage.shared.hasSavedFolder { game.place = .externalDrive }
         if !isDesktop {
             game.recommended = GameRecommendations.match(windowsPath: entry.windowsPath, steamAppID: nil,
                                                          fileExists: GameRecommendations.driveFileExists) != nil
@@ -534,6 +539,7 @@ import os
         guard let launch else { return }
         startingGame = game.id
         if let entry = gogPlayEntry(game) { launch(entry); return }
+        if let entry = epicPlayEntry(game) { launch(entry); return }
         let library = LibraryModel.shared
         switch BCDLiveID.parse(game.id) {
         case .local(let id)?:
@@ -564,17 +570,16 @@ import os
             LogStore.shared.log("[bcd-ui] play app=\(appID)")
             launch(entry)
         case nil:
-            // Epic: the engine starts no game of its own yet, and the store lists none (rebuild).
-            // Its Play plugs in where GOG's does (gogPlayEntry, above): a library entry handed to
-            // the same connected Play.
+            // GOG's and Epic's games start through gogPlayEntry and epicPlayEntry, above: a library
+            // entry handed to the same connected Play. Any other id is nothing to start.
             return
         }
     }
 
     func install(_ game: BCDGame, place: BCDInstallPlace) {
         if gog(.install, game.id) { return }
-        // A game from Files is added, not installed. Epic: its downloads plug in here once the
-        // engine has them (the store lists none of its games until then).
+        if epic(.install, game.id, place: place) { return }
+        // A game from Files is added, not installed.
         guard case .steam(let appID)? = BCDLiveID.parse(game.id) else { return }
         if place == .externalDrive { LogStore.shared.log("[bcd-ui] no external drive in this build: app=\(appID) goes to the device") }
         download(appID)
@@ -582,6 +587,7 @@ import os
 
     func update(_ game: BCDGame) {
         if gog(.update, game.id) { return }
+        if epic(.update, game.id) { return }
         guard case .steam(let appID)? = BCDLiveID.parse(game.id) else { return }
         download(appID)
     }
@@ -604,6 +610,7 @@ import os
     /// offers it): at once, as a download.
     func verify(_ game: BCDGame) {
         if gog(.verify, game.id) { return }
+        if epic(.verify, game.id) { return }
         guard case .steam(let appID)? = BCDLiveID.parse(game.id) else { return }
         guard let installed = SteamGamesModel.shared.games.first(where: { $0.id == appID }),
               SteamOwnedLibrary.enabled, SteamInstallPaths.isManaged(library: installed.library) else {
@@ -617,6 +624,7 @@ import os
     /// from Files leaves the library, its files and saves staying in drive_c (Game details › Remove).
     func uninstall(_ game: BCDGame) {
         if gog(.uninstall, game.id) { return }
+        if epic(.uninstall, game.id) { return }
         switch BCDLiveID.parse(game.id) {
         case .steam(let appID)?:
             settled {
@@ -637,12 +645,14 @@ import os
 
     func pauseDownload(_ id: String) {
         if gog(.pause, id) { return }
+        if epic(.pause, id) { return }
         guard case .steam(let appID)? = BCDLiveID.parse(id) else { return }
         SteamOwnedLibrary.shared.pause(appID)
     }
 
     func resumeDownload(_ id: String) {
         if gog(.resume, id) { return }
+        if epic(.resume, id) { return }
         guard case .steam(let appID)? = BCDLiveID.parse(id) else { return }
         download(appID)
     }
@@ -651,23 +661,42 @@ import os
     /// an update of an installed game is only stopped.
     func cancelDownload(_ id: String) {
         if gog(.cancel, id) { return }
+        if epic(.cancel, id) { return }
         guard case .steam(let appID)? = BCDLiveID.parse(id) else { return }
         SteamOwnedLibrary.shared.cancelInstall(appID, installed: SteamGamesModel.shared.games.contains { $0.id == appID })
     }
 
     func enableJIT() { settled { [weak self] in self?.requestJIT?() } }
 
+    /// A launcher's installer or program (BCDLaunchersLive; the Library's Battle.net and EA app cards): the library entry the
+    /// engine made for it, handed to the same connected Play as every other start, once nothing covers the interface.
+    /// `game` is the id the store's startingJIT names while Play turns JIT on (BCDLauncherSpec.gameID).
+    func startLauncherEntry(_ entry: LibraryEntry, game: String) {
+        guard !starting, LibraryModel.shared.current == nil else { return }
+        starting = true
+        settled { [weak self] in
+            guard let self else { return }
+            self.starting = false
+            guard let launch = self.launch else { return }
+            self.startingGame = game
+            LogStore.shared.log("[bcd-ui] play launcher")
+            launch(entry)
+        }
+    }
+
     /// Settings › BCD Dock's start: ContentView's own, once nothing covers the main screen.
     func startDock(_ game: DockGame, _ compactPool: Bool) { settled { [weak self] in self?.dockStart?(game, compactPool) } }
 
     func signIn(_ front: BCDStoreFront) {
         if gogAccountAction(signIn: true, front) { return }
-        guard front == .steam else { return }   // Epic is not in this build yet: its sign-in plugs in here
+        if epicAccountAction(signIn: true, front) { return }
+        guard front == .steam else { return }
         settled { [weak self] in self?.sheet = .steamSignIn }
     }
 
     func signOut(_ front: BCDStoreFront) {
         if gogAccountAction(signIn: false, front) { return }
+        if epicAccountAction(signIn: false, front) { return }
         guard front == .steam else { return }
         SteamSignInModel.shared.signOut()
     }
@@ -677,6 +706,7 @@ import os
     func refreshLibrary() {
         Task { await SteamGamesModel.refreshAll() }
         gogRefresh()
+        epicRefresh()
         rebuild()
     }
 }

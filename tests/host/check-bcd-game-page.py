@@ -120,7 +120,7 @@ check("Library opens a game's page full screen",
       '.bcdGamePage($opened, from: "Library")' in library and ".sheet(item: $opened)" not in library)
 check("the first-version game sheet is gone", not any("BCDGameSheet" in p.read_text() for p in APP.glob("*.swift")))
 check("the page opens as a full-screen cover with the store and the focus",
-      "content.fullScreenCover(item: $game) { opened in" in page and ".environmentObject(store)" in page
+      "content.fullScreenCover(item: $game, onDismiss: BCDPresentation.didClose) { opened in" in page and ".environmentObject(store)" in page
       and ".environmentObject(focus)" in page)
 check("BCDGameDetailSource finds the live backend by its Objective-C name",
       'NSClassFromString("BCDGamePageLive")' in page and "@objc(BCDGamePageLive)" in live
@@ -176,10 +176,14 @@ for what, needle in [
     ("... and at most 20 MB", 'guard bytes <= 20_000_000 else { throw BCDGameError("Choose a picture under 20 MB.") }'),
     ("the game's config is its own file, edited as text", "if profile.text != text { profile.text = text }"),
     ("the Wine desktop has its page, before its first start too", "(id == LibraryEntry.desktopID ? LibraryEntry.desktopEntry : nil)"),
-    ("... with the desktop's settings and none of a game's library rows", "if !desktop { d.groups.append(libraryGroup(entry, gog: game.store == .gog)) }"),
+    ("... with the desktop's settings and none of a game's library rows", "if !desktop { d.groups.append(libraryGroup(entry, gog: game.store == .gog || game.store == .epic)) }"),
     ("an installed GOG game's settings are its library entry's", "guard BCDGOG.enabled, let id = BCDGOG.shared.installs[product]?.entryID else { return nil }"),
-    ("... with GOG's note on what it may need", "d.storeNote = BCDLiveStore.shared.gogNote(game.id)"),
-    ("... and Uninstall, which deletes its files through the store", "} else if game.store == .gog {\n            // Uninstall deletes a GOG game's files through the store (BCDLiveStoreGOG).\n            d.removal = .uninstall(frees: entry.folderBytes ?? game.size)"),
+    ("... with GOG's note on what it may need (and Epic's)", "d.storeNote = BCDLiveStore.shared.gogNote(game.id) ?? BCDLiveStore.shared.epicNote(game.id)"),
+    ("... and Uninstall, which deletes its files through the store", "} else if game.store == .gog || game.store == .epic {\n            // Uninstall deletes a GOG or Epic game's files through the store (BCDLiveStoreGOG, BCDLiveStoreEpic).\n            d.removal = .uninstall(frees: entry.folderBytes ?? game.size)"),
+    ("an installed Epic game's settings are its library entry's", "if let id = BCDLiveStore.shared.epicEntryID(game.id) { return library.entries.first { $0.id == id } }"),
+    ("an Epic game's page looks at its manifest when it opens, and reads its details again when the look answers", "BCDLiveStore.shared.epicOpened(game.id)\n        guard game.state.isInstalled else { return }"),
+    ("... through the one hook line in the watched changes", "BCDLiveStore.shared.epicDetailChanges,"),
+    ("an Epic game BCD cannot install says why before Install, and one that may not start says so", "let advice = BCDLiveStore.shared.epicInstallAdvice(game.id)\n        d.installBlocker = advice.blocker\n        d.installWarning = advice.warning"),
     ("the program's graphics API is read once, off the main thread", "return LibraryModel.graphicsImports(program)"),
     ("Steam's blockers before Play are the engine's", "SteamGamesRules.blocker(installed: installed, client: MadeiraDock.clientInstalled"),
     ("Uninstall is offered only for BCD's own downloads", "SteamInstallPaths.isManaged(library: $0.library)"),
@@ -195,7 +199,7 @@ for what, needle in [
     ("Add to Home Screen is the existing shortcut link", "ShortcutRouter.link(for: $0.windowsPath)"),
     ("saves back up through SaveBackup", "try SaveBackup.backup()"),
     ("saves restore through SaveBackup", "try SaveBackup.restore(from: file)"),
-    ("Report a problem is Send Log", "LogUpload.send(log.file, game: LogUpload.game(of: log.file), progress: progress)"),
+    ("Report a problem is Send Log, with the sender's comment", "LogUpload.send(log.file, game: LogUpload.game(of: log.file), comment: comment, progress: progress)"),
     ("only the newest logs Send Log offers are looked at", "LogUpload.recentLogs()"),
     ("the sections are built only while Options is open", "if settings {\n            d.groups = [display(entry, profile)"),
     ("nothing of a closed page stays in the backend", "programs.removeAll()"),
@@ -240,7 +244,8 @@ for focus_id in ('"game.main"', '"game.back"', '"game.options"', '"game.other.\\
                  '"game.panel.row.match.\\(match.id)"', '"game.store"'):
     check(f"a control carries the focus id {focus_id}", focus_id in views)
 check("the question's controls are \"game.ask.yes\" and \"game.ask.no\" on the page (the card menu's question gives its own prefix)",
-      'var prefix = "game.ask."' in views and "BCDGameQuestionView(question: asked.question) { model.answer($0) }" in views)
+      'var prefix = "game.ask."' in views and "BCDGameQuestionView(question: asked.question, answerAlternative: { model.answerAlternative() }) { model.answer($0) }" in views
+      and 'prefix + "alt"' in views)
 plain = code(views)
 check("every button of the page can be reached with a controller",
       len(re.findall(r"\bButton\(", plain)) - len(re.findall(r"\.bcdFocusable\(", plain)) <= 2,
@@ -317,10 +322,11 @@ else:
     with tempfile.TemporaryDirectory(prefix="bcd-game-page-") as tmp:
         t = Path(tmp)
         (t / "BCDStore.swift").write_text((APP / "BCDStore.swift").read_text())
+        (t / "BCDGameDLC.swift").write_text((APP / "BCDGameDLC.swift").read_text())   # the question before a first install (the model asks it)
         (t / "Rules.swift").write_text("import Combine\nimport Foundation\nimport SwiftUI\n\n" + page[start:end])
         (t / "Main.swift").write_text(TEST)
         r = subprocess.run(["xcrun", "swiftc", "-parse-as-library", "-swift-version", "5", "-o", str(t / "rules"),
-                            str(t / "BCDStore.swift"), str(t / "Rules.swift"), str(t / "Main.swift")],
+                            str(t / "BCDStore.swift"), str(t / "BCDGameDLC.swift"), str(t / "Rules.swift"), str(t / "Main.swift")],
                            capture_output=True, text=True)
         check("the page's rules compile on their own with BCDStore.swift", r.returncode == 0, (r.stderr or r.stdout)[-3000:])
         if r.returncode == 0:

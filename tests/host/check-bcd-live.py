@@ -143,11 +143,12 @@ check("LibraryController.shared.configure(enabled: true, ownsInput: true)" in bl
 
 # ---- play ----------------------------------------------------------------------------------
 start = block(store, "private func start(_ game: BCDGame)")
-# Three starts, all through the connected Play: a GOG game's entry (BCDLiveStoreGOG's hook, which
-# returns nil for every other game), a game from Files or the desktop, and a Steam game.
-check(start.count("launch(entry)") == 3 and "guard let launch else { return }" in start
-      and "if let entry = gogPlayEntry(game) { launch(entry); return }" in start,
-      "Play: the live store starts a game only through the connected Play (GOG, local, Steam)")
+# Four starts, all through the connected Play: a GOG game's entry (BCDLiveStoreGOG's hook, which returns nil for
+# every other game), an Epic game's entry (BCDLiveStoreEpic's, the same), a game from Files or the desktop, and a Steam game.
+check(start.count("launch(entry)") == 4 and "guard let launch else { return }" in start
+      and "if let entry = gogPlayEntry(game) { launch(entry); return }" in start
+      and "if let entry = epicPlayEntry(game) { launch(entry); return }" in start,
+      "Play: the live store starts a game only through the connected Play (GOG, Epic, local, Steam)")
 # Wave 3 (2026-10-19): the classic Game details page, which asked this check too, is deleted; the check moved
 # unchanged to SteamGames.swift (SteamPlayCheck.blocker) and BCD's Play is the only caller.
 check("library.steamEntry(installed, title: title)" in start
@@ -192,7 +193,7 @@ check("account.$cloud.map { _ in () }" in store and "self?.noteSavesDiffer()" in
       "savesDiffer is read as the cloud state moves and with every rebuild, and dropped while a game runs")
 
 # ---- around the shell: setup, settings, errors, controller ---------------------------------
-check(".fullScreenCover(isPresented: $onboarding.presented) { OnboardingView() }" in front
+check(".fullScreenCover(isPresented: $onboarding.presented, onDismiss: BCDPresentation.didClose) { OnboardingView() }" in front
       and "onboarding.presentIfNeeded()" in front and 'EndedSessionSurface.hide(reason: "library-appeared")' in front,
       "first-run setup opens over BCD's interface as over the classic library")
 # Wave 3 (2026-10-19): the classic Settings page (BCDOpenClassicSettings, LibrarySettingsForm) is deleted; the
@@ -213,7 +214,7 @@ check("LogUploadSettingsSection" not in front and "sendLog" not in front and "BC
       "no old Send Log sheet (Send Log lives in Settings › Logs and on the game page); Steam sign-in is BCD's own page")
 # Add a game and a game's page (after Add a game, and the Play question's Choose saves) are BCD's
 # own screens, full screen (ui-game-page, 2026-10-18): the classic browser and page never open.
-check("BCDAddGame(close:" in front and "BCDGamePage(gameID:" in front and ".fullScreenCover(item: pageShown)" in front
+check("BCDAddGame(close:" in front and "BCDGamePage(gameID:" in front and ".fullScreenCover(item: pageShown, onDismiss: BCDPresentation.didClose)" in front
       and "ExecutableBrowser" not in front and "LibraryDetail" not in front,
       "Add a game and a game's page are BCD's own screens, never the classic ones")
 check("@StateObject private var focus = BCDFocus(watchControllers: false)" in front

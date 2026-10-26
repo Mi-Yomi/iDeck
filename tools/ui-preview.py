@@ -13,6 +13,7 @@ sheet puts them side by side.
     tools/ui-preview.py                              all screens, the default devices
     tools/ui-preview.py --screens library --devices "BCD iPhone 13 Pro" --orient landscape
     tools/ui-preview.py --focus library.game.wc3     show a controller's focus ring
+    tools/ui-preview.py --screens "game-620,game-620@game.main"   one screen with a ring of its own (screen@focus id)
     tools/ui-preview.py --focus library.game.wc3 --press x,down   then a controller's presses (x opens the game's menu)
     tools/ui-preview.py --screens settings.memory    a screen's part: Settings opened on Memory
     tools/ui-preview.py --screens game-620,game-wc3-options   a game's page (-BCDTab game-<id>-<what>)
@@ -56,9 +57,17 @@ ART_SOURCES = ["https://cdn.cloudflare.steamstatic.com/steam/apps/{app}/{name}",
 # Settings › Accounts, JIT and BCD Dock on the engine (their views: BCDAccounts/JIT/Dock.swift).
 ENGINE_BOUND |= {"BCDAccountsLive.swift", "BCDJITLive.swift", "BCDDockLive.swift"}
 
+# The screen orientation lock (BCDOrientation.swift: the choice, the rule and the UIKit lock, built into the preview; its
+# engine side BCDOrientationLive.swift, which names LibraryEntry and MadeiraConfig, stays out).
+ENGINE_BOUND |= {"BCDOrientationLive.swift"}
+
 # The in-game layer (BCDSession.swift and its views): its engine side stays out; its screens are
 # -BCDTab ingame-menu|starting|overlay, with variants (app/BCDPreview/BCDPreviewSession.swift).
 ENGINE_BOUND |= {"BCDSessionLive.swift"}
+
+# PC launchers (Battle.net, EA app: BCDLaunchers.swift, BCDLauncherView.swift): their engine side stays out; the screens are
+# -BCDTab library -BCDSection launcher-battlenet[+installed|downloading|failed|starting] (app/BCDPreview/BCDLauncherSample.swift).
+ENGINE_BOUND |= {"BCDLaunchersLive.swift"}
 SCREENS += ["ingame-menu", "starting", "overlay"]
 
 
@@ -78,6 +87,8 @@ def simulators():
             # Prefer the newer runtime when a name exists twice (e.g. iPad mini).
             if d["name"] not in out or version > out[d["name"]][1]:
                 out[d["name"]] = (d["udid"], version, d["state"])
+            # "iPad mini (A17 Pro)@18.1" names one runtime (the iOS 26 iPad shows the app in a window).
+            out[f"{d['name']}@{version}"] = (d["udid"], version, d["state"])
     return out
 
 
@@ -147,7 +158,7 @@ def build(out):
     return app
 
 
-def shoot(app, device, udid, screens, orients, focus, empty, out, press=None):
+def shoot(app, device, udid, screens, orients, focus_all, empty, out, press=None):
     shots = []
     subprocess.run(["xcrun", "simctl", "boot", udid], capture_output=True)
     run(["xcrun", "simctl", "bootstatus", udid, "-b"])
@@ -158,8 +169,12 @@ def shoot(app, device, udid, screens, orients, focus, empty, out, press=None):
                    capture_output=True)
     first = True
     for orient in orients:
-        for screen in screens:
-            tab, _, section = screen.partition(".")
+        for spec in screens:
+            # "screen@focus": this screen with the focus ring on that control (a controller's view), besides --focus.
+            screen, _, ring = spec.partition("@")
+            focus = ring or focus_all
+            # A game's page keeps the dots of its id (game-epic.deathsdoor-options); other screens take ".section".
+            tab, _, section = (screen, "", "") if screen.startswith("game-") else screen.partition(".")
             args = ["-BCDTab", tab, "-BCDOrientation", orient, "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
             if section:
                 args += ["-BCDSection", section]
@@ -188,7 +203,8 @@ def shoot(app, device, udid, screens, orients, focus, empty, out, press=None):
             # -BCDButtons: the presses start 1.6 s after the screen is up and come every 0.4 s.
             time.sleep(3 + (1.6 + 0.4 * len(press.split(",")) if press else 0))
             first = False
-            name = f"{device.replace(' ', '_').replace('(', '').replace(')', '')}--{screen}{'--' + press.replace(',', '-') if press else ''}--{orient}.png"
+            name = (f"{device.replace(' ', '_').replace('(', '').replace(')', '')}--{screen}{'--ring-' + ring if ring else ''}"
+                    f"{'--' + press.replace(',', '-') if press else ''}--{orient}.png")
             run(["xcrun", "simctl", "io", udid, "screenshot", str(out / name)])
             subprocess.run(["xcrun", "simctl", "terminate", udid, BUNDLE_ID], capture_output=True)
             try:

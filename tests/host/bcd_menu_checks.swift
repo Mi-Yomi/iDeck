@@ -29,11 +29,15 @@ import SwiftUI
     var onChange: (() -> Void)?
     var onNotice: (() -> Void)?
     var removal = BCDGameRemoval.none
+    /// The DLC state a game not installed reports (BCDGameDLC.swift): the card's Install opens the page for it.
+    var shown = BCDGameDetails()
     var asked: [Bool] = []
     func details(for game: BCDGame, settings: Bool) -> BCDGameDetails {
         asked.append(settings)
         var d = BCDGameDetails()
         d.removal = removal
+        d.dlcOffer = shown.dlcOffer
+        d.dlcCheck = shown.dlcCheck
         return d
     }
     func opened(_ game: BCDGame) {}
@@ -51,7 +55,8 @@ import SwiftUI
     func backUpSaves() async throws -> BCDSavesBackup { throw BCDGameError("no") }
     func restoreSaves(from file: URL) async throws -> Int { 0 }
     func lastLog(of game: BCDGame) async -> BCDGameLog? { nil }
-    func send(_ log: BCDGameLog, of game: BCDGame, progress: @escaping (String) -> Void) async throws -> String { "" }
+    func logComment() async -> String? { "" }
+    func send(_ log: BCDGameLog, of game: BCDGame, comment: String, progress: @escaping (String) -> Void) async throws -> String { "" }
     func configText(for game: BCDGame) -> String? { nil }
     func saveConfig(_ text: String, for game: BCDGame) {}
     func searchStore(_ text: String) async throws -> [BCDStoreMatch] { [] }
@@ -110,6 +115,29 @@ func check(_ what: String, _ ok: Bool, _ detail: Any = "") {
         menu.showCard("steam.1145360")
         check("a game not installed: Install, Game page, nothing to remove", titles() == ["Install", "Game page"], titles())
         menu.dismiss()
+        // A game not installed whose DLC the player owns (or Steam is still being asked): the card's Install opens the game's page, where
+        // the question is asked; otherwise it installs as it did.
+        var pages: [String] = []
+        menu.openPage = { pages.append($0.id) }
+        backend.shown.dlcOffer = BCDDLCOffer(items: [BCDDLCOfferItem(id: 1, name: "Alpha", bytes: 500_000_000), BCDDLCOfferItem(id: 2, name: "Beta", bytes: 500_000_000)])
+        menu.showCard("steam.1145360")
+        menu.pick(item("install")!)
+        menu.closed()?()
+        check("Install on the card of a game with owned DLC opens its page instead of installing it alone",
+              pages == ["steam.1145360"] && actions.calls.isEmpty, [pages, actions.calls])
+        backend.shown.dlcOffer = nil
+        backend.shown.dlcCheck = .checking
+        menu.showCard("steam.1145360")
+        menu.pick(item("install")!)
+        menu.closed()?()
+        check("... and while the DLC lookup still runs", pages == ["steam.1145360", "steam.1145360"] && actions.calls.isEmpty, [pages, actions.calls])
+        backend.shown.dlcCheck = .none
+        menu.showCard("steam.1145360")
+        menu.pick(item("install")!)
+        menu.closed()?()
+        check("... with no DLC to ask about it installs, as before", pages.count == 2 && actions.calls == ["install steam.1145360 device"], [pages, actions.calls])
+        actions.calls = []
+        menu.openPage = nil
         menu.showCard("steam.7")
         check("an update: Play, Update, Game page", titles() == ["Play", "Update", "Game page"], titles())
         menu.dismiss()

@@ -1256,6 +1256,17 @@ struct ContentView: View {
     /// applies the entry's launch profile and runs the same full sequence as the
     /// developer interface's buttons.
     private func launchLibraryEntry(_ entry: LibraryEntry) {
+        // A game on the SSD chosen in Settings > Storage (C:\External): when its folder is not connected, the saved one is
+        // opened again without the picker; if the program is still out of reach, say so. Nothing here for any other game.
+        if entry.relativePath.hasPrefix("External/"), ExternalGameStorage.shared.hasSavedFolder {
+            if (try? LibraryModel.executable(entry.launchRelativePath)) == nil {
+                _ = ExternalGameStorage.shared.reconnect(verifyWrite: false)
+            }
+            if (try? LibraryModel.executable(entry.launchRelativePath)) == nil {
+                library.error = "This game is on the external SSD, and BCD can't reach it. Plug the SSD in, then tap Reconnect in Settings › Storage (or choose its games folder again)."
+                return
+            }
+        }
         // madeira-bcd: what this device's GPU or CPU cannot run is refused here, before JIT is
         // asked for (DeviceCapability.swift); A14 and later devices always pass.
         if let refusal = DeviceCapability.libraryRefusal(entry) { library.error = refusal; return }
@@ -1309,6 +1320,26 @@ struct ContentView: View {
 
     /// The rest of Play, with JIT on: checks the entry's launch profile and starts it.
     private func startLibraryEntry(_ entry: LibraryEntry) {
+        // madeira-bcd (2026-10-22): an Epic game BCD installed starts signed in: its one-time code is fetched first and this start runs
+        // again with it (BCDEpicStart.swift). Any other entry, and Epic off (env.BCD_EPIC = 0), go straight on.
+        guard !BCDEpic.enabled || BCDEpic.shared.preLaunch(entry, retry: { startLibraryEntry(entry) }) else { return }
+        // madeira-bcd (lead, 2026-10-24): a launcher's own library entry (Battle.net, EA app) started from its library tile takes the
+        // launcher's current block of lines too, as the Launchers tab's Open does (BCDLaunchersLive.entry). Build 597's Battle.net
+        // fix never reached the owner's session because it was started from the tile and the block was still build 594's. Only the
+        // two launcher entries are touched; the player's own lines stay (BCDLauncherConfig.merged keeps them and their keys).
+        // (After Epic's look: neither launcher entry is an Epic game's, and check-epic keeps that look first.)
+        // The launcher's own arguments too, when it has any (Battle.net's Chromium switches, build 599), as Open sets them.
+        var entry = entry
+        if let spec = BCDLauncherSpec.all.first(where: { $0.entryID.caseInsensitiveCompare(entry.id.uuidString) == .orderedSame }) {
+            let merged = BCDLauncherConfig.merged(entry.config, lines: spec.programSessionConfig, id: spec.id)
+            let arguments = BCDLauncherArguments.merged(entry.arguments, table: spec.launcherArguments)
+            if merged != entry.config || arguments != entry.arguments {
+                entry.config = merged
+                entry.arguments = arguments
+                library.save(entry)
+                logStore.log("[launchers] \(spec.id): a library start took the launcher's current lines")
+            }
+        }
         do { if entry.desktop != true { _ = try LibraryModel.executable(entry.launchRelativePath) }; try entry.validate() }
         catch {
             library.error = error.localizedDescription
@@ -1321,6 +1352,7 @@ struct ContentView: View {
             library.error = "The program path or its launch arguments are longer than BCD allows."; return
         }
         entry.configureLaunch()
+        if BCDEpic.enabled { BCDEpic.shared.applyLaunch(entry) }   // madeira-bcd (2026-10-22): an Epic game's signed-in start goes through BCD Host (BCDEpicStart.swift)
         // madeira-bcd: the game's own options (LibraryBCD.swift); this run's
         // log is named below, by upstream's rule (the program a launch starts).
         BCDLaunch.applyLibrary(entry, sessionLog: false)
@@ -1331,7 +1363,7 @@ struct ContentView: View {
         let program = entry.desktop == true ? "explorer.exe"
             : entry.launchWindowsPath.split(separator: "\\").last.map(String.init) ?? entry.launchWindowsPath
         LogStore.shared.startSessionLog(program: program)
-        library.begin(entry)
+        library.begin(entry, remember: !BCDLaunchersLive.isSetup(entry))   // madeira-bcd: a launcher's installer run (BCDLaunchersLive) is not added to the library
         runWineFullSequence(profile: entry)
     }
 
@@ -1426,6 +1458,7 @@ struct ContentView: View {
 
         logStore.log("Running full Wine sequence...")
         DeviceDiagnostics.logLaunch()
+        logStore.log(BCDWindowReport.current())   // madeira-bcd (2026-10-24): the window this session runs in (BCDOrientation.swift); log only
 
         // Start a main thread heartbeat to diagnose hang
         var heartbeatCount = 0
@@ -1442,6 +1475,8 @@ struct ContentView: View {
         // contention that blocks the main thread RunLoop, triggering iOS hang detection
         ws_log_quiet = 1
 
+        let epicSession = profile.map { BCDEpic.shared.owns(entryID: $0.id) } ?? false   // madeira-bcd (2026-10-22): read here, on the main thread (BCDEpic is main-actor); used for the msiexec line below
+        let windowsDesktopEntry = profile?.desktop == true   // madeira-bcd (2026-10-23): the library's "Windows desktop" entry (no game), for the msiexec line below
         DispatchQueue.global(qos: .userInitiated).async {
             // A library entry's launch profile (executable, arguments, x87
             // precision, frame limit).
@@ -1567,6 +1602,29 @@ struct ContentView: View {
             } else {
                 unsetenv("MADEIRA_DOCK_SESSION")
             }
+            // madeira-bcd (2026-10-22): an Epic game's session gets msiexec in the 64-bit system32 (WineProcessBridge.m):
+            // Paradox's launcher stub (Cities: Skylines on Epic, dowser.exe) installs its launcher by running "msiexec"
+            // from PATH, and only the 32-bit msiexec is bundled ("executable file not found in %PATH%", build 585).
+            // Every other launch clears it and is unchanged; env.MADEIRA_MSIEXEC_SYSTEM32 = 1 in a game's config or
+            // bcd.cfg (exported later) asks for it in any session, = 0 refuses it for an Epic game.
+            // madeira-bcd (2026-10-23): the "Windows desktop" entry too (only that entry: not a game, not a Dock session). The
+            // owner's EA app install there stopped on "The Windows Installer service could not be accessed" (build 592): Wine's
+            // MSIServer runs system32\msiexec.exe, which was missing; with the link the service started (owner's test, same day).
+            // env.MADEIRA_MSIEXEC_SYSTEM32 = 0 in bcd.cfg refuses it.
+            if epicSession {
+                setenv("MADEIRA_MSIEXEC_SYSTEM32", "1", 1)
+                logStore.log("[msiexec64] Epic game: msiexec in system32 for this session")
+            } else if windowsDesktopEntry {
+                setenv("MADEIRA_MSIEXEC_SYSTEM32", "1", 1)
+                logStore.log("[msiexec64] Windows desktop: msiexec in system32 for this session")
+            } else {
+                unsetenv("MADEIRA_MSIEXEC_SYSTEM32")
+            }
+            // madeira-bcd: Wine Gecko downloaded with BCD's own downloader (Settings › HTML engine for installers, BCDGecko.swift) is
+            // the guest's cache folder (XDG_CACHE_HOME, seen by the guest as WINE_HOST_XDG_CACHE_HOME): appwiz.cpl then installs it
+            // silently where an installer's embedded web page needs it, instead of showing its slow download dialog. Not downloaded:
+            // nothing is set, and a session that never needs mshtml never reads the folder.
+            if let line = BCDGeckoFiles.exportEnvironment() { logStore.log(line) }
             // A Dock session runs Valve's client headless, with no Chromium, so
             // nothing claims the 8 GB V8 cage holdback (virtual_ios.c). Let ntdll
             // hand it to the allocator when the guest band runs out. bcd.cfg
@@ -2203,9 +2261,11 @@ struct ContentView: View {
             // used before; Dock stops at once if Steam names that entry missing.
             let options = await SteamOwnedLibrary.shared.launchOptions(appID: game.id)
             let installFolder = MadeiraDock.drive.appendingPathComponent(game.library + "/common/" + game.installDir)
-            let chosen = options.flatMap { SteamDirectStart.choose($0, installFolder: installFolder)?.launchIndex }
-            let launchOption = chosen ?? 0
-            LogStore.shared.log("[madeira-dock] launch option \(launchOption)\(chosen == nil ? " (none chosen: the default)" : "")")
+            // madeira-bcd (2026-10-24): a game whose page chose a Steam launch option (profile.steamLaunchOption) asks for that
+            // entry; a game that never did gets exactly the key and the line it got before (SteamDirectStart.dockLaunch).
+            let dockLaunch = SteamDirectStart.dockLaunch(chosen: profile?.steamLaunchOption, options: options, installFolder: installFolder)
+            let launchOption = dockLaunch.index
+            for line in dockLaunch.lines { LogStore.shared.log(line) }
             await SteamOwnedLibrary.shared.prepareDock()
             do {
                 // The launch state may have changed while the connection closed.

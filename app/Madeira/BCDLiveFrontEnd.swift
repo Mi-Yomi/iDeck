@@ -102,6 +102,7 @@ struct BCDLiveFrontEnd: View {
             .alert("Steam", isPresented: Binding(get: { steam.error != nil }, set: { if !$0 { steam.error = nil } })) {
                 Button("OK", role: .cancel) { steam.error = nil }
             } message: { Text(steam.error ?? "") }
+            .modifier(BCDEpicPromptAlert())   // Epic's sign-in question when a start can't be signed in (BCDEpicStart.swift); nothing until one asks
             // An install without the increased memory limit (MemoryRights.swift): told, never blocked;
             // only over the library, OK is the only button.
             .alert("Memory limit", isPresented: Binding(
@@ -119,9 +120,9 @@ struct BCDLiveFrontEnd: View {
                 Button("OK", role: .cancel) { update.message = nil }
             } message: { Text(update.message ?? "") }
             // First-run setup (Onboarding.swift).
-            .fullScreenCover(isPresented: $onboarding.presented) { OnboardingView() }
-            .sheet(item: sheetShown) { sheet in screen(sheet) }
-            .fullScreenCover(item: pageShown) { page in pageScreen(page) }
+            .fullScreenCover(isPresented: $onboarding.presented, onDismiss: BCDPresentation.didClose) { OnboardingView() }
+            .sheet(item: sheetShown, onDismiss: BCDPresentation.didClose) { sheet in screen(sheet) }
+            .fullScreenCover(item: pageShown, onDismiss: BCDPresentation.didClose) { page in pageScreen(page) }
             // A start waiting for its Steam Cloud saves.
             .overlay(alignment: .bottom) { cloudWaitNote }
     }

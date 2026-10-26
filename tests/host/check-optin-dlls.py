@@ -18,6 +18,7 @@ optionally today (Chromium loads dxva2 for video), so each is opt-in, as wer-opt
     import failure (fixtures fort-solis-*, animal-well-*).
 """
 from pathlib import Path
+import os
 import re
 import sys
 
@@ -36,9 +37,14 @@ want = build[build.index('WANT="'):]
 want = want[:want.index('"\n', 6)]
 optin = re.search(r'OPTIN_WANT="([^"]*)"', build)
 names = optin.group(1).split() if optin else []
+# iDeck-BCD, 2026-10-26: these also ship under their own names (WANT) for 1C's 64-bit .msi install through msiexec.exe
+# (and oledlg for 1C's frame.dll, build 591);
+# a listed game's link to the -optin copy only ever replaces a link of ours, never the plain DLL.
+PLAIN = {'msi', 'sxs', 'mspatcha', 'odbccp32', 'oledlg'}
+check('iDeck-BCD: msi, sxs, mspatcha, odbccp32 and oledlg ship under their own names too', all(re.search(r'\b%s\b' % n, want) for n in PLAIN))
 check('OPTIN_WANT lists dxva2, evr, xpsprint, sfc, sfc_os and tbs (Diablo II: Resurrected), twinapi.appcore (Hellblade II) (%s)' % names,
       {'dxva2', 'evr', 'xpsprint', 'sfc', 'sfc_os', 'tbs', 'twinapi.appcore'} <= set(names))
-check('none of them is in the list shipped under its own name', not any(re.search(r'\b%s\b' % n, want) for n in names))
+check('none of them is in the list shipped under its own name', not any(re.search(r'\b%s\b' % n, want) for n in names if n not in PLAIN))
 opt = build[build.index('OPT=""'):]
 opt = opt[:opt.index('\nfi\n') + 4]
 check('each is built only where no <name>.dll ships, and MADEIRA_OPTIN_BUILD=0 skips them',
@@ -99,7 +105,74 @@ recs = json.loads((root / 'recommended/recommendations.json').read_text())
 # Senua's Saga: Hellblade II has no list: its only log (XJ7Z6Y) was a copy outside Steam (the lead, round 579); the
 # twinapi.appcore DLL and the auto-tune rule are engine-level and stay. No list may name twinapi.appcore before build 579.
 named = [r['id'] for r in recs['rules'] if 'twinapi.appcore' in json.dumps(r)]
-check("no list names twinapi.appcore (Hellblade II's only log was a copy; the DLL and the rule stay engine-level)", named == [])
+# 2026-10-24: the recipe of thebcd69/bcd-games#16 by le0-VV (Minecraft Dungeons II) names it; no other list does.
+check("only Minecraft Dungeons II's list names twinapi.appcore (Hellblade II's only log was a copy; the DLL and the rule stay engine-level)",
+      named == ['minecraft-dungeons-2'])
+
+# oledlg, fwpuclnt and sensapi (2026-10-23, testers' logs of build 580): Digimon Story Cyber Sleuth's exe imports oledlg.dll (PGET5A),
+# FINAL FANTASY XV's ffxv_s.exe fwpuclnt.dll (DM9SAF, CDC7AK), Borderlands 3's vivoxsdk.dll SensApi.dll (VFM84T); each ended with
+# c0000135. The 32-bit set has all three; the 64-bit one had none. Same mechanism as the DLLs above, one rule each.
+NEW3 = {'oledlg': ('oledlg.dll', 'digimon-story-cyber-sleuth-2026-10-22'), 'fwpuclnt': ('fwpuclnt.dll', 'ffxv-demo-2026-10-22'),
+        'sensapi': ('SensApi.dll', 'borderlands-3-2026-10-22')}
+check('OPTIN_WANT also lists oledlg, fwpuclnt and sensapi', set(NEW3) <= set(names))
+check('none of the three is in the list shipped under its own name', not any(re.search(r'\b%s\b' % n, want) for n in NEW3 if n not in PLAIN))
+wine = Path(os.environ.get('WINE_SRC') or (root / 'wine'))
+shipdir = root / 'app/Madeira/arm64ec-windows'
+check('no oledlg.dll, fwpuclnt.dll or sensapi.dll ships in the 64-bit set (the script skips a DLL that ships)',
+      not any((shipdir / (n + '.dll')).exists() or (shipdir / (n.upper() + '.dll')).exists() for n in NEW3))
+if (wine / 'dlls/oledlg/Makefile.in').exists():
+    for n in NEW3:
+        mk = (wine / 'dlls' / n / 'Makefile.in').read_text()
+        imports = re.search(r'^IMPORTS\s*=\s*(.*)$', mk, re.M)
+        imports = imports.group(1).split() if imports else []
+        check('Wine builds %s.dll from dlls/%s; its imports %s all ship in the 64-bit set (or are import-only libraries)' % (n, n, imports),
+              re.search(r'^MODULE\s*=\s*%s\.dll$' % n, mk, re.M) and
+              all((shipdir / (i + '.dll')).exists() or i in ('uuid', 'dxguid', 'strmiids') for i in imports))
+else:
+    print('note SKIPPED: no Wine sources here (set WINE_SRC); the three DLLs\' Makefile.in files are not read')
+# msi, mspatcha, odbccp32, sxs and rstrtmgr (2026-10-23, the owner's EA app install on build 594, log 19:20:11): the 64-bit
+# EABackgroundService.exe imports msi.dll and RstrtMgr.dll, msi.dll imports mspatcha, odbccp32 and sxs; none was in the 64-bit
+# set, the service never started (1053) and the MSI rolled back (1627). Only the EA app's launcher entry names them.
+EA5 = ['msi', 'mspatcha', 'odbccp32', 'sxs', 'rstrtmgr']
+check('OPTIN_WANT also lists msi, mspatcha, odbccp32, sxs and rstrtmgr', set(EA5) <= set(names))
+check('none of the five is in the list shipped under its own name', not any(re.search(r'\b%s\b' % n, want) for n in EA5 if n not in PLAIN))
+check('no msi.dll, mspatcha.dll, odbccp32.dll, sxs.dll or rstrtmgr.dll ships in the 64-bit set',
+      not any((shipdir / (n + '.dll')).exists() for n in EA5))
+if (wine / 'dlls/msi/Makefile.in').exists():
+    for n in EA5:
+        mk = (wine / 'dlls' / n / 'Makefile.in').read_text()
+        imports = re.search(r'^IMPORTS\s*=\s*(.*)$', mk, re.M)
+        imports = imports.group(1).split() if imports else []
+        check('Wine builds %s.dll; its imports %s ship in the 64-bit set or are among the five' % (n, imports),
+              re.search(r'^MODULE\s*=\s*%s\.dll$' % n, mk, re.M) and
+              all((shipdir / (i + '.dll')).exists() or re.search(r'\b%s\b' % i, want) or i in EA5 or i in ('uuid', 'dxguid', 'strmiids')
+                  for i in imports))   # want: the DLLs this script builds and ships under their own name (cabinet)
+launchers = (root / 'app/Madeira/BCDLaunchers.swift').read_text()
+check('only the EA app\'s launcher entry names them',
+      launchers.count('"env.MADEIRA_OPTIN_DLLS = msi,mspatcha,odbccp32,sxs,rstrtmgr,dxva2"') == 1 and
+      not any('mspatcha' in json.dumps(r) for r in recs['rules']))
+policy = (root / 'app/Madeira/GameRecommendationsList.swift').read_text()
+check('RecommendationsPolicy lets a downloaded list name oledlg, fwpuclnt and sensapi',
+      '["oledlg", "fwpuclnt", "sensapi", "ddraw"].contains($0)' in policy and 'wmadmod, or oledlg, fwpuclnt, sensapi' in policy)
+check('the catalog note names the three DLLs', 'oledlg, fwpuclnt and sensapi are three small system DLLs' in gen)
+import importlib.util
+spec = importlib.util.spec_from_file_location('autotune_rules', root / 'build/tools/autotune_rules.py')
+atr = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(atr)
+by_id = {r['id']: r for r in atr.RULES}
+for n, (spelled, fixture) in NEW3.items():
+    r = by_id.get('%s-dll-optin' % n)
+    check('auto-tune has %s-dll-optin: one line, no retry of the unchanged start, not again once linked' % n,
+          r and r['lines'] == ['env.MADEIRA_OPTIN_DLLS = %s' % n] and r.get('noRetry') is True and r['priority'] == 10 and
+          r['none'] == [{'has': ['MADEIRA_OPTIN_DLLS: %s.dll -> %s-optin.dll' % (n, n)]}])
+    sigs = r['any'] if r else []
+    check('its signal matches the name as the tester\'s log spelled it (%s) and the usual upper-case spellings' % spelled,
+          any(sg['has'][0] == 'err:module:import_dll Library ' + spelled for sg in sigs) and
+          any(sg['has'][0] == 'err:module:import_dll Library %s.DLL' % n.upper() for sg in sigs))
+    fx = (root / 'tests/fixtures/autotune' / (fixture + '.log')).read_text(errors='replace').split('\n')
+    check('fixture %s has the import failure line the rule reads' % fixture,
+          any('err:module:import_dll Library ' + spelled in l and 'not found' in l for l in fx))
+    check('its fixture proves the rule', '"%s-dll-optin"' % n in (root / 'tests/fixtures/autotune' / (fixture + '.expect')).read_text())
 wf = (root / '.github/workflows/build-ipa.yml').read_text()
 check('CI runs this check', 'python3 tests/host/check-optin-dlls.py' in wf)
 print('PASS: opt-in DLLs' if ok else 'FAILED: opt-in DLLs')

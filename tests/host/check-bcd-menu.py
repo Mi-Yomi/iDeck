@@ -103,7 +103,7 @@ check("the hint follows the ring", ".onChange(of: focus.focused) { _, _ in insta
 check("the shell's buttons are not set over a page, a menu or Settings",
       "guard !focus.layerOpen, !showSettings else { return }" in shell and "var layerOpen: Bool { !layers.isEmpty }" in focus)
 check("the shell's buttons come back when Settings closes (it clears them as it goes)",
-      "onDismiss: { installButtons() }" in shell)
+      "onDismiss: { installButtons(); BCDPresentation.didClose() }" in shell)
 check("a control's registration belongs to the latest view of its id: a turn of the device builds the new view before the old one goes, and the old one's going leaves the new one's action, frame and ring alone",
       "if let owner, let latest = owners[id], latest != owner { return }" in focus
       and "func setAction(_ id: String, _ action: @escaping () -> Void, owner: UUID? = nil)" in focus
@@ -165,12 +165,13 @@ else:
     with tempfile.TemporaryDirectory(prefix="bcd-menu-") as tmp:
         t = Path(tmp)
         (t / "BCDStore.swift").write_text((APP / "BCDStore.swift").read_text())
+        (t / "BCDGameDLC.swift").write_text((APP / "BCDGameDLC.swift").read_text())   # the page's model asks the DLC question
         (t / "Rules.swift").write_text("import Combine\nimport Foundation\nimport SwiftUI\n\n" + page[rules_start:rules_end])
         (t / "Menu.swift").write_text("import SwiftUI\n\n" + menu[menu.index("// MARK: - What a menu holds"):model_end])
         (t / "Main.swift").write_text((Path(__file__).resolve().parent / "bcd_menu_checks.swift").read_text())
         # The question's view is the page's (BCDGamePage.swift, outside the rules): the model needs only its type.
         r = subprocess.run(["xcrun", "swiftc", "-parse-as-library", "-swift-version", "5", "-o", str(t / "rules")]
-                           + [str(t / n) for n in ("BCDStore.swift", "Rules.swift", "Menu.swift", "Main.swift")],
+                           + [str(t / n) for n in ("BCDStore.swift", "BCDGameDLC.swift", "Rules.swift", "Menu.swift", "Main.swift")],
                            capture_output=True, text=True)
         check("the menu's rules compile on their own with BCDStore.swift and the page's rules", r.returncode == 0, (r.stderr or r.stdout)[-3000:])
         if r.returncode == 0:
